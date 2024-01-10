@@ -40,7 +40,7 @@ public class UtilsTest {
             Utils.parse(data, ObjectNode.class);
             fail("expected to fail");
         } catch (Exception e) {
-            assertThat(e.getMessage()).isEqualTo("Failed to parse byte-array " + Arrays.toString(data) + " to POJO.");
+            assertThat(e.getMessage()).isEqualTo("Failed to parse byte-array " + new String(data, StandardCharsets.UTF_8) + " to POJO.");
         }
     }
 

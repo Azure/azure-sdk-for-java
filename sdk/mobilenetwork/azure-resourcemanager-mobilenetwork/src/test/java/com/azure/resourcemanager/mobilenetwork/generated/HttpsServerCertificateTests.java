@@ -14,15 +14,15 @@ public final class HttpsServerCertificateTests {
         HttpsServerCertificate model =
             BinaryData
                 .fromString(
-                    "{\"certificateUrl\":\"jtoqne\",\"provisioning\":{\"state\":\"Failed\",\"reason\":\"plpho\"}}")
+                    "{\"certificateUrl\":\"wrupqsxvnmicykvc\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"lo\"}}")
                 .toObject(HttpsServerCertificate.class);
-        Assertions.assertEquals("jtoqne", model.certificateUrl());
+        Assertions.assertEquals("wrupqsxvnmicykvc", model.certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpsServerCertificate model = new HttpsServerCertificate().withCertificateUrl("jtoqne");
+        HttpsServerCertificate model = new HttpsServerCertificate().withCertificateUrl("wrupqsxvnmicykvc");
         model = BinaryData.fromObject(model).toObject(HttpsServerCertificate.class);
-        Assertions.assertEquals("jtoqne", model.certificateUrl());
+        Assertions.assertEquals("wrupqsxvnmicykvc", model.certificateUrl());
     }
 }

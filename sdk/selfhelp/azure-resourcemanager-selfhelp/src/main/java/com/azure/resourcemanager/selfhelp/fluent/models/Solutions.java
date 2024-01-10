@@ -9,7 +9,9 @@ import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of solutions. */
+/**
+ * List of solutions.
+ */
 @Fluent
 public final class Solutions {
     /*
@@ -18,13 +20,15 @@ public final class Solutions {
     @JsonProperty(value = "solutions")
     private List<SolutionMetadataProperties> solutions;
 
-    /** Creates an instance of Solutions class. */
+    /**
+     * Creates an instance of Solutions class.
+     */
     public Solutions() {
     }
 
     /**
      * Get the solutions property: List of metadata.
-     *
+     * 
      * @return the solutions value.
      */
     public List<SolutionMetadataProperties> solutions() {
@@ -33,7 +37,7 @@ public final class Solutions {
 
     /**
      * Set the solutions property: List of metadata.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the Solutions object itself.
      */
@@ -44,7 +48,7 @@ public final class Solutions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

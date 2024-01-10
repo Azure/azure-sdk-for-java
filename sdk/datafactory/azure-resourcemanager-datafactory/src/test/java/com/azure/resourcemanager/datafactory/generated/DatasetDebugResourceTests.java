@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetDebugResource model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"Dataset\",\"description\":\"qmjxlyyzglgouwtl\",\"structure\":\"datajyuojqtobaxkjeyt\",\"schema\":\"datalbfjkwr\",\"linkedServiceName\":{\"referenceName\":\"snkq\",\"parameters\":{\"qunjqh\":\"datay\"}},\"parameters\":{\"ifmjnn\":{\"type\":\"Float\",\"defaultValue\":\"dataulkpakd\"},\"yirdhlisngwflqq\":{\"type\":\"String\",\"defaultValue\":\"dataqabpxuckpggqow\"}},\"annotations\":[\"datazruwn\",\"dataqxpxiwfcngjsaa\",\"dataiixtmkzj\",\"datakv\"],\"folder\":{\"name\":\"hgfgrwsd\"},\"\":{\"bglbyvict\":\"dataatzv\"}},\"name\":\"brxkjzwr\"}")
-                .toObject(DatasetDebugResource.class);
+        DatasetDebugResource model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"Dataset\",\"description\":\"qmjxlyyzglgouwtl\",\"structure\":\"datajyuojqtobaxkjeyt\",\"schema\":\"datalbfjkwr\",\"linkedServiceName\":{\"referenceName\":\"snkq\",\"parameters\":{\"qunjqh\":\"datay\"}},\"parameters\":{\"ifmjnn\":{\"type\":\"Float\",\"defaultValue\":\"dataulkpakd\"},\"yirdhlisngwflqq\":{\"type\":\"String\",\"defaultValue\":\"dataqabpxuckpggqow\"}},\"annotations\":[\"datazruwn\",\"dataqxpxiwfcngjsaa\",\"dataiixtmkzj\",\"datakv\"],\"folder\":{\"name\":\"hgfgrwsd\"},\"\":{\"bglbyvict\":\"dataatzv\"}},\"name\":\"brxkjzwr\"}")
+            .toObject(DatasetDebugResource.class);
         Assertions.assertEquals("brxkjzwr", model.name());
         Assertions.assertEquals("qmjxlyyzglgouwtl", model.properties().description());
         Assertions.assertEquals("snkq", model.properties().linkedServiceName().referenceName());
@@ -33,31 +31,18 @@ public final class DatasetDebugResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetDebugResource model =
-            new DatasetDebugResource()
-                .withName("brxkjzwr")
-                .withProperties(
-                    new Dataset()
-                        .withDescription("qmjxlyyzglgouwtl")
-                        .withStructure("datajyuojqtobaxkjeyt")
-                        .withSchema("datalbfjkwr")
-                        .withLinkedServiceName(
-                            new LinkedServiceReference()
-                                .withReferenceName("snkq")
-                                .withParameters(mapOf("qunjqh", "datay")))
-                        .withParameters(
-                            mapOf(
-                                "ifmjnn",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.FLOAT)
-                                    .withDefaultValue("dataulkpakd"),
-                                "yirdhlisngwflqq",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.STRING)
-                                    .withDefaultValue("dataqabpxuckpggqow")))
-                        .withAnnotations(Arrays.asList("datazruwn", "dataqxpxiwfcngjsaa", "dataiixtmkzj", "datakv"))
-                        .withFolder(new DatasetFolder().withName("hgfgrwsd"))
-                        .withAdditionalProperties(mapOf("type", "Dataset")));
+        DatasetDebugResource model = new DatasetDebugResource().withName("brxkjzwr")
+            .withProperties(new Dataset().withDescription("qmjxlyyzglgouwtl").withStructure("datajyuojqtobaxkjeyt")
+                .withSchema("datalbfjkwr")
+                .withLinkedServiceName(
+                    new LinkedServiceReference().withReferenceName("snkq").withParameters(mapOf("qunjqh", "datay")))
+                .withParameters(mapOf("ifmjnn",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataulkpakd"),
+                    "yirdhlisngwflqq",
+                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataqabpxuckpggqow")))
+                .withAnnotations(Arrays.asList("datazruwn", "dataqxpxiwfcngjsaa", "dataiixtmkzj", "datakv"))
+                .withFolder(new DatasetFolder().withName("hgfgrwsd"))
+                .withAdditionalProperties(mapOf("type", "Dataset")));
         model = BinaryData.fromObject(model).toObject(DatasetDebugResource.class);
         Assertions.assertEquals("brxkjzwr", model.name());
         Assertions.assertEquals("qmjxlyyzglgouwtl", model.properties().description());

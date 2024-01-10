@@ -16,36 +16,35 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InboundSecurityRuleOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InboundSecurityRuleOperationsClient.
+ */
 public interface InboundSecurityRuleOperationsClient {
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
-        InboundSecurityRuleInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,19 +52,17 @@ public interface InboundSecurityRuleOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
+        String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
         InboundSecurityRuleInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,19 +70,17 @@ public interface InboundSecurityRuleOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
+        String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
         InboundSecurityRuleInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,60 +89,51 @@ public interface InboundSecurityRuleOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
-        InboundSecurityRuleInner parameters,
-        Context context);
+        String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
+        InboundSecurityRuleInner parameters, Context context);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InboundSecurityRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
-        InboundSecurityRuleInner parameters);
+    Mono<InboundSecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkVirtualApplianceName,
+        String ruleCollectionName, InboundSecurityRuleInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundSecurityRuleInner createOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
-        InboundSecurityRuleInner parameters);
+    InboundSecurityRuleInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
+        String ruleCollectionName, InboundSecurityRuleInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance Inbound Security Rules
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,10 +141,6 @@ public interface InboundSecurityRuleOperationsClient {
      * @return nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundSecurityRuleInner createOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        String ruleCollectionName,
-        InboundSecurityRuleInner parameters,
-        Context context);
+    InboundSecurityRuleInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
+        String ruleCollectionName, InboundSecurityRuleInner parameters, Context context);
 }

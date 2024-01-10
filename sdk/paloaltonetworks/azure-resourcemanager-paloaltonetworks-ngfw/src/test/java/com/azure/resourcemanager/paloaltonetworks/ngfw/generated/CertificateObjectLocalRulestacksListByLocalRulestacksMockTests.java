@@ -32,44 +32,31 @@ public final class CertificateObjectLocalRulestacksListByLocalRulestacksMockTest
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"hhltnjadhqo\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"qoyueayfbpcmsplb\",\"description\":\"rueqthwm\",\"etag\":\"mbscbbx\",\"provisioningState\":\"Deleting\"},\"id\":\"xiidloped\",\"name\":\"wdpyq\",\"type\":\"ybxubmdna\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"xawqy\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"hd\",\"description\":\"myck\",\"etag\":\"xnx\",\"provisioningState\":\"Accepted\"},\"id\":\"ywymxgaabj\",\"name\":\"dtfohfaog\",\"type\":\"vkiwrsiwdyjqu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CertificateObjectLocalRulestackResource> response =
-            manager
-                .certificateObjectLocalRulestacks()
-                .listByLocalRulestacks("klsbsbqqqagw", "rxaomzisglrrcze", com.azure.core.util.Context.NONE);
+        PagedIterable<CertificateObjectLocalRulestackResource> response = manager.certificateObjectLocalRulestacks()
+            .listByLocalRulestacks("exhvuqbozoolz", "ocarkuzlbcnndt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhltnjadhqo", response.iterator().next().certificateSignerResourceId());
+        Assertions.assertEquals("xawqy", response.iterator().next().certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, response.iterator().next().certificateSelfSigned());
-        Assertions.assertEquals("qoyueayfbpcmsplb", response.iterator().next().auditComment());
-        Assertions.assertEquals("rueqthwm", response.iterator().next().description());
-        Assertions.assertEquals("mbscbbx", response.iterator().next().etag());
+        Assertions.assertEquals("hd", response.iterator().next().auditComment());
+        Assertions.assertEquals("myck", response.iterator().next().description());
+        Assertions.assertEquals("xnx", response.iterator().next().etag());
     }
 }

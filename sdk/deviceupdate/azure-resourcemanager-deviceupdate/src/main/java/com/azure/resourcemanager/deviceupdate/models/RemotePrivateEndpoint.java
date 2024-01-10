@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Remote private endpoint details. */
+/**
+ * Remote private endpoint details.
+ */
 @Fluent
 public final class RemotePrivateEndpoint {
     /*
@@ -66,8 +68,14 @@ public final class RemotePrivateEndpoint {
     private List<ConnectionDetails> connectionDetails;
 
     /**
+     * Creates an instance of RemotePrivateEndpoint class.
+     */
+    public RemotePrivateEndpoint() {
+    }
+
+    /**
      * Get the id property: Remote endpoint resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +84,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the id property: Remote endpoint resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -87,7 +95,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -96,7 +104,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @param location the location value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -107,7 +115,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableSubscriptionId value.
      */
     public String immutableSubscriptionId() {
@@ -116,7 +124,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableSubscriptionId the immutableSubscriptionId value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -127,7 +135,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -136,7 +144,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableResourceId the immutableResourceId value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -147,7 +155,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @return the vnetTrafficTag value.
      */
     public String vnetTrafficTag() {
@@ -156,7 +164,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @param vnetTrafficTag the vnetTrafficTag value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -168,7 +176,7 @@ public final class RemotePrivateEndpoint {
     /**
      * Get the manualPrivateLinkServiceConnections property: List of private link service connections that need manual
      * approval.
-     *
+     * 
      * @return the manualPrivateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
@@ -178,7 +186,7 @@ public final class RemotePrivateEndpoint {
     /**
      * Set the manualPrivateLinkServiceConnections property: List of private link service connections that need manual
      * approval.
-     *
+     * 
      * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -190,7 +198,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the privateLinkServiceConnections property: List of automatically approved private link service connections.
-     *
+     * 
      * @return the privateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
@@ -199,19 +207,19 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the privateLinkServiceConnections property: List of automatically approved private link service connections.
-     *
+     * 
      * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
-    public RemotePrivateEndpoint withPrivateLinkServiceConnections(
-        List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
+    public RemotePrivateEndpoint
+        withPrivateLinkServiceConnections(List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
         this.privateLinkServiceConnections = privateLinkServiceConnections;
         return this;
     }
 
     /**
      * Get the privateLinkServiceProxies property: List of private link service proxies.
-     *
+     * 
      * @return the privateLinkServiceProxies value.
      */
     public List<PrivateLinkServiceProxy> privateLinkServiceProxies() {
@@ -220,19 +228,19 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the privateLinkServiceProxies property: List of private link service proxies.
-     *
+     * 
      * @param privateLinkServiceProxies the privateLinkServiceProxies value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
-    public RemotePrivateEndpoint withPrivateLinkServiceProxies(
-        List<PrivateLinkServiceProxy> privateLinkServiceProxies) {
+    public RemotePrivateEndpoint
+        withPrivateLinkServiceProxies(List<PrivateLinkServiceProxy> privateLinkServiceProxies) {
         this.privateLinkServiceProxies = privateLinkServiceProxies;
         return this;
     }
 
     /**
      * Get the connectionDetails property: List of connection details.
-     *
+     * 
      * @return the connectionDetails value.
      */
     public List<ConnectionDetails> connectionDetails() {
@@ -241,7 +249,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the connectionDetails property: List of connection details.
-     *
+     * 
      * @param connectionDetails the connectionDetails value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -252,7 +260,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

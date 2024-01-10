@@ -10,21 +10,16 @@ import com.azure.resourcemanager.datafactory.models.SapTablePartitionSettings;
 public final class SapTablePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapTablePartitionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"partitionColumnName\":\"datada\",\"partitionUpperBound\":\"datahtwhh\",\"partitionLowerBound\":\"databomf\",\"maxPartitionsNumber\":\"datajkerdujfnb\"}")
-                .toObject(SapTablePartitionSettings.class);
+        SapTablePartitionSettings model = BinaryData.fromString(
+            "{\"partitionColumnName\":\"datawmfwr\",\"partitionUpperBound\":\"dataizggvmuotc\",\"partitionLowerBound\":\"dataabfyjampvwx\",\"maxPartitionsNumber\":\"datahpr\"}")
+            .toObject(SapTablePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapTablePartitionSettings model =
-            new SapTablePartitionSettings()
-                .withPartitionColumnName("datada")
-                .withPartitionUpperBound("datahtwhh")
-                .withPartitionLowerBound("databomf")
-                .withMaxPartitionsNumber("datajkerdujfnb");
+        SapTablePartitionSettings model = new SapTablePartitionSettings().withPartitionColumnName("datawmfwr")
+            .withPartitionUpperBound("dataizggvmuotc").withPartitionLowerBound("dataabfyjampvwx")
+            .withMaxPartitionsNumber("datahpr");
         model = BinaryData.fromObject(model).toObject(SapTablePartitionSettings.class);
     }
 }

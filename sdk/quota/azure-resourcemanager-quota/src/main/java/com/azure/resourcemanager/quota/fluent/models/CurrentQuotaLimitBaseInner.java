@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Quota limit. */
+/**
+ * Quota limit.
+ */
 @Fluent
 public final class CurrentQuotaLimitBaseInner extends ProxyResource {
     /*
@@ -18,14 +20,16 @@ public final class CurrentQuotaLimitBaseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private QuotaProperties properties;
 
-    /** Creates an instance of CurrentQuotaLimitBaseInner class. */
+    /**
+     * Creates an instance of CurrentQuotaLimitBaseInner class.
+     */
     public CurrentQuotaLimitBaseInner() {
     }
 
     /**
      * Get the properties property: Quota properties for the specified resource, based on the API called, Quotas or
      * Usages.
-     *
+     * 
      * @return the properties value.
      */
     public QuotaProperties properties() {
@@ -35,7 +39,7 @@ public final class CurrentQuotaLimitBaseInner extends ProxyResource {
     /**
      * Set the properties property: Quota properties for the specified resource, based on the API called, Quotas or
      * Usages.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CurrentQuotaLimitBaseInner object itself.
      */
@@ -46,7 +50,7 @@ public final class CurrentQuotaLimitBaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

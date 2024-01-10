@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayLoadDistributionTargetPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Load Distribution Target of an application gateway. */
+/**
+ * Load Distribution Target of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayLoadDistributionTarget extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayLoadDistributionTarget class. */
+    /**
+     * Creates an instance of ApplicationGatewayLoadDistributionTarget class.
+     */
     public ApplicationGatewayLoadDistributionTarget() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution target.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayLoadDistributionTargetPropertiesFormat innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Get the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Set the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayLoadDistributionTarget object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayLoadDistributionTarget withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Get the weightPerServer property: Weight per server. Range between 1 and 100.
-     *
+     * 
      * @return the weightPerServer value.
      */
     public Integer weightPerServer() {
@@ -105,7 +111,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Set the weightPerServer property: Weight per server. Range between 1 and 100.
-     *
+     * 
      * @param weightPerServer the weightPerServer value to set.
      * @return the ApplicationGatewayLoadDistributionTarget object itself.
      */
@@ -119,7 +125,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -128,7 +134,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayLoadDistributionTarget object itself.
      */
@@ -142,7 +148,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

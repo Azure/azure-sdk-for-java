@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SecurityAdminConfiguratio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of network manager security admin configurations. */
+/**
+ * A list of network manager security admin configurations.
+ */
 @Fluent
 public final class SecurityAdminConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class SecurityAdminConfigurationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SecurityAdminConfigurationListResult class. */
+    /**
+     * Creates an instance of SecurityAdminConfigurationListResult class.
+     */
     public SecurityAdminConfigurationListResult() {
     }
 
     /**
      * Get the value property: Gets a page of security admin configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityAdminConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class SecurityAdminConfigurationListResult {
 
     /**
      * Set the value property: Gets a page of security admin configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityAdminConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SecurityAdminConfigurationListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SecurityAdminConfigurationListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecurityAdminConfigurationListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class SecurityAdminConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

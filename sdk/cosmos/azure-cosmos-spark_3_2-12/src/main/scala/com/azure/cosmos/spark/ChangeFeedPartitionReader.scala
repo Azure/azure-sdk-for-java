@@ -41,7 +41,7 @@ private case class ChangeFeedPartitionReader
 
   requireNotNull(partition, "partition")
   assert(partition.continuationState.isDefined, "Argument 'partition.continuationState' must be defined here.")
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   log.logInfo(s"Reading from feed range ${partition.feedRange} of " +

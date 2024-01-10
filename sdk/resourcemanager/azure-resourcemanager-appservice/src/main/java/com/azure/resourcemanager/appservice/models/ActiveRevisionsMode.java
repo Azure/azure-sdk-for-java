@@ -15,15 +15,19 @@ import java.util.Collection;
  * in this mode&lt;/item&gt;&lt;/list&gt;.
  */
 public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisionsMode> {
-    /** Static value multiple for ActiveRevisionsMode. */
+    /**
+     * Static value multiple for ActiveRevisionsMode.
+     */
     public static final ActiveRevisionsMode MULTIPLE = fromString("multiple");
 
-    /** Static value single for ActiveRevisionsMode. */
+    /**
+     * Static value single for ActiveRevisionsMode.
+     */
     public static final ActiveRevisionsMode SINGLE = fromString("single");
 
     /**
      * Creates a new instance of ActiveRevisionsMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
 
     /**
      * Creates or finds a ActiveRevisionsMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActiveRevisionsMode.
      */
@@ -43,7 +47,7 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
 
     /**
      * Gets known ActiveRevisionsMode values.
-     *
+     * 
      * @return known ActiveRevisionsMode values.
      */
     public static Collection<ActiveRevisionsMode> values() {

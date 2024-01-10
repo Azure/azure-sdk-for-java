@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The set of data plane operations permitted through this Role Definition. */
+/**
+ * The set of data plane operations permitted through this Role Definition.
+ */
 @Fluent
 public final class Permission {
     /*
@@ -23,13 +25,15 @@ public final class Permission {
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
-    /** Creates an instance of Permission class. */
+    /**
+     * Creates an instance of Permission class.
+     */
     public Permission() {
     }
 
     /**
      * Get the dataActions property: An array of data actions that are allowed.
-     *
+     * 
      * @return the dataActions value.
      */
     public List<String> dataActions() {
@@ -38,7 +42,7 @@ public final class Permission {
 
     /**
      * Set the dataActions property: An array of data actions that are allowed.
-     *
+     * 
      * @param dataActions the dataActions value to set.
      * @return the Permission object itself.
      */
@@ -49,7 +53,7 @@ public final class Permission {
 
     /**
      * Get the notDataActions property: An array of data actions that are denied.
-     *
+     * 
      * @return the notDataActions value.
      */
     public List<String> notDataActions() {
@@ -58,7 +62,7 @@ public final class Permission {
 
     /**
      * Set the notDataActions property: An array of data actions that are denied.
-     *
+     * 
      * @param notDataActions the notDataActions value to set.
      * @return the Permission object itself.
      */
@@ -69,7 +73,7 @@ public final class Permission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

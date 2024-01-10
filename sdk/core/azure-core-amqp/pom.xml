@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>2.9.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+  <version>2.9.0-beta.8</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
@@ -57,6 +57,9 @@
     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>
@@ -70,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.45.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.46.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -86,7 +89,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.33</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -131,7 +134,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.22.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.22.1</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

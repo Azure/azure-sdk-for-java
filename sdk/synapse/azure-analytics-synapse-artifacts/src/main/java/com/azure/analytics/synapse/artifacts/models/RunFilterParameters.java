@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Query parameters for listing runs. */
+/**
+ * Query parameters for listing runs.
+ */
 @Fluent
 public final class RunFilterParameters {
     /*
@@ -42,13 +44,16 @@ public final class RunFilterParameters {
     @JsonProperty(value = "orderBy")
     private List<RunQueryOrderBy> orderBy;
 
-    /** Creates an instance of RunFilterParameters class. */
-    public RunFilterParameters() {}
+    /**
+     * Creates an instance of RunFilterParameters class.
+     */
+    public RunFilterParameters() {
+    }
 
     /**
      * Get the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.
-     *
+     * 
      * @return the continuationToken value.
      */
     public String getContinuationToken() {
@@ -58,7 +63,7 @@ public final class RunFilterParameters {
     /**
      * Set the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.
-     *
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -69,7 +74,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the lastUpdatedAfter property: The time at or after which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @return the lastUpdatedAfter value.
      */
     public OffsetDateTime getLastUpdatedAfter() {
@@ -78,7 +83,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the lastUpdatedAfter property: The time at or after which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @param lastUpdatedAfter the lastUpdatedAfter value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -89,7 +94,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the lastUpdatedBefore property: The time at or before which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @return the lastUpdatedBefore value.
      */
     public OffsetDateTime getLastUpdatedBefore() {
@@ -98,7 +103,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the lastUpdatedBefore property: The time at or before which the run event was updated in 'ISO 8601' format.
-     *
+     * 
      * @param lastUpdatedBefore the lastUpdatedBefore value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -109,7 +114,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the filters property: List of filters.
-     *
+     * 
      * @return the filters value.
      */
     public List<RunQueryFilter> getFilters() {
@@ -118,7 +123,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the filters property: List of filters.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the RunFilterParameters object itself.
      */
@@ -129,7 +134,7 @@ public final class RunFilterParameters {
 
     /**
      * Get the orderBy property: List of OrderBy option.
-     *
+     * 
      * @return the orderBy value.
      */
     public List<RunQueryOrderBy> getOrderBy() {
@@ -138,7 +143,7 @@ public final class RunFilterParameters {
 
     /**
      * Set the orderBy property: List of OrderBy option.
-     *
+     * 
      * @param orderBy the orderBy value to set.
      * @return the RunFilterParameters object itself.
      */

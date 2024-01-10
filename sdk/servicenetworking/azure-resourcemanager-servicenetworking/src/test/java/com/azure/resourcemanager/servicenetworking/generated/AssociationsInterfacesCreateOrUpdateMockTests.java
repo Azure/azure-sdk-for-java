@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import java.nio.ByteBuffer;
@@ -34,52 +35,38 @@ public final class AssociationsInterfacesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ibnuqqkpik\"},\"provisioningState\":\"Succeeded\"},\"location\":\"vtq\",\"tags\":{\"bfs\":\"buynhijggm\"},\"id\":\"arbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"}";
+        String responseStr
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wflzlfbxzpuzy\"},\"provisioningState\":\"Succeeded\"},\"location\":\"nqzahmgkbrpyyd\",\"tags\":{\"agnb\":\"nuqqkpikadrgvt\",\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Association response =
-            manager
-                .associationsInterfaces()
-                .define("jrbirphxepcyv")
-                .withRegion("ok")
-                .withExistingTrafficController("ebrjcxe", "fuwutttxf")
-                .withTags(mapOf("gsncghkjeszz", "jyoxgvclt", "mxnehmp", "bijhtxfvgxbf", "godebfqkkrbmpu", "ec"))
-                .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("ljkyqxjvuuj"))
-                .create();
+        Association response = manager.associationsInterfaces().define("ctq").withRegion("utttxfvjrbirp")
+            .withExistingTrafficController("qylihkaetckt", "fcivfsnkym")
+            .withTags(mapOf("vuujq", "pcyvahfnljkyqx", "oxgvclt", "idokgjlj", "bijhtxfvgxbf", "gsncghkjeszz"))
+            .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnet().withId("ebrjcxe")))
+            .create();
 
-        Assertions.assertEquals("vtq", response.location());
-        Assertions.assertEquals("buynhijggm", response.tags().get("bfs"));
-        Assertions.assertEquals(AssociationType.SUBNETS, response.associationType());
-        Assertions.assertEquals("ibnuqqkpik", response.subnet().id());
+        Assertions.assertEquals("nqzahmgkbrpyyd", response.location());
+        Assertions.assertEquals("nuqqkpikadrgvt", response.tags().get("agnb"));
+        Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
+        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().subnet().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

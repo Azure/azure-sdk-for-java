@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.BaseResourceProperties;
 public final class BaseResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BaseResourceProperties model =
-            BinaryData.fromString("{\"objectType\":\"BaseResourceProperties\"}").toObject(BaseResourceProperties.class);
+        BaseResourceProperties model = BinaryData.fromString("{\"objectType\":\"BaseResourceProperties\"}")
+            .toObject(BaseResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

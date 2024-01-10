@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CompositePath model. */
+/**
+ * The CompositePath model.
+ */
 @Fluent
 public final class CompositePath {
     /*
@@ -23,14 +25,16 @@ public final class CompositePath {
     @JsonProperty(value = "order")
     private CompositePathSortOrder order;
 
-    /** Creates an instance of CompositePath class. */
+    /**
+     * Creates an instance of CompositePath class.
+     */
     public CompositePath() {
     }
 
     /**
-     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @return the path value.
      */
     public String path() {
@@ -38,9 +42,9 @@ public final class CompositePath {
     }
 
     /**
-     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @param path the path value to set.
      * @return the CompositePath object itself.
      */
@@ -51,7 +55,7 @@ public final class CompositePath {
 
     /**
      * Get the order property: Sort order for composite paths.
-     *
+     * 
      * @return the order value.
      */
     public CompositePathSortOrder order() {
@@ -60,7 +64,7 @@ public final class CompositePath {
 
     /**
      * Set the order property: Sort order for composite paths.
-     *
+     * 
      * @param order the order value to set.
      * @return the CompositePath object itself.
      */
@@ -71,7 +75,7 @@ public final class CompositePath {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

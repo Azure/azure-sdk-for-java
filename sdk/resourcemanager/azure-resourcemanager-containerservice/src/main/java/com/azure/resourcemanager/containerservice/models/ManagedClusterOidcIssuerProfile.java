@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OIDC issuer profile of the Managed Cluster. */
+/**
+ * The OIDC issuer profile of the Managed Cluster.
+ */
 @Fluent
 public final class ManagedClusterOidcIssuerProfile {
     /*
@@ -22,7 +24,9 @@ public final class ManagedClusterOidcIssuerProfile {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterOidcIssuerProfile class. */
+    /**
+     * Creates an instance of ManagedClusterOidcIssuerProfile class.
+     */
     public ManagedClusterOidcIssuerProfile() {
     }
 

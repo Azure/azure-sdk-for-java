@@ -31,6 +31,10 @@ public final class OperationValueImpl implements OperationValue {
         return this.innerModel().display();
     }
 
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
+    }
+
     public OperationValueInner innerModel() {
         return this.innerObject;
     }

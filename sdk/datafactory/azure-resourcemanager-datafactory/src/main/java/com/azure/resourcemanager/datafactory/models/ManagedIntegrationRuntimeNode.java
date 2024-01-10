@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of integration runtime node. */
+/**
+ * Properties of integration runtime node.
+ */
 @Fluent
 public final class ManagedIntegrationRuntimeNode {
     /*
@@ -37,15 +39,18 @@ public final class ManagedIntegrationRuntimeNode {
     /*
      * Properties of integration runtime node.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedIntegrationRuntimeNode class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeNode class.
+     */
     public ManagedIntegrationRuntimeNode() {
     }
 
     /**
      * Get the nodeId property: The managed integration runtime node id.
-     *
+     * 
      * @return the nodeId value.
      */
     public String nodeId() {
@@ -54,7 +59,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Get the status property: The managed integration runtime node status.
-     *
+     * 
      * @return the status value.
      */
     public ManagedIntegrationRuntimeNodeStatus status() {
@@ -63,7 +68,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Get the errors property: The errors that occurred on this integration runtime node.
-     *
+     * 
      * @return the errors value.
      */
     public List<ManagedIntegrationRuntimeError> errors() {
@@ -72,7 +77,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Set the errors property: The errors that occurred on this integration runtime node.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the ManagedIntegrationRuntimeNode object itself.
      */
@@ -83,7 +88,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Get the additionalProperties property: Properties of integration runtime node.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +98,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Set the additionalProperties property: Properties of integration runtime node.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedIntegrationRuntimeNode object itself.
      */
@@ -112,7 +117,7 @@ public final class ManagedIntegrationRuntimeNode {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

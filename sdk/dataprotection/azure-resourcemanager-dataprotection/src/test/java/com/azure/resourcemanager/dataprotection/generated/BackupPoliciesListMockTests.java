@@ -31,38 +31,27 @@ public final class BackupPoliciesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"wm\",\"xmeb\",\"jscjpahl\",\"veabfqxnmwmqtib\"]},\"id\":\"ijddtvqc\",\"name\":\"tad\",\"type\":\"jaeukmrsieekpn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"objectType\":\"BaseBackupPolicy\",\"datasourceTypes\":[\"slstvasy\",\"wxdzaumweoohgu\"]},\"id\":\"uzboyjathw\",\"name\":\"zolbaemwmdxmebw\",\"type\":\"scjpahlxv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<BaseBackupPolicyResource> response =
-            manager.backupPolicies().list("wxdzaumweoohgu", "fuzboyjathwtzolb", com.azure.core.util.Context.NONE);
+        PagedIterable<BaseBackupPolicyResource> response
+            = manager.backupPolicies().list("oylhjlmuoyxprimr", "opteecj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wm", response.iterator().next().properties().datasourceTypes().get(0));
+        Assertions.assertEquals("slstvasy", response.iterator().next().properties().datasourceTypes().get(0));
     }
 }

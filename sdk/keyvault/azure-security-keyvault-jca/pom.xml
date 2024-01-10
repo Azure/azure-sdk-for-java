@@ -66,13 +66,13 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.45.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->

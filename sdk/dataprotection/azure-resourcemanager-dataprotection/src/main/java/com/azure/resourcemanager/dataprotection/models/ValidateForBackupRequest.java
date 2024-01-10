@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ValidateForBackupRequest
- *
- * <p>Validate for backup request.
+ * 
+ * Validate for backup request.
  */
 @Fluent
 public final class ValidateForBackupRequest {
@@ -21,13 +21,15 @@ public final class ValidateForBackupRequest {
     @JsonProperty(value = "backupInstance", required = true)
     private BackupInstance backupInstance;
 
-    /** Creates an instance of ValidateForBackupRequest class. */
+    /**
+     * Creates an instance of ValidateForBackupRequest class.
+     */
     public ValidateForBackupRequest() {
     }
 
     /**
      * Get the backupInstance property: Backup Instance.
-     *
+     * 
      * @return the backupInstance value.
      */
     public BackupInstance backupInstance() {
@@ -36,7 +38,7 @@ public final class ValidateForBackupRequest {
 
     /**
      * Set the backupInstance property: Backup Instance.
-     *
+     * 
      * @param backupInstance the backupInstance value to set.
      * @return the ValidateForBackupRequest object itself.
      */
@@ -47,15 +49,13 @@ public final class ValidateForBackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (backupInstance() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupInstance in model ValidateForBackupRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property backupInstance in model ValidateForBackupRequest"));
         } else {
             backupInstance().validate();
         }

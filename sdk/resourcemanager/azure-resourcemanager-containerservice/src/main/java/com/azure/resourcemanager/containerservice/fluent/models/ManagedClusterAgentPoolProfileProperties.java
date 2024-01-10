@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.CreationData;
@@ -26,7 +27,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Properties for the container service agent pool profile. */
+/**
+ * Properties for the container service agent pool profile.
+ */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
     /*
@@ -80,7 +83,8 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
      * applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetworkName}/subnets/{subnetName}
      */
     @JsonProperty(value = "vnetSubnetID")
     private String vnetSubnetId;
@@ -90,7 +94,8 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
      * the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetworkName}/subnets/{subnetName}
      */
     @JsonProperty(value = "podSubnetID")
     private String podSubnetId;
@@ -217,7 +222,8 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
      * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
      * to minimize hops. For more information see [assigning a public IP per
-     * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
+     * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-
+     * pools).
      * The default is false.
      */
     @JsonProperty(value = "enableNodePublicIP")
@@ -227,7 +233,8 @@ public class ManagedClusterAgentPoolProfileProperties {
      * The public IP prefix ID which VM nodes should use IPs from.
      *
      * This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{
+     * publicIPPrefixName}
      */
     @JsonProperty(value = "nodePublicIPPrefixID")
     private String nodePublicIpPrefixId;
@@ -338,18 +345,36 @@ public class ManagedClusterAgentPoolProfileProperties {
     private CreationData creationData;
 
     /*
+     * The fully qualified resource ID of the Capacity Reservation Group to provide virtual machines from a reserved
+     * group of Virtual Machines.
+     *
+     * AKS will associate the specified agent pool with the Capacity Reservation Group.
+     */
+    @JsonProperty(value = "capacityReservationGroupID")
+    private String capacityReservationGroupId;
+
+    /*
      * The fully qualified resource ID of the Dedicated Host Group to provision virtual machines from, used only in
      * creation scenario and not allowed to changed once set.
      *
      * This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{
+     * hostGroupName}.
      * For more information see [Azure dedicated
      * hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts).
      */
     @JsonProperty(value = "hostGroupID")
     private String hostGroupId;
 
-    /** Creates an instance of ManagedClusterAgentPoolProfileProperties class. */
+    /*
+     * Network-related settings of an agent pool.
+     */
+    @JsonProperty(value = "networkProfile")
+    private AgentPoolNetworkProfile networkProfile;
+
+    /**
+     * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
+     */
     public ManagedClusterAgentPoolProfileProperties() {
     }
 
@@ -380,8 +405,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the vmSize property: The size of the agent pool VMs.
      *
-     * <p>VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc)
-     * pods might fail to run correctly. For more details on restricted VM sizes, see:
+     * VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods
+     * might fail to run correctly. For more details on restricted VM sizes, see:
      * https://docs.microsoft.com/azure/aks/quotas-skus-regions.
      *
      * @return the vmSize value.
@@ -393,8 +418,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the vmSize property: The size of the agent pool VMs.
      *
-     * <p>VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc)
-     * pods might fail to run correctly. For more details on restricted VM sizes, see:
+     * VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods
+     * might fail to run correctly. For more details on restricted VM sizes, see:
      * https://docs.microsoft.com/azure/aks/quotas-skus-regions.
      *
      * @param vmSize the vmSize value to set.
@@ -430,7 +455,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the osDiskType property: The OS disk type to be used for machines in the agent pool.
      *
-     * <p>The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
+     * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
      * Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
      * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
      *
@@ -443,7 +468,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the osDiskType property: The OS disk type to be used for machines in the agent pool.
      *
-     * <p>The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
+     * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
      * Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
      * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
      *
@@ -501,7 +526,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Get the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
      * startup.
      *
-     * <p>If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
+     * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
      * applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      *
@@ -515,7 +540,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Set the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
      * startup.
      *
-     * <p>If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
+     * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
      * applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      *
@@ -530,7 +555,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the podSubnetId property: The ID of the subnet which pods will join when launched.
      *
-     * <p>If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
+     * If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
      * the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      *
@@ -543,7 +568,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the podSubnetId property: The ID of the subnet which pods will join when launched.
      *
-     * <p>If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
+     * If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
      * the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      *
@@ -724,7 +749,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the mode property: The mode of an agent pool.
      *
-     * <p>A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
+     * A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
      * restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools.
      *
      * @return the mode value.
@@ -736,7 +761,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the mode property: The mode of an agent pool.
      *
-     * <p>A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
+     * A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
      * restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools.
      *
      * @param mode the mode value to set.
@@ -750,7 +775,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the orchestratorVersion property: The version of Kubernetes specified by the user.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
+     * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
      * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
      * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
      * an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in
@@ -768,7 +793,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the orchestratorVersion property: The version of Kubernetes specified by the user.
      *
-     * <p>Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
+     * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
      * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
      * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
      * an upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in
@@ -788,9 +813,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running.
      *
-     * <p>If orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly
-     * equal to it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full
-     * &lt;major.minor.patch&gt; version being used.
+     * If orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
+     * to it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
      *
      * @return the currentOrchestratorVersion value.
      */
@@ -885,9 +910,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the enableNodePublicIp property: Whether each node is allocated its own public IP.
      *
-     * <p>Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
-     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to
-     * minimize hops. For more information see [assigning a public IP per
+     * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
+     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
+     * to minimize hops. For more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      *
@@ -900,9 +925,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the enableNodePublicIp property: Whether each node is allocated its own public IP.
      *
-     * <p>Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
-     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to
-     * minimize hops. For more information see [assigning a public IP per
+     * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
+     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
+     * to minimize hops. For more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      *
@@ -917,7 +942,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from.
      *
-     * <p>This is of the form:
+     * This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
      *
      * @return the nodePublicIpPrefixId value.
@@ -929,7 +954,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from.
      *
-     * <p>This is of the form:
+     * This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
      *
      * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
@@ -965,7 +990,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy.
      *
-     * <p>This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
+     * This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
      *
      * @return the scaleSetEvictionPolicy value.
      */
@@ -976,13 +1001,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy.
      *
-     * <p>This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
+     * This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
      *
      * @param scaleSetEvictionPolicy the scaleSetEvictionPolicy value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withScaleSetEvictionPolicy(
-        ScaleSetEvictionPolicy scaleSetEvictionPolicy) {
+    public ManagedClusterAgentPoolProfileProperties
+        withScaleSetEvictionPolicy(ScaleSetEvictionPolicy scaleSetEvictionPolicy) {
         this.scaleSetEvictionPolicy = scaleSetEvictionPolicy;
         return this;
     }
@@ -991,7 +1016,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Get the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
      * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
      *
-     * <p>Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
+     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
      * on-demand price. For more details on spot pricing, see [spot VMs
      * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
      *
@@ -1005,7 +1030,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Set the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
      * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
      *
-     * <p>Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
+     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
      * on-demand price. For more details on spot pricing, see [spot VMs
      * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
      *
@@ -1102,7 +1127,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the kubeletConfig property: Kubelet configurations of agent nodes.
      *
-     * <p>The Kubelet configuration on the agent pool nodes.
+     * The Kubelet configuration on the agent pool nodes.
      *
      * @return the kubeletConfig value.
      */
@@ -1113,7 +1138,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the kubeletConfig property: Kubelet configurations of agent nodes.
      *
-     * <p>The Kubelet configuration on the agent pool nodes.
+     * The Kubelet configuration on the agent pool nodes.
      *
      * @param kubeletConfig the kubeletConfig value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1126,7 +1151,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the linuxOSConfig property: OS configurations of Linux agent nodes.
      *
-     * <p>The OS configuration of Linux agent nodes.
+     * The OS configuration of Linux agent nodes.
      *
      * @return the linuxOSConfig value.
      */
@@ -1137,7 +1162,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the linuxOSConfig property: OS configurations of Linux agent nodes.
      *
-     * <p>The OS configuration of Linux agent nodes.
+     * The OS configuration of Linux agent nodes.
      *
      * @param linuxOSConfig the linuxOSConfig value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1150,7 +1175,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption.
      *
-     * <p>This is only supported on certain VM sizes and in certain Azure regions. For more information, see:
+     * This is only supported on certain VM sizes and in certain Azure regions. For more information, see:
      * https://docs.microsoft.com/azure/aks/enable-host-encryption.
      *
      * @return the enableEncryptionAtHost value.
@@ -1162,7 +1187,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption.
      *
-     * <p>This is only supported on certain VM sizes and in certain Azure regions. For more information, see:
+     * This is only supported on certain VM sizes and in certain Azure regions. For more information, see:
      * https://docs.microsoft.com/azure/aks/enable-host-encryption.
      *
      * @param enableEncryptionAtHost the enableEncryptionAtHost value to set.
@@ -1196,9 +1221,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Get the enableFips property: Whether to use a FIPS-enabled OS.
      *
-     * <p>See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
-     * details.
+     * See [Add a FIPS-enabled node
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for
+     * more details.
      *
      * @return the enableFips value.
      */
@@ -1209,9 +1234,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /**
      * Set the enableFips property: Whether to use a FIPS-enabled OS.
      *
-     * <p>See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
-     * details.
+     * See [Add a FIPS-enabled node
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for
+     * more details.
      *
      * @param enableFips the enableFips value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1244,8 +1269,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
-     * created/upgraded using a snapshot.
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will
+     * be created/upgraded using a snapshot.
      *
      * @return the creationData value.
      */
@@ -1254,8 +1279,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
-     * created/upgraded using a snapshot.
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will
+     * be created/upgraded using a snapshot.
      *
      * @param creationData the creationData value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1266,10 +1291,36 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group
+     * to provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @return the capacityReservationGroupId value.
+     */
+    public String capacityReservationGroupId() {
+        return this.capacityReservationGroupId;
+    }
+
+    /**
+     * Set the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group
+     * to provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @param capacityReservationGroupId the capacityReservationGroupId value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withCapacityReservationGroupId(String capacityReservationGroupId) {
+        this.capacityReservationGroupId = capacityReservationGroupId;
+        return this;
+    }
+
+    /**
      * Get the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
      * machines from, used only in creation scenario and not allowed to changed once set.
      *
-     * <p>This is of the form:
+     * This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
      * For more information see [Azure dedicated
      * hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts).
@@ -1284,7 +1335,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Set the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
      * machines from, used only in creation scenario and not allowed to changed once set.
      *
-     * <p>This is of the form:
+     * This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
      * For more information see [Azure dedicated
      * hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts).
@@ -1294,6 +1345,26 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     public ManagedClusterAgentPoolProfileProperties withHostGroupId(String hostGroupId) {
         this.hostGroupId = hostGroupId;
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @return the networkProfile value.
+     */
+    public AgentPoolNetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
         return this;
     }
 
@@ -1317,6 +1388,9 @@ public class ManagedClusterAgentPoolProfileProperties {
         }
         if (creationData() != null) {
             creationData().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
     }
 }

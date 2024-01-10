@@ -86,17 +86,17 @@ public class MultipartDataHelper {
      *           This represents the type information of the request object.
      * @return the marshalled data and its length.
      */
-    public <T> MultipartDataSerializationResult serializeRequest(T requestOptions, String fileName) {
+    public <T> MultipartDataSerializationResult serializeRequest(T requestOptions) {
         if (requestOptions instanceof AudioTranslationOptions) {
             AudioTranslationOptions audioTranslationOptions = (AudioTranslationOptions) requestOptions;
             byte[] file = audioTranslationOptions.getFile();
             List<MultipartField> fields = formatAudioTranslationOptions(audioTranslationOptions);
-            return serializeRequestFields(file, fields, fileName);
+            return serializeRequestFields(file, fields, audioTranslationOptions.getFilename());
         } else if (requestOptions instanceof AudioTranscriptionOptions) {
             AudioTranscriptionOptions audioTranscriptionOptions = (AudioTranscriptionOptions) requestOptions;
             byte[] file = audioTranscriptionOptions.getFile();
             List<MultipartField> fields = formatAudioTranscriptionOptions(audioTranscriptionOptions);
-            return serializeRequestFields(file, fields, fileName);
+            return serializeRequestFields(file, fields, audioTranscriptionOptions.getFilename());
         } else {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(
                 "Only AudioTranslationOptions and AudioTranscriptionOptions currently supported"));

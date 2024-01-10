@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureBackupParams
- *
- * <p>Azure backup parameters.
+ * 
+ * Azure backup parameters.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureBackupParams")
@@ -25,13 +25,15 @@ public final class AzureBackupParams extends BackupParameters {
     @JsonProperty(value = "backupType", required = true)
     private String backupType;
 
-    /** Creates an instance of AzureBackupParams class. */
+    /**
+     * Creates an instance of AzureBackupParams class.
+     */
     public AzureBackupParams() {
     }
 
     /**
      * Get the backupType property: BackupType ; Full/Incremental etc.
-     *
+     * 
      * @return the backupType value.
      */
     public String backupType() {
@@ -40,7 +42,7 @@ public final class AzureBackupParams extends BackupParameters {
 
     /**
      * Set the backupType property: BackupType ; Full/Incremental etc.
-     *
+     * 
      * @param backupType the backupType value to set.
      * @return the AzureBackupParams object itself.
      */
@@ -51,16 +53,15 @@ public final class AzureBackupParams extends BackupParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (backupType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property backupType in model AzureBackupParams"));
         }
     }
 

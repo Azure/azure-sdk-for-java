@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.MongoDbV2LinkedServic
 public final class MongoDbV2LinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbV2LinkedServiceTypeProperties model =
-            BinaryData
-                .fromString("{\"connectionString\":\"dataq\",\"database\":\"datapi\"}")
+        MongoDbV2LinkedServiceTypeProperties model
+            = BinaryData.fromString("{\"connectionString\":\"dataueefrxzwvcvtjd\",\"database\":\"datadagwxjafbdvpcd\"}")
                 .toObject(MongoDbV2LinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2LinkedServiceTypeProperties model =
-            new MongoDbV2LinkedServiceTypeProperties().withConnectionString("dataq").withDatabase("datapi");
+        MongoDbV2LinkedServiceTypeProperties model = new MongoDbV2LinkedServiceTypeProperties()
+            .withConnectionString("dataueefrxzwvcvtjd").withDatabase("datadagwxjafbdvpcd");
         model = BinaryData.fromObject(model).toObject(MongoDbV2LinkedServiceTypeProperties.class);
     }
 }

@@ -4,27 +4,38 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The previous state of the Job. */
+/**
+ * The previous state of the Job.
+ */
 public enum MediaJobState {
-    /** The job was canceled. This is a final state for the job. */
+    /**
+     * The job was canceled. This is a final state for the job.
+     */
     CANCELED("Canceled"),
 
-    /** The job is in the process of being canceled. This is a transient state for the job. */
+    /**
+     * The job is in the process of being canceled. This is a transient state for the job.
+     */
     CANCELING("Canceling"),
 
-    /** The job has encountered an error. This is a final state for the job. */
+    /**
+     * The job has encountered an error. This is a final state for the job.
+     */
     ERROR("Error"),
 
-    /** The job is finished. This is a final state for the job. */
+    /**
+     * The job is finished. This is a final state for the job.
+     */
     FINISHED("Finished"),
 
-    /** The job is processing. This is a transient state for the job. */
+    /**
+     * The job is processing. This is a transient state for the job.
+     */
     PROCESSING("Processing"),
 
-    /** The job is in a queued state, waiting for resources to become available. This is a transient state. */
+    /**
+     * The job is in a queued state, waiting for resources to become available. This is a transient state.
+     */
     QUEUED("Queued"),
 
     /**
@@ -33,7 +44,9 @@ public enum MediaJobState {
      */
     SCHEDULED("Scheduled");
 
-    /** The actual serialized value for a MediaJobState instance. */
+    /**
+     * The actual serialized value for a MediaJobState instance.
+     */
     private final String value;
 
     MediaJobState(String value) {
@@ -42,11 +55,10 @@ public enum MediaJobState {
 
     /**
      * Parses a serialized value to a MediaJobState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobState object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobState fromString(String value) {
         if (value == null) {
             return null;
@@ -60,8 +72,9 @@ public enum MediaJobState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

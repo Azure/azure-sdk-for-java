@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedVirtualNetworkReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedVirtualNetworkReference model =
-            BinaryData
-                .fromString("{\"type\":\"ManagedVirtualNetworkReference\",\"referenceName\":\"xawqy\"}")
+        ManagedVirtualNetworkReference model
+            = BinaryData.fromString("{\"type\":\"ManagedVirtualNetworkReference\",\"referenceName\":\"xawqy\"}")
                 .toObject(ManagedVirtualNetworkReference.class);
         Assertions.assertEquals(ManagedVirtualNetworkReferenceType.MANAGED_VIRTUAL_NETWORK_REFERENCE, model.type());
         Assertions.assertEquals("xawqy", model.referenceName());
@@ -22,10 +21,8 @@ public final class ManagedVirtualNetworkReferenceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkReference model =
-            new ManagedVirtualNetworkReference()
-                .withType(ManagedVirtualNetworkReferenceType.MANAGED_VIRTUAL_NETWORK_REFERENCE)
-                .withReferenceName("xawqy");
+        ManagedVirtualNetworkReference model = new ManagedVirtualNetworkReference()
+            .withType(ManagedVirtualNetworkReferenceType.MANAGED_VIRTUAL_NETWORK_REFERENCE).withReferenceName("xawqy");
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkReference.class);
         Assertions.assertEquals(ManagedVirtualNetworkReferenceType.MANAGED_VIRTUAL_NETWORK_REFERENCE, model.type());
         Assertions.assertEquals("xawqy", model.referenceName());

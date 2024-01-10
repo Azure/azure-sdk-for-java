@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceGuardTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceGuard model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"vtpuqujmqlgk\",\"requestResourceType\":\"tndoaongbjc\"},{\"vaultCriticalOperation\":\"ujitcjedftww\",\"requestResourceType\":\"zkoj\"}],\"vaultCriticalOperationExclusionList\":[\"pzfoqoui\"],\"description\":\"bxarzgszufoxci\"}")
-                .toObject(ResourceGuard.class);
-        Assertions.assertEquals("pzfoqoui", model.vaultCriticalOperationExclusionList().get(0));
+        ResourceGuard model = BinaryData.fromString(
+            "{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"uqlcvydy\",\"requestResourceType\":\"tdooaoj\"},{\"vaultCriticalOperation\":\"iodkooebwnujhem\",\"requestResourceType\":\"bvdkcrodtjin\"},{\"vaultCriticalOperation\":\"jlfltkacjvefkdlf\",\"requestResourceType\":\"kggkfpa\"},{\"vaultCriticalOperation\":\"owpulpq\",\"requestResourceType\":\"ylsyxkqjnsje\"}],\"vaultCriticalOperationExclusionList\":[\"iagxsdszuempsbz\",\"f\"],\"description\":\"eyvpnqicvinvkj\"}")
+            .toObject(ResourceGuard.class);
+        Assertions.assertEquals("iagxsdszuempsbz", model.vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuard model = new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("pzfoqoui"));
+        ResourceGuard model
+            = new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("iagxsdszuempsbz", "f"));
         model = BinaryData.fromObject(model).toObject(ResourceGuard.class);
-        Assertions.assertEquals("pzfoqoui", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("iagxsdszuempsbz", model.vaultCriticalOperationExclusionList().get(0));
     }
 }

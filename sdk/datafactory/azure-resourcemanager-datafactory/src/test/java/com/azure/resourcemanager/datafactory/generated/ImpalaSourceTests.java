@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.ImpalaSource;
 public final class ImpalaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImpalaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ImpalaSource\",\"query\":\"datavzd\",\"queryTimeout\":\"datakqajia\",\"additionalColumns\":\"datacyrdtrd\",\"sourceRetryCount\":\"datadmsktuvjh\",\"sourceRetryWait\":\"datatvyt\",\"maxConcurrentConnections\":\"datafbsgrzw\",\"disableMetricsCollection\":\"datadudxqebtrpsplwt\",\"\":{\"ckrnku\":\"dataseybvtgcoznnjq\",\"tuynugptfjpi\":\"dataotlymybmgmrkxk\",\"tqqshb\":\"datavfh\",\"zjsezgphip\":\"datapzhuhuj\"}}")
-                .toObject(ImpalaSource.class);
+        ImpalaSource model = BinaryData.fromString(
+            "{\"type\":\"ImpalaSource\",\"query\":\"datawpwrfet\",\"queryTimeout\":\"datag\",\"additionalColumns\":\"dataeufhkoernrjm\",\"sourceRetryCount\":\"dataha\",\"sourceRetryWait\":\"dataen\",\"maxConcurrentConnections\":\"dataqjvdde\",\"disableMetricsCollection\":\"datavrjhtpxydiuviup\",\"\":{\"suhozihd\":\"datansyrrybdyqivk\",\"hwcpijgas\":\"dataqdjw\",\"vzbdhrcepanhy\":\"dataafdjinwgirnjgs\",\"jbjjlxsv\":\"datacah\"}}")
+            .toObject(ImpalaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaSource model =
-            new ImpalaSource()
-                .withSourceRetryCount("datadmsktuvjh")
-                .withSourceRetryWait("datatvyt")
-                .withMaxConcurrentConnections("datafbsgrzw")
-                .withDisableMetricsCollection("datadudxqebtrpsplwt")
-                .withQueryTimeout("datakqajia")
-                .withAdditionalColumns("datacyrdtrd")
-                .withQuery("datavzd");
+        ImpalaSource model = new ImpalaSource().withSourceRetryCount("dataha").withSourceRetryWait("dataen")
+            .withMaxConcurrentConnections("dataqjvdde").withDisableMetricsCollection("datavrjhtpxydiuviup")
+            .withQueryTimeout("datag").withAdditionalColumns("dataeufhkoernrjm").withQuery("datawpwrfet");
         model = BinaryData.fromObject(model).toObject(ImpalaSource.class);
     }
 }

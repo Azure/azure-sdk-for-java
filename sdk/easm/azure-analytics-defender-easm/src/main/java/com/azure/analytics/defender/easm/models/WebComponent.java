@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The WebComponent model. */
+/**
+ * The WebComponent model.
+ */
 @Immutable
 public final class WebComponent {
 
@@ -104,9 +106,12 @@ public final class WebComponent {
     @JsonProperty(value = "service")
     private String service;
 
-    /** Creates an instance of WebComponent class. */
+    /**
+     * Creates an instance of WebComponent class.
+     */
     @Generated
-    private WebComponent() {}
+    private WebComponent() {
+    }
 
     /**
      * Get the name property: The name property.

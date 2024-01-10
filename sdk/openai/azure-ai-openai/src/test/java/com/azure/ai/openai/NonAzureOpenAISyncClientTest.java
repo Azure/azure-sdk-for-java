@@ -7,18 +7,21 @@ import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
-import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionsToolCall;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -28,6 +31,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +41,7 @@ import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -208,7 +213,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-        getImageGenerationRunner(options -> assertImageResponse(client.getImages(options)));
+        getImageGenerationRunner((deploymentOrModelName, options) ->
+                assertImageGenerations(client.getImageGenerations(deploymentOrModelName, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -290,12 +296,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, fileName, transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION);
         });
     }
@@ -306,12 +310,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, fileName, transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE);
         });
     }
@@ -322,12 +324,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            String transcription = client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
             // A plain/text request adds a line break as an artifact. Also observed for translations
             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription);
         });
@@ -339,12 +339,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            String transcription = client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
             // Sequence number
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -360,12 +358,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            String transcription = client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -384,14 +380,11 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VERBOSE_JSON
         );
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions);
+                    client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
                 });
             }
         });
@@ -407,14 +400,11 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VTT
         );
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranscription(modelId, fileName, transcriptionOptions);
+                    client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
                 });
             }
         });
@@ -426,12 +416,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(modelId, fileName, translationOptions);
+            AudioTranslation translation = client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationSimpleJson(translation, "It's raining today.");
         });
     }
@@ -442,12 +430,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VERBOSE_JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(modelId, fileName, translationOptions);
+            AudioTranslation translation = client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE);
         });
     }
@@ -457,13 +443,9 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @RecordWithoutRequestBody
     public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
-
-            String transcription = client.getAudioTranslationText(modelId, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions);
             assertEquals("It's raining today.\n", transcription);
         });
     }
@@ -473,13 +455,9 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @RecordWithoutRequestBody
     public void testGetAudioTranslationSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
-
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.SRT);
-
-            String transcription = client.getAudioTranslationText(modelId, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions);
             // Sequence number
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -489,18 +467,17 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         });
     }
 
+
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VTT);
-
-            String transcription = client.getAudioTranslationText(modelId, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -519,14 +496,11 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VERBOSE_JSON
         );
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranslationText(modelId, fileName, translationOptions);
+                    client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions);
                 });
             }
         });
@@ -542,16 +516,145 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VTT
         );
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranslation(modelId, fileName, translationOptions);
+                    client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions);
                 });
             }
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsVision(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatWithVisionRunnerForNonAzure(((modelId, chatRequestMessages) -> {
+            ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+            chatCompletionsOptions.setMaxTokens(2048);
+            ChatCompletions chatCompletions = client.getChatCompletions(modelId, chatCompletionsOptions);
+            assertVisionChatCompletions(chatCompletions);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatWithToolCallRunnerForNonAzure(((modelId, chatCompletionsOptions) -> {
+            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+
+            // first round trip
+            assertNotNull(response);
+            assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+            ChatCompletions chatCompletions = response.getValue();
+            assertNotNull(chatCompletions);
+
+            assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+            ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+            assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.TOOL_CALLS);
+
+            ChatResponseMessage responseMessage = chatChoice.getMessage();
+            assertNotNull(responseMessage);
+            assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
+            assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
+            assertEquals(1, responseMessage.getToolCalls().size());
+
+            ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
+            assertNotNull(functionToolCall);
+            assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature"); // see base class
+            assertFalse(functionToolCall.getFunction().getArguments() == null
+                    || functionToolCall.getFunction().getArguments().isEmpty());
+
+            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
+                    functionToolCall, responseMessage.getContent());
+
+            ChatCompletions followUpChatCompletions = client.getChatCompletions(modelId, followUpChatCompletionsOptions);
+
+            assertNotNull(followUpChatCompletions);
+            assertNotNull(followUpChatCompletions.getChoices());
+            ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+            assertNotNull(followUpChatChoice);
+            assertNotNull(followUpChatChoice.getMessage());
+            String content = followUpChatChoice.getMessage().getContent();
+            assertFalse(content == null || content.isEmpty());
+            assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+            assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
+
+            StringBuilder argumentsBuilder = new StringBuilder();
+            long totalStreamMessages = chatCompletionsStream.stream().count();
+            String functionName = null;
+            String toolCallId = null;
+            String content = null;
+            assertTrue(totalStreamMessages > 0);
+
+            int i = 0;
+            for (ChatCompletions chatCompletions : chatCompletionsStream) {
+                List<ChatChoice> chatChoices = chatCompletions.getChoices();
+                if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
+                    assertEquals(1, chatChoices.size());
+                    ChatChoice chatChoice = chatChoices.get(0);
+                    List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
+                    if (toolCalls != null && !toolCalls.isEmpty()) {
+                        assertEquals(1, toolCalls.size());
+                        ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
+                        FunctionCall functionCall = toolCall.getFunction();
+
+                        // this data is only available in the first stream message, if at all
+                        if (i == 0) {
+                            content = chatChoice.getDelta().getContent();
+                            functionName = functionCall.getName();
+                            toolCallId = toolCall.getId();
+                        }
+                        argumentsBuilder.append(functionCall.getArguments());
+                    }
+                    if (i < totalStreamMessages - 1) {
+                        assertNull(chatChoice.getFinishReason());
+                    } else {
+                        assertEquals(CompletionsFinishReason.TOOL_CALLS, chatChoice.getFinishReason());
+                    }
+                }
+                i++;
+            }
+            assertFunctionToolCallArgs(argumentsBuilder.toString());
+            FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
+            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+
+            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
+                    functionToolCall, content);
+
+            IterableStream<ChatCompletions> followupChatCompletionsStream = client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
+            assertNotNull(followupChatCompletionsStream);
+
+            StringBuilder contentBuilder = new StringBuilder();
+            long totalStreamFollowUpMessages = followupChatCompletionsStream.stream().count();
+            int j = 0;
+
+            for (ChatCompletions chatCompletions: followupChatCompletionsStream) {
+                List<ChatChoice> chatChoices = chatCompletions.getChoices();
+                if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
+                    assertEquals(1, chatChoices.size());
+                    ChatChoice chatChoice = chatChoices.get(0);
+                    contentBuilder.append(chatChoice.getDelta().getContent());
+                    if (j < totalStreamFollowUpMessages - 1) {
+                        assertNull(chatChoice.getFinishReason());
+                    } else {
+                        assertEquals(CompletionsFinishReason.STOPPED, chatChoice.getFinishReason());
+                    }
+                }
+                j++;
+            }
+            assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
+        }));
     }
 }

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Activity to get metadata of dataset. */
+/**
+ * Activity to get metadata of dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GetMetadata")
 @JsonFlatten
@@ -41,12 +43,15 @@ public class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.formatSettings")
     private FormatReadSettings formatSettings;
 
-    /** Creates an instance of GetMetadataActivity class. */
-    public GetMetadataActivity() {}
+    /**
+     * Creates an instance of GetMetadataActivity class.
+     */
+    public GetMetadataActivity() {
+    }
 
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference getDataset() {
@@ -55,7 +60,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Set the dataset property: GetMetadata activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the GetMetadataActivity object itself.
      */
@@ -66,7 +71,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Get the fieldList property: Fields of metadata to get from dataset.
-     *
+     * 
      * @return the fieldList value.
      */
     public List<Object> getFieldList() {
@@ -75,7 +80,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Set the fieldList property: Fields of metadata to get from dataset.
-     *
+     * 
      * @param fieldList the fieldList value to set.
      * @return the GetMetadataActivity object itself.
      */
@@ -86,7 +91,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Get the storeSettings property: GetMetadata activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -95,7 +100,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Set the storeSettings property: GetMetadata activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the GetMetadataActivity object itself.
      */
@@ -106,7 +111,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Get the formatSettings property: GetMetadata activity format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public FormatReadSettings getFormatSettings() {
@@ -115,7 +120,7 @@ public class GetMetadataActivity extends ExecutionActivity {
 
     /**
      * Set the formatSettings property: GetMetadata activity format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the GetMetadataActivity object itself.
      */
@@ -124,56 +129,72 @@ public class GetMetadataActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetMetadataActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

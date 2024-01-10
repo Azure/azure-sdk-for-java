@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.EffectiveRoute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list effective route API service call. */
+/**
+ * Response for list effective route API service call.
+ */
 @Fluent
 public final class EffectiveRouteListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class EffectiveRouteListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EffectiveRouteListResultInner class. */
+    /**
+     * Creates an instance of EffectiveRouteListResultInner class.
+     */
     public EffectiveRouteListResultInner() {
     }
 
     /**
      * Get the value property: A list of effective routes.
-     *
+     * 
      * @return the value value.
      */
     public List<EffectiveRoute> value() {
@@ -39,7 +43,7 @@ public final class EffectiveRouteListResultInner {
 
     /**
      * Set the value property: A list of effective routes.
-     *
+     * 
      * @param value the value value to set.
      * @return the EffectiveRouteListResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class EffectiveRouteListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class EffectiveRouteListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

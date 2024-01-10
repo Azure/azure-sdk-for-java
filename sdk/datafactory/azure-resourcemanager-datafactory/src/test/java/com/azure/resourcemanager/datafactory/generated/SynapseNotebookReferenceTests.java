@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SynapseNotebookReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SynapseNotebookReference model =
-            BinaryData
-                .fromString("{\"type\":\"NotebookReference\",\"referenceName\":\"datazmpk\"}")
+        SynapseNotebookReference model
+            = BinaryData.fromString("{\"type\":\"NotebookReference\",\"referenceName\":\"datazmpk\"}")
                 .toObject(SynapseNotebookReference.class);
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SynapseNotebookReference model =
-            new SynapseNotebookReference()
-                .withType(NotebookReferenceType.NOTEBOOK_REFERENCE)
-                .withReferenceName("datazmpk");
+        SynapseNotebookReference model = new SynapseNotebookReference()
+            .withType(NotebookReferenceType.NOTEBOOK_REFERENCE).withReferenceName("datazmpk");
         model = BinaryData.fromObject(model).toObject(SynapseNotebookReference.class);
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.type());
     }

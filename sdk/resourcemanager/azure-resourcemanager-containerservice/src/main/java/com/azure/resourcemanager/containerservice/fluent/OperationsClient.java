@@ -11,7 +11,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.OperationValueInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public interface OperationsClient {
     /**
      * Gets a list of operations.

@@ -4,42 +4,45 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The ChangePointFeedback model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "feedbackType")
-@JsonTypeName("ChangePoint")
+/**
+ * The ChangePointFeedback model.
+ */
 @Fluent
 public final class ChangePointFeedback extends MetricFeedback {
     /*
      * the start timestamp of feedback time range
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * the end timestamp of feedback time range, when equals to startTime means only one timestamp
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
     private ChangePointFeedbackValue value;
 
-    /** Creates an instance of ChangePointFeedback class. */
-    public ChangePointFeedback() {}
+    /**
+     * Creates an instance of ChangePointFeedback class.
+     */
+    public ChangePointFeedback() {
+    }
 
     /**
      * Get the startTime property: the start timestamp of feedback time range.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -48,7 +51,7 @@ public final class ChangePointFeedback extends MetricFeedback {
 
     /**
      * Set the startTime property: the start timestamp of feedback time range.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ChangePointFeedback object itself.
      */
@@ -60,7 +63,7 @@ public final class ChangePointFeedback extends MetricFeedback {
     /**
      * Get the endTime property: the end timestamp of feedback time range, when equals to startTime means only one
      * timestamp.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -70,7 +73,7 @@ public final class ChangePointFeedback extends MetricFeedback {
     /**
      * Set the endTime property: the end timestamp of feedback time range, when equals to startTime means only one
      * timestamp.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ChangePointFeedback object itself.
      */
@@ -81,7 +84,7 @@ public final class ChangePointFeedback extends MetricFeedback {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public ChangePointFeedbackValue getValue() {
@@ -90,7 +93,7 @@ public final class ChangePointFeedback extends MetricFeedback {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChangePointFeedback object itself.
      */
@@ -99,17 +102,87 @@ public final class ChangePointFeedback extends MetricFeedback {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChangePointFeedback setMetricId(UUID metricId) {
         super.setMetricId(metricId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChangePointFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
         super.setDimensionFilter(dimensionFilter);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("feedbackType", Objects.toString(FeedbackType.CHANGE_POINT, null));
+        jsonWriter.writeStringField("metricId", Objects.toString(getMetricId(), null));
+        jsonWriter.writeJsonField("dimensionFilter", getDimensionFilter());
+        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
+        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangePointFeedback from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangePointFeedback if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the ChangePointFeedback.
+     */
+    public static ChangePointFeedback fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangePointFeedback deserializedChangePointFeedback = new ChangePointFeedback();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("feedbackType".equals(fieldName)) {
+                    String feedbackType = reader.getString();
+                    if (!"ChangePoint".equals(feedbackType)) {
+                        throw new IllegalStateException(
+                            "'feedbackType' was expected to be non-null and equal to 'ChangePoint'. The found 'feedbackType' was '"
+                                + feedbackType + "'.");
+                    }
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedChangePointFeedback
+                        .setMetricId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("dimensionFilter".equals(fieldName)) {
+                    deserializedChangePointFeedback.setDimensionFilter(FeedbackDimensionFilter.fromJson(reader));
+                } else if ("feedbackId".equals(fieldName)) {
+                    deserializedChangePointFeedback
+                        .setFeedbackId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedChangePointFeedback.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("userPrincipal".equals(fieldName)) {
+                    deserializedChangePointFeedback.setUserPrincipal(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedChangePointFeedback.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedChangePointFeedback.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedChangePointFeedback.value = ChangePointFeedbackValue.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangePointFeedback;
+        });
     }
 }

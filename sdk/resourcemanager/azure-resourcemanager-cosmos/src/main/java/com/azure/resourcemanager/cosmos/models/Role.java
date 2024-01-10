@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The set of roles permitted through this Role Definition. */
+/**
+ * The set of roles permitted through this Role Definition.
+ */
 @Fluent
 public final class Role {
     /*
@@ -22,13 +24,15 @@ public final class Role {
     @JsonProperty(value = "role")
     private String role;
 
-    /** Creates an instance of Role class. */
+    /**
+     * Creates an instance of Role class.
+     */
     public Role() {
     }
 
     /**
      * Get the db property: The database name the role is applied.
-     *
+     * 
      * @return the db value.
      */
     public String db() {
@@ -37,7 +41,7 @@ public final class Role {
 
     /**
      * Set the db property: The database name the role is applied.
-     *
+     * 
      * @param db the db value to set.
      * @return the Role object itself.
      */
@@ -48,7 +52,7 @@ public final class Role {
 
     /**
      * Get the role property: The role name.
-     *
+     * 
      * @return the role value.
      */
     public String role() {
@@ -57,7 +61,7 @@ public final class Role {
 
     /**
      * Set the role property: The role name.
-     *
+     * 
      * @param role the role value to set.
      * @return the Role object itself.
      */
@@ -68,7 +72,7 @@ public final class Role {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

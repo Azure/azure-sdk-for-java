@@ -1,32 +1,26 @@
 matrix:
   scenarios:
     composite:
+      imageBuildDir: ..\..\..\
       testDurationMin: 15
-      processingConcurrency: 50
-      sendRate: 160
-      receiverTestClass: MessageProcessor
       senderTestClass: MessageSenderAsync
+      senderConcurrency: 5
+      sendRate: 600 # per each container, so 1.2k messages per sec total
+      batchSize: 3
+      receiverTestClass: MessageProcessor
+      processingConcurrency: 64
       abandonRatio: 0.002
       noDispositionRatio: 0.001
       lockRenewalNeededRatio: 0.01
       processCallbackDurationMaxInMs: 10
-      autoRenewLock: "true"
-      prefetchCount: 0
-      lockDurationInMs: 5000
-      chaos: "false"
-      tryTimeout: 60
-      delayStartMin: 0
-      azureSdkLogLevel: 3
-      azureSdkTracingEnabled: true
-      applicationInsightsSamplingRate: 100
-      applicationInsightsLogLevel: "INFO"
-      imageBuildDir: ..\..\..\
+      lockDurationInSec: 5
     happy-case:
-      testDurationMin: 15
-      processingConcurrency: 64
-      sendRate: 900
-      receiverTestClass: MessageProcessor
-      senderTestClass: MessageSenderAsync
-      lockDurationInMs: 5000
-      processCallbackDurationMaxInMs: 10
       imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: MessageSenderAsync
+      sendRate: 2600 # per each container, so 5.2k messages per sec total
+      batchSize: 10
+      senderConcurrency: 20
+      receiverTestClass: MessageProcessor
+      processingConcurrency: 256
+

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.MSDeployLogEntry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MSDeployLog resource specific properties. */
+/**
+ * MSDeployLog resource specific properties.
+ */
 @Immutable
 public final class MSDeployLogProperties {
     /*
@@ -18,13 +20,15 @@ public final class MSDeployLogProperties {
     @JsonProperty(value = "entries", access = JsonProperty.Access.WRITE_ONLY)
     private List<MSDeployLogEntry> entries;
 
-    /** Creates an instance of MSDeployLogProperties class. */
+    /**
+     * Creates an instance of MSDeployLogProperties class.
+     */
     public MSDeployLogProperties() {
     }
 
     /**
      * Get the entries property: List of log entry messages.
-     *
+     * 
      * @return the entries value.
      */
     public List<MSDeployLogEntry> entries() {
@@ -33,7 +37,7 @@ public final class MSDeployLogProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

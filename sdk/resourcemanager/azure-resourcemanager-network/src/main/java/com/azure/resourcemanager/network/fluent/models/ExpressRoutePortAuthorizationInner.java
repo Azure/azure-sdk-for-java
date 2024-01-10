@@ -12,14 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ExpressRoute Port Authorization
- *
- * <p>ExpressRoutePort Authorization resource definition.
+ * 
+ * ExpressRoutePort Authorization resource definition.
  */
 @Fluent
 public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /*
      * ExpressRoute Port Authorization Properties
-     *
+     * 
      * ExpressRoutePort properties.
      */
     @JsonProperty(value = "properties")
@@ -43,15 +43,17 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ExpressRoutePortAuthorizationInner class. */
+    /**
+     * Creates an instance of ExpressRoutePortAuthorizationInner class.
+     */
     public ExpressRoutePortAuthorizationInner() {
     }
 
     /**
      * Get the innerProperties property: ExpressRoute Port Authorization Properties
-     *
-     * <p>ExpressRoutePort properties.
-     *
+     * 
+     * ExpressRoutePort properties.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRoutePortAuthorizationPropertiesFormat innerProperties() {
@@ -61,7 +63,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +73,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRoutePortAuthorizationInner object itself.
      */
@@ -82,7 +84,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -91,14 +93,16 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRoutePortAuthorizationInner withId(String id) {
         super.withId(id);
@@ -107,7 +111,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -116,7 +120,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @return the authorizationUseStatus value.
      */
     public ExpressRoutePortAuthorizationUseStatus authorizationUseStatus() {
@@ -125,7 +129,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the circuitResourceUri property: The reference to the ExpressRoute circuit resource using the authorization.
-     *
+     * 
      * @return the circuitResourceUri value.
      */
     public String circuitResourceUri() {
@@ -134,7 +138,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -143,7 +147,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

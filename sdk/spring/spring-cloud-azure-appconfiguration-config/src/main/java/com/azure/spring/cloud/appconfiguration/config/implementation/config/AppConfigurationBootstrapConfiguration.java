@@ -63,7 +63,7 @@ public class AppConfigurationBootstrapConfiguration {
     }
 
     @Bean
-    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment)
+    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment, AppConfigurationProviderProperties appProperties)
         throws IllegalArgumentException {
         AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
             AzureGlobalProperties.class);
@@ -88,7 +88,7 @@ public class AppConfigurationBootstrapConfiguration {
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
 
         return new AppConfigurationKeyVaultClientFactory(keyVaultClientProvider, keyVaultSecretProvider,
-            secretClientBuilderFactory, credentialConfigured);
+            secretClientBuilderFactory, credentialConfigured, appProperties.getMaxRetryTime());
     }
 
     /**

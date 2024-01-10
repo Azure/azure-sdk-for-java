@@ -13,23 +13,18 @@ import java.util.Map;
 public final class XmlReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        XmlReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"pizjqpjztu\":\"dataqge\",\"akvuted\":\"datadiverkwmafyxo\",\"o\":\"datat\"}},\"validationMode\":\"dataudjdwcwjacdbkce\",\"detectDataType\":\"dataahnqjbavdblfef\",\"namespaces\":\"datavitlnnp\",\"namespacePrefixes\":\"dataufwrer\",\"\":{\"temvaajyit\":\"dataruzfnstlavmdc\",\"ubryhvbvjyf\":\"datayzgwihkswurza\"}}")
-                .toObject(XmlReadSettings.class);
+        XmlReadSettings model = BinaryData.fromString(
+            "{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"pizjqpjztu\":\"dataqge\",\"akvuted\":\"datadiverkwmafyxo\",\"o\":\"datat\"}},\"validationMode\":\"dataudjdwcwjacdbkce\",\"detectDataType\":\"dataahnqjbavdblfef\",\"namespaces\":\"datavitlnnp\",\"namespacePrefixes\":\"dataufwrer\",\"\":{\"temvaajyit\":\"dataruzfnstlavmdc\",\"ubryhvbvjyf\":\"datayzgwihkswurza\"}}")
+            .toObject(XmlReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XmlReadSettings model =
-            new XmlReadSettings()
-                .withCompressionProperties(
-                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
-                .withValidationMode("dataudjdwcwjacdbkce")
-                .withDetectDataType("dataahnqjbavdblfef")
-                .withNamespaces("datavitlnnp")
-                .withNamespacePrefixes("dataufwrer");
+        XmlReadSettings model = new XmlReadSettings()
+            .withCompressionProperties(
+                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
+            .withValidationMode("dataudjdwcwjacdbkce").withDetectDataType("dataahnqjbavdblfef")
+            .withNamespaces("datavitlnnp").withNamespacePrefixes("dataufwrer");
         model = BinaryData.fromObject(model).toObject(XmlReadSettings.class);
     }
 

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The SslCertAsset model. */
+/**
+ * The SslCertAsset model.
+ */
 @Immutable
 public final class SslCertAsset extends InventoryAsset {
 
@@ -244,9 +246,12 @@ public final class SslCertAsset extends InventoryAsset {
     @JsonProperty(value = "validationType")
     private SslCertAssetValidationType validationType;
 
-    /** Creates an instance of SslCertAsset class. */
+    /**
+     * Creates an instance of SslCertAsset class.
+     */
     @Generated
-    private SslCertAsset() {}
+    private SslCertAsset() {
+    }
 
     /**
      * Get the sha1 property: The sha1 property.

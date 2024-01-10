@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the properties of a gallery image definition. */
+/**
+ * Describes the properties of a gallery image definition.
+ */
 @Fluent
 public final class GalleryImageProperties {
     /*
@@ -49,7 +51,7 @@ public final class GalleryImageProperties {
 
     /*
      * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-     * managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
+     * managed image. Possible values are: **Windows,** **Linux.**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
@@ -101,7 +103,7 @@ public final class GalleryImageProperties {
 
     /*
      * The current state of the gallery or gallery artifact.
-     *
+     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -119,14 +121,16 @@ public final class GalleryImageProperties {
     @JsonProperty(value = "architecture")
     private Architecture architecture;
 
-    /** Creates an instance of GalleryImageProperties class. */
+    /**
+     * Creates an instance of GalleryImageProperties class.
+     */
     public GalleryImageProperties() {
     }
 
     /**
      * Get the description property: The description of this gallery image definition resource. This property is
      * updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -136,7 +140,7 @@ public final class GalleryImageProperties {
     /**
      * Set the description property: The description of this gallery image definition resource. This property is
      * updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the eula property: The Eula agreement for the gallery image definition.
-     *
+     * 
      * @return the eula value.
      */
     public String eula() {
@@ -156,7 +160,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the eula property: The Eula agreement for the gallery image definition.
-     *
+     * 
      * @param eula the eula value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
@@ -176,7 +180,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @param privacyStatementUri the privacyStatementUri value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
@@ -196,7 +200,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @param releaseNoteUri the releaseNoteUri value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -206,10 +210,9 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
-     * creating a VM from a managed image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
+     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -217,10 +220,9 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
-     * creating a VM from a managed image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
+     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * 
      * @param osType the osType value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -232,7 +234,7 @@ public final class GalleryImageProperties {
     /**
      * Get the osState property: This property allows the user to specify whether the virtual machines created under
      * this image are 'Generalized' or 'Specialized'.
-     *
+     * 
      * @return the osState value.
      */
     public OperatingSystemStateTypes osState() {
@@ -242,7 +244,7 @@ public final class GalleryImageProperties {
     /**
      * Set the osState property: This property allows the user to specify whether the virtual machines created under
      * this image are 'Generalized' or 'Specialized'.
-     *
+     * 
      * @param osState the osState value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -252,8 +254,9 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
-     *
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
+     * only.
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
@@ -261,8 +264,9 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
-     *
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
+     * only.
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -274,7 +278,7 @@ public final class GalleryImageProperties {
     /**
      * Get the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -284,7 +288,7 @@ public final class GalleryImageProperties {
     /**
      * Set the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
      * for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @param endOfLifeDate the endOfLifeDate value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -295,7 +299,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the identifier property: This is the gallery image definition identifier.
-     *
+     * 
      * @return the identifier value.
      */
     public GalleryImageIdentifier identifier() {
@@ -304,7 +308,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the identifier property: This is the gallery image definition identifier.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -316,7 +320,7 @@ public final class GalleryImageProperties {
     /**
      * Get the recommended property: The properties describe the recommended machine configuration for this Image
      * Definition. These properties are updatable.
-     *
+     * 
      * @return the recommended value.
      */
     public RecommendedMachineConfiguration recommended() {
@@ -326,7 +330,7 @@ public final class GalleryImageProperties {
     /**
      * Set the recommended property: The properties describe the recommended machine configuration for this Image
      * Definition. These properties are updatable.
-     *
+     * 
      * @param recommended the recommended value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -337,7 +341,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the disallowed property: Describes the disallowed disk types.
-     *
+     * 
      * @return the disallowed value.
      */
     public Disallowed disallowed() {
@@ -346,7 +350,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the disallowed property: Describes the disallowed disk types.
-     *
+     * 
      * @param disallowed the disallowed value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -358,7 +362,7 @@ public final class GalleryImageProperties {
     /**
      * Get the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
-     *
+     * 
      * @return the purchasePlan value.
      */
     public ImagePurchasePlan purchasePlan() {
@@ -368,7 +372,7 @@ public final class GalleryImageProperties {
     /**
      * Set the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
      * images.
-     *
+     * 
      * @param purchasePlan the purchasePlan value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -379,9 +383,9 @@ public final class GalleryImageProperties {
 
     /**
      * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * 
+     * The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -390,7 +394,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the features property: A list of gallery image features.
-     *
+     * 
      * @return the features value.
      */
     public List<GalleryImageFeature> features() {
@@ -399,7 +403,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the features property: A list of gallery image features.
-     *
+     * 
      * @param features the features value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -410,7 +414,7 @@ public final class GalleryImageProperties {
 
     /**
      * Get the architecture property: The architecture of the image. Applicable to OS disks only.
-     *
+     * 
      * @return the architecture value.
      */
     public Architecture architecture() {
@@ -419,7 +423,7 @@ public final class GalleryImageProperties {
 
     /**
      * Set the architecture property: The architecture of the image. Applicable to OS disks only.
-     *
+     * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageProperties object itself.
      */
@@ -430,25 +434,21 @@ public final class GalleryImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
         }
         if (osState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property osState in model GalleryImageProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property osState in model GalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property identifier in model GalleryImageProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identifier in model GalleryImageProperties"));
         } else {
             identifier().validate();
         }

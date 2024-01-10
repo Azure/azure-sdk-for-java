@@ -30,42 +30,28 @@ public final class GlobalRulestacksListAppIdsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[\"iosrsjuivfcdis\",\"irnxz\",\"czexrxzbujrtrhqv\"],\"nextLink\":\"evkh\"}";
+        String responseStr = "{\"value\":[\"wrsnewmozqvbu\",\"qmamhsycxhxzga\"],\"nextLink\":\"taboidvmf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ListAppIdResponse response =
-            manager
-                .globalRulestacks()
-                .listAppIdsWithResponse(
-                    "itmhhei", "qaqhvseufu", "yrxpdlcgqls", "smjqfrddgam", 15155929, com.azure.core.util.Context.NONE)
-                .getValue();
+        ListAppIdResponse response = manager.globalRulestacks()
+            .listAppIdsWithResponse("k", "jqirwrw", "ooxf", "i", 423706619, com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("iosrsjuivfcdis", response.value().get(0));
-        Assertions.assertEquals("evkh", response.nextLink());
+        Assertions.assertEquals("wrsnewmozqvbu", response.value().get(0));
+        Assertions.assertEquals("taboidvmf", response.nextLink());
     }
 }

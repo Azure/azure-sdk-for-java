@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.WorkspaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of workspace object with a next link. */
+/**
+ * Collection of workspace object with a next link.
+ */
 @Fluent
 public final class WorkspaceList {
     /*
@@ -25,8 +27,14 @@ public final class WorkspaceList {
     private List<WorkspaceInner> value;
 
     /**
+     * Creates an instance of WorkspaceList class.
+     */
+    public WorkspaceList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class WorkspaceList {
 
     /**
      * Set the nextLink property: The link used to get the next page.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceList object itself.
      */
@@ -46,7 +54,7 @@ public final class WorkspaceList {
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceInner> value() {
@@ -55,7 +63,7 @@ public final class WorkspaceList {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceList object itself.
      */
@@ -66,7 +74,7 @@ public final class WorkspaceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The AzureDataExplorerDataConnectionData model. */
+/**
+ * The AzureDataExplorerDataConnectionData model.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("azureDataExplorer")
 @Fluent
@@ -31,7 +33,7 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
     @Generated
     @JsonCreator
     public AzureDataExplorerDataConnectionData(
-            @JsonProperty(value = "properties") AzureDataExplorerDataConnectionProperties properties) {
+        @JsonProperty(value = "properties") AzureDataExplorerDataConnectionProperties properties) {
         this.properties = properties;
     }
 
@@ -45,7 +47,9 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
         return this.properties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public AzureDataExplorerDataConnectionData setName(String name) {
@@ -53,7 +57,9 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public AzureDataExplorerDataConnectionData setContent(DataConnectionContent content) {
@@ -61,7 +67,9 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public AzureDataExplorerDataConnectionData setFrequency(DataConnectionFrequency frequency) {
@@ -69,7 +77,9 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public AzureDataExplorerDataConnectionData setFrequencyOffset(Integer frequencyOffset) {

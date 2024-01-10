@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Data Explorer sink. */
+/**
+ * A copy activity Azure Data Explorer sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerSink")
 @Fluent
@@ -32,13 +34,16 @@ public final class AzureDataExplorerSink extends CopySink {
     @JsonProperty(value = "flushImmediately")
     private Object flushImmediately;
 
-    /** Creates an instance of AzureDataExplorerSink class. */
-    public AzureDataExplorerSink() {}
+    /**
+     * Creates an instance of AzureDataExplorerSink class.
+     */
+    public AzureDataExplorerSink() {
+    }
 
     /**
      * Get the ingestionMappingName property: A name of a pre-created csv mapping that was defined on the target Kusto
      * table. Type: string.
-     *
+     * 
      * @return the ingestionMappingName value.
      */
     public Object getIngestionMappingName() {
@@ -48,7 +53,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * Set the ingestionMappingName property: A name of a pre-created csv mapping that was defined on the target Kusto
      * table. Type: string.
-     *
+     * 
      * @param ingestionMappingName the ingestionMappingName value to set.
      * @return the AzureDataExplorerSink object itself.
      */
@@ -60,7 +65,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * Get the ingestionMappingAsJson property: An explicit column mapping description provided in a json format. Type:
      * string.
-     *
+     * 
      * @return the ingestionMappingAsJson value.
      */
     public Object getIngestionMappingAsJson() {
@@ -70,7 +75,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * Set the ingestionMappingAsJson property: An explicit column mapping description provided in a json format. Type:
      * string.
-     *
+     * 
      * @param ingestionMappingAsJson the ingestionMappingAsJson value to set.
      * @return the AzureDataExplorerSink object itself.
      */
@@ -82,7 +87,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * Get the flushImmediately property: If set to true, any aggregation will be skipped. Default is false. Type:
      * boolean.
-     *
+     * 
      * @return the flushImmediately value.
      */
     public Object getFlushImmediately() {
@@ -92,7 +97,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * Set the flushImmediately property: If set to true, any aggregation will be skipped. Default is false. Type:
      * boolean.
-     *
+     * 
      * @param flushImmediately the flushImmediately value to set.
      * @return the AzureDataExplorerSink object itself.
      */
@@ -101,35 +106,45 @@ public final class AzureDataExplorerSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

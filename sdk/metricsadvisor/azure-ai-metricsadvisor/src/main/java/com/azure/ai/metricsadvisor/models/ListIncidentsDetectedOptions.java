@@ -16,6 +16,12 @@ public final class ListIncidentsDetectedOptions {
     private List<DimensionKey> dimensionsToFilter;
 
     /**
+     * Creates an instance of ListIncidentsDetectedOptions.
+     */
+    public ListIncidentsDetectedOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

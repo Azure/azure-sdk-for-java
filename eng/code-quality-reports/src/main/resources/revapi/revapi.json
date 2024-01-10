@@ -110,6 +110,16 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
@@ -275,15 +285,21 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificates)\\.models.*)",
+          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?)\\.models.*",
           "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, KeyVault, and Search in transition to stream-style."
+          "justification": "Removing Jackson annotations from ACR, KeyVault, Search, and Text Analytics in transition to stream-style."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.ai\\.textanalytics\\.models.*",
-          "justification": "Removing Jackson annotations from Text Analytics in transition to stream-style."
+          "old": ".*? com\\.azure\\.ai\\.metricsadvisor\\.(administration\\.)?models.*",
+          "justification": "Removing Jackson annotations from Metrics Advisor in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
+          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
         },
         {
           "code": "java.field.removed",

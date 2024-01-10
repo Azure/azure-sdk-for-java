@@ -1,6 +1,6 @@
 # Azure Identity Brokered Authentication client library for Java
 
-The Azure Identity Brokered Authentication library extends the Azure Identity library to provide brokdered authentication support. This options class can be used to create an `InteractiveBrowserCredential` capable of using the system authentication broker in lieu of the web browser when available.
+The Azure Identity Brokered Authentication library extends the Azure Identity library to provide brokered authentication support. This options class can be used to create an `InteractiveBrowserCredential` capable of using the system authentication broker in lieu of the web browser when available.
 
 [Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entra_id_doc]
 
@@ -60,51 +60,65 @@ To take dependency on a particular version of the library that isn't present in 
 
 ## Key concepts
 
+This package enables broker support via `InteractiveBrowserCredential`, from the [Azure Identity library][azure_identity_library]. The credential is created with `InteractiveBrowserBrokerCredentialBuilder` from the `azure-identity-broker` library, as shown below.
+
+### Parent window handles
+
+When authenticating interactively via `InteractiveBrowserCredential`, a parent window handle is required to ensure that the authentication dialog is shown correctly over the requesting window. In the context of graphical user interfaces on devices, a window handle is a unique identifier that the operating system assigns to each window. For the Windows operating system, this handle is an integer value that serves as a reference to a specific window.
+
+## Microsoft account (MSA) passthrough
+
+Microsoft accounts (MSA) are personal accounts created by users to access Microsoft services. MSA passthrough is a legacy configuration which enables users to get tokens to resources which normally don't accept MSA logins. This feature is only available to first-party applications. Users authenticating with an application that is configured to use MSA passthrough can `InteractiveBrowserBrokerCredentialBuilder.enableLegacyMsaPassthrough()` to allow these personal accounts to be listed by WAM.
+
+## Redirect URIs
+
+Microsoft Entra applications rely on redirect URIs to determine where to send the authentication response after a user has logged in. To enable brokered authentication through WAM, a redirect URI matching the following pattern should be registered to the application:
+
+```
+ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
+```
+
 ### Examples
 
-#### Configuring the `InteractiveBrowserCredential` to use the system authentication broker
+#### Configure the `InteractiveBrowserCredential` to use the system authentication broker for Windows
 
-```java
-long windowHandle = GetWindowHandle() // Samples below
-InteractiveBrowserCredential cred = new InteractiveBrowserCredentialBuilder()
-    .useInteractiveBrowserBroker(windowHandle)
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.windows
+long windowHandle = getWindowHandle(); // Samples below
+InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+    .setWindowHandle(windowHandle)
     .build();
 ```
 
-#### Obtaining a window handle
+#### Obtain a window handle
 
 ##### JavaFX
 
-This code will obtain the window handle for a JavaFX application for use with `InteractiveBrowserCredentialBuilder`
+This code will obtain the window handle for a JavaFX application for use with `InteractiveBrowserCredentialBuilder`:
 
-```java
-
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef;
-
-public static long getWindowHandle(Stage stage) {
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.getwindowhandle.javafx
+public long getWindowHandle(Stage stage) {
     try {
         WinDef.HWND hwnd = User32.INSTANCE.FindWindow(null, stage.getTitle());
         return Pointer.nativeValue(hwnd.getPointer());
     } catch (Exception e) {
-        e.printStackTrace();
-        return 0;
+        // Handle exceptions in an appropriate manner for your application.
+        // Not being able to retrieve a window handle for Windows is a fatal error.
+        throw e;
     }
 }
 ```
 
 ## Troubleshooting
 
-Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
+Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate a `ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
 
-When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
+When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine a `CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
 See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
-The Java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library. You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
+[These Java client libraries](https://learn.microsoft.com/azure/developer/java/sdk/azure-sdk-library-package-index#libraries-using-azure-core) support authenticating with `TokenCredential` and the Azure Identity library. To learn more about using these client libraries, see the aforementioned link.
 
 The [microsoft-graph-sdk](https://github.com/microsoftgraph/msgraph-sdk-java) also supports authenticating with `TokenCredential` and the Azure Identity library.
 
@@ -117,13 +131,13 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 
-```
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
-[azure_sub]: https://azure.microsoft.com/free/
-[entra_id_doc]: https://learn.microsoft.com/azure/active-directory/
+[azure_identity_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity
+[azure_sub]: https://azure.microsoft.com/free/java
+[entra_id_doc]: https://learn.microsoft.com/entra/identity/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
+[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity.broker?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets

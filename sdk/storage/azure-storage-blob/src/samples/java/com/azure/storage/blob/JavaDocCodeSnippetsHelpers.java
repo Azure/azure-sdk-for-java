@@ -19,7 +19,7 @@ final class JavaDocCodeSnippetsHelpers {
     }
 
     static BlobClient getBlobClient(String blobName) {
-        return new BlobClient(getBlobAsyncClient(blobName));
+        return getContainerClient().getBlobClient(blobName);
     }
 
     static BlobServiceAsyncClient getBlobServiceAsyncClient() {

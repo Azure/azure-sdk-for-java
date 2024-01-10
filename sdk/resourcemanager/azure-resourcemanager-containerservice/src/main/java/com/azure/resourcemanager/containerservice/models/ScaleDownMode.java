@@ -13,10 +13,14 @@ import java.util.Collection;
  * states](https://docs.microsoft.com/azure/virtual-machines/states-billing).
  */
 public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
-    /** Static value Delete for ScaleDownMode. */
+    /**
+     * Static value Delete for ScaleDownMode.
+     */
     public static final ScaleDownMode DELETE = fromString("Delete");
 
-    /** Static value Deallocate for ScaleDownMode. */
+    /**
+     * Static value Deallocate for ScaleDownMode.
+     */
     public static final ScaleDownMode DEALLOCATE = fromString("Deallocate");
 
     /**

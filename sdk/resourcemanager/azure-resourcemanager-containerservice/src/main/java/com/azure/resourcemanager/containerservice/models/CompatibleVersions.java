@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Version information about a product/service that is compatible with a service mesh revision. */
+/**
+ * Version information about a product/service that is compatible with a service mesh revision.
+ */
 @Fluent
 public final class CompatibleVersions {
     /*
@@ -23,7 +25,9 @@ public final class CompatibleVersions {
     @JsonProperty(value = "versions")
     private List<String> versions;
 
-    /** Creates an instance of CompatibleVersions class. */
+    /**
+     * Creates an instance of CompatibleVersions class.
+     */
     public CompatibleVersions() {
     }
 

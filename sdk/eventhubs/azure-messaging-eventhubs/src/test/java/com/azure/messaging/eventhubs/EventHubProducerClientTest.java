@@ -43,6 +43,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -78,7 +79,9 @@ public class EventHubProducerClientTest {
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+        .setTryTimeout(Duration.ofSeconds(30))
+        .setDelay(Duration.ofSeconds(1));
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     @Mock
     private AmqpSendLink sendLink;
@@ -136,7 +139,7 @@ public class EventHubProducerClientTest {
     @Test
     public void sendSingleMessage() {
         // Arrange
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -172,7 +175,7 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -238,7 +241,7 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
         eventData.getProperties().put("traceparent", "traceparent");
 
@@ -288,7 +291,7 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
         //Act & Assert
         final Iterable<EventData> tooManyEvents = Flux.range(0, 1024).map(number -> {
@@ -315,7 +318,7 @@ public class EventHubProducerClientTest {
 
         final String partitionId = "partition-id-1";
         final SendOptions options = new SendOptions().setPartitionId(partitionId);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(argThat(name -> name.endsWith(partitionId)),
@@ -365,7 +368,7 @@ public class EventHubProducerClientTest {
 
         // This event will be 1025 bytes when serialized.
         final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
-        final EventHubProducerClient hubProducer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient hubProducer = new EventHubProducerClient(asyncProducer);
 
         // Act
         final EventDataBatch batch = hubProducer.createBatch();
@@ -392,7 +395,7 @@ public class EventHubProducerClientTest {
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -473,7 +476,7 @@ public class EventHubProducerClientTest {
         final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionKey("some-key")
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
         // Act
         final EventDataBatch batch = producer.createBatch(options);
@@ -509,7 +512,7 @@ public class EventHubProducerClientTest {
         final CreateBatchOptions options = new CreateBatchOptions()
             .setPartitionId(partitionId)
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
         // Act
         final EventDataBatch batch = producer.createBatch(options);
@@ -542,7 +545,7 @@ public class EventHubProducerClientTest {
         // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
         final CreateBatchOptions options = new CreateBatchOptions()
             .setMaximumSizeInBytes(maxBatchSize);
-        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventDataBatch batch = producer.createBatch(options);
 
         // Act & Assert
@@ -551,6 +554,36 @@ public class EventHubProducerClientTest {
         } catch (AmqpException e) {
             Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
+    }
+
+    /**
+     * Verifies can create a batch on a second try if first fails with transient error.
+     */
+    @Test
+    public void createBatchWithRetry() {
+        // Arrange
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
+
+        AtomicInteger tries = new AtomicInteger();
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
+            .thenAnswer(invocation -> {
+                if (tries.incrementAndGet() == 1) {
+                    return Mono.error(new AmqpException(true, "something bad", new AmqpErrorContext("test-namespace")));
+                } else {
+                    return Mono.just(sendLink);
+                }
+            });
+
+        // Act
+        try {
+            producer.createBatch();
+        } finally {
+            producer.close();
+        }
+
+        // Assert
+        verify(sendLink, times(1)).getLinkSize();
+        assertEquals(2, tries.get());
     }
 
     private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, int linkCount) {

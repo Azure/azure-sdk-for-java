@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SetVariableActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SetVariableActivity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SetVariable\",\"typeProperties\":{\"variableName\":\"apucnkn\",\"value\":\"datacoxeoptb\",\"setSystemVariable\":false},\"policy\":{\"secureInput\":true,\"secureOutput\":false},\"name\":\"xeqwgaeiceo\",\"description\":\"cdc\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"ypztssqbcla\",\"dependencyConditions\":[\"Completed\",\"Failed\"],\"\":{\"qyinfdmqjqjk\":\"datavttkha\",\"xpiczaqgevsnn\":\"dataq\"}}],\"userProperties\":[{\"name\":\"ufezwgwmdv\",\"value\":\"dataskffqqaobbq\"},{\"name\":\"dkjusqhr\",\"value\":\"dataadffdr\"},{\"name\":\"ykhtsycct\",\"value\":\"datarvn\"}],\"\":{\"m\":\"dataembcat\",\"vzhacorqbm\":\"datadwhixjk\"}}")
-                .toObject(SetVariableActivity.class);
+        SetVariableActivity model = BinaryData.fromString(
+            "{\"type\":\"SetVariable\",\"typeProperties\":{\"variableName\":\"apucnkn\",\"value\":\"datacoxeoptb\",\"setSystemVariable\":false},\"policy\":{\"secureInput\":true,\"secureOutput\":false},\"name\":\"xeqwgaeiceo\",\"description\":\"cdc\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"ypztssqbcla\",\"dependencyConditions\":[\"Completed\",\"Failed\"],\"\":{\"qyinfdmqjqjk\":\"datavttkha\",\"xpiczaqgevsnn\":\"dataq\"}}],\"userProperties\":[{\"name\":\"ufezwgwmdv\",\"value\":\"dataskffqqaobbq\"},{\"name\":\"dkjusqhr\",\"value\":\"dataadffdr\"},{\"name\":\"ykhtsycct\",\"value\":\"datarvn\"}],\"\":{\"m\":\"dataembcat\",\"vzhacorqbm\":\"datadwhixjk\"}}")
+            .toObject(SetVariableActivity.class);
         Assertions.assertEquals("xeqwgaeiceo", model.name());
         Assertions.assertEquals("cdc", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
@@ -40,30 +38,16 @@ public final class SetVariableActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SetVariableActivity model =
-            new SetVariableActivity()
-                .withName("xeqwgaeiceo")
-                .withDescription("cdc")
-                .withState(ActivityState.INACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new ActivityDependency()
-                                .withActivity("ypztssqbcla")
-                                .withDependencyConditions(
-                                    Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED))
-                                .withAdditionalProperties(mapOf())))
-                .withUserProperties(
-                    Arrays
-                        .asList(
-                            new UserProperty().withName("ufezwgwmdv").withValue("dataskffqqaobbq"),
-                            new UserProperty().withName("dkjusqhr").withValue("dataadffdr"),
-                            new UserProperty().withName("ykhtsycct").withValue("datarvn")))
-                .withPolicy(new SecureInputOutputPolicy().withSecureInput(true).withSecureOutput(false))
-                .withVariableName("apucnkn")
-                .withValue("datacoxeoptb")
-                .withSetSystemVariable(false);
+        SetVariableActivity model = new SetVariableActivity().withName("xeqwgaeiceo").withDescription("cdc")
+            .withState(ActivityState.INACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("ypztssqbcla")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED))
+                .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("ufezwgwmdv").withValue("dataskffqqaobbq"),
+                new UserProperty().withName("dkjusqhr").withValue("dataadffdr"),
+                new UserProperty().withName("ykhtsycct").withValue("datarvn")))
+            .withPolicy(new SecureInputOutputPolicy().withSecureInput(true).withSecureOutput(false))
+            .withVariableName("apucnkn").withValue("datacoxeoptb").withSetSystemVariable(false);
         model = BinaryData.fromObject(model).toObject(SetVariableActivity.class);
         Assertions.assertEquals("xeqwgaeiceo", model.name());
         Assertions.assertEquals("cdc", model.description());

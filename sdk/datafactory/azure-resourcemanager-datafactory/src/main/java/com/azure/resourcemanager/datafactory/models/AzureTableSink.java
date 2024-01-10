@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Table sink. */
+/**
+ * A copy activity Azure Table sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTableSink")
 @Fluent
@@ -38,14 +40,16 @@ public final class AzureTableSink extends CopySink {
     @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;
 
-    /** Creates an instance of AzureTableSink class. */
+    /**
+     * Creates an instance of AzureTableSink class.
+     */
     public AzureTableSink() {
     }
 
     /**
      * Get the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the azureTableDefaultPartitionKeyValue value.
      */
     public Object azureTableDefaultPartitionKeyValue() {
@@ -55,7 +59,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param azureTableDefaultPartitionKeyValue the azureTableDefaultPartitionKeyValue value to set.
      * @return the AzureTableSink object itself.
      */
@@ -67,7 +71,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTablePartitionKeyName property: Azure Table partition key name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the azureTablePartitionKeyName value.
      */
     public Object azureTablePartitionKeyName() {
@@ -77,7 +81,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTablePartitionKeyName property: Azure Table partition key name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param azureTablePartitionKeyName the azureTablePartitionKeyName value to set.
      * @return the AzureTableSink object itself.
      */
@@ -89,7 +93,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTableRowKeyName property: Azure Table row key name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the azureTableRowKeyName value.
      */
     public Object azureTableRowKeyName() {
@@ -99,7 +103,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableRowKeyName property: Azure Table row key name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param azureTableRowKeyName the azureTableRowKeyName value to set.
      * @return the AzureTableSink object itself.
      */
@@ -111,7 +115,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Get the azureTableInsertType property: Azure Table insert type. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the azureTableInsertType value.
      */
     public Object azureTableInsertType() {
@@ -121,7 +125,7 @@ public final class AzureTableSink extends CopySink {
     /**
      * Set the azureTableInsertType property: Azure Table insert type. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param azureTableInsertType the azureTableInsertType value to set.
      * @return the AzureTableSink object itself.
      */
@@ -130,42 +134,54 @@ public final class AzureTableSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -174,7 +190,7 @@ public final class AzureTableSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

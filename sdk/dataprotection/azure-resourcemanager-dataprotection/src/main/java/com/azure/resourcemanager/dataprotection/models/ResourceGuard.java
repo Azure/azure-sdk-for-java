@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceGuard model. */
+/**
+ * The ResourceGuard model.
+ */
 @Fluent
 public final class ResourceGuard {
     /*
@@ -41,13 +43,15 @@ public final class ResourceGuard {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of ResourceGuard class. */
+    /**
+     * Creates an instance of ResourceGuard class.
+     */
     public ResourceGuard() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the BackupVault resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -56,7 +60,7 @@ public final class ResourceGuard {
 
     /**
      * Get the allowAutoApprovals property: This flag indicates whether auto approval is allowed or not.
-     *
+     * 
      * @return the allowAutoApprovals value.
      */
     public Boolean allowAutoApprovals() {
@@ -66,7 +70,7 @@ public final class ResourceGuard {
     /**
      * Get the resourceGuardOperations property: {readonly} List of operation details those are protected by the
      * ResourceGuard resource.
-     *
+     * 
      * @return the resourceGuardOperations value.
      */
     public List<ResourceGuardOperation> resourceGuardOperations() {
@@ -74,9 +78,9 @@ public final class ResourceGuard {
     }
 
     /**
-     * Get the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by this
-     * resourceGuard.
-     *
+     * Get the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by
+     * this resourceGuard.
+     * 
      * @return the vaultCriticalOperationExclusionList value.
      */
     public List<String> vaultCriticalOperationExclusionList() {
@@ -84,9 +88,9 @@ public final class ResourceGuard {
     }
 
     /**
-     * Set the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by this
-     * resourceGuard.
-     *
+     * Set the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by
+     * this resourceGuard.
+     * 
      * @param vaultCriticalOperationExclusionList the vaultCriticalOperationExclusionList value to set.
      * @return the ResourceGuard object itself.
      */
@@ -97,7 +101,7 @@ public final class ResourceGuard {
 
     /**
      * Get the description property: Description about the pre-req steps to perform all the critical operations.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -106,7 +110,7 @@ public final class ResourceGuard {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

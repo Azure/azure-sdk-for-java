@@ -151,7 +151,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the input stream holding the PFX certificate and its password for authenticating to Microsoft Entra ID.
+     * Sets the input stream holding the PFX certificate for authenticating to Microsoft Entra ID.
      *
      * @param certificate the input stream containing the password protected PFX certificate
      * @return An updated instance of this builder.

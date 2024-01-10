@@ -11,13 +11,17 @@ import java.util.Collection;
 /**
  * The network mode Azure CNI is configured with.
  *
- * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
+ * This cannot be specified if networkPlugin is anything other than 'azure'.
  */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
-    /** Static value transparent for NetworkMode. */
+    /**
+     * Static value transparent for NetworkMode.
+     */
     public static final NetworkMode TRANSPARENT = fromString("transparent");
 
-    /** Static value bridge for NetworkMode. */
+    /**
+     * Static value bridge for NetworkMode.
+     */
     public static final NetworkMode BRIDGE = fromString("bridge");
 
     /**

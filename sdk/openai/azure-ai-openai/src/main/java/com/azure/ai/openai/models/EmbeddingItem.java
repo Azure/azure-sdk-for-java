@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Representation of a single embeddings relatedness comparison. */
+/**
+ * Representation of a single embeddings relatedness comparison.
+ */
 @Immutable
 public final class EmbeddingItem {
 
@@ -29,8 +31,8 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonCreator
-    private EmbeddingItem(
-            @JsonProperty(value = "embedding") List<Double> embedding, @JsonProperty(value = "index") int promptIndex) {
+    private EmbeddingItem(@JsonProperty(value = "embedding") List<Double> embedding,
+        @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
     }

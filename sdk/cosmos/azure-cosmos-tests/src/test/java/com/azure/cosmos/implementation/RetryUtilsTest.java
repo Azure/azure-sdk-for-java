@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseValidator;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -75,8 +76,11 @@ public class RetryUtilsTest {
         Mockito.when(retryPolicy.shouldRetry(ArgumentMatchers.any()))
                 .thenReturn(Mono.just(ShouldRetryResult.retryAfter(BACK_OFF_DURATION)));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
-        StoreResponseValidator validator = StoreResponseValidator.create().withStatus(storeResponse.getStatus())
-                .withContent(storeResponse.getResponseBody()).build();
+        StoreResponseValidator validator = StoreResponseValidator
+            .create()
+            .withStatus(storeResponse.getStatus())
+            .withContent((ObjectNode)storeResponse.getResponseBodyAsJson())
+            .build();
         validateSuccess(response, validator, TIMEOUT);
         Mockito.verify(callbackMethod, Mockito.times(4)).apply(ArgumentMatchers.any());
     }
@@ -95,8 +99,11 @@ public class RetryUtilsTest {
         Mockito.when(retryPolicy.shouldRetry(ArgumentMatchers.any()))
                 .thenReturn(Mono.just(ShouldRetryResult.retryAfter(BACK_OFF_DURATION)));
         Mono<StoreResponse> response = onErrorFunc.apply(new GoneException());
-        StoreResponseValidator validator = StoreResponseValidator.create().withStatus(storeResponse.getStatus())
-                .withContent(storeResponse.getResponseBody()).build();
+        StoreResponseValidator validator = StoreResponseValidator
+            .create()
+            .withStatus(storeResponse.getStatus())
+            .withContent((ObjectNode)storeResponse.getResponseBodyAsJson())
+            .build();
         validateSuccess(response, validator, TIMEOUT);
         Mockito.verify(inBackoffAlternateCallbackMethod, Mockito.times(4)).apply(ArgumentMatchers.any());
     }
@@ -141,7 +148,7 @@ public class RetryUtilsTest {
     }
 
     private StoreResponse getStoreResponse() {
-        StoreResponseBuilder storeResponseBuilder = new StoreResponseBuilder().withContent("Test content")
+        StoreResponseBuilder storeResponseBuilder = new StoreResponseBuilder().withContent("{\"id\":\"Test content\"}")
                 .withStatus(200);
         return storeResponseBuilder.build();
     }

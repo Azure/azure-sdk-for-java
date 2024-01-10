@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.SwapResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SwapResource to represent slot type on the specified cloud service. */
+/**
+ * SwapResource to represent slot type on the specified cloud service.
+ */
 @Fluent
 public final class SwapResourceInner {
     /*
@@ -35,13 +37,15 @@ public final class SwapResourceInner {
     @JsonProperty(value = "properties")
     private SwapResourceProperties properties;
 
-    /** Creates an instance of SwapResourceInner class. */
+    /**
+     * Creates an instance of SwapResourceInner class.
+     */
     public SwapResourceInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the properties property: Swap resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public SwapResourceProperties properties() {
@@ -77,7 +81,7 @@ public final class SwapResourceInner {
 
     /**
      * Set the properties property: Swap resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SwapResourceInner object itself.
      */
@@ -88,7 +92,7 @@ public final class SwapResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

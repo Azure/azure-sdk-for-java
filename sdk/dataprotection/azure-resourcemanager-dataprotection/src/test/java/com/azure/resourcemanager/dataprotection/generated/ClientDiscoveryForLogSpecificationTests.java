@@ -11,25 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryForLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryForLogSpecification model =
-            BinaryData
-                .fromString("{\"blobDuration\":\"vvdfwatkpnpul\",\"displayName\":\"xbczwtruwiqz\",\"name\":\"j\"}")
-                .toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("vvdfwatkpnpul", model.blobDuration());
-        Assertions.assertEquals("xbczwtruwiqz", model.displayName());
-        Assertions.assertEquals("j", model.name());
+        ClientDiscoveryForLogSpecification model = BinaryData
+            .fromString("{\"blobDuration\":\"ddystkiiuxhqy\",\"displayName\":\"xorrqnb\",\"name\":\"czvyifq\"}")
+            .toObject(ClientDiscoveryForLogSpecification.class);
+        Assertions.assertEquals("ddystkiiuxhqy", model.blobDuration());
+        Assertions.assertEquals("xorrqnb", model.displayName());
+        Assertions.assertEquals("czvyifq", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryForLogSpecification model =
-            new ClientDiscoveryForLogSpecification()
-                .withBlobDuration("vvdfwatkpnpul")
-                .withDisplayName("xbczwtruwiqz")
-                .withName("j");
+        ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification()
+            .withBlobDuration("ddystkiiuxhqy").withDisplayName("xorrqnb").withName("czvyifq");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("vvdfwatkpnpul", model.blobDuration());
-        Assertions.assertEquals("xbczwtruwiqz", model.displayName());
-        Assertions.assertEquals("j", model.name());
+        Assertions.assertEquals("ddystkiiuxhqy", model.blobDuration());
+        Assertions.assertEquals("xorrqnb", model.displayName());
+        Assertions.assertEquals("czvyifq", model.name());
     }
 }

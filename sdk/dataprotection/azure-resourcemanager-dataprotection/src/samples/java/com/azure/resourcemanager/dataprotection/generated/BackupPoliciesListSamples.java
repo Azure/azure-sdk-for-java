@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupPolicies List. */
+/**
+ * Samples for BackupPolicies List.
+ */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/ListBackupPolicy.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/
+     * ListBackupPolicy.json
      */
     /**
      * Sample code: List BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void listBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {

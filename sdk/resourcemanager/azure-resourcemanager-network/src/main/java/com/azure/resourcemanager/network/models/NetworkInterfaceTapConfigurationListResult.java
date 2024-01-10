@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceTapConfig
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list tap configurations API service call. */
+/**
+ * Response for list tap configurations API service call.
+ */
 @Fluent
 public final class NetworkInterfaceTapConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkInterfaceTapConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of NetworkInterfaceTapConfigurationListResult class. */
+    /**
+     * Creates an instance of NetworkInterfaceTapConfigurationListResult class.
+     */
     public NetworkInterfaceTapConfigurationListResult() {
     }
 
     /**
      * Get the value property: A list of tap configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkInterfaceTapConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkInterfaceTapConfigurationListResult {
 
     /**
      * Set the value property: A list of tap configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkInterfaceTapConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkInterfaceTapConfigurationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkInterfaceTapConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

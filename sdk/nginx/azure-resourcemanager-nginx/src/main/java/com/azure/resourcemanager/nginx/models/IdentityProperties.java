@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The IdentityProperties model. */
+/**
+ * The IdentityProperties model.
+ */
 @Fluent
 public final class IdentityProperties {
     /*
@@ -37,13 +39,15 @@ public final class IdentityProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentityProperties> userAssignedIdentities;
 
-    /** Creates an instance of IdentityProperties class. */
+    /**
+     * Creates an instance of IdentityProperties class.
+     */
     public IdentityProperties() {
     }
 
     /**
      * Get the principalId property: The principalId property.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -52,7 +56,7 @@ public final class IdentityProperties {
 
     /**
      * Get the tenantId property: The tenantId property.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -61,7 +65,7 @@ public final class IdentityProperties {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -70,7 +74,7 @@ public final class IdentityProperties {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class IdentityProperties {
 
     /**
      * Get the userAssignedIdentities property: Dictionary of &lt;UserIdentityProperties&gt;.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserIdentityProperties> userAssignedIdentities() {
@@ -90,7 +94,7 @@ public final class IdentityProperties {
 
     /**
      * Set the userAssignedIdentities property: Dictionary of &lt;UserIdentityProperties&gt;.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the IdentityProperties object itself.
      */
@@ -101,19 +105,16 @@ public final class IdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

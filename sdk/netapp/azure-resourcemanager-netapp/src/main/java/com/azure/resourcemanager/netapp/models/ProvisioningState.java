@@ -7,30 +7,48 @@ package com.azure.resourcemanager.netapp.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets the status of the VolumeQuotaRule at the time the operation was called. */
+/**
+ * Gets the status of the VolumeQuotaRule at the time the operation was called.
+ */
 public enum ProvisioningState {
-    /** Enum value Accepted. */
+    /**
+     * Enum value Accepted.
+     */
     ACCEPTED("Accepted"),
 
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Patching. */
+    /**
+     * Enum value Patching.
+     */
     PATCHING("Patching"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting"),
 
-    /** Enum value Moving. */
+    /**
+     * Enum value Moving.
+     */
     MOVING("Moving"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded");
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /**
+     * The actual serialized value for a ProvisioningState instance.
+     */
     private final String value;
 
     ProvisioningState(String value) {
@@ -39,7 +57,7 @@ public enum ProvisioningState {
 
     /**
      * Parses a serialized value to a ProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
@@ -57,7 +75,9 @@ public enum ProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

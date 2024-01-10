@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of integration runtime resources. */
+/**
+ * A list of integration runtime resources.
+ */
 @Fluent
 public final class IntegrationRuntimeListResponse {
     /*
@@ -23,12 +25,15 @@ public final class IntegrationRuntimeListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of IntegrationRuntimeListResponse class. */
-    public IntegrationRuntimeListResponse() {}
+    /**
+     * Creates an instance of IntegrationRuntimeListResponse class.
+     */
+    public IntegrationRuntimeListResponse() {
+    }
 
     /**
      * Get the value property: List of integration runtimes.
-     *
+     * 
      * @return the value value.
      */
     public List<IntegrationRuntimeResource> getValue() {
@@ -37,7 +42,7 @@ public final class IntegrationRuntimeListResponse {
 
     /**
      * Set the value property: List of integration runtimes.
-     *
+     * 
      * @param value the value value to set.
      * @return the IntegrationRuntimeListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class IntegrationRuntimeListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class IntegrationRuntimeListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IntegrationRuntimeListResponse object itself.
      */

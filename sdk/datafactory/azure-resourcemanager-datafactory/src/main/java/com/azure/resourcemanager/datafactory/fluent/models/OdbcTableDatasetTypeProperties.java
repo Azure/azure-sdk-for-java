@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ODBC table dataset properties. */
+/**
+ * ODBC table dataset properties.
+ */
 @Fluent
 public final class OdbcTableDatasetTypeProperties {
     /*
@@ -16,13 +18,15 @@ public final class OdbcTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
-    /** Creates an instance of OdbcTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of OdbcTableDatasetTypeProperties class.
+     */
     public OdbcTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -31,7 +35,7 @@ public final class OdbcTableDatasetTypeProperties {
 
     /**
      * Set the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the OdbcTableDatasetTypeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class OdbcTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

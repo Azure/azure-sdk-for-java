@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.AzureWebCategoryInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListAzureWebCategories API service call. */
+/**
+ * Response for ListAzureWebCategories API service call.
+ */
 @Fluent
 public final class AzureWebCategoryListResult {
     /*
@@ -24,13 +26,15 @@ public final class AzureWebCategoryListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AzureWebCategoryListResult class. */
+    /**
+     * Creates an instance of AzureWebCategoryListResult class.
+     */
     public AzureWebCategoryListResult() {
     }
 
     /**
      * Get the value property: List of Azure Web Categories for a given Subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureWebCategoryInner> value() {
@@ -39,7 +43,7 @@ public final class AzureWebCategoryListResult {
 
     /**
      * Set the value property: List of Azure Web Categories for a given Subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureWebCategoryListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AzureWebCategoryListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AzureWebCategoryListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AzureWebCategoryListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AzureWebCategoryListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List capacity reservation group with resource group response. */
+/**
+ * The List capacity reservation group with resource group response.
+ */
 @Fluent
 public final class CapacityReservationGroupListResult {
     /*
@@ -26,13 +28,15 @@ public final class CapacityReservationGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CapacityReservationGroupListResult class. */
+    /**
+     * Creates an instance of CapacityReservationGroupListResult class.
+     */
     public CapacityReservationGroupListResult() {
     }
 
     /**
      * Get the value property: The list of capacity reservation groups.
-     *
+     * 
      * @return the value value.
      */
     public List<CapacityReservationGroupInner> value() {
@@ -41,7 +45,7 @@ public final class CapacityReservationGroupListResult {
 
     /**
      * Set the value property: The list of capacity reservation groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the CapacityReservationGroupListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class CapacityReservationGroupListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of capacity reservation groups. Call ListNext() with
      * this URI to fetch the next page of capacity reservation groups.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class CapacityReservationGroupListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of capacity reservation groups. Call ListNext() with
      * this URI to fetch the next page of capacity reservation groups.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CapacityReservationGroupListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class CapacityReservationGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CapacityReservationGroupListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model CapacityReservationGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

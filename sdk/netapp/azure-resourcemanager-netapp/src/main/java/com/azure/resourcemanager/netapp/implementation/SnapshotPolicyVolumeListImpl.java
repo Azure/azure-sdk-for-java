@@ -17,8 +17,8 @@ public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeL
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    SnapshotPolicyVolumeListImpl(
-        SnapshotPolicyVolumeListInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    SnapshotPolicyVolumeListImpl(SnapshotPolicyVolumeListInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,9 +26,8 @@ public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeL
     public List<Volume> value() {
         List<VolumeInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new VolumeImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new VolumeImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

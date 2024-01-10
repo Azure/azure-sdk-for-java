@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the server certificate details using common name. */
+/**
+ * Describes the server certificate details using common name.
+ */
 @Fluent
 public final class ServerCertificateCommonName {
     /*
@@ -23,13 +25,15 @@ public final class ServerCertificateCommonName {
     @JsonProperty(value = "certificateIssuerThumbprint", required = true)
     private String certificateIssuerThumbprint;
 
-    /** Creates an instance of ServerCertificateCommonName class. */
+    /**
+     * Creates an instance of ServerCertificateCommonName class.
+     */
     public ServerCertificateCommonName() {
     }
 
     /**
      * Get the certificateCommonName property: The common name of the server certificate.
-     *
+     * 
      * @return the certificateCommonName value.
      */
     public String certificateCommonName() {
@@ -38,7 +42,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Set the certificateCommonName property: The common name of the server certificate.
-     *
+     * 
      * @param certificateCommonName the certificateCommonName value to set.
      * @return the ServerCertificateCommonName object itself.
      */
@@ -49,7 +53,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Get the certificateIssuerThumbprint property: The issuer thumbprint of the server certificate.
-     *
+     * 
      * @return the certificateIssuerThumbprint value.
      */
     public String certificateIssuerThumbprint() {
@@ -58,7 +62,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Set the certificateIssuerThumbprint property: The issuer thumbprint of the server certificate.
-     *
+     * 
      * @param certificateIssuerThumbprint the certificateIssuerThumbprint value to set.
      * @return the ServerCertificateCommonName object itself.
      */
@@ -69,21 +73,17 @@ public final class ServerCertificateCommonName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateCommonName in model ServerCertificateCommonName"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateCommonName in model ServerCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateIssuerThumbprint in model ServerCertificateCommonName"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateIssuerThumbprint in model ServerCertificateCommonName"));
         }
     }
 

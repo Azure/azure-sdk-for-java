@@ -8,27 +8,23 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ExpressRouteCrossConnections UpdateTags. */
+/**
+ * Samples for ExpressRouteCrossConnections UpdateTags.
+ */
 public final class ExpressRouteCrossConnectionsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/ExpressRouteCrossConnectionUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ExpressRouteCrossConnectionUpdateTags.json
      */
     /**
      * Sample code: UpdateExpressRouteCrossConnectionTags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateExpressRouteCrossConnectionTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteCrossConnections()
-            .updateTagsWithResponse(
-                "CrossConnection-SiliconValley",
-                "<circuitServiceKey>",
-                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteCrossConnections().updateTagsWithResponse(
+            "CrossConnection-SiliconValley", "<circuitServiceKey>",
+            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

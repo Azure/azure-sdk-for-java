@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a NAT rule. */
+/**
+ * Properties of a NAT rule.
+ */
 @Fluent
 public final class AzureFirewallNatRule {
     /*
@@ -71,13 +73,15 @@ public final class AzureFirewallNatRule {
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
-    /** Creates an instance of AzureFirewallNatRule class. */
+    /**
+     * Creates an instance of AzureFirewallNatRule class.
+     */
     public AzureFirewallNatRule() {
     }
 
     /**
      * Get the name property: Name of the NAT rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +90,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the name property: Name of the NAT rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -97,7 +101,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the description property: Description of the rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -106,7 +110,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the description property: Description of the rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -117,7 +121,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -126,7 +130,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -138,7 +142,7 @@ public final class AzureFirewallNatRule {
     /**
      * Get the destinationAddresses property: List of destination IP addresses for this rule. Supports IP ranges,
      * prefixes, and service tags.
-     *
+     * 
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -148,7 +152,7 @@ public final class AzureFirewallNatRule {
     /**
      * Set the destinationAddresses property: List of destination IP addresses for this rule. Supports IP ranges,
      * prefixes, and service tags.
-     *
+     * 
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -159,7 +163,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the destinationPorts property: List of destination ports.
-     *
+     * 
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -168,7 +172,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the destinationPorts property: List of destination ports.
-     *
+     * 
      * @param destinationPorts the destinationPorts value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -179,7 +183,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the protocols property: Array of AzureFirewallNetworkRuleProtocols applicable to this NAT rule.
-     *
+     * 
      * @return the protocols value.
      */
     public List<AzureFirewallNetworkRuleProtocol> protocols() {
@@ -188,7 +192,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the protocols property: Array of AzureFirewallNetworkRuleProtocols applicable to this NAT rule.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -199,7 +203,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the translatedAddress property: The translated address for this NAT rule.
-     *
+     * 
      * @return the translatedAddress value.
      */
     public String translatedAddress() {
@@ -208,7 +212,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the translatedAddress property: The translated address for this NAT rule.
-     *
+     * 
      * @param translatedAddress the translatedAddress value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -219,7 +223,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the translatedPort property: The translated port for this NAT rule.
-     *
+     * 
      * @return the translatedPort value.
      */
     public String translatedPort() {
@@ -228,7 +232,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the translatedPort property: The translated port for this NAT rule.
-     *
+     * 
      * @param translatedPort the translatedPort value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -239,7 +243,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the translatedFqdn property: The translated FQDN for this NAT rule.
-     *
+     * 
      * @return the translatedFqdn value.
      */
     public String translatedFqdn() {
@@ -248,7 +252,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the translatedFqdn property: The translated FQDN for this NAT rule.
-     *
+     * 
      * @param translatedFqdn the translatedFqdn value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -259,7 +263,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -268,7 +272,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the AzureFirewallNatRule object itself.
      */
@@ -279,7 +283,7 @@ public final class AzureFirewallNatRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

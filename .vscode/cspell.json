@@ -160,6 +160,7 @@
     "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
+    "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -250,7 +251,9 @@
     "creds",
     "credscan",
     "curr",
+    "dall",
     "DALL-E",
+    "dall-e",
     "databind",
     "databricks",
     "DAZURE",
@@ -372,6 +375,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -864,7 +868,10 @@
     {
       "filename": "sdk/servicebus/azure-messaging-servicebus/**",
       "words": [
+        "anu",
         "Conniey",
+        "liudmila",
+        "Milli",
         "qpid",
         "unretriable"
         ]
@@ -1054,13 +1061,14 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev"
+        "Pdev",
+	"Djava"
       ]
     },
     {
-      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
       "words": [
-        "Djava"
+        "javac"
       ]
     },
     {

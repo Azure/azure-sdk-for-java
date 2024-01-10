@@ -11,38 +11,29 @@ import org.junit.jupiter.api.Assertions;
 public final class AppSeenInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppSeenInfo model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"qaqtdoqmcbxvwvxy\",\"category\":\"lqbhsf\",\"subCategory\":\"obl\",\"risk\":\"tkblmpewww\",\"tag\":\"bkrvrnsvshqj\",\"technology\":\"hxcr\",\"standardPorts\":\"bfovasrruvwbhsq\"}")
-                .toObject(AppSeenInfo.class);
-        Assertions.assertEquals("qaqtdoqmcbxvwvxy", model.title());
-        Assertions.assertEquals("lqbhsf", model.category());
-        Assertions.assertEquals("obl", model.subCategory());
-        Assertions.assertEquals("tkblmpewww", model.risk());
-        Assertions.assertEquals("bkrvrnsvshqj", model.tag());
-        Assertions.assertEquals("hxcr", model.technology());
-        Assertions.assertEquals("bfovasrruvwbhsq", model.standardPorts());
+        AppSeenInfo model = BinaryData.fromString(
+            "{\"title\":\"pglkf\",\"category\":\"ohdneuel\",\"subCategory\":\"phsdyhto\",\"risk\":\"fikdowwqu\",\"tag\":\"v\",\"technology\":\"zx\",\"standardPorts\":\"lvithhqzonosgg\"}")
+            .toObject(AppSeenInfo.class);
+        Assertions.assertEquals("pglkf", model.title());
+        Assertions.assertEquals("ohdneuel", model.category());
+        Assertions.assertEquals("phsdyhto", model.subCategory());
+        Assertions.assertEquals("fikdowwqu", model.risk());
+        Assertions.assertEquals("v", model.tag());
+        Assertions.assertEquals("zx", model.technology());
+        Assertions.assertEquals("lvithhqzonosgg", model.standardPorts());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppSeenInfo model =
-            new AppSeenInfo()
-                .withTitle("qaqtdoqmcbxvwvxy")
-                .withCategory("lqbhsf")
-                .withSubCategory("obl")
-                .withRisk("tkblmpewww")
-                .withTag("bkrvrnsvshqj")
-                .withTechnology("hxcr")
-                .withStandardPorts("bfovasrruvwbhsq");
+        AppSeenInfo model = new AppSeenInfo().withTitle("pglkf").withCategory("ohdneuel").withSubCategory("phsdyhto")
+            .withRisk("fikdowwqu").withTag("v").withTechnology("zx").withStandardPorts("lvithhqzonosgg");
         model = BinaryData.fromObject(model).toObject(AppSeenInfo.class);
-        Assertions.assertEquals("qaqtdoqmcbxvwvxy", model.title());
-        Assertions.assertEquals("lqbhsf", model.category());
-        Assertions.assertEquals("obl", model.subCategory());
-        Assertions.assertEquals("tkblmpewww", model.risk());
-        Assertions.assertEquals("bkrvrnsvshqj", model.tag());
-        Assertions.assertEquals("hxcr", model.technology());
-        Assertions.assertEquals("bfovasrruvwbhsq", model.standardPorts());
+        Assertions.assertEquals("pglkf", model.title());
+        Assertions.assertEquals("ohdneuel", model.category());
+        Assertions.assertEquals("phsdyhto", model.subCategory());
+        Assertions.assertEquals("fikdowwqu", model.risk());
+        Assertions.assertEquals("v", model.tag());
+        Assertions.assertEquals("zx", model.technology());
+        Assertions.assertEquals("lvithhqzonosgg", model.standardPorts());
     }
 }

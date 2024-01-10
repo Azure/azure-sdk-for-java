@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity ORC sink. */
+/**
+ * A copy activity ORC sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OrcSink")
 @Fluent
@@ -26,13 +28,15 @@ public final class OrcSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private OrcWriteSettings formatSettings;
 
-    /** Creates an instance of OrcSink class. */
+    /**
+     * Creates an instance of OrcSink class.
+     */
     public OrcSink() {
     }
 
     /**
      * Get the storeSettings property: ORC store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings storeSettings() {
@@ -41,7 +45,7 @@ public final class OrcSink extends CopySink {
 
     /**
      * Set the storeSettings property: ORC store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the OrcSink object itself.
      */
@@ -52,7 +56,7 @@ public final class OrcSink extends CopySink {
 
     /**
      * Get the formatSettings property: ORC format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public OrcWriteSettings formatSettings() {
@@ -61,7 +65,7 @@ public final class OrcSink extends CopySink {
 
     /**
      * Set the formatSettings property: ORC format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the OrcSink object itself.
      */
@@ -70,42 +74,54 @@ public final class OrcSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -114,7 +130,7 @@ public final class OrcSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

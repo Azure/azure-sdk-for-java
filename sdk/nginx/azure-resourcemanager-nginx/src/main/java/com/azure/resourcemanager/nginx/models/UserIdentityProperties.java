@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserIdentityProperties model. */
+/**
+ * The UserIdentityProperties model.
+ */
 @Immutable
 public final class UserIdentityProperties {
     /*
@@ -22,13 +24,15 @@ public final class UserIdentityProperties {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of UserIdentityProperties class. */
+    /**
+     * Creates an instance of UserIdentityProperties class.
+     */
     public UserIdentityProperties() {
     }
 
     /**
      * Get the principalId property: The principalId property.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserIdentityProperties {
 
     /**
      * Get the clientId property: The clientId property.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +50,7 @@ public final class UserIdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
