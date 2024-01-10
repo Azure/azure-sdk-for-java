@@ -5,12 +5,16 @@ package com.azure.perf.test.core;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.util.HttpClientOptions;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -21,12 +25,18 @@ import reactor.core.publisher.Mono;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.X509TrustManager;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.VERTX;
 
 /**
  * The Base Performance Test class for API based Perf Tests.
@@ -40,10 +50,9 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     private String recordingId;
     private long completedOperations;
 
-
-    // Derived classes should use the ConfigureClientBuilder() method by default.  If a ClientBuilder does not
+    // Derived classes should use the configureClientBuilder() method by default.  If a ClientBuilder does not
     // follow the standard convention, it can be configured manually using these fields.
-    protected final HttpClient httpClient;
+    protected HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
     /**
@@ -56,7 +65,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         super(options);
 
         httpClient = createHttpClient(options);
-
         if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
             recordPlaybackHttpClient = createRecordPlaybackClient(options);
             testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
@@ -72,51 +80,80 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     private static HttpClient createHttpClient(PerfStressOptions options) {
         PerfStressOptions.HttpClientType httpClientType = options.getHttpClient();
-        switch (httpClientType) {
-            case NETTY:
-                if (options.isInsecure()) {
-                    try {
-                        SslContext sslContext = SslContextBuilder.forClient()
-                            .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                            .build();
+        Class<? extends HttpClientProvider> httpClientProvider = null;
+        if (httpClientType.equals(NETTY)) {
+            if (options.isInsecure()) {
+                try {
+                    SslContext sslContext = SslContextBuilder.forClient()
+                        .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                        .build();
 
-                        reactor.netty.http.client.HttpClient nettyHttpClient =
-                            reactor.netty.http.client.HttpClient.create()
-                                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+                    reactor.netty.http.client.HttpClient nettyHttpClient =
+                        reactor.netty.http.client.HttpClient.create()
+                            .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
-                        return new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
-                    } catch (SSLException e) {
-                        throw new IllegalStateException(e);
-                    }
-                } else {
-                    return new NettyAsyncHttpClientProvider().createInstance();
+                    return new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
+                } catch (SSLException e) {
+                    throw new IllegalStateException(e);
                 }
-            case OKHTTP:
-                if (options.isInsecure()) {
-                    try {
-                        SSLContext sslContext = SSLContext.getInstance("SSL");
-                        sslContext.init(
-                            null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
-                        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                            .sslSocketFactory(sslContext.getSocketFactory(),
-                                (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
-                            .build();
-                        return new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
-                    } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                        throw new IllegalStateException(e);
-                    }
-                } else {
-                    return new OkHttpAsyncClientProvider().createInstance();
+            } else {
+                httpClientProvider = NettyAsyncHttpClientProvider.class;
+            }
+        } else if (httpClientType.equals(OKHTTP)) {
+            if (options.isInsecure()) {
+                try {
+                    SSLContext sslContext = SSLContext.getInstance("SSL");
+                    sslContext.init(
+                        null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
+                    OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                        .sslSocketFactory(sslContext.getSocketFactory(),
+                            (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
+                        .build();
+                    return new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
+                } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                    throw new IllegalStateException(e);
                 }
-            case JDK:
-                if (options.isInsecure()) {
-                    // can't configure JDK HttpClient for insecure mode with source set to Java 8
-                    throw new UnsupportedOperationException("Can't configure JDK HttpClient for insecure mode.");
-                } else {
-                    return new JdkHttpClientProvider().createInstance();
-                }
-            default:
-                throw new IllegalArgumentException("Unsupported http client " + httpClientType);
+            } else {
+                httpClientProvider = OkHttpAsyncClientProvider.class;
+            }
+        } else if (httpClientType.equals(JDK)) {
+            if (options.isInsecure()) {
+                // can't configure JDK HttpClient for insecure mode with source set to Java 8
+                throw new UnsupportedOperationException("Can't configure JDK HttpClient for insecure mode.");
+            } else {
+                httpClientProvider = JdkHttpClientProvider.class;
+            }
+        } else if (httpClientType.equals(VERTX)) {
+            if (options.isInsecure()) {
+                io.vertx.core.http.HttpClientOptions vertxOptions = new io.vertx.core.http.HttpClientOptions()
+                    .setSsl(true)
+                    .setTrustAll(true);
+                return new VertxAsyncHttpClientBuilder().httpClientOptions(vertxOptions).build();
+            } else {
+                httpClientProvider = VertxAsyncHttpClientProvider.class;
+            }
+        } else {
+            httpClientProvider = getHttpclientProvider(httpClientType);
+        }
+        try {
+            return httpClientProvider.getDeclaredConstructor().newInstance().createInstance();
+        } catch (Throwable e) {
+            throw new IllegalArgumentException("Could not create HttpClient from given provider: " + httpClientType, e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Class<? extends HttpClientProvider> getHttpclientProvider(PerfStressOptions.HttpClientType httpClientType) {
+        String providerClassName = httpClientType.toString();
+        try {
+            Class<?> provider = Class.forName(providerClassName, false, ApiPerfTestBase.class.getClassLoader());
+            if (HttpClientProvider.class.isAssignableFrom(provider)) {
+                return (Class<? extends HttpClientProvider>) provider;
+            } else {
+                throw new IllegalArgumentException("Http client type does not match HttpClientProvider implementation: " + providerClassName);
+            }
+        } catch (Throwable e) {
+            throw new IllegalArgumentException("Http client provider type is not found: " + providerClassName, e);
         }
     }
 

@@ -90,7 +90,7 @@ public class CorePerfIntegrationTest {
                         List<String> argLine = new ArrayList<>(Arrays.asList(
                             "unused",
                             "--backend-type", backendType.name(),
-                            "--http-client", httpClientType.name(),
+                            "--http-client", httpClientType.toString(),
                             "--binary-data-source", binaryDataSource.name()
                         ));
                         if (includePipelinePolicies) {
