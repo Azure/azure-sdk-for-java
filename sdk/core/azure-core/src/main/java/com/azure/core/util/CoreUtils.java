@@ -564,30 +564,11 @@ public final class CoreUtils {
         throws InterruptedException, ExecutionException, TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
-        if (!hasTimeout(timeout)) {
+        if (timeout == null) {
             return future.get();
         }
 
-        try {
-            return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-        } catch (TimeoutException e) {
-            future.cancel(true);
-            throw e;
-        } catch (ExecutionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof Error) {
-                throw (Error) cause;
-            } else if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            } else {
-                ImplUtils.sneakyThrows(cause);
-                throw e;
-            }
-        }
-    }
-
-    private static boolean hasTimeout(Duration timeout) {
-        return timeout != null && !timeout.isZero() && !timeout.isNegative();
+        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
     }
 
     /**
