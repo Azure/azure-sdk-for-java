@@ -10,10 +10,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -1535,7 +1537,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    /* Uncomment this test when Client Name is enabled with STG 93.
     @PlaybackOnly
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-02-04")
     @Test
@@ -1545,7 +1546,5 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileAsyncClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().collectList().block();
         assertNotNull(list.get(0).getClientName());
-
     }
-    */
 }

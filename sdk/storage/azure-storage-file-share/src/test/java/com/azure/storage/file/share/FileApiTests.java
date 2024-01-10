@@ -2768,7 +2768,6 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
-    /* Uncomment this test when Client Name is enabled with STG 93.
     @PlaybackOnly
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-02-04")
     @Test
@@ -2778,7 +2777,5 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertNotNull(list.get(0).getClientName());
-
     }
-     */
 }
