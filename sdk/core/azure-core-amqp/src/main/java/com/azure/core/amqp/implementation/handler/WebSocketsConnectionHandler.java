@@ -40,8 +40,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      *
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the connection.
+     * @param peerDetails The peer details for this connection.
+     * @param metricsProvider The AMQP metrics provider.
      */
-    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions, SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
+    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
+        SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
         super(connectionId, connectionOptions, peerDetails, metricsProvider);
         this.hostname = connectionOptions.getHostname();
     }
