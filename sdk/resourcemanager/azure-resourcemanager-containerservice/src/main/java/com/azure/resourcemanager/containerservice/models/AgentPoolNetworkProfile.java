@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network settings of an agent pool. */
+/**
+ * Network settings of an agent pool.
+ */
 @Fluent
 public final class AgentPoolNetworkProfile {
     /*
@@ -29,7 +31,9 @@ public final class AgentPoolNetworkProfile {
     @JsonProperty(value = "applicationSecurityGroups")
     private List<String> applicationSecurityGroups;
 
-    /** Creates an instance of AgentPoolNetworkProfile class. */
+    /**
+     * Creates an instance of AgentPoolNetworkProfile class.
+     */
     public AgentPoolNetworkProfile() {
     }
 

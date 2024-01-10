@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * AADProfile specifies attributes for Azure Active Directory integration.
  *
- * <p>For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad).
+ * For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad).
  */
 @Fluent
 public final class ManagedClusterAadProfile {
@@ -58,7 +58,9 @@ public final class ManagedClusterAadProfile {
     @JsonProperty(value = "tenantID")
     private String tenantId;
 
-    /** Creates an instance of ManagedClusterAadProfile class. */
+    /**
+     * Creates an instance of ManagedClusterAadProfile class.
+     */
     public ManagedClusterAadProfile() {
     }
 

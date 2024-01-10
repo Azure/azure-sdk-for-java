@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about orchestrator. */
+/**
+ * Contains information about orchestrator.
+ */
 @Fluent
 public final class OrchestratorProfile {
     /*
@@ -29,7 +31,9 @@ public final class OrchestratorProfile {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /** Creates an instance of OrchestratorProfile class. */
+    /**
+     * Creates an instance of OrchestratorProfile class.
+     */
     public OrchestratorProfile() {
     }
 
@@ -100,10 +104,8 @@ public final class OrchestratorProfile {
      */
     public void validate() {
         if (orchestratorVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorVersion in model OrchestratorProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
 

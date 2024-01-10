@@ -11,14 +11,18 @@ import java.util.Collection;
 /**
  * The load balancer sku for the managed cluster.
  *
- * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
+ * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
  * more information about the differences between load balancer SKUs.
  */
 public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku> {
-    /** Static value standard for LoadBalancerSku. */
+    /**
+     * Static value standard for LoadBalancerSku.
+     */
     public static final LoadBalancerSku STANDARD = fromString("standard");
 
-    /** Static value basic for LoadBalancerSku. */
+    /**
+     * Static value basic for LoadBalancerSku.
+     */
     public static final LoadBalancerSku BASIC = fromString("basic");
 
     /**

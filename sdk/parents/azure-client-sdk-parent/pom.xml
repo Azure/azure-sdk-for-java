@@ -651,7 +651,7 @@
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
-            <encoding>UTF-8</encoding>
+            <outputEncoding>UTF-8</outputEncoding>
             <consoleOutput>true</consoleOutput>
             <includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}</includeTestSourceDirectory>
             <linkXRef>true</linkXRef>
