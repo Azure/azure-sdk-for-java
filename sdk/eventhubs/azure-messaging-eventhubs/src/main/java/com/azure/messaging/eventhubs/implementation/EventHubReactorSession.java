@@ -127,7 +127,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, new ConsumerFactory());
     }
 
-    private String getExpression(EventPosition eventPosition) {
+    static String getExpression(EventPosition eventPosition) {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
