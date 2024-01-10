@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -68,8 +67,8 @@ class PollingUtil {
                 }
 
                 try {
-                    Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
-                    intermediatePollResponse = CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
+                    long pollTimeout = timeBound ? timeoutInMillis - elapsedTime : -1;
+                    intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
                     pollingContext.setLatestResponse(intermediatePollResponse);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     // waitUntil should not throw when timeout is reached.
