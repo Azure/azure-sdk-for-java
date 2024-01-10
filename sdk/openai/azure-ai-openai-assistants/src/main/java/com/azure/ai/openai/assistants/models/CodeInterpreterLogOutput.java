@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("logs")
 @Immutable
-public final class CodeInterpreterLogOutput extends CodeInterpreterCallOutput {
+public final class CodeInterpreterLogOutput extends CodeInterpreterToolCallOutput {
 
     /*
      * The serialized log output emitted by the code interpreter.

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The status of a thread deletion operation.
  */
 @Immutable
-public final class ThreadDeletionStatus {
+public final class ThreadDeletionStatus extends DeletionStatus {
 
     /*
      * The object type, which is always 'thread.deleted'.
@@ -20,13 +20,6 @@ public final class ThreadDeletionStatus {
     @Generated
     @JsonProperty(value = "object")
     private String object = "thread.deleted";
-
-    /*
-     * A value indicating whether deletion was successful.
-     */
-    @Generated
-    @JsonProperty(value = "deleted")
-    private boolean deleted;
 
     /**
      * Creates an instance of ThreadDeletionStatus class.
@@ -36,7 +29,7 @@ public final class ThreadDeletionStatus {
     @Generated
     @JsonCreator
     private ThreadDeletionStatus(@JsonProperty(value = "deleted") boolean deleted) {
-        this.deleted = deleted;
+        super(deleted);
     }
 
     /**
@@ -47,15 +40,5 @@ public final class ThreadDeletionStatus {
     @Generated
     public String getObject() {
         return this.object;
-    }
-
-    /**
-     * Get the deleted property: A value indicating whether deletion was successful.
-     *
-     * @return the deleted value.
-     */
-    @Generated
-    public boolean isDeleted() {
-        return this.deleted;
     }
 }

@@ -101,7 +101,7 @@ public final class RunStepsImpl {
     }
 
     /**
-     * Retrieves a single run step associated with an assistant thread run.
+     * Gets a single run step from a thread run.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -109,6 +109,7 @@ public final class RunStepsImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
      *     assistant_id: String (Required)
      *     thread_id: String (Required)
      *     run_id: String (Required)
@@ -124,22 +125,21 @@ public final class RunStepsImpl {
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with run of which the requested run step is part of.
-     * @param runId The ID of the run which the requested run step is part of.
-     * @param stepId The ID of the run step to retrieve.
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about a single step of an assistant thread run along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return a single run step from a thread run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retrieveRunStepWithResponseAsync(String threadId, String runId, String stepId,
@@ -150,7 +150,7 @@ public final class RunStepsImpl {
     }
 
     /**
-     * Retrieves a single run step associated with an assistant thread run.
+     * Gets a single run step from a thread run.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -158,6 +158,7 @@ public final class RunStepsImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
      *     assistant_id: String (Required)
      *     thread_id: String (Required)
      *     run_id: String (Required)
@@ -173,21 +174,21 @@ public final class RunStepsImpl {
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with run of which the requested run step is part of.
-     * @param runId The ID of the run which the requested run step is part of.
-     * @param stepId The ID of the run step to retrieve.
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about a single step of an assistant thread run along with {@link Response}.
+     * @return a single run step from a thread run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveRunStepWithResponse(String threadId, String runId, String stepId,
@@ -198,7 +199,7 @@ public final class RunStepsImpl {
     }
 
     /**
-     * Returns a list of run steps associated an assistant thread run.
+     * Gets a list of run steps from a thread run.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -221,8 +222,8 @@ public final class RunStepsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -252,6 +253,7 @@ public final class RunStepsImpl {
      *          (Required){
      *             id: String (Required)
      *             object: String (Required)
+     *             type: String(message_creation/tool_calls) (Required)
      *             assistant_id: String (Required)
      *             thread_id: String (Required)
      *             run_id: String (Required)
@@ -267,8 +269,8 @@ public final class RunStepsImpl {
      *             completed_at: OffsetDateTime (Required)
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
-     *             metadata (Required): {
-     *                 String: String (Required)
+     *             metadata (Optional): {
+     *                 String: String (Optional)
      *             }
      *         }
      *     ]
@@ -278,14 +280,14 @@ public final class RunStepsImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run from which steps should be listed.
-     * @param runId The ID of the run from which steps should be listed.
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * @return a list of run steps from a thread run along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -297,7 +299,7 @@ public final class RunStepsImpl {
     }
 
     /**
-     * Returns a list of run steps associated an assistant thread run.
+     * Gets a list of run steps from a thread run.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -320,8 +322,8 @@ public final class RunStepsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -351,6 +353,7 @@ public final class RunStepsImpl {
      *          (Required){
      *             id: String (Required)
      *             object: String (Required)
+     *             type: String(message_creation/tool_calls) (Required)
      *             assistant_id: String (Required)
      *             thread_id: String (Required)
      *             run_id: String (Required)
@@ -366,8 +369,8 @@ public final class RunStepsImpl {
      *             completed_at: OffsetDateTime (Required)
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
-     *             metadata (Required): {
-     *                 String: String (Required)
+     *             metadata (Optional): {
+     *                 String: String (Optional)
      *             }
      *         }
      *     ]
@@ -377,14 +380,14 @@ public final class RunStepsImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run from which steps should be listed.
-     * @param runId The ID of the run from which steps should be listed.
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of run steps from a thread run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {

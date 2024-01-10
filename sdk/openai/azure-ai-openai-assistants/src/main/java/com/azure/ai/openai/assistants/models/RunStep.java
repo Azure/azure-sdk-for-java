@@ -110,64 +110,13 @@ public final class RunStep {
     private OffsetDateTime failedAt;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
-
-    /**
-     * Creates an instance of RunStep class.
-     *
-     * @param id the id value to set.
-     * @param assistantId the assistantId value to set.
-     * @param threadId the threadId value to set.
-     * @param runId the runId value to set.
-     * @param status the status value to set.
-     * @param stepDetails the stepDetails value to set.
-     * @param lastError the lastError value to set.
-     * @param createdAt the createdAt value to set.
-     * @param expiredAt the expiredAt value to set.
-     * @param completedAt the completedAt value to set.
-     * @param cancelledAt the cancelledAt value to set.
-     * @param failedAt the failedAt value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private RunStep(String id, String assistantId, String threadId, String runId, RunStepStatus status,
-        RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt, OffsetDateTime expiredAt,
-        OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt, Map<String, String> metadata) {
-        this.id = id;
-        this.assistantId = assistantId;
-        this.threadId = threadId;
-        this.runId = runId;
-        this.status = status;
-        this.stepDetails = stepDetails;
-        this.lastError = lastError;
-        this.createdAt = createdAt.toEpochSecond();
-        this.expiredAt = expiredAt;
-        this.completedAt = completedAt;
-        this.cancelledAt = cancelledAt;
-        this.failedAt = failedAt;
-        this.metadata = metadata;
-    }
-
-    @Generated
-    @JsonCreator
-    private RunStep(@JsonProperty(value = "id") String id, @JsonProperty(value = "assistant_id") String assistantId,
-        @JsonProperty(value = "thread_id") String threadId, @JsonProperty(value = "run_id") String runId,
-        @JsonProperty(value = "status") RunStepStatus status,
-        @JsonProperty(value = "step_details") RunStepDetails stepDetails,
-        @JsonProperty(value = "last_error") RunStepError lastError, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "expired_at") OffsetDateTime expiredAt,
-        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
-        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
-        @JsonProperty(value = "failed_at") OffsetDateTime failedAt,
-        @JsonProperty(value = "metadata") Map<String, String> metadata) {
-        this(id, assistantId, threadId, runId, status, stepDetails, lastError,
-            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiredAt, completedAt,
-            cancelledAt, failedAt, metadata);
-    }
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -300,12 +249,83 @@ public final class RunStep {
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /*
+     * The type of run step, which can be either message_creation or tool_calls.
+     */
+    @Generated
+    @JsonProperty(value = "type")
+    private RunStepType type;
+
+    /**
+     * Creates an instance of RunStep class.
+     *
+     * @param id the id value to set.
+     * @param type the type value to set.
+     * @param assistantId the assistantId value to set.
+     * @param threadId the threadId value to set.
+     * @param runId the runId value to set.
+     * @param status the status value to set.
+     * @param stepDetails the stepDetails value to set.
+     * @param lastError the lastError value to set.
+     * @param createdAt the createdAt value to set.
+     * @param expiredAt the expiredAt value to set.
+     * @param completedAt the completedAt value to set.
+     * @param cancelledAt the cancelledAt value to set.
+     * @param failedAt the failedAt value to set.
+     */
+    @Generated
+    private RunStep(String id, RunStepType type, String assistantId, String threadId, String runId,
+        RunStepStatus status, RunStepDetails stepDetails, RunStepError lastError, OffsetDateTime createdAt,
+        OffsetDateTime expiredAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt, OffsetDateTime failedAt) {
+        this.id = id;
+        this.type = type;
+        this.assistantId = assistantId;
+        this.threadId = threadId;
+        this.runId = runId;
+        this.status = status;
+        this.stepDetails = stepDetails;
+        this.lastError = lastError;
+        this.createdAt = createdAt.toEpochSecond();
+        this.expiredAt = expiredAt;
+        this.completedAt = completedAt;
+        this.cancelledAt = cancelledAt;
+        this.failedAt = failedAt;
+    }
+
+    @Generated
+    @JsonCreator
+    private RunStep(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") RunStepType type,
+        @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "thread_id") String threadId,
+        @JsonProperty(value = "run_id") String runId, @JsonProperty(value = "status") RunStepStatus status,
+        @JsonProperty(value = "step_details") RunStepDetails stepDetails,
+        @JsonProperty(value = "last_error") RunStepError lastError, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "expired_at") OffsetDateTime expiredAt,
+        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
+        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
+        @JsonProperty(value = "failed_at") OffsetDateTime failedAt) {
+        this(id, type, assistantId, threadId, runId, status, stepDetails, lastError,
+            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiredAt, completedAt,
+            cancelledAt, failedAt);
+    }
+
+    /**
+     * Get the type property: The type of run step, which can be either message_creation or tool_calls.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public RunStepType getType() {
+        return this.type;
     }
 }

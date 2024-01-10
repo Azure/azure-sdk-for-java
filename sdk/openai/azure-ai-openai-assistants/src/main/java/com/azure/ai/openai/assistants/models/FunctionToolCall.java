@@ -25,7 +25,17 @@ public final class FunctionToolCall extends ToolCall {
      */
     @Generated
     @JsonProperty(value = "function")
-    private FunctionCallDetails function;
+    private FunctionToolCallDetails function;
+
+    /**
+     * Get the function property: The detailed information about the function called by the model.
+     *
+     * @return the function value.
+     */
+    @Generated
+    public FunctionToolCallDetails getFunction() {
+        return this.function;
+    }
 
     /**
      * Creates an instance of FunctionToolCall class.
@@ -36,18 +46,8 @@ public final class FunctionToolCall extends ToolCall {
     @Generated
     @JsonCreator
     private FunctionToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "function") FunctionCallDetails function) {
+        @JsonProperty(value = "function") FunctionToolCallDetails function) {
         super(id);
         this.function = function;
-    }
-
-    /**
-     * Get the function property: The detailed information about the function called by the model.
-     *
-     * @return the function value.
-     */
-    @Generated
-    public FunctionCallDetails getFunction() {
-        return this.function;
     }
 }

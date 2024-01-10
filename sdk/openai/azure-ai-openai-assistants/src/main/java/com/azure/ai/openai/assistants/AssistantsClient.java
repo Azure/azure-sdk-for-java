@@ -6,12 +6,13 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.implementation.AssistantsImpl;
 import com.azure.ai.openai.assistants.implementation.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.implementation.models.AssistantFileDeletionStatus;
+import com.azure.ai.openai.assistants.implementation.models.ListSortOrder;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantModificationOptions;
-import com.azure.ai.openai.assistants.models.ListResponseOfAssistant;
-import com.azure.ai.openai.assistants.models.ListResponseOfAssistantFile;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -34,7 +35,7 @@ public final class AssistantsClient {
     private final AssistantsImpl serviceClient;
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Creates a new assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -75,8 +76,8 @@ public final class AssistantsClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -97,7 +98,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -120,8 +121,8 @@ public final class AssistantsClient {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -163,8 +164,8 @@ public final class AssistantsClient {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
-     *                 String: String (Required)
+     *             metadata (Optional): {
+     *                 String: String (Optional)
      *             }
      *         }
      *     ]
@@ -179,16 +180,16 @@ public final class AssistantsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of assistants that were previously created along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
+    Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listAssistantsWithResponse(requestOptions);
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -208,8 +209,8 @@ public final class AssistantsClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -229,7 +230,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -270,8 +271,8 @@ public final class AssistantsClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -299,8 +300,8 @@ public final class AssistantsClient {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      *
@@ -319,7 +320,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -358,7 +359,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -381,8 +382,8 @@ public final class AssistantsClient {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -422,17 +423,18 @@ public final class AssistantsClient {
      * }
      * }</pre>
      *
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
+    Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         return this.serviceClient.listAssistantFilesWithResponse(assistantId, requestOptions);
     }
 
@@ -468,19 +470,20 @@ public final class AssistantsClient {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      *
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -496,7 +499,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Creates a new assistant.
      *
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,66 +520,25 @@ public final class AssistantsClient {
     }
 
     /**
-     * Returns a list of assistants.
-     *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
-     * is 20.
-     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
-     * descending order.
-     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListResponseOfAssistant listAssistants(Integer limit, String order, String after, String before) {
-        // Generated convenience method for listAssistantsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order, false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return listAssistantsWithResponse(requestOptions).getValue().toObject(ListResponseOfAssistant.class);
-    }
-
-    /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items.
+     * @return a list of assistants that were previously created.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListResponseOfAssistant listAssistants() {
+    OpenAIPageableListOfAssistant listAssistants() {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listAssistantsWithResponse(requestOptions).getValue().toObject(ListResponseOfAssistant.class);
+        return listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      *
      * @param assistantId The ID of the assistant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,7 +558,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
      * @param modificationOptions The details of the modification to perform on the specified assistant.
@@ -639,7 +601,7 @@ public final class AssistantsClient {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      *
      * @param assistantId The ID of the assistant to attach the file to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,73 +617,29 @@ public final class AssistantsClient {
     public AssistantFile createAssistantFile(String assistantId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantFileWithResponse(assistantId, null, requestOptions).getValue()
+        return createAssistantFileWithResponse(assistantId, request, requestOptions).getValue()
             .toObject(AssistantFile.class);
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
-     * @param assistantId The ID of the assistant to list files for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
-     * is 20.
-     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
-     * descending order.
-     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include before=obj_foo in order to fetch the previous page of the list.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListResponseOfAssistantFile listAssistantFiles(String assistantId, Integer limit, String order, String after,
-        String before) {
-        // Generated convenience method for listAssistantFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order, false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(ListResponseOfAssistantFile.class);
-    }
-
-    /**
-     * Returns a list of assistant files.
-     *
-     * @param assistantId The ID of the assistant to list files for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListResponseOfAssistantFile listAssistantFiles(String assistantId) {
+    OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(ListResponseOfAssistantFile.class);
+            .toObject(OpenAIPageableListOfAssistantFile.class);
     }
 
     /**
@@ -747,10 +665,11 @@ public final class AssistantsClient {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      *
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -776,5 +695,90 @@ public final class AssistantsClient {
     @Generated
     AssistantsClient(AssistantsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Gets a list of assistants that were previously created.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of assistants that were previously created.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OpenAIPageableListOfAssistant listAssistants(Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listAssistantsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
+    }
+
+    /**
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
+     *
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
+        String after, String before) {
+        // Generated convenience method for listAssistantFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfAssistantFile.class);
     }
 }

@@ -50,14 +50,14 @@ import java.util.Objects;
     serviceClients = {
         AssistantsClient.class,
         AssistantThreadsClient.class,
-        AssistantMessagesClient.class,
-        AssistantRunsClient.class,
+        ThreadMessagesClient.class,
+        ThreadRunsClient.class,
         RunStepsClient.class,
         FilesClient.class,
         AssistantsAsyncClient.class,
         AssistantThreadsAsyncClient.class,
-        AssistantMessagesAsyncClient.class,
-        AssistantRunsAsyncClient.class,
+        ThreadMessagesAsyncClient.class,
+        ThreadRunsAsyncClient.class,
         RunStepsAsyncClient.class,
         FilesAsyncClient.class })
 public final class AssistantsClientBuilder implements HttpTrait<AssistantsClientBuilder>,
@@ -339,26 +339,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     /**
-     * Builds an instance of AssistantMessagesAsyncClient class.
-     *
-     * @return an instance of AssistantMessagesAsyncClient.
-     */
-    @Generated
-    public AssistantMessagesAsyncClient buildAssistantMessagesAsyncClient() {
-        return new AssistantMessagesAsyncClient(buildInnerClient().getAssistantMessages());
-    }
-
-    /**
-     * Builds an instance of AssistantRunsAsyncClient class.
-     *
-     * @return an instance of AssistantRunsAsyncClient.
-     */
-    @Generated
-    public AssistantRunsAsyncClient buildAssistantRunsAsyncClient() {
-        return new AssistantRunsAsyncClient(buildInnerClient().getAssistantRuns());
-    }
-
-    /**
      * Builds an instance of RunStepsAsyncClient class.
      *
      * @return an instance of RunStepsAsyncClient.
@@ -399,26 +379,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     /**
-     * Builds an instance of AssistantMessagesClient class.
-     *
-     * @return an instance of AssistantMessagesClient.
-     */
-    @Generated
-    public AssistantMessagesClient buildAssistantMessagesClient() {
-        return new AssistantMessagesClient(buildInnerClient().getAssistantMessages());
-    }
-
-    /**
-     * Builds an instance of AssistantRunsClient class.
-     *
-     * @return an instance of AssistantRunsClient.
-     */
-    @Generated
-    public AssistantRunsClient buildAssistantRunsClient() {
-        return new AssistantRunsClient(buildInnerClient().getAssistantRuns());
-    }
-
-    /**
      * Builds an instance of RunStepsClient class.
      *
      * @return an instance of RunStepsClient.
@@ -436,5 +396,45 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     @Generated
     public FilesClient buildFilesClient() {
         return new FilesClient(buildInnerClient().getFiles());
+    }
+
+    /**
+     * Builds an instance of ThreadMessagesAsyncClient class.
+     *
+     * @return an instance of ThreadMessagesAsyncClient.
+     */
+    @Generated
+    public ThreadMessagesAsyncClient buildThreadMessagesAsyncClient() {
+        return new ThreadMessagesAsyncClient(buildInnerClient().getThreadMessages());
+    }
+
+    /**
+     * Builds an instance of ThreadRunsAsyncClient class.
+     *
+     * @return an instance of ThreadRunsAsyncClient.
+     */
+    @Generated
+    public ThreadRunsAsyncClient buildThreadRunsAsyncClient() {
+        return new ThreadRunsAsyncClient(buildInnerClient().getThreadRuns());
+    }
+
+    /**
+     * Builds an instance of ThreadMessagesClient class.
+     *
+     * @return an instance of ThreadMessagesClient.
+     */
+    @Generated
+    public ThreadMessagesClient buildThreadMessagesClient() {
+        return new ThreadMessagesClient(buildInnerClient().getThreadMessages());
+    }
+
+    /**
+     * Builds an instance of ThreadRunsClient class.
+     *
+     * @return an instance of ThreadRunsClient.
+     */
+    @Generated
+    public ThreadRunsClient buildThreadRunsClient() {
+        return new ThreadRunsClient(buildInnerClient().getThreadRuns());
     }
 }

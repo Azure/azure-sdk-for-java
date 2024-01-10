@@ -20,10 +20,12 @@ public final class AssistantThreadCreationOptions {
      */
     @Generated
     @JsonProperty(value = "messages")
-    private List<AssistantMessage> messages;
+    private List<ThreadMessage> messages;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -42,7 +44,7 @@ public final class AssistantThreadCreationOptions {
      * @return the messages value.
      */
     @Generated
-    public List<AssistantMessage> getMessages() {
+    public List<ThreadMessage> getMessages() {
         return this.messages;
     }
 
@@ -53,13 +55,15 @@ public final class AssistantThreadCreationOptions {
      * @return the AssistantThreadCreationOptions object itself.
      */
     @Generated
-    public AssistantThreadCreationOptions setMessages(List<AssistantMessage> messages) {
+    public AssistantThreadCreationOptions setMessages(List<ThreadMessage> messages) {
         this.messages = messages;
         return this;
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -69,7 +73,9 @@ public final class AssistantThreadCreationOptions {
     }
 
     /**
-     * Set the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the AssistantThreadCreationOptions object itself.
