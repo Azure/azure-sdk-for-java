@@ -47,27 +47,59 @@ public class SendLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
     /**
-     * @deprecated use {@link SendLinkHandler#SendLinkHandler(String, String, String, String, AmqpMetricsProvider)} instead.
+     * Creates a new instance of SendLinkHandler.
+     *
+     * @param connectionId The identifier of the connection this link belongs to.
+     * @param hostname The hostname for the connection.
+     * @param linkName The name of the link.
+     * @param entityPath The entity path this link is connected to.
+     * @deprecated use {@link SendLinkHandler#SendLinkHandler(String, String, String, String, AmqpMetricsProvider)}
+     * instead.
      */
     @Deprecated
     public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, null));
     }
 
-    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+    /**
+     * Creates a new instance of SendLinkHandler.
+     *
+     * @param connectionId The identifier of the connection this link belongs to.
+     * @param hostname The hostname for the connection.
+     * @param linkName The name of the link.
+     * @param entityPath The entity path this link is connected to.
+     * @param metricsProvider The AMQP metrics provider.
+     */
+    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath,
+        AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
     }
 
+    /**
+     * Gets the name of the link.
+     *
+     * @return The name of the link.
+     */
     public String getLinkName() {
         return linkName;
     }
 
+    /**
+     * Gets the link credits.
+     *
+     * @return The link credits.
+     */
     public Flux<Integer> getLinkCredits() {
         return creditProcessor.asFlux();
     }
 
+    /**
+     * Gets the delivered messages.
+     *
+     * @return The delivered messages.
+     */
     public Flux<Delivery> getDeliveredMessages() {
         return deliveryProcessor.asFlux();
     }

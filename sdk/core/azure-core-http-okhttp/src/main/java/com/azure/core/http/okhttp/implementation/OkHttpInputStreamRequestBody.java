@@ -22,6 +22,13 @@ public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<In
 
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
 
+    /**
+     * Creates an OkHttpInputStreamRequestBody.
+     *
+     * @param content The content to send.
+     * @param effectiveContentLength The length of the content to send.
+     * @param mediaType The content type of the content to send.
+     */
     public OkHttpInputStreamRequestBody(InputStreamContent content, long effectiveContentLength, MediaType mediaType) {
         super(content, effectiveContentLength, mediaType);
     }
