@@ -2,6 +2,10 @@
 
 ## 2.35.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+
 ### Other Changes
 
 #### Dependency Updates
