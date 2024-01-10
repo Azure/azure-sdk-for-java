@@ -31,6 +31,7 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
@@ -62,6 +63,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -208,8 +210,10 @@ class FunctionAppImpl
                         .getStorageConnectionString(storageAccountToSet.name(), key.value(),
                             manager().environment());
                     addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                    addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                     if (!isFunctionAppOnACA()) {
+                        // Function App on ACA only supports Application Insights as log option.
+                        // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
+                        addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                         return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())
                             .flatMap(appServicePlan -> {
                                 if (appServicePlan == null
@@ -696,13 +700,42 @@ class FunctionAppImpl
         return this;
     }
 
+    @Override
+    public Mono<Map<String, AppSetting>> getAppSettingsAsync() {
+        if (isFunctionAppOnACA()) {
+            // current function app on ACA doesn't support deployment slot, so appSettings sticky is false
+            return listAppSettings()
+                .map(
+                    appSettingsInner ->
+                        appSettingsInner
+                            .properties()
+                            .entrySet()
+                            .stream()
+                            .collect(
+                                Collectors
+                                    .toMap(
+                                        Map.Entry::getKey,
+                                        entry ->
+                                            new AppSettingImpl(
+                                                entry.getKey(),
+                                                entry.getValue(),
+                                                false))));
+        } else {
+            return super.getAppSettingsAsync();
+        }
+    }
+
     /**
      * Whether this Function App is on Azure Container Apps environment.
      *
      * @return whether this Function App is on Azure Container Apps environment
      */
     private boolean isFunctionAppOnACA() {
-        return !CoreUtils.isNullOrEmpty(this.innerModel().managedEnvironmentId());
+        return isFunctionAppOnACA(innerModel());
+    }
+
+    static boolean isFunctionAppOnACA(SiteInner siteInner) {
+        return siteInner != null && !CoreUtils.isNullOrEmpty(siteInner.managedEnvironmentId());
     }
 
     @Host("{$host}")

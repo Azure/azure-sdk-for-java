@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Operation Value Display. */
+/**
+ * Describes the properties of a Operation Value Display.
+ */
 @Immutable
 public final class OperationValueDisplay {
     /*
@@ -34,7 +36,9 @@ public final class OperationValueDisplay {
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
-    /** Creates an instance of OperationValueDisplay class. */
+    /**
+     * Creates an instance of OperationValueDisplay class.
+     */
     public OperationValueDisplay() {
     }
 

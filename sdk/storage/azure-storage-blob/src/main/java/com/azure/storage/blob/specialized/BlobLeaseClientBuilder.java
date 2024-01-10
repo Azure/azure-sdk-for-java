@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -190,6 +191,6 @@ public final class BlobLeaseClientBuilder {
     }
 
     private String getLeaseId() {
-        return (leaseId == null) ? UUID.randomUUID().toString() : leaseId;
+        return (leaseId == null) ? CoreUtils.randomUuid().toString() : leaseId;
     }
 }

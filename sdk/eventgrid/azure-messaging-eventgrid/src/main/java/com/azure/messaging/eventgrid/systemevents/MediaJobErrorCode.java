@@ -4,15 +4,18 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Error code describing the error. */
+/**
+ * Error code describing the error.
+ */
 public enum MediaJobErrorCode {
-    /** Fatal service error, please contact support. */
+    /**
+     * Fatal service error, please contact support.
+     */
     SERVICE_ERROR("ServiceError"),
 
-    /** Transient error, please retry, if retry is unsuccessful, please contact support. */
+    /**
+     * Transient error, please retry, if retry is unsuccessful, please contact support.
+     */
     SERVICE_TRANSIENT_ERROR("ServiceTransientError"),
 
     /**
@@ -63,7 +66,9 @@ public enum MediaJobErrorCode {
      */
     IDENTITY_UNSUPPORTED("IdentityUnsupported");
 
-    /** The actual serialized value for a MediaJobErrorCode instance. */
+    /**
+     * The actual serialized value for a MediaJobErrorCode instance.
+     */
     private final String value;
 
     MediaJobErrorCode(String value) {
@@ -72,11 +77,10 @@ public enum MediaJobErrorCode {
 
     /**
      * Parses a serialized value to a MediaJobErrorCode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobErrorCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobErrorCode fromString(String value) {
         if (value == null) {
             return null;
@@ -90,8 +94,9 @@ public enum MediaJobErrorCode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

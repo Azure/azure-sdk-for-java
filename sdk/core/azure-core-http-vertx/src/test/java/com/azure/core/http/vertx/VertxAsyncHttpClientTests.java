@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
@@ -139,12 +140,10 @@ public class VertxAsyncHttpClientTests {
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
-            // The following checks don't apply as Vertx is creating a single buffer response at this time and it will
-            // only emit one value.
-            //.thenRequest(3)
-            //.expectNextCount(3)
-            //.thenRequest(Long.MAX_VALUE)
-            //.thenConsumeWhile(ByteBuffer::hasRemaining)
+            .thenRequest(3)
+            .expectNextCount(3)
+            .thenRequest(Long.MAX_VALUE)
+            .thenConsumeWhile(Objects::nonNull)
             .verifyComplete();
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Restore status. */
+/**
+ * Restore status.
+ */
 @Immutable
 public final class RestoreStatusInner {
     /*
@@ -48,13 +50,15 @@ public final class RestoreStatusInner {
     @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
 
-    /** Creates an instance of RestoreStatusInner class. */
+    /**
+     * Creates an instance of RestoreStatusInner class.
+     */
     public RestoreStatusInner() {
     }
 
     /**
      * Get the healthy property: Restore health status.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean healthy() {
@@ -63,7 +67,7 @@ public final class RestoreStatusInner {
 
     /**
      * Get the relationshipStatus property: Status of the restore SnapMirror relationship.
-     *
+     * 
      * @return the relationshipStatus value.
      */
     public RelationshipStatus relationshipStatus() {
@@ -72,7 +76,7 @@ public final class RestoreStatusInner {
 
     /**
      * Get the mirrorState property: The status of the restore.
-     *
+     * 
      * @return the mirrorState value.
      */
     public MirrorState mirrorState() {
@@ -81,7 +85,7 @@ public final class RestoreStatusInner {
 
     /**
      * Get the unhealthyReason property: Reason for the unhealthy restore relationship.
-     *
+     * 
      * @return the unhealthyReason value.
      */
     public String unhealthyReason() {
@@ -90,7 +94,7 @@ public final class RestoreStatusInner {
 
     /**
      * Get the errorMessage property: Displays error message if the restore is in an error state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -99,7 +103,7 @@ public final class RestoreStatusInner {
 
     /**
      * Get the totalTransferBytes property: Displays the total bytes transferred.
-     *
+     * 
      * @return the totalTransferBytes value.
      */
     public Long totalTransferBytes() {
@@ -108,7 +112,7 @@ public final class RestoreStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

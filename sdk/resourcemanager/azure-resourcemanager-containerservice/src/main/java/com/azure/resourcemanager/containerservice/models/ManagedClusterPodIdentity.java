@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details about the pod identity assigned to the Managed Cluster. */
+/**
+ * Details about the pod identity assigned to the Managed Cluster.
+ */
 @Fluent
 public final class ManagedClusterPodIdentity {
     /*
@@ -47,7 +49,9 @@ public final class ManagedClusterPodIdentity {
     @JsonProperty(value = "provisioningInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterPodIdentityProvisioningInfo provisioningInfo;
 
-    /** Creates an instance of ManagedClusterPodIdentity class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentity class.
+     */
     public ManagedClusterPodIdentity() {
     }
 
@@ -156,21 +160,16 @@ public final class ManagedClusterPodIdentity {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ManagedClusterPodIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ManagedClusterPodIdentity"));
         }
         if (namespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespace in model ManagedClusterPodIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property namespace in model ManagedClusterPodIdentity"));
         }
         if (identity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property identity in model ManagedClusterPodIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identity in model ManagedClusterPodIdentity"));
         } else {
             identity().validate();
         }

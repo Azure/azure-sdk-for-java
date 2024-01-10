@@ -145,7 +145,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.github.spotbugs:spotbugs-annotations:[4.8.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

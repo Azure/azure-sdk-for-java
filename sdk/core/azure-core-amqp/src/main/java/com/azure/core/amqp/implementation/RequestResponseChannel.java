@@ -120,6 +120,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
      *
+     * @param amqpConnection AMQP connection associated with this request response channel.
      * @param connectionId Identifier of the connection.
      * @param fullyQualifiedNamespace Fully qualified namespace for the the host.
      * @param linkName Name of the link.
@@ -128,8 +129,10 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @param retryOptions Retry options to use for sending the request response.
      * @param handlerProvider Provides handlers that interact with proton-j's reactor.
      * @param provider The reactor provider that the request will be sent with.
+     * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     * @param metricsProvider The AMQP metrics provider.
      * @param isV2 (temporary) flag to use either v1 or v2 receiver.
      *
      * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
@@ -287,6 +290,11 @@ public class RequestResponseChannel implements AsyncCloseable {
         }).subscribeOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
     }
 
+    /**
+     * Whether the channel is disposed.
+     *
+     * @return Whether the channel is disposed.
+     */
     public boolean isDisposed() {
         return isDisposed.get();
     }

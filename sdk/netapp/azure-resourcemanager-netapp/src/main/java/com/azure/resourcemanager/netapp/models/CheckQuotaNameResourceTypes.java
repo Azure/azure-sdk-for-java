@@ -8,28 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource type used for verification. */
+/**
+ * Resource type used for verification.
+ */
 public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<CheckQuotaNameResourceTypes> {
-    /** Static value Microsoft.NetApp/netAppAccounts for CheckQuotaNameResourceTypes. */
-    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS =
-        fromString("Microsoft.NetApp/netAppAccounts");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts for CheckQuotaNameResourceTypes.
+     */
+    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS
+        = fromString("Microsoft.NetApp/netAppAccounts");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools for CheckQuotaNameResourceTypes. */
-    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS =
-        fromString("Microsoft.NetApp/netAppAccounts/capacityPools");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools for CheckQuotaNameResourceTypes.
+     */
+    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes for CheckQuotaNameResourceTypes. */
-    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES =
-        fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes for CheckQuotaNameResourceTypes.
+     */
+    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots for CheckQuotaNameResourceTypes. */
-    public static final CheckQuotaNameResourceTypes
-        MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS =
-            fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots for CheckQuotaNameResourceTypes.
+     */
+    public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
      * Creates a new instance of CheckQuotaNameResourceTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +47,7 @@ public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<Chec
 
     /**
      * Creates or finds a CheckQuotaNameResourceTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CheckQuotaNameResourceTypes.
      */
@@ -49,7 +58,7 @@ public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<Chec
 
     /**
      * Gets known CheckQuotaNameResourceTypes values.
-     *
+     * 
      * @return known CheckQuotaNameResourceTypes values.
      */
     public static Collection<CheckQuotaNameResourceTypes> values() {

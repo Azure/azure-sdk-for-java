@@ -21,6 +21,13 @@ public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> e
     protected final long effectiveContentLength;
     private final MediaType mediaType;
 
+    /**
+     * Creates an OkHttpStreamableRequestBody.
+     *
+     * @param content The content to send.
+     * @param effectiveContentLength The length of the content to send.
+     * @param mediaType The content type of the content to send.
+     */
     public OkHttpStreamableRequestBody(T content, long effectiveContentLength, MediaType mediaType) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.effectiveContentLength = effectiveContentLength;

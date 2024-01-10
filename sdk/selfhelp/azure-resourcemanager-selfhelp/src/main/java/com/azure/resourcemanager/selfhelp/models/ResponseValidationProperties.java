@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Troubleshooter step input response validation properties. */
+/**
+ * Troubleshooter step input response validation properties.
+ */
 @Fluent
 public final class ResponseValidationProperties {
     /*
@@ -34,13 +36,15 @@ public final class ResponseValidationProperties {
     @JsonProperty(value = "maxLength")
     private Long maxLength;
 
-    /** Creates an instance of ResponseValidationProperties class. */
+    /**
+     * Creates an instance of ResponseValidationProperties class.
+     */
     public ResponseValidationProperties() {
     }
 
     /**
      * Get the regex property: Regex used for the input validation.
-     *
+     * 
      * @return the regex value.
      */
     public String regex() {
@@ -49,7 +53,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Set the regex property: Regex used for the input validation.
-     *
+     * 
      * @param regex the regex value to set.
      * @return the ResponseValidationProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Get the isRequired property: Default True.
-     *
+     * 
      * @return the isRequired value.
      */
     public Boolean isRequired() {
@@ -69,7 +73,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Set the isRequired property: Default True.
-     *
+     * 
      * @param isRequired the isRequired value to set.
      * @return the ResponseValidationProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Get the validationErrorMessage property: Validation Error Message.
-     *
+     * 
      * @return the validationErrorMessage value.
      */
     public String validationErrorMessage() {
@@ -89,7 +93,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Set the validationErrorMessage property: Validation Error Message.
-     *
+     * 
      * @param validationErrorMessage the validationErrorMessage value to set.
      * @return the ResponseValidationProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Get the maxLength property: Max text input (open Ended Text).
-     *
+     * 
      * @return the maxLength value.
      */
     public Long maxLength() {
@@ -109,7 +113,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Set the maxLength property: Max text input (open Ended Text).
-     *
+     * 
      * @param maxLength the maxLength value to set.
      * @return the ResponseValidationProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class ResponseValidationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

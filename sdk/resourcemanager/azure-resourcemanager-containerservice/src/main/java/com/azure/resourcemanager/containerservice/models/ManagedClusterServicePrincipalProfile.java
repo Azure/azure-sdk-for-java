@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
+/**
+ * Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+ */
 @Fluent
 public final class ManagedClusterServicePrincipalProfile {
     /*
@@ -23,7 +25,9 @@ public final class ManagedClusterServicePrincipalProfile {
     @JsonProperty(value = "secret")
     private String secret;
 
-    /** Creates an instance of ManagedClusterServicePrincipalProfile class. */
+    /**
+     * Creates an instance of ManagedClusterServicePrincipalProfile class.
+     */
     public ManagedClusterServicePrincipalProfile() {
     }
 
@@ -74,10 +78,8 @@ public final class ManagedClusterServicePrincipalProfile {
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
 

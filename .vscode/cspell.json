@@ -375,6 +375,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -1062,6 +1063,12 @@
         "Dspotbugs",
         "Pdev",
 	"Djava"
+      ]
+    },
+    {
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
+      "words": [
+        "javac"
       ]
     },
     {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure Cosmos DB SQL Role Definition resource object. */
+/**
+ * Azure Cosmos DB SQL Role Definition resource object.
+ */
 @Fluent
 public final class SqlRoleDefinitionResource {
     /*
@@ -40,13 +42,16 @@ public final class SqlRoleDefinitionResource {
     @JsonProperty(value = "permissions")
     private List<Permission> permissions;
 
-    /** Creates an instance of SqlRoleDefinitionResource class. */
+    /**
+     * Creates an instance of SqlRoleDefinitionResource class.
+     */
     public SqlRoleDefinitionResource() {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
+     * 
      * @return the roleName value.
      */
     public String roleName() {
@@ -54,8 +59,9 @@ public final class SqlRoleDefinitionResource {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
+     * 
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionResource object itself.
      */
@@ -66,7 +72,7 @@ public final class SqlRoleDefinitionResource {
 
     /**
      * Get the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @return the type value.
      */
     public RoleDefinitionType type() {
@@ -75,7 +81,7 @@ public final class SqlRoleDefinitionResource {
 
     /**
      * Set the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @param type the type value to set.
      * @return the SqlRoleDefinitionResource object itself.
      */
@@ -90,7 +96,7 @@ public final class SqlRoleDefinitionResource {
      * account or any underlying Database / Collection. Must have at least one element. Scopes higher than Database
      * account are not enforceable as assignable Scopes. Note that resources referenced in assignable Scopes need not
      * exist.
-     *
+     * 
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
@@ -103,7 +109,7 @@ public final class SqlRoleDefinitionResource {
      * account or any underlying Database / Collection. Must have at least one element. Scopes higher than Database
      * account are not enforceable as assignable Scopes. Note that resources referenced in assignable Scopes need not
      * exist.
-     *
+     * 
      * @param assignableScopes the assignableScopes value to set.
      * @return the SqlRoleDefinitionResource object itself.
      */
@@ -114,7 +120,7 @@ public final class SqlRoleDefinitionResource {
 
     /**
      * Get the permissions property: The set of operations allowed through this Role Definition.
-     *
+     * 
      * @return the permissions value.
      */
     public List<Permission> permissions() {
@@ -123,7 +129,7 @@ public final class SqlRoleDefinitionResource {
 
     /**
      * Set the permissions property: The set of operations allowed through this Role Definition.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the SqlRoleDefinitionResource object itself.
      */
@@ -134,7 +140,7 @@ public final class SqlRoleDefinitionResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

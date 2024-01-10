@@ -7,26 +7,26 @@ package com.azure.resourcemanager.dataprotection.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceGuards Put. */
+/**
+ * Samples for ResourceGuards Put.
+ */
 public final class ResourceGuardsPutSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/PutResourceGuard.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * ResourceGuardCRUD/PutResourceGuard.json
      */
     /**
      * Sample code: Create ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void createResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .define("swaggerExample")
-            .withRegion("WestUS")
-            .withExistingResourceGroup("SampleResourceGroup")
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .create();
+        manager.resourceGuards().define("swaggerExample").withRegion("WestUS")
+            .withExistingResourceGroup("SampleResourceGroup").withTags(mapOf("key1", "fakeTokenPlaceholder")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

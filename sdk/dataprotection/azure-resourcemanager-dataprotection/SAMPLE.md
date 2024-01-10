@@ -14,8 +14,10 @@
 - [StopProtection](#backupinstances_stopprotection)
 - [SuspendBackups](#backupinstances_suspendbackups)
 - [SyncBackupInstance](#backupinstances_syncbackupinstance)
+- [TriggerCrossRegionRestore](#backupinstances_triggercrossregionrestore)
 - [TriggerRehydrate](#backupinstances_triggerrehydrate)
 - [TriggerRestore](#backupinstances_triggerrestore)
+- [ValidateCrossRegionRestore](#backupinstances_validatecrossregionrestore)
 - [ValidateForBackup](#backupinstances_validateforbackup)
 - [ValidateForRestore](#backupinstances_validateforrestore)
 
@@ -69,6 +71,18 @@
 ## ExportJobsOperationResult
 
 - [Get](#exportjobsoperationresult_get)
+
+## FetchCrossRegionRestoreJob
+
+- [Get](#fetchcrossregionrestorejob_get)
+
+## FetchCrossRegionRestoreJobsOperation
+
+- [List](#fetchcrossregionrestorejobsoperation_list)
+
+## FetchSecondaryRecoveryPoints
+
+- [List](#fetchsecondaryrecoverypoints_list)
 
 ## Jobs
 
@@ -127,29 +141,20 @@ import com.azure.resourcemanager.dataprotection.models.AdHocBackupRuleOptions;
 import com.azure.resourcemanager.dataprotection.models.AdhocBackupTriggerOption;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 
-/** Samples for BackupInstances AdhocBackup. */
+/**
+ * Samples for BackupInstances AdhocBackup.
+ */
 public final class BackupInstancesAdhocBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/TriggerBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerBackup.json
      */
     /**
      * Sample code: Trigger Adhoc Backup.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerAdhocBackup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .adhocBackup(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                new TriggerBackupRequest()
-                    .withBackupRuleOptions(
-                        new AdHocBackupRuleOptions()
-                            .withRuleName("BackupWeekly")
-                            .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("yearly"))),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().adhocBackup("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("BackupWeekly").withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("yearly"))), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -159,9 +164,9 @@ public final class BackupInstancesAdhocBackupSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.AzureOperationalStoreParameters;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
-import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.PolicyInfo;
 import com.azure.resourcemanager.dataprotection.models.PolicyParameters;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
@@ -171,70 +176,25 @@ import com.azure.resourcemanager.dataprotection.models.ValidationType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances CreateOrUpdate. */
+/**
+ * Samples for BackupInstances CreateOrUpdate.
+ */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void createBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .define("testInstance1")
-            .withExistingBackupVault("000pikumar", "PratikPrivatePreviewVault1")
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withProperties(
-                new BackupInstance()
-                    .withFriendlyName("harshitbi2")
-                    .withDataSourceInfo(
-                        new Datasource()
-                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                            .withObjectType("Datasource")
-                            .withResourceId(
-                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                            .withResourceLocation("")
-                            .withResourceName("testdb")
-                            .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                            .withResourceUri(""))
-                    .withDataSourceSetInfo(
-                        new DatasourceSet()
-                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                            .withObjectType("DatasourceSet")
-                            .withResourceId(
-                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                            .withResourceLocation("")
-                            .withResourceName("viveksipgtest")
-                            .withResourceType("Microsoft.DBforPostgreSQL/servers")
-                            .withResourceUri(""))
-                    .withPolicyInfo(
-                        new PolicyInfo()
-                            .withPolicyId(
-                                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1")
-                            .withPolicyParameters(
-                                new PolicyParameters()
-                                    .withDataStoreParametersList(
-                                        Arrays
-                                            .asList(
-                                                new AzureOperationalStoreParameters()
-                                                    .withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
-                                                    .withResourceGroupId(
-                                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest")))))
-                    .withDatasourceAuthCredentials(
-                        new SecretStoreBasedAuthCredentials()
-                            .withSecretStoreResource(
-                                new SecretStoreResource()
-                                    .withUri("https://samplevault.vault.azure.net/secrets/credentials")
-                                    .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
-                    .withValidationType(ValidationType.SHALLOW_VALIDATION)
-                    .withObjectType("BackupInstance"))
-            .create();
+        manager.backupInstances().define("testInstance1").withExistingBackupVault("000pikumar", "PratikPrivatePreviewVault1").withTags(mapOf("key1", "fakeTokenPlaceholder")).withProperties(new BackupInstance().withFriendlyName("harshitbi2").withDataSourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withResourceLocation("").withResourceName("testdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDataSourceSetInfo(new DatasourceSet().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withPolicyInfo(new PolicyInfo().withPolicyId("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1").withPolicyParameters(new PolicyParameters().withDataStoreParametersList(Arrays.asList(new AzureOperationalStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withResourceGroupId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest"))))).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))).withValidationType(ValidationType.SHALLOW_VALIDATION).withObjectType("BackupInstance")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -251,20 +211,20 @@ public final class BackupInstancesCreateOrUpdateSamples {
 ### BackupInstances_Delete
 
 ```java
-/** Samples for BackupInstances Delete. */
+/**
+ * Samples for BackupInstances Delete.
+ */
 public final class BackupInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
      */
     /**
      * Sample code: Delete BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .delete("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
+        manager.backupInstances().delete("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -272,21 +232,20 @@ public final class BackupInstancesDeleteSamples {
 ### BackupInstances_Get
 
 ```java
-/** Samples for BackupInstances Get. */
+/**
+ * Samples for BackupInstances Get.
+ */
 public final class BackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetBackupInstance.json
      */
     /**
      * Sample code: Get BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .getWithResponse(
-                "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
+        manager.backupInstances().getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -294,26 +253,20 @@ public final class BackupInstancesGetSamples {
 ### BackupInstances_GetBackupInstanceOperationResult
 
 ```java
-/** Samples for BackupInstances GetBackupInstanceOperationResult. */
+/**
+ * Samples for BackupInstances GetBackupInstanceOperationResult.
+ */
 public final class BackupInstancesGetBackupInstanceOperationResultSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
      */
     /**
      * Sample code: Get BackupInstanceOperationResult.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupInstanceOperationResult(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .getBackupInstanceOperationResultWithResponse(
-                "SampleResourceGroup",
-                "swaggerExample",
-                "testInstance1",
-                "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                com.azure.core.util.Context.NONE);
+    public static void getBackupInstanceOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances().getBackupInstanceOperationResultWithResponse("SampleResourceGroup", "swaggerExample", "testInstance1", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -321,18 +274,19 @@ public final class BackupInstancesGetBackupInstanceOperationResultSamples {
 ### BackupInstances_List
 
 ```java
-/** Samples for BackupInstances List. */
+/**
+ * Samples for BackupInstances List.
+ */
 public final class BackupInstancesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ListBackupInstances.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ListBackupInstances.json
      */
     /**
      * Sample code: List BackupInstances in a Vault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listBackupInstancesInAVault(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void listBackupInstancesInAVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.backupInstances().list("000pikumar", "PratikPrivatePreviewVault1", com.azure.core.util.Context.NONE);
     }
 }
@@ -341,14 +295,16 @@ public final class BackupInstancesListSamples {
 ### BackupInstances_ResumeBackups
 
 ```java
-/** Samples for BackupInstances ResumeBackups. */
+/**
+ * Samples for BackupInstances ResumeBackups.
+ */
 public final class BackupInstancesResumeBackupsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ResumeBackups.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ResumeBackups.json
      */
     /**
      * Sample code: ResumeBackups.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void resumeBackups(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -360,14 +316,16 @@ public final class BackupInstancesResumeBackupsSamples {
 ### BackupInstances_ResumeProtection
 
 ```java
-/** Samples for BackupInstances ResumeProtection. */
+/**
+ * Samples for BackupInstances ResumeProtection.
+ */
 public final class BackupInstancesResumeProtectionSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ResumeProtection.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ResumeProtection.json
      */
     /**
      * Sample code: ResumeProtection.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void resumeProtection(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -379,14 +337,16 @@ public final class BackupInstancesResumeProtectionSamples {
 ### BackupInstances_StopProtection
 
 ```java
-/** Samples for BackupInstances StopProtection. */
+/**
+ * Samples for BackupInstances StopProtection.
+ */
 public final class BackupInstancesStopProtectionSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/StopProtection.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/StopProtection.json
      */
     /**
      * Sample code: StopProtection.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void stopProtection(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -398,14 +358,16 @@ public final class BackupInstancesStopProtectionSamples {
 ### BackupInstances_SuspendBackups
 
 ```java
-/** Samples for BackupInstances SuspendBackups. */
+/**
+ * Samples for BackupInstances SuspendBackups.
+ */
 public final class BackupInstancesSuspendBackupsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/SuspendBackups.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/SuspendBackups.json
      */
     /**
      * Sample code: SuspendBackups.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void suspendBackups(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -419,26 +381,56 @@ public final class BackupInstancesSuspendBackupsSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.SyncType;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances SyncBackupInstance. */
+/**
+ * Samples for BackupInstances SyncBackupInstance.
+ */
 public final class BackupInstancesSyncBackupInstanceSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/SyncBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/SyncBackupInstance.json
      */
     /**
      * Sample code: Sync BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void syncBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .syncBackupInstance(
-                "testrg",
-                "testvault",
-                "testbi",
-                new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().syncBackupInstance("testrg", "testvault", "testbi", new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupInstances_TriggerCrossRegionRestore
+
+```java
+import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointBasedRestoreRequest;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreDetails;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
+import com.azure.resourcemanager.dataprotection.models.Datasource;
+import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
+import com.azure.resourcemanager.dataprotection.models.RestoreTargetInfo;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
+import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
+import java.util.stream.Collectors;
+
+/**
+ * Samples for BackupInstances TriggerCrossRegionRestore.
+ */
+public final class BackupInstancesTriggerCrossRegionRestoreSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/TriggerCrossRegionRestore.json
+     */
+    /**
+     * Sample code: Trigger Cross Region Restore.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void triggerCrossRegionRestore(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances().triggerCrossRegionRestore("000pikumar", "EastAsia", new CrossRegionRestoreRequestObject().withRestoreRequestObject(new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withDatasourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb").withResourceLocation("").withResourceName("targetdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDatasourceSetInfo(new DatasourceSet().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP")).withCrossRegionRestoreDetails(new CrossRegionRestoreDetails().withSourceRegion("east asia").withSourceBackupInstanceId("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -448,29 +440,22 @@ public final class BackupInstancesSyncBackupInstanceSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances TriggerRehydrate. */
+/**
+ * Samples for BackupInstances TriggerRehydrate.
+ */
 public final class BackupInstancesTriggerRehydrateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/TriggerRehydrate.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRehydrate.json
      */
     /**
      * Sample code: Trigger Rehydrate.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerRehydrate(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .triggerRehydrate(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                new AzureBackupRehydrationRequest()
-                    .withRecoveryPointId("hardcodedRP")
-                    .withRehydrationPriority(RehydrationPriority.HIGH)
-                    .withRehydrationRetentionDuration("7D"),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().triggerRehydrate("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", new AzureBackupRehydrationRequest().withRecoveryPointId("hardcodedRP").withRehydrationPriority(RehydrationPriority.HIGH).withRehydrationRetentionDuration("7D"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -492,142 +477,80 @@ import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
 import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
 import com.azure.resourcemanager.dataprotection.models.TargetDetails;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances TriggerRestore. */
+/**
+ * Samples for BackupInstances TriggerRestore.
+ */
 public final class BackupInstancesTriggerRestoreSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestoreAsFiles.json
      */
     /**
      * Sample code: Trigger Restore As Files.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerRestoreAsFiles(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .triggerRestore(
-                "000pikumar",
-                "PrivatePreviewVault1",
-                "testInstance1",
-                new AzureBackupRecoveryPointBasedRestoreRequest()
-                    .withRestoreTargetInfo(
-                        new RestoreFilesTargetInfo()
-                            .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                            .withRestoreLocation("southeastasia")
-                            .withTargetDetails(
-                                new TargetDetails()
-                                    .withFilePrefix("restoredblob")
-                                    .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_BLOBS)
-                                    .withUrl("https://teststorage.blob.core.windows.net/restoretest")))
-                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                    .withSourceResourceId(
-                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                    .withRecoveryPointId("hardcodedRP"),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().triggerRestore("000pikumar", "PrivatePreviewVault1", "testInstance1", new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreFilesTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withTargetDetails(new TargetDetails().withFilePrefix("restoredblob").withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_BLOBS).withUrl("https://teststorage.blob.core.windows.net/restoretest"))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestoreWithRehydration.json
      */
     /**
      * Sample code: Trigger Restore With Rehydration.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void triggerRestoreWithRehydration(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .triggerRestore(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                new AzureBackupRestoreWithRehydrationRequest()
-                    .withRestoreTargetInfo(
-                        new RestoreTargetInfo()
-                            .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                            .withRestoreLocation("southeastasia")
-                            .withDatasourceInfo(
-                                new Datasource()
-                                    .withDatasourceType("OssDB")
-                                    .withObjectType("Datasource")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                                    .withResourceLocation("")
-                                    .withResourceName("testdb")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                    .withResourceUri(""))
-                            .withDatasourceSetInfo(
-                                new DatasourceSet()
-                                    .withDatasourceType("OssDB")
-                                    .withObjectType("DatasourceSet")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                                    .withResourceLocation("")
-                                    .withResourceName("viveksipgtest")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers")
-                                    .withResourceUri("")))
-                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                    .withSourceResourceId(
-                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                    .withRecoveryPointId("hardcodedRP")
-                    .withRehydrationPriority(RehydrationPriority.HIGH)
-                    .withRehydrationRetentionDuration("7D"),
-                com.azure.core.util.Context.NONE);
+    public static void triggerRestoreWithRehydration(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances().triggerRestore("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", new AzureBackupRestoreWithRehydrationRequest().withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withDatasourceInfo(new Datasource().withDatasourceType("OssDB").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withResourceLocation("").withResourceName("testdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDatasourceSetInfo(new DatasourceSet().withDatasourceType("OssDB").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri(""))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP").withRehydrationPriority(RehydrationPriority.HIGH).withRehydrationRetentionDuration("7D"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/TriggerRestore.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/TriggerRestore.json
      */
     /**
      * Sample code: Trigger Restore.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerRestore(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .triggerRestore(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                new AzureBackupRecoveryPointBasedRestoreRequest()
-                    .withRestoreTargetInfo(
-                        new RestoreTargetInfo()
-                            .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                            .withRestoreLocation("southeastasia")
-                            .withDatasourceInfo(
-                                new Datasource()
-                                    .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                    .withObjectType("Datasource")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
-                                    .withResourceLocation("")
-                                    .withResourceName("targetdb")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                    .withResourceUri(""))
-                            .withDatasourceSetInfo(
-                                new DatasourceSet()
-                                    .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                    .withObjectType("DatasourceSet")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                                    .withResourceLocation("")
-                                    .withResourceName("viveksipgtest")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers")
-                                    .withResourceUri(""))
-                            .withDatasourceAuthCredentials(
-                                new SecretStoreBasedAuthCredentials()
-                                    .withSecretStoreResource(
-                                        new SecretStoreResource()
-                                            .withUri("https://samplevault.vault.azure.net/secrets/credentials")
-                                            .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
-                    .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                    .withSourceResourceId(
-                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                    .withRecoveryPointId("hardcodedRP"),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().triggerRestore("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withDatasourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb").withResourceLocation("").withResourceName("targetdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDatasourceSetInfo(new DatasourceSet().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BackupInstances_ValidateCrossRegionRestore
+
+```java
+import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointBasedRestoreRequest;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreDetails;
+import com.azure.resourcemanager.dataprotection.models.Datasource;
+import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.RecoveryOption;
+import com.azure.resourcemanager.dataprotection.models.RestoreTargetInfo;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
+import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
+import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
+import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
+import java.util.stream.Collectors;
+
+/**
+ * Samples for BackupInstances ValidateCrossRegionRestore.
+ */
+public final class BackupInstancesValidateCrossRegionRestoreSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/ValidateCrossRegionRestore.json
+     */
+    /**
+     * Sample code: Validate Cross Region Restore.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void validateCrossRegionRestore(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances().validateCrossRegionRestore("000pikumar", "EastAsia", new ValidateCrossRegionRestoreRequestObject().withRestoreRequestObject(new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withDatasourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb").withResourceLocation("").withResourceName("targetdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDatasourceSetInfo(new DatasourceSet().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP")).withCrossRegionRestoreDetails(new CrossRegionRestoreDetails().withSourceRegion("east asia").withSourceBackupInstanceId("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/BackupInstances/harshitbi1")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -643,59 +566,22 @@ import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCrede
 import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances ValidateForBackup. */
+/**
+ * Samples for BackupInstances ValidateForBackup.
+ */
 public final class BackupInstancesValidateForBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ValidateForBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ValidateForBackup.json
      */
     /**
      * Sample code: Validate For Backup.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void validateForBackup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .validateForBackup(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                new ValidateForBackupRequest()
-                    .withBackupInstance(
-                        new BackupInstance()
-                            .withFriendlyName("harshitbi2")
-                            .withDataSourceInfo(
-                                new Datasource()
-                                    .withDatasourceType("OssDB")
-                                    .withObjectType("Datasource")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                                    .withResourceLocation("")
-                                    .withResourceName("testdb")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                    .withResourceUri(""))
-                            .withDataSourceSetInfo(
-                                new DatasourceSet()
-                                    .withDatasourceType("OssDB")
-                                    .withObjectType("DatasourceSet")
-                                    .withResourceId(
-                                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                                    .withResourceLocation("")
-                                    .withResourceName("viveksipgtest")
-                                    .withResourceType("Microsoft.DBforPostgreSQL/servers")
-                                    .withResourceUri(""))
-                            .withPolicyInfo(
-                                new PolicyInfo()
-                                    .withPolicyId(
-                                        "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"))
-                            .withDatasourceAuthCredentials(
-                                new SecretStoreBasedAuthCredentials()
-                                    .withSecretStoreResource(
-                                        new SecretStoreResource()
-                                            .withUri("https://samplevault.vault.azure.net/secrets/credentials")
-                                            .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
-                            .withObjectType("BackupInstance")),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().validateForBackup("000pikumar", "PratikPrivatePreviewVault1", new ValidateForBackupRequest().withBackupInstance(new BackupInstance().withFriendlyName("harshitbi2").withDataSourceInfo(new Datasource().withDatasourceType("OssDB").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withResourceLocation("").withResourceName("testdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDataSourceSetInfo(new DatasourceSet().withDatasourceType("OssDB").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withPolicyInfo(new PolicyInfo().withPolicyId("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1")).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))).withObjectType("BackupInstance")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -713,62 +599,22 @@ import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
 import com.azure.resourcemanager.dataprotection.models.SourceDataStoreType;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
+import java.util.stream.Collectors;
 
-/** Samples for BackupInstances ValidateForRestore. */
+/**
+ * Samples for BackupInstances ValidateForRestore.
+ */
 public final class BackupInstancesValidateForRestoreSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ValidateRestore.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ValidateRestore.json
      */
     /**
      * Sample code: Validate Restore.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void validateRestore(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .validateForRestore(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                new ValidateRestoreRequestObject()
-                    .withRestoreRequestObject(
-                        new AzureBackupRecoveryPointBasedRestoreRequest()
-                            .withRestoreTargetInfo(
-                                new RestoreTargetInfo()
-                                    .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                                    .withRestoreLocation("southeastasia")
-                                    .withDatasourceInfo(
-                                        new Datasource()
-                                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                            .withObjectType("Datasource")
-                                            .withResourceId(
-                                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb")
-                                            .withResourceLocation("")
-                                            .withResourceName("targetdb")
-                                            .withResourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                            .withResourceUri(""))
-                                    .withDatasourceSetInfo(
-                                        new DatasourceSet()
-                                            .withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases")
-                                            .withObjectType("DatasourceSet")
-                                            .withResourceId(
-                                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest")
-                                            .withResourceLocation("")
-                                            .withResourceName("viveksipgtest")
-                                            .withResourceType("Microsoft.DBforPostgreSQL/servers")
-                                            .withResourceUri(""))
-                                    .withDatasourceAuthCredentials(
-                                        new SecretStoreBasedAuthCredentials()
-                                            .withSecretStoreResource(
-                                                new SecretStoreResource()
-                                                    .withUri("https://samplevault.vault.azure.net/secrets/credentials")
-                                                    .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT))))
-                            .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
-                            .withSourceResourceId(
-                                "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb")
-                            .withRecoveryPointId("hardcodedRP")),
-                com.azure.core.util.Context.NONE);
+        manager.backupInstances().validateForRestore("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", new ValidateRestoreRequestObject().withRestoreRequestObject(new AzureBackupRecoveryPointBasedRestoreRequest().withRestoreTargetInfo(new RestoreTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("southeastasia").withDatasourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("Datasource").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb").withResourceLocation("").withResourceName("targetdb").withResourceType("Microsoft.DBforPostgreSQL/servers/databases").withResourceUri("")).withDatasourceSetInfo(new DatasourceSet().withDatasourceType("Microsoft.DBforPostgreSQL/servers/databases").withObjectType("DatasourceSet").withResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest").withResourceLocation("").withResourceName("viveksipgtest").withResourceType("Microsoft.DBforPostgreSQL/servers").withResourceUri("")).withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials").withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))).withSourceDataStoreType(SourceDataStoreType.VAULT_STORE).withSourceResourceId("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb").withRecoveryPointId("hardcodedRP")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -792,90 +638,22 @@ import com.azure.resourcemanager.dataprotection.models.SourceLifeCycle;
 import com.azure.resourcemanager.dataprotection.models.TaggingCriteria;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
-/** Samples for BackupPolicies CreateOrUpdate. */
+/**
+ * Samples for BackupPolicies CreateOrUpdate.
+ */
 public final class BackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
      */
     /**
      * Sample code: CreateOrUpdate BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void createOrUpdateBackupPolicy(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupPolicies()
-            .define("OSSDBPolicy")
-            .withExistingBackupVault("000pikumar", "PrivatePreviewVault")
-            .withProperties(
-                new BackupPolicy()
-                    .withDatasourceTypes(Arrays.asList("OssDB"))
-                    .withPolicyRules(
-                        Arrays
-                            .asList(
-                                new AzureBackupRule()
-                                    .withName("BackupWeekly")
-                                    .withBackupParameters(new AzureBackupParams().withBackupType("Full"))
-                                    .withDataStore(
-                                        new DataStoreInfoBase()
-                                            .withDataStoreType(DataStoreTypes.VAULT_STORE)
-                                            .withObjectType("DataStoreInfoBase"))
-                                    .withTrigger(
-                                        new ScheduleBasedTriggerContext()
-                                            .withSchedule(
-                                                new BackupSchedule()
-                                                    .withRepeatingTimeIntervals(
-                                                        Arrays.asList("R/2019-11-20T08:00:00-08:00/P1W")))
-                                            .withTaggingCriteria(
-                                                Arrays
-                                                    .asList(
-                                                        new TaggingCriteria()
-                                                            .withIsDefault(true)
-                                                            .withTaggingPriority(99L)
-                                                            .withTagInfo(new RetentionTag().withTagName("Default")),
-                                                        new TaggingCriteria()
-                                                            .withCriteria(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new ScheduleBasedBackupCriteria()
-                                                                            .withDaysOfTheWeek(
-                                                                                Arrays.asList(DayOfWeek.SUNDAY))
-                                                                            .withScheduleTimes(
-                                                                                Arrays
-                                                                                    .asList(
-                                                                                        OffsetDateTime
-                                                                                            .parse(
-                                                                                                "2019-03-01T13:00:00Z")))))
-                                                            .withIsDefault(false)
-                                                            .withTaggingPriority(20L)
-                                                            .withTagInfo(new RetentionTag().withTagName("Weekly"))))),
-                                new AzureRetentionRule()
-                                    .withName("Default")
-                                    .withIsDefault(true)
-                                    .withLifecycles(
-                                        Arrays
-                                            .asList(
-                                                new SourceLifeCycle()
-                                                    .withDeleteAfter(new AbsoluteDeleteOption().withDuration("P1W"))
-                                                    .withSourceDataStore(
-                                                        new DataStoreInfoBase()
-                                                            .withDataStoreType(DataStoreTypes.VAULT_STORE)
-                                                            .withObjectType("DataStoreInfoBase")))),
-                                new AzureRetentionRule()
-                                    .withName("Weekly")
-                                    .withIsDefault(false)
-                                    .withLifecycles(
-                                        Arrays
-                                            .asList(
-                                                new SourceLifeCycle()
-                                                    .withDeleteAfter(new AbsoluteDeleteOption().withDuration("P12W"))
-                                                    .withSourceDataStore(
-                                                        new DataStoreInfoBase()
-                                                            .withDataStoreType(DataStoreTypes.VAULT_STORE)
-                                                            .withObjectType("DataStoreInfoBase")))))))
-            .create();
+    public static void createOrUpdateBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupPolicies().define("OSSDBPolicy").withExistingBackupVault("000pikumar", "PrivatePreviewVault").withProperties(new BackupPolicy().withDatasourceTypes(Arrays.asList("OssDB")).withPolicyRules(Arrays.asList(new AzureBackupRule().withName("BackupWeekly").withBackupParameters(new AzureBackupParams().withBackupType("Full")).withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("DataStoreInfoBase")).withTrigger(new ScheduleBasedTriggerContext().withSchedule(new BackupSchedule().withRepeatingTimeIntervals(Arrays.asList("R/2019-11-20T08:00:00-08:00/P1W"))).withTaggingCriteria(Arrays.asList(new TaggingCriteria().withIsDefault(true).withTaggingPriority(99L).withTagInfo(new RetentionTag().withTagName("Default")), new TaggingCriteria().withCriteria(Arrays.asList(new ScheduleBasedBackupCriteria().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY)).withScheduleTimes(Arrays.asList(OffsetDateTime.parse("2019-03-01T13:00:00Z"))))).withIsDefault(false).withTaggingPriority(20L).withTagInfo(new RetentionTag().withTagName("Weekly"))))), new AzureRetentionRule().withName("Default").withIsDefault(true).withLifecycles(Arrays.asList(new SourceLifeCycle().withDeleteAfter(new AbsoluteDeleteOption().withDuration("P1W")).withSourceDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("DataStoreInfoBase")))), new AzureRetentionRule().withName("Weekly").withIsDefault(false).withLifecycles(Arrays.asList(new SourceLifeCycle().withDeleteAfter(new AbsoluteDeleteOption().withDuration("P12W")).withSourceDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("DataStoreInfoBase"))))))).create();
     }
 }
 ```
@@ -883,20 +661,20 @@ public final class BackupPoliciesCreateOrUpdateSamples {
 ### BackupPolicies_Delete
 
 ```java
-/** Samples for BackupPolicies Delete. */
+/**
+ * Samples for BackupPolicies Delete.
+ */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/DeleteBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/DeleteBackupPolicy.json
      */
     /**
      * Sample code: Delete BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupPolicies()
-            .deleteWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().deleteWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -904,20 +682,20 @@ public final class BackupPoliciesDeleteSamples {
 ### BackupPolicies_Get
 
 ```java
-/** Samples for BackupPolicies Get. */
+/**
+ * Samples for BackupPolicies Get.
+ */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/GetBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/GetBackupPolicy.json
      */
     /**
      * Sample code: Get BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupPolicies()
-            .getWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().getWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -925,14 +703,16 @@ public final class BackupPoliciesGetSamples {
 ### BackupPolicies_List
 
 ```java
-/** Samples for BackupPolicies List. */
+/**
+ * Samples for BackupPolicies List.
+ */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/ListBackupPolicy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/ListBackupPolicy.json
      */
     /**
      * Sample code: List BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void listBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -944,24 +724,20 @@ public final class BackupPoliciesListSamples {
 ### BackupVaultOperationResults_Get
 
 ```java
-/** Samples for BackupVaultOperationResults Get. */
+/**
+ * Samples for BackupVaultOperationResults Get.
+ */
 public final class BackupVaultOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetOperationResultPatch.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetOperationResultPatch.json
      */
     /**
      * Sample code: GetOperationResult Patch.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationResultPatch(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaultOperationResults()
-            .getWithResponse(
-                "SampleResourceGroup",
-                "swaggerExample",
-                "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                com.azure.core.util.Context.NONE);
+        manager.backupVaultOperationResults().getWithResponse("SampleResourceGroup", "swaggerExample", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -971,27 +747,20 @@ public final class BackupVaultOperationResultsGetSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.CheckNameAvailabilityRequest;
 
-/** Samples for BackupVaults CheckNameAvailability. */
+/**
+ * Samples for BackupVaults CheckNameAvailability.
+ */
 public final class BackupVaultsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/CheckBackupVaultsNameAvailability.json
      */
     /**
      * Sample code: Check BackupVaults name availability.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void checkBackupVaultsNameAvailability(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .checkNameAvailabilityWithResponse(
-                "SampleResourceGroup",
-                "westus",
-                new CheckNameAvailabilityRequest()
-                    .withName("swaggerExample")
-                    .withType("Microsoft.DataProtection/BackupVaults"),
-                com.azure.core.util.Context.NONE);
+    public static void checkBackupVaultsNameAvailability(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults().checkNameAvailabilityWithResponse("SampleResourceGroup", "westus", new CheckNameAvailabilityRequest().withName("swaggerExample").withType("Microsoft.DataProtection/BackupVaults"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1016,92 +785,37 @@ import com.azure.resourcemanager.dataprotection.models.StorageSettingTypes;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-/** Samples for BackupVaults CreateOrUpdate. */
+/**
+ * Samples for BackupVaults CreateOrUpdate.
+ */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void createBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .define("swaggerExample")
-            .withRegion("WestUS")
-            .withExistingResourceGroup("SampleResourceGroup")
-            .withProperties(
-                new BackupVault()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                    .withSecuritySettings(
-                        new SecuritySettings()
-                            .withSoftDeleteSettings(
-                                new SoftDeleteSettings()
-                                    .withState(SoftDeleteState.fromString("Enabled"))
-                                    .withRetentionDurationInDays(14.0D)))
-                    .withStorageSettings(
-                        Arrays
-                            .asList(
-                                new StorageSetting()
-                                    .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                    .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                    .withFeatureSettings(
-                        new FeatureSettings()
-                            .withCrossRegionRestoreSettings(
-                                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new DppIdentityDetails().withType("None"))
-            .create();
+        manager.backupVaults().define("swaggerExample").withRegion("WestUS").withExistingResourceGroup("SampleResourceGroup").withProperties(new BackupVault().withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))).withSecuritySettings(new SecuritySettings().withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.fromString("Enabled")).withRetentionDurationInDays(14.0D))).withStorageSettings(Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE).withType(StorageSettingTypes.LOCALLY_REDUNDANT))).withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)))).withTags(mapOf("key1", "fakeTokenPlaceholder")).withIdentity(new DppIdentityDetails().withType("None")).create();
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void createBackupVaultWithMSI(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .define("swaggerExample")
-            .withRegion("WestUS")
-            .withExistingResourceGroup("SampleResourceGroup")
-            .withProperties(
-                new BackupVault()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                    .withSecuritySettings(
-                        new SecuritySettings()
-                            .withSoftDeleteSettings(
-                                new SoftDeleteSettings()
-                                    .withState(SoftDeleteState.fromString("Enabled"))
-                                    .withRetentionDurationInDays(14.0D)))
-                    .withStorageSettings(
-                        Arrays
-                            .asList(
-                                new StorageSetting()
-                                    .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                    .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                    .withFeatureSettings(
-                        new FeatureSettings()
-                            .withCrossRegionRestoreSettings(
-                                new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
-            .create();
+    public static void createBackupVaultWithMSI(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults().define("swaggerExample").withRegion("WestUS").withExistingResourceGroup("SampleResourceGroup").withProperties(new BackupVault().withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))).withSecuritySettings(new SecuritySettings().withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.fromString("Enabled")).withRetentionDurationInDays(14.0D))).withStorageSettings(Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE).withType(StorageSettingTypes.LOCALLY_REDUNDANT))).withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)))).withTags(mapOf("key1", "fakeTokenPlaceholder")).withIdentity(new DppIdentityDetails().withType("systemAssigned")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1118,14 +832,16 @@ public final class BackupVaultsCreateOrUpdateSamples {
 ### BackupVaults_Delete
 
 ```java
-/** Samples for BackupVaults Delete. */
+/**
+ * Samples for BackupVaults Delete.
+ */
 public final class BackupVaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/DeleteBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/DeleteBackupVault.json
      */
     /**
      * Sample code: Delete BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -1137,34 +853,32 @@ public final class BackupVaultsDeleteSamples {
 ### BackupVaults_GetByResourceGroup
 
 ```java
-/** Samples for BackupVaults GetByResourceGroup. */
+/**
+ * Samples for BackupVaults GetByResourceGroup.
+ */
 public final class BackupVaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVault.json
      */
     /**
      * Sample code: Get BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.backupVaults().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVaultWithMSI.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultWithMSI.json
      */
     /**
      * Sample code: Get BackupVault With MSI.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupVaultWithMSI(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.backupVaults().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1172,18 +886,19 @@ public final class BackupVaultsGetByResourceGroupSamples {
 ### BackupVaults_List
 
 ```java
-/** Samples for BackupVaults List. */
+/**
+ * Samples for BackupVaults List.
+ */
 public final class BackupVaultsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
      */
     /**
      * Sample code: Get BackupVaults in Subscription.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupVaultsInSubscription(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void getBackupVaultsInSubscription(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.backupVaults().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -1192,18 +907,19 @@ public final class BackupVaultsListSamples {
 ### BackupVaults_ListByResourceGroup
 
 ```java
-/** Samples for BackupVaults ListByResourceGroup. */
+/**
+ * Samples for BackupVaults ListByResourceGroup.
+ */
 public final class BackupVaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/GetBackupVaultsInResourceGroup.json
      */
     /**
      * Sample code: Get BackupVaults in ResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupVaultsInResourceGroup(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void getBackupVaultsInResourceGroup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.backupVaults().listByResourceGroup("SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -1219,36 +935,26 @@ import com.azure.resourcemanager.dataprotection.models.MonitoringSettings;
 import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-/** Samples for BackupVaults Update. */
+/**
+ * Samples for BackupVaults Update.
+ */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void patchBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        BackupVaultResource resource =
-            manager
-                .backupVaults()
-                .getByResourceGroupWithResponse(
-                    "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("newKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new PatchBackupVaultInput()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))))
-            .apply();
+        BackupVaultResource resource = manager.backupVaults().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("newKey", "fakeTokenPlaceholder")).withProperties(new PatchBackupVaultInput().withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1267,25 +973,22 @@ public final class BackupVaultsUpdateSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.FeatureType;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequest;
+import java.util.stream.Collectors;
 
-/** Samples for DataProtection CheckFeatureSupport. */
+/**
+ * Samples for DataProtection CheckFeatureSupport.
+ */
 public final class DataProtectionCheckFeatureSupportSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/CheckfeatureSupport.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CheckfeatureSupport.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void checkAzureVmBackupFeatureSupport(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .dataProtections()
-            .checkFeatureSupportWithResponse(
-                "WestUS",
-                new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE),
-                com.azure.core.util.Context.NONE);
+    public static void checkAzureVmBackupFeatureSupport(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.dataProtections().checkFeatureSupportWithResponse("WestUS", new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1293,18 +996,19 @@ public final class DataProtectionCheckFeatureSupportSamples {
 ### DataProtectionOperations_List
 
 ```java
-/** Samples for DataProtectionOperations List. */
+/**
+ * Samples for DataProtectionOperations List.
+ */
 public final class DataProtectionOperationsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/Operations/List.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/Operations/List.json
      */
     /**
      * Sample code: Returns the list of supported REST operations.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void returnsTheListOfSupportedRESTOperations(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void returnsTheListOfSupportedRESTOperations(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.dataProtectionOperations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -1313,22 +1017,20 @@ public final class DataProtectionOperationsListSamples {
 ### DeletedBackupInstances_Get
 
 ```java
-/** Samples for DeletedBackupInstances Get. */
+/**
+ * Samples for DeletedBackupInstances Get.
+ */
 public final class DeletedBackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
      */
     /**
      * Sample code: Get DeletedBackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDeletedBackupInstance(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .deletedBackupInstances()
-            .getWithResponse(
-                "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
+    public static void getDeletedBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.deletedBackupInstances().getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1336,21 +1038,20 @@ public final class DeletedBackupInstancesGetSamples {
 ### DeletedBackupInstances_List
 
 ```java
-/** Samples for DeletedBackupInstances List. */
+/**
+ * Samples for DeletedBackupInstances List.
+ */
 public final class DeletedBackupInstancesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
      */
     /**
      * Sample code: List DeletedBackupInstances in a Vault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listDeletedBackupInstancesInAVault(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .deletedBackupInstances()
-            .list("000pikumar", "PratikPrivatePreviewVault1", com.azure.core.util.Context.NONE);
+    public static void listDeletedBackupInstancesInAVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.deletedBackupInstances().list("000pikumar", "PratikPrivatePreviewVault1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1358,18 +1059,19 @@ public final class DeletedBackupInstancesListSamples {
 ### DeletedBackupInstances_Undelete
 
 ```java
-/** Samples for DeletedBackupInstances Undelete. */
+/**
+ * Samples for DeletedBackupInstances Undelete.
+ */
 public final class DeletedBackupInstancesUndeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
      */
     /**
      * Sample code: Undelete Deleted BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void undeleteDeletedBackupInstance(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void undeleteDeletedBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.deletedBackupInstances().undelete("testrg", "testvault", "testbi", com.azure.core.util.Context.NONE);
     }
 }
@@ -1380,27 +1082,20 @@ public final class DeletedBackupInstancesUndeleteSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBase;
 
-/** Samples for DppResourceGuardProxy CreateOrUpdate. */
+/**
+ * Samples for DppResourceGuardProxy CreateOrUpdate.
+ */
 public final class DppResourceGuardProxyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void createResourceGuardProxy(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .dppResourceGuardProxies()
-            .define("swaggerExample")
-            .withExistingBackupVault("SampleResourceGroup", "sampleVault")
-            .withProperties(
-                new ResourceGuardProxyBase()
-                    .withResourceGuardResourceId(
-                        "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource"))
-            .create();
+    public static void createResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.dppResourceGuardProxies().define("swaggerExample").withExistingBackupVault("SampleResourceGroup", "sampleVault").withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource")).create();
     }
 }
 ```
@@ -1408,22 +1103,20 @@ public final class DppResourceGuardProxyCreateOrUpdateSamples {
 ### DppResourceGuardProxy_Delete
 
 ```java
-/** Samples for DppResourceGuardProxy Delete. */
+/**
+ * Samples for DppResourceGuardProxy Delete.
+ */
 public final class DppResourceGuardProxyDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void deleteResourceGuardProxy(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .dppResourceGuardProxies()
-            .deleteWithResponse(
-                "SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void deleteResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.dppResourceGuardProxies().deleteWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1431,20 +1124,20 @@ public final class DppResourceGuardProxyDeleteSamples {
 ### DppResourceGuardProxy_Get
 
 ```java
-/** Samples for DppResourceGuardProxy Get. */
+/**
+ * Samples for DppResourceGuardProxy Get.
+ */
 public final class DppResourceGuardProxyGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .dppResourceGuardProxies()
-            .getWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.dppResourceGuardProxies().getWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1452,14 +1145,16 @@ public final class DppResourceGuardProxyGetSamples {
 ### DppResourceGuardProxy_List
 
 ```java
-/** Samples for DppResourceGuardProxy List. */
+/**
+ * Samples for DppResourceGuardProxy List.
+ */
 public final class DppResourceGuardProxyListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxies.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getResourceGuardProxies(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -1474,32 +1169,20 @@ public final class DppResourceGuardProxyListSamples {
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
 import java.util.Arrays;
 
-/** Samples for DppResourceGuardProxy UnlockDelete. */
+/**
+ * Samples for DppResourceGuardProxy UnlockDelete.
+ */
 public final class DppResourceGuardProxyUnlockDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
      * Sample code: UnlockDelete ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void unlockDeleteResourceGuardProxy(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .dppResourceGuardProxies()
-            .unlockDeleteWithResponse(
-                "SampleResourceGroup",
-                "sampleVault",
-                "swaggerExample",
-                new UnlockDeleteRequest()
-                    .withResourceGuardOperationRequests(
-                        Arrays
-                            .asList(
-                                "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource/deleteBackupInstanceRequests/default"))
-                    .withResourceToBeDeleted(
-                        "/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupInstances/TestBI9779f4de"),
-                com.azure.core.util.Context.NONE);
+    public static void unlockDeleteResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.dppResourceGuardProxies().unlockDeleteWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", new UnlockDeleteRequest().withResourceGuardOperationRequests(Arrays.asList("/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource/deleteBackupInstanceRequests/default")).withResourceToBeDeleted("/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupInstances/TestBI9779f4de"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1507,14 +1190,16 @@ public final class DppResourceGuardProxyUnlockDeleteSamples {
 ### ExportJobs_Trigger
 
 ```java
-/** Samples for ExportJobs Trigger. */
+/**
+ * Samples for ExportJobs Trigger.
+ */
 public final class ExportJobsTriggerSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/TriggerExportJobs.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/TriggerExportJobs.json
      */
     /**
      * Sample code: Trigger Export Jobs.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerExportJobs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -1526,25 +1211,89 @@ public final class ExportJobsTriggerSamples {
 ### ExportJobsOperationResult_Get
 
 ```java
-/** Samples for ExportJobsOperationResult Get. */
+/**
+ * Samples for ExportJobsOperationResult Get.
+ */
 public final class ExportJobsOperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/GetExportJobsOperationResult.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/GetExportJobsOperationResult.json
      */
     /**
      * Sample code: Get Export Jobs Operation Result.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getExportJobsOperationResult(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .exportJobsOperationResults()
-            .getWithResponse(
-                "SwaggerTestRg",
-                "NetSDKTestRsVault",
-                "00000000-0000-0000-0000-000000000000",
-                com.azure.core.util.Context.NONE);
+    public static void getExportJobsOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.exportJobsOperationResults().getWithResponse("SwaggerTestRg", "NetSDKTestRsVault", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FetchCrossRegionRestoreJob_Get
+
+```java
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreJobRequest;
+
+/**
+ * Samples for FetchCrossRegionRestoreJob Get.
+ */
+public final class FetchCrossRegionRestoreJobGetSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/FetchCrossRegionRestoreJob.json
+     */
+    /**
+     * Sample code: Get Cross Region Restore Job.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void getCrossRegionRestoreJob(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.fetchCrossRegionRestoreJobs().getWithResponse("BugBash1", "west us", new CrossRegionRestoreJobRequest().withSourceRegion("east us").withSourceBackupVaultId("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/BugBash1/providers/Microsoft.DataProtection/backupVaults/BugBashVaultForCCYv11").withJobId("3c60cb49-63e8-4b21-b9bd-26277b3fdfae"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FetchCrossRegionRestoreJobsOperation_List
+
+```java
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreJobsRequest;
+
+/**
+ * Samples for FetchCrossRegionRestoreJobsOperation List.
+ */
+public final class FetchCrossRegionRestoreJobsOperationListSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/FetchCrossRegionRestoreJobs.json
+     */
+    /**
+     * Sample code: List Cross Region Restore Jobs.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void listCrossRegionRestoreJobs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.fetchCrossRegionRestoreJobsOperations().list("BugBash1", "east us", new CrossRegionRestoreJobsRequest().withSourceRegion("east us").withSourceBackupVaultId("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/BugBash1/providers/Microsoft.DataProtection/backupVaults/BugBashVaultForCCYv11"), null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FetchSecondaryRecoveryPoints_List
+
+```java
+import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRPsRequestParameters;
+
+/**
+ * Samples for FetchSecondaryRecoveryPoints List.
+ */
+public final class FetchSecondaryRecoveryPointsListSamples {
+    /*
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/CrossRegionRestore/FetchSecondaryRPs.json
+     */
+    /**
+     * Sample code: Fetch SecondaryRPs.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void fetchSecondaryRPs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.fetchSecondaryRecoveryPoints().list("000pikumar", "WestUS", new FetchSecondaryRPsRequestParameters().withSourceRegion("EastUS").withSourceBackupInstanceId("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/HelloTest/providers/Microsoft.DataProtection/backupVaults/HelloTestVault/backupInstances/653213d-c5b3-44f6-a0d9-db3c4f9d8e34"), null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1552,24 +1301,20 @@ public final class ExportJobsOperationResultGetSamples {
 ### Jobs_Get
 
 ```java
-/** Samples for Jobs Get. */
+/**
+ * Samples for Jobs Get.
+ */
 public final class JobsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/GetJob.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/GetJob.json
      */
     /**
      * Sample code: Get Job.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getJob(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .jobs()
-            .getWithResponse(
-                "BugBash1",
-                "BugBashVaultForCCYv11",
-                "3c60cb49-63e8-4b21-b9bd-26277b3fdfae",
-                com.azure.core.util.Context.NONE);
+        manager.jobs().getWithResponse("BugBash1", "BugBashVaultForCCYv11", "3c60cb49-63e8-4b21-b9bd-26277b3fdfae", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1577,14 +1322,16 @@ public final class JobsGetSamples {
 ### Jobs_List
 
 ```java
-/** Samples for Jobs List. */
+/**
+ * Samples for Jobs List.
+ */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/ListJobs.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/ListJobs.json
      */
     /**
      * Sample code: Get Jobs.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getJobs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
@@ -1596,23 +1343,20 @@ public final class JobsListSamples {
 ### OperationResult_Get
 
 ```java
-/** Samples for OperationResult Get. */
+/**
+ * Samples for OperationResult Get.
+ */
 public final class OperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/GetOperationResult.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/GetOperationResult.json
      */
     /**
      * Sample code: Get OperationResult.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .operationResults()
-            .getWithResponse(
-                "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                "WestUS",
-                com.azure.core.util.Context.NONE);
+        manager.operationResults().getWithResponse("MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==", "WestUS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1620,23 +1364,20 @@ public final class OperationResultGetSamples {
 ### OperationStatus_Get
 
 ```java
-/** Samples for OperationStatus Get. */
+/**
+ * Samples for OperationStatus Get.
+ */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/GetOperationStatus.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/GetOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationStatus(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .operationStatus()
-            .getWithResponse(
-                "WestUS",
-                "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                com.azure.core.util.Context.NONE);
+        manager.operationStatus().getWithResponse("WestUS", "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1644,24 +1385,20 @@ public final class OperationStatusGetSamples {
 ### OperationStatusBackupVaultContext_Get
 
 ```java
-/** Samples for OperationStatusBackupVaultContext Get. */
+/**
+ * Samples for OperationStatusBackupVaultContext Get.
+ */
 public final class OperationStatusBackupVaultContextGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/GetOperationStatusVaultContext.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/GetOperationStatusVaultContext.json
      */
     /**
      * Sample code: Get OperationStatus.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationStatus(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .operationStatusBackupVaultContexts()
-            .getWithResponse(
-                "SampleResourceGroup",
-                "swaggerExample",
-                "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                com.azure.core.util.Context.NONE);
+        manager.operationStatusBackupVaultContexts().getWithResponse("SampleResourceGroup", "swaggerExample", "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1669,23 +1406,20 @@ public final class OperationStatusBackupVaultContextGetSamples {
 ### OperationStatusResourceGroupContext_GetByResourceGroup
 
 ```java
-/** Samples for OperationStatusResourceGroupContext GetByResourceGroup. */
+/**
+ * Samples for OperationStatusResourceGroupContext GetByResourceGroup.
+ */
 public final class OperationStatusResourceGroupContextGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/GetOperationStatusRGContext.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/GetOperationStatusRGContext.json
      */
     /**
      * Sample code: Get OperationStatus.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationStatus(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .operationStatusResourceGroupContexts()
-            .getByResourceGroupWithResponse(
-                "SampleResourceGroup",
-                "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                com.azure.core.util.Context.NONE);
+        manager.operationStatusResourceGroupContexts().getByResourceGroupWithResponse("SampleResourceGroup", "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1693,25 +1427,20 @@ public final class OperationStatusResourceGroupContextGetByResourceGroupSamples 
 ### RecoveryPoints_Get
 
 ```java
-/** Samples for RecoveryPoints Get. */
+/**
+ * Samples for RecoveryPoints Get.
+ */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
      */
     /**
      * Sample code: Get Recovery Point.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getRecoveryPoint(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .recoveryPoints()
-            .getWithResponse(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                "7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25",
-                com.azure.core.util.Context.NONE);
+        manager.recoveryPoints().getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", "7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1719,27 +1448,20 @@ public final class RecoveryPointsGetSamples {
 ### RecoveryPoints_List
 
 ```java
-/** Samples for RecoveryPoints List. */
+/**
+ * Samples for RecoveryPoints List.
+ */
 public final class RecoveryPointsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ListRecoveryPoints.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ListRecoveryPoints.json
      */
     /**
      * Sample code: List Recovery Points in a Vault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listRecoveryPointsInAVault(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .recoveryPoints()
-            .list(
-                "000pikumar",
-                "PratikPrivatePreviewVault1",
-                "testInstance1",
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void listRecoveryPointsInAVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.recoveryPoints().list("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1747,21 +1469,20 @@ public final class RecoveryPointsListSamples {
 ### ResourceGuards_Delete
 
 ```java
-/** Samples for ResourceGuards Delete. */
+/**
+ * Samples for ResourceGuards Delete.
+ */
 public final class ResourceGuardsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
      */
     /**
      * Sample code: Delete ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .deleteByResourceGroupWithResponse(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.resourceGuards().deleteByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1769,22 +1490,20 @@ public final class ResourceGuardsDeleteSamples {
 ### ResourceGuards_GetBackupSecurityPinRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetBackupSecurityPinRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetBackupSecurityPinRequestsObjects.
+ */
 public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getBackupSecurityPinRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getBackupSecurityPinRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1792,20 +1511,20 @@ public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsSamples {
 ### ResourceGuards_GetByResourceGroup
 
 ```java
-/** Samples for ResourceGuards GetByResourceGroup. */
+/**
+ * Samples for ResourceGuards GetByResourceGroup.
+ */
 public final class ResourceGuardsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetResourceGuard.json
      */
     /**
      * Sample code: Get ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.resourceGuards().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1813,22 +1532,20 @@ public final class ResourceGuardsGetByResourceGroupSamples {
 ### ResourceGuards_GetDefaultBackupSecurityPinRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultBackupSecurityPinRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultBackupSecurityPinRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultBackupSecurityPinRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultBackupSecurityPinRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1836,22 +1553,20 @@ public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectSample
 ### ResourceGuards_GetDefaultDeleteProtectedItemRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultDeleteProtectedItemRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultDeleteProtectedItemRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultDeleteProtectedItemRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1859,22 +1574,20 @@ public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectSamp
 ### ResourceGuards_GetDefaultDeleteResourceGuardProxyRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultDeleteResourceGuardProxyRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultDeleteResourceGuardProxyRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1882,22 +1595,20 @@ public final class ResourceGuardsGetDefaultDeleteResourceGuardProxyRequestsObjec
 ### ResourceGuards_GetDefaultDisableSoftDeleteRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultDisableSoftDeleteRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultDisableSoftDeleteRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultDisableSoftDeleteRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultDisableSoftDeleteRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1905,22 +1616,20 @@ public final class ResourceGuardsGetDefaultDisableSoftDeleteRequestsObjectSample
 ### ResourceGuards_GetDefaultUpdateProtectedItemRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultUpdateProtectedItemRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultUpdateProtectedItemRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultUpdateProtectedItemRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1928,22 +1637,20 @@ public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectSamp
 ### ResourceGuards_GetDefaultUpdateProtectionPolicyRequestsObject
 
 ```java
-/** Samples for ResourceGuards GetDefaultUpdateProtectionPolicyRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultUpdateProtectionPolicyRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultUpdateProtectionPolicyRequestsObjectWithResponse("SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1951,22 +1658,20 @@ public final class ResourceGuardsGetDefaultUpdateProtectionPolicyRequestsObjectS
 ### ResourceGuards_GetDeleteProtectedItemRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetDeleteProtectedItemRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetDeleteProtectedItemRequestsObjects.
+ */
 public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDeleteProtectedItemRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDeleteProtectedItemRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1974,22 +1679,20 @@ public final class ResourceGuardsGetDeleteProtectedItemRequestsObjectsSamples {
 ### ResourceGuards_GetDeleteResourceGuardProxyRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetDeleteResourceGuardProxyRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetDeleteResourceGuardProxyRequestsObjects.
+ */
 public final class ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDeleteResourceGuardProxyRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDeleteResourceGuardProxyRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1997,22 +1700,20 @@ public final class ResourceGuardsGetDeleteResourceGuardProxyRequestsObjectsSampl
 ### ResourceGuards_GetDisableSoftDeleteRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetDisableSoftDeleteRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetDisableSoftDeleteRequestsObjects.
+ */
 public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDisableSoftDeleteRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDisableSoftDeleteRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2020,22 +1721,20 @@ public final class ResourceGuardsGetDisableSoftDeleteRequestsObjectsSamples {
 ### ResourceGuards_GetUpdateProtectedItemRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetUpdateProtectedItemRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetUpdateProtectedItemRequestsObjects.
+ */
 public final class ResourceGuardsGetUpdateProtectedItemRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getUpdateProtectedItemRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getUpdateProtectedItemRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2043,22 +1742,20 @@ public final class ResourceGuardsGetUpdateProtectedItemRequestsObjectsSamples {
 ### ResourceGuards_GetUpdateProtectionPolicyRequestsObjects
 
 ```java
-/** Samples for ResourceGuards GetUpdateProtectionPolicyRequestsObjects. */
+/**
+ * Samples for ResourceGuards GetUpdateProtectionPolicyRequestsObjects.
+ */
 public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
      */
     /**
      * Sample code: List OperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void listOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getUpdateProtectionPolicyRequestsObjects(
-                "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void listOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getUpdateProtectionPolicyRequestsObjects("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2066,18 +1763,19 @@ public final class ResourceGuardsGetUpdateProtectionPolicyRequestsObjectsSamples
 ### ResourceGuards_List
 
 ```java
-/** Samples for ResourceGuards List. */
+/**
+ * Samples for ResourceGuards List.
+ */
 public final class ResourceGuardsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
      */
     /**
      * Sample code: Get ResourceGuards in Subscription.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getResourceGuardsInSubscription(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void getResourceGuardsInSubscription(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.resourceGuards().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -2086,18 +1784,19 @@ public final class ResourceGuardsListSamples {
 ### ResourceGuards_ListByResourceGroup
 
 ```java
-/** Samples for ResourceGuards ListByResourceGroup. */
+/**
+ * Samples for ResourceGuards ListByResourceGroup.
+ */
 public final class ResourceGuardsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
      */
     /**
      * Sample code: Get ResourceGuards in ResourceGroup.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getResourceGuardsInResourceGroup(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+    public static void getResourceGuardsInResourceGroup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.resourceGuards().listByResourceGroup("SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -2110,26 +1809,24 @@ import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceGuards Patch. */
+/**
+ * Samples for ResourceGuards Patch.
+ */
 public final class ResourceGuardsPatchSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
      */
     /**
      * Sample code: Patch ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void patchResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        ResourceGuardResource resource =
-            manager
-                .resourceGuards()
-                .getByResourceGroupWithResponse(
-                    "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
+        ResourceGuardResource resource = manager.resourceGuards().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("newKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2149,26 +1846,23 @@ public final class ResourceGuardsPatchSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceGuards Put. */
+/**
+ * Samples for ResourceGuards Put.
+ */
 public final class ResourceGuardsPutSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/PutResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/ResourceGuardCRUD/PutResourceGuard.json
      */
     /**
      * Sample code: Create ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void createResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .define("swaggerExample")
-            .withRegion("WestUS")
-            .withExistingResourceGroup("SampleResourceGroup")
-            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .create();
+        manager.resourceGuards().define("swaggerExample").withRegion("WestUS").withExistingResourceGroup("SampleResourceGroup").withTags(mapOf("key1", "fakeTokenPlaceholder")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2187,30 +1881,22 @@ public final class ResourceGuardsPutSamples {
 ```java
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesRequest;
 import com.azure.resourcemanager.dataprotection.models.RestoreSourceDataStoreType;
+import java.util.stream.Collectors;
 
-/** Samples for RestorableTimeRanges Find. */
+/**
+ * Samples for RestorableTimeRanges Find.
+ */
 public final class RestorableTimeRangesFindSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
      */
     /**
      * Sample code: Find Restorable Time Ranges.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void findRestorableTimeRanges(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .restorableTimeRanges()
-            .findWithResponse(
-                "Blob-Backup",
-                "ZBlobBackupVaultBVTD3",
-                "zblobbackuptestsa58",
-                new AzureBackupFindRestorableTimeRangesRequest()
-                    .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)
-                    .withStartTime("2020-10-17T23:28:17.6829685Z")
-                    .withEndTime("2021-02-24T00:35:17.6829685Z"),
-                com.azure.core.util.Context.NONE);
+    public static void findRestorableTimeRanges(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.restorableTimeRanges().findWithResponse("Blob-Backup", "ZBlobBackupVaultBVTD3", "zblobbackuptestsa58", new AzureBackupFindRestorableTimeRangesRequest().withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE).withStartTime("2020-10-17T23:28:17.6829685Z").withEndTime("2021-02-24T00:35:17.6829685Z"), com.azure.core.util.Context.NONE);
     }
 }
 ```

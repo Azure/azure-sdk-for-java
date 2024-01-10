@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile of the managed outbound IP resources of the managed cluster. */
+/**
+ * Profile of the managed outbound IP resources of the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterManagedOutboundIpProfile {
     /*
@@ -17,7 +19,9 @@ public final class ManagedClusterManagedOutboundIpProfile {
     @JsonProperty(value = "count")
     private Integer count;
 
-    /** Creates an instance of ManagedClusterManagedOutboundIpProfile class. */
+    /**
+     * Creates an instance of ManagedClusterManagedOutboundIpProfile class.
+     */
     public ManagedClusterManagedOutboundIpProfile() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoUserDefinitionGetResu
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The relevant User Definition. */
+/**
+ * The relevant User Definition.
+ */
 @Immutable
 public final class MongoUserDefinitionListResult {
     /*
@@ -18,13 +20,15 @@ public final class MongoUserDefinitionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoUserDefinitionGetResultsInner> value;
 
-    /** Creates an instance of MongoUserDefinitionListResult class. */
+    /**
+     * Creates an instance of MongoUserDefinitionListResult class.
+     */
     public MongoUserDefinitionListResult() {
     }
 
     /**
      * Get the value property: List of User Definition and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<MongoUserDefinitionGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class MongoUserDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

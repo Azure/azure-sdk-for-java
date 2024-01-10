@@ -24,6 +24,13 @@ public final class OutputStreamWriteSubscriber implements Subscriber<ByteBuffer>
 
     private Subscription subscription;
 
+    /**
+     * Creates a subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to an {@link OutputStream}.
+     *
+     * @param emitter The {@link MonoSink} that will be notified when the stream has been written.
+     * @param stream The {@link OutputStream} to write the stream of {@link ByteBuffer ByteBuffers} to.
+     * @param logger The {@link ClientLogger} used to log any errors.
+     */
     public OutputStreamWriteSubscriber(MonoSink<Void> emitter, OutputStream stream, ClientLogger logger) {
         this.emitter = emitter;
         this.stream = stream;

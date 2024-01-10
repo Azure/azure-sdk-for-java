@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User Response for Troubleshooter continue request. */
+/**
+ * User Response for Troubleshooter continue request.
+ */
 @Fluent
 public final class TroubleshooterResponse {
     /*
@@ -17,7 +19,7 @@ public final class TroubleshooterResponse {
     private String questionId;
 
     /*
-     * Text Input. Will be a single line input.
+     * Type of Question
      */
     @JsonProperty(value = "questionType")
     private QuestionType questionType;
@@ -28,13 +30,15 @@ public final class TroubleshooterResponse {
     @JsonProperty(value = "response")
     private String response;
 
-    /** Creates an instance of TroubleshooterResponse class. */
+    /**
+     * Creates an instance of TroubleshooterResponse class.
+     */
     public TroubleshooterResponse() {
     }
 
     /**
      * Get the questionId property: id of the question.
-     *
+     * 
      * @return the questionId value.
      */
     public String questionId() {
@@ -43,7 +47,7 @@ public final class TroubleshooterResponse {
 
     /**
      * Set the questionId property: id of the question.
-     *
+     * 
      * @param questionId the questionId value to set.
      * @return the TroubleshooterResponse object itself.
      */
@@ -53,8 +57,8 @@ public final class TroubleshooterResponse {
     }
 
     /**
-     * Get the questionType property: Text Input. Will be a single line input.
-     *
+     * Get the questionType property: Type of Question.
+     * 
      * @return the questionType value.
      */
     public QuestionType questionType() {
@@ -62,8 +66,8 @@ public final class TroubleshooterResponse {
     }
 
     /**
-     * Set the questionType property: Text Input. Will be a single line input.
-     *
+     * Set the questionType property: Type of Question.
+     * 
      * @param questionType the questionType value to set.
      * @return the TroubleshooterResponse object itself.
      */
@@ -75,7 +79,7 @@ public final class TroubleshooterResponse {
     /**
      * Get the response property: Response key for SingleInput. For Multi-line test/open ended question it is free form
      * text.
-     *
+     * 
      * @return the response value.
      */
     public String response() {
@@ -85,7 +89,7 @@ public final class TroubleshooterResponse {
     /**
      * Set the response property: Response key for SingleInput. For Multi-line test/open ended question it is free form
      * text.
-     *
+     * 
      * @param response the response value to set.
      * @return the TroubleshooterResponse object itself.
      */
@@ -96,7 +100,7 @@ public final class TroubleshooterResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

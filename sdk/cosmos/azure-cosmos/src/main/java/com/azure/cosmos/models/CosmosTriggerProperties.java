@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -37,10 +38,10 @@ public final class CosmosTriggerProperties {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the trigger properties.
+     * @param jsonNode the json node that represents the trigger properties.
      */
-    CosmosTriggerProperties(String jsonString) {
-        this.trigger = new Trigger(jsonString);
+    CosmosTriggerProperties(ObjectNode jsonNode) {
+        this.trigger = new Trigger(jsonNode);
     }
 
     /**
@@ -157,7 +158,7 @@ public final class CosmosTriggerProperties {
     }
 
     static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {
-        return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson()))
+        return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.getPropertyBag()))
                    .collect(Collectors.toList());
     }
 }

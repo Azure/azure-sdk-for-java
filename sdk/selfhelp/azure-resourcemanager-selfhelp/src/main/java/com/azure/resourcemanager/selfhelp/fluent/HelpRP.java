@@ -7,74 +7,76 @@ package com.azure.resourcemanager.selfhelp.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for HelpRP class. */
+/**
+ * The interface for HelpRP class.
+ */
 public interface HelpRP {
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
+     * 
      * @return the CheckNameAvailabilitiesClient object.
      */
     CheckNameAvailabilitiesClient getCheckNameAvailabilities();
 
     /**
      * Gets the DiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the DiagnosticsClient object.
      */
     DiagnosticsClient getDiagnostics();
 
     /**
      * Gets the DiscoverySolutionsClient object to access its operations.
-     *
+     * 
      * @return the DiscoverySolutionsClient object.
      */
     DiscoverySolutionsClient getDiscoverySolutions();
 
     /**
      * Gets the SolutionOperationsClient object to access its operations.
-     *
+     * 
      * @return the SolutionOperationsClient object.
      */
     SolutionOperationsClient getSolutionOperations();
 
     /**
      * Gets the TroubleshootersClient object to access its operations.
-     *
+     * 
      * @return the TroubleshootersClient object.
      */
     TroubleshootersClient getTroubleshooters();

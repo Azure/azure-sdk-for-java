@@ -9,34 +9,28 @@ import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameter
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MongoDBResources UpdateMongoDBCollectionThroughput. */
+/**
+ * Samples for MongoDBResources UpdateMongoDBCollectionThroughput.
+ */
 public final class MongoDBResourcesUpdateMongoDBCollectionThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBMongoDBCollectionThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionThroughputUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBCollectionThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getMongoDBResources()
-            .updateMongoDBCollectionThroughput(
-                "rg1",
-                "ddb1",
-                "databaseName",
-                "collectionName",
-                new ThroughputSettingsUpdateParameters()
-                    .withLocation("West US")
-                    .withTags(mapOf())
-                    .withResource(new ThroughputSettingsResource().withThroughput(400)),
-                com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().updateMongoDBCollectionThroughput(
+            "rg1", "ddb1", "databaseName", "collectionName",
+            new ThroughputSettingsUpdateParameters().withLocation("West US").withTags(mapOf())
+                .withResource(new ThroughputSettingsResource().withThroughput(400)),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

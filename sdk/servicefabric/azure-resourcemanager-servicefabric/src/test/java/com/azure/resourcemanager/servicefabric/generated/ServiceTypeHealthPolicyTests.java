@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTypeHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTypeHealthPolicy model =
-            BinaryData
-                .fromString("{\"maxPercentUnhealthyServices\":1312385221}")
-                .toObject(ServiceTypeHealthPolicy.class);
-        Assertions.assertEquals(1312385221, model.maxPercentUnhealthyServices());
+        ServiceTypeHealthPolicy model = BinaryData.fromString("{\"maxPercentUnhealthyServices\":1218196264}")
+            .toObject(ServiceTypeHealthPolicy.class);
+        Assertions.assertEquals(1218196264, model.maxPercentUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTypeHealthPolicy model = new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1312385221);
+        ServiceTypeHealthPolicy model = new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1218196264);
         model = BinaryData.fromObject(model).toObject(ServiceTypeHealthPolicy.class);
-        Assertions.assertEquals(1312385221, model.maxPercentUnhealthyServices());
+        Assertions.assertEquals(1218196264, model.maxPercentUnhealthyServices());
     }
 }

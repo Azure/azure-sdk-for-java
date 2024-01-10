@@ -14,8 +14,7 @@ public final class DeletedBackupInstanceResourceImpl implements DeletedBackupIns
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    DeletedBackupInstanceResourceImpl(
-        DeletedBackupInstanceResourceInner innerObject,
+    DeletedBackupInstanceResourceImpl(DeletedBackupInstanceResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

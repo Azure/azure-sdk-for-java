@@ -10,8 +10,8 @@ import com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner;
 public final class BatchLocationQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchLocationQuotaInner model =
-            BinaryData.fromString("{\"accountQuota\":581868928}").toObject(BatchLocationQuotaInner.class);
+        BatchLocationQuotaInner model
+            = BinaryData.fromString("{\"accountQuota\":581868928}").toObject(BatchLocationQuotaInner.class);
     }
 
     @org.junit.jupiter.api.Test

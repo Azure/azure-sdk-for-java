@@ -140,6 +140,24 @@ public class AnnotatedQueryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithNewLinesInQuery() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2));
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCityWithSort(TestConstants.CITY,
+            Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithNewLinesInQuery2() {
+        addressRepository.saveAll(Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2));
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCityWithSort2(TestConstants.CITY,
+            Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
     public void testAnnotatedQueryWithValueAsPage() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAll(addresses);

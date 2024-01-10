@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for SqlResources ListSqlRoleAssignments. */
+/**
+ * Samples for SqlResources ListSqlRoleAssignments.
+ */
 public final class SqlResourcesListSqlRoleAssignmentsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBSqlRoleAssignmentList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBSqlRoleAssignmentList.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlRoleAssignmentList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getSqlResources()
+        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources()
             .listSqlRoleAssignments("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

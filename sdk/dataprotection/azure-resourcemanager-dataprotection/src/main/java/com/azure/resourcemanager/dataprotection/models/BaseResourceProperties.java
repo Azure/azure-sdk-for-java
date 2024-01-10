@@ -5,21 +5,31 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties which are specific to datasource/datasourceSets. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+/**
+ * Properties which are specific to datasource/datasourceSets.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "objectType",
+    defaultImpl = BaseResourceProperties.class)
 @JsonTypeName("BaseResourceProperties")
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DefaultResourceProperties", value = DefaultResourceProperties.class) })
 @Immutable
-public final class BaseResourceProperties {
-    /** Creates an instance of BaseResourceProperties class. */
+public class BaseResourceProperties {
+    /**
+     * Creates an instance of BaseResourceProperties class.
+     */
     public BaseResourceProperties() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

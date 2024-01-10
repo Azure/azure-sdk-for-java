@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies a metric to load balance a service during runtime. */
+/**
+ * Specifies a metric to load balance a service during runtime.
+ */
 @Fluent
 public final class ServiceLoadMetricDescription {
     /*
@@ -45,14 +47,16 @@ public final class ServiceLoadMetricDescription {
     @JsonProperty(value = "defaultLoad")
     private Integer defaultLoad;
 
-    /** Creates an instance of ServiceLoadMetricDescription class. */
+    /**
+     * Creates an instance of ServiceLoadMetricDescription class.
+     */
     public ServiceLoadMetricDescription() {
     }
 
     /**
      * Get the name property: The name of the metric. If the service chooses to report load during runtime, the load
      * metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the name property: The name of the metric. If the service chooses to report load during runtime, the load
      * metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -74,7 +78,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the weight property: The service load metric relative weight, compared to other metrics configured for this
      * service, as a number.
-     *
+     * 
      * @return the weight value.
      */
     public ServiceLoadMetricWeight weight() {
@@ -84,7 +88,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the weight property: The service load metric relative weight, compared to other metrics configured for this
      * service, as a number.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -96,7 +100,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the primaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Primary replica.
-     *
+     * 
      * @return the primaryDefaultLoad value.
      */
     public Integer primaryDefaultLoad() {
@@ -106,7 +110,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the primaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Primary replica.
-     *
+     * 
      * @param primaryDefaultLoad the primaryDefaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -118,7 +122,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the secondaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Secondary replica.
-     *
+     * 
      * @return the secondaryDefaultLoad value.
      */
     public Integer secondaryDefaultLoad() {
@@ -128,7 +132,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the secondaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Secondary replica.
-     *
+     * 
      * @param secondaryDefaultLoad the secondaryDefaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -140,7 +144,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the defaultLoad property: Used only for Stateless services. The default amount of load, as a number, that
      * this service creates for this metric.
-     *
+     * 
      * @return the defaultLoad value.
      */
     public Integer defaultLoad() {
@@ -150,7 +154,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the defaultLoad property: Used only for Stateless services. The default amount of load, as a number, that
      * this service creates for this metric.
-     *
+     * 
      * @param defaultLoad the defaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -161,15 +165,13 @@ public final class ServiceLoadMetricDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ServiceLoadMetricDescription"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ServiceLoadMetricDescription"));
         }
     }
 

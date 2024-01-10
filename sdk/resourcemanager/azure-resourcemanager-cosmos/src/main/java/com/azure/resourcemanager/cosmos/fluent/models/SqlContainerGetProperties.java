@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB container. */
+/**
+ * The properties of an Azure Cosmos DB container.
+ */
 @Fluent
 public final class SqlContainerGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class SqlContainerGetProperties {
     @JsonProperty(value = "options")
     private SqlContainerGetPropertiesOptions options;
 
-    /** Creates an instance of SqlContainerGetProperties class. */
+    /**
+     * Creates an instance of SqlContainerGetProperties class.
+     */
     public SqlContainerGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlContainerGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class SqlContainerGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlContainerGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class SqlContainerGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public SqlContainerGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class SqlContainerGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlContainerGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class SqlContainerGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

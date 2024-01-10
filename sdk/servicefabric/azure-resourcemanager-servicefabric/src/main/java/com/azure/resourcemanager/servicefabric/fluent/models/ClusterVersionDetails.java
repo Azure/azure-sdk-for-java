@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.servicefabric.models.ClusterEnvironment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The detail of the Service Fabric runtime version result. */
+/**
+ * The detail of the Service Fabric runtime version result.
+ */
 @Fluent
 public final class ClusterVersionDetails {
     /*
@@ -29,13 +31,15 @@ public final class ClusterVersionDetails {
     @JsonProperty(value = "environment")
     private ClusterEnvironment environment;
 
-    /** Creates an instance of ClusterVersionDetails class. */
+    /**
+     * Creates an instance of ClusterVersionDetails class.
+     */
     public ClusterVersionDetails() {
     }
 
     /**
      * Get the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @return the codeVersion value.
      */
     public String codeVersion() {
@@ -44,7 +48,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Set the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @param codeVersion the codeVersion value to set.
      * @return the ClusterVersionDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Get the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @return the supportExpiryUtc value.
      */
     public String supportExpiryUtc() {
@@ -64,7 +68,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Set the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @param supportExpiryUtc the supportExpiryUtc value to set.
      * @return the ClusterVersionDetails object itself.
      */
@@ -75,7 +79,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Get the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @return the environment value.
      */
     public ClusterEnvironment environment() {
@@ -84,7 +88,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Set the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the ClusterVersionDetails object itself.
      */
@@ -95,7 +99,7 @@ public final class ClusterVersionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

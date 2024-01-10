@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents metrics values. */
+/**
+ * Represents metrics values.
+ */
 @Immutable
 public class MetricValue {
     /*
@@ -47,13 +49,15 @@ public class MetricValue {
     @JsonProperty(value = "total", access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
-    /** Creates an instance of MetricValue class. */
+    /**
+     * Creates an instance of MetricValue class.
+     */
     public MetricValue() {
     }
 
     /**
      * Get the count property: The number of values for the metric.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -62,7 +66,7 @@ public class MetricValue {
 
     /**
      * Get the average property: The average value of the metric.
-     *
+     * 
      * @return the average value.
      */
     public Double average() {
@@ -71,7 +75,7 @@ public class MetricValue {
 
     /**
      * Get the maximum property: The max value of the metric.
-     *
+     * 
      * @return the maximum value.
      */
     public Double maximum() {
@@ -80,7 +84,7 @@ public class MetricValue {
 
     /**
      * Get the minimum property: The min value of the metric.
-     *
+     * 
      * @return the minimum value.
      */
     public Double minimum() {
@@ -89,7 +93,7 @@ public class MetricValue {
 
     /**
      * Get the timestamp property: The metric timestamp (ISO-8601 format).
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -98,7 +102,7 @@ public class MetricValue {
 
     /**
      * Get the total property: The total value of the metric.
-     *
+     * 
      * @return the total value.
      */
     public Double total() {
@@ -107,7 +111,7 @@ public class MetricValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
