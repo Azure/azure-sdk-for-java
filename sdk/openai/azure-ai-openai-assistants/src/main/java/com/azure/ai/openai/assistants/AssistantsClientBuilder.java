@@ -50,14 +50,14 @@ import java.util.Objects;
     serviceClients = {
         AssistantsClient.class,
         AssistantThreadsClient.class,
-        AssistantMessagesClient.class,
-        AssistantRunsClient.class,
+        ThreadMessagesClient.class,
+        ThreadRunsClient.class,
         RunStepsClient.class,
         FilesClient.class,
         AssistantsAsyncClient.class,
         AssistantThreadsAsyncClient.class,
-        AssistantMessagesAsyncClient.class,
-        AssistantRunsAsyncClient.class,
+        ThreadMessagesAsyncClient.class,
+        ThreadRunsAsyncClient.class,
         RunStepsAsyncClient.class,
         FilesAsyncClient.class })
 public final class AssistantsClientBuilder implements HttpTrait<AssistantsClientBuilder>,
@@ -310,13 +310,11 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
 
     /**
      * Builds an instance of AssistantsAsyncClient class.
@@ -339,23 +337,23 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     /**
-     * Builds an instance of AssistantMessagesAsyncClient class.
+     * Builds an instance of ThreadMessagesAsyncClient class.
      *
-     * @return an instance of AssistantMessagesAsyncClient.
+     * @return an instance of ThreadMessagesAsyncClient.
      */
     @Generated
-    public AssistantMessagesAsyncClient buildAssistantMessagesAsyncClient() {
-        return new AssistantMessagesAsyncClient(buildInnerClient().getAssistantMessages());
+    public ThreadMessagesAsyncClient buildThreadMessagesAsyncClient() {
+        return new ThreadMessagesAsyncClient(buildInnerClient().getThreadMessages());
     }
 
     /**
-     * Builds an instance of AssistantRunsAsyncClient class.
+     * Builds an instance of ThreadRunsAsyncClient class.
      *
-     * @return an instance of AssistantRunsAsyncClient.
+     * @return an instance of ThreadRunsAsyncClient.
      */
     @Generated
-    public AssistantRunsAsyncClient buildAssistantRunsAsyncClient() {
-        return new AssistantRunsAsyncClient(buildInnerClient().getAssistantRuns());
+    public ThreadRunsAsyncClient buildThreadRunsAsyncClient() {
+        return new ThreadRunsAsyncClient(buildInnerClient().getThreadRuns());
     }
 
     /**
@@ -399,23 +397,23 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     /**
-     * Builds an instance of AssistantMessagesClient class.
+     * Builds an instance of ThreadMessagesClient class.
      *
-     * @return an instance of AssistantMessagesClient.
+     * @return an instance of ThreadMessagesClient.
      */
     @Generated
-    public AssistantMessagesClient buildAssistantMessagesClient() {
-        return new AssistantMessagesClient(buildInnerClient().getAssistantMessages());
+    public ThreadMessagesClient buildThreadMessagesClient() {
+        return new ThreadMessagesClient(buildInnerClient().getThreadMessages());
     }
 
     /**
-     * Builds an instance of AssistantRunsClient class.
+     * Builds an instance of ThreadRunsClient class.
      *
-     * @return an instance of AssistantRunsClient.
+     * @return an instance of ThreadRunsClient.
      */
     @Generated
-    public AssistantRunsClient buildAssistantRunsClient() {
-        return new AssistantRunsClient(buildInnerClient().getAssistantRuns());
+    public ThreadRunsClient buildThreadRunsClient() {
+        return new ThreadRunsClient(buildInnerClient().getThreadRuns());
     }
 
     /**
@@ -437,4 +435,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     public FilesClient buildFilesClient() {
         return new FilesClient(buildInnerClient().getFiles());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
 }

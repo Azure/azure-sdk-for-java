@@ -11,38 +11,38 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A representation of a log output emitted by a code interpreter tool in response to a tool call by the model.
+ * A representation of a textual item of thread message content.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("logs")
+@JsonTypeName("text")
 @Immutable
-public final class CodeInterpreterLogOutput extends CodeInterpreterToolCallOutput {
+public final class MessageTextContent extends MessageContent {
 
     /*
-     * The serialized log output emitted by the code interpreter.
+     * The text and associated annotations for this thread message content item.
      */
     @Generated
-    @JsonProperty(value = "logs")
-    private String logs;
+    @JsonProperty(value = "text")
+    private MessageTextDetails text;
 
     /**
-     * Creates an instance of CodeInterpreterLogOutput class.
+     * Creates an instance of MessageTextContent class.
      *
-     * @param logs the logs value to set.
+     * @param text the text value to set.
      */
     @Generated
     @JsonCreator
-    private CodeInterpreterLogOutput(@JsonProperty(value = "logs") String logs) {
-        this.logs = logs;
+    public MessageTextContent(@JsonProperty(value = "text") MessageTextDetails text) {
+        this.text = text;
     }
 
     /**
-     * Get the logs property: The serialized log output emitted by the code interpreter.
+     * Get the text property: The text and associated annotations for this thread message content item.
      *
-     * @return the logs value.
+     * @return the text value.
      */
     @Generated
-    public String getLogs() {
-        return this.logs;
+    public MessageTextDetails getText() {
+        return this.text;
     }
 }

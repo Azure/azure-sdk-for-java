@@ -29,13 +29,13 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AssistantMessages.
+ * An instance of this class provides access to all the operations defined in ThreadMessages.
  */
-public final class AssistantMessagesImpl {
+public final class ThreadMessagesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AssistantMessagesService service;
+    private final ThreadMessagesService service;
 
     /**
      * The service client containing this operation class.
@@ -43,23 +43,23 @@ public final class AssistantMessagesImpl {
     private final AssistantsClientImpl client;
 
     /**
-     * Initializes an instance of AssistantMessagesImpl.
+     * Initializes an instance of ThreadMessagesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AssistantMessagesImpl(AssistantsClientImpl client) {
+    ThreadMessagesImpl(AssistantsClientImpl client) {
         this.service
-            = RestProxy.create(AssistantMessagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(ThreadMessagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AssistantsClientAssistantMessages to be used by the proxy service to
+     * The interface defining all the services for AssistantsClientThreadMessages to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}/openai")
-    @ServiceInterface(name = "AssistantsClientAssi")
-    public interface AssistantMessagesService {
+    @ServiceInterface(name = "AssistantsClientThre")
+    public interface ThreadMessagesService {
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -186,7 +186,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of messages from a thread.
+     * Creates a new message on a specified thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -198,7 +198,7 @@ public final class AssistantMessagesImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -218,13 +218,16 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread that the message should be created on.
+     * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -243,7 +246,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of messages from a thread.
+     * Creates a new message on a specified thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -255,7 +258,7 @@ public final class AssistantMessagesImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -275,13 +278,16 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread that the message should be created on.
+     * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -299,7 +305,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of messages from a thread.
+     * Gets a list of messages that exist on a thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -322,8 +328,8 @@ public final class AssistantMessagesImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -362,8 +368,11 @@ public final class AssistantMessagesImpl {
      *             ]
      *             assistant_id: String (Optional)
      *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -373,13 +382,13 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread from which messages should be listed.
+     * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * @return a list of messages that exist on a thread along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -390,7 +399,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of messages from a thread.
+     * Gets a list of messages that exist on a thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -413,8 +422,8 @@ public final class AssistantMessagesImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -453,8 +462,11 @@ public final class AssistantMessagesImpl {
      *             ]
      *             assistant_id: String (Optional)
      *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -464,13 +476,13 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread from which messages should be listed.
+     * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of messages that exist on a thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
@@ -479,7 +491,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Retrieves a message associated with a thread.
+     * Gets an existing message from an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -496,20 +508,23 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread from which the message should be retrieved.
-     * @param messageId The ID of the message to retrieve.
+     * @param threadId The ID of the thread to retrieve the specified message from.
+     * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response} on successful completion of
+     * @return an existing message from an existing thread along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -521,7 +536,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Retrieves a message associated with a thread.
+     * Gets an existing message from an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -538,20 +553,23 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread from which the message should be retrieved.
-     * @param messageId The ID of the message to retrieve.
+     * @param threadId The ID of the thread to retrieve the specified message from.
+     * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response}.
+     * @return an existing message from an existing thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveMessageWithResponse(String threadId, String messageId,
@@ -562,14 +580,14 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Modifies an existing message associated with a thread.
+     * Modifies an existing message on an existing thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -589,14 +607,17 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the message to modify.
-     * @param messageId The ID of the message to modify.
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -615,14 +636,14 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Modifies an existing message associated with a thread.
+     * Modifies an existing message on an existing thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -642,14 +663,17 @@ public final class AssistantMessagesImpl {
      *     ]
      *     assistant_id: String (Optional)
      *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the message to modify.
-     * @param messageId The ID of the message to modify.
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -667,7 +691,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of files associated with a message from a thread.
+     * Gets a list of previously uploaded files associated with a message from a thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -690,8 +714,8 @@ public final class AssistantMessagesImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -731,15 +755,15 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the target message to list files from.
+     * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
@@ -750,7 +774,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Returns a list of files associated with a message from a thread.
+     * Gets a list of previously uploaded files associated with a message from a thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -773,8 +797,8 @@ public final class AssistantMessagesImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -814,14 +838,14 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the target message to list files from.
+     * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
@@ -832,7 +856,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Retrieves a file attached to a message within a thread.
+     * Gets information about a file attachment to a message within a thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -845,15 +869,15 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the target message to retrieve the requested file from.
-     * @param messageId The ID of the message to retrieve the requested file from.
-     * @param fileId The ID of the file to retrieve.
+     * @param threadId The ID of the thread containing the message to get information from.
+     * @param messageId The ID of the message to get information from.
+     * @param fileId The ID of the file to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant thread message along with {@link Response} on
+     * @return information about a file attachment to a message within a thread along with {@link Response} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -865,7 +889,7 @@ public final class AssistantMessagesImpl {
     }
 
     /**
-     * Retrieves a file attached to a message within a thread.
+     * Gets information about a file attachment to a message within a thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -878,15 +902,15 @@ public final class AssistantMessagesImpl {
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread containing the target message to retrieve the requested file from.
-     * @param messageId The ID of the message to retrieve the requested file from.
-     * @param fileId The ID of the file to retrieve.
+     * @param threadId The ID of the thread containing the message to get information from.
+     * @param messageId The ID of the message to get information from.
+     * @param fileId The ID of the file to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant thread message along with {@link Response}.
+     * @return information about a file attachment to a message within a thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveMessageFileWithResponse(String threadId, String messageId, String fileId,

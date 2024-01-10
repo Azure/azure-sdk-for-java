@@ -17,7 +17,7 @@ import java.util.Map;
  * A single message within an assistant thread.
  */
 @Fluent
-public final class AssistantMessage {
+public final class ThreadMessage {
 
     /*
      * The identifier, which can be referenced in API endpoints.
@@ -52,14 +52,14 @@ public final class AssistantMessage {
      */
     @Generated
     @JsonProperty(value = "role")
-    private AssistantRole role;
+    private MessageRole role;
 
     /*
      * The list of content items associated with the assistant thread message.
      */
     @Generated
     @JsonProperty(value = "content")
-    private List<AssistantMessageContent> content;
+    private List<MessageContent> content;
 
     /*
      * If applicable, the ID of the assistant that authored this message.
@@ -76,37 +76,51 @@ public final class AssistantMessage {
     private String runId;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
+     * access files.
+     */
+    @Generated
+    @JsonProperty(value = "file_ids")
+    private List<String> fileIds;
+
+    /*
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of AssistantMessage class.
+     * Creates an instance of ThreadMessage class.
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
      * @param threadId the threadId value to set.
      * @param role the role value to set.
      * @param content the content value to set.
+     * @param fileIds the fileIds value to set.
      */
     @Generated
-    public AssistantMessage(String id, OffsetDateTime createdAt, String threadId, AssistantRole role,
-        List<AssistantMessageContent> content) {
+    public ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageRole role,
+        List<MessageContent> content, List<String> fileIds) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
         this.threadId = threadId;
         this.role = role;
         this.content = content;
+        this.fileIds = fileIds;
     }
 
     @Generated
     @JsonCreator
-    private AssistantMessage(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "thread_id") String threadId, @JsonProperty(value = "role") AssistantRole role,
-        @JsonProperty(value = "content") List<AssistantMessageContent> content) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), threadId, role, content);
+    private ThreadMessage(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "thread_id") String threadId, @JsonProperty(value = "role") MessageRole role,
+        @JsonProperty(value = "content") List<MessageContent> content,
+        @JsonProperty(value = "file_ids") List<String> fileIds) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), threadId, role, content,
+            fileIds);
     }
 
     /**
@@ -155,7 +169,7 @@ public final class AssistantMessage {
      * @return the role value.
      */
     @Generated
-    public AssistantRole getRole() {
+    public MessageRole getRole() {
         return this.role;
     }
 
@@ -165,7 +179,7 @@ public final class AssistantMessage {
      * @return the content value.
      */
     @Generated
-    public List<AssistantMessageContent> getContent() {
+    public List<MessageContent> getContent() {
         return this.content;
     }
 
@@ -183,10 +197,10 @@ public final class AssistantMessage {
      * Set the assistantId property: If applicable, the ID of the assistant that authored this message.
      *
      * @param assistantId the assistantId value to set.
-     * @return the AssistantMessage object itself.
+     * @return the ThreadMessage object itself.
      */
     @Generated
-    public AssistantMessage setAssistantId(String assistantId) {
+    public ThreadMessage setAssistantId(String assistantId) {
         this.assistantId = assistantId;
         return this;
     }
@@ -205,16 +219,30 @@ public final class AssistantMessage {
      * Set the runId property: If applicable, the ID of the run associated with the authoring of this message.
      *
      * @param runId the runId value to set.
-     * @return the AssistantMessage object itself.
+     * @return the ThreadMessage object itself.
      */
     @Generated
-    public AssistantMessage setRunId(String runId) {
+    public ThreadMessage setRunId(String runId) {
         this.runId = runId;
         return this;
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and
+     * code_interpreter that can
+     * access files.
+     *
+     * @return the fileIds value.
+     */
+    @Generated
+    public List<String> getFileIds() {
+        return this.fileIds;
+    }
+
+    /**
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -224,13 +252,15 @@ public final class AssistantMessage {
     }
 
     /**
-     * Set the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
-     * @return the AssistantMessage object itself.
+     * @return the ThreadMessage object itself.
      */
     @Generated
-    public AssistantMessage setMetadata(Map<String, String> metadata) {
+    public ThreadMessage setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

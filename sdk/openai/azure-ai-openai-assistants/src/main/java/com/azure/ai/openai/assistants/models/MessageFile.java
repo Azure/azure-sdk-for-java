@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
  * Information about a file attached to an assistant thread message.
  */
 @Immutable
-public final class AssistantMessageFile {
+public final class MessageFile {
 
     /*
      * The identifier, which can be referenced in API endpoints.
@@ -46,14 +46,14 @@ public final class AssistantMessageFile {
     private String messageId;
 
     /**
-     * Creates an instance of AssistantMessageFile class.
+     * Creates an instance of MessageFile class.
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
      * @param messageId the messageId value to set.
      */
     @Generated
-    private AssistantMessageFile(String id, OffsetDateTime createdAt, String messageId) {
+    private MessageFile(String id, OffsetDateTime createdAt, String messageId) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
         this.messageId = messageId;
@@ -61,8 +61,8 @@ public final class AssistantMessageFile {
 
     @Generated
     @JsonCreator
-    private AssistantMessageFile(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "created_at") long createdAt, @JsonProperty(value = "message_id") String messageId) {
+    private MessageFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "message_id") String messageId) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), messageId);
     }
 

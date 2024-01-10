@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A tool call to a code interpreter tool, issued by the model in evaluation of a configured code interpeter tool, that
+ * A tool call to a code interpreter tool, issued by the model in evaluation of a configured code interpreter tool,
+ * that
  * represents submitted output needed or already fulfilled by the tool for the model to continue.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -24,7 +25,7 @@ public final class CodeInterpreterToolCall extends ToolCall {
      */
     @Generated
     @JsonProperty(value = "code_interpreter")
-    private CodeInterpeterCallDetails codeInterpreter;
+    private CodeInterpreterToolCallDetails codeInterpreter;
 
     /**
      * Creates an instance of CodeInterpreterToolCall class.
@@ -35,7 +36,7 @@ public final class CodeInterpreterToolCall extends ToolCall {
     @Generated
     @JsonCreator
     private CodeInterpreterToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "code_interpreter") CodeInterpeterCallDetails codeInterpreter) {
+        @JsonProperty(value = "code_interpreter") CodeInterpreterToolCallDetails codeInterpreter) {
         super(id);
         this.codeInterpreter = codeInterpreter;
     }
@@ -46,7 +47,7 @@ public final class CodeInterpreterToolCall extends ToolCall {
      * @return the codeInterpreter value.
      */
     @Generated
-    public CodeInterpeterCallDetails getCodeInterpreter() {
+    public CodeInterpreterToolCallDetails getCodeInterpreter() {
         return this.codeInterpreter;
     }
 }

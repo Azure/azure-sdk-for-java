@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The status of an assistant deletion operation.
  */
 @Immutable
-public final class AssistantDeletionStatus {
+public final class AssistantDeletionStatus extends DeletionStatus {
 
     /*
      * The object type, which is always 'assistant.deleted'.
@@ -20,13 +20,6 @@ public final class AssistantDeletionStatus {
     @Generated
     @JsonProperty(value = "object")
     private String object = "assistant.deleted";
-
-    /*
-     * A value indicating whether deletion was successful.
-     */
-    @Generated
-    @JsonProperty(value = "deleted")
-    private boolean deleted;
 
     /**
      * Creates an instance of AssistantDeletionStatus class.
@@ -36,7 +29,7 @@ public final class AssistantDeletionStatus {
     @Generated
     @JsonCreator
     private AssistantDeletionStatus(@JsonProperty(value = "deleted") boolean deleted) {
-        this.deleted = deleted;
+        super(deleted);
     }
 
     /**
@@ -47,15 +40,5 @@ public final class AssistantDeletionStatus {
     @Generated
     public String getObject() {
         return this.object;
-    }
-
-    /**
-     * Get the deleted property: A value indicating whether deletion was successful.
-     *
-     * @return the deleted value.
-     */
-    @Generated
-    public boolean isDeleted() {
-        return this.deleted;
     }
 }

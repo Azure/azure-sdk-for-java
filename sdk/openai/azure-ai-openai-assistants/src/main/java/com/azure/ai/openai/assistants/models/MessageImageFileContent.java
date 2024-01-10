@@ -16,23 +16,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("image_file")
 @Immutable
-public final class AssistantMessageImageFileContent extends AssistantMessageContent {
+public final class MessageImageFileContent extends MessageContent {
 
     /*
      * The image file for this thread message content item.
      */
     @Generated
     @JsonProperty(value = "image_file")
-    private AssistantImageFile imageFile;
+    private MessageImageFileDetails imageFile;
 
     /**
-     * Creates an instance of AssistantMessageImageFileContent class.
+     * Creates an instance of MessageImageFileContent class.
      *
      * @param imageFile the imageFile value to set.
      */
     @Generated
     @JsonCreator
-    public AssistantMessageImageFileContent(@JsonProperty(value = "image_file") AssistantImageFile imageFile) {
+    public MessageImageFileContent(@JsonProperty(value = "image_file") MessageImageFileDetails imageFile) {
         this.imageFile = imageFile;
     }
 
@@ -42,7 +42,7 @@ public final class AssistantMessageImageFileContent extends AssistantMessageCont
      * @return the imageFile value.
      */
     @Generated
-    public AssistantImageFile getImageFile() {
+    public MessageImageFileDetails getImageFile() {
         return this.imageFile;
     }
 }

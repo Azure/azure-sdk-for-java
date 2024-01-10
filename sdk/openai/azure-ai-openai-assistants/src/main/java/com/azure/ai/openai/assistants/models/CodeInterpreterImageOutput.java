@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("image")
 @Immutable
-public final class CodeInterpreterImageOutput extends CodeInterpreterCallOutput {
+public final class CodeInterpreterImageOutput extends CodeInterpreterToolCallOutput {
 
     /*
      * Referential information for the image associated with this output.

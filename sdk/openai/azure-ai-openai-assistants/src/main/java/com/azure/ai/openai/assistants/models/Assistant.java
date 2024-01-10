@@ -83,7 +83,9 @@ public final class Assistant {
     private List<String> fileIds;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -100,11 +102,10 @@ public final class Assistant {
      * @param instructions the instructions value to set.
      * @param tools the tools value to set.
      * @param fileIds the fileIds value to set.
-     * @param metadata the metadata value to set.
      */
     @Generated
     private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
-        String instructions, List<ToolDefinition> tools, List<String> fileIds, Map<String, String> metadata) {
+        String instructions, List<ToolDefinition> tools, List<String> fileIds) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
         this.name = name;
@@ -113,7 +114,6 @@ public final class Assistant {
         this.instructions = instructions;
         this.tools = tools;
         this.fileIds = fileIds;
-        this.metadata = metadata;
     }
 
     @Generated
@@ -122,10 +122,9 @@ public final class Assistant {
         @JsonProperty(value = "name") String name, @JsonProperty(value = "description") String description,
         @JsonProperty(value = "model") String model, @JsonProperty(value = "instructions") String instructions,
         @JsonProperty(value = "tools") List<ToolDefinition> tools,
-        @JsonProperty(value = "file_ids") List<String> fileIds,
-        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        @JsonProperty(value = "file_ids") List<String> fileIds) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), name, description, model,
-            instructions, tools, fileIds, metadata);
+            instructions, tools, fileIds);
     }
 
     /**
@@ -219,7 +218,9 @@ public final class Assistant {
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

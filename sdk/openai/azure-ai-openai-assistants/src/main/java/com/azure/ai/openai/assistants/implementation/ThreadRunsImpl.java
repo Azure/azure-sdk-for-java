@@ -29,13 +29,13 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AssistantRuns.
+ * An instance of this class provides access to all the operations defined in ThreadRuns.
  */
-public final class AssistantRunsImpl {
+public final class ThreadRunsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AssistantRunsService service;
+    private final ThreadRunsService service;
 
     /**
      * The service client containing this operation class.
@@ -43,23 +43,23 @@ public final class AssistantRunsImpl {
     private final AssistantsClientImpl client;
 
     /**
-     * Initializes an instance of AssistantRunsImpl.
+     * Initializes an instance of ThreadRunsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AssistantRunsImpl(AssistantsClientImpl client) {
+    ThreadRunsImpl(AssistantsClientImpl client) {
         this.service
-            = RestProxy.create(AssistantRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(ThreadRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AssistantsClientAssistantRuns to be used by the proxy service to
+     * The interface defining all the services for AssistantsClientThreadRuns to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}/openai")
-    @ServiceInterface(name = "AssistantsClientAssi")
-    public interface AssistantRunsService {
+    @ServiceInterface(name = "AssistantsClientThre")
+    public interface ThreadRunsService {
         @Post("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -220,7 +220,7 @@ public final class AssistantRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -236,7 +236,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -249,15 +249,15 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
@@ -294,7 +294,7 @@ public final class AssistantRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -310,7 +310,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -323,15 +323,15 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
@@ -353,7 +353,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Returns a list of runs associated with an assistant thread.
+     * Gets a list of runs for a specified thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -376,8 +376,8 @@ public final class AssistantRunsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -412,7 +412,7 @@ public final class AssistantRunsImpl {
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
      *             }
-     *             last_error (Optional): {
+     *             last_error (Required): {
      *                 code: String (Required)
      *                 message: String (Required)
      *             }
@@ -425,15 +425,15 @@ public final class AssistantRunsImpl {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             expires_at: OffsetDateTime (Required)
      *             started_at: OffsetDateTime (Required)
      *             completed_at: OffsetDateTime (Required)
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     ]
      *     first_id: String (Required)
@@ -448,7 +448,7 @@ public final class AssistantRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * @return a list of runs for a specified thread along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -459,7 +459,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Returns a list of runs associated with an assistant thread.
+     * Gets a list of runs for a specified thread.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -482,8 +482,8 @@ public final class AssistantRunsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -518,7 +518,7 @@ public final class AssistantRunsImpl {
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
      *             }
-     *             last_error (Optional): {
+     *             last_error (Required): {
      *                 code: String (Required)
      *                 message: String (Required)
      *             }
@@ -531,15 +531,15 @@ public final class AssistantRunsImpl {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
      *             created_at: long (Required)
      *             expires_at: OffsetDateTime (Required)
      *             started_at: OffsetDateTime (Required)
      *             completed_at: OffsetDateTime (Required)
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     ]
      *     first_id: String (Required)
@@ -554,7 +554,7 @@ public final class AssistantRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of runs for a specified thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
@@ -563,7 +563,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Retrieves an existing run associated with an assistant thread.
+     * Gets an existing run from an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -576,7 +576,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -589,27 +589,27 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread to retrieve the run from.
-     * @param runId The ID of the run to retrieve.
+     * @param threadId The ID of the thread to retrieve run information from.
+     * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return an existing run from an existing thread along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retrieveRunWithResponseAsync(String threadId, String runId,
@@ -620,7 +620,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Retrieves an existing run associated with an assistant thread.
+     * Gets an existing run from an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -633,7 +633,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -646,26 +646,26 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread to retrieve the run from.
-     * @param runId The ID of the run to retrieve.
+     * @param threadId The ID of the thread to retrieve run information from.
+     * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     * @return an existing run from an existing thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
@@ -675,14 +675,14 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Modifies an existing run associated with an assistant thread.
+     * Modifies an existing thread run.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -698,7 +698,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -711,19 +711,19 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the target run to be modified.
+     * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -743,14 +743,14 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Modifies an existing run associated with an assistant thread.
+     * Modifies an existing thread run.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -766,7 +766,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -779,19 +779,19 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the target run to be modified.
+     * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -810,8 +810,8 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Submits outputs from tool calls as requested by a run with a status of 'requires_action' with
-     * required_action.type of 'submit_tool_outputs'.
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -837,7 +837,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -850,20 +850,20 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run to which outputs should be submitted.
-     * @param runId The ID of the run to submit tool outputs to.
+     * @param threadId The ID of the the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -882,8 +882,8 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Submits outputs from tool calls as requested by a run with a status of 'requires_action' with
-     * required_action.type of 'submit_tool_outputs'.
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -909,7 +909,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -922,20 +922,20 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run to which outputs should be submitted.
-     * @param runId The ID of the run to submit tool outputs to.
+     * @param threadId The ID of the the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -953,7 +953,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Cancels a run associated with an assistant thread.
+     * Cancels a thread run.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -966,7 +966,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -979,19 +979,19 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run to cancel.
+     * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1010,7 +1010,7 @@ public final class AssistantRunsImpl {
     }
 
     /**
-     * Cancels a run associated with an assistant thread.
+     * Cancels a thread run.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -1023,7 +1023,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -1036,19 +1036,19 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread associated with the run to cancel.
+     * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1085,13 +1085,16 @@ public final class AssistantRunsImpl {
      *                 ]
      *                 assistant_id: String (Optional)
      *                 run_id: String (Optional)
+     *                 file_ids (Required): [
+     *                     String (Required)
+     *                 ]
      *                 metadata (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *             }
      *         ]
      *         metadata (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *     }
      *     model: String (Optional)
@@ -1101,7 +1104,7 @@ public final class AssistantRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1117,7 +1120,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -1130,15 +1133,15 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 
@@ -1181,13 +1184,16 @@ public final class AssistantRunsImpl {
      *                 ]
      *                 assistant_id: String (Optional)
      *                 run_id: String (Optional)
+     *                 file_ids (Required): [
+     *                     String (Required)
+     *                 ]
      *                 metadata (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *             }
      *         ]
      *         metadata (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *     }
      *     model: String (Optional)
@@ -1197,7 +1203,7 @@ public final class AssistantRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1213,7 +1219,7 @@ public final class AssistantRunsImpl {
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
      *     }
-     *     last_error (Optional): {
+     *     last_error (Required): {
      *         code: String (Required)
      *         message: String (Required)
      *     }
@@ -1226,15 +1232,15 @@ public final class AssistantRunsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
      *     created_at: long (Required)
      *     expires_at: OffsetDateTime (Required)
      *     started_at: OffsetDateTime (Required)
      *     completed_at: OffsetDateTime (Required)
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
      * }
      * }</pre>
      * 

@@ -9,31 +9,31 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An image reference, as represented in thread message content.
+ * An encapsulation of an image file ID, as used by message image content.
  */
 @Immutable
-public final class AssistantImageFile {
+public final class MessageImageFileIdDetails {
 
     /*
-     * The ID for the file associated with this image.
+     * The ID of the specific image file.
      */
     @Generated
     @JsonProperty(value = "file_id")
     private String fileId;
 
     /**
-     * Creates an instance of AssistantImageFile class.
+     * Creates an instance of MessageImageFileIdDetails class.
      *
      * @param fileId the fileId value to set.
      */
     @Generated
     @JsonCreator
-    public AssistantImageFile(@JsonProperty(value = "file_id") String fileId) {
+    public MessageImageFileIdDetails(@JsonProperty(value = "file_id") String fileId) {
         this.fileId = fileId;
     }
 
     /**
-     * Get the fileId property: The ID for the file associated with this image.
+     * Get the fileId property: The ID of the specific image file.
      *
      * @return the fileId value.
      */

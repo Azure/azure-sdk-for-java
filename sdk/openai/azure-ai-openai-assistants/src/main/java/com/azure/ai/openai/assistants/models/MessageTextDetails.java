@@ -13,7 +13,7 @@ import java.util.List;
  * The text and associated annotations for a single item of assistant thread message content.
  */
 @Immutable
-public final class AssistantMessageText {
+public final class MessageTextDetails {
 
     /*
      * The text data.
@@ -27,18 +27,18 @@ public final class AssistantMessageText {
      */
     @Generated
     @JsonProperty(value = "annotations")
-    private List<AssistantMessageTextAnnotation> annotations;
+    private List<MessageTextAnnotation> annotations;
 
     /**
-     * Creates an instance of AssistantMessageText class.
+     * Creates an instance of MessageTextDetails class.
      *
      * @param value the value value to set.
      * @param annotations the annotations value to set.
      */
     @Generated
     @JsonCreator
-    public AssistantMessageText(@JsonProperty(value = "value") String value,
-        @JsonProperty(value = "annotations") List<AssistantMessageTextAnnotation> annotations) {
+    public MessageTextDetails(@JsonProperty(value = "value") String value,
+        @JsonProperty(value = "annotations") List<MessageTextAnnotation> annotations) {
         this.value = value;
         this.annotations = annotations;
     }
@@ -59,7 +59,7 @@ public final class AssistantMessageText {
      * @return the annotations value.
      */
     @Generated
-    public List<AssistantMessageTextAnnotation> getAnnotations() {
+    public List<MessageTextAnnotation> getAnnotations() {
         return this.annotations;
     }
 }

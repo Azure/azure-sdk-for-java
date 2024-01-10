@@ -161,7 +161,7 @@ public final class FilesImpl {
     }
 
     /**
-     * Returns a list of files that belong to the user's organization.
+     * Gets a list of previously uploaded files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -177,8 +177,8 @@ public final class FilesImpl {
      * <td>purpose</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Limits files in the response to those with the specified purpose. Allowed values: "fine-tune",
-     * "fine-tune-results", "assistants", "assistants_output".</td>
+     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
+     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -206,8 +206,7 @@ public final class FilesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data from a file list operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
@@ -217,7 +216,7 @@ public final class FilesImpl {
     }
 
     /**
-     * Returns a list of files that belong to the user's organization.
+     * Gets a list of previously uploaded files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -233,8 +232,8 @@ public final class FilesImpl {
      * <td>purpose</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Limits files in the response to those with the specified purpose. Allowed values: "fine-tune",
-     * "fine-tune-results", "assistants", "assistants_output".</td>
+     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
+     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -262,7 +261,7 @@ public final class FilesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data from a file list operation along with {@link Response}.
+     * @return a list of previously uploaded files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
@@ -271,13 +270,14 @@ public final class FilesImpl {
     }
 
     /**
-     * Upload a file that can be used across various endpoints.
+     * Uploads a file for use by other operations.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      *     filename: String (Optional)
      * }
@@ -314,13 +314,14 @@ public final class FilesImpl {
     }
 
     /**
-     * Upload a file that can be used across various endpoints.
+     * Uploads a file for use by other operations.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      *     filename: String (Optional)
      * }
@@ -362,8 +363,8 @@ public final class FilesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      *     id: String (Required)
      * }
      * }</pre>
@@ -391,8 +392,8 @@ public final class FilesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      *     id: String (Required)
      * }
      * }</pre>

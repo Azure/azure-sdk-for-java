@@ -145,7 +145,7 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Creates a new thread for an assistant.
+     * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -164,13 +164,16 @@ public final class AssistantThreadsImpl {
      *             ]
      *             assistant_id: String (Optional)
      *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -182,7 +185,7 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -206,7 +209,7 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Creates a new thread for an assistant.
+     * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -225,13 +228,16 @@ public final class AssistantThreadsImpl {
      *             ]
      *             assistant_id: String (Optional)
      *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -243,7 +249,7 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -266,7 +272,7 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Retrieves an existing thread for an assistant.
+     * Gets information about an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -275,20 +281,20 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread to retrieve.
+     * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a single thread associated with an assistant along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return information about an existing thread along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retrieveThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
@@ -298,7 +304,7 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Retrieves an existing thread for an assistant.
+     * Gets information about an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -307,19 +313,19 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
      * 
-     * @param threadId The ID of the thread to retrieve.
+     * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a single thread associated with an assistant along with {@link Response}.
+     * @return information about an existing thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveThreadWithResponse(String threadId, RequestOptions requestOptions) {
@@ -328,14 +334,14 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Modifies an existing thread for an assistant.
+     * Modifies an existing thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -347,7 +353,7 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -372,14 +378,14 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Modifies an existing thread for an assistant.
+     * Modifies an existing thread.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -391,7 +397,7 @@ public final class AssistantThreadsImpl {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -415,14 +421,14 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Deletes a thread.
+     * Deletes an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 
@@ -443,14 +449,14 @@ public final class AssistantThreadsImpl {
     }
 
     /**
-     * Deletes a thread.
+     * Deletes an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 

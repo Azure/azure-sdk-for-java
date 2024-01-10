@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = AssistantMessageTextAnnotation.class)
-@JsonTypeName("AssistantMessageTextAnnotation")
+    defaultImpl = MessageTextAnnotation.class)
+@JsonTypeName("MessageTextAnnotation")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "file_citation", value = AssistantMessageTextFileAnnotation.class),
-    @JsonSubTypes.Type(name = "file_path", value = AssistantMessageTextFilePathAnnotation.class) })
+    @JsonSubTypes.Type(name = "file_citation", value = MessageFileCitationTextAnnotation.class),
+    @JsonSubTypes.Type(name = "file_path", value = MessageFilePathTextAnnotation.class) })
 @Immutable
-public class AssistantMessageTextAnnotation {
+public class MessageTextAnnotation {
 
     /*
      * The textual content associated with this text annotation item.
@@ -48,7 +48,7 @@ public class AssistantMessageTextAnnotation {
     private int endIndex;
 
     /**
-     * Creates an instance of AssistantMessageTextAnnotation class.
+     * Creates an instance of MessageTextAnnotation class.
      *
      * @param text the text value to set.
      * @param startIndex the startIndex value to set.
@@ -56,7 +56,7 @@ public class AssistantMessageTextAnnotation {
      */
     @Generated
     @JsonCreator
-    public AssistantMessageTextAnnotation(@JsonProperty(value = "text") String text,
+    public MessageTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex) {
         this.text = text;
         this.startIndex = startIndex;

@@ -13,7 +13,7 @@ import java.util.List;
  * The detailed information about a code interpreter invocation by the model.
  */
 @Immutable
-public final class CodeInterpeterCallDetails {
+public final class CodeInterpreterToolCallDetails {
 
     /*
      * The input provided by the model to the code interpreter tool.
@@ -23,22 +23,22 @@ public final class CodeInterpeterCallDetails {
     private String input;
 
     /*
-     * The outputs produced by the code interpeter tool back to the model in response to the tool call.
+     * The outputs produced by the code interpreter tool back to the model in response to the tool call.
      */
     @Generated
     @JsonProperty(value = "outputs")
-    private List<CodeInterpreterCallOutput> outputs;
+    private List<CodeInterpreterToolCallOutput> outputs;
 
     /**
-     * Creates an instance of CodeInterpeterCallDetails class.
+     * Creates an instance of CodeInterpreterToolCallDetails class.
      *
      * @param input the input value to set.
      * @param outputs the outputs value to set.
      */
     @Generated
     @JsonCreator
-    private CodeInterpeterCallDetails(@JsonProperty(value = "input") String input,
-        @JsonProperty(value = "outputs") List<CodeInterpreterCallOutput> outputs) {
+    private CodeInterpreterToolCallDetails(@JsonProperty(value = "input") String input,
+        @JsonProperty(value = "outputs") List<CodeInterpreterToolCallOutput> outputs) {
         this.input = input;
         this.outputs = outputs;
     }
@@ -54,13 +54,13 @@ public final class CodeInterpeterCallDetails {
     }
 
     /**
-     * Get the outputs property: The outputs produced by the code interpeter tool back to the model in response to the
+     * Get the outputs property: The outputs produced by the code interpreter tool back to the model in response to the
      * tool call.
      *
      * @return the outputs value.
      */
     @Generated
-    public List<CodeInterpreterCallOutput> getOutputs() {
+    public List<CodeInterpreterToolCallOutput> getOutputs() {
         return this.outputs;
     }
 }

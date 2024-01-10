@@ -40,7 +40,9 @@ public final class AssistantThread {
     private long createdAt;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -51,20 +53,17 @@ public final class AssistantThread {
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
-     * @param metadata the metadata value to set.
      */
     @Generated
-    private AssistantThread(String id, OffsetDateTime createdAt, Map<String, String> metadata) {
+    private AssistantThread(String id, OffsetDateTime createdAt) {
         this.id = id;
         this.createdAt = createdAt.toEpochSecond();
-        this.metadata = metadata;
     }
 
     @Generated
     @JsonCreator
-    private AssistantThread(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "metadata") Map<String, String> metadata) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), metadata);
+    private AssistantThread(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC));
     }
 
     /**
@@ -98,7 +97,9 @@ public final class AssistantThread {
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

@@ -243,7 +243,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Creates a new assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -261,7 +261,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -284,7 +284,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -308,7 +308,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Creates a new assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -326,7 +326,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -349,7 +349,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -372,7 +372,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -395,8 +395,8 @@ public final class AssistantsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -438,7 +438,7 @@ public final class AssistantsImpl {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -454,7 +454,7 @@ public final class AssistantsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * @return a list of assistants that were previously created along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -465,7 +465,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -488,8 +488,8 @@ public final class AssistantsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -531,7 +531,7 @@ public final class AssistantsImpl {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -547,7 +547,7 @@ public final class AssistantsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of assistants that were previously created along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
@@ -556,7 +556,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -576,7 +576,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -600,7 +600,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -620,7 +620,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -642,7 +642,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -660,7 +660,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -683,7 +683,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -708,7 +708,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -726,7 +726,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -749,7 +749,7 @@ public final class AssistantsImpl {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -779,8 +779,8 @@ public final class AssistantsImpl {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 
@@ -808,8 +808,8 @@ public final class AssistantsImpl {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 
@@ -829,7 +829,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -869,7 +869,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -909,7 +909,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -932,8 +932,8 @@ public final class AssistantsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -973,14 +973,14 @@ public final class AssistantsImpl {
      * }
      * }</pre>
      * 
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listAssistantFilesWithResponseAsync(String assistantId,
@@ -991,7 +991,7 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -1014,8 +1014,8 @@ public final class AssistantsImpl {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -1055,13 +1055,14 @@ public final class AssistantsImpl {
      * }
      * }</pre>
      * 
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
@@ -1135,19 +1136,20 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1165,19 +1167,20 @@ public final class AssistantsImpl {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      * 
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

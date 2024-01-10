@@ -86,31 +86,31 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * The AssistantMessagesImpl object to access its operations.
+     * The ThreadMessagesImpl object to access its operations.
      */
-    private final AssistantMessagesImpl assistantMessages;
+    private final ThreadMessagesImpl threadMessages;
 
     /**
-     * Gets the AssistantMessagesImpl object to access its operations.
+     * Gets the ThreadMessagesImpl object to access its operations.
      * 
-     * @return the AssistantMessagesImpl object.
+     * @return the ThreadMessagesImpl object.
      */
-    public AssistantMessagesImpl getAssistantMessages() {
-        return this.assistantMessages;
+    public ThreadMessagesImpl getThreadMessages() {
+        return this.threadMessages;
     }
 
     /**
-     * The AssistantRunsImpl object to access its operations.
+     * The ThreadRunsImpl object to access its operations.
      */
-    private final AssistantRunsImpl assistantRuns;
+    private final ThreadRunsImpl threadRuns;
 
     /**
-     * Gets the AssistantRunsImpl object to access its operations.
+     * Gets the ThreadRunsImpl object to access its operations.
      * 
-     * @return the AssistantRunsImpl object.
+     * @return the ThreadRunsImpl object.
      */
-    public AssistantRunsImpl getAssistantRuns() {
-        return this.assistantRuns;
+    public ThreadRunsImpl getThreadRuns() {
+        return this.threadRuns;
     }
 
     /**
@@ -174,8 +174,8 @@ public final class AssistantsClientImpl {
         this.endpoint = endpoint;
         this.assistants = new AssistantsImpl(this);
         this.assistantThreads = new AssistantThreadsImpl(this);
-        this.assistantMessages = new AssistantMessagesImpl(this);
-        this.assistantRuns = new AssistantRunsImpl(this);
+        this.threadMessages = new ThreadMessagesImpl(this);
+        this.threadRuns = new ThreadRunsImpl(this);
         this.runSteps = new RunStepsImpl(this);
         this.files = new FilesImpl(this);
     }

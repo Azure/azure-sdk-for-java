@@ -6,12 +6,13 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.implementation.AssistantsImpl;
 import com.azure.ai.openai.assistants.implementation.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.implementation.models.AssistantFileDeletionStatus;
+import com.azure.ai.openai.assistants.implementation.models.ListSortOrder;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantModificationOptions;
-import com.azure.ai.openai.assistants.models.ListResponseOfAssistant;
-import com.azure.ai.openai.assistants.models.ListResponseOfAssistantFile;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -36,7 +37,17 @@ public final class AssistantsAsyncClient {
     private final AssistantsImpl serviceClient;
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Initializes an instance of AssistantsAsyncClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    AssistantsAsyncClient(AssistantsImpl serviceClient) {
+        this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Creates a new assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -54,7 +65,7 @@ public final class AssistantsAsyncClient {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -77,7 +88,7 @@ public final class AssistantsAsyncClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -100,7 +111,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -123,8 +134,8 @@ public final class AssistantsAsyncClient {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -166,7 +177,7 @@ public final class AssistantsAsyncClient {
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -182,17 +193,17 @@ public final class AssistantsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * @return a list of assistants that were previously created along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAssistantsWithResponse(RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> listAssistantsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listAssistantsWithResponseAsync(requestOptions);
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -212,7 +223,7 @@ public final class AssistantsAsyncClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -234,7 +245,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -252,7 +263,7 @@ public final class AssistantsAsyncClient {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -275,7 +286,7 @@ public final class AssistantsAsyncClient {
      *     file_ids (Required): [
      *         String (Required)
      *     ]
-     *     metadata (Required): {
+     *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
@@ -305,8 +316,8 @@ public final class AssistantsAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      *
@@ -326,7 +337,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p>
      * <strong>Request Body Schema</strong>
      * </p>
@@ -365,7 +376,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -388,8 +399,8 @@ public final class AssistantsAsyncClient {
      * <td>order</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending
-     * order.</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
      * </tr>
      * <tr>
      * <td>after</td>
@@ -429,19 +440,18 @@ public final class AssistantsAsyncClient {
      * }
      * }</pre>
      *
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId,
-        RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         return this.serviceClient.listAssistantFilesWithResponseAsync(assistantId, requestOptions);
     }
 
@@ -477,19 +487,20 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     deleted: boolean (Required)
+     *     object: String (Required)
      * }
      * }</pre>
      *
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -506,7 +517,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Creates an assistant with a model and instructions.
+     * Creates a new assistant.
      *
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -527,7 +538,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
      * is 20.
@@ -545,18 +556,19 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
+     * @return a list of assistants that were previously created on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListResponseOfAssistant> listAssistants(Integer limit, String order, String after, String before) {
+    Mono<OpenAIPageableListOfAssistant> listAssistants(Integer limit, ListSortOrder order, String after,
+        String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
         if (order != null) {
-            requestOptions.addQueryParam("order", order, false);
+            requestOptions.addQueryParam("order", order.toString(), false);
         }
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -565,30 +577,30 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListResponseOfAssistant.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class));
     }
 
     /**
-     * Returns a list of assistants.
+     * Gets a list of assistants that were previously created.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
+     * @return a list of assistants that were previously created on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListResponseOfAssistant> listAssistants() {
+    Mono<OpenAIPageableListOfAssistant> listAssistants() {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListResponseOfAssistant.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class));
     }
 
     /**
-     * Retrieves an assistant.
+     * Retrieves an existing assistant.
      *
      * @param assistantId The ID of the assistant to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -609,7 +621,7 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Modifies an assistant.
+     * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
      * @param modificationOptions The details of the modification to perform on the specified assistant.
@@ -652,9 +664,10 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Attaches a file to an assistant for use by tools that can read files.
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      *
      * @param assistantId The ID of the assistant to attach the file to.
+     * @param fileId The ID of the file to attach to the specified assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -664,19 +677,19 @@ public final class AssistantsAsyncClient {
      * @return information about a file attached to an assistant, as used by tools that can read files on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AssistantFile> createAssistantFile(String assistantId) {
+    public Mono<AssistantFile> createAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantFileWithResponse(assistantId, request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
+        // TODO: manually added the String fileId but will need to fix it when generating from TypeSpec.
+        return createAssistantFileWithResponse(assistantId, BinaryData.fromObject(fileId), requestOptions)
+            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
      * is 20.
      * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
@@ -693,11 +706,12 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListResponseOfAssistantFile> listAssistantFiles(String assistantId, Integer limit, String order,
+    Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -705,7 +719,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
         if (order != null) {
-            requestOptions.addQueryParam("order", order, false);
+            requestOptions.addQueryParam("order", order.toString(), false);
         }
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -714,28 +728,29 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListResponseOfAssistantFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class));
     }
 
     /**
-     * Returns a list of assistant files.
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
      *
-     * @param assistantId The ID of the assistant to list files for.
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListResponseOfAssistantFile> listAssistantFiles(String assistantId) {
+    Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListResponseOfAssistantFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class));
     }
 
     /**
@@ -762,10 +777,11 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Deletes an assistant file.
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
      *
-     * @param assistantId The ID of the assistant associated with the attached file to delete.
-     * @param fileId The ID of the attached file to delete.
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -781,15 +797,5 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return deleteAssistantFileWithResponse(assistantId, fileId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantFileDeletionStatus.class));
-    }
-
-    /**
-     * Initializes an instance of AssistantsAsyncClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    @Generated
-    AssistantsAsyncClient(AssistantsImpl serviceClient) {
-        this.serviceClient = serviceClient;
     }
 }

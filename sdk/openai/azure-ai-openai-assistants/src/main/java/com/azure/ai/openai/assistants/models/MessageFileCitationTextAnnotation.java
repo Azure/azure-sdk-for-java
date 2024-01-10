@@ -17,17 +17,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("file_citation")
 @Immutable
-public final class AssistantMessageTextFileAnnotation extends AssistantMessageTextAnnotation {
+public final class MessageFileCitationTextAnnotation extends MessageTextAnnotation {
 
     /*
-     * The file-based citation associated with this annotation.
+     * A citation within the message that points to a specific quote from a specific file.
+     * Generated when the assistant uses the "retrieval" tool to search files.
      */
     @Generated
     @JsonProperty(value = "file_citation")
-    private AssistantMessageTextFileCitation fileCitation;
+    private MessageTextFileCitationDetails fileCitation;
 
     /**
-     * Creates an instance of AssistantMessageTextFileAnnotation class.
+     * Creates an instance of MessageFileCitationTextAnnotation class.
      *
      * @param text the text value to set.
      * @param startIndex the startIndex value to set.
@@ -36,20 +37,22 @@ public final class AssistantMessageTextFileAnnotation extends AssistantMessageTe
      */
     @Generated
     @JsonCreator
-    public AssistantMessageTextFileAnnotation(@JsonProperty(value = "text") String text,
+    public MessageFileCitationTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
-        @JsonProperty(value = "file_citation") AssistantMessageTextFileCitation fileCitation) {
+        @JsonProperty(value = "file_citation") MessageTextFileCitationDetails fileCitation) {
         super(text, startIndex, endIndex);
         this.fileCitation = fileCitation;
     }
 
     /**
-     * Get the fileCitation property: The file-based citation associated with this annotation.
+     * Get the fileCitation property: A citation within the message that points to a specific quote from a specific
+     * file.
+     * Generated when the assistant uses the "retrieval" tool to search files.
      *
      * @return the fileCitation value.
      */
     @Generated
-    public AssistantMessageTextFileCitation getFileCitation() {
+    public MessageTextFileCitationDetails getFileCitation() {
         return this.fileCitation;
     }
 }

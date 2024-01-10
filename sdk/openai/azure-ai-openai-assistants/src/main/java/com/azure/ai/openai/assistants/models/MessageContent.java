@@ -16,18 +16,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = AssistantMessageContent.class)
-@JsonTypeName("AssistantMessageContent")
+    defaultImpl = MessageContent.class)
+@JsonTypeName("MessageContent")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "image_file", value = AssistantMessageImageFileContent.class),
-    @JsonSubTypes.Type(name = "text", value = AssistantMessageTextContent.class) })
+    @JsonSubTypes.Type(name = "text", value = MessageTextContent.class),
+    @JsonSubTypes.Type(name = "image_file", value = MessageImageFileContent.class) })
 @Immutable
-public class AssistantMessageContent {
+public class MessageContent {
 
     /**
-     * Creates an instance of AssistantMessageContent class.
+     * Creates an instance of MessageContent class.
      */
     @Generated
-    public AssistantMessageContent() {
+    public MessageContent() {
     }
 }

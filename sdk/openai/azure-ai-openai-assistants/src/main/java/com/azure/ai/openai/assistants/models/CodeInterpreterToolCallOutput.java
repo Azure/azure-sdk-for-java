@@ -16,18 +16,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = CodeInterpreterCallOutput.class)
-@JsonTypeName("CodeInterpreterCallOutput")
+    defaultImpl = CodeInterpreterToolCallOutput.class)
+@JsonTypeName("CodeInterpreterToolCallOutput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "logs", value = CodeInterpreterLogOutput.class),
     @JsonSubTypes.Type(name = "image", value = CodeInterpreterImageOutput.class) })
 @Immutable
-public class CodeInterpreterCallOutput {
+public class CodeInterpreterToolCallOutput {
 
     /**
-     * Creates an instance of CodeInterpreterCallOutput class.
+     * Creates an instance of CodeInterpreterToolCallOutput class.
      */
     @Generated
-    protected CodeInterpreterCallOutput() {
+    protected CodeInterpreterToolCallOutput() {
     }
 }

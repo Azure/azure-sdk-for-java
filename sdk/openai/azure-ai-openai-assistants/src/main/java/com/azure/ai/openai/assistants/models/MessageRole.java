@@ -11,49 +11,49 @@ import java.util.Collection;
 /**
  * The possible values for roles attributed to messages in a thread.
  */
-public final class AssistantRole extends ExpandableStringEnum<AssistantRole> {
+public final class MessageRole extends ExpandableStringEnum<MessageRole> {
 
     /**
      * The role representing the end-user.
      */
     @Generated
-    public static final AssistantRole USER = fromString("user");
+    public static final MessageRole USER = fromString("user");
 
     /**
      * The role representing the assistant.
      */
     @Generated
-    public static final AssistantRole ASSISTANT = fromString("assistant");
+    public static final MessageRole ASSISTANT = fromString("assistant");
 
     /**
-     * Creates a new instance of AssistantRole value.
+     * Creates a new instance of MessageRole value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public AssistantRole() {
+    public MessageRole() {
     }
 
     /**
-     * Creates or finds a AssistantRole from its string representation.
+     * Creates or finds a MessageRole from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding AssistantRole.
+     * @return the corresponding MessageRole.
      */
     @Generated
     @JsonCreator
-    public static AssistantRole fromString(String name) {
-        return fromString(name, AssistantRole.class);
+    public static MessageRole fromString(String name) {
+        return fromString(name, MessageRole.class);
     }
 
     /**
-     * Gets known AssistantRole values.
+     * Gets known MessageRole values.
      *
-     * @return known AssistantRole values.
+     * @return known MessageRole values.
      */
     @Generated
-    public static Collection<AssistantRole> values() {
-        return values(AssistantRole.class);
+    public static Collection<MessageRole> values() {
+        return values(MessageRole.class);
     }
 }

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The detailed information about the function called by the model.
  */
 @Immutable
-public final class FunctionCallDetails {
+public final class FunctionToolCallDetails {
 
     /*
      * The name of the function.
@@ -37,14 +37,14 @@ public final class FunctionCallDetails {
     private String output;
 
     /**
-     * Creates an instance of FunctionCallDetails class.
+     * Creates an instance of FunctionToolCallDetails class.
      *
      * @param name the name value to set.
      * @param arguments the arguments value to set.
      */
     @Generated
     @JsonCreator
-    private FunctionCallDetails(@JsonProperty(value = "name") String name,
+    private FunctionToolCallDetails(@JsonProperty(value = "name") String name,
         @JsonProperty(value = "arguments") String arguments) {
         this.name = name;
         this.arguments = arguments;

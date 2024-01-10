@@ -17,7 +17,7 @@ import java.util.Map;
  * Data representing a single evaluation run of an assistant thread.
  */
 @Immutable
-public final class AssistantRun {
+public final class ThreadRun {
 
     /*
      * The identifier, which can be referenced in API endpoints.
@@ -76,14 +76,14 @@ public final class AssistantRun {
     private String model;
 
     /*
-     * The overriden system instructions used for this assistant thread run.
+     * The overridden system instructions used for this assistant thread run.
      */
     @Generated
     @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
-     * The overriden enabled tools used for this assistant thread run.
+     * The overridden enabled tools used for this assistant thread run.
      */
     @Generated
     @JsonProperty(value = "tools")
@@ -95,13 +95,6 @@ public final class AssistantRun {
     @Generated
     @JsonProperty(value = "file_ids")
     private List<String> fileIds;
-
-    /*
-     * A set of key/value pairs used to store additional information about the object.
-     */
-    @Generated
-    @JsonProperty(value = "metadata")
-    private Map<String, String> metadata;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
@@ -145,18 +138,27 @@ public final class AssistantRun {
     @JsonProperty(value = "failed_at")
     private OffsetDateTime failedAt;
 
+    /*
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
+     */
+    @Generated
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
+
     /**
-     * Creates an instance of AssistantRun class.
+     * Creates an instance of ThreadRun class.
      *
      * @param id the id value to set.
      * @param threadId the threadId value to set.
      * @param assistantId the assistantId value to set.
      * @param status the status value to set.
+     * @param lastError the lastError value to set.
      * @param model the model value to set.
      * @param instructions the instructions value to set.
      * @param tools the tools value to set.
      * @param fileIds the fileIds value to set.
-     * @param metadata the metadata value to set.
      * @param createdAt the createdAt value to set.
      * @param expiresAt the expiresAt value to set.
      * @param startedAt the startedAt value to set.
@@ -165,19 +167,19 @@ public final class AssistantRun {
      * @param failedAt the failedAt value to set.
      */
     @Generated
-    private AssistantRun(String id, String threadId, String assistantId, RunStatus status, String model,
-        String instructions, List<ToolDefinition> tools, List<String> fileIds, Map<String, String> metadata,
-        OffsetDateTime createdAt, OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt,
-        OffsetDateTime cancelledAt, OffsetDateTime failedAt) {
+    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
+        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
+        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
+        OffsetDateTime failedAt) {
         this.id = id;
         this.threadId = threadId;
         this.assistantId = assistantId;
         this.status = status;
+        this.lastError = lastError;
         this.model = model;
         this.instructions = instructions;
         this.tools = tools;
         this.fileIds = fileIds;
-        this.metadata = metadata;
         this.createdAt = createdAt.toEpochSecond();
         this.expiresAt = expiresAt;
         this.startedAt = startedAt;
@@ -188,19 +190,18 @@ public final class AssistantRun {
 
     @Generated
     @JsonCreator
-    private AssistantRun(@JsonProperty(value = "id") String id, @JsonProperty(value = "thread_id") String threadId,
+    private ThreadRun(@JsonProperty(value = "id") String id, @JsonProperty(value = "thread_id") String threadId,
         @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "status") RunStatus status,
-        @JsonProperty(value = "model") String model, @JsonProperty(value = "instructions") String instructions,
+        @JsonProperty(value = "last_error") RunError lastError, @JsonProperty(value = "model") String model,
+        @JsonProperty(value = "instructions") String instructions,
         @JsonProperty(value = "tools") List<ToolDefinition> tools,
-        @JsonProperty(value = "file_ids") List<String> fileIds,
-        @JsonProperty(value = "metadata") Map<String, String> metadata,
-        @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "file_ids") List<String> fileIds, @JsonProperty(value = "created_at") long createdAt,
         @JsonProperty(value = "expires_at") OffsetDateTime expiresAt,
         @JsonProperty(value = "started_at") OffsetDateTime startedAt,
         @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
         @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
         @JsonProperty(value = "failed_at") OffsetDateTime failedAt) {
-        this(id, threadId, assistantId, status, model, instructions, tools, fileIds, metadata,
+        this(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
             OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiresAt, startedAt,
             completedAt, cancelledAt, failedAt);
     }
@@ -286,7 +287,7 @@ public final class AssistantRun {
     }
 
     /**
-     * Get the instructions property: The overriden system instructions used for this assistant thread run.
+     * Get the instructions property: The overridden system instructions used for this assistant thread run.
      *
      * @return the instructions value.
      */
@@ -296,7 +297,7 @@ public final class AssistantRun {
     }
 
     /**
-     * Get the tools property: The overriden enabled tools used for this assistant thread run.
+     * Get the tools property: The overridden enabled tools used for this assistant thread run.
      *
      * @return the tools value.
      */
@@ -313,16 +314,6 @@ public final class AssistantRun {
     @Generated
     public List<String> getFileIds() {
         return this.fileIds;
-    }
-
-    /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
-     *
-     * @return the metadata value.
-     */
-    @Generated
-    public Map<String, String> getMetadata() {
-        return this.metadata;
     }
 
     /**
@@ -383,5 +374,17 @@ public final class AssistantRun {
     @Generated
     public OffsetDateTime getFailedAt() {
         return this.failedAt;
+    }
+
+    /**
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
     }
 }

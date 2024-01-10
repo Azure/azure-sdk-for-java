@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A representation of a file-based text citation, as used in a file-based annotation of text thread message content.
  */
 @Immutable
-public final class AssistantMessageTextFileCitation {
+public final class MessageTextFileCitationDetails {
 
     /*
      * The ID of the file associated with this citation.
@@ -29,14 +29,14 @@ public final class AssistantMessageTextFileCitation {
     private String quote;
 
     /**
-     * Creates an instance of AssistantMessageTextFileCitation class.
+     * Creates an instance of MessageTextFileCitationDetails class.
      *
      * @param fileId the fileId value to set.
      * @param quote the quote value to set.
      */
     @Generated
     @JsonCreator
-    public AssistantMessageTextFileCitation(@JsonProperty(value = "file_id") String fileId,
+    public MessageTextFileCitationDetails(@JsonProperty(value = "file_id") String fileId,
         @JsonProperty(value = "quote") String quote) {
         this.fileId = fileId;
         this.quote = quote;

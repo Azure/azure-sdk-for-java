@@ -58,7 +58,9 @@ public final class AssistantModificationOptions {
     private List<String> fileIds;
 
     /*
-     * A set of key/value pairs used to store additional information about the object.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -204,7 +206,9 @@ public final class AssistantModificationOptions {
     }
 
     /**
-     * Get the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -214,7 +218,9 @@ public final class AssistantModificationOptions {
     }
 
     /**
-     * Set the metadata property: A set of key/value pairs used to store additional information about the object.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the AssistantModificationOptions object itself.

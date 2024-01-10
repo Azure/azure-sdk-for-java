@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The data provided during a tool outputs submission to resolve pending tool calls and allow the model to continue.
  */
 @Fluent
-public final class ToolOutputSubmission {
+public final class ToolOutput {
 
     /*
      * The ID of the tool call being resolved, as provided in the tool calls of a required action from a run.
@@ -28,10 +28,10 @@ public final class ToolOutputSubmission {
     private String output;
 
     /**
-     * Creates an instance of ToolOutputSubmission class.
+     * Creates an instance of ToolOutput class.
      */
     @Generated
-    public ToolOutputSubmission() {
+    public ToolOutput() {
     }
 
     /**
@@ -50,10 +50,10 @@ public final class ToolOutputSubmission {
      * action from a run.
      *
      * @param toolCallId the toolCallId value to set.
-     * @return the ToolOutputSubmission object itself.
+     * @return the ToolOutput object itself.
      */
     @Generated
-    public ToolOutputSubmission setToolCallId(String toolCallId) {
+    public ToolOutput setToolCallId(String toolCallId) {
         this.toolCallId = toolCallId;
         return this;
     }
@@ -72,10 +72,10 @@ public final class ToolOutputSubmission {
      * Set the output property: The output from the tool to be submitted.
      *
      * @param output the output value to set.
-     * @return the ToolOutputSubmission object itself.
+     * @return the ToolOutput object itself.
      */
     @Generated
-    public ToolOutputSubmission setOutput(String output) {
+    public ToolOutput setOutput(String output) {
         this.output = output;
         return this;
     }

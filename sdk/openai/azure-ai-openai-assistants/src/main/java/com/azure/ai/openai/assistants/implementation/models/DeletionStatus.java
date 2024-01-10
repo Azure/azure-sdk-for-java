@@ -9,36 +9,36 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The status of a thread deletion operation.
+ * An abstract representation of an OpenAI deletion operation result status.
  */
 @Immutable
-public final class ThreadDeletionStatus extends DeletionStatus {
+public class DeletionStatus {
 
     /*
-     * The object type, which is always 'thread.deleted'.
+     * A value indicating whether deletion was successful.
      */
     @Generated
-    @JsonProperty(value = "object")
-    private String object = "thread.deleted";
+    @JsonProperty(value = "deleted")
+    private boolean deleted;
 
     /**
-     * Creates an instance of ThreadDeletionStatus class.
+     * Creates an instance of DeletionStatus class.
      *
      * @param deleted the deleted value to set.
      */
     @Generated
     @JsonCreator
-    private ThreadDeletionStatus(@JsonProperty(value = "deleted") boolean deleted) {
-        super(deleted);
+    protected DeletionStatus(@JsonProperty(value = "deleted") boolean deleted) {
+        this.deleted = deleted;
     }
 
     /**
-     * Get the object property: The object type, which is always 'thread.deleted'.
+     * Get the deleted property: A value indicating whether deletion was successful.
      *
-     * @return the object value.
+     * @return the deleted value.
      */
     @Generated
-    public String getObject() {
-        return this.object;
+    public boolean isDeleted() {
+        return this.deleted;
     }
 }

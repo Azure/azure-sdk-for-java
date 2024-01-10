@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A status response from a file deletion operation.
  */
 @Immutable
-public final class FileDeletionStatus {
+public final class FileDeletionStatus extends DeletionStatus {
 
     /*
      * The object type, which is always 'file'.
@@ -20,13 +20,6 @@ public final class FileDeletionStatus {
     @Generated
     @JsonProperty(value = "object")
     private String object = "file";
-
-    /*
-     * A value indicating whether deletion was successful.
-     */
-    @Generated
-    @JsonProperty(value = "deleted")
-    private boolean deleted;
 
     /*
      * The ID of the deleted file.
@@ -45,7 +38,7 @@ public final class FileDeletionStatus {
     @JsonCreator
     private FileDeletionStatus(@JsonProperty(value = "deleted") boolean deleted,
         @JsonProperty(value = "id") String id) {
-        this.deleted = deleted;
+        super(deleted);
         this.id = id;
     }
 
@@ -57,16 +50,6 @@ public final class FileDeletionStatus {
     @Generated
     public String getObject() {
         return this.object;
-    }
-
-    /**
-     * Get the deleted property: A value indicating whether deletion was successful.
-     *
-     * @return the deleted value.
-     */
-    @Generated
-    public boolean isDeleted() {
-        return this.deleted;
     }
 
     /**
