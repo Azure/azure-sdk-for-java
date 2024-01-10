@@ -10,6 +10,7 @@ import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOf
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
+import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -37,7 +38,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Initializes an instance of ThreadRunsAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -100,7 +101,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to run.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -207,7 +208,7 @@ public final class ThreadRunsAsyncClient {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -261,7 +262,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -327,7 +328,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -398,7 +399,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -455,7 +456,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -554,7 +555,7 @@ public final class ThreadRunsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -573,7 +574,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Creates a new run for an assistant thread.
-     * 
+     *
      * @param threadId The ID of the thread to run.
      * @param model The overriden model name that the assistant should use to run the thread.
      * @param instructions The overridden system instructions that the assistant should use to run the thread.
@@ -608,7 +609,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Creates a new run for an assistant thread.
-     * 
+     *
      * @param threadId The ID of the thread to run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -632,7 +633,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Gets a list of runs for a specified thread.
-     * 
+     *
      * @param threadId The ID of the thread to list runs from.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
      * is 20.
@@ -676,7 +677,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Gets a list of runs for a specified thread.
-     * 
+     *
      * @param threadId The ID of the thread to list runs from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -697,7 +698,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Gets an existing run from an existing thread.
-     * 
+     *
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -719,7 +720,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Modifies an existing thread run.
-     * 
+     *
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
@@ -748,7 +749,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Modifies an existing thread run.
-     * 
+     *
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -774,9 +775,10 @@ public final class ThreadRunsAsyncClient {
     /**
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     * 
+     *
      * @param threadId The ID of the the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs The list of tool outputs to submit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -786,18 +788,19 @@ public final class ThreadRunsAsyncClient {
      * @return data representing a single evaluation run of an assistant thread on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadRun> submitRunToolOutputs(String threadId, String runId) {
+    public Mono<ThreadRun> submitRunToolOutputs(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitRunToolOutputsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return submitRunToolOutputsWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
+        // TODO: manually added the List<ToolOutput> toolOutputs but will need to fix it when generating from TypeSpec.
+        return submitRunToolOutputsWithResponse(threadId, runId, BinaryData.fromObject(toolOutputs), requestOptions)
+                .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
     /**
      * Cancels a thread run.
-     * 
+     *
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -820,7 +823,7 @@ public final class ThreadRunsAsyncClient {
 
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
-     * 
+     *
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

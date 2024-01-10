@@ -10,6 +10,7 @@ import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOf
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
+import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -755,6 +756,7 @@ public final class ThreadRunsClient {
      * 
      * @param threadId The ID of the the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs The list of tool outputs to submit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -763,13 +765,14 @@ public final class ThreadRunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data representing a single evaluation run of an assistant thread.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun submitRunToolOutputs(String threadId, String runId) {
+    public ThreadRun submitRunToolOutputs(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitRunToolOutputsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return submitRunToolOutputsWithResponse(threadId, runId, request, requestOptions).getValue()
-            .toObject(ThreadRun.class);
+        // TODO: manually added the List<ToolOutput> toolOutputs but will need to fix it when generating from TypeSpec.
+        return submitRunToolOutputsWithResponse(threadId, runId, BinaryData.fromObject(toolOutputs), requestOptions)
+                .getValue()
+                .toObject(ThreadRun.class);
     }
 
     /**
