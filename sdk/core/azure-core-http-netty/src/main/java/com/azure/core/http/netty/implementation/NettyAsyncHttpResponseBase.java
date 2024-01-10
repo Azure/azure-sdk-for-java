@@ -69,22 +69,6 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     }
 
     @Override
-    public BinaryData getBodyAsBinaryData() {
-        String contentLength = getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
-        if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return super.getBodyAsBinaryData();
-        } else {
-            try {
-                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody(),
-                    Long.parseLong(contentLength)));
-            } catch (NumberFormatException ignored) {
-                // Using Content-Length is speculative, so if it's not a number, we'll just return the stream.
-                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
-            }
-        }
-    }
-
-    @Override
     public final HttpHeaders getHeaders() {
         return headers;
     }
