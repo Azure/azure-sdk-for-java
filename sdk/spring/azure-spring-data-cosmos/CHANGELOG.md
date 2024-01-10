@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issues with how nested partition keys are used by `azure-spring-data-cosmos` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).
 
 #### Other Changes
 * Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 37840](https://github.com/Azure/azure-sdk-for-java/pull/37840).

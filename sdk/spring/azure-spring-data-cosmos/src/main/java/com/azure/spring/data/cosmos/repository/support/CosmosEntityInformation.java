@@ -241,7 +241,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public String getPartitionKeyPath() {
         if (partitionKeyField == null) {
-            return partitionKeyPath == null ? "/null" : partitionKeyPath; //"/" + partitionKeyPath.substring(1).replace("/", ".");
+            return partitionKeyPath == null ? "/null" : partitionKeyPath;
         } else {
             final PartitionKey partitionKey = partitionKeyField.getAnnotation(PartitionKey.class);
             return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
