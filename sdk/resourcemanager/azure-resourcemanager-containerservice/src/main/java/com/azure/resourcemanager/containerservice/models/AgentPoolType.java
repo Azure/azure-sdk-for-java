@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of Agent Pool. */
+/**
+ * The type of Agent Pool.
+ */
 public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
-    /** Static value VirtualMachineScaleSets for AgentPoolType. */
+    /**
+     * Static value VirtualMachineScaleSets for AgentPoolType.
+     */
     public static final AgentPoolType VIRTUAL_MACHINE_SCALE_SETS = fromString("VirtualMachineScaleSets");
 
-    /** Static value AvailabilitySet for AgentPoolType. */
+    /**
+     * Static value AvailabilitySet for AgentPoolType.
+     */
     public static final AgentPoolType AVAILABILITY_SET = fromString("AvailabilitySet");
 
     /**

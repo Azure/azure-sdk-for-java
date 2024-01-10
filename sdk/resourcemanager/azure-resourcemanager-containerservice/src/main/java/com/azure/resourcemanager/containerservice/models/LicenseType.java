@@ -13,10 +13,14 @@ import java.util.Collection;
  * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
  */
 public final class LicenseType extends ExpandableStringEnum<LicenseType> {
-    /** Static value None for LicenseType. */
+    /**
+     * Static value None for LicenseType.
+     */
     public static final LicenseType NONE = fromString("None");
 
-    /** Static value Windows_Server for LicenseType. */
+    /**
+     * Static value Windows_Server for LicenseType.
+     */
     public static final LicenseType WINDOWS_SERVER = fromString("Windows_Server");
 
     /**

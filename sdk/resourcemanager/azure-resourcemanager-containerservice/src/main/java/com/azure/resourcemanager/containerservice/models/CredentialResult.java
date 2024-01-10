@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The credential result response. */
+/**
+ * The credential result response.
+ */
 @Immutable
 public final class CredentialResult {
     /*
@@ -23,7 +25,9 @@ public final class CredentialResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] value;
 
-    /** Creates an instance of CredentialResult class. */
+    /**
+     * Creates an instance of CredentialResult class.
+     */
     public CredentialResult() {
     }
 

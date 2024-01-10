@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of the managed cluster NAT gateway. */
+/**
+ * Profile of the managed cluster NAT gateway.
+ */
 @Fluent
 public final class ManagedClusterNatGatewayProfile {
     /*
@@ -30,7 +32,9 @@ public final class ManagedClusterNatGatewayProfile {
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
-    /** Creates an instance of ManagedClusterNatGatewayProfile class. */
+    /**
+     * Creates an instance of ManagedClusterNatGatewayProfile class.
+     */
     public ManagedClusterNatGatewayProfile() {
     }
 
@@ -51,8 +55,8 @@ public final class ManagedClusterNatGatewayProfile {
      * @param managedOutboundIpProfile the managedOutboundIpProfile value to set.
      * @return the ManagedClusterNatGatewayProfile object itself.
      */
-    public ManagedClusterNatGatewayProfile withManagedOutboundIpProfile(
-        ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile) {
+    public ManagedClusterNatGatewayProfile
+        withManagedOutboundIpProfile(ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile) {
         this.managedOutboundIpProfile = managedOutboundIpProfile;
         return this;
     }

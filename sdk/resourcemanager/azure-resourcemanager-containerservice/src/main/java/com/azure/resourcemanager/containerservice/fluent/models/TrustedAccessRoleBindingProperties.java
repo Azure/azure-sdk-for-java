@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleBindin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties for trusted access role binding. */
+/**
+ * Properties for trusted access role binding.
+ */
 @Fluent
 public final class TrustedAccessRoleBindingProperties {
     /*
@@ -32,7 +34,9 @@ public final class TrustedAccessRoleBindingProperties {
     @JsonProperty(value = "roles", required = true)
     private List<String> roles;
 
-    /** Creates an instance of TrustedAccessRoleBindingProperties class. */
+    /**
+     * Creates an instance of TrustedAccessRoleBindingProperties class.
+     */
     public TrustedAccessRoleBindingProperties() {
     }
 
@@ -94,16 +98,12 @@ public final class TrustedAccessRoleBindingProperties {
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
         }
         if (roles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roles in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property roles in model TrustedAccessRoleBindingProperties"));
         }
     }
 

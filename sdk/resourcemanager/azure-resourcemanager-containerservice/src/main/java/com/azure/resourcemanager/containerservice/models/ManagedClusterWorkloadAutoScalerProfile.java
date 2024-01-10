@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload Auto-scaler profile for the managed cluster. */
+/**
+ * Workload Auto-scaler profile for the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterWorkloadAutoScalerProfile {
     /*
@@ -22,7 +24,9 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     @JsonProperty(value = "verticalPodAutoscaler")
     private ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler;
 
-    /** Creates an instance of ManagedClusterWorkloadAutoScalerProfile class. */
+    /**
+     * Creates an instance of ManagedClusterWorkloadAutoScalerProfile class.
+     */
     public ManagedClusterWorkloadAutoScalerProfile() {
     }
 
@@ -63,8 +67,8 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
      * @param verticalPodAutoscaler the verticalPodAutoscaler value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
      */
-    public ManagedClusterWorkloadAutoScalerProfile withVerticalPodAutoscaler(
-        ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler) {
+    public ManagedClusterWorkloadAutoScalerProfile
+        withVerticalPodAutoscaler(ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler) {
         this.verticalPodAutoscaler = verticalPodAutoscaler;
         return this;
     }

@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.MeshUpgradeProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Upgrade profile for given mesh. */
+/**
+ * Upgrade profile for given mesh.
+ */
 @Fluent
 public final class MeshUpgradeProfileInner extends ProxyResource {
     /*
@@ -25,7 +27,9 @@ public final class MeshUpgradeProfileInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MeshUpgradeProfileInner class. */
+    /**
+     * Creates an instance of MeshUpgradeProfileInner class.
+     */
     public MeshUpgradeProfileInner() {
     }
 
