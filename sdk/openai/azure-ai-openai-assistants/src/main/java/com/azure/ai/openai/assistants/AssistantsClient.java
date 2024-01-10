@@ -617,7 +617,9 @@ public final class AssistantsClient {
     public AssistantFile createAssistantFile(String assistantId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantFileWithResponse(assistantId, request, requestOptions).getValue()
+        // TODO: this is should be a string `fileId` but the generated code is not generate this input parameter.
+        // Setting it to null for now but need to fix this in type spec.
+        return createAssistantFileWithResponse(assistantId, null, requestOptions).getValue()
             .toObject(AssistantFile.class);
     }
 
