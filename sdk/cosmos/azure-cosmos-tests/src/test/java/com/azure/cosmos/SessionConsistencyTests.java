@@ -121,7 +121,6 @@ public class SessionConsistencyTests extends TestSuiteBase {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .partitionKeyScopedSessionCapturingEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .consistencyLevel(ConsistencyLevel.SESSION)
             .preferredRegions(this.writeRegionMap.keySet().stream().collect(Collectors.toList()))

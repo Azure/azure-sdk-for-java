@@ -57,8 +57,6 @@ public class SpyClientUnderTestFactory {
                     null,
                     false,
                     false,
-                    false,
-                    false,
                     contentResponseOnWriteEnabled,
                     null,
                     null,
