@@ -1459,14 +1459,9 @@ public final class BinaryData {
      * @param channel The {@link AsynchronousByteChannel} to write the contents of this {@link BinaryData} to.
      * @return A {@link Mono} the completes once content has been written or had an error writing.
      * @throws NullPointerException If {@code channel} is null.
-     * @throws IOException If an I/O error occurs.
      */
-    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) throws IOException {
-        if (channel == null) {
-            return Mono.error(new NullPointerException("'channel' cannot be null."));
-        }
-
-        return content.writeToAsync(channel);
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        return content.writeTo(channel);
     }
 
     /**

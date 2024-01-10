@@ -20,11 +20,9 @@ public final class JdkHttpUtils {
         final HttpHeaders httpHeaders = new HttpHeaders((int) (headers.map().size() / 0.75F));
 
         for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
-            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
-                continue;
+            if (!CoreUtils.isNullOrEmpty(kvp.getValue())) {
+                httpHeaders.set(kvp.getKey(), kvp.getValue());
             }
-
-            httpHeaders.set(kvp.getKey(), kvp.getValue());
         }
 
         return httpHeaders;

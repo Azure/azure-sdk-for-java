@@ -3,9 +3,7 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -106,9 +104,7 @@ public abstract class BinaryDataContent {
      * @throws NullPointerException If {@code outputStream} is null.
      * @throws IOException If an I/O error occurs.
      */
-    public void writeTo(OutputStream outputStream) throws IOException {
-        outputStream.write(toBytes());
-    }
+    public abstract void writeTo(OutputStream outputStream) throws IOException;
 
     /**
      * Writes the contents of this {@link BinaryDataContent} to the given {@link WritableByteChannel}.
@@ -124,9 +120,7 @@ public abstract class BinaryDataContent {
      * @throws NullPointerException If {@code channel} is null.
      * @throws IOException If an I/O error occurs.
      */
-    public void writeTo(WritableByteChannel channel) throws IOException {
-        ImplUtils.fullyWriteBuffer(toByteBuffer().asReadOnlyBuffer(), channel);
-    }
+    public abstract void writeTo(WritableByteChannel channel) throws IOException;
 
     /**
      * Writes the contents of this {@link BinaryDataContent} to the given {@link AsynchronousByteChannel}.
@@ -141,11 +135,8 @@ public abstract class BinaryDataContent {
      * @param channel The {@link AsynchronousByteChannel} to write the contents of this {@link BinaryDataContent} to.
      * @return A {@link Mono} the completes once content has been written or had an error writing.
      * @throws NullPointerException If {@code channel} is null.
-     * @throws IOException If an I/O error occurs.
      */
-    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) throws IOException {
-        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
-    }
+    public abstract Mono<Void> writeTo(AsynchronousByteChannel channel);
 
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including

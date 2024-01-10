@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -28,6 +29,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} backed by a file.
@@ -213,6 +216,15 @@ public class FileContent extends BinaryDataContent {
                 totalWritten += written;
             }
         }
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
     }
 
     /**

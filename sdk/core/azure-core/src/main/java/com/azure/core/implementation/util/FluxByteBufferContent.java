@@ -15,12 +15,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
@@ -119,6 +122,15 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     @Override
     public void writeTo(WritableByteChannel channel) throws IOException {
         FluxUtil.writeToWritableByteChannel(content, channel).block();
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(content, channel);
     }
 
     @Override
