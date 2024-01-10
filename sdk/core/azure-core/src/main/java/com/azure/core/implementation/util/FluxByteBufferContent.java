@@ -11,8 +11,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -106,6 +109,16 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return content;
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        FluxUtil.writeToOutputStream(content, outputStream).block();
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        FluxUtil.writeToWritableByteChannel(content, channel).block();
     }
 
     @Override

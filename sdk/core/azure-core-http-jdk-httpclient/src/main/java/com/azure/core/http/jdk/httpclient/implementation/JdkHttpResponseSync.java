@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -19,9 +19,9 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
-import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
+import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
-final class JdkHttpResponseSync extends JdkHttpResponseBase {
+public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpResponseSync.class);
     private BinaryData binaryData = null;
     public static final int STREAM_READ_SIZE = 8192;
@@ -30,13 +30,14 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private byte[] bodyBytes;
 
     private volatile boolean disposed = false;
-    JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
+
+    public JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
         this.bodyBytes = bytes;
     }
 
-    JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
+    public JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
         super(request, streamResponse.statusCode(), fromJdkHttpHeaders(streamResponse.headers()));
         this.bodyStream = streamResponse.body();
         this.bodyBytes = null;

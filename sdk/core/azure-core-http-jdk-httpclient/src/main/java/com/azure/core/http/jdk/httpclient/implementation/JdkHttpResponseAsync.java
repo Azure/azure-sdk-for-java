@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpRequest;
 import reactor.adapter.JdkFlowAdapter;
@@ -11,17 +11,16 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
+import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
-final class JdkHttpResponseAsync extends JdkHttpResponseBase {
+public final class JdkHttpResponseAsync extends JdkHttpResponseBase {
     private final Flux<ByteBuffer> contentFlux;
     private volatile boolean disposed = false;
 
-    JdkHttpResponseAsync(final HttpRequest request,
+    public JdkHttpResponseAsync(final HttpRequest request,
         java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
-        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
-            .flatMapSequential(Flux::fromIterable);
+        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
     }
 
     @Override
@@ -33,9 +32,7 @@ final class JdkHttpResponseAsync extends JdkHttpResponseBase {
     public void close() {
         if (!this.disposed) {
             this.disposed = true;
-            this.contentFlux
-                .subscribe()
-                .dispose();
+            this.contentFlux.subscribe().dispose();
         }
     }
 }

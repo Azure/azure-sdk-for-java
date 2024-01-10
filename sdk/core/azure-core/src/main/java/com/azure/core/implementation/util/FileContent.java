@@ -16,10 +16,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -190,6 +193,26 @@ public class FileContent extends BinaryDataContent {
                     throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
                 }
             });
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        writeTo(Channels.newChannel(outputStream));
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        long totalWritten = 0;
+        try (FileChannel fileChannel = FileChannel.open(file)) {
+            while (totalWritten < length) {
+                long written = fileChannel.transferTo(position + totalWritten, length - totalWritten, channel);
+                if (written < 0) {
+                    return;
+                }
+
+                totalWritten += written;
+            }
+        }
     }
 
     /**

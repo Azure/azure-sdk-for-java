@@ -3,13 +3,16 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -68,6 +71,12 @@ public final class ByteBufferContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Flux.just(content).map(ByteBuffer::asReadOnlyBuffer);
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        ByteBuffer buffer = toByteBuffer();
+        ImplUtils.writeByteBufferToStream(buffer, outputStream);
     }
 
     @Override

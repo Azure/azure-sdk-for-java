@@ -7,6 +7,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import reactor.netty.http.client.HttpClientResponse;
 
 import java.util.Iterator;
@@ -62,6 +66,22 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     @Override
     public final String getHeaderValue(HttpHeaderName headerName) {
         return headers.getValue(headerName);
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        String contentLength = getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+        if (CoreUtils.isNullOrEmpty(contentLength)) {
+            return super.getBodyAsBinaryData();
+        } else {
+            try {
+                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody(),
+                    Long.parseLong(contentLength)));
+            } catch (NumberFormatException ignored) {
+                // Using Content-Length is speculative, so if it's not a number, we'll just return the stream.
+                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
+            }
+        }
     }
 
     @Override

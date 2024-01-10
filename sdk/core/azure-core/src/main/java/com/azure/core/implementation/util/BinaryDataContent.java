@@ -4,15 +4,20 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 /**
  * An abstract internal representation of the content stored in {@link BinaryData}.
@@ -85,6 +90,64 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
+
+    /**
+     * Writes the contents of this {@link BinaryDataContent} to the given {@link OutputStream}.
+     * <p>
+     * This method does not close the {@link OutputStream}.
+     * <p>
+     * The contents of this {@link BinaryDataContent} will be written without buffering. If the underlying data source
+     * isn't {@link #isReplayable()}, after this method is called the {@link BinaryDataContent} will be consumed and
+     * can't be read again. If it needs to be read again, use {@link #toReplayableContent()} to create a replayable
+     * copy.
+     *
+     * @param outputStream The {@link OutputStream} to write the contents of this {@link BinaryDataContent} to.
+     * @throws NullPointerException If {@code outputStream} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(OutputStream outputStream) throws IOException {
+        outputStream.write(toBytes());
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryDataContent} to the given {@link WritableByteChannel}.
+     * <p>
+     * This method does not close the {@link WritableByteChannel}.
+     * <p>
+     * The contents of this {@link BinaryDataContent} will be written without buffering. If the underlying data source
+     * isn't {@link #isReplayable()}, after this method is called the {@link BinaryDataContent} will be consumed and
+     * can't be read again. If it needs to be read again, use {@link #toReplayableContent()} to create a replayable
+     * copy.
+     *
+     * @param channel The {@link WritableByteChannel} to write the contents of this {@link BinaryDataContent} to.
+     * @throws NullPointerException If {@code channel} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        ByteBuffer buffer = toByteBuffer().duplicate();
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryDataContent} to the given {@link AsynchronousByteChannel}.
+     * <p>
+     * This method does not close the {@link AsynchronousByteChannel}.
+     * <p>
+     * The contents of this {@link BinaryDataContent} will be written without buffering. If the underlying data source
+     * isn't {@link #isReplayable()}, after this method is called the {@link BinaryDataContent} will be consumed and
+     * can't be read again. If it needs to be read again, use {@link #toReplayableContentAsync()} to create a replayable
+     * copy.
+     *
+     * @param channel The {@link AsynchronousByteChannel} to write the contents of this {@link BinaryDataContent} to.
+     * @return A {@link Mono} the completes once content has been written or had an error writing.
+     * @throws NullPointerException If {@code channel} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public Mono<Void> writeToAsync(AsynchronousByteChannel channel) throws IOException {
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
 
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including

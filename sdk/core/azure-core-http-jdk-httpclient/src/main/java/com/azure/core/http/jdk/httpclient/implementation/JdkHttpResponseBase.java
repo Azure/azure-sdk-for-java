@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -16,11 +16,11 @@ import java.nio.charset.Charset;
 /**
  * Base response class for JDK with implementations for response metadata.
  */
-abstract class JdkHttpResponseBase extends HttpResponse {
+public abstract class JdkHttpResponseBase extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
 
-    JdkHttpResponseBase(final HttpRequest request, int statusCode, HttpHeaders headers) {
+    public JdkHttpResponseBase(final HttpRequest request, int statusCode, HttpHeaders headers) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
