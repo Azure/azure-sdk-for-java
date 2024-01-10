@@ -366,8 +366,14 @@ public final class SpanDataMapper {
             return peerService;
         }
         String host = attributes.get(SemanticAttributes.SERVER_ADDRESS);
+        if (host == null) {
+            host = attributes.get(SemanticAttributes.NETWORK_PEER_ADDRESS);
+        }
         if (host != null) {
             Long port = attributes.get(SemanticAttributes.SERVER_PORT);
+            if (port == null) {
+                port = attributes.get(SemanticAttributes.NETWORK_PEER_PORT);
+            }
             return getTarget(host, port, defaultPort);
         }
         return null;
