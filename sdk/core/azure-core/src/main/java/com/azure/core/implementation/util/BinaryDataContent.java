@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -124,10 +125,7 @@ public abstract class BinaryDataContent {
      * @throws IOException If an I/O error occurs.
      */
     public void writeTo(WritableByteChannel channel) throws IOException {
-        ByteBuffer buffer = toByteBuffer().duplicate();
-        while (buffer.hasRemaining()) {
-            channel.write(buffer);
-        }
+        ImplUtils.fullyWriteBuffer(toByteBuffer().asReadOnlyBuffer(), channel);
     }
 
     /**

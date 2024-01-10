@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -406,6 +407,22 @@ public final class ImplUtils {
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+        }
+    }
+
+    /**
+     * Fully writes a {@link ByteBuffer} to a {@link WritableByteChannel}.
+     * <p>
+     * This handles scenarios where write operations don't write the entirety of the {@link ByteBuffer} in a single
+     * call.
+     *
+     * @param buffer The {@link ByteBuffer} to write.
+     * @param channel The {@link WritableByteChannel} to write the {@code buffer} to.
+     * @throws IOException If an I/O error occurs while writing to the {@code channel}.
+     */
+    public static void fullyWriteBuffer(ByteBuffer buffer, WritableByteChannel channel) throws IOException {
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
         }
     }
 

@@ -75,8 +75,7 @@ public final class ByteBufferContent extends BinaryDataContent {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        ByteBuffer buffer = toByteBuffer();
-        ImplUtils.writeByteBufferToStream(buffer, outputStream);
+        ImplUtils.writeByteBufferToStream(toByteBuffer(), outputStream);
     }
 
     @Override

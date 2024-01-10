@@ -6,6 +6,7 @@ package com.azure.core.implementation.util;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -117,22 +119,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        InputStream inputStream = content.get();
-        if (bufferedContent != null) {
-            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
-            for (ByteBuffer bb : bufferedContent) {
-                ImplUtils.writeByteBufferToStream(bb, outputStream);
-            }
-        } else {
-            // Otherwise use a generic write to.
-            // More optimizations can be done here based on the type of InputStream but this is the initial
-            // implementation, so it has been kept simple.
-            byte[] buffer = new byte[STREAM_READ_SIZE];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
-        }
+        writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
@@ -141,21 +128,11 @@ public final class InputStreamContent extends BinaryDataContent {
         if (bufferedContent != null) {
             // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
             for (ByteBuffer bb : bufferedContent) {
-                bb = bb.duplicate();
-                while (bb.hasRemaining()) {
-                    channel.write(bb);
-                }
+                ImplUtils.fullyWriteBuffer(bb.duplicate(), channel);
             }
         } else {
             // Otherwise use a generic write to.
-            byte[] buffer = new byte[STREAM_READ_SIZE];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                ByteBuffer bb = ByteBuffer.wrap(buffer, 0, read);
-                while (bb.hasRemaining()) {
-                    channel.write(bb);
-                }
-            }
+            IOUtils.transfer(Channels.newChannel(inputStream), channel, length);
         }
     }
 

@@ -92,10 +92,7 @@ public class ListByteBufferContent extends BinaryDataContent {
     @Override
     public void writeTo(WritableByteChannel channel) throws IOException {
         for (ByteBuffer bb : content) {
-            bb = bb.duplicate();
-            while (bb.hasRemaining()) {
-                channel.write(bb);
-            }
+            ImplUtils.fullyWriteBuffer(bb.asReadOnlyBuffer(), channel);
         }
     }
 
