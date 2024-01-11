@@ -31,7 +31,7 @@ public final class ResourceParser {
     }
 
     // visible for testing
-    public void setRoleNameAndInstance(
+    public void updateRoleNameAndInstance(
         AbstractTelemetryBuilder builder, Resource resource) {
 
         // update AKS role name and role instance
