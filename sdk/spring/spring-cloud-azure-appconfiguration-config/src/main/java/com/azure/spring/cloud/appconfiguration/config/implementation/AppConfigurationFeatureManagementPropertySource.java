@@ -19,6 +19,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -104,7 +105,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
             }
         }
     }
-    
+
     List<ConfigurationSetting> getFeatureFlagSettings() {
         return featureConfigurationSettings;
     }
@@ -140,8 +141,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         } catch (JsonProcessingException e) {
 
         }
+        // Feature feature = new Feature(key, item, requirementType);
         Feature feature = new Feature(key, item, requirementType);
-        Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
+        List<FeatureFlagFilter> featureEnabledFor = new ArrayList<>();
 
         // Setting Enabled For to null, but enabled = true will result in the feature
         // being on. This is the case of a feature is on/off and set to on. This is to
@@ -149,37 +151,38 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         // It should never be the case of Conditional On, and no filters coming from
         // Azure, but it is a valid way from the config file, which should result in
         // false being returned.
-        if (featureEnabledFor.size() == 0 && item.isEnabled()) {
-            return true;
-        } else if (!item.isEnabled()) {
-            return false;
+        if (!item.isEnabled()) {
+            feature.setEvaluate(false);
         }
-        for (int filter = 0; filter < feature.getEnabledFor().size(); filter++) {
-            FeatureFlagFilter featureFilterEvaluationContext = featureEnabledFor.get(filter);
-            Map<String, Object> parameters = featureFilterEvaluationContext.getParameters();
+        if (item.getClientFilters() != null) {
+            for (int filter = 0; filter < item.getClientFilters().size(); filter++) {
+                FeatureFlagFilter featureFilterEvaluationContext = item.getClientFilters().get(filter);
+                Map<String, Object> parameters = featureFilterEvaluationContext.getParameters();
 
-            if (parameters == null || !TARGETING_FILTER.equals(featureEnabledFor.get(filter).getName())) {
-                continue;
+                if (parameters == null || !TARGETING_FILTER.equals(featureFilterEvaluationContext.getName())) {
+                    continue;
+                }
+
+                Object audienceObject = parameters.get(AUDIENCE);
+                if (audienceObject != null) {
+                    parameters = (Map<String, Object>) audienceObject;
+                }
+
+                List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
+                List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
+
+                switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
+                switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
+                switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
+                    parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
+
+                featureFilterEvaluationContext.setParameters(parameters);
+                featureEnabledFor.add(featureFilterEvaluationContext);
+                feature.setEnabledFor(featureEnabledFor);
+
             }
-
-            Object audienceObject = parameters.get(AUDIENCE);
-            if (audienceObject != null) {
-                parameters = (Map<String, Object>) audienceObject;
-            }
-
-            List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
-            List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
-
-            switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
-            switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
-            switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
-
-            featureFilterEvaluationContext.setParameters(parameters);
-            featureEnabledFor.put(filter, featureFilterEvaluationContext);
-            feature.setEnabledFor(featureEnabledFor);
-
         }
+
         return feature;
     }
 
@@ -198,7 +201,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     private static String getFeatureSimpleName(ConfigurationSetting setting) {
         return setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
     }
-    
+
     @SuppressWarnings("null")
     private static Map<String, Object> mapValuesByIndex(List<Object> users) {
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
@@ -210,8 +213,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects =
-            CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
+            new TypeReference<List<Object>>() {
+            });
         return listObjects == null ? emptyList() : listObjects;
     }
 }

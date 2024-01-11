@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,18 +22,27 @@ public final class Feature {
     @JsonProperty("key")
     private String key;
 
-    @JsonProperty("enabled-for")
-    private Map<Integer, FeatureFlagFilter> enabledFor;
+    @JsonProperty("evaluate")
+    private Boolean evaluate = true;
 
-    @JsonProperty(REQUIREMENT_TYPE)
+    @JsonProperty("requirement-type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
+    @JsonProperty("enabled-for")
+    private Map<String, FeatureFlagFilter> enabledFor;
+
+    @JsonProperty("allocation")
+    private Allocation allocation = new Allocation();
+
+    @JsonProperty("variants")
+    private Map<String, VariantReference> variants;
+    
     /**
      * Feature Flag object.
      */
     public Feature() {
     }
-
+    
     /**
      * Feature Flag object.
      * 
@@ -48,10 +56,11 @@ public final class Feature {
         enabledFor = new HashMap<>();
 
         for (int i = 0; i < filterMapper.size(); i++) {
-            enabledFor.put(i, filterMapper.get(i));
+            enabledFor.put(String.valueOf(i), filterMapper.get(i));
         }
         this.requirementType = requirementType;
     }
+
 
     /**
      * @return the key
@@ -68,17 +77,17 @@ public final class Feature {
     }
 
     /**
-     * @return the enabledFor
+     * @return the evaluate
      */
-    public Map<Integer, FeatureFlagFilter> getEnabledFor() {
-        return enabledFor;
+    public Boolean getEvaluate() {
+        return evaluate;
     }
 
     /**
-     * @param enabledFor the enabledFor to set
+     * @param evaluate the evaluate to set
      */
-    public void setEnabledFor(Map<Integer, FeatureFlagFilter> enabledFor) {
-        this.enabledFor = enabledFor;
+    public void setEvaluate(Boolean evaluate) {
+        this.evaluate = evaluate;
     }
 
     /**
@@ -93,6 +102,54 @@ public final class Feature {
      */
     public void setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+    }
+
+    /**
+     * @return the enabledFor
+     */
+    public Map<String, FeatureFlagFilter> getEnabledFor() {
+        return enabledFor;
+    }
+
+    /**
+     * @param enabledFor the enabledFor to set
+     */
+    public void setEnabledFor(List<FeatureFlagFilter> enabledFor) {
+        this.enabledFor = new HashMap<>();
+        for (int i = 0; i < enabledFor.size(); i++) {
+            this.enabledFor.put(String.valueOf(i), enabledFor.get(i));
+        }
+    }
+
+    /**
+     * @return the variants
+     */
+    public Map<String, VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public void setVariants(List<VariantReference> variants) {
+        this.variants = new HashMap<>();
+        for (int i = 0; i < variants.size(); i++) {
+            this.variants.put(String.valueOf(i), variants.get(i));
+        }
     }
 
 }

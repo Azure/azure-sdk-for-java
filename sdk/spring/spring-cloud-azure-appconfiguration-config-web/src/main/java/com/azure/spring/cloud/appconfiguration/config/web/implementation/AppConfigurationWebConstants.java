@@ -11,6 +11,10 @@ public final class AppConfigurationWebConstants {
      * Validation Code Key value
      */
     public static final String VALIDATION_CODE_KEY = "validationCode";
+    /**
+     * Validation Topic for push refresh.
+     */
+    public static final String VALIDATION_TOPIC = "topic";
 
     /**
      * Json field name for Data  section
