@@ -57,7 +57,7 @@ public final class ThreadMessagesImpl {
      * The interface defining all the services for AssistantsClientThreadMessages to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{endpoint}/openai")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClientThre")
     public interface ThreadMessagesService {
         @Post("/threads/{threadId}/messages")

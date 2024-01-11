@@ -38,6 +38,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -269,15 +270,14 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      *
      * @return an instance of AssistantsClientImpl.
      */
-    @Generated
     private AssistantsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         AssistantsClientImpl client
-            = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint);
+            = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+                useNonAzureOpenAIService() ? OPEN_AI_ENDPOINT : this.endpoint + "/openai");
         return client;
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -293,6 +293,9 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         HttpHeaders headers = new HttpHeaders();
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+
+        headers.add("OpenAI-Beta", "assistants=v1");
+
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -302,7 +305,8 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
-            policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(useNonAzureOpenAIService() ? new KeyCredentialPolicy("Authorization", keyCredential, "Bearer")
+                    : new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
@@ -437,4 +441,18 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
+
+
+    /**
+     * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     */
+    public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+
+    /**
+     * OpenAI service can be used by either not setting the endpoint or by setting the endpoint to start with
+     * "https://api.openai.com/v1"
+     */
+    private boolean useNonAzureOpenAIService() {
+        return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+    }
 }

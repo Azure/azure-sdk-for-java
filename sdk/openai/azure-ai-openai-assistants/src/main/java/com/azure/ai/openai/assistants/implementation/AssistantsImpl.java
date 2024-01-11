@@ -58,7 +58,7 @@ public final class AssistantsImpl {
      * The interface defining all the services for AssistantsClientAssistants to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{endpoint}/openai")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClientAssi")
     public interface AssistantsService {
         @Post("/assistants")

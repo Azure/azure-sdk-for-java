@@ -190,7 +190,7 @@ public final class ThreadMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.listMessagesWithResponse(threadId, requestOptions);
     }
 
@@ -453,7 +453,7 @@ public final class ThreadMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadMessage listMessages(String threadId, Integer limit, ListSortOrder order, String after,
+    public OpenAIPageableListOfThreadMessage listMessages(String threadId, Integer limit, ListSortOrder order, String after,
         String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -487,7 +487,7 @@ public final class ThreadMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadMessage listMessages(String threadId) {
+    public OpenAIPageableListOfThreadMessage listMessages(String threadId) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).getValue()

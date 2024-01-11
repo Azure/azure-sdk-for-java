@@ -54,7 +54,7 @@ public final class RunStepsImpl {
      * The interface defining all the services for AssistantsClientRunSteps to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/openai")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClientRunS")
     public interface RunStepsService {
         @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")

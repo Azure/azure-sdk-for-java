@@ -57,7 +57,7 @@ public final class ThreadRunsImpl {
      * The interface defining all the services for AssistantsClientThreadRuns to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{endpoint}/openai")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClientThre")
     public interface ThreadRunsService {
         @Post("/threads/{threadId}/runs")
