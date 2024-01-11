@@ -400,7 +400,7 @@ public final class ThreadRunsAsyncClient {
      * }
      * }</pre>
      *
-     * @param threadId The ID of the the thread that was run.
+     * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

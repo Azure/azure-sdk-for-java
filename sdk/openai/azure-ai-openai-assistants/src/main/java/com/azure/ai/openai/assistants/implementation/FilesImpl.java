@@ -57,7 +57,7 @@ public final class FilesImpl {
      * The interface defining all the services for AssistantsClientFiles to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/openai")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClientFile")
     public interface FilesService {
         @Get("/files")
