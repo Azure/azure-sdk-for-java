@@ -30,15 +30,7 @@ public class TimeWindowFilterSettings {
      * @param startTime the start time to determine when a feature should be enabled
      * */
     public void setStart(String startTime) {
-        try {
-            this.start = StringUtils.hasText(startTime)
-                ? ZonedDateTime.parse(startTime, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-        } catch (DateTimeParseException e) {
-            this.start = StringUtils.hasText(startTime)
-                ? ZonedDateTime.parse(startTime, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-        }
+        this.start = convertStringToDate(startTime);
     }
 
     /**
@@ -52,15 +44,7 @@ public class TimeWindowFilterSettings {
      * @param endTime the end time to determine when a feature should be disabled
      * */
     public void setEnd(String endTime) {
-        try {
-            this.end = StringUtils.hasText(endTime)
-                ? ZonedDateTime.parse(endTime, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-        } catch (DateTimeParseException e) {
-            this.end = StringUtils.hasText(endTime)
-                ? ZonedDateTime.parse(endTime, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-        }
+        this.end = convertStringToDate(endTime);
     }
 
     /**
@@ -82,5 +66,16 @@ public class TimeWindowFilterSettings {
      * */
     public Recurrence getRecurrence() {
         return recurrence;
+    }
+
+    private ZonedDateTime convertStringToDate(String timeStr) {
+        if (!StringUtils.hasText(timeStr)) {
+            return null;
+        }
+        try {
+            return ZonedDateTime.parse(timeStr, DateTimeFormatter.ISO_DATE_TIME);
+        } catch (final DateTimeParseException e) {
+            return ZonedDateTime.parse(timeStr, DateTimeFormatter.RFC_1123_DATE_TIME);
+        }
     }
 }
