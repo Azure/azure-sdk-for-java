@@ -1,0 +1,61 @@
+matrix:
+  image:
+    - dockerfiles/java11
+    - dockerfiles/java21
+  scenarios:
+    netty-sync-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: true
+      httpClient: netty
+    netty-async-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: false
+      httpClient: netty
+    okhttp-sync-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: true
+      httpClient: okhttp
+    okhttp-async-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: false
+      httpClient: okhttp
+    jdk-sync-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: true
+      httpClient: jdk
+    jdk-async-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: false
+      httpClient: jdk
+    vertx-sync-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: true
+      httpClient: vertx
+    vertx-async-get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      testScenario: httpget
+      concurrency: 75
+      sync: false
+      httpClient: vertx

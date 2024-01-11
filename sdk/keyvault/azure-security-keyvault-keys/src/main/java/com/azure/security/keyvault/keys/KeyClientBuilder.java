@@ -48,7 +48,7 @@ import java.util.Map;
  * {@link KeyClientBuilder#buildAsyncClient() buildAsyncClient} and {@link KeyClientBuilder#buildClient() buildClient}
  * respectively. It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient} are
+ * <p> The minimal configuration options required by {@link KeyClientBuilder} to build a {@link KeyAsyncClient} are
  * {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -18,10 +18,14 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
-import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
+import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
-final class JdkHttpResponseSync extends JdkHttpResponseBase {
+/**
+ * Synchronous response implementation for JDK HttpClient.
+ */
+public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpResponseSync.class);
     private BinaryData binaryData = null;
     public static final int STREAM_READ_SIZE = 8192;
@@ -29,14 +33,31 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private final InputStream bodyStream;
     private byte[] bodyBytes;
 
-    private volatile boolean disposed = false;
-    JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
+    private volatile int disposed = 0;
+    private static final AtomicIntegerFieldUpdater<JdkHttpResponseSync> DISPOSED_UPDATER =
+        AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseSync.class, "disposed");
+
+    /**
+     * Creates an instance of {@link JdkHttpResponseSync}.
+     *
+     * @param request the request which resulted in this response.
+     * @param statusCode the status code of the response.
+     * @param headers the headers of the response.
+     * @param bytes the response body bytes.
+     */
+    public JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
         this.bodyBytes = bytes;
     }
 
-    JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
+    /**
+     * Creates an instance of {@link JdkHttpResponseSync}.
+     *
+     * @param request the request which resulted in this response.
+     * @param streamResponse the JDK HttpClient response.
+     */
+    public JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
         super(request, streamResponse.statusCode(), fromJdkHttpHeaders(streamResponse.headers()));
         this.bodyStream = streamResponse.body();
         this.bodyBytes = null;
@@ -86,8 +107,7 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
 
     @Override
     public void close() {
-        if (!disposed && bodyStream != null) {
-            disposed = true;
+        if (bodyStream != null && DISPOSED_UPDATER.compareAndSet(this, 0, 1)) {
             try {
                 bodyStream.close();
             } catch (IOException e) {

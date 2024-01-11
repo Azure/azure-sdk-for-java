@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -25,7 +25,10 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
 import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 
-final class BodyPublisherUtils {
+/**
+ * Utility class for BodyPublisher.
+ */
+public final class BodyPublisherUtils {
     private BodyPublisherUtils() {
     }
 
@@ -72,7 +75,8 @@ final class BodyPublisherUtils {
      * @param publisher BodyPublisher representing request content that's not aware of content length
      * @return the request BodyPublisher
      */
-    private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher, String contentLength) {
+    private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher,
+        String contentLength) {
         if (CoreUtils.isNullOrEmpty(contentLength)) {
             return publisher;
         } else {
@@ -85,7 +89,8 @@ final class BodyPublisherUtils {
         }
     }
 
-    private static HttpRequest.BodyPublisher getPublisherWithReporter(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
+    private static HttpRequest.BodyPublisher getPublisherWithReporter(HttpRequest.BodyPublisher downstream,
+        ProgressReporter progressReporter) {
         return progressReporter == null ? downstream : new CountingPublisher(downstream, progressReporter);
     }
 
