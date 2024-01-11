@@ -25,6 +25,9 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
 import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 
+/**
+ * Utility class for BodyPublisher.
+ */
 public final class BodyPublisherUtils {
     private BodyPublisherUtils() {
     }

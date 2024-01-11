@@ -18,9 +18,13 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
+/**
+ * Synchronous response implementation for JDK HttpClient.
+ */
 public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpResponseSync.class);
     private BinaryData binaryData = null;
@@ -29,14 +33,30 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private final InputStream bodyStream;
     private byte[] bodyBytes;
 
-    private volatile boolean disposed = false;
+    private volatile int disposed = 0;
+    private static final AtomicIntegerFieldUpdater<JdkHttpResponseSync> DISPOSED_UPDATER =
+        AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseSync.class, "disposed");
 
+    /**
+     * Creates an instance of {@link JdkHttpResponseSync}.
+     *
+     * @param request the request which resulted in this response.
+     * @param statusCode the status code of the response.
+     * @param headers the headers of the response.
+     * @param bytes the response body bytes.
+     */
     public JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
         this.bodyBytes = bytes;
     }
 
+    /**
+     * Creates an instance of {@link JdkHttpResponseSync}.
+     *
+     * @param request the request which resulted in this response.
+     * @param streamResponse the JDK HttpClient response.
+     */
     public JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
         super(request, streamResponse.statusCode(), fromJdkHttpHeaders(streamResponse.headers()));
         this.bodyStream = streamResponse.body();
@@ -87,8 +107,7 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
 
     @Override
     public void close() {
-        if (!disposed && bodyStream != null) {
-            disposed = true;
+        if (bodyStream != null && DISPOSED_UPDATER.compareAndSet(this, 0, 1)) {
             try {
                 bodyStream.close();
             } catch (IOException e) {

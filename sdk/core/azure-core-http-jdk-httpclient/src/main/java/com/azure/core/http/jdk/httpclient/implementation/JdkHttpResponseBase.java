@@ -20,6 +20,13 @@ public abstract class JdkHttpResponseBase extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
 
+    /**
+     * Creates an instance of {@link JdkHttpResponseBase}.
+     *
+     * @param request the request which resulted in this response.
+     * @param statusCode the status code of the response.
+     * @param headers the headers of the response.
+     */
     public JdkHttpResponseBase(final HttpRequest request, int statusCode, HttpHeaders headers) {
         super(request);
         this.statusCode = statusCode;

@@ -23,6 +23,17 @@ import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_K
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
+/**
+ * A cache that holds a single active RequestResponseChannel at a time. The cache is responsible for creating a new
+ * RequestResponseChannel if the cache is empty or the current cached RequestResponseChannel is in closed state.
+ * <p>
+ * The cache is also responsible for terminating the recovery support (i.e. no longer possible to obtain
+ * RequestResponseChannel) once the cache is terminated due to {@link RequestResponseChannelCache#dispose()} call or
+ * the parent {@link ReactorConnection} is in terminated state.
+ * Since the parent {@link ReactorConnection} hosts any RequestResponseChannel object that RequestResponseChannelCache
+ * caches, recovery (scoped to the Connection) is impossible once the Connection is terminated
+ * (i.e. connection.isDisposed() == true). Which also means RequestResponseChannelCache cannot outlive the Connection.
+ */
 public final class RequestResponseChannelCache implements Disposable {
     private static final String IS_CACHE_TERMINATED_KEY = "isCacheTerminated";
     private static final String IS_CONNECTION_TERMINATED_KEY = "isConnectionTerminated";

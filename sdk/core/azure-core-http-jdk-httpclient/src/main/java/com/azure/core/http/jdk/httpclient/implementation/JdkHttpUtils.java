@@ -8,6 +8,9 @@ import com.azure.core.util.CoreUtils;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class for JDK HttpClient.
+ */
 public final class JdkHttpUtils {
     /**
      * Converts the given JDK Http headers to azure-core Http header.

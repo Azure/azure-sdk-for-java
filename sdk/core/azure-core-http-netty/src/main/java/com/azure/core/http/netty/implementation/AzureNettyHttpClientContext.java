@@ -13,15 +13,31 @@ public final class AzureNettyHttpClientContext {
     private final Long responseTimeoutOverride;
     private final ProgressReporter progressReporter;
 
+    /**
+     * Creates an instance of AzureNettyHttpClientContext.
+     *
+     * @param responseTimeoutOverride The response timeout override.
+     * @param progressReporter The progress reporter.
+     */
     public AzureNettyHttpClientContext(Long responseTimeoutOverride, ProgressReporter progressReporter) {
         this.responseTimeoutOverride = responseTimeoutOverride;
         this.progressReporter = progressReporter;
     }
 
+    /**
+     * Gets the response timeout override.
+     *
+     * @return The response timeout override.
+     */
     public Long getResponseTimeoutOverride() {
         return responseTimeoutOverride;
     }
 
+    /**
+     * Gets the progress reporter.
+     *
+     * @return The progress reporter.
+     */
     public ProgressReporter getProgressReporter() {
         return progressReporter;
     }

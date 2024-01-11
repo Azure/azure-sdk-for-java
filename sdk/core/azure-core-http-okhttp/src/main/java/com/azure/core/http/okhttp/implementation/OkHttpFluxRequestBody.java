@@ -20,10 +20,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * An {@link okhttp3.RequestBody} subtype that sends {@link BinaryDataContent}
- * as {@link Flux} of {@link ByteBuffer} in an unbuffered manner.
- * This class accepts any {@link BinaryDataContent} as catch-all for backwards compatibility
- * but ideally should be used only with reactive payloads.
+ * An {@link okhttp3.RequestBody} subtype that sends {@link BinaryDataContent} as {@link Flux} of {@link ByteBuffer} in
+ * an unbuffered manner. This class accepts any {@link BinaryDataContent} as catch-all for backwards compatibility but
+ * ideally should be used only with reactive payloads.
  */
 public class OkHttpFluxRequestBody extends RequestBody {
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpFluxRequestBody.class);
@@ -53,8 +52,16 @@ public class OkHttpFluxRequestBody extends RequestBody {
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
     private final int callTimeoutMillis;
 
-    public OkHttpFluxRequestBody(
-        BinaryDataContent content, long effectiveContentLength, MediaType mediaType, int callTimeoutMillis) {
+    /**
+     * Creates an OkHttpFluxRequestBody.
+     *
+     * @param content The content to send.
+     * @param effectiveContentLength The length of the content to send.
+     * @param mediaType The content type of the content to send.
+     * @param callTimeoutMillis The call timeout in milliseconds.
+     */
+    public OkHttpFluxRequestBody(BinaryDataContent content, long effectiveContentLength, MediaType mediaType,
+        int callTimeoutMillis) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.effectiveContentLength = effectiveContentLength;
         this.mediaType = mediaType;
@@ -64,19 +71,15 @@ public class OkHttpFluxRequestBody extends RequestBody {
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
         if (bodySent.compareAndSet(false, true)) {
-            Mono<Void> requestSendMono = content.toFluxByteBuffer()
-                .flatMapSequential(buffer -> {
-                    if (Schedulers.isInNonBlockingThread()) {
-                        return Mono.just(buffer)
-                            .publishOn(Schedulers.boundedElastic())
-                            .map(b -> writeBuffer(bufferedSink, b))
-                            .then();
-                    } else {
-                        writeBuffer(bufferedSink, buffer);
-                        return Mono.empty();
-                    }
-                }, 1, 1)
-                .then();
+            Mono<Void> requestSendMono = content.toFluxByteBuffer().flatMapSequential(buffer -> {
+                if (Schedulers.isInNonBlockingThread()) {
+                    return Mono.just(buffer).publishOn(Schedulers.boundedElastic())
+                        .map(b -> writeBuffer(bufferedSink, b)).then();
+                } else {
+                    writeBuffer(bufferedSink, buffer);
+                    return Mono.empty();
+                }
+            }, 1, 1).then();
 
             // The blocking happens on OkHttp thread pool.
             if (callTimeoutMillis > 0) {
@@ -94,7 +97,7 @@ public class OkHttpFluxRequestBody extends RequestBody {
         }
     }
 
-    private ByteBuffer writeBuffer(BufferedSink sink, ByteBuffer buffer) {
+    private static ByteBuffer writeBuffer(BufferedSink sink, ByteBuffer buffer) {
         try {
             while (buffer.hasRemaining()) {
                 sink.write(buffer);
