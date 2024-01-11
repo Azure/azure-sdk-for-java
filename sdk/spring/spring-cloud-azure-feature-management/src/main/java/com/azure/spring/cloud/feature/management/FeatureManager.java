@@ -204,29 +204,29 @@ public class FeatureManager {
             }
         }
 
-        String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
-        Collection<VariantReference> variants = feature.getVariants().values();
+        if (feature.getAllocation() != null && feature.getVariants() != null) {
+            String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
+            Collection<VariantReference> variants = feature.getVariants().values();
+            if (results.size() > 0) {
+                return evaluateFeatureFlagResults(feature, results).map(filterAssignedValue -> {
+                    if (filterAssignedValue && feature.getVariants().size() > 0) {
+                        // Feature is on by Feature Flags, check allocation
+                        validateVariant(feature);
 
-        if (results.size() > 0) {
-            return evaluateFeatureFlagResults(feature, results).map(filterAssignedValue -> {
-                if (filterAssignedValue && feature.getVariants().size() > 0) {
-                    // Feature is on by Feature Flags, check allocation
-                    validateVariant(feature);
-
-                    VariantAssignment variantAssignment = new VariantAssignment(evaluationOptions,
-                        propertiesProvider);
-                    // Checking if allocation overrides true result
-                    return checkDefaultOverride(feature.getVariants().values(), true,
-                        variantAssignment.assignVariant(feature.getAllocation(), buildContext(featureContext)));
-                } else if (filterAssignedValue) {
-                    return true;
-                }
-                // Feature is disabled by Feature Flags, check default disabled variant
-                return checkDefaultOverride(variants, false, defaultDisabledVariant);
-            });
-        } else if (feature.getVariants().size() > 0 && StringUtils.hasText(defaultDisabledVariant)) {
-            return Mono.just(checkDefaultOverride(variants, false, defaultDisabledVariant));
-
+                        VariantAssignment variantAssignment = new VariantAssignment(evaluationOptions,
+                            propertiesProvider);
+                        // Checking if allocation overrides true result
+                        return checkDefaultOverride(feature.getVariants().values(), true,
+                            variantAssignment.assignVariant(feature.getAllocation(), buildContext(featureContext)));
+                    } else if (filterAssignedValue) {
+                        return true;
+                    }
+                    // Feature is disabled by Feature Flags, check default disabled variant
+                    return checkDefaultOverride(variants, false, defaultDisabledVariant);
+                });
+            } else if (feature.getVariants().size() > 0 && StringUtils.hasText(defaultDisabledVariant)) {
+                return Mono.just(checkDefaultOverride(variants, false, defaultDisabledVariant));
+            }
         }
 
         return Mono.just(false);
@@ -287,8 +287,7 @@ public class FeatureManager {
         }
 
         List<Mono<Boolean>> results = new ArrayList<>();
-        
-        
+
         for (FeatureFilterEvaluationContext featureFilter : feature.getEnabledFor().values()) {
             if (StringUtils.hasText(featureFilter.getName())) {
                 results.add(isFeatureOn(featureFilter, feature.getKey(), featureContext));

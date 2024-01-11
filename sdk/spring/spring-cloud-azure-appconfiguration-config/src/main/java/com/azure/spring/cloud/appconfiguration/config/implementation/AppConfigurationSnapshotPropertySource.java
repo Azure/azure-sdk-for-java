@@ -10,6 +10,7 @@ import java.util.List;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -49,8 +50,9 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         // Feature Flags are only part of this if they come from a snapshot
         processFeatureFlag(key, setting, trimStrings);
     }
-    
-    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
+
+    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
+        throws JsonMappingException, JsonProcessingException {
         TracingInfo tracing = replicaClient.getTracingInfo();
         featureConfigurationSettings.add(setting);
         FeatureFlagConfigurationSetting featureFlag = setting;

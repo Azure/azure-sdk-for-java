@@ -44,6 +44,8 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.ent
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -122,14 +124,16 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     }
 
     @Test
-    public void overrideTest() {
-        String[] labels = {"test"};
-        AppConfigurationFeatureManagementPropertySource propertySourceOverride = new AppConfigurationFeatureManagementPropertySource(TEST_STORE_NAME, clientMock, "/test/",
+    public void overrideTest() throws JsonMappingException, JsonProcessingException {
+        String[] labels = { "test" };
+        AppConfigurationFeatureManagementPropertySource propertySourceOverride = new AppConfigurationFeatureManagementPropertySource(
+            TEST_STORE_NAME, clientMock, "/test/",
             labels);
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
-        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
         featureFlagStore.setEnabled(true);
 
         propertySourceOverride.initProperties(null);
@@ -150,9 +154,9 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertEquals(gamma.getKey(),
             ((Feature) propertySourceOverride.getProperty(FEATURE_MANAGEMENT_KEY + "Gamma")).getKey());
     }
-    
+
     @Test
-    public void testFeatureFlagCanBeInitedAndQueried() {
+    public void testFeatureFlagCanBeInitedAndQueried() throws JsonMappingException, JsonProcessingException {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
@@ -191,7 +195,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     }
 
     @Test
-    public void initNullInvalidContentTypeFeatureFlagTest() {
+    public void initNullInvalidContentTypeFeatureFlagTest() throws JsonMappingException, JsonProcessingException {
         ArrayList<ConfigurationSetting> items = new ArrayList<>();
         items.add(FEATURE_ITEM_NULL);
         when(featureListMock.iterator()).thenReturn(Collections.emptyIterator())
@@ -208,7 +212,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     }
 
     @Test
-    public void testFeatureFlagTargeting() {
+    public void testFeatureFlagTargeting() throws JsonMappingException, JsonProcessingException {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS_TARGETING.iterator());
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
