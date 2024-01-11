@@ -6,6 +6,7 @@ package com.azure.core.util.io;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
@@ -96,9 +97,7 @@ public final class IOUtils {
             buffer.clear();
             read = source.read(buffer);
             buffer.flip();
-            while (buffer.hasRemaining()) {
-                destination.write(buffer);
-            }
+            ImplUtils.fullyWriteBuffer(buffer, destination);
         } while (read >= 0);
     }
 
