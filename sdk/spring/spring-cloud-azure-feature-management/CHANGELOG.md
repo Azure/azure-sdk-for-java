@@ -1,8 +1,12 @@
 # Release History
 
-## 5.9.0-beta.1 (Unreleased)
+## 5.9.0-beta.1 (2024-01-11)
 
 ### Features Added
+
+* Added Support for Feature Variants
+* `FeatureManager` has a new method, `getVariant` that can return a `Variant` object that contains configuration or a instance of an object.
+* Added Support of providing local context to feature filters. 
 
 ### Breaking Changes
 

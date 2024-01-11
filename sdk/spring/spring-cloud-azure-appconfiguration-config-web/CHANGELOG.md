@@ -1,8 +1,10 @@
 # Release History
 
-## 5.9.0-beta.1 (Unreleased)
+## 5.9.0-beta.1 (2024-01-11)
 
 ### Features Added
+
+* Added Support for Feature Variants
 
 ### Breaking Changes
 
