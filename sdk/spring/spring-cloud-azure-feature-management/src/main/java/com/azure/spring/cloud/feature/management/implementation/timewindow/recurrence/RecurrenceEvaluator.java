@@ -9,6 +9,7 @@ import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -574,11 +575,20 @@ public class RecurrenceEvaluator {
 
     private boolean tryValidateDayOfMonth(TimeWindowFilterSettings settings) {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN, RecurrenceConstants.RECURRENCE_PATTERN_DAY_OF_MONTH);
-        if (settings.getRecurrence().getPattern().getDayOfMonth() == null) {
+        final RecurrencePattern p = settings.getRecurrence().getPattern();
+        if (p.getDayOfMonth() == null) {
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
-        if (settings.getRecurrence().getPattern().getDayOfMonth() < 1 || settings.getRecurrence().getPattern().getDayOfMonth() > 31) {
+
+        int maxDayOfMonth = 31;
+        // Absolute yearly, max day of month depends on the month.
+        if (RecurrenceConstants.ABSOLUTE_YEARLY.equalsIgnoreCase(p.getType())) {
+            final Month m = Month.of(p.getMonth());
+            maxDayOfMonth = m.length(true); // We should allow Feb 29th whether is leap year
+        }
+
+        if (p.getDayOfMonth() < 1 || p.getDayOfMonth() > maxDayOfMonth) {
             reason = RecurrenceConstants.OUT_OF_RANGE;
             return false;
         }
