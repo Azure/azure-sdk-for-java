@@ -249,10 +249,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         Span span = getSpanOrNull(context);
         if (span != null) {
-            if (span.isRecording()) {
-                span = OpenTelemetryUtils.setError(span, errorMessage, throwable);
-            }
-
+            span = OpenTelemetryUtils.setError(span, errorMessage, throwable);
             span.end();
         }
     }

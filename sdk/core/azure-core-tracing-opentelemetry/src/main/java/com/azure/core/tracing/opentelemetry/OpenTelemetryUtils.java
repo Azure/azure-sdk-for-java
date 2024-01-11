@@ -42,6 +42,7 @@ class OpenTelemetryUtils {
     }
 
     private static String mapAttributeName(String name) {
+        // TODO (limolkova) remove all these mappings prior to plugin stability
         if ("http.method".equals(name)) {
             return "http.request.method";
         }
@@ -140,6 +141,10 @@ class OpenTelemetryUtils {
      * @return the corresponding OpenTelemetry {@link Span}.
      */
     static Span setError(Span span, String statusMessage, Throwable throwable) {
+        if (!span.isRecording()) {
+            return span;
+        }
+
         // "success" is needed for back compat with older Event Hubs and Service Bus, don't use it.
         if ("success".equals(statusMessage)) {
             statusMessage = null;
@@ -153,6 +158,6 @@ class OpenTelemetryUtils {
         span.setAttribute(ERROR_TYPE_ATTRIBUTE,
             statusMessage != null ? statusMessage : throwable.getClass().getName());
 
-        return span.setStatus(StatusCode.ERROR, statusMessage != null ? statusMessage : throwable.getMessage());
+        return span.setStatus(StatusCode.ERROR, throwable != null ? throwable.getMessage() : statusMessage);
     }
 }

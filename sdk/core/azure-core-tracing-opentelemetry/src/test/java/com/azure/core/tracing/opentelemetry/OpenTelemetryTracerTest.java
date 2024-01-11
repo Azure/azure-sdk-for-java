@@ -30,7 +30,6 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.sdk.trace.internal.data.ExceptionEventData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Exceptions;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.time.Instant;
@@ -558,39 +558,31 @@ public class OpenTelemetryTracerTest {
     @Test
     public void endSpanErrorMessageTest() {
         // Arrange
-        final ReadableSpan recordEventsSpan = (ReadableSpan) parentSpan;
+        final ReadableSpan span = (ReadableSpan) parentSpan;
         final String throwableMessage = "custom error message";
 
         // Act
         openTelemetryTracer.end(null, new Throwable(throwableMessage), tracingContext);
 
         // Assert
-        assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
-        assertEquals(1, events.size());
-        EventData event = events.get(0);
-        assertEquals("exception", event.getName());
-        assertEquals("custom error message",
-            event.getAttributes().get(AttributeKey.stringKey("exception.message")));
+        assertEquals(StatusCode.ERROR, span.toSpanData().getStatus().getStatusCode());
+        assertEquals(throwableMessage, span.toSpanData().getStatus().getDescription());
+        assertEquals(Throwable.class.getName(), span.getAttribute(AttributeKey.stringKey("error.type")));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void endSpanTestThrowableResponseCode() {
         // Arrange
-        final ReadableSpan recordEventsSpan = (ReadableSpan) parentSpan;
+        final ReadableSpan span = (ReadableSpan) parentSpan;
 
         // Act
         openTelemetryTracer.end(404, new Throwable("this is an exception"), tracingContext);
 
         // Assert
-        assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        assertEquals("this is an exception", recordEventsSpan.toSpanData().getStatus().getDescription());
-
-        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
-        assertEquals(1, events.size());
-        EventData event = events.get(0);
-        assertEquals("exception", event.getName());
+        assertEquals(StatusCode.ERROR, span.toSpanData().getStatus().getStatusCode());
+        assertEquals("this is an exception", span.toSpanData().getStatus().getDescription());
+        assertEquals(Throwable.class.getName(), span.getAttribute(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -1196,16 +1188,12 @@ public class OpenTelemetryTracerTest {
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
         assertEquals(originalError.getMessage(), spanData.getStatus().getDescription());
-        assertEquals(1, spanData.getEvents().size());
-
-        EventData exceptionEvent = spanData.getEvents().get(0);
-        assertTrue(exceptionEvent instanceof ExceptionEventData);
-        assertSame(originalError, ((ExceptionEventData) exceptionEvent).getException());
+        assertEquals(0, spanData.getEvents().size());
         assertEquals(originalError.getClass().getName(), spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
-    public void setStatusThrowableAndStatus() {
+    public void setErrorThrowableAndStatusMessage() {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
         Throwable error = new IOException("bar");
         openTelemetryTracer.end("foo", error, span);
@@ -1214,7 +1202,6 @@ public class OpenTelemetryTracerTest {
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
         assertEquals("bar", spanData.getStatus().getDescription());
         assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
-        assertEquals(1, spanData.getEvents().size());
     }
 
     @Test
@@ -1304,6 +1291,8 @@ public class OpenTelemetryTracerTest {
         return Stream.of(
             Arguments.of(rootCause, rootCause),
             Arguments.of(Exceptions.propagate(rootCause), rootCause),
+            Arguments.of(new UncheckedIOException(rootCause), rootCause),
+            Arguments.of(Exceptions.propagate(new UncheckedIOException(rootCause)), rootCause),
             Arguments.of(new ExecutionException(rootCause), rootCause),
             Arguments.of(new InvocationTargetException(rootCause), rootCause),
             Arguments.of(new InvocationTargetException(rootCause), rootCause),
