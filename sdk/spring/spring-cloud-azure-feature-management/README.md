@@ -409,7 +409,7 @@ In the above example, if the feature is not enabled, `GetVariantAsync` would ret
 
 If the feature is enabled, the feature manager will check the `User`, `Group`, and `Percentile` allocations in that order to allocate a variant for this feature. If the user being evaluated is named `Marsha`, in the group named `Ring1`, or the user happens to fall between the 0 and 10th percentile calculated with the given `Seed`, then the specified variant is returned for that allocation. In this case, all of these would return the `Big` variant. If none of these allocations match, the `DefaultWhenEnabled` variant is returned, which is `Small`.
 
-Allocation logic is similar to the [Microsoft.Targeting](#TargetingFilter) feature filter, but there are some parameters that are present in targeting that aren't in allocation, and vice versa. The outcomes of targeting and allocation are not related.
+Allocation logic is similar to the [Microsoft.Targeting](#targetingfilter) feature filter, but there are some parameters that are present in targeting that aren't in allocation, and vice versa. The outcomes of targeting and allocation are not related.
 
 ### Overriding Enabled State with a Variant
 
