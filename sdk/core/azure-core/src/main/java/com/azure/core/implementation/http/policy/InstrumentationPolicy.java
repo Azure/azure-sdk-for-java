@@ -22,14 +22,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
-import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
-import java.net.URL;
-
+import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static com.azure.core.http.policy.HttpLoggingPolicy.RETRY_COUNT_CONTEXT;
+import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
 /**
@@ -51,11 +51,13 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String HTTP_RESEND_COUNT = "http.request.resend_count";
     private static final String SERVER_ADDRESS = "server.address";
     private static final String SERVER_PORT = "server.port";
-    private static final String ERROR_TYPE_OTHER = "_OTHER";
-    private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;
+
+    /**
+     * Creates an instance of {@link InstrumentationPolicy}.
+     */
     public InstrumentationPolicy() {
     }
 
@@ -151,7 +153,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         if (response != null) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
-            String requestId = response.getHeaderValue(SERVICE_REQUEST_ID_HEADER);
+            String requestId = response.getHeaderValue(X_MS_REQUEST_ID);
             if (requestId != null) {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
@@ -248,7 +250,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             if (errorType == null && statusCode >= 400) {
                 errorType = String.valueOf(statusCode);
             }
-            tracer.end(null, exception, span);
+            tracer.end(errorType, exception, span);
         }
     }
 }

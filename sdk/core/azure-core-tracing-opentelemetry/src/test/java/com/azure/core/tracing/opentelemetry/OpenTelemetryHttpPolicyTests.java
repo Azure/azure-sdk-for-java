@@ -31,7 +31,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
@@ -307,7 +306,7 @@ public class OpenTelemetryHttpPolicyTests {
     }
 
     @Test
-    public void exceptionEventIsRecorded() {
+    public void exceptionEventIsNotRecorded() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
@@ -332,11 +331,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertNull(span.getAttributes().get(AttributeKey.longKey("http.response.status_code")));
         assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
 
-        List<EventData> events = span.getEvents();
-        assertEquals(1, events.size());
-        assertEquals("exception", events.get(0).getName());
-        assertEquals(Exception.class.getName(), events.get(0).getAttributes().get(AttributeKey.stringKey("exception.type")));
-        assertEquals("foo", events.get(0).getAttributes().get(AttributeKey.stringKey("exception.message")));
+        assertEquals(0, span.getEvents().size());
     }
 
     @Test
@@ -388,11 +383,6 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(StatusCode.ERROR, tryTimeout.getStatus().getStatusCode());
         assertEquals("timeout", tryTimeout.getStatus().getDescription());
         assertEquals(TimeoutException.class.getName(), tryTimeout.getAttributes().get(AttributeKey.stringKey("error.type")));
-
-        List<EventData> events = tryTimeout.getEvents();
-        assertEquals(1, events.size());
-        assertEquals("exception", events.get(0).getName());
-        assertEquals(TimeoutException.class.getName(), events.get(0).getAttributes().get(AttributeKey.stringKey("exception.type")));
     }
 
     @Test
@@ -424,7 +414,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("boom", partialContent.getStatus().getDescription());
 
         Map<String, Object> attributes = getAttributes(partialContent);
-        assertEquals(200L, attributes.get("http.status_code"));
+        assertEquals(IOException.class.getName(), attributes.get("error.type"));
+        assertEquals(200L, attributes.get("http.response.status_code"));
     }
 
     @Test

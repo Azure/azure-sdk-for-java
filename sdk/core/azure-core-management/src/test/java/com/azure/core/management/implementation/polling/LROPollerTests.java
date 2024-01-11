@@ -6,7 +6,6 @@ package com.azure.core.management.implementation.polling;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -329,8 +328,6 @@ public class LROPollerTests {
                         response.getStatus());
                     Assertions.assertEquals(200, response.getValue().getError().getResponseStatusCode());
                     Assertions.assertNotNull(response.getValue().getError());
-                    UUID validUuid = UUID.fromString(response.getValue().getError().getResponseHeaders()
-                        .getValue(HttpHeaderName.fromString("x-ms-request-id")));
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
                 }

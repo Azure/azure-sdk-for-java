@@ -6,6 +6,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import reactor.core.Exceptions;
 
+import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +26,8 @@ final class ExceptionUtils {
     public static Throwable unwrapError(Throwable error) {
         error = Exceptions.unwrap(error);
         if (error != null && error.getCause() != null
-            && (error instanceof ExecutionException
+            && (error instanceof UncheckedIOException
+            || error instanceof ExecutionException
             || isInstanceOfCompletionException(error)
             || error instanceof InvocationTargetException
             || error instanceof UndeclaredThrowableException)) {

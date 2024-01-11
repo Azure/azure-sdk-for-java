@@ -153,11 +153,6 @@ class OpenTelemetryUtils {
         span.setAttribute(ERROR_TYPE_ATTRIBUTE,
             statusMessage != null ? statusMessage : throwable.getClass().getName());
 
-        if (throwable != null) {
-            span.recordException(throwable);
-            return span.setStatus(StatusCode.ERROR, throwable.getMessage());
-        }
-
-        return span.setStatus(StatusCode.ERROR, statusMessage);
+        return span.setStatus(StatusCode.ERROR, statusMessage != null ? statusMessage : throwable.getMessage());
     }
 }
