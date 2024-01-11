@@ -80,6 +80,10 @@ public class FaultInjectionRequestContext {
     }
 
     public int getFaultInjectionRuleApplyCount(String ruleId) {
+        if (this.hitCountByRuleMap.isEmpty()) {
+            return 0;
+        }
+
         return this.hitCountByRuleMap.getOrDefault(ruleId, 0);
     }
     public String getFaultInjectionRuleId(long transportRequestId) {
@@ -99,7 +103,7 @@ public class FaultInjectionRequestContext {
     }
 
     public List<String> getFaultInjectionRuleEvaluationResults(long transportRequestId) {
-        if (this.transportRequestIdRuleIdMap.isEmpty()) {
+        if (this.transportRequestIdRuleEvaluationMap.isEmpty()) {
             return null;
         }
 
