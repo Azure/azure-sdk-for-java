@@ -311,7 +311,11 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    // todo (abhmohanty): revert public API change
+    // todo (abhmohanty): revert public API change - used to hook into to track 404/1002s for operation
+    /**
+     * Return {@link ClientSideRequestStatistics}
+     * @return collection of {@link ClientSideRequestStatistics}
+     * */
     public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
         DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
             new DistinctClientSideRequestStatisticsCollection();

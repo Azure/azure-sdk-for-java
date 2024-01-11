@@ -126,8 +126,6 @@ public class CosmosClientBuilder implements
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
-    private boolean partitionKeyScopedSessionCapturingEnabled = false;
-    private boolean sessionConsistencyDisabledForWrites = false;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
@@ -185,13 +183,16 @@ public class CosmosClientBuilder implements
     ApiType apiType(){ return this.apiType; }
 
     /**
-     * Indicates whether session token is used for "write" operations.
-     *
-     * @param sessionConsistencyDisabledForWrites a boolean
-     * @return this CosmosClientBuilder
-     * */
-    public CosmosClientBuilder sessionConsistencyDisabledForWrites(boolean sessionConsistencyDisabledForWrites) {
-        this.sessionConsistencyDisabledForWrites = sessionConsistencyDisabledForWrites;
+     * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
+     * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
+     * Consistency while the client is not configured in session.
+     * <p>
+     * enabling Session capturing for Session mode has no effect.
+     * @param sessionCapturingOverrideEnabled session capturing override
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
 
@@ -203,14 +204,6 @@ public class CosmosClientBuilder implements
      */
     boolean isSessionCapturingOverrideEnabled() {
         return this.sessionCapturingOverrideEnabled;
-    }
-
-    boolean isPartitionKeyScopedSessionCapturingEnabled() {
-        return this.partitionKeyScopedSessionCapturingEnabled;
-    }
-
-    boolean isSessionConsistencyDisabledForWrites() {
-        return this.sessionConsistencyDisabledForWrites;
     }
 
     /**
