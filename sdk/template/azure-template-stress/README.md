@@ -21,7 +21,7 @@ Check out [Azure SDK Stress Test Wiki][azure_sdk_stress_test] for general inform
 cd into `azure-sdk-for-java` root folder and run command to deploy the package to cluster:
 
 ```shell
-.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<your service directory>
+./eng/common/scripts/stress-testing/deploy-stress-tests.ps1 -SearchDirectory ./sdk/<your service directory>
 ```
 
 ### Check Status
@@ -128,7 +128,7 @@ Now you can run stress tests locally. Remaining steps are required to run tests 
    - update test parameters for `test` container, feel free to rename the container as you see fit
 6. Define scenarios and parameters in `scenarios-matrix.yaml`
 
-Now you're ready to run tests with `.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<your service directory>`.
+Now you're ready to run tests with `./eng/common/scripts/stress-testing/deploy-stress-tests.ps1 -SearchDirectory ./sdk/<your service directory>`.
 See [Deploying A Stress Test][deploy_stress_test] for more details.
 
 Let's see how we can check test results.

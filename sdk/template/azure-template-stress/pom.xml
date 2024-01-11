@@ -45,6 +45,11 @@
       <artifactId>opentelemetry-logback-appender-1.0</artifactId> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
       <version>1.32.0-alpha</version>
     </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.3.12</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
