@@ -6,11 +6,8 @@ package com.azure.ai.openai.assistants.auth;
 import com.azure.ai.openai.assistants.AssistantThreadsClient;
 import com.azure.ai.openai.assistants.AssistantsClient;
 import com.azure.ai.openai.assistants.AssistantsClientBuilder;
-import com.azure.ai.openai.assistants.RunStepsClient;
 import com.azure.ai.openai.assistants.ThreadMessagesClient;
 import com.azure.ai.openai.assistants.ThreadRunsClient;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -21,8 +18,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
-
-import java.util.List;
 
 /**
  * Sample demonstrates how to create a client with public Non-Azure API Key.
@@ -84,17 +79,22 @@ public class ClientCreationWithNonAzureOpenAIKeyCredential {
         }
 
 
-        RunStepsClient runStepsClient = builder.buildRunStepsClient();
-        OpenAIPageableListOfRunStep openAIPageableListOfRunStep = runStepsClient.listRunSteps(threadId, runId);
-        openAIPageableListOfRunStep.getFirstId();
-        openAIPageableListOfRunStep.getLastId();
+//        RunStepsClient runStepsClient = builder.buildRunStepsClient();
+//        OpenAIPageableListOfRunStep openAIPageableListOfRunStep = runStepsClient.listRunSteps(threadId, runId);
+//        openAIPageableListOfRunStep.getFirstId();
+//        openAIPageableListOfRunStep.getLastId();
 
 
-        OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = threadMessagesClient.listMessages(threadId);
-
-        List<ThreadMessage> data = openAIPageableListOfThreadMessage.getData();
-        for (ThreadMessage threadMessage1 : data) {
-            System.out.println(threadMessage1.getContent().get(0));
-        }
+//        OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = threadMessagesClient.listMessages(threadId);
+//
+//        List<ThreadMessage> data = openAIPageableListOfThreadMessage.getData();
+//        for (int i = 0; i < data.size(); i++) {
+//            ThreadMessage dataMessage = data.get(i);
+//            MessageRole role = dataMessage.getRole();
+//            for (MessageContent messageContent : dataMessage.getContent()) {
+//                MessageTextContent messageTextContent = (MessageTextContent) messageContent;
+//                System.out.println(i + ": Role = " + role + "; " + messageTextContent.getText().getValue());
+//            }
+//        }
     }
 }

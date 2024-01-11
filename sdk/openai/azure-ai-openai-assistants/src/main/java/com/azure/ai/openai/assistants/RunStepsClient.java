@@ -230,7 +230,7 @@ public final class RunStepsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
+    OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -265,7 +265,7 @@ public final class RunStepsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId) {
+    OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).getValue()

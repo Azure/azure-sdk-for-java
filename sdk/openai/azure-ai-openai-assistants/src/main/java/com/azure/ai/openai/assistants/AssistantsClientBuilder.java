@@ -38,7 +38,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -293,9 +292,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         HttpHeaders headers = new HttpHeaders();
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-
         headers.add("OpenAI-Beta", "assistants=v1");
-
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -306,7 +303,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(useNonAzureOpenAIService() ? new KeyCredentialPolicy("Authorization", keyCredential, "Bearer")
-                    : new KeyCredentialPolicy("api-key", keyCredential));
+                : new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
@@ -441,7 +438,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
-
 
     /**
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
