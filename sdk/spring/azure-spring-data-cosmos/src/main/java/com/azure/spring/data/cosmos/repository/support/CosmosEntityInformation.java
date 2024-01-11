@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
 
@@ -267,7 +268,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public Object getPartitionKeyFieldValue(T entity) {
         if (partitionKeyField == null && partitionKeyPath != null) {
-            List<String> parts = Arrays.stream(partitionKeyPath.split("/")).toList();
+            List<String> parts = Arrays.stream(partitionKeyPath.split("/")).collect(Collectors.toList());
             final Object[] currentObject = {entity};
             parts.forEach(part -> {
                 try {
