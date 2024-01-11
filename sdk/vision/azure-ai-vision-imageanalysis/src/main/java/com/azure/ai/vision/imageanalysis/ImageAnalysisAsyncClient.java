@@ -572,6 +572,7 @@ public final class ImageAnalysisAsyncClient {
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -600,6 +601,7 @@ public final class ImageAnalysisAsyncClient {
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
