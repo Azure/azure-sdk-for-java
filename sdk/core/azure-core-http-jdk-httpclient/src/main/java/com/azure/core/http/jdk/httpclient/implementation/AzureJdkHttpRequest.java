@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.jdk.httpclient.implementation;
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -45,11 +46,13 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
         Set<String> restrictedHeaders, ClientLogger logger) {
-        this.method = azureCoreRequest.getHttpMethod().toString();
-
+        HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
+        this.method = method.toString();
+        this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
+            ? noBody() : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
+
         try {
             uri = azureCoreRequest.getUrl().toURI();
         } catch (URISyntaxException e) {
@@ -59,20 +62,6 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         this.headers = HttpHeaders.of(new HeaderFilteringMap(
             HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()), restrictedHeaders, logger),
             (ignored1, ignored2) -> true);
-
-        switch (azureCoreRequest.getHttpMethod()) {
-            case GET:
-                this.bodyPublisher = null;
-                break;
-
-            case HEAD:
-                this.bodyPublisher = noBody();
-                break;
-
-            default:
-                this.bodyPublisher = BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
-                break;
-        }
     }
 
     @Override
