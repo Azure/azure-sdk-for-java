@@ -28,6 +28,10 @@
 
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" />
 
+  <!-- Exception is being caught for tracing purposes only and rethrown as is, it is logged before or after tracing policy -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.core.implementation.http.policy.InstrumentationPolicy"/>
+
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header"
             files="com.azure.core.implementation.jackson.Option(BeanPropertyWriter|Module|PropertiesModifier|TypeModifier|SerializerProvider|Serializer)"/>

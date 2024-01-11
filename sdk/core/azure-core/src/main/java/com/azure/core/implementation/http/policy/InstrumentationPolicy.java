@@ -111,7 +111,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return new TraceableResponse(response, span);
         } catch (RuntimeException ex) {
             tracer.end(null, ex, span);
-            throw LOGGER.logExceptionAsWarning(ex);
+            throw ex;
         } catch (Exception ex) {
             tracer.end(null, ex, span);
             throw LOGGER.logExceptionAsWarning(new RuntimeException(ex));
