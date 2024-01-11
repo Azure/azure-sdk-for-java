@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.stores;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,7 +20,8 @@ public class ConfigStoreTest {
     @Test
     public void invalidLabel() {
         ConfigStore configStore = new ConfigStore();
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter("/application/")
+        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector()
+            .setKeyFilter("/application/")
             .setLabelFilter("*");
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
@@ -33,7 +33,8 @@ public class ConfigStoreTest {
     @Test
     public void invalidKey() {
         ConfigStore configStore = new ConfigStore();
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter("/application/*");
+        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector()
+            .setKeyFilter("/application/*");
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         configStore.setSelects(selects);
@@ -57,7 +58,8 @@ public class ConfigStoreTest {
 
         assertEquals("\0", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
 
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter("/application/")
+        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector()
+            .setKeyFilter("/application/")
             .setLabelFilter("dev");
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
@@ -77,7 +79,7 @@ public class ConfigStoreTest {
         configStore.setSelects(selects);
         assertEquals("\0", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
     }
-    
+
     @Test
     public void testContainsEndpoint() {
         ConfigStore store = new ConfigStore();
@@ -85,7 +87,7 @@ public class ConfigStoreTest {
         store.validateAndInit();
         assertTrue(store.containsEndpoint("endpoint"));
         assertFalse(store.containsEndpoint("invalidEndpoint"));
-        
+
         store = new ConfigStore();
         List<String> endpoints = new ArrayList<>();
         endpoints.add("endpoint");
@@ -96,13 +98,13 @@ public class ConfigStoreTest {
         assertTrue(store.containsEndpoint("secondEndpoint"));
         assertFalse(store.containsEndpoint("invalidEndpoint"));
     }
-    
+
     @Test
     public void testValidateConnectionString() {
         ConfigStore store = new ConfigStore();
         store.setConnectionString("Endpoint=https://endpoint.io;Id=identifier;Secret=secret=");
         store.validateAndInit();
-        
+
         store = new ConfigStore();
         List<String> connectionStrings = new ArrayList<>();
         connectionStrings.add("Endpoint=https://endpoint.io;Id=identifier;Secret=secret=");
@@ -110,7 +112,7 @@ public class ConfigStoreTest {
         store.setConnectionStrings(connectionStrings);
         store.validateAndInit();
     }
-    
+
     @Test
     public void testValidateConnectionStringInvalid() {
         ConfigStore store = new ConfigStore();

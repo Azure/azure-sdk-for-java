@@ -36,9 +36,11 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.ent
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
@@ -51,7 +53,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build()
+        .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     private final String keyFilter;
 
@@ -74,10 +77,12 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
      * Feature Management, but make sure its done in the last {@code AppConfigurationPropertySource}
      * AppConfigurationPropertySource}
      * </p>
+     * @throws JsonProcessingException
+     * @throws JsonMappingException
      *
      */
     @Override
-    public void initProperties(List<String> trim) {
+    public void initProperties(List<String> trim) throws JsonMappingException, JsonProcessingException {
         SettingSelector settingSelector = new SettingSelector();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -110,7 +115,8 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         return featureConfigurationSettings;
     }
 
-    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
+    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
+        throws JsonMappingException, JsonProcessingException {
         TracingInfo tracing = replicaClient.getTracingInfo();
         featureConfigurationSettings.add(setting);
         FeatureFlagConfigurationSetting featureFlag = setting;
@@ -129,21 +135,19 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
      * @return Feature created from KeyValueItem
      */
     @SuppressWarnings("unchecked")
-    protected static Object createFeature(FeatureFlagConfigurationSetting item) {
-        String key = getFeatureSimpleName(item);
-        String requirementType = DEFAULT_REQUIREMENT_TYPE;
-        try {
-            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
-            JsonNode conditions = node.get("conditions");
-            if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
-                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
-            }
-        } catch (JsonProcessingException e) {
-
-        }
-        // Feature feature = new Feature(key, item, requirementType);
-        Feature feature = new Feature(key, item, requirementType);
+    protected static Object createFeature(FeatureFlagConfigurationSetting item)
+        throws JsonMappingException, JsonProcessingException {
+        Feature feature = CASE_INSENSITIVE_MAPPER.readValue(item.getValue(), Feature.class);
+        feature.setKey(getFeatureSimpleName(item));
+        feature.setEnabledFor(item.getClientFilters());
         List<FeatureFlagFilter> featureEnabledFor = new ArrayList<>();
+        String requirementType = DEFAULT_REQUIREMENT_TYPE;
+        JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
+        JsonNode conditions = node.get("conditions");
+        if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
+            requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+        }
+        feature.setRequirementType(requirementType);
 
         // Setting Enabled For to null, but enabled = true will result in the feature
         // being on. This is the case of a feature is on/off and set to on. This is to
@@ -151,6 +155,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         // It should never be the case of Conditional On, and no filters coming from
         // Azure, but it is a valid way from the config file, which should result in
         // false being returned.
+        if (feature.getEnabledFor().size() == 0 && feature.getAllocation() == null && feature.getVariants() == null) {
+            return item.isEnabled();
+        }
         if (!item.isEnabled()) {
             feature.setEvaluate(false);
         }

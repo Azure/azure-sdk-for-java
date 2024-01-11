@@ -3,17 +3,14 @@
 package com.azure.spring.cloud.feature.management.implementation.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantReference {
 
     private String name;
 
-    @JsonProperty("configuration-value")
     private Object configurationValue;
 
-    @JsonProperty("configuration-reference")
     private String configurationReference;
 
     private String statusOverride;
