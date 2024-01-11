@@ -29,6 +29,7 @@ public final class RecurrenceConstants {
     public static final int WEEK_DAY_NUMBER = 7;
     public static final int MIN_MONTH_DAY_NUMBER = 28;
     public static final int MIN_YEAR_DAY_NUMBER = 365;
+    public static final int NUMBER_OF_MONTHS_IN_YEAR = 12;
 
     // parameters
     public static final String RECURRENCE_PATTERN = "Pattern";

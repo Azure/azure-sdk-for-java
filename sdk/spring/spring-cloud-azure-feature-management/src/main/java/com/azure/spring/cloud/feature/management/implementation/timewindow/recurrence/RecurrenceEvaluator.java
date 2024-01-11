@@ -195,7 +195,7 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedStart = start.withZoneSameInstant(zoneId);
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
-        int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
+        int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * RecurrenceConstants.NUMBER_OF_MONTHS_IN_YEAR + alignedTime.getMonthValue() - alignedStart.getMonthValue();
         final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart).plus(
             Duration.ofDays(alignedStart.getDayOfMonth()));
         final Duration timeDuration = Duration.between(alignedTime.toLocalDate().atStartOfDay(alignedTime.getZone()), alignedTime).plus(
@@ -223,7 +223,7 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
 
-        int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
+        int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * RecurrenceConstants.NUMBER_OF_MONTHS_IN_YEAR + alignedTime.getMonthValue() - alignedStart.getMonthValue();
         final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart);
         if (pattern.getDaysOfWeek().stream().allMatch(day ->
             alignedTime.isBefore(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
@@ -667,7 +667,7 @@ public class RecurrenceEvaluator {
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
-        if (settings.getRecurrence().getPattern().getMonth() < 1 || settings.getRecurrence().getPattern().getMonth() > 12) {
+        if (settings.getRecurrence().getPattern().getMonth() < 1 || settings.getRecurrence().getPattern().getMonth() > RecurrenceConstants.NUMBER_OF_MONTHS_IN_YEAR) {
             reason = RecurrenceConstants.OUT_OF_RANGE;
             return false;
         }
