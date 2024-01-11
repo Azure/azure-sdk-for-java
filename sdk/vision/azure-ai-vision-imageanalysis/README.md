@@ -314,7 +314,7 @@ You can enable console logging of HTTP request and response for your entire appl
  To enable console logging of HTTP request and response for a single client
 
 * Set environment variable `AZURE_LOG_LEVEL` to `debug`
-* Create the `ImageAnalysisClient` by calling `httpLogOptions` in the the builder:
+* Add a call to `httpLogOptions` when building the `ImageAnalysisClient`:
 
 ```java
 ImageAnalysisClient client = new ImageAnalysisClientBuilder()
