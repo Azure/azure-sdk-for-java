@@ -33,7 +33,7 @@ import com.azure.core.credential.KeyCredential;
 import java.net.MalformedURLException;
 
 // BEGIN: imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import java.net.URL;

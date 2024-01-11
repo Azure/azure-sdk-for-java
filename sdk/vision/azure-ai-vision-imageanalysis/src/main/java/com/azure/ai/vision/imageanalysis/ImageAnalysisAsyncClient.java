@@ -5,6 +5,7 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
