@@ -34,6 +34,7 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
         return toXml(xmlWriter, null);
     }
 
+    @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);

@@ -4,6 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
+      JavadocSafeJavaBuildVersion: '1.21'
       Artifacts:
         - name: azure-messaging-eventhubs
           groupId: com.azure

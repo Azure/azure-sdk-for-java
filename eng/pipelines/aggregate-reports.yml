@@ -36,6 +36,7 @@ stages:
         # reports. This means it is available as part of that, but also so that this is not documented in the project report.
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
+        # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors from the rest of the libraries for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
         - task: Maven@3
           displayName: 'Build All Libraries (excluding Cosmos Spark connectors) with Java $(JavaBuildVersion)'
           inputs:
@@ -94,7 +95,7 @@ stages:
             options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavadocSafeJavaBuildVersion) # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
+            jdkVersionOption: '1.17' # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
             goals: 'javadoc:aggregate'

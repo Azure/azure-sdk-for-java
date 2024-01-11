@@ -4,6 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: formrecognizer
+      JavadocSafeJavaBuildVersion: '1.21'
       timeoutInMinutes: 150 # how long to run the job before automatically cancelling
       Artifacts:
         - name: azure-ai-formrecognizer
