@@ -271,14 +271,15 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             List<String> parts = Arrays.stream(partitionKeyPath.split("/")).collect(Collectors.toList());
             final Object[] currentObject = {entity};
             parts.forEach(part -> {
-                try {
-                    if (!part.isEmpty()) {
-                        Field f = currentObject[0].getClass().getDeclaredField(part);
-                        ReflectionUtils.makeAccessible(f);
-                        currentObject[0] = ReflectionUtils.getField(f, currentObject[0]);
+                if (!part.isEmpty()) {
+                    Field f = null;
+                    try {
+                        f = currentObject[0].getClass().getDeclaredField(part);
+                    } catch (NoSuchFieldException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException(e);
+                    ReflectionUtils.makeAccessible(f);
+                    currentObject[0] = ReflectionUtils.getField(f, currentObject[0]);
                 }
             });
             return currentObject[0];
