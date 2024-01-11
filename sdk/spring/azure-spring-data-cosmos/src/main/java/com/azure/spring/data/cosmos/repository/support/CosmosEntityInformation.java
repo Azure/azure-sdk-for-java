@@ -265,6 +265,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      *
      * @param entity the target object from which to get the field
      * @return partition key field
+     * @throws RuntimeException thrown if field is not found
      */
     public Object getPartitionKeyFieldValue(T entity) {
         if (partitionKeyField == null && partitionKeyPath != null) {
