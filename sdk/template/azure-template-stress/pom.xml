@@ -64,7 +64,8 @@
               <includes>
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
-                <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->              </includes>
+                <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
+              </includes>
             </bannedDependencies>
           </rules>
         </configuration>
@@ -85,7 +86,6 @@
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <mainClass>com.azure.sdk.template.stress.App</mainClass>
             </transformer>
-            <!--Transforms META-INF/services (essential if you relocate com.azure classes)-->
             <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
           </transformers>
           <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
