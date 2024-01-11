@@ -13,7 +13,7 @@ public final class DatastoreListTests {
         DatastoreList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"status\":\"Inaccessible\"},\"id\":\"lqdqgbiqylihka\",\"name\":\"tcktvfcivfsnky\",\"type\":\"uctqhjfbe\"}],\"nextLink\":\"jcxerfuwu\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"netAppVolume\":{\"id\":\"napkteoellw\"},\"diskPoolVolume\":{\"targetId\":\"fdygpfqbuaceopz\",\"lunName\":\"qrhhu\",\"mountOption\":\"ATTACH\",\"path\":\"pcqeqx\"},\"status\":\"Attached\"},\"id\":\"dahzxctobg\",\"name\":\"kdmoi\",\"type\":\"postmgrcfbunrm\"},{\"properties\":{\"provisioningState\":\"Cancelled\",\"netAppVolume\":{\"id\":\"kxbpvj\"},\"diskPoolVolume\":{\"targetId\":\"jhxxjyn\",\"lunName\":\"u\",\"mountOption\":\"MOUNT\",\"path\":\"r\"},\"status\":\"LostCommunication\"},\"id\":\"bxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"}],\"nextLink\":\"aqtdoqmcbx\"}")
                 .toObject(DatastoreList.class);
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -11,22 +10,23 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ClassifierDocumentTypeDetails {
-    private final TrainingDataContentSource trainingDataContentSource;
+    private final ContentSource contentSource;
 
     /**
      * Creates an instance of ClassifierDocumentTypeDetails class.
+     *
      * @param source the source of the training data.
      */
-    public ClassifierDocumentTypeDetails(TrainingDataContentSource source) {
-        this.trainingDataContentSource = source;
+    public ClassifierDocumentTypeDetails(ContentSource source) {
+        this.contentSource = source;
     }
 
     /**
-     * Get the trainingDataContentSource property: The source of the training data.
-     * It can be a {@link AzureBlobContentSource} or a {@link AzureBlobFileListContentSource}.
-     * @return the trainingDataContentSource value.
+     * Get the source of the data.
+     * It can be a {@link BlobContentSource} or a {@link BlobFileListContentSource}.
+     * @return the ContentSource value.
      */
-    public TrainingDataContentSource getTrainingDataContentSource() {
-        return trainingDataContentSource;
+    public ContentSource getContentSource() {
+        return contentSource;
     }
 }

@@ -58,6 +58,6 @@ public final class ConnectedEnvironmentsCertificatesDeleteWithResponseMockTests 
 
         manager
             .connectedEnvironmentsCertificates()
-            .deleteWithResponse("vefloccsrmozihmi", "g", "wtxxpkyjcx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("sqqw", "tcmwqkchc", "waxfewzjkj", com.azure.core.util.Context.NONE);
     }
 }

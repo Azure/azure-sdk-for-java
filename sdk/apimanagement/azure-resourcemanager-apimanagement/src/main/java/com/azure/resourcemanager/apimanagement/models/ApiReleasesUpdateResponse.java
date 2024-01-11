@@ -29,7 +29,11 @@ public final class ApiReleasesUpdateResponse extends ResponseBase<ApiReleasesUpd
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ApiReleaseContractInner getValue() {
         return super.getValue();

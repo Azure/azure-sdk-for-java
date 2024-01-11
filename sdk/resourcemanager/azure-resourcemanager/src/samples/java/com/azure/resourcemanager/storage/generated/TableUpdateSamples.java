@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.TableInner;
 import com.azure.resourcemanager.storage.models.TableAccessPolicy;
 import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Table Update. */
 public final class TableUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationPutOrPatchAcls.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationPutOrPatchAcls.json
      */
     /**
      * Sample code: TableOperationPutOrPatchAcls.
@@ -49,11 +48,11 @@ public final class TableUpdateSamples {
                                             .withStartTime(OffsetDateTime.parse("2022-03-17T08:49:37.0000000Z"))
                                             .withExpiryTime(OffsetDateTime.parse("2022-03-20T08:49:37.0000000Z"))
                                             .withPermission("rad")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationPatch.json
      */
     /**
      * Sample code: TableOperationPatch.
@@ -66,6 +65,6 @@ public final class TableUpdateSamples {
             .manager()
             .serviceClient()
             .getTables()
-            .updateWithResponse("res3376", "sto328", "table6185", null, Context.NONE);
+            .updateWithResponse("res3376", "sto328", "table6185", null, com.azure.core.util.Context.NONE);
     }
 }

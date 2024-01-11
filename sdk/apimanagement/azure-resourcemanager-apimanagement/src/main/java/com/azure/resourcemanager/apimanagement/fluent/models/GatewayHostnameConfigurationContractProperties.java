@@ -17,8 +17,7 @@ public final class GatewayHostnameConfigurationContractProperties {
     private String hostname;
 
     /*
-     * Identifier of Certificate entity that will be used for TLS connection
-     * establishment
+     * Identifier of Certificate entity that will be used for TLS connection establishment
      */
     @JsonProperty(value = "certificateId")
     private String certificateId;
@@ -46,6 +45,10 @@ public final class GatewayHostnameConfigurationContractProperties {
      */
     @JsonProperty(value = "http2Enabled")
     private Boolean http2Enabled;
+
+    /** Creates an instance of GatewayHostnameConfigurationContractProperties class. */
+    public GatewayHostnameConfigurationContractProperties() {
+    }
 
     /**
      * Get the hostname property: Hostname value. Supports valid domain name, partial or full wildcard.

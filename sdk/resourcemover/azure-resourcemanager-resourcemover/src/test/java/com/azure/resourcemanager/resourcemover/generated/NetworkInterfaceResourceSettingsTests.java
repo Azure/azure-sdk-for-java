@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.resourcemover.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resourcemover.models.LoadBalancerBackendAddressPoolReference;
+import com.azure.resourcemanager.resourcemover.models.LoadBalancerNatRuleReference;
 import com.azure.resourcemanager.resourcemover.models.NetworkInterfaceResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.NicIpConfigurationResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.PublicIpReference;
 import com.azure.resourcemanager.resourcemover.models.SubnetReference;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class NetworkInterfaceResourceSettingsTests {
@@ -18,65 +22,100 @@ public final class NetworkInterfaceResourceSettingsTests {
         NetworkInterfaceResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/networkInterfaces\",\"ipConfigurations\":[{\"name\":\"nkymuctqhjfbebrj\",\"privateIpAddress\":\"erfuwuttt\",\"privateIpAllocationMethod\":\"vjrbirphxepcyvah\",\"subnet\":{\"name\":\"jky\",\"sourceArmResourceId\":\"xjvuujqgidokg\"},\"primary\":true,\"loadBalancerBackendAddressPools\":[],\"loadBalancerNatRules\":[],\"publicIp\":{\"sourceArmResourceId\":\"cltbgsncghkjesz\"}},{\"name\":\"bijhtxfvgxbf\",\"privateIpAddress\":\"xnehmpvec\",\"privateIpAllocationMethod\":\"odebfqkkrbmpu\",\"subnet\":{\"name\":\"iw\",\"sourceArmResourceId\":\"lzlfbxzpuz\"},\"primary\":true,\"loadBalancerBackendAddressPools\":[],\"loadBalancerNatRules\":[],\"publicIp\":{\"sourceArmResourceId\":\"ahmgkbrp\"}},{\"name\":\"dhibnuq\",\"privateIpAddress\":\"pikad\",\"privateIpAllocationMethod\":\"vtq\",\"subnet\":{\"name\":\"buynhijggm\",\"sourceArmResourceId\":\"bfs\"},\"primary\":false,\"loadBalancerBackendAddressPools\":[],\"loadBalancerNatRules\":[],\"publicIp\":{\"sourceArmResourceId\":\"vpnazzm\"}}],\"enableAcceleratedNetworking\":false,\"targetResourceName\":\"unmpxttd\"}")
+                    "{\"resourceType\":\"Microsoft.Network/networkInterfaces\",\"tags\":{\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"ipConfigurations\":[{\"name\":\"gnxytxhpzxbz\",\"privateIpAddress\":\"zabglcuhxwt\",\"privateIpAllocationMethod\":\"yqiklbbovplwzb\",\"subnet\":{\"name\":\"yuguosvmkfssx\",\"sourceArmResourceId\":\"ukkfplgmgs\"},\"primary\":false,\"loadBalancerBackendAddressPools\":[{\"name\":\"deslp\",\"sourceArmResourceId\":\"lopwiyig\"}],\"loadBalancerNatRules\":[{\"name\":\"dwzbaiue\",\"sourceArmResourceId\":\"baumnyqupedeoj\"},{\"name\":\"bckhsmtxpsi\",\"sourceArmResourceId\":\"btfhvpesaps\"}],\"publicIp\":{\"sourceArmResourceId\":\"dqmh\"}}],\"enableAcceleratedNetworking\":true,\"targetResourceName\":\"tldwkyzxuutk\",\"targetResourceGroupName\":\"ws\"}")
                 .toObject(NetworkInterfaceResourceSettings.class);
-        Assertions.assertEquals("unmpxttd", model.targetResourceName());
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals("vjrbirphxepcyvah", model.ipConfigurations().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("xjvuujqgidokg", model.ipConfigurations().get(0).subnet().sourceArmResourceId());
-        Assertions.assertEquals("jky", model.ipConfigurations().get(0).subnet().name());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).primary());
-        Assertions.assertEquals("cltbgsncghkjesz", model.ipConfigurations().get(0).publicIp().sourceArmResourceId());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
+        Assertions.assertEquals("tldwkyzxuutk", model.targetResourceName());
+        Assertions.assertEquals("ws", model.targetResourceGroupName());
+        Assertions.assertEquals("zyoxaepdkzjan", model.tags().get("ux"));
+        Assertions.assertEquals("gnxytxhpzxbz", model.ipConfigurations().get(0).name());
+        Assertions.assertEquals("zabglcuhxwt", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("yqiklbbovplwzb", model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("ukkfplgmgs", model.ipConfigurations().get(0).subnet().sourceArmResourceId());
+        Assertions.assertEquals("yuguosvmkfssx", model.ipConfigurations().get(0).subnet().name());
+        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions
+            .assertEquals(
+                "lopwiyig",
+                model.ipConfigurations().get(0).loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
+        Assertions
+            .assertEquals("deslp", model.ipConfigurations().get(0).loadBalancerBackendAddressPools().get(0).name());
+        Assertions
+            .assertEquals(
+                "baumnyqupedeoj", model.ipConfigurations().get(0).loadBalancerNatRules().get(0).sourceArmResourceId());
+        Assertions.assertEquals("dwzbaiue", model.ipConfigurations().get(0).loadBalancerNatRules().get(0).name());
+        Assertions.assertEquals("dqmh", model.ipConfigurations().get(0).publicIp().sourceArmResourceId());
+        Assertions.assertEquals(true, model.enableAcceleratedNetworking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfaceResourceSettings model =
             new NetworkInterfaceResourceSettings()
-                .withTargetResourceName("unmpxttd")
+                .withTargetResourceName("tldwkyzxuutk")
+                .withTargetResourceGroupName("ws")
+                .withTags(mapOf("ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
                 .withIpConfigurations(
                     Arrays
                         .asList(
                             new NicIpConfigurationResourceSettings()
-                                .withName("nkymuctqhjfbebrj")
-                                .withPrivateIpAddress("erfuwuttt")
-                                .withPrivateIpAllocationMethod("vjrbirphxepcyvah")
+                                .withName("gnxytxhpzxbz")
+                                .withPrivateIpAddress("zabglcuhxwt")
+                                .withPrivateIpAllocationMethod("yqiklbbovplwzb")
                                 .withSubnet(
-                                    new SubnetReference().withSourceArmResourceId("xjvuujqgidokg").withName("jky"))
-                                .withPrimary(true)
-                                .withLoadBalancerBackendAddressPools(Arrays.asList())
-                                .withLoadBalancerNatRules(Arrays.asList())
-                                .withPublicIp(new PublicIpReference().withSourceArmResourceId("cltbgsncghkjesz")),
-                            new NicIpConfigurationResourceSettings()
-                                .withName("bijhtxfvgxbf")
-                                .withPrivateIpAddress("xnehmpvec")
-                                .withPrivateIpAllocationMethod("odebfqkkrbmpu")
-                                .withSubnet(new SubnetReference().withSourceArmResourceId("lzlfbxzpuz").withName("iw"))
-                                .withPrimary(true)
-                                .withLoadBalancerBackendAddressPools(Arrays.asList())
-                                .withLoadBalancerNatRules(Arrays.asList())
-                                .withPublicIp(new PublicIpReference().withSourceArmResourceId("ahmgkbrp")),
-                            new NicIpConfigurationResourceSettings()
-                                .withName("dhibnuq")
-                                .withPrivateIpAddress("pikad")
-                                .withPrivateIpAllocationMethod("vtq")
-                                .withSubnet(new SubnetReference().withSourceArmResourceId("bfs").withName("buynhijggm"))
+                                    new SubnetReference()
+                                        .withSourceArmResourceId("ukkfplgmgs")
+                                        .withName("yuguosvmkfssx"))
                                 .withPrimary(false)
-                                .withLoadBalancerBackendAddressPools(Arrays.asList())
-                                .withLoadBalancerNatRules(Arrays.asList())
-                                .withPublicIp(new PublicIpReference().withSourceArmResourceId("vpnazzm"))))
-                .withEnableAcceleratedNetworking(false);
+                                .withLoadBalancerBackendAddressPools(
+                                    Arrays
+                                        .asList(
+                                            new LoadBalancerBackendAddressPoolReference()
+                                                .withSourceArmResourceId("lopwiyig")
+                                                .withName("deslp")))
+                                .withLoadBalancerNatRules(
+                                    Arrays
+                                        .asList(
+                                            new LoadBalancerNatRuleReference()
+                                                .withSourceArmResourceId("baumnyqupedeoj")
+                                                .withName("dwzbaiue"),
+                                            new LoadBalancerNatRuleReference()
+                                                .withSourceArmResourceId("btfhvpesaps")
+                                                .withName("bckhsmtxpsi")))
+                                .withPublicIp(new PublicIpReference().withSourceArmResourceId("dqmh"))))
+                .withEnableAcceleratedNetworking(true);
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceResourceSettings.class);
-        Assertions.assertEquals("unmpxttd", model.targetResourceName());
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals("vjrbirphxepcyvah", model.ipConfigurations().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("xjvuujqgidokg", model.ipConfigurations().get(0).subnet().sourceArmResourceId());
-        Assertions.assertEquals("jky", model.ipConfigurations().get(0).subnet().name());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).primary());
-        Assertions.assertEquals("cltbgsncghkjesz", model.ipConfigurations().get(0).publicIp().sourceArmResourceId());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
+        Assertions.assertEquals("tldwkyzxuutk", model.targetResourceName());
+        Assertions.assertEquals("ws", model.targetResourceGroupName());
+        Assertions.assertEquals("zyoxaepdkzjan", model.tags().get("ux"));
+        Assertions.assertEquals("gnxytxhpzxbz", model.ipConfigurations().get(0).name());
+        Assertions.assertEquals("zabglcuhxwt", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("yqiklbbovplwzb", model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("ukkfplgmgs", model.ipConfigurations().get(0).subnet().sourceArmResourceId());
+        Assertions.assertEquals("yuguosvmkfssx", model.ipConfigurations().get(0).subnet().name());
+        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions
+            .assertEquals(
+                "lopwiyig",
+                model.ipConfigurations().get(0).loadBalancerBackendAddressPools().get(0).sourceArmResourceId());
+        Assertions
+            .assertEquals("deslp", model.ipConfigurations().get(0).loadBalancerBackendAddressPools().get(0).name());
+        Assertions
+            .assertEquals(
+                "baumnyqupedeoj", model.ipConfigurations().get(0).loadBalancerNatRules().get(0).sourceArmResourceId());
+        Assertions.assertEquals("dwzbaiue", model.ipConfigurations().get(0).loadBalancerNatRules().get(0).name());
+        Assertions.assertEquals("dqmh", model.ipConfigurations().get(0).publicIp().sourceArmResourceId());
+        Assertions.assertEquals(true, model.enableAcceleratedNetworking());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

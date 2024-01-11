@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IssueType. */
+/** The type of issue. */
 public final class IssueType extends ExpandableStringEnum<IssueType> {
     /** Static value Unknown for IssueType. */
     public static final IssueType UNKNOWN = fromString("Unknown");
@@ -38,6 +38,15 @@ public final class IssueType extends ExpandableStringEnum<IssueType> {
     public static final IssueType PLATFORM = fromString("Platform");
 
     /**
+     * Creates a new instance of IssueType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IssueType() {
+    }
+
+    /**
      * Creates or finds a IssueType from its string representation.
      *
      * @param name a name to look for.
@@ -48,7 +57,11 @@ public final class IssueType extends ExpandableStringEnum<IssueType> {
         return fromString(name, IssueType.class);
     }
 
-    /** @return known IssueType values. */
+    /**
+     * Gets known IssueType values.
+     *
+     * @return known IssueType values.
+     */
     public static Collection<IssueType> values() {
         return values(IssueType.class);
     }

@@ -38,6 +38,10 @@ public final class IssueAttachmentContractImpl
         return this.innerModel().content();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IssueAttachmentContractInner innerModel() {
         return this.innerObject;
     }

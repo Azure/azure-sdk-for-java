@@ -20,6 +20,15 @@ public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
     public static final ParamIndicator SIGNATURE = fromString("Signature");
 
     /**
+     * Creates a new instance of ParamIndicator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParamIndicator() {
+    }
+
+    /**
      * Creates or finds a ParamIndicator from its string representation.
      *
      * @param name a name to look for.

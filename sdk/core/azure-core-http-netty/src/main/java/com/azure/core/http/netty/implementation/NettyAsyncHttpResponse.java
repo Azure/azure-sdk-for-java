@@ -29,6 +29,15 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final Connection reactorNettyConnection;
     private final boolean disableBufferCopy;
 
+    /**
+     * Creates a new response.
+     *
+     * @param reactorNettyResponse The Reactor Netty HTTP response.
+     * @param reactorNettyConnection The Reactor Netty connection.
+     * @param httpRequest The HTTP request that initiated this response.
+     * @param disableBufferCopy Whether to disable copying the response body into a new buffer.
+     * @param headersEagerlyConverted Whether the headers were eagerly converted.
+     */
     public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
         HttpRequest httpRequest, boolean disableBufferCopy, boolean headersEagerlyConverted) {
         super(reactorNettyResponse, httpRequest, headersEagerlyConverted);
@@ -38,14 +47,15 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return bodyIntern()
-            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf))
-            .doFinally(ignored -> close());
+        return Flux.using(() -> this, response -> response.bodyIntern()
+            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf)),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return bodyIntern().aggregate().asByteArray().doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asByteArray(),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
@@ -56,19 +66,22 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return bodyIntern().aggregate().asString(charset).doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asString(charset),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        return bodyIntern().aggregate().asInputStream().doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asInputStream(),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return Mono.<Void>create(sink -> bodyIntern().subscribe(
-            new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, getContentLength())))
-            .doFinally(ignored -> close());
+        Long length = getContentLength();
+        return Mono.using(() -> this, response -> Mono.create(sink -> response.bodyIntern()
+                .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length))),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
@@ -88,10 +101,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.<Void>create(sink -> bodyIntern().subscribe(
+        Mono.using(() -> this, response -> Mono.<Void>create(sink -> response.bodyIntern().subscribe(
             new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
-            .subscribeOn(Schedulers.boundedElastic())
-            .doFinally(ignored -> close())
+            .subscribeOn(Schedulers.boundedElastic()), NettyAsyncHttpResponse::close)
             .block();
     }
 
@@ -105,6 +117,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     // used for testing only
+    /**
+     * Gets the underlying Reactor Netty connection.
+     *
+     * @return The underlying Reactor Netty connection.
+     */
     public Connection internConnection() {
         return reactorNettyConnection;
     }

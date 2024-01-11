@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -28,6 +29,12 @@ public final class WorkspacePatchProperties {
      */
     @JsonProperty(value = "applicationGroupReferences")
     private List<String> applicationGroupReferences;
+
+    /*
+     * Enabled to allow this resource to be access from the public network
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /** Creates an instance of WorkspacePatchProperties class. */
     public WorkspacePatchProperties() {
@@ -90,6 +97,26 @@ public final class WorkspacePatchProperties {
      */
     public WorkspacePatchProperties withApplicationGroupReferences(List<String> applicationGroupReferences) {
         this.applicationGroupReferences = applicationGroupReferences;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspacePatchProperties object itself.
+     */
+    public WorkspacePatchProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

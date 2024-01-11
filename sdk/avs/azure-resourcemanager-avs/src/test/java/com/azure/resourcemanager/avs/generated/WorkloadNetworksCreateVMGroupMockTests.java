@@ -32,7 +32,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"nkfkbgbzb\",\"members\":[\"eqocljmygvk\",\"qkjjeokbz\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":879492249234255301},\"id\":\"zurtleipqxbkwvz\",\"name\":\"nzvdfbzdixzmq\",\"type\":\"noda\"}";
+            "{\"properties\":{\"displayName\":\"zyjq\",\"members\":[\"wkpqhjpenuygbq\",\"qqekewvnqvcdlgu\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":6066393981630309590},\"id\":\"nlaxpunjqikcz\",\"name\":\"vitac\",\"type\":\"xmfcsserxhtv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
         WorkloadNetworkVMGroup response =
             manager
                 .workloadNetworks()
-                .defineVMGroup("bdb")
-                .withExistingPrivateCloud("fjltfvnzcyjtotp", "opv")
-                .withDisplayName("qqihedsvqwthmk")
-                .withMembers(Arrays.asList("cysihs", "qcwdhoh"))
-                .withRevision(2499995130164336659L)
+                .defineVMGroup("m")
+                .withExistingPrivateCloud("razftxejwabmdujt", "vcopex")
+                .withDisplayName("buhhlkyqlt")
+                .withMembers(Arrays.asList("ogtu", "kffdjktsys"))
+                .withRevision(1114803493705852577L)
                 .create();
 
-        Assertions.assertEquals("nkfkbgbzb", response.displayName());
-        Assertions.assertEquals("eqocljmygvk", response.members().get(0));
-        Assertions.assertEquals(879492249234255301L, response.revision());
+        Assertions.assertEquals("zyjq", response.displayName());
+        Assertions.assertEquals("wkpqhjpenuygbq", response.members().get(0));
+        Assertions.assertEquals(6066393981630309590L, response.revision());
     }
 }

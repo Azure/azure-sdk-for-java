@@ -17,26 +17,36 @@ public final class CreatorInnerTests {
         CreatorInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"xgcp\",\"storageUnits\":524649765},\"location\":\"gmaajrm\",\"tags\":{\"oejctbzaqsqsy\":\"wzrlovmclwhij\",\"ppofmxaxcfjpgdd\":\"bkbfkgukdkex\"},\"id\":\"ocjjxhvpmouexh\",\"name\":\"zxibqeoj\",\"type\":\"xqbzvddntwnd\"}")
+                    "{\"properties\":{\"provisioningState\":\"jn\",\"storageUnits\":746279797},\"location\":\"khsmtxpsiebt\",\"tags\":{\"htldwk\":\"pesapskrdqmhjj\",\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"}")
                 .toObject(CreatorInner.class);
-        Assertions.assertEquals("gmaajrm", model.location());
-        Assertions.assertEquals("wzrlovmclwhij", model.tags().get("oejctbzaqsqsy"));
-        Assertions.assertEquals(524649765, model.properties().storageUnits());
+        Assertions.assertEquals("khsmtxpsiebt", model.location());
+        Assertions.assertEquals("pesapskrdqmhjj", model.tags().get("htldwk"));
+        Assertions.assertEquals(746279797, model.properties().storageUnits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreatorInner model =
             new CreatorInner()
-                .withLocation("gmaajrm")
-                .withTags(mapOf("oejctbzaqsqsy", "wzrlovmclwhij", "ppofmxaxcfjpgdd", "bkbfkgukdkex"))
-                .withProperties(new CreatorProperties().withStorageUnits(524649765));
+                .withLocation("khsmtxpsiebt")
+                .withTags(
+                    mapOf(
+                        "htldwk",
+                        "pesapskrdqmhjj",
+                        "otogtwrupqs",
+                        "zxuutkncwscwsvl",
+                        "cykvceo",
+                        "vnm",
+                        "vnotyfjfcnj",
+                        "eil"))
+                .withProperties(new CreatorProperties().withStorageUnits(746279797));
         model = BinaryData.fromObject(model).toObject(CreatorInner.class);
-        Assertions.assertEquals("gmaajrm", model.location());
-        Assertions.assertEquals("wzrlovmclwhij", model.tags().get("oejctbzaqsqsy"));
-        Assertions.assertEquals(524649765, model.properties().storageUnits());
+        Assertions.assertEquals("khsmtxpsiebt", model.location());
+        Assertions.assertEquals("pesapskrdqmhjj", model.tags().get("htldwk"));
+        Assertions.assertEquals(746279797, model.properties().storageUnits());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

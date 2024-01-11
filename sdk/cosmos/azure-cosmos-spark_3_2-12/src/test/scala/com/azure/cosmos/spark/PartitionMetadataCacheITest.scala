@@ -22,7 +22,8 @@ class PartitionMetadataCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private[this] val clientConfig = CosmosClientConfiguration(userConfig, useEventualConsistency = true)
+  private[this] val clientConfig = CosmosClientConfiguration(
+    userConfig, useEventualConsistency = true, sparkEnvironmentInfo = "")
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
   private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 

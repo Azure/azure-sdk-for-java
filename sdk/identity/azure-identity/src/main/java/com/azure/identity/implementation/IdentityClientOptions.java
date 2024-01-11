@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
@@ -40,6 +41,7 @@ public final class IdentityClientOptions implements Cloneable {
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private BrowserCustomizationOptions browserCustomizationOptions;
     private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
@@ -73,7 +75,10 @@ public final class IdentityClientOptions implements Cloneable {
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
     private boolean isChained;
-    private boolean enableSupportLogging;
+    private boolean enableUnsafeSupportLogging;
+    private long brokerWindowHandle;
+    private boolean brokerEnabled;
+    private boolean enableMsaPassthrough;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -82,6 +87,7 @@ public final class IdentityClientOptions implements Cloneable {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiguration(configuration);
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
+        browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         perCallPolicies = new ArrayList<>();
@@ -93,15 +99,15 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the Azure Active Directory endpoint to acquire tokens.
+     * @return the Microsoft Entra endpoint to acquire tokens.
      */
     public String getAuthorityHost() {
         return authorityHost;
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
@@ -659,6 +665,15 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    public IdentityClientOptions setBrowserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.browserCustomizationOptions = browserCustomizationOptions;
+        return this;
+    }
+
+    public BrowserCustomizationOptions getBrowserCustomizationOptions() {
+        return this.browserCustomizationOptions;
+    }
+
     /**
      * Gets the instance discovery policy.
      * @return boolean indicating if instance discovery is enabled.
@@ -718,17 +733,60 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the status whether support logging is enabled or not.
      * @return the flag indicating if support logging is enabled or not.
      */
-    public boolean isSupportLoggingEnabled() {
-        return enableSupportLogging;
+    public boolean isUnsafeSupportLoggingEnabled() {
+        return enableUnsafeSupportLogging;
     }
 
     /**
      * Enables additional support logging (including PII) for MSAL based credentials.
      * @return the updated client options
      */
-    public IdentityClientOptions enableSupportLogging() {
-        this.enableSupportLogging = true;
+    public IdentityClientOptions enableUnsafeSupportLogging() {
+        this.enableUnsafeSupportLogging = true;
         return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public IdentityClientOptions setBrokerWindowHandle(long windowHandle) {
+        this.brokerEnabled = true;
+        this.brokerWindowHandle = windowHandle;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public long getBrokerWindowHandle() {
+        return this.brokerWindowHandle;
+    }
+
+    /**
+     * Gets the status whether broker is enabled or not.
+     * @return the flag indicating if broker is enabled or not.
+     */
+    public boolean isBrokerEnabled() {
+        return this.brokerEnabled;
+    }
+
+    /**
+     * Enables MSA passthrough.
+     */
+    public IdentityClientOptions setEnableLegacyMsaPassthrough(boolean enableMsaPassthrough) {
+        this.brokerEnabled = true;
+        this.enableMsaPassthrough = enableMsaPassthrough;
+        return this;
+    }
+
+    /**
+     * Gets the status whether MSA passthrough is enabled or not.
+     * @return the flag indicating if MSA passthrough is enabled or not.
+     */
+    public boolean isMsaPassthroughEnabled() {
+        return this.enableMsaPassthrough;
     }
 
     public IdentityClientOptions clone() {
@@ -759,12 +817,15 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies)
-            .setChained(this.isChained);
+            .setBrowserCustomizationOptions(this.browserCustomizationOptions)
+            .setChained(this.isChained)
+            .setBrokerWindowHandle(this.brokerWindowHandle)
+            .setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
-        if (isSupportLoggingEnabled()) {
-            clone.enableSupportLogging();
+        if (isUnsafeSupportLoggingEnabled()) {
+            clone.enableUnsafeSupportLogging();
         }
         return clone;
     }

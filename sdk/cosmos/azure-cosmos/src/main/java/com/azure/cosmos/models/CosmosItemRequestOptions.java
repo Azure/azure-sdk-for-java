@@ -627,6 +627,17 @@ public class CosmosItemRequestOptions {
                         false);
                     return WriteRetryPolicy.DISABLED;
                 }
+
+                @Override
+                public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                    CosmosItemRequestOptions options) {
+
+                    if (options == null) {
+                        return null;
+                    }
+
+                    return options.getCosmosEndToEndOperationLatencyPolicyConfig();
+                }
             }
         );
     }

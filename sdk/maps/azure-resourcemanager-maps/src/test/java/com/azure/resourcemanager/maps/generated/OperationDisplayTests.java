@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"kjlxofpdvhpf\",\"resource\":\"ypininm\",\"operation\":\"huyb\",\"description\":\"podepoo\"}")
+                    "{\"provider\":\"osfln\",\"resource\":\"sfqpteehz\",\"operation\":\"ypyqrimzinp\",\"description\":\"wjdk\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("kjlxofpdvhpf", model.provider());
-        Assertions.assertEquals("ypininm", model.resource());
-        Assertions.assertEquals("huyb", model.operation());
-        Assertions.assertEquals("podepoo", model.description());
+        Assertions.assertEquals("osfln", model.provider());
+        Assertions.assertEquals("sfqpteehz", model.resource());
+        Assertions.assertEquals("ypyqrimzinp", model.operation());
+        Assertions.assertEquals("wjdk", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("kjlxofpdvhpf")
-                .withResource("ypininm")
-                .withOperation("huyb")
-                .withDescription("podepoo");
+                .withProvider("osfln")
+                .withResource("sfqpteehz")
+                .withOperation("ypyqrimzinp")
+                .withDescription("wjdk");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("kjlxofpdvhpf", model.provider());
-        Assertions.assertEquals("ypininm", model.resource());
-        Assertions.assertEquals("huyb", model.operation());
-        Assertions.assertEquals("podepoo", model.description());
+        Assertions.assertEquals("osfln", model.provider());
+        Assertions.assertEquals("sfqpteehz", model.resource());
+        Assertions.assertEquals("ypyqrimzinp", model.operation());
+        Assertions.assertEquals("wjdk", model.description());
     }
 }

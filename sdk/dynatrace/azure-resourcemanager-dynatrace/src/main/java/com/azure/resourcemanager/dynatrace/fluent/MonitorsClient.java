@@ -11,48 +11,22 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.dynatrace.fluent.models.AccountInfoSecureInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.AppServiceInfoInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.LinkableEnvironmentResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResourceDetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentRequest;
+import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetailsRequest;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
 import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 
 /** An instance of this class provides access to all the operations defined in MonitorsClient. */
 public interface MonitorsClient {
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountInfoSecureInner getAccountCredentials(String resourceGroupName, String monitorName);
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountInfoSecureInner> getAccountCredentialsWithResponse(
-        String resourceGroupName, String monitorName, Context context);
-
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
      *
@@ -88,19 +62,6 @@ public interface MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VMExtensionPayloadInner getVMHostPayload(String resourceGroupName, String monitorName);
-
-    /**
-     * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -112,17 +73,17 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get a MonitorResource.
+     * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MonitorResource.
+     * @return response of payload to be passed while installing VM agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName);
+    VMExtensionPayloadInner getVMHostPayload(String resourceGroupName, String monitorName);
 
     /**
      * Get a MonitorResource.
@@ -138,6 +99,19 @@ public interface MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitorResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Get a MonitorResource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a MonitorResource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
      * Create a MonitorResource.
@@ -206,20 +180,6 @@ public interface MonitorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynatrace Monitor Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitorResourceInner update(String resourceGroupName, String monitorName, MonitorResourceUpdate resource);
-
-    /**
-     * Update a MonitorResource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param resource The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -229,6 +189,20 @@ public interface MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitorResourceInner> updateWithResponse(
         String resourceGroupName, String monitorName, MonitorResourceUpdate resource, Context context);
+
+    /**
+     * Update a MonitorResource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param resource The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dynatrace Monitor Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MonitorResourceInner update(String resourceGroupName, String monitorName, MonitorResourceUpdate resource);
 
     /**
      * Delete a MonitorResource.
@@ -330,7 +304,38 @@ public interface MonitorsClient {
     PagedIterable<MonitorResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MarketplaceSaaSResourceDetailsResponseInner> getMarketplaceSaaSResourceDetailsWithResponse(
+        MarketplaceSaaSResourceDetailsRequest request, Context context);
+
+    /**
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MarketplaceSaaSResourceDetailsResponseInner getMarketplaceSaaSResourceDetails(
+        MarketplaceSaaSResourceDetailsRequest request);
+
+    /**
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -343,7 +348,7 @@ public interface MonitorsClient {
     PagedIterable<VMInfoInner> listHosts(String resourceGroupName, String monitorName);
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -355,6 +360,34 @@ public interface MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VMInfoInner> listHosts(String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MetricsStatusResponseInner> getMetricStatusWithResponse(
+        String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MetricsStatusResponseInner getMetricStatus(String resourceGroupName, String monitorName);
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
@@ -390,29 +423,33 @@ public interface MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SSO configuration details from the partner.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName);
-
-    /**
-     * Gets the SSO configuration details from the partner.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(
         String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context);
+
+    /**
+     * Gets the SSO configuration details from the partner.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 401.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SSO configuration details from the partner.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName);
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.

@@ -37,6 +37,10 @@ public final class OperationDisplay {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
      * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
      * Insights" or "Microsoft Compute".

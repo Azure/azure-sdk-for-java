@@ -33,7 +33,7 @@ public final class TrunkedNetworksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"s\",\"type\":\"zlehgcvkbcknjolg\"},\"properties\":{\"associatedResourceIds\":[\"xpvelszerqzevxo\",\"eintxwaljglzobl\",\"waafrqulh\",\"zyqbhd\"],\"clusterId\":\"fjrqpjiyr\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"gaxwmzwdfkbnrzo\",\"hybridAksClustersAssociatedIds\":[\"ltbqctqjfgxxsaet\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"vpyigdaqq\",\"isolationDomainIds\":[\"zdcduwjoedxng\",\"caifpaurww\",\"ilfjqqacdmk\",\"wxdcvjwcyz\"],\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"iqch\",\"rtui\",\"dsiwdfmmp\"],\"vlans\":[2362544626861623763,4642391627466733088,2641967984733286276,6124853951510578139]},\"location\":\"ngydgr\",\"tags\":{\"djrkclamggl\":\"cakiqao\"},\"id\":\"lmf\",\"name\":\"jdoq\",\"type\":\"ykglt\"}]}";
+            "{\"value\":[{\"extendedLocation\":{\"name\":\"hzwxq\",\"type\":\"ejp\"},\"properties\":{\"associatedResourceIds\":[\"hvtozyagjjnxkb\",\"lh\",\"yxg\"],\"clusterId\":\"klvqzrwtrdgscn\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"nsgnwxlwmez\",\"hybridAksClustersAssociatedIds\":[\"xpthceopvkvt\",\"fve\",\"obpbokhmm\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"arnggcjfwblqh\",\"isolationDomainIds\":[\"asmcolmugpyvaos\",\"kluwz\",\"eygzvtyevjhu\",\"nobguqisqsqkpdmi\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"mlviqcpszpmcvqdv\",\"dmvxyrxdhgvqojb\"],\"vlans\":[2010350344823941297,6106416782592877568,4720543683832895411]},\"location\":\"mbtple\",\"tags\":{\"dawsxmrsz\":\"oyidoxznvgvdtmuu\",\"erxrzutylcurza\":\"knimxlp\",\"qaeht\":\"mnb\"},\"id\":\"bjmbnvynfaooeac\",\"name\":\"edcgl\",\"type\":\"kakddidahzllrqm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class TrunkedNetworksListMockTests {
 
         PagedIterable<TrunkedNetwork> response = manager.trunkedNetworks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ngydgr", response.iterator().next().location());
-        Assertions.assertEquals("cakiqao", response.iterator().next().tags().get("djrkclamggl"));
-        Assertions.assertEquals("s", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("zlehgcvkbcknjolg", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("mbtple", response.iterator().next().location());
+        Assertions.assertEquals("oyidoxznvgvdtmuu", response.iterator().next().tags().get("dawsxmrsz"));
+        Assertions.assertEquals("hzwxq", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ejp", response.iterator().next().extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("vpyigdaqq", response.iterator().next().interfaceName());
-        Assertions.assertEquals("zdcduwjoedxng", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(2362544626861623763L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("arnggcjfwblqh", response.iterator().next().interfaceName());
+        Assertions.assertEquals("asmcolmugpyvaos", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(2010350344823941297L, response.iterator().next().vlans().get(0));
     }
 }

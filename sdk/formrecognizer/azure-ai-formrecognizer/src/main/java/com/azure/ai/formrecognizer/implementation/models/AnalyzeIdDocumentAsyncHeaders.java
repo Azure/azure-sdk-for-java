@@ -5,20 +5,34 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The AnalyzeIdDocumentAsyncHeaders model. */
+/**
+ * The AnalyzeIdDocumentAsyncHeaders model.
+ */
 @Fluent
 public final class AnalyzeIdDocumentAsyncHeaders {
     /*
      * The Operation-Location property.
      */
-    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
+
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of AnalyzeIdDocumentAsyncHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public AnalyzeIdDocumentAsyncHeaders(HttpHeaders rawHeaders) {
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -27,7 +41,7 @@ public final class AnalyzeIdDocumentAsyncHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeIdDocumentAsyncHeaders object itself.
      */

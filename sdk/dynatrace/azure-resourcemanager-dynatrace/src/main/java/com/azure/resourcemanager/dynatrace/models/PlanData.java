@@ -35,6 +35,10 @@ public final class PlanData {
     @JsonProperty(value = "effectiveDate")
     private OffsetDateTime effectiveDate;
 
+    /** Creates an instance of PlanData class. */
+    public PlanData() {
+    }
+
     /**
      * Get the usageType property: different usage type like PAYG/COMMITTED. this could be enum.
      *

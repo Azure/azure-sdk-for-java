@@ -16,23 +16,23 @@ public final class ClusterInnerTests {
         ClusterInner model =
             BinaryData
                 .fromString(
-                    "{\"sku\":{\"name\":\"lvmezyvshxmzsbbz\"},\"properties\":{\"clusterSize\":1542879301,\"provisioningState\":\"Succeeded\",\"clusterId\":2011180934,\"hosts\":[\"rvjx\"]},\"id\":\"jnspydp\",\"name\":\"koen\",\"type\":\"ou\"}")
+                    "{\"sku\":{\"name\":\"nmxiebwwaloayqc\"},\"properties\":{\"clusterSize\":1428727987,\"provisioningState\":\"Deleting\",\"clusterId\":442573185,\"hosts\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"]},\"id\":\"rknftguvriuhprwm\",\"name\":\"yvxqtayriwwroy\",\"type\":\"bexrmcq\"}")
                 .toObject(ClusterInner.class);
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.sku().name());
-        Assertions.assertEquals(1542879301, model.clusterSize());
-        Assertions.assertEquals("rvjx", model.hosts().get(0));
+        Assertions.assertEquals("nmxiebwwaloayqc", model.sku().name());
+        Assertions.assertEquals(1428727987, model.clusterSize());
+        Assertions.assertEquals("yzm", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterInner model =
             new ClusterInner()
-                .withSku(new Sku().withName("lvmezyvshxmzsbbz"))
-                .withClusterSize(1542879301)
-                .withHosts(Arrays.asList("rvjx"));
+                .withSku(new Sku().withName("nmxiebwwaloayqc"))
+                .withClusterSize(1428727987)
+                .withHosts(Arrays.asList("yzm", "txon", "mtsavjcbpwxqp"));
         model = BinaryData.fromObject(model).toObject(ClusterInner.class);
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.sku().name());
-        Assertions.assertEquals(1542879301, model.clusterSize());
-        Assertions.assertEquals("rvjx", model.hosts().get(0));
+        Assertions.assertEquals("nmxiebwwaloayqc", model.sku().name());
+        Assertions.assertEquals(1428727987, model.clusterSize());
+        Assertions.assertEquals("yzm", model.hosts().get(0));
     }
 }

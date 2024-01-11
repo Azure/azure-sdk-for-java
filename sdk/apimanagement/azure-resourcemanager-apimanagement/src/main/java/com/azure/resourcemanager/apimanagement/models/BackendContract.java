@@ -60,7 +60,7 @@ public interface BackendContract {
     String description();
 
     /**
-     * Gets the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Gets the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
@@ -82,7 +82,7 @@ public interface BackendContract {
     BackendCredentialsContract credentials();
 
     /**
-     * Gets the proxy property: Backend Proxy Contract Properties.
+     * Gets the proxy property: Backend gateway Contract Properties.
      *
      * @return the proxy value.
      */
@@ -96,6 +96,13 @@ public interface BackendContract {
     BackendTlsProperties tls();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner object.
      *
      * @return the inner object.
@@ -106,22 +113,25 @@ public interface BackendContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The BackendContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the BackendContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the BackendContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the BackendContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -152,6 +162,7 @@ public interface BackendContract {
              */
             BackendContract create(Context context);
         }
+
         /** The stage of the BackendContract definition allowing to specify url. */
         interface WithUrl {
             /**
@@ -162,6 +173,7 @@ public interface BackendContract {
              */
             WithCreate withUrl(String url);
         }
+
         /** The stage of the BackendContract definition allowing to specify protocol. */
         interface WithProtocol {
             /**
@@ -172,6 +184,7 @@ public interface BackendContract {
              */
             WithCreate withProtocol(BackendProtocol protocol);
         }
+
         /** The stage of the BackendContract definition allowing to specify title. */
         interface WithTitle {
             /**
@@ -182,6 +195,7 @@ public interface BackendContract {
              */
             WithCreate withTitle(String title);
         }
+
         /** The stage of the BackendContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -192,18 +206,20 @@ public interface BackendContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the BackendContract definition allowing to specify resourceId. */
         interface WithResourceId {
             /**
-             * Specifies the resourceId property: Management Uri of the Resource in External System. This url can be the
+             * Specifies the resourceId property: Management Uri of the Resource in External System. This URL can be the
              * Arm Resource Id of Logic Apps, Function Apps or API Apps..
              *
-             * @param resourceId Management Uri of the Resource in External System. This url can be the Arm Resource Id
+             * @param resourceId Management Uri of the Resource in External System. This URL can be the Arm Resource Id
              *     of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             WithCreate withResourceId(String resourceId);
         }
+
         /** The stage of the BackendContract definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -214,6 +230,7 @@ public interface BackendContract {
              */
             WithCreate withProperties(BackendProperties properties);
         }
+
         /** The stage of the BackendContract definition allowing to specify credentials. */
         interface WithCredentials {
             /**
@@ -224,16 +241,18 @@ public interface BackendContract {
              */
             WithCreate withCredentials(BackendCredentialsContract credentials);
         }
+
         /** The stage of the BackendContract definition allowing to specify proxy. */
         interface WithProxy {
             /**
-             * Specifies the proxy property: Backend Proxy Contract Properties.
+             * Specifies the proxy property: Backend gateway Contract Properties.
              *
-             * @param proxy Backend Proxy Contract Properties.
+             * @param proxy Backend gateway Contract Properties.
              * @return the next definition stage.
              */
             WithCreate withProxy(BackendProxyContract proxy);
         }
+
         /** The stage of the BackendContract definition allowing to specify tls. */
         interface WithTls {
             /**
@@ -244,6 +263,7 @@ public interface BackendContract {
              */
             WithCreate withTls(BackendTlsProperties tls);
         }
+
         /** The stage of the BackendContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -257,6 +277,7 @@ public interface BackendContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the BackendContract resource.
      *
@@ -291,6 +312,7 @@ public interface BackendContract {
          */
         BackendContract apply(Context context);
     }
+
     /** The BackendContract update stages. */
     interface UpdateStages {
         /** The stage of the BackendContract update allowing to specify url. */
@@ -303,6 +325,7 @@ public interface BackendContract {
              */
             Update withUrl(String url);
         }
+
         /** The stage of the BackendContract update allowing to specify protocol. */
         interface WithProtocol {
             /**
@@ -313,6 +336,7 @@ public interface BackendContract {
              */
             Update withProtocol(BackendProtocol protocol);
         }
+
         /** The stage of the BackendContract update allowing to specify title. */
         interface WithTitle {
             /**
@@ -323,6 +347,7 @@ public interface BackendContract {
              */
             Update withTitle(String title);
         }
+
         /** The stage of the BackendContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -333,18 +358,20 @@ public interface BackendContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the BackendContract update allowing to specify resourceId. */
         interface WithResourceId {
             /**
-             * Specifies the resourceId property: Management Uri of the Resource in External System. This url can be the
+             * Specifies the resourceId property: Management Uri of the Resource in External System. This URL can be the
              * Arm Resource Id of Logic Apps, Function Apps or API Apps..
              *
-             * @param resourceId Management Uri of the Resource in External System. This url can be the Arm Resource Id
+             * @param resourceId Management Uri of the Resource in External System. This URL can be the Arm Resource Id
              *     of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             Update withResourceId(String resourceId);
         }
+
         /** The stage of the BackendContract update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -355,6 +382,7 @@ public interface BackendContract {
              */
             Update withProperties(BackendProperties properties);
         }
+
         /** The stage of the BackendContract update allowing to specify credentials. */
         interface WithCredentials {
             /**
@@ -365,16 +393,18 @@ public interface BackendContract {
              */
             Update withCredentials(BackendCredentialsContract credentials);
         }
+
         /** The stage of the BackendContract update allowing to specify proxy. */
         interface WithProxy {
             /**
-             * Specifies the proxy property: Backend Proxy Contract Properties.
+             * Specifies the proxy property: Backend gateway Contract Properties.
              *
-             * @param proxy Backend Proxy Contract Properties.
+             * @param proxy Backend gateway Contract Properties.
              * @return the next definition stage.
              */
             Update withProxy(BackendProxyContract proxy);
         }
+
         /** The stage of the BackendContract update allowing to specify tls. */
         interface WithTls {
             /**
@@ -385,6 +415,7 @@ public interface BackendContract {
              */
             Update withTls(BackendTlsProperties tls);
         }
+
         /** The stage of the BackendContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -398,6 +429,7 @@ public interface BackendContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -414,17 +446,8 @@ public interface BackendContract {
     BackendContract refresh(Context context);
 
     /**
-     * Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout was
-     * specified, timeout of 2 minutes is used.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void reconnect();
-
-    /**
-     * Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout was
-     * specified, timeout of 2 minutes is used.
+     * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
+     * timeout was specified, timeout of 2 minutes is used.
      *
      * @param parameters Reconnect request parameters.
      * @param context The context to associate with this operation.
@@ -434,4 +457,13 @@ public interface BackendContract {
      * @return the {@link Response}.
      */
     Response<Void> reconnectWithResponse(BackendReconnectContract parameters, Context context);
+
+    /**
+     * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
+     * timeout was specified, timeout of 2 minutes is used.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reconnect();
 }

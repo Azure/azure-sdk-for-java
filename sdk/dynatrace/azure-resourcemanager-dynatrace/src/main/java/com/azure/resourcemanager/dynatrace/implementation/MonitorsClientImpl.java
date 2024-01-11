@@ -34,9 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dynatrace.fluent.MonitorsClient;
-import com.azure.resourcemanager.dynatrace.fluent.models.AccountInfoSecureInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.AppServiceInfoInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.LinkableEnvironmentResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResourceDetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
@@ -45,6 +46,7 @@ import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
 import com.azure.resourcemanager.dynatrace.models.AppServiceListResponse;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentListResponse;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentRequest;
+import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetailsRequest;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceListResult;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
 import com.azure.resourcemanager.dynatrace.models.MonitoredResourceListResponse;
@@ -78,26 +80,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DynatraceObservabili")
-    private interface MonitorsService {
+    public interface MonitorsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/getAccountCredentials")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccountInfoSecureInner>> getAccountCredentials(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/listMonitoredResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listMonitoredResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoredResourceListResponse>> listMonitoredResources(
@@ -111,8 +97,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/getVMHostPayload")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getVMHostPayload")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VMExtensionPayloadInner>> getVMHostPayload(
@@ -126,8 +111,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitorResourceInner>> getByResourceGroup(
@@ -141,8 +125,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -157,8 +140,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitorResourceInner>> update(
@@ -173,8 +155,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -199,8 +180,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitorResourceListResult>> listByResourceGroup(
@@ -212,9 +192,23 @@ public final class MonitorsClientImpl implements MonitorsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/getMarketplaceSaaSResourceDetails")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ManagementException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MarketplaceSaaSResourceDetailsResponseInner>> getMarketplaceSaaSResourceDetails(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") MarketplaceSaaSResourceDetailsRequest request,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/listHosts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listHosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VMHostsListResponse>> listHosts(
@@ -228,8 +222,21 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/listAppServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getMetricStatus")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MetricsStatusResponseInner>> getMetricStatus(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listAppServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AppServiceListResponse>> listAppServices(
@@ -243,9 +250,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/getSSODetails")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getSSODetails")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ManagementException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SsoDetailsResponseInner>> getSsoDetails(
             @HostParam("$host") String endpoint,
@@ -259,8 +268,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/listLinkableEnvironments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listLinkableEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkableEnvironmentListResponse>> listLinkableEnvironments(
@@ -332,150 +340,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountInfoSecureInner>> getAccountCredentialsWithResponseAsync(
-        String resourceGroupName, String monitorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAccountCredentials(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccountInfoSecureInner>> getAccountCredentialsWithResponseAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getAccountCredentials(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccountInfoSecureInner> getAccountCredentialsAsync(String resourceGroupName, String monitorName) {
-        return getAccountCredentialsWithResponseAsync(resourceGroupName, monitorName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccountInfoSecureInner getAccountCredentials(String resourceGroupName, String monitorName) {
-        return getAccountCredentialsAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Gets the user account credentials for a Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user account credentials for a Monitor along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountInfoSecureInner> getAccountCredentialsWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        return getAccountCredentialsWithResponseAsync(resourceGroupName, monitorName, context).block();
     }
 
     /**
@@ -782,21 +646,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VMExtensionPayloadInner getVMHostPayload(String resourceGroupName, String monitorName) {
-        return getVMHostPayloadAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -807,6 +656,21 @@ public final class MonitorsClientImpl implements MonitorsClient {
     public Response<VMExtensionPayloadInner> getVMHostPayloadWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         return getVMHostPayloadWithResponseAsync(resourceGroupName, monitorName, context).block();
+    }
+
+    /**
+     * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of payload to be passed while installing VM agent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VMExtensionPayloadInner getVMHostPayload(String resourceGroupName, String monitorName) {
+        return getVMHostPayloadWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
@@ -924,21 +788,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MonitorResource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
-        return getByResourceGroupAsync(resourceGroupName, monitorName).block();
-    }
-
-    /**
-     * Get a MonitorResource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -949,6 +798,21 @@ public final class MonitorsClientImpl implements MonitorsClient {
     public Response<MonitorResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, monitorName, context).block();
+    }
+
+    /**
+     * Get a MonitorResource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a MonitorResource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MonitorResourceInner getByResourceGroup(String resourceGroupName, String monitorName) {
+        return getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
@@ -1123,7 +987,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String monitorName, MonitorResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, resource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, resource).getSyncPoller();
     }
 
     /**
@@ -1141,7 +1005,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String monitorName, MonitorResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, resource, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, resource, context).getSyncPoller();
     }
 
     /**
@@ -1350,22 +1214,6 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynatrace Monitor Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitorResourceInner update(String resourceGroupName, String monitorName, MonitorResourceUpdate resource) {
-        return updateAsync(resourceGroupName, monitorName, resource).block();
-    }
-
-    /**
-     * Update a MonitorResource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param resource The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1376,6 +1224,22 @@ public final class MonitorsClientImpl implements MonitorsClient {
     public Response<MonitorResourceInner> updateWithResponse(
         String resourceGroupName, String monitorName, MonitorResourceUpdate resource, Context context) {
         return updateWithResponseAsync(resourceGroupName, monitorName, resource, context).block();
+    }
+
+    /**
+     * Update a MonitorResource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param resource The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dynatrace Monitor Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MonitorResourceInner update(String resourceGroupName, String monitorName, MonitorResourceUpdate resource) {
+        return updateWithResponse(resourceGroupName, monitorName, resource, Context.NONE).getValue();
     }
 
     /**
@@ -1523,7 +1387,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
     }
 
     /**
@@ -1540,7 +1404,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String monitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
     }
 
     /**
@@ -1914,7 +1778,149 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MarketplaceSaaSResourceDetailsResponseInner>>
+        getMarketplaceSaaSResourceDetailsWithResponseAsync(MarketplaceSaaSResourceDetailsRequest request) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getMarketplaceSaaSResourceDetails(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            request,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}
+     *     on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MarketplaceSaaSResourceDetailsResponseInner>>
+        getMarketplaceSaaSResourceDetailsWithResponseAsync(
+            MarketplaceSaaSResourceDetailsRequest request, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getMarketplaceSaaSResourceDetails(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                request,
+                accept,
+                context);
+    }
+
+    /**
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MarketplaceSaaSResourceDetailsResponseInner> getMarketplaceSaaSResourceDetailsAsync(
+        MarketplaceSaaSResourceDetailsRequest request) {
+        return getMarketplaceSaaSResourceDetailsWithResponseAsync(request)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MarketplaceSaaSResourceDetailsResponseInner> getMarketplaceSaaSResourceDetailsWithResponse(
+        MarketplaceSaaSResourceDetailsRequest request, Context context) {
+        return getMarketplaceSaaSResourceDetailsWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Get Marketplace SaaS resource details of a tenant under a specific subscription.
+     *
+     * @param request Tenant Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace SaaS resource details of a tenant under a specific subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MarketplaceSaaSResourceDetailsResponseInner getMarketplaceSaaSResourceDetails(
+        MarketplaceSaaSResourceDetailsRequest request) {
+        return getMarketplaceSaaSResourceDetailsWithResponse(request, Context.NONE).getValue();
+    }
+
+    /**
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -1971,7 +1977,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -2027,7 +2033,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -2044,7 +2050,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -2062,7 +2068,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -2077,7 +2083,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * List the compute resources currently being monitored by the Dynatrace resource.
+     * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -2090,6 +2096,148 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMInfoInner> listHosts(String resourceGroupName, String monitorName, Context context) {
         return new PagedIterable<>(listHostsAsync(resourceGroupName, monitorName, context));
+    }
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MetricsStatusResponseInner>> getMetricStatusWithResponseAsync(
+        String resourceGroupName, String monitorName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getMetricStatus(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            monitorName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MetricsStatusResponseInner>> getMetricStatusWithResponseAsync(
+        String resourceGroupName, String monitorName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getMetricStatus(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                monitorName,
+                accept,
+                context);
+    }
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MetricsStatusResponseInner> getMetricStatusAsync(String resourceGroupName, String monitorName) {
+        return getMetricStatusWithResponseAsync(resourceGroupName, monitorName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricsStatusResponseInner> getMetricStatusWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        return getMetricStatusWithResponseAsync(resourceGroupName, monitorName, context).block();
+    }
+
+    /**
+     * Get metric status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metric status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricsStatusResponseInner getMetricStatus(String resourceGroupName, String monitorName) {
+        return getMetricStatusWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     /**
@@ -2284,6 +2432,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @param request The details of the get sso details request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response} on successful completion of
      *     {@link Mono}.
@@ -2339,6 +2488,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response} on successful completion of
      *     {@link Mono}.
@@ -2387,26 +2537,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param request The details of the get sso details request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SSO configuration details from the partner on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SsoDetailsResponseInner> getSsoDetailsAsync(
-        String resourceGroupName, String monitorName, SsoDetailsRequest request) {
-        return getSsoDetailsWithResponseAsync(resourceGroupName, monitorName, request)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the SSO configuration details from the partner.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner on successful completion of {@link Mono}.
      */
@@ -2422,26 +2555,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SSO configuration details from the partner.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName) {
-        final SsoDetailsRequest request = null;
-        return getSsoDetailsAsync(resourceGroupName, monitorName, request).block();
-    }
-
-    /**
-     * Gets the SSO configuration details from the partner.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
@@ -2449,6 +2567,23 @@ public final class MonitorsClientImpl implements MonitorsClient {
     public Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(
         String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context) {
         return getSsoDetailsWithResponseAsync(resourceGroupName, monitorName, request, context).block();
+    }
+
+    /**
+     * Gets the SSO configuration details from the partner.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 401.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SSO configuration details from the partner.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SsoDetailsResponseInner getSsoDetails(String resourceGroupName, String monitorName) {
+        final SsoDetailsRequest request = null;
+        return getSsoDetailsWithResponse(resourceGroupName, monitorName, request, Context.NONE).getValue();
     }
 
     /**

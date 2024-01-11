@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHub route table. */
+/**
+ * VirtualHub route table.
+ */
 @Fluent
 public final class VirtualHubRouteTable {
     /*
@@ -17,13 +19,15 @@ public final class VirtualHubRouteTable {
     @JsonProperty(value = "routes")
     private List<VirtualHubRoute> routes;
 
-    /** Creates an instance of VirtualHubRouteTable class. */
+    /**
+     * Creates an instance of VirtualHubRouteTable class.
+     */
     public VirtualHubRouteTable() {
     }
 
     /**
      * Get the routes property: List of all routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<VirtualHubRoute> routes() {
@@ -32,7 +36,7 @@ public final class VirtualHubRouteTable {
 
     /**
      * Set the routes property: List of all routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the VirtualHubRouteTable object itself.
      */
@@ -43,7 +47,7 @@ public final class VirtualHubRouteTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

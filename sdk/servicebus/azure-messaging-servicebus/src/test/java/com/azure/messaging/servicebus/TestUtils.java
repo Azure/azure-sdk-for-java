@@ -99,7 +99,7 @@ public class TestUtils {
     /**
      * Namespace used to record tests.
      */
-    public static final String TEST_NAMESPACE = "sb-java-conniey-sba";
+    public static final String TEST_NAMESPACE = "sb-java-conniey-sb1";
 
     /**
      * Gets the namespace connection string.

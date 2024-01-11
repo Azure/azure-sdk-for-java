@@ -69,10 +69,6 @@ jobs:
         parameters:
           runProxy: true
 
-      - template: /eng/pipelines/templates/steps/restore-test-proxy-recordings.yml
-        parameters:
-          Paths: $(SparseCheckoutDirectories)
-
       - pwsh: |
           $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
           foreach($file in $files){

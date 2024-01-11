@@ -1,14 +1,78 @@
 # Release History
 
-## 12.24.0-beta.1 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+- When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
+`BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
+URL-encoded. For example, if blob name is "test%25test" and is created by calling 
+`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
+`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
+“https://account.blob.core.windows.net/container/test%25%25test”.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.25.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+- Upgraded `azure-storage-internal-avro` from `12.10.0` to version `12.10.1`.
+- Upgraded `azure-storage-common` from `12.24.0` to version `12.24.1`.
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+
+## 12.25.0 (2023-11-08)
+
+### Features Added
+- Added BlobProperties.getRequestId() to access the x-ms-request-id header property.
+- Added support for service versions 2023-11-03.
+- Added support for BlobAudience.
+
+## 12.24.1 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-storage-internal-avro` from `12.9.0` to version `12.9.1`.
+- Upgraded `azure-storage-common` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 12.25.0-beta.1 (2023-10-19)
+
+### Features Added
+- Added support for service versions 2023-11-03.
+- Added support for BlobAudience.
+
+## 12.24.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added RehydratePendingToCold value to ArchiveStatus enum.
+
+## 12.23.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-storage-internal-avro` from `12.8.0` to version `12.8.1`.
+
+## 12.24.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added RehydratePendingToCold value to ArchiveStatus enum.
 
 ## 12.23.0 (2023-07-11)
 

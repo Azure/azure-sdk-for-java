@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An app cloneability criterion. */
+/**
+ * An app cloneability criterion.
+ */
 @Fluent
 public final class SiteCloneabilityCriterion {
     /*
@@ -22,13 +24,15 @@ public final class SiteCloneabilityCriterion {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of SiteCloneabilityCriterion class. */
+    /**
+     * Creates an instance of SiteCloneabilityCriterion class.
+     */
     public SiteCloneabilityCriterion() {
     }
 
     /**
      * Get the name property: Name of criterion.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Set the name property: Name of criterion.
-     *
+     * 
      * @param name the name value to set.
      * @return the SiteCloneabilityCriterion object itself.
      */
@@ -48,7 +52,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Get the description property: Description of criterion.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -57,7 +61,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Set the description property: Description of criterion.
-     *
+     * 
      * @param description the description value to set.
      * @return the SiteCloneabilityCriterion object itself.
      */
@@ -68,7 +72,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

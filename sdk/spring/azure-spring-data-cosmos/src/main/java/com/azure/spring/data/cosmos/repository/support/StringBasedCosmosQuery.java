@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -70,8 +71,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             if (!("").equals(paramName)) {
                 String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
                 if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
-                    List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
-                        .map(Object::toString).collect(Collectors.toList());
+                    List<Object> expandParam = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
                     List<String> expandedParamKeys = new ArrayList<>();
                     for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
                         expandedParamKeys.add("@" + paramName + arrayIndex);
@@ -81,13 +81,17 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
                 } else {
                     if (!Pageable.class.isAssignableFrom(queryParam.getType())
                         && !Sort.class.isAssignableFrom(queryParam.getType())) {
-                        sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                        if (!(parameters[paramIndex] instanceof Optional<?>)
+                            || (parameters[paramIndex] instanceof Optional<?>
+                            && ((Optional<?>) parameters[paramIndex]).isPresent())) {
+                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                        }
                     }
                 }
             }
         }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
+        SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());
@@ -104,6 +108,10 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                             processor.getReturnedType().getReturnedType());
         }
+    }
+
+    private String stripExtraWhitespaceFromString(String input) {
+        return input.replaceAll("\\s+{1,}", " ").trim();
     }
 
     @Override

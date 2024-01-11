@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Data Lake Store linked service. */
+/**
+ * Azure Data Lake Store linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeStore")
 @Fluent
@@ -22,44 +24,54 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
      * Azure Data Lake Store linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private AzureDataLakeStoreLinkedServiceTypeProperties innerTypeProperties =
-        new AzureDataLakeStoreLinkedServiceTypeProperties();
+    private AzureDataLakeStoreLinkedServiceTypeProperties innerTypeProperties
+        = new AzureDataLakeStoreLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureDataLakeStoreLinkedService class. */
+    /**
+     * Creates an instance of AzureDataLakeStoreLinkedService class.
+     */
     public AzureDataLakeStoreLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Data Lake Store linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureDataLakeStoreLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Get the dataLakeStoreUri property: Data Lake Store service URI. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the dataLakeStoreUri value.
      */
     public Object dataLakeStoreUri() {
@@ -79,7 +91,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Set the dataLakeStoreUri property: Data Lake Store service URI. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param dataLakeStoreUri the dataLakeStoreUri value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -94,7 +106,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Store account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -104,7 +116,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Store account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -117,9 +129,9 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Store account.
-     *
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
+     * Lake Store account.
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -127,9 +139,9 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Store account.
-     *
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
+     * Lake Store account.
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -144,7 +156,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -154,7 +166,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -167,10 +179,10 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object azureCloudType() {
@@ -178,10 +190,10 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -195,7 +207,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
 
     /**
      * Get the accountName property: Data Lake Store account name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accountName value.
      */
     public Object accountName() {
@@ -204,7 +216,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
 
     /**
      * Set the accountName property: Data Lake Store account name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -219,7 +231,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Get the subscriptionId property: Data Lake Store account subscription ID (if different from Data Factory
      * account). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the subscriptionId value.
      */
     public Object subscriptionId() {
@@ -229,7 +241,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Set the subscriptionId property: Data Lake Store account subscription ID (if different from Data Factory
      * account). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -244,7 +256,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Get the resourceGroupName property: Data Lake Store account resource group name (if different from Data Factory
      * account). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public Object resourceGroupName() {
@@ -254,7 +266,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * Set the resourceGroupName property: Data Lake Store account resource group name (if different from Data Factory
      * account). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -267,23 +279,23 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
-    public AzureDataLakeStoreLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureDataLakeStoreLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureDataLakeStoreLinkedServiceTypeProperties();
         }
@@ -293,7 +305,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -302,7 +314,7 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
@@ -316,17 +328,15 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureDataLakeStoreLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureDataLakeStoreLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

@@ -13,7 +13,7 @@ public final class ScriptPackagesListTests {
         ScriptPackagesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"gbjcntujitcjed\",\"version\":\"wwa\",\"company\":\"kojvd\",\"uri\":\"zfoqouicybxar\"},\"id\":\"gszufoxciqopid\",\"name\":\"amcio\",\"type\":\"hkh\"},{\"properties\":{\"description\":\"khnzbonlw\",\"version\":\"oegokdwbwh\",\"company\":\"z\",\"uri\":\"mrv\"},\"id\":\"xztvbtqgsfraoyzk\",\"name\":\"owtlmnguxawqald\",\"type\":\"yuuximerqfobwyzn\"}],\"nextLink\":\"ykutwpf\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"ffovjzhpj\",\"version\":\"bgj\",\"company\":\"xumvfcluyovw\",\"uri\":\"bkfezzxscyhwzdgi\"},\"id\":\"ujb\",\"name\":\"bomvzzbtdcqv\",\"type\":\"niyujv\"}],\"nextLink\":\"l\"}")
                 .toObject(ScriptPackagesList.class);
     }
 

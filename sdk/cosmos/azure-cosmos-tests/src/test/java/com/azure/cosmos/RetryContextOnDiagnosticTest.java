@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GoneException;
@@ -24,7 +25,6 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
@@ -49,18 +49,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,12 +94,15 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryPolicy = new TestRetryPolicy();
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
+        String rawJson = "{\"id\":\"" + responseText + "\"}";
+        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
-            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), getUTF8BytesOrNull(responseText))));
+
+            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), new ByteBufInputStream(buffer, true), buffer.readableBytes())));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(response.getResponseBody()).isEqualTo(getUTF8BytesOrNull(responseText));
+        assertThat(response.getResponseBodyAsJson().get("id").asText()).isEqualTo(responseText);
         assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
@@ -138,8 +140,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<StoreResponse> exceptionMono = Mono.error(exception);
+        String rawJson = "{\"id\":\"" + responseText + "\"}";
+        ByteBuf buffer = getUTF8BytesOrNull(rawJson);
         Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), getUTF8BytesOrNull(responseText))));
+            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), new ByteBufInputStream(buffer, true), buffer.readableBytes())));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
@@ -149,7 +153,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             addressSelector);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(response.getResponseBody()).isEqualTo(getUTF8BytesOrNull(responseText));
+        assertThat(response.getResponseBodyAsJson().get("id").asText()).isEqualTo(responseText);
         assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
@@ -209,7 +213,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
 
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockStoreModel.processMessage(ArgumentMatchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
@@ -225,7 +229,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -235,7 +239,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -245,7 +249,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -255,7 +259,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.upsertDocument(itemSelfLink, new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
@@ -478,14 +482,26 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
                 fail("Create item should no succeed");
             } catch (CosmosException ex) {
+                logger.info(
+                    "Diagnostics of exception caught: {}, context: {}",
+                    ex.getDiagnostics(),
+                    ex.getDiagnostics() != null && ex.getDiagnostics().getDiagnosticsContext() != null
+                        ? ex.getDiagnostics().getDiagnosticsContext().toJson()
+                        : "NULL",
+                    ex);
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
 
                 //In CI pipeline, the emulator starts with strong consitency
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(10);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
-                assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
-                assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
+                int[] firstRetryStatusCodes = retryContext.getStatusAndSubStatusCodes().get(0);
+                int[] lastRetryStatusCodes = retryContext.getStatusAndSubStatusCodes()
+                                                         .get(retryContext.getStatusAndSubStatusCodes().size() - 1);
+                assertThat(firstRetryStatusCodes[0]).isEqualTo(410);
+                assertThat(firstRetryStatusCodes[1]).isEqualTo(0);
+                assertThat(lastRetryStatusCodes[0]).isEqualTo(503);
+                assertThat(lastRetryStatusCodes[1]).isEqualTo(0);
             }
         } finally {
             safeCloseSyncClient(cosmosClient);
@@ -925,19 +941,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             }
 
             @Override
-            public Flux<ByteBuf> body() {
+            public Mono<ByteBuf> body() {
                 try {
-                    return Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
+                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
                         OBJECT_MAPPER.writeValueAsString(getTestPojoObject())));
-                } catch (JsonProcessingException e) {
-                    return Flux.error(e);
-                }
-            }
-
-            @Override
-            public Mono<byte[]> bodyAsByteArray() {
-                try {
-                    return Mono.just(Utils.getUTF8Bytes(OBJECT_MAPPER.writeValueAsString(getTestPojoObject())));
                 } catch (JsonProcessingException e) {
                     return Mono.error(e);
                 }
@@ -945,15 +952,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             @Override
             public Mono<String> bodyAsString() {
-                try {
-                    return Mono.just(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
-                }
-            }
-
-            @Override
-            public Mono<String> bodyAsString(Charset charset) {
                 try {
                     return Mono.just(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
                 } catch (JsonProcessingException e) {

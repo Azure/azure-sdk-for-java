@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of network configuration. */
+/**
+ * Profile of network configuration.
+ */
 @Fluent
 public final class ContainerServiceNetworkProfile {
     /*
@@ -120,7 +122,9 @@ public final class ContainerServiceNetworkProfile {
     @JsonProperty(value = "ipFamilies")
     private List<IpFamily> ipFamilies;
 
-    /** Creates an instance of ContainerServiceNetworkProfile class. */
+    /**
+     * Creates an instance of ContainerServiceNetworkProfile class.
+     */
     public ContainerServiceNetworkProfile() {
     }
 
@@ -187,7 +191,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the networkMode property: The network mode Azure CNI is configured with.
      *
-     * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
+     * This cannot be specified if networkPlugin is anything other than 'azure'.
      *
      * @return the networkMode value.
      */
@@ -198,7 +202,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the networkMode property: The network mode Azure CNI is configured with.
      *
-     * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
+     * This cannot be specified if networkPlugin is anything other than 'azure'.
      *
      * @param networkMode the networkMode value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -295,7 +299,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the outboundType property: The outbound (egress) routing method.
      *
-     * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
      * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      *
      * @return the outboundType value.
@@ -307,7 +311,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the outboundType property: The outbound (egress) routing method.
      *
-     * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
      * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      *
      * @param outboundType the outboundType value to set.
@@ -321,7 +325,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the loadBalancerSku property: The load balancer sku for the managed cluster.
      *
-     * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
+     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
      * for more information about the differences between load balancer SKUs.
      *
      * @return the loadBalancerSku value.
@@ -333,7 +337,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the loadBalancerSku property: The load balancer sku for the managed cluster.
      *
-     * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
+     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
      * for more information about the differences between load balancer SKUs.
      *
      * @param loadBalancerSku the loadBalancerSku value to set.
@@ -359,8 +363,8 @@ public final class ContainerServiceNetworkProfile {
      * @param loadBalancerProfile the loadBalancerProfile value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
-    public ContainerServiceNetworkProfile withLoadBalancerProfile(
-        ManagedClusterLoadBalancerProfile loadBalancerProfile) {
+    public ContainerServiceNetworkProfile
+        withLoadBalancerProfile(ManagedClusterLoadBalancerProfile loadBalancerProfile) {
         this.loadBalancerProfile = loadBalancerProfile;
         return this;
     }
@@ -388,7 +392,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
      *
-     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
      * expected for dual-stack networking.
      *
      * @return the podCidrs value.
@@ -400,7 +404,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
      *
-     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
      * expected for dual-stack networking.
      *
      * @param podCidrs the podCidrs value to set.
@@ -414,7 +418,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
      *
-     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
      * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      *
      * @return the serviceCidrs value.
@@ -426,7 +430,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
      *
-     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
      * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      *
      * @param serviceCidrs the serviceCidrs value to set.
@@ -440,7 +444,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the ipFamilies property: The IP families used to specify IP versions available to the cluster.
      *
-     * <p>IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
+     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
      * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      *
      * @return the ipFamilies value.
@@ -452,7 +456,7 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the ipFamilies property: The IP families used to specify IP versions available to the cluster.
      *
-     * <p>IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
+     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
      * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      *
      * @param ipFamilies the ipFamilies value to set.

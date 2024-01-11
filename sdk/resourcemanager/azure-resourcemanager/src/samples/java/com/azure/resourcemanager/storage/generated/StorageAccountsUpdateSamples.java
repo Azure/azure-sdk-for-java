@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyState;
 import com.azure.resourcemanager.storage.models.ActiveDirectoryProperties;
@@ -44,7 +43,7 @@ import java.util.Map;
 /** Samples for StorageAccounts Update. */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateWithImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithImmutabilityPolicy.
@@ -70,11 +69,11 @@ public final class StorageAccountsUpdateSamples {
                                     .withImmutabilityPeriodSinceCreationInDays(15)
                                     .withState(AccountImmutabilityPolicyState.LOCKED)
                                     .withAllowProtectedAppendWrites(true))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -110,19 +109,19 @@ public final class StorageAccountsUpdateSamples {
                             .withKeySource(KeySource.MICROSOFT_KEYVAULT)
                             .withKeyVaultProperties(
                                 new KeyVaultProperties()
-                                    .withKeyName("wrappingKey")
-                                    .withKeyVersion("")
-                                    .withKeyVaultUri("https://myvault8569.vault.azure.net"))
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder")
+                                    .withKeyVaultUri("fakeTokenPlaceholder"))
                             .withEncryptionIdentity(
                                 new EncryptionIdentity()
                                     .withEncryptionUserAssignedIdentity(
                                         "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}")
                                     .withEncryptionFederatedIdentityClientId("3109d1c4-a5de-4d84-8832-feabb916a4b6"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountEnableAD.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -152,11 +151,11 @@ public final class StorageAccountsUpdateSamples {
                                     .withAzureStorageSid("S-1-5-21-2400535526-2334094090-2402026252-0012")
                                     .withSamAccountName("sam12498")
                                     .withAccountType(ActiveDirectoryPropertiesAccountType.USER))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountUpdateAllowedCopyScopeToAAD.
@@ -204,11 +203,11 @@ public final class StorageAccountsUpdateSamples {
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
                     .withAllowedCopyScope(AllowedCopyScope.AAD),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateDisablePublicNetworkAccess.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountUpdateDisablePublicNetworkAccess.
@@ -257,11 +256,11 @@ public final class StorageAccountsUpdateSamples {
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
                     .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountEnableCMK.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -287,14 +286,14 @@ public final class StorageAccountsUpdateSamples {
                             .withKeySource(KeySource.MICROSOFT_KEYVAULT)
                             .withKeyVaultProperties(
                                 new KeyVaultProperties()
-                                    .withKeyName("wrappingKey")
-                                    .withKeyVersion("")
-                                    .withKeyVaultUri("https://myvault8569.vault.azure.net"))),
-                Context.NONE);
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder")
+                                    .withKeyVaultUri("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdate.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -344,11 +343,11 @@ public final class StorageAccountsUpdateSamples {
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
                     .withDefaultToOAuthAuthentication(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.
@@ -384,16 +383,17 @@ public final class StorageAccountsUpdateSamples {
                             .withKeySource(KeySource.MICROSOFT_KEYVAULT)
                             .withKeyVaultProperties(
                                 new KeyVaultProperties()
-                                    .withKeyName("wrappingKey")
-                                    .withKeyVersion("")
-                                    .withKeyVaultUri("https://myvault8569.vault.azure.net"))
+                                    .withKeyName("fakeTokenPlaceholder")
+                                    .withKeyVersion("fakeTokenPlaceholder")
+                                    .withKeyVaultUri("fakeTokenPlaceholder"))
                             .withEncryptionIdentity(
                                 new EncryptionIdentity()
                                     .withEncryptionUserAssignedIdentity(
                                         "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

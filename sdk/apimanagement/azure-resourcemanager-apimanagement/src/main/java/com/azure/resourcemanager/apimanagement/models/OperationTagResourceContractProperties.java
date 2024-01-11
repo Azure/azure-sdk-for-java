@@ -47,19 +47,21 @@ public final class OperationTagResourceContractProperties {
     private String description;
 
     /*
-     * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
-     * but not limited by only them.
+     * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
      */
     @JsonProperty(value = "method", access = JsonProperty.Access.WRITE_ONLY)
     private String method;
 
     /*
-     * Relative URL template identifying the target resource for this
-     * operation. May include parameters. Example:
+     * Relative URL template identifying the target resource for this operation. May include parameters. Example:
      * /customers/{cid}/orders/{oid}/?date={date}
      */
     @JsonProperty(value = "urlTemplate", access = JsonProperty.Access.WRITE_ONLY)
     private String urlTemplate;
+
+    /** Creates an instance of OperationTagResourceContractProperties class. */
+    public OperationTagResourceContractProperties() {
+    }
 
     /**
      * Get the id property: Identifier of the operation in form /operations/{operationId}.

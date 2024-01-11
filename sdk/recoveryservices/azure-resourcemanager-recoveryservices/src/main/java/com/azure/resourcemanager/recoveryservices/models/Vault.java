@@ -117,11 +117,13 @@ public interface Vault {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Vault definition stages. */
     interface DefinitionStages {
         /** The first stage of the Vault definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Vault definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -140,6 +142,7 @@ public interface Vault {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Vault definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -150,6 +153,7 @@ public interface Vault {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Vault definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -175,6 +179,7 @@ public interface Vault {
              */
             Vault create(Context context);
         }
+
         /** The stage of the Vault definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -185,6 +190,7 @@ public interface Vault {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Vault definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -195,6 +201,7 @@ public interface Vault {
              */
             WithCreate withIdentity(IdentityData identity);
         }
+
         /** The stage of the Vault definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -205,6 +212,7 @@ public interface Vault {
              */
             WithCreate withProperties(VaultProperties properties);
         }
+
         /** The stage of the Vault definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -215,6 +223,7 @@ public interface Vault {
              */
             WithCreate withSku(Sku sku);
         }
+
         /** The stage of the Vault definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -226,6 +235,7 @@ public interface Vault {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the Vault resource.
      *
@@ -255,6 +265,7 @@ public interface Vault {
          */
         Vault apply(Context context);
     }
+
     /** The Vault update stages. */
     interface UpdateStages {
         /** The stage of the Vault update allowing to specify tags. */
@@ -267,6 +278,7 @@ public interface Vault {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Vault update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -277,6 +289,7 @@ public interface Vault {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the Vault update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -287,6 +300,7 @@ public interface Vault {
              */
             Update withProperties(VaultProperties properties);
         }
+
         /** The stage of the Vault update allowing to specify sku. */
         interface WithSku {
             /**
@@ -297,6 +311,7 @@ public interface Vault {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the Vault update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -308,6 +323,7 @@ public interface Vault {
             Update withIdentity(IdentityData identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

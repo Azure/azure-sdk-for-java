@@ -29,6 +29,10 @@ public final class AccessPolicy {
     @JsonProperty(value = "permission")
     private String permission;
 
+    /** Creates an instance of AccessPolicy class. */
+    public AccessPolicy() {
+    }
+
     /**
      * Get the startTime property: Start time of the access policy.
      *

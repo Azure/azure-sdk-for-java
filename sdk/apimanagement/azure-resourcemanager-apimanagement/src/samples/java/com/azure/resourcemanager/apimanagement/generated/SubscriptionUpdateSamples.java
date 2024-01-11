@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionUpdateParameters;
 
 /** Samples for Subscription Update. */
 public final class SubscriptionUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateSubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateSubscription.json
      */
     /**
      * Sample code: ApiManagementUpdateSubscription.
@@ -29,6 +28,6 @@ public final class SubscriptionUpdateSamples {
                 new SubscriptionUpdateParameters().withDisplayName("testsub"),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

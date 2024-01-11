@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The list of HTTP methods supported by a WebActivity. */
+/**
+ * The list of HTTP methods supported by a WebActivity.
+ */
 public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMethod> {
-    /** Static value GET for WebActivityMethod. */
+    /**
+     * Static value GET for WebActivityMethod.
+     */
     public static final WebActivityMethod GET = fromString("GET");
 
-    /** Static value POST for WebActivityMethod. */
+    /**
+     * Static value POST for WebActivityMethod.
+     */
     public static final WebActivityMethod POST = fromString("POST");
 
-    /** Static value PUT for WebActivityMethod. */
+    /**
+     * Static value PUT for WebActivityMethod.
+     */
     public static final WebActivityMethod PUT = fromString("PUT");
 
-    /** Static value DELETE for WebActivityMethod. */
+    /**
+     * Static value DELETE for WebActivityMethod.
+     */
     public static final WebActivityMethod DELETE = fromString("DELETE");
 
     /**
      * Creates a new instance of WebActivityMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
 
     /**
      * Creates or finds a WebActivityMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebActivityMethod.
      */
@@ -44,7 +54,7 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
 
     /**
      * Gets known WebActivityMethod values.
-     *
+     * 
      * @return known WebActivityMethod values.
      */
     public static Collection<WebActivityMethod> values() {

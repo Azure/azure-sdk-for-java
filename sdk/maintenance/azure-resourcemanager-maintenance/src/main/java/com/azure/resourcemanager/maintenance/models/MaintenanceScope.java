@@ -13,6 +13,9 @@ public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScop
     /** Static value Host for MaintenanceScope. */
     public static final MaintenanceScope HOST = fromString("Host");
 
+    /** Static value Resource for MaintenanceScope. */
+    public static final MaintenanceScope RESOURCE = fromString("Resource");
+
     /** Static value OSImage for MaintenanceScope. */
     public static final MaintenanceScope OSIMAGE = fromString("OSImage");
 

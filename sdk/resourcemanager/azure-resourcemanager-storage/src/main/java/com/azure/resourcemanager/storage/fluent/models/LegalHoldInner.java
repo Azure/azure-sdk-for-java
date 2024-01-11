@@ -33,6 +33,10 @@ public final class LegalHoldInner {
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
+    /** Creates an instance of LegalHoldInner class. */
+    public LegalHoldInner() {
+    }
+
     /**
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared

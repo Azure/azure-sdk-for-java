@@ -8,41 +8,68 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This enumerates the possible sources of a disk's creation. */
+/**
+ * This enumerates the possible sources of a disk's creation.
+ */
 public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOption> {
-    /** Static value Empty for DiskCreateOption. */
+    /**
+     * Static value Empty for DiskCreateOption.
+     */
     public static final DiskCreateOption EMPTY = fromString("Empty");
 
-    /** Static value Attach for DiskCreateOption. */
+    /**
+     * Static value Attach for DiskCreateOption.
+     */
     public static final DiskCreateOption ATTACH = fromString("Attach");
 
-    /** Static value FromImage for DiskCreateOption. */
+    /**
+     * Static value FromImage for DiskCreateOption.
+     */
     public static final DiskCreateOption FROM_IMAGE = fromString("FromImage");
 
-    /** Static value Import for DiskCreateOption. */
+    /**
+     * Static value Import for DiskCreateOption.
+     */
     public static final DiskCreateOption IMPORT = fromString("Import");
 
-    /** Static value Copy for DiskCreateOption. */
+    /**
+     * Static value Copy for DiskCreateOption.
+     */
     public static final DiskCreateOption COPY = fromString("Copy");
 
-    /** Static value Restore for DiskCreateOption. */
+    /**
+     * Static value Restore for DiskCreateOption.
+     */
     public static final DiskCreateOption RESTORE = fromString("Restore");
 
-    /** Static value Upload for DiskCreateOption. */
+    /**
+     * Static value Upload for DiskCreateOption.
+     */
     public static final DiskCreateOption UPLOAD = fromString("Upload");
 
-    /** Static value CopyStart for DiskCreateOption. */
+    /**
+     * Static value CopyStart for DiskCreateOption.
+     */
     public static final DiskCreateOption COPY_START = fromString("CopyStart");
 
-    /** Static value ImportSecure for DiskCreateOption. */
+    /**
+     * Static value ImportSecure for DiskCreateOption.
+     */
     public static final DiskCreateOption IMPORT_SECURE = fromString("ImportSecure");
 
-    /** Static value UploadPreparedSecure for DiskCreateOption. */
+    /**
+     * Static value UploadPreparedSecure for DiskCreateOption.
+     */
     public static final DiskCreateOption UPLOAD_PREPARED_SECURE = fromString("UploadPreparedSecure");
 
     /**
+     * Static value CopyFromSanSnapshot for DiskCreateOption.
+     */
+    public static final DiskCreateOption COPY_FROM_SAN_SNAPSHOT = fromString("CopyFromSanSnapshot");
+
+    /**
      * Creates a new instance of DiskCreateOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +78,7 @@ public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOptio
 
     /**
      * Creates or finds a DiskCreateOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskCreateOption.
      */
@@ -62,7 +89,7 @@ public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOptio
 
     /**
      * Gets known DiskCreateOption values.
-     *
+     * 
      * @return known DiskCreateOption values.
      */
     public static Collection<DiskCreateOption> values() {

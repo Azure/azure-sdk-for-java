@@ -116,13 +116,15 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ObjectReplicationPolicyInner get(String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Response<ObjectReplicationPolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
@@ -135,15 +137,13 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID along with {@link Response}.
+     * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    ObjectReplicationPolicyInner get(String resourceGroupName, String accountName, String objectReplicationPolicyId);
 
     /**
      * Create or update the object replication policy of the storage account.
@@ -209,17 +209,19 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
+     * @return the replication policy between two storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ObjectReplicationPolicyInner createOrUpdate(
+    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String accountName,
         String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties);
+        ObjectReplicationPolicyInner properties,
+        Context context);
 
     /**
      * Create or update the object replication policy of the storage account.
@@ -234,19 +236,17 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts along with {@link Response}.
+     * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
+    ObjectReplicationPolicyInner createOrUpdate(
         String resourceGroupName,
         String accountName,
         String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties,
-        Context context);
+        ObjectReplicationPolicyInner properties);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
@@ -298,12 +298,15 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
@@ -316,13 +319,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    void delete(String resourceGroupName, String accountName, String objectReplicationPolicyId);
 }

@@ -23,6 +23,15 @@ public final class MicrosoftGraphEventType extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphEventType SERIES_MASTER = fromString("seriesMaster");
 
     /**
+     * Creates a new instance of MicrosoftGraphEventType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphEventType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphEventType from its string representation.
      *
      * @param name a name to look for.

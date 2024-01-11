@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection Delete. */
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: ApiManagementDeletePrivateEndpointConnection.
@@ -20,6 +18,6 @@ public final class PrivateEndpointConnectionDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .privateEndpointConnections()
-            .delete("rg1", "apimService1", "privateEndpointConnectionName", Context.NONE);
+            .delete("rg1", "apimService1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataStoreInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataStoreInfoBase model =
-            BinaryData
-                .fromString("{\"dataStoreType\":\"VaultStore\",\"objectType\":\"dvzyybycnun\"}")
+        DataStoreInfoBase model
+            = BinaryData.fromString("{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"hxumwctondzj\"}")
                 .toObject(DataStoreInfoBase.class);
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
-        Assertions.assertEquals("dvzyybycnun", model.objectType());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals("hxumwctondzj", model.objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataStoreInfoBase model =
-            new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("dvzyybycnun");
+        DataStoreInfoBase model
+            = new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE).withObjectType("hxumwctondzj");
         model = BinaryData.fromObject(model).toObject(DataStoreInfoBase.class);
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStoreType());
-        Assertions.assertEquals("dvzyybycnun", model.objectType());
+        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
+        Assertions.assertEquals("hxumwctondzj", model.objectType());
     }
 }

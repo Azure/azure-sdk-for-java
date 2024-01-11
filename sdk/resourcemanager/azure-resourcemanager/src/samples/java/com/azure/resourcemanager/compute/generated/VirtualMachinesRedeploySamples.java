@@ -4,39 +4,37 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-/** Samples for VirtualMachines Redeploy. */
+/**
+ * Samples for VirtualMachines Redeploy.
+ */
 public final class VirtualMachinesRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Redeploy_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRedeployMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachines()
-            .redeploy("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().redeploy("rgcompute", "aaaaaaaaaaaaaaa",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Redeploy_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRedeployMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachines()
-            .redeploy("rgcompute", "a", com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().redeploy("rgcompute", "a",
+            com.azure.core.util.Context.NONE);
     }
 }

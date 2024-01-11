@@ -41,134 +41,105 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetVMRunCommandsClient.
+ * An instance of this class provides access to all the operations defined in
+ * VirtualMachineScaleSetVMRunCommandsClient.
  */
 public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements VirtualMachineScaleSetVMRunCommandsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineScaleSetVMRunCommandsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineScaleSetVMRunCommandsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetVMRunCommandsClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VirtualMachineScaleSetVMRunCommandsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineScaleSetVMRunCommandsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface VirtualMachineScaleSetVMRunCommandsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineRunCommandInner runCommand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineRunCommandUpdate runCommand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineRunCommandInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualMachineRunCommandInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("$expand") String expand,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/runCommands")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineRunCommandsListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualMachineRunCommandsListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineRunCommandsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -177,21 +148,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,39 +172,25 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            runCommand,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                instanceId, runCommandName, apiVersion, this.client.getSubscriptionId(), runCommand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -249,22 +200,16 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -280,36 +225,24 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                runCommand,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
+            runCommandName, apiVersion, this.client.getSubscriptionId(), runCommand, accept, context);
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -322,27 +255,18 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String runCommandName,
-            VirtualMachineRunCommandInner runCommand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+            String runCommandName, VirtualMachineRunCommandInner runCommand) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName,
+            instanceId, runCommandName, runCommand);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -356,30 +280,19 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String runCommandName,
-            VirtualMachineRunCommandInner runCommand,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+            String runCommandName, VirtualMachineRunCommandInner runCommand, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName,
+            instanceId, runCommandName, runCommand, context);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            context);
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -392,19 +305,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         VirtualMachineRunCommandInner runCommand) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
             .getSyncPoller();
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -418,21 +327,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
-            .getSyncPoller();
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
+        VirtualMachineRunCommandInner runCommand, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
+            context).getSyncPoller();
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -444,20 +347,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand) {
+    public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -470,22 +368,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -497,18 +388,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand) {
+    public VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         return createOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand).block();
     }
 
     /**
      * The operation to create or update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -521,20 +408,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
+    public VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context) {
         return createOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
             .block();
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -543,21 +425,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -573,39 +449,25 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            runCommand,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                instanceId, runCommandName, apiVersion, this.client.getSubscriptionId(), runCommand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -615,22 +477,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -646,36 +501,24 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                runCommand,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
+            apiVersion, this.client.getSubscriptionId(), runCommand, accept, context);
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -688,26 +531,18 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         VirtualMachineRunCommandUpdate runCommand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -721,28 +556,19 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId,
+            runCommandName, runCommand, context);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            context);
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -755,19 +581,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         VirtualMachineRunCommandUpdate runCommand) {
-        return this
-            .beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
+        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
             .getSyncPoller();
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -781,20 +603,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
             .getSyncPoller();
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -806,20 +623,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> updateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand) {
-        return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
-            .last()
+    public Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
+        return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -832,21 +644,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineRunCommandInner> updateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+    private Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -858,18 +664,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand) {
+    public VirtualMachineRunCommandInner update(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         return updateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand).block();
     }
 
     /**
      * The operation to update the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -882,19 +684,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+    public VirtualMachineRunCommandInner update(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         return updateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context).block();
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -905,13 +702,11 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -927,33 +722,20 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                instanceId, runCommandName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -965,13 +747,11 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -987,30 +767,19 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1021,19 +790,17 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1045,19 +812,18 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1068,14 +834,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName) {
         return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName).getSyncPoller();
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1087,16 +853,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context)
             .getSyncPoller();
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1107,16 +872,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName) {
+        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1128,16 +892,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName, Context context) {
+        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1153,7 +916,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1164,14 +927,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
+    public void delete(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
+        Context context) {
         deleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context).block();
     }
 
     /**
      * The operation to get the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1180,17 +943,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand) {
+    public Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String runCommandName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1206,34 +967,20 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            runCommandName,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                instanceId, runCommandName, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1243,22 +990,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        String expand,
-        Context context) {
+    private Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String runCommandName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1274,31 +1014,19 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                runCommandName,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
+            expand, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to get the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1309,8 +1037,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> getAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
+    public Mono<VirtualMachineRunCommandInner> getAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1318,7 +1046,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1331,20 +1059,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineRunCommandInner> getWithResponse(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String runCommandName,
-        String expand,
-        Context context) {
+    public Response<VirtualMachineRunCommandInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String runCommandName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, expand, context)
             .block();
     }
 
     /**
      * The operation to get the VMSS VM run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1355,8 +1078,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner get(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
+    public VirtualMachineRunCommandInner get(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String runCommandName) {
         final String expand = null;
         return getWithResponse(resourceGroupName, vmScaleSetName, instanceId, runCommandName, expand, Context.NONE)
             .getValue();
@@ -1364,7 +1087,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1373,16 +1096,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1395,42 +1116,22 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<VirtualMachineRunCommandInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                instanceId, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<VirtualMachineRunCommandInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1440,16 +1141,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1462,39 +1161,22 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1505,16 +1187,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualMachineRunCommandInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vmScaleSetName, instanceId, expand),
+    public PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String expand) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vmScaleSetName, instanceId, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1524,17 +1205,16 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualMachineRunCommandInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
+    public PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId) {
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vmScaleSetName, instanceId, expand),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vmScaleSetName, instanceId, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1546,8 +1226,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualMachineRunCommandInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+    private PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String expand, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1555,7 +1235,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1565,15 +1245,15 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualMachineRunCommandInner> list(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
+    public PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
+        String instanceId) {
         final String expand = null;
         return new PagedIterable<>(listAsync(resourceGroupName, vmScaleSetName, instanceId, expand));
     }
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1585,21 +1265,22 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualMachineRunCommandInner> list(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+    public PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String expand, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineRunCommandInner>> listNextSinglePageAsync(String nextLink) {
@@ -1607,62 +1288,43 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualMachineRunCommandInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualMachineRunCommandInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

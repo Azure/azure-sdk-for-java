@@ -24,10 +24,13 @@ public final class RemoveParticipantRequestInternal {
     private String operationContext;
 
     /*
-     * The callback URI override.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "callbackUriOverride")
-    private String callbackUriOverride;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /**
      * Get the participantToRemove property: The participants to be removed from the call.
@@ -72,22 +75,26 @@ public final class RemoveParticipantRequestInternal {
     }
 
     /**
-     * Get the callbackUriOverride property: The callback URI override.
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @return the callbackUriOverride value.
+     * @return the operationCallbackUri value.
      */
-    public String getCallbackUriOverride() {
-        return this.callbackUriOverride;
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
     }
 
     /**
-     * Set the callbackUriOverride property: The callback URI override.
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @param callbackUriOverride the callbackUriOverride value to set.
+     * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
-    public RemoveParticipantRequestInternal setCallbackUriOverride(String callbackUriOverride) {
-        this.callbackUriOverride = callbackUriOverride;
+    public RemoveParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

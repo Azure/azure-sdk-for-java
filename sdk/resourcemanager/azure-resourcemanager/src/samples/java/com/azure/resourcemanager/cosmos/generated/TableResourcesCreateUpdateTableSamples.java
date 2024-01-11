@@ -10,34 +10,28 @@ import com.azure.resourcemanager.cosmos.models.TableResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for TableResources CreateUpdateTable. */
+/**
+ * Samples for TableResources CreateUpdateTable.
+ */
 public final class TableResourcesCreateUpdateTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBTableReplace.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBTableReplace(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getTableResources()
-            .createUpdateTable(
-                "rg1",
-                "ddb1",
-                "tableName",
-                new TableCreateUpdateParameters()
-                    .withLocation("West US")
-                    .withTags(mapOf())
-                    .withResource(new TableResource().withId("tableName"))
-                    .withOptions(new CreateUpdateOptions()),
-                com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getTableResources().createUpdateTable("rg1", "ddb1",
+            "tableName",
+            new TableCreateUpdateParameters().withLocation("West US").withTags(mapOf())
+                .withResource(new TableResource().withId("tableName")).withOptions(new CreateUpdateOptions()),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
@@ -303,6 +304,9 @@ class LoadBalancerImpl
             ref = lbRule.innerModel().backendAddressPool();
             if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.innerModel().withBackendAddressPool(null);
+            }
+            if (!CoreUtils.isNullOrEmpty(lbRule.innerModel().backendAddressPools())) {
+                lbRule.innerModel().backendAddressPools().removeIf(backendRef -> backendRef != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(backendRef.id())));
             }
 
             // Clear deleted probe references

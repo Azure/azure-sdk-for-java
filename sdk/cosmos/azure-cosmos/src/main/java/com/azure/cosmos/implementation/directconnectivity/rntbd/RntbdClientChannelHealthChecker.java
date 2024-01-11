@@ -58,8 +58,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     @JsonProperty
     private final long writeDelayLimitInNanos;
     @JsonProperty
-    private final long networkRequestTimeoutInNanos;
-    @JsonProperty
     private final boolean timeoutDetectionEnabled;
     @JsonProperty
     private final double timeoutDetectionDisableCPUThreshold;
@@ -73,6 +71,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final int timeoutOnWriteThreshold;
     @JsonProperty
     private final long timeoutOnWriteTimeLimitInNanos;
+    @JsonProperty
+    private final long nonRespondingChannelReadDelayTimeLimitInNanos;
+    @JsonProperty
+    private final int cancellationCountSinceLastReadThreshold;
 
     // endregion
 
@@ -93,7 +95,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
         this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
-        this.networkRequestTimeoutInNanos = config.tcpNetworkRequestTimeoutInNanos();
         this.timeoutDetectionEnabled = config.timeoutDetectionEnabled();
         this.timeoutDetectionDisableCPUThreshold = config.timeoutDetectionDisableCPUThreshold();
         this.timeoutTimeLimitInNanos = config.timeoutDetectionTimeLimitInNanos();
@@ -101,6 +102,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.timeoutHighFrequencyTimeLimitInNanos = config.timeoutDetectionHighFrequencyTimeLimitInNanos();
         this.timeoutOnWriteThreshold = config.timeoutDetectionOnWriteThreshold();
         this.timeoutOnWriteTimeLimitInNanos = config.timeoutDetectionOnWriteTimeLimitInNanos();
+        this.nonRespondingChannelReadDelayTimeLimitInNanos = config.nonRespondingChannelReadDelayTimeLimitInNanos();
+        this.cancellationCountSinceLastReadThreshold = config.cancellationCountSinceLastReadThreshold();
     }
 
     // endregion
@@ -220,6 +223,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(idleConnectionValidationMessage);
         }
 
+        String isCancellationProneChannelMessage = this.isCancellationProneChannel(timestamps, currentTime, requestManager, channel);
+        if (StringUtils.isNotEmpty(isCancellationProneChannelMessage)) {
+            return promise.setSuccess(isCancellationProneChannelMessage);
+        }
+
         channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
             if (completed.isSuccess()) {
                 promise.setSuccess(RntbdHealthCheckResults.SuccessValue);
@@ -315,6 +323,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             // When request timeout due to high CPU,
             // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
             if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                // reset the transit timeout here
+                // else when the CPU back to below the threshold, the connection may still trigger a connection close right away
+                timestamps.resetTransitTimeout();
                 return transitTimeoutValidationMessage;
             }
 
@@ -397,6 +408,45 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         return errorMessage;
     }
 
+    private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, RntbdRequestManager requestManager, Channel channel) {
+        String errorMessage = StringUtils.EMPTY;
+
+        if (timestamps.cancellationCount() >= this.cancellationCountSinceLastReadThreshold) {
+
+            // Request cancellations could be a normal symptom under high CPU load.
+            // When request cancellations are due to high CPU,
+            // close the existing the connection and re-establish a new one will not help the issue but rather make it worse, return fast
+            if (CpuMemoryMonitor.getCpuLoad().isCpuOverThreshold(this.timeoutDetectionDisableCPUThreshold)) {
+                // reset the cancellation count here
+                // else when the CPU back to below the threshold, the connection may still trigger a connection close right away
+                timestamps.resetCancellationCount();
+                return errorMessage;
+            }
+
+            final long readSuccessRecency = Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos();
+
+            if (readSuccessRecency >= this.nonRespondingChannelReadDelayTimeLimitInNanos) {
+
+                final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
+
+                errorMessage = MessageFormat.format(
+                    "{0} health check failed due to channel being cancellation prone: [rntbdContext: {1}, lastChannelWrite: {2}, lastChannelRead: {3},"
+                        + "cancellationCountSinceLastSuccessfulRead: {4}, currentTime: {5}]",
+                    channel,
+                    rntbdContext,
+                    timestamps.lastChannelWriteTime(),
+                    timestamps.lastChannelReadTime(),
+                    timestamps.cancellationCount(),
+                    currentTime);
+
+                logger.warn(errorMessage);
+                return errorMessage;
+            }
+        }
+
+        return errorMessage;
+    }
+
     @Override
     public String toString() {
         return RntbdObjectMapper.toString(this);
@@ -429,6 +479,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private static final AtomicReferenceFieldUpdater<Timestamps, Instant> transitTimeoutStartingTimeUpdater =
             newUpdater(Timestamps.class, Instant.class, "transitTimeoutStartingTime");
 
+        private static final AtomicIntegerFieldUpdater<Timestamps> cancellationCountUpdater =
+            AtomicIntegerFieldUpdater.newUpdater(Timestamps.class, "cancellationCount");
+
         private volatile Instant lastPingTime;
         private volatile Instant lastReadTime;
         private volatile Instant lastWriteTime;
@@ -436,7 +489,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private volatile int transitTimeoutCount;
         private volatile int transitTimeoutWriteCount;
         private volatile Instant transitTimeoutStartingTime;
-
+        private volatile int cancellationCount;
         public Timestamps() {
             lastPingUpdater.set(this, Instant.now());
             lastReadUpdater.set(this, Instant.now());
@@ -454,6 +507,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             this.transitTimeoutCount = transitTimeoutCountUpdater.get(other);
             this.transitTimeoutWriteCount = transitTimeoutWriteCountUpdater.get(other);
             this.transitTimeoutStartingTime = transitTimeoutStartingTimeUpdater.get(other);
+            this.cancellationCount = cancellationCountUpdater.get(other);
         }
 
         public void channelPingCompleted() {
@@ -463,6 +517,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         public void channelReadCompleted() {
             lastReadUpdater.set(this, Instant.now());
             this.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
+            this.resetCancellationCount();
         }
 
         public void channelWriteAttempted() {
@@ -486,6 +541,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             transitTimeoutCountUpdater.set(this, 0);
             transitTimeoutWriteCountUpdater.set(this, 0);
             transitTimeoutStartingTimeUpdater.set(this, null);
+        }
+
+        public void resetCancellationCount() {
+            cancellationCountUpdater.set(this, 0);
         }
 
         @JsonProperty
@@ -521,6 +580,16 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @JsonProperty
         public Instant transitTimeoutStartingTime() {
             return transitTimeoutStartingTimeUpdater.get(this);
+        }
+
+        @JsonProperty
+        public int cancellationCount() {
+            return cancellationCountUpdater.get(this);
+        }
+
+        @JsonProperty
+        public void cancellation() {
+            cancellationCountUpdater.incrementAndGet(this);
         }
 
         @Override

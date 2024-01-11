@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GroupUser Delete. */
 public final class GroupUserDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteGroupUser.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGroupUser.json
      */
     /**
      * Sample code: ApiManagementDeleteGroupUser.
@@ -20,6 +18,7 @@ public final class GroupUserDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .groupUsers()
-            .deleteWithResponse("rg1", "apimService1", "templategroup", "59307d350af58404d8a26300", Context.NONE);
+            .deleteWithResponse(
+                "rg1", "apimService1", "templategroup", "59307d350af58404d8a26300", com.azure.core.util.Context.NONE);
     }
 }

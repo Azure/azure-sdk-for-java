@@ -21,7 +21,7 @@ public interface ApiTagDescriptionsClient {
      * Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API level
      * but tag may be assigned to the Operations.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -38,7 +38,7 @@ public interface ApiTagDescriptionsClient {
      * Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API level
      * but tag may be assigned to the Operations.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -67,23 +67,7 @@ public interface ApiTagDescriptionsClient {
     /**
      * Gets the entity state version of the tag specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId);
-
-    /**
-     * Gets the entity state version of the tag specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -100,9 +84,9 @@ public interface ApiTagDescriptionsClient {
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
 
     /**
-     * Get Tag description in scope of API.
+     * Gets the entity state version of the tag specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -111,16 +95,14 @@ public interface ApiTagDescriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagDescriptionContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId);
 
     /**
      * Get Tag description in scope of API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -137,32 +119,27 @@ public interface ApiTagDescriptionsClient {
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
 
     /**
-     * Create/Update tag description in scope of the Api.
+     * Get Tag description in scope of API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
      *     Based on API and Tag names.
-     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contract details.
+     * @return tag description in scope of API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagDescriptionContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        TagDescriptionCreateParameters parameters);
+    TagDescriptionContractInner get(
+        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId);
 
     /**
      * Create/Update tag description in scope of the Api.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -187,27 +164,32 @@ public interface ApiTagDescriptionsClient {
         Context context);
 
     /**
-     * Delete tag description for the Api.
+     * Create/Update tag description in scope of the Api.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
      *     Based on API and Tag names.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, String ifMatch);
+    TagDescriptionContractInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String tagDescriptionId,
+        TagDescriptionCreateParameters parameters);
 
     /**
      * Delete tag description for the Api.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -229,4 +211,22 @@ public interface ApiTagDescriptionsClient {
         String tagDescriptionId,
         String ifMatch,
         Context context);
+
+    /**
+     * Delete tag description for the Api.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
+     *     Based on API and Tag names.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, String ifMatch);
 }

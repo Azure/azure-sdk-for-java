@@ -56,6 +56,8 @@ public final class FieldBuilder {
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
+    private static final SearchFieldDataType COLLECTION_SINGLE
+        = SearchFieldDataType.collection(SearchFieldDataType.SINGLE);
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -74,11 +76,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
-
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Float.class, SearchFieldDataType.SINGLE);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(float.class, SearchFieldDataType.SINGLE);
         UNSUPPORTED_TYPES.add(byte.class);
         UNSUPPORTED_TYPES.add(Byte.class);
-        UNSUPPORTED_TYPES.add(float.class);
-        UNSUPPORTED_TYPES.add(Float.class);
         UNSUPPORTED_TYPES.add(short.class);
         UNSUPPORTED_TYPES.add(Short.class);
     }
@@ -247,7 +248,7 @@ public final class FieldBuilder {
         }
 
         throw LOGGER.logExceptionAsError(
-            new RuntimeException("Collection type '" + arrayOrListType.getTypeName() + "' is not supported."));
+            new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
@@ -274,8 +275,10 @@ public final class FieldBuilder {
         String analyzerName = null;
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
-        String normalizerName;
         String[] synonymMapNames = null;
+        String normalizerName;
+        Integer vectorSearchDimensions = null;
+        String vectorSearchProfileName = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -293,21 +296,30 @@ public final class FieldBuilder {
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
-            normalizerName = searchableField.normalizerName();
             synonymMapNames = searchableField.synonymMapNames();
+            normalizerName = searchableField.normalizerName();
+            vectorSearchDimensions = searchableField.vectorSearchDimensions() > 0
+                ? searchableField.vectorSearchDimensions() : null;
+            vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
+                ? null : searchableField.vectorSearchProfileName();
         }
 
         StringBuilder errorMessage = new StringBuilder();
         boolean isStringOrCollectionString = searchField.getType() == SearchFieldDataType.STRING
             || searchField.getType() == COLLECTION_STRING;
+        boolean isSearchableType = isStringOrCollectionString || searchField.getType() == COLLECTION_SINGLE;
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
         boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
         if (searchable) {
-            if (!isStringOrCollectionString) {
-                errorMessage.append("SearchField can only be used on string properties. Property '")
-                    .append(member.getName()).append("' returns a '").append(searchField.getType()).append("' value. ");
+            if (!isSearchableType) {
+                errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
+                                    + "'Collection(Edm.Single)' types. Property '")
+                    .append(member.getName())
+                    .append("' returns a '")
+                    .append(searchField.getType())
+                    .append("' value. ");
             }
 
             // Searchable fields are allowed to have either no analyzer names configure or one of the following
@@ -317,6 +329,12 @@ public final class FieldBuilder {
                 || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
                 errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
             }
+        }
+
+        if (searchField.getType() == COLLECTION_SINGLE
+            && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
+            errorMessage.append(
+                "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
         }
 
         // Any field is allowed to have a normalizer but it must be either a STRING or Collection(STRING) and have one
@@ -335,7 +353,9 @@ public final class FieldBuilder {
             .setSearchable(searchable)
             .setFilterable(filterable)
             .setSortable(sortable)
-            .setFacetable(facetable);
+            .setFacetable(facetable)
+            .setVectorSearchDimensions(vectorSearchDimensions)
+            .setVectorSearchProfileName(vectorSearchProfileName);
 
         if (hasAnalyzerName) {
             searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
@@ -372,9 +392,9 @@ public final class FieldBuilder {
         if (!(type instanceof ParameterizedType)) {
             if (UNSUPPORTED_TYPES.contains(type)) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Type '" + type.getTypeName() + "' is not supported. Please use @FieldIgnore to exclude the field "
-                        + "and manually build SearchField to the list if the field is needed. For more information, "
-                        + "refer to link: aka.ms/azsdk/java/search/fieldbuilder"));
+                    "Type '" + type + "' is not supported. Please use @FieldIgnore to exclude the field and manually "
+                        + "build SearchField to the list if the field is needed. For more information, refer to link: "
+                        + "aka.ms/azsdk/java/search/fieldbuilder"));
             }
             return;
         }
@@ -391,7 +411,7 @@ public final class FieldBuilder {
 
         if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Collection type '" + type.getTypeName() + "' is not supported"));
+                new IllegalArgumentException("Collection type '" + type + "' is not supported"));
         }
     }
 

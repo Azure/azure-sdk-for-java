@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This activity is used for iterating over a collection and execute given activities. */
+/**
+ * This activity is used for iterating over a collection and execute given activities.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ForEach")
 @Fluent
@@ -23,41 +25,69 @@ public final class ForEachActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ForEachActivityTypeProperties innerTypeProperties = new ForEachActivityTypeProperties();
 
-    /** Creates an instance of ForEachActivity class. */
+    /**
+     * Creates an instance of ForEachActivity class.
+     */
     public ForEachActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: ForEach activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ForEachActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ForEachActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ForEachActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -66,7 +96,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @return the isSequential value.
      */
     public Boolean isSequential() {
@@ -75,7 +105,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivity object itself.
      */
@@ -90,7 +120,7 @@ public final class ForEachActivity extends ControlActivity {
     /**
      * Get the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @return the batchCount value.
      */
     public Integer batchCount() {
@@ -100,7 +130,7 @@ public final class ForEachActivity extends ControlActivity {
     /**
      * Set the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivity object itself.
      */
@@ -114,7 +144,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the items property: Collection to iterate.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -123,7 +153,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the items property: Collection to iterate.
-     *
+     * 
      * @param items the items value to set.
      * @return the ForEachActivity object itself.
      */
@@ -137,7 +167,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the activities property: List of activities to execute .
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -146,7 +176,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the activities property: List of activities to execute .
-     *
+     * 
      * @param activities the activities value to set.
      * @return the ForEachActivity object itself.
      */
@@ -160,17 +190,15 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ForEachActivity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model ForEachActivity"));
         } else {
             innerTypeProperties().validate();
         }

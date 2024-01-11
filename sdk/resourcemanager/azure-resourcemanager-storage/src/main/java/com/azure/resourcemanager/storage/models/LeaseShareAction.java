@@ -26,6 +26,15 @@ public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareActio
     public static final LeaseShareAction BREAK = fromString("Break");
 
     /**
+     * Creates a new instance of LeaseShareAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseShareAction() {
+    }
+
+    /**
      * Creates or finds a LeaseShareAction from its string representation.
      *
      * @param name a name to look for.

@@ -12,14 +12,14 @@ public final class SignalRTlsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalRTlsSettings model =
-            BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(SignalRTlsSettings.class);
-        Assertions.assertEquals(true, model.clientCertEnabled());
+            BinaryData.fromString("{\"clientCertEnabled\":false}").toObject(SignalRTlsSettings.class);
+        Assertions.assertEquals(false, model.clientCertEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRTlsSettings model = new SignalRTlsSettings().withClientCertEnabled(true);
+        SignalRTlsSettings model = new SignalRTlsSettings().withClientCertEnabled(false);
         model = BinaryData.fromObject(model).toObject(SignalRTlsSettings.class);
-        Assertions.assertEquals(true, model.clientCertEnabled());
+        Assertions.assertEquals(false, model.clientCertEnabled());
     }
 }

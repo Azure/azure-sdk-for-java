@@ -10,12 +10,14 @@ the `azure-sdk-tools` repository.
 
 ## Table of contents
 
-- [Current recording setup](#current-recording-setup)
-- [New recording setup](#new-recording-setup)
-- [Initial recording migration](#initial-recording-migration)
+- [Guide for migrating test recordings out of the `azure-sdk-for-java` repository](#guide-for-migrating-test-recordings-out-of-the-azure-sdk-for-java-repository)
+  - [Table of contents](#table-of-contents)
+  - [Current recording setup](#current-recording-setup)
+  - [New recording setup](#new-recording-setup)
+  - [Initial recording migration](#initial-recording-migration)
     - [Migration script prerequisites](#migration-script-prerequisites)
     - [Execute the migration script](#execute-the-migration-script)
-- [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
+  - [Run tests with out-of-repo recordings](#run-tests-with-out-of-repo-recordings)
 
 ## Current recording setup
 
@@ -52,7 +54,7 @@ either directly from an `azure-sdk-tools` repo clone or with a local download of
 your current working directory, use the following PowerShell command:
 
 ```PowerShell
-Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-for-java/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
+Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
 ```
 
 ### Migration script prerequisites
@@ -116,8 +118,8 @@ primary ways:
 
 [azure_sdk_assets]: https://github.com/Azure/azure-sdk-assets
 [detailed_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/documentation/asset-sync/README.md
-[generate_assets_json]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
+[generate_assets_json]: https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
 [git_setup]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
-[transition_script]: https://github.com/Azure/azure-sdk-for-java/tree/main/eng/common/testproxy/transition-scripts
+[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md

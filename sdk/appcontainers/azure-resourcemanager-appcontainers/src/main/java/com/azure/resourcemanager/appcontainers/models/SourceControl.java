@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.SourceControlInner;
 
@@ -30,13 +29,6 @@ public interface SourceControl {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the operationState property: Current provisioning State of the operation.
@@ -85,11 +77,13 @@ public interface SourceControl {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SourceControl definition stages. */
     interface DefinitionStages {
         /** The first stage of the SourceControl definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SourceControl definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -101,6 +95,7 @@ public interface SourceControl {
              */
             WithCreate withExistingContainerApp(String resourceGroupName, String containerAppName);
         }
+
         /**
          * The stage of the SourceControl definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -124,6 +119,7 @@ public interface SourceControl {
              */
             SourceControl create(Context context);
         }
+
         /** The stage of the SourceControl definition allowing to specify repoUrl. */
         interface WithRepoUrl {
             /**
@@ -134,6 +130,7 @@ public interface SourceControl {
              */
             WithCreate withRepoUrl(String repoUrl);
         }
+
         /** The stage of the SourceControl definition allowing to specify branch. */
         interface WithBranch {
             /**
@@ -144,6 +141,7 @@ public interface SourceControl {
              */
             WithCreate withBranch(String branch);
         }
+
         /** The stage of the SourceControl definition allowing to specify githubActionConfiguration. */
         interface WithGithubActionConfiguration {
             /**
@@ -158,6 +156,7 @@ public interface SourceControl {
             WithCreate withGithubActionConfiguration(GithubActionConfiguration githubActionConfiguration);
         }
     }
+
     /**
      * Begins update for the SourceControl resource.
      *
@@ -183,6 +182,7 @@ public interface SourceControl {
          */
         SourceControl apply(Context context);
     }
+
     /** The SourceControl update stages. */
     interface UpdateStages {
         /** The stage of the SourceControl update allowing to specify repoUrl. */
@@ -195,6 +195,7 @@ public interface SourceControl {
              */
             Update withRepoUrl(String repoUrl);
         }
+
         /** The stage of the SourceControl update allowing to specify branch. */
         interface WithBranch {
             /**
@@ -205,6 +206,7 @@ public interface SourceControl {
              */
             Update withBranch(String branch);
         }
+
         /** The stage of the SourceControl update allowing to specify githubActionConfiguration. */
         interface WithGithubActionConfiguration {
             /**
@@ -219,6 +221,7 @@ public interface SourceControl {
             Update withGithubActionConfiguration(GithubActionConfiguration githubActionConfiguration);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

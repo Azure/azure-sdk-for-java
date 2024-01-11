@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The event type information for Channels. */
+/**
+ * The event type information for Channels.
+ */
 @Fluent
 public final class EventTypeInfo {
     /*
@@ -29,13 +31,15 @@ public final class EventTypeInfo {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InlineEventProperties> inlineEventTypes;
 
-    /** Creates an instance of EventTypeInfo class. */
+    /**
+     * Creates an instance of EventTypeInfo class.
+     */
     public EventTypeInfo() {
     }
 
     /**
      * Get the kind property: The kind of event type used.
-     *
+     * 
      * @return the kind value.
      */
     public EventDefinitionKind kind() {
@@ -44,7 +48,7 @@ public final class EventTypeInfo {
 
     /**
      * Set the kind property: The kind of event type used.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the EventTypeInfo object itself.
      */
@@ -55,10 +59,11 @@ public final class EventTypeInfo {
 
     /**
      * Get the inlineEventTypes property: A collection of inline event types for the resource. The inline event type
-     * keys are of type string which represents the name of the event. An example of a valid inline event name is
-     * "Contoso.OrderCreated". The inline event type values are of type InlineEventProperties and will contain
-     * additional information for every inline event type.
-     *
+     * keys are of type string which represents the name of the event.
+     * An example of a valid inline event name is "Contoso.OrderCreated".
+     * The inline event type values are of type InlineEventProperties and will contain additional information for every
+     * inline event type.
+     * 
      * @return the inlineEventTypes value.
      */
     public Map<String, InlineEventProperties> inlineEventTypes() {
@@ -67,10 +72,11 @@ public final class EventTypeInfo {
 
     /**
      * Set the inlineEventTypes property: A collection of inline event types for the resource. The inline event type
-     * keys are of type string which represents the name of the event. An example of a valid inline event name is
-     * "Contoso.OrderCreated". The inline event type values are of type InlineEventProperties and will contain
-     * additional information for every inline event type.
-     *
+     * keys are of type string which represents the name of the event.
+     * An example of a valid inline event name is "Contoso.OrderCreated".
+     * The inline event type values are of type InlineEventProperties and will contain additional information for every
+     * inline event type.
+     * 
      * @param inlineEventTypes the inlineEventTypes value to set.
      * @return the EventTypeInfo object itself.
      */
@@ -81,19 +87,16 @@ public final class EventTypeInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (inlineEventTypes() != null) {
-            inlineEventTypes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            inlineEventTypes().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

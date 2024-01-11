@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Sample for recognizing commonly found ID document fields from a file source URL of an identity document.
- * See fields found on an identity document here: https://aka.ms/formrecognizer/iddocumentfields
+ * See fields found on an identity document <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a>
  */
 public class RecognizeIdentityDocumentsFromUrl {
 

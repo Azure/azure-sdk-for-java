@@ -6,50 +6,43 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 
-/** Samples for VirtualMachineScaleSets ConvertToSinglePlacementGroup. */
+/**
+ * Samples for VirtualMachineScaleSets ConvertToSinglePlacementGroup.
+ */
 public final class VirtualMachineScaleSetsConvertToSinglePlacementGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetConvertToSinglePlacementGroupMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .convertToSinglePlacementGroupWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+            .convertToSinglePlacementGroupWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new VMScaleSetConvertToSinglePlacementGroupInput()
                     .withActivePlacementGroupId("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetConvertToSinglePlacementGroupMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .convertToSinglePlacementGroupWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaa",
-                new VMScaleSetConvertToSinglePlacementGroupInput(),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+            .convertToSinglePlacementGroupWithResponse("rgcompute", "aaaaaaaaaaaaa",
+                new VMScaleSetConvertToSinglePlacementGroupInput(), com.azure.core.util.Context.NONE);
     }
 }

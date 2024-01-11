@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.OperationContract;
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
 import com.azure.resourcemanager.apimanagement.models.RequestContract;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for ApiOperation Update. */
 public final class ApiOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateApiOperation.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApiOperation.json
      */
     /**
      * Sample code: ApiManagementUpdateApiOperation.
@@ -26,7 +25,7 @@ public final class ApiOperationUpdateSamples {
         OperationContract resource =
             manager
                 .apiOperations()
-                .getWithResponse("rg1", "apimService1", "echo-api", "operationId", Context.NONE)
+                .getWithResponse("rg1", "apimService1", "echo-api", "operationId", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -30,6 +30,10 @@ public final class CacheCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CacheCollection class. */
+    public CacheCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

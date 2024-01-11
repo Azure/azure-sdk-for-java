@@ -4,19 +4,10 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -25,13 +16,17 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
@@ -48,30 +43,32 @@ import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CryptographyClientTestBase extends TestProxyTestBase {
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
 
-    @Override
-    protected String getTestName() {
-        return "";
-    }
+    private static final int MAX_RETRIES = 5;
+    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
+        .setMaxRetries(MAX_RETRIES)
+        .setBaseDelay(Duration.ofSeconds(2))
+        .setMaxDelay(Duration.ofSeconds(16)));
+
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
+        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient)   {
+    KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
         TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -79,14 +76,10 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
 
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-
             credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
                 .additionallyAllowedTenants("*")
                 .build();
         } else {
@@ -98,31 +91,61 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        KeyClientBuilder builder = new KeyClientBuilder()
+            .vaultUrl(endpoint)
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
 
-        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
-        policies.add(new RetryPolicy(strategy));
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
+        }
+    }
 
-        if (credential != null) {
-            // If in playback mode, disable the challenge resource verification.
-            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
+    CryptographyClientBuilder getCryptographyClientBuilder(HttpClient httpClient,
+        CryptographyServiceVersion serviceVersion) {
+        TokenCredential credential;
+
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
+                .additionallyAllowedTenants("*")
+                .build();
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        CryptographyClientBuilder builder = new CryptographyClientBuilder()
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
+
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
         }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
     }
 
     static CryptographyClient initializeCryptographyClient(JsonWebKey key) {
@@ -163,7 +186,77 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+    public abstract void signDataVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    void signVerifyEcRunner(Consumer<SignVerifyEcData> testRunner) {
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+
+        curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
+        curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
+        curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
+        curveToSignature.put(KeyCurveName.P_256K, SignatureAlgorithm.ES256K);
+
+        Map<KeyCurveName, String> curveToSpec = new HashMap<>();
+
+        curveToSpec.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpec.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpec.put(KeyCurveName.P_521, "secp521r1");
+        curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+
+        Map<KeyCurveName, String> messageDigestAlgorithm = new HashMap<>();
+
+        messageDigestAlgorithm.put(KeyCurveName.P_256, "SHA-256");
+        messageDigestAlgorithm.put(KeyCurveName.P_384, "SHA-384");
+        messageDigestAlgorithm.put(KeyCurveName.P_521, "SHA-512");
+        messageDigestAlgorithm.put(KeyCurveName.P_256K, "SHA-256");
+
+        List<KeyCurveName> curveList = new ArrayList<>();
+
+        curveList.add(KeyCurveName.P_256);
+        curveList.add(KeyCurveName.P_384);
+        curveList.add(KeyCurveName.P_521);
+        curveList.add(KeyCurveName.P_256K);
+
+
+        for (KeyCurveName curve : curveList) {
+            testRunner.accept(new SignVerifyEcData(curve, curveToSignature, curveToSpec, messageDigestAlgorithm));
+        }
+    }
+
+    protected static class SignVerifyEcData {
+        private final KeyCurveName curve;
+        private final Map<KeyCurveName, SignatureAlgorithm> curveToSignature;
+        private final Map<KeyCurveName, String> curveToSpec;
+        private final Map<KeyCurveName, String> messageDigestAlgorithm;
+
+        public SignVerifyEcData(KeyCurveName curve, Map<KeyCurveName, SignatureAlgorithm> curveToSignature,
+                                Map<KeyCurveName, String> curveToSpec,
+                                Map<KeyCurveName, String> messageDigestAlgorithm) {
+            this.curve = curve;
+            this.curveToSignature = curveToSignature;
+            this.curveToSpec = curveToSpec;
+            this.messageDigestAlgorithm = messageDigestAlgorithm;
+        }
+
+        public KeyCurveName getCurve() {
+            return curve;
+        }
+
+        public Map<KeyCurveName, SignatureAlgorithm> getCurveToSignature() {
+            return curveToSignature;
+        }
+
+        public Map<KeyCurveName, String> getCurveToSpec() {
+            return curveToSpec;
+        }
+
+        public Map<KeyCurveName, String> getMessageDigestAlgorithm() {
+            return messageDigestAlgorithm;
+        }
+    }
+
+    @Test
+    public abstract void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
     public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
@@ -173,6 +266,9 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    @Test
+    public abstract void signDataVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
 
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
@@ -239,63 +335,6 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
         Objects.requireNonNull(endpoint);
 
         return endpoint;
-    }
-
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Runnable exceptionThrower,
-                                    Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Throwable ex) {
-            assertRestException(ex, expectedExceptionType, expectedStatusCode);
-        }
-    }
-
-    /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
-     *
-     * @param exception Expected error thrown during the test.
-     * @param expectedStatusCode Expected HTTP status code contained in the error response.
-     */
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
-    }
-
-    /**
-     * Helper method to verify that a command throws an IllegalArgumentException.
-     *
-     * @param exceptionThrower Command that should throw the exception
-     */
-    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Exception ex) {
-            assertEquals(exception, ex.getClass());
-        }
-    }
-
-    public void sleepInRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void sleep(long millis) {

@@ -12,7 +12,7 @@ public final class TrialInnerTests {
     public void testDeserialize() throws Exception {
         TrialInner model =
             BinaryData
-                .fromString("{\"status\":\"TrialAvailable\",\"availableHosts\":132549399}")
+                .fromString("{\"status\":\"TrialAvailable\",\"availableHosts\":1342514759}")
                 .toObject(TrialInner.class);
     }
 

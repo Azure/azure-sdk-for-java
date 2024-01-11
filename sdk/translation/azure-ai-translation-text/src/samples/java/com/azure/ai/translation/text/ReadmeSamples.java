@@ -20,6 +20,7 @@ public final class ReadmeSamples {
      * Sample for creating text translator client using Text Translator API Key and Region.
      */
     public void createClient() {
+        // BEGIN: createTextTranslationRestClient
         String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
         String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
@@ -29,6 +30,7 @@ public final class ReadmeSamples {
                 .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
+        // END: createTextTranslationRestClient
     }
 
     /**

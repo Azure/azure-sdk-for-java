@@ -4,11 +4,13 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 
 /** Options to configure the Recognize operation **/
+@Fluent
 public abstract class CallMediaRecognizeOptions {
     /*
      * Determines the type of the recognition.
@@ -60,11 +62,18 @@ public abstract class CallMediaRecognizeOptions {
     @JsonProperty(value = "speechModelEndpointId")
     private String speechModelEndpointId;
 
-    /*
-     * Target participant of DTFM tone recognition.
+ /*
+     * Target participant of DTMF tone recognition.
      */
     @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifier targetParticipant;
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    @JsonProperty(value = "operationCallbackUrl")
+    private String operationCallbackUrl;
 
     /**
      * Initializes a CallMediaRecognizeOptions object.
@@ -232,6 +241,27 @@ public abstract class CallMediaRecognizeOptions {
     }
 
     /**
+     * Get the overridden call back URL override for operation.
+     *
+     * @return the operationCallbackUrl
+     */
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
+    }
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the CallMediaRecognizeOptions object itself.
+     */
+    public CallMediaRecognizeOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+
+     /**
      * Get the speech model endpoint id.
      *
      * @return the speech model endpoint id.
@@ -239,7 +269,6 @@ public abstract class CallMediaRecognizeOptions {
     public String getSpeechModelEndpointId() {
         return speechModelEndpointId;
     }
-
     /**
      * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
      *
@@ -250,4 +279,5 @@ public abstract class CallMediaRecognizeOptions {
         this.speechModelEndpointId = speechModelEndpointId;
         return this;
     }
+
 }

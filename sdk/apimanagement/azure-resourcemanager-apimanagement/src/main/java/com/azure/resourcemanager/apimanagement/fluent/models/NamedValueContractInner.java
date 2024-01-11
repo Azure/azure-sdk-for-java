@@ -19,6 +19,10 @@ public final class NamedValueContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private NamedValueContractProperties innerProperties;
 
+    /** Creates an instance of NamedValueContractInner class. */
+    public NamedValueContractInner() {
+    }
+
     /**
      * Get the innerProperties property: NamedValue entity contract properties.
      *

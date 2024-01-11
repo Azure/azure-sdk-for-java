@@ -16,23 +16,24 @@ public final class StorageAppliancePatchParametersTests {
         StorageAppliancePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"serialNumber\":\"nekhenlusfnrdtj\"},\"tags\":{\"cq\":\"r\",\"uslvyjtcvuwkasi\":\"jvidttge\"}}")
+                    "{\"properties\":{\"serialNumber\":\"lrocuyzlwh\"},\"tags\":{\"tnpqmemczjk\":\"mhoocl\",\"rryejylmbkzudnig\":\"mykyujxsglhs\",\"wlpxuzzjg\":\"fihotj\"}}")
                 .toObject(StorageAppliancePatchParameters.class);
-        Assertions.assertEquals("r", model.tags().get("cq"));
-        Assertions.assertEquals("nekhenlusfnrdtj", model.serialNumber());
+        Assertions.assertEquals("mhoocl", model.tags().get("tnpqmemczjk"));
+        Assertions.assertEquals("lrocuyzlwh", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageAppliancePatchParameters model =
             new StorageAppliancePatchParameters()
-                .withTags(mapOf("cq", "r", "uslvyjtcvuwkasi", "jvidttge"))
-                .withSerialNumber("nekhenlusfnrdtj");
+                .withTags(mapOf("tnpqmemczjk", "mhoocl", "rryejylmbkzudnig", "mykyujxsglhs", "wlpxuzzjg", "fihotj"))
+                .withSerialNumber("lrocuyzlwh");
         model = BinaryData.fromObject(model).toObject(StorageAppliancePatchParameters.class);
-        Assertions.assertEquals("r", model.tags().get("cq"));
-        Assertions.assertEquals("nekhenlusfnrdtj", model.serialNumber());
+        Assertions.assertEquals("mhoocl", model.tags().get("tnpqmemczjk"));
+        Assertions.assertEquals("lrocuyzlwh", model.serialNumber());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

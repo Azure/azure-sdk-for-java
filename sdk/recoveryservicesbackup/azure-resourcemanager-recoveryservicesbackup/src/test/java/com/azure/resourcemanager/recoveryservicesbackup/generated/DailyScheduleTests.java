@@ -14,15 +14,15 @@ public final class DailyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DailySchedule model =
-            BinaryData.fromString("{\"scheduleRunTimes\":[\"2021-01-31T21:33:12Z\"]}").toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T21:33:12Z"), model.scheduleRunTimes().get(0));
+            BinaryData.fromString("{\"scheduleRunTimes\":[\"2021-10-10T19:20:29Z\"]}").toObject(DailySchedule.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T19:20:29Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DailySchedule model =
-            new DailySchedule().withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-01-31T21:33:12Z")));
+            new DailySchedule().withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-10-10T19:20:29Z")));
         model = BinaryData.fromObject(model).toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T21:33:12Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T19:20:29Z"), model.scheduleRunTimes().get(0));
     }
 }

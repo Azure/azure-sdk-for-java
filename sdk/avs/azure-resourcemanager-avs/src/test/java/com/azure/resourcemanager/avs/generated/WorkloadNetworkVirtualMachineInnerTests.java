@@ -14,16 +14,16 @@ public final class WorkloadNetworkVirtualMachineInnerTests {
         WorkloadNetworkVirtualMachineInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"riofzpyqse\",\"vmType\":\"REGULAR\"},\"id\":\"bnetshh\",\"name\":\"zhedplvwiw\",\"type\":\"bmwmbesldnkw\"}")
+                    "{\"properties\":{\"displayName\":\"slfaoqzpiyyl\",\"vmType\":\"REGULAR\"},\"id\":\"nswhcc\",\"name\":\"ph\",\"type\":\"aivwitqscywu\"}")
                 .toObject(WorkloadNetworkVirtualMachineInner.class);
-        Assertions.assertEquals("riofzpyqse", model.displayName());
+        Assertions.assertEquals("slfaoqzpiyyl", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkVirtualMachineInner model =
-            new WorkloadNetworkVirtualMachineInner().withDisplayName("riofzpyqse");
+            new WorkloadNetworkVirtualMachineInner().withDisplayName("slfaoqzpiyyl");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVirtualMachineInner.class);
-        Assertions.assertEquals("riofzpyqse", model.displayName());
+        Assertions.assertEquals("slfaoqzpiyyl", model.displayName());
     }
 }

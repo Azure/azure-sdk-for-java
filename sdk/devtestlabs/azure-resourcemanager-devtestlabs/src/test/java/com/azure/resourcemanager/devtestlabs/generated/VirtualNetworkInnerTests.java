@@ -6,8 +6,10 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.devtestlabs.models.Port;
 import com.azure.resourcemanager.devtestlabs.models.Subnet;
 import com.azure.resourcemanager.devtestlabs.models.SubnetOverride;
+import com.azure.resourcemanager.devtestlabs.models.SubnetSharedPublicIpAddressConfiguration;
 import com.azure.resourcemanager.devtestlabs.models.UsagePermissionType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,81 +22,86 @@ public final class VirtualNetworkInnerTests {
         VirtualNetworkInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"i\",\"labSubnetName\":\"gvelfc\",\"allowPublicIp\":\"Deny\"}],\"description\":\"cb\",\"externalProviderResourceId\":\"ds\",\"externalSubnets\":[{\"id\":\"o\",\"name\":\"egstmninwjizci\"},{\"id\":\"ghgshejjtbxqmu\",\"name\":\"xlxqzvn\"}],\"subnetOverrides\":[{\"resourceId\":\"ycucrwnamikzeb\",\"labSubnetName\":\"bsmswziqgf\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Allow\",\"virtualNetworkPoolName\":\"swhvhczznvfbycj\"},{\"resourceId\":\"jww\",\"labSubnetName\":\"z\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Default\",\"virtualNetworkPoolName\":\"hndvnoamldsehao\"},{\"resourceId\":\"jhhflzokxcoxpel\",\"labSubnetName\":\"eta\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Default\",\"virtualNetworkPoolName\":\"tft\"},{\"resourceId\":\"pnpbswveflocc\",\"labSubnetName\":\"mozi\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Deny\",\"virtualNetworkPoolName\":\"txx\"}],\"createdDate\":\"2021-06-29T13:46:46Z\",\"provisioningState\":\"cxcjxgry\",\"uniqueIdentifier\":\"mpcycilrmcaykgg\"},\"location\":\"oxuztrksx\",\"tags\":{\"cpfnznthjtwkja\":\"d\",\"tcqiosmg\":\"srxuzvoam\"},\"id\":\"zah\",\"name\":\"xqdlyrtltlapr\",\"type\":\"tz\"}")
+                    "{\"properties\":{\"allowedSubnets\":[{\"resourceId\":\"cdoewbidyv\",\"labSubnetName\":\"owx\",\"allowPublicIp\":\"Default\"}],\"description\":\"udeugfsxz\",\"externalProviderResourceId\":\"paxwkufyk\",\"externalSubnets\":[{\"id\":\"xepmrut\",\"name\":\"abaobnslujdjltym\"},{\"id\":\"vguihywar\",\"name\":\"pphkixkykxds\"}],\"subnetOverrides\":[{\"resourceId\":\"mmuc\",\"labSubnetName\":\"hikkflrmy\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{}]},\"virtualNetworkPoolName\":\"isws\"},{\"resourceId\":\"iiiovgqcgxuugq\",\"labSubnetName\":\"totiowlxteqdptjg\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{},{},{}]},\"virtualNetworkPoolName\":\"b\"},{\"resourceId\":\"phqlkccuz\",\"labSubnetName\":\"gqwa\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{},{},{}]},\"virtualNetworkPoolName\":\"iprglvawu\"}],\"createdDate\":\"2021-10-09T04:15:21Z\",\"provisioningState\":\"fypiv\",\"uniqueIdentifier\":\"bbjpmcubkmif\"},\"location\":\"xxkubvphavp\",\"tags\":{\"bbttefjo\":\"rbqgvgov\",\"kdfrdbiqmrjgeihf\":\"nssqyzqed\",\"wfiwzcxmj\":\"lg\"},\"id\":\"byephmgt\",\"name\":\"ljvrcmyfqipgxhnp\",\"type\":\"myqwcab\"}")
                 .toObject(VirtualNetworkInner.class);
-        Assertions.assertEquals("oxuztrksx", model.location());
-        Assertions.assertEquals("d", model.tags().get("cpfnznthjtwkja"));
-        Assertions.assertEquals("i", model.allowedSubnets().get(0).resourceId());
-        Assertions.assertEquals("gvelfc", model.allowedSubnets().get(0).labSubnetName());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.allowedSubnets().get(0).allowPublicIp());
-        Assertions.assertEquals("cb", model.description());
-        Assertions.assertEquals("ds", model.externalProviderResourceId());
-        Assertions.assertEquals("ycucrwnamikzeb", model.subnetOverrides().get(0).resourceId());
-        Assertions.assertEquals("bsmswziqgf", model.subnetOverrides().get(0).labSubnetName());
+        Assertions.assertEquals("xxkubvphavp", model.location());
+        Assertions.assertEquals("rbqgvgov", model.tags().get("bbttefjo"));
+        Assertions.assertEquals("cdoewbidyv", model.allowedSubnets().get(0).resourceId());
+        Assertions.assertEquals("owx", model.allowedSubnets().get(0).labSubnetName());
+        Assertions.assertEquals(UsagePermissionType.DEFAULT, model.allowedSubnets().get(0).allowPublicIp());
+        Assertions.assertEquals("udeugfsxz", model.description());
+        Assertions.assertEquals("paxwkufyk", model.externalProviderResourceId());
+        Assertions.assertEquals("mmuc", model.subnetOverrides().get(0).resourceId());
+        Assertions.assertEquals("hikkflrmy", model.subnetOverrides().get(0).labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).useInVmCreationPermission());
         Assertions
-            .assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).usePublicIpAddressPermission());
-        Assertions.assertEquals("swhvhczznvfbycj", model.subnetOverrides().get(0).virtualNetworkPoolName());
+            .assertEquals(UsagePermissionType.DEFAULT, model.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions.assertEquals("isws", model.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkInner model =
             new VirtualNetworkInner()
-                .withLocation("oxuztrksx")
-                .withTags(mapOf("cpfnznthjtwkja", "d", "tcqiosmg", "srxuzvoam"))
+                .withLocation("xxkubvphavp")
+                .withTags(mapOf("bbttefjo", "rbqgvgov", "kdfrdbiqmrjgeihf", "nssqyzqed", "wfiwzcxmj", "lg"))
                 .withAllowedSubnets(
                     Arrays
                         .asList(
                             new Subnet()
-                                .withResourceId("i")
-                                .withLabSubnetName("gvelfc")
-                                .withAllowPublicIp(UsagePermissionType.DENY)))
-                .withDescription("cb")
-                .withExternalProviderResourceId("ds")
+                                .withResourceId("cdoewbidyv")
+                                .withLabSubnetName("owx")
+                                .withAllowPublicIp(UsagePermissionType.DEFAULT)))
+                .withDescription("udeugfsxz")
+                .withExternalProviderResourceId("paxwkufyk")
                 .withSubnetOverrides(
                     Arrays
                         .asList(
                             new SubnetOverride()
-                                .withResourceId("ycucrwnamikzeb")
-                                .withLabSubnetName("bsmswziqgf")
+                                .withResourceId("mmuc")
+                                .withLabSubnetName("hikkflrmy")
                                 .withUseInVmCreationPermission(UsagePermissionType.ALLOW)
+                                .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
+                                .withSharedPublicIpAddressConfiguration(
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(Arrays.asList(new Port())))
+                                .withVirtualNetworkPoolName("isws"),
+                            new SubnetOverride()
+                                .withResourceId("iiiovgqcgxuugq")
+                                .withLabSubnetName("totiowlxteqdptjg")
+                                .withUseInVmCreationPermission(UsagePermissionType.DEFAULT)
                                 .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
-                                .withVirtualNetworkPoolName("swhvhczznvfbycj"),
+                                .withSharedPublicIpAddressConfiguration(
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(
+                                            Arrays.asList(new Port(), new Port(), new Port(), new Port())))
+                                .withVirtualNetworkPoolName("b"),
                             new SubnetOverride()
-                                .withResourceId("jww")
-                                .withLabSubnetName("z")
+                                .withResourceId("phqlkccuz")
+                                .withLabSubnetName("gqwa")
                                 .withUseInVmCreationPermission(UsagePermissionType.ALLOW)
                                 .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
-                                .withVirtualNetworkPoolName("hndvnoamldsehao"),
-                            new SubnetOverride()
-                                .withResourceId("jhhflzokxcoxpel")
-                                .withLabSubnetName("eta")
-                                .withUseInVmCreationPermission(UsagePermissionType.DEFAULT)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
-                                .withVirtualNetworkPoolName("tft"),
-                            new SubnetOverride()
-                                .withResourceId("pnpbswveflocc")
-                                .withLabSubnetName("mozi")
-                                .withUseInVmCreationPermission(UsagePermissionType.DEFAULT)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.DENY)
-                                .withVirtualNetworkPoolName("txx")));
+                                .withSharedPublicIpAddressConfiguration(
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(Arrays.asList(new Port(), new Port(), new Port())))
+                                .withVirtualNetworkPoolName("iprglvawu")));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkInner.class);
-        Assertions.assertEquals("oxuztrksx", model.location());
-        Assertions.assertEquals("d", model.tags().get("cpfnznthjtwkja"));
-        Assertions.assertEquals("i", model.allowedSubnets().get(0).resourceId());
-        Assertions.assertEquals("gvelfc", model.allowedSubnets().get(0).labSubnetName());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.allowedSubnets().get(0).allowPublicIp());
-        Assertions.assertEquals("cb", model.description());
-        Assertions.assertEquals("ds", model.externalProviderResourceId());
-        Assertions.assertEquals("ycucrwnamikzeb", model.subnetOverrides().get(0).resourceId());
-        Assertions.assertEquals("bsmswziqgf", model.subnetOverrides().get(0).labSubnetName());
+        Assertions.assertEquals("xxkubvphavp", model.location());
+        Assertions.assertEquals("rbqgvgov", model.tags().get("bbttefjo"));
+        Assertions.assertEquals("cdoewbidyv", model.allowedSubnets().get(0).resourceId());
+        Assertions.assertEquals("owx", model.allowedSubnets().get(0).labSubnetName());
+        Assertions.assertEquals(UsagePermissionType.DEFAULT, model.allowedSubnets().get(0).allowPublicIp());
+        Assertions.assertEquals("udeugfsxz", model.description());
+        Assertions.assertEquals("paxwkufyk", model.externalProviderResourceId());
+        Assertions.assertEquals("mmuc", model.subnetOverrides().get(0).resourceId());
+        Assertions.assertEquals("hikkflrmy", model.subnetOverrides().get(0).labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).useInVmCreationPermission());
         Assertions
-            .assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).usePublicIpAddressPermission());
-        Assertions.assertEquals("swhvhczznvfbycj", model.subnetOverrides().get(0).virtualNetworkPoolName());
+            .assertEquals(UsagePermissionType.DEFAULT, model.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions.assertEquals("isws", model.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -48,6 +48,10 @@ public final class ApiVersionSetContractImpl
         return this.innerModel().versionHeaderName();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApiVersionSetContractInner innerModel() {
         return this.innerObject;
     }

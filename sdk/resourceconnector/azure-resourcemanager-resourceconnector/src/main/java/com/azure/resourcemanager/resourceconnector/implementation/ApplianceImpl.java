@@ -23,7 +23,7 @@ import java.util.Map;
 public final class ApplianceImpl implements Appliance, Appliance.Definition, Appliance.Update {
     private ApplianceInner innerObject;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -98,7 +98,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 
@@ -131,7 +131,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return this;
     }
 
-    ApplianceImpl(String name, com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+    ApplianceImpl(String name, com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = new ApplianceInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -163,7 +163,8 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     ApplianceImpl(
-        ApplianceInner innerObject, com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+        ApplianceInner innerObject,
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -200,8 +201,8 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return serviceManager.appliances().listClusterUserCredential(resourceGroupName, resourceName);
     }
 
-    public Response<ApplianceListKeysResults> listKeysWithResponse(Context context) {
-        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListKeysResults> listKeysWithResponse(String artifactType, Context context) {
+        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
     }
 
     public ApplianceListKeysResults listKeys() {

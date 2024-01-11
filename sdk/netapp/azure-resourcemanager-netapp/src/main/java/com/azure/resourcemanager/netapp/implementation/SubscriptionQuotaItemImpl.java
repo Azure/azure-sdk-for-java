@@ -13,8 +13,8 @@ public final class SubscriptionQuotaItemImpl implements SubscriptionQuotaItem {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    SubscriptionQuotaItemImpl(
-        SubscriptionQuotaItemInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    SubscriptionQuotaItemImpl(SubscriptionQuotaItemInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

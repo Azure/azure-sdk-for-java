@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ApiManagementSkuRestrictionsType. */
+/** The type of restrictions. */
 public enum ApiManagementSkuRestrictionsType {
     /** Enum value Location. */
     LOCATION("Location"),
@@ -30,6 +30,9 @@ public enum ApiManagementSkuRestrictionsType {
      */
     @JsonCreator
     public static ApiManagementSkuRestrictionsType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApiManagementSkuRestrictionsType[] items = ApiManagementSkuRestrictionsType.values();
         for (ApiManagementSkuRestrictionsType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ApiManagementSkuRestrictionsType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

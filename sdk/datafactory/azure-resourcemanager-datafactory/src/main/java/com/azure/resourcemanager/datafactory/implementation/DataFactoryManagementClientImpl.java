@@ -23,6 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.fluent.ActivityRunsClient;
+import com.azure.resourcemanager.datafactory.fluent.ChangeDataCapturesClient;
 import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowDebugSessionsClient;
@@ -54,339 +55,397 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DataFactoryManagementClientImpl type. */
+/**
+ * Initializes a new instance of the DataFactoryManagementClientImpl type.
+ */
 @ServiceClient(builder = DataFactoryManagementClientBuilder.class)
 public final class DataFactoryManagementClientImpl implements DataFactoryManagementClient {
-    /** The subscription identifier. */
+    /**
+     * The subscription identifier.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The subscription identifier.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The FactoriesClient object to access its operations. */
+    /**
+     * The FactoriesClient object to access its operations.
+     */
     private final FactoriesClient factories;
 
     /**
      * Gets the FactoriesClient object to access its operations.
-     *
+     * 
      * @return the FactoriesClient object.
      */
     public FactoriesClient getFactories() {
         return this.factories;
     }
 
-    /** The ExposureControlsClient object to access its operations. */
+    /**
+     * The ExposureControlsClient object to access its operations.
+     */
     private final ExposureControlsClient exposureControls;
 
     /**
      * Gets the ExposureControlsClient object to access its operations.
-     *
+     * 
      * @return the ExposureControlsClient object.
      */
     public ExposureControlsClient getExposureControls() {
         return this.exposureControls;
     }
 
-    /** The IntegrationRuntimesClient object to access its operations. */
+    /**
+     * The IntegrationRuntimesClient object to access its operations.
+     */
     private final IntegrationRuntimesClient integrationRuntimes;
 
     /**
      * Gets the IntegrationRuntimesClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimesClient object.
      */
     public IntegrationRuntimesClient getIntegrationRuntimes() {
         return this.integrationRuntimes;
     }
 
-    /** The IntegrationRuntimeObjectMetadatasClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeObjectMetadatasClient object to access its operations.
+     */
     private final IntegrationRuntimeObjectMetadatasClient integrationRuntimeObjectMetadatas;
 
     /**
      * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeObjectMetadatasClient object.
      */
     public IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas() {
         return this.integrationRuntimeObjectMetadatas;
     }
 
-    /** The IntegrationRuntimeNodesClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeNodesClient object to access its operations.
+     */
     private final IntegrationRuntimeNodesClient integrationRuntimeNodes;
 
     /**
      * Gets the IntegrationRuntimeNodesClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeNodesClient object.
      */
     public IntegrationRuntimeNodesClient getIntegrationRuntimeNodes() {
         return this.integrationRuntimeNodes;
     }
 
-    /** The LinkedServicesClient object to access its operations. */
+    /**
+     * The LinkedServicesClient object to access its operations.
+     */
     private final LinkedServicesClient linkedServices;
 
     /**
      * Gets the LinkedServicesClient object to access its operations.
-     *
+     * 
      * @return the LinkedServicesClient object.
      */
     public LinkedServicesClient getLinkedServices() {
         return this.linkedServices;
     }
 
-    /** The DatasetsClient object to access its operations. */
+    /**
+     * The DatasetsClient object to access its operations.
+     */
     private final DatasetsClient datasets;
 
     /**
      * Gets the DatasetsClient object to access its operations.
-     *
+     * 
      * @return the DatasetsClient object.
      */
     public DatasetsClient getDatasets() {
         return this.datasets;
     }
 
-    /** The PipelinesClient object to access its operations. */
+    /**
+     * The PipelinesClient object to access its operations.
+     */
     private final PipelinesClient pipelines;
 
     /**
      * Gets the PipelinesClient object to access its operations.
-     *
+     * 
      * @return the PipelinesClient object.
      */
     public PipelinesClient getPipelines() {
         return this.pipelines;
     }
 
-    /** The PipelineRunsClient object to access its operations. */
+    /**
+     * The PipelineRunsClient object to access its operations.
+     */
     private final PipelineRunsClient pipelineRuns;
 
     /**
      * Gets the PipelineRunsClient object to access its operations.
-     *
+     * 
      * @return the PipelineRunsClient object.
      */
     public PipelineRunsClient getPipelineRuns() {
         return this.pipelineRuns;
     }
 
-    /** The ActivityRunsClient object to access its operations. */
+    /**
+     * The ActivityRunsClient object to access its operations.
+     */
     private final ActivityRunsClient activityRuns;
 
     /**
      * Gets the ActivityRunsClient object to access its operations.
-     *
+     * 
      * @return the ActivityRunsClient object.
      */
     public ActivityRunsClient getActivityRuns() {
         return this.activityRuns;
     }
 
-    /** The TriggersClient object to access its operations. */
+    /**
+     * The TriggersClient object to access its operations.
+     */
     private final TriggersClient triggers;
 
     /**
      * Gets the TriggersClient object to access its operations.
-     *
+     * 
      * @return the TriggersClient object.
      */
     public TriggersClient getTriggers() {
         return this.triggers;
     }
 
-    /** The TriggerRunsClient object to access its operations. */
+    /**
+     * The TriggerRunsClient object to access its operations.
+     */
     private final TriggerRunsClient triggerRuns;
 
     /**
      * Gets the TriggerRunsClient object to access its operations.
-     *
+     * 
      * @return the TriggerRunsClient object.
      */
     public TriggerRunsClient getTriggerRuns() {
         return this.triggerRuns;
     }
 
-    /** The DataFlowsClient object to access its operations. */
+    /**
+     * The DataFlowsClient object to access its operations.
+     */
     private final DataFlowsClient dataFlows;
 
     /**
      * Gets the DataFlowsClient object to access its operations.
-     *
+     * 
      * @return the DataFlowsClient object.
      */
     public DataFlowsClient getDataFlows() {
         return this.dataFlows;
     }
 
-    /** The DataFlowDebugSessionsClient object to access its operations. */
+    /**
+     * The DataFlowDebugSessionsClient object to access its operations.
+     */
     private final DataFlowDebugSessionsClient dataFlowDebugSessions;
 
     /**
      * Gets the DataFlowDebugSessionsClient object to access its operations.
-     *
+     * 
      * @return the DataFlowDebugSessionsClient object.
      */
     public DataFlowDebugSessionsClient getDataFlowDebugSessions() {
         return this.dataFlowDebugSessions;
     }
 
-    /** The ManagedVirtualNetworksClient object to access its operations. */
+    /**
+     * The ManagedVirtualNetworksClient object to access its operations.
+     */
     private final ManagedVirtualNetworksClient managedVirtualNetworks;
 
     /**
      * Gets the ManagedVirtualNetworksClient object to access its operations.
-     *
+     * 
      * @return the ManagedVirtualNetworksClient object.
      */
     public ManagedVirtualNetworksClient getManagedVirtualNetworks() {
         return this.managedVirtualNetworks;
     }
 
-    /** The ManagedPrivateEndpointsClient object to access its operations. */
+    /**
+     * The ManagedPrivateEndpointsClient object to access its operations.
+     */
     private final ManagedPrivateEndpointsClient managedPrivateEndpoints;
 
     /**
      * Gets the ManagedPrivateEndpointsClient object to access its operations.
-     *
+     * 
      * @return the ManagedPrivateEndpointsClient object.
      */
     public ManagedPrivateEndpointsClient getManagedPrivateEndpoints() {
         return this.managedPrivateEndpoints;
     }
 
-    /** The CredentialOperationsClient object to access its operations. */
+    /**
+     * The CredentialOperationsClient object to access its operations.
+     */
     private final CredentialOperationsClient credentialOperations;
 
     /**
      * Gets the CredentialOperationsClient object to access its operations.
-     *
+     * 
      * @return the CredentialOperationsClient object.
      */
     public CredentialOperationsClient getCredentialOperations() {
         return this.credentialOperations;
     }
 
-    /** The PrivateEndPointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndPointConnectionsClient object to access its operations.
+     */
     private final PrivateEndPointConnectionsClient privateEndPointConnections;
 
     /**
      * Gets the PrivateEndPointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndPointConnectionsClient object.
      */
     public PrivateEndPointConnectionsClient getPrivateEndPointConnections() {
         return this.privateEndPointConnections;
     }
 
-    /** The PrivateEndpointConnectionOperationsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionOperationsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionOperationsClient privateEndpointConnectionOperations;
 
     /**
      * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionOperationsClient object.
      */
     public PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations() {
         return this.privateEndpointConnectionOperations;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The GlobalParametersClient object to access its operations. */
+    /**
+     * The GlobalParametersClient object to access its operations.
+     */
     private final GlobalParametersClient globalParameters;
 
     /**
      * Gets the GlobalParametersClient object to access its operations.
-     *
+     * 
      * @return the GlobalParametersClient object.
      */
     public GlobalParametersClient getGlobalParameters() {
@@ -394,8 +453,22 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
     }
 
     /**
+     * The ChangeDataCapturesClient object to access its operations.
+     */
+    private final ChangeDataCapturesClient changeDataCaptures;
+
+    /**
+     * Gets the ChangeDataCapturesClient object to access its operations.
+     * 
+     * @return the ChangeDataCapturesClient object.
+     */
+    public ChangeDataCapturesClient getChangeDataCaptures() {
+        return this.changeDataCaptures;
+    }
+
+    /**
      * Initializes an instance of DataFactoryManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -403,13 +476,8 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
      * @param subscriptionId The subscription identifier.
      * @param endpoint server parameter.
      */
-    DataFactoryManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    DataFactoryManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -438,11 +506,12 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.globalParameters = new GlobalParametersClientImpl(this);
+        this.changeDataCaptures = new ChangeDataCapturesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -451,7 +520,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -461,7 +530,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -471,26 +540,15 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -503,19 +561,16 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

@@ -6,21 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The SqlDatabaseGetPropertiesOptions model. */
+/**
+ * The SqlDatabaseGetPropertiesOptions model.
+ */
 @Fluent
 public final class SqlDatabaseGetPropertiesOptions extends OptionsResource {
-    /** Creates an instance of SqlDatabaseGetPropertiesOptions class. */
+    /**
+     * Creates an instance of SqlDatabaseGetPropertiesOptions class.
+     */
     public SqlDatabaseGetPropertiesOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);
@@ -29,7 +37,7 @@ public final class SqlDatabaseGetPropertiesOptions extends OptionsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

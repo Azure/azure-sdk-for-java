@@ -4,7 +4,7 @@
 
 # Microsoft Azure Event Processor Host for Java
 
-> Please note, a newer package [com.azure:azure-messaging-eventhubs](https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs) for [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is available as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/eh) for more details.
+> Please note, a newer package [com.azure:azure-messaging-eventhubs](https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs) for [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is available as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/eh) for more details.
 
 Event Processor Host is built on top of the Azure Event Hubs Client and provides a number of features
 not present in that lower layer. See the [README for Azure Event Hubs Client for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/microsoft-azure-eventhubs/README.md) for details of how to

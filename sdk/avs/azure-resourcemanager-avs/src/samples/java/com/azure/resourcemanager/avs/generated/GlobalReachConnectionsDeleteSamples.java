@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for GlobalReachConnections Delete. */
 public final class GlobalReachConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Delete.json
      */
     /**
      * Sample code: GlobalReachConnections_Delete.

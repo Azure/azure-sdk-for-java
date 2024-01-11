@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Parameters used to update an existing Maps Account. */
@@ -33,6 +34,12 @@ public final class MapsAccountUpdateParameters {
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * The map account properties.
@@ -109,6 +116,26 @@ public final class MapsAccountUpdateParameters {
     }
 
     /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: The map account properties.
      *
      * @return the innerProperties value.
@@ -128,7 +155,8 @@ public final class MapsAccountUpdateParameters {
 
     /**
      * Get the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @return the disableLocalAuth value.
      */
@@ -138,7 +166,8 @@ public final class MapsAccountUpdateParameters {
 
     /**
      * Set the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the MapsAccountUpdateParameters object itself.
@@ -152,12 +181,96 @@ public final class MapsAccountUpdateParameters {
     }
 
     /**
-     * Get the provisioningState property: the state of the provisioning.
+     * Get the provisioningState property: The provisioning state of the Map account resource, Account updates can only
+     * be performed on terminal states. Terminal states: `Succeeded` and `Failed`.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @return the linkedResources value.
+     */
+    public List<LinkedResource> linkedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedResources();
+    }
+
+    /**
+     * Set the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @param linkedResources the linkedResources value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withLinkedResources(List<LinkedResource> linkedResources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withLinkedResources(linkedResources);
+        return this;
+    }
+
+    /**
+     * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @return the cors value.
+     */
+    public CorsRules cors() {
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
+    }
+
+    /**
+     * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @param cors the cors value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withCors(CorsRules cors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withCors(cors);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @param encryption the encryption value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
     }
 
     /**
@@ -168,6 +281,9 @@ public final class MapsAccountUpdateParameters {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

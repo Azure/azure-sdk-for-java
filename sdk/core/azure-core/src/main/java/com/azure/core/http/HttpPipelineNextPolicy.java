@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -54,9 +55,9 @@ public class HttpPipelineNextPolicy {
             return Mono.fromCallable(() -> new HttpPipelineNextSyncPolicy(state).processSync());
         } else {
             if (originatedFromSyncPolicy) {
-                LOGGER.warning("The pipeline switched from synchronous to asynchronous."
-                    + "Check if {} does not override HttpPipelinePolicy.processSync",
-                    this.state.getCurrentPolicy().getClass().getSimpleName());
+                LOGGER.log(LogLevel.WARNING, () -> "The pipeline switched from synchronous to asynchronous. Check if "
+                    + this.state.getCurrentPolicy().getClass().getSimpleName() + " does not override "
+                    + "HttpPipelinePolicy.processSync");
             }
 
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();

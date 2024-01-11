@@ -150,6 +150,15 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().encryption();
     }
 
+    public List<String> extendedNetworkBlocks() {
+        List<String> inner = this.innerModel().extendedNetworkBlocks();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -382,6 +391,16 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
             return this;
         } else {
             this.updatePrivateCloudUpdate.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public PrivateCloudImpl withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        if (isInCreateMode()) {
+            this.innerModel().withExtendedNetworkBlocks(extendedNetworkBlocks);
+            return this;
+        } else {
+            this.updatePrivateCloudUpdate.withExtendedNetworkBlocks(extendedNetworkBlocks);
             return this;
         }
     }

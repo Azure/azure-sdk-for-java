@@ -467,7 +467,7 @@ public final class PathsImpl {
                 Context context);
 
         @Delete("/{filesystem}/{path}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<PathsDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
@@ -483,11 +483,12 @@ public final class PathsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @QueryParam("paginated") Boolean paginated,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/{filesystem}/{path}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> deleteNoCustomHeaders(
                 @HostParam("url") String url,
@@ -503,6 +504,7 @@ public final class PathsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @QueryParam("paginated") Boolean paginated,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -5558,6 +5560,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5571,6 +5577,7 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions) {
         final String accept = "application/json";
@@ -5619,6 +5626,7 @@ public final class PathsImpl {
                                 ifNoneMatch,
                                 ifModifiedSinceConverted,
                                 ifUnmodifiedSinceConverted,
+                                paginated,
                                 accept,
                                 context));
     }
@@ -5640,6 +5648,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -5654,6 +5666,7 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -5701,6 +5714,7 @@ public final class PathsImpl {
                 ifNoneMatch,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
+                paginated,
                 accept,
                 context);
     }
@@ -5722,6 +5736,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5735,10 +5753,17 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions) {
         return deleteWithResponseAsync(
-                        requestId, timeout, recursive, continuation, leaseAccessConditions, modifiedAccessConditions)
+                        requestId,
+                        timeout,
+                        recursive,
+                        continuation,
+                        paginated,
+                        leaseAccessConditions,
+                        modifiedAccessConditions)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -5759,6 +5784,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -5773,6 +5802,7 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -5781,6 +5811,7 @@ public final class PathsImpl {
                         timeout,
                         recursive,
                         continuation,
+                        paginated,
                         leaseAccessConditions,
                         modifiedAccessConditions,
                         context)
@@ -5804,6 +5835,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5817,6 +5852,7 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions) {
         final String accept = "application/json";
@@ -5865,6 +5901,7 @@ public final class PathsImpl {
                                 ifNoneMatch,
                                 ifModifiedSinceConverted,
                                 ifUnmodifiedSinceConverted,
+                                paginated,
                                 accept,
                                 context));
     }
@@ -5886,6 +5923,10 @@ public final class PathsImpl {
      *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
      *     returned in this response header. When a continuation token is returned in the response, it must be specified
      *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     *     requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     *     missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     *     recursive ACL checks. This new parameter is introduced for backward compatibility.
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -5900,6 +5941,7 @@ public final class PathsImpl {
             Integer timeout,
             Boolean recursive,
             String continuation,
+            Boolean paginated,
             LeaseAccessConditions leaseAccessConditions,
             ModifiedAccessConditions modifiedAccessConditions,
             Context context) {
@@ -5947,6 +5989,7 @@ public final class PathsImpl {
                 ifNoneMatch,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
+                paginated,
                 accept,
                 context);
     }

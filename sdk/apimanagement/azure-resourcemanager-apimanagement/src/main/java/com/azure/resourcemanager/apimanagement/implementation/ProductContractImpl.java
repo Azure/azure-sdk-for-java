@@ -55,6 +55,10 @@ public final class ProductContractImpl implements ProductContract, ProductContra
         return this.innerModel().state();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProductContractInner innerModel() {
         return this.innerObject;
     }

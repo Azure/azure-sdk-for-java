@@ -67,13 +67,15 @@ public interface QueuesClient {
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
      * @param queue Queue properties and metadata to be created with.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageQueueInner create(String resourceGroupName, String accountName, String queueName, StorageQueueInner queue);
+    Response<StorageQueueInner> createWithResponse(
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context);
 
     /**
      * Creates a new queue with the specified queue name, under the specified account.
@@ -86,15 +88,13 @@ public interface QueuesClient {
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
      * @param queue Queue properties and metadata to be created with.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageQueueInner> createWithResponse(
-        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context);
+    StorageQueueInner create(String resourceGroupName, String accountName, String queueName, StorageQueueInner queue);
 
     /**
      * Creates a new queue with the specified queue name, under the specified account.
@@ -147,13 +147,15 @@ public interface QueuesClient {
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
      * @param queue Queue properties and metadata to be created with.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageQueueInner update(String resourceGroupName, String accountName, String queueName, StorageQueueInner queue);
+    Response<StorageQueueInner> updateWithResponse(
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context);
 
     /**
      * Creates a new queue with the specified queue name, under the specified account.
@@ -166,15 +168,13 @@ public interface QueuesClient {
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
      * @param queue Queue properties and metadata to be created with.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageQueueInner> updateWithResponse(
-        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context);
+    StorageQueueInner update(String resourceGroupName, String accountName, String queueName, StorageQueueInner queue);
 
     /**
      * Gets the queue with the specified queue name, under the specified account if it exists.
@@ -225,13 +225,16 @@ public interface QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queue with the specified queue name, under the specified account if it exists.
+     * @return the queue with the specified queue name, under the specified account if it exists along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageQueueInner get(String resourceGroupName, String accountName, String queueName);
+    Response<StorageQueueInner> getWithResponse(
+        String resourceGroupName, String accountName, String queueName, Context context);
 
     /**
      * Gets the queue with the specified queue name, under the specified account if it exists.
@@ -243,16 +246,13 @@ public interface QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queue with the specified queue name, under the specified account if it exists along with {@link
-     *     Response}.
+     * @return the queue with the specified queue name, under the specified account if it exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageQueueInner> getWithResponse(
-        String resourceGroupName, String accountName, String queueName, Context context);
+    StorageQueueInner get(String resourceGroupName, String accountName, String queueName);
 
     /**
      * Deletes the queue with the specified queue name, under the specified account if it exists.
@@ -300,12 +300,14 @@ public interface QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String queueName);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String queueName, Context context);
 
     /**
      * Deletes the queue with the specified queue name, under the specified account if it exists.
@@ -317,14 +319,12 @@ public interface QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String queueName, Context context);
+    void delete(String resourceGroupName, String accountName, String queueName);
 
     /**
      * Gets a list of all the queues under the specified storage account.

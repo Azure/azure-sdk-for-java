@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Execute Synapse notebook activity. */
+/**
+ * Execute Synapse notebook activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SynapseNotebook")
 @Fluent
@@ -24,55 +26,87 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SynapseNotebookActivityTypeProperties innerTypeProperties = new SynapseNotebookActivityTypeProperties();
 
-    /** Creates an instance of SynapseNotebookActivity class. */
+    /**
+     * Creates an instance of SynapseNotebookActivity class.
+     */
     public SynapseNotebookActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Execute Synapse notebook activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SynapseNotebookActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SynapseNotebookActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SynapseNotebookActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SynapseNotebookActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -81,7 +115,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the notebook property: Synapse notebook reference.
-     *
+     * 
      * @return the notebook value.
      */
     public SynapseNotebookReference notebook() {
@@ -90,7 +124,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Set the notebook property: Synapse notebook reference.
-     *
+     * 
      * @param notebook the notebook value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -104,7 +138,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the sparkPool property: The name of the big data pool which will be used to execute the notebook.
-     *
+     * 
      * @return the sparkPool value.
      */
     public BigDataPoolParametrizationReference sparkPool() {
@@ -113,7 +147,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Set the sparkPool property: The name of the big data pool which will be used to execute the notebook.
-     *
+     * 
      * @param sparkPool the sparkPool value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -127,7 +161,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Notebook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, NotebookParameter> parameters() {
@@ -136,7 +170,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Notebook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -152,7 +186,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
      * Get the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the
      * notebook you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the executorSize value.
      */
     public Object executorSize() {
@@ -163,7 +197,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
      * Set the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the
      * notebook you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param executorSize the executorSize value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -178,7 +212,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * Get the conf property: Spark configuration properties, which will override the 'conf' of the notebook you
      * provide.
-     *
+     * 
      * @return the conf value.
      */
     public Object conf() {
@@ -188,7 +222,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * Set the conf property: Spark configuration properties, which will override the 'conf' of the notebook you
      * provide.
-     *
+     * 
      * @param conf the conf value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -204,7 +238,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
      * Get the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you
      * provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the driverSize value.
      */
     public Object driverSize() {
@@ -215,7 +249,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
      * Set the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you
      * provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param driverSize the driverSize value to set.
      * @return the SynapseNotebookActivity object itself.
      */
@@ -229,22 +263,22 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
-     *
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @return the numExecutors value.
      */
-    public Integer numExecutors() {
+    public Object numExecutors() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().numExecutors();
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
-     *
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseNotebookActivity object itself.
      */
-    public SynapseNotebookActivity withNumExecutors(Integer numExecutors) {
+    public SynapseNotebookActivity withNumExecutors(Object numExecutors) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
         }
@@ -253,18 +287,86 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the configurationType property: The type of the spark config.
+     * 
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().configurationType();
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     * 
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity withConfigurationType(ConfigurationType configurationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withConfigurationType(configurationType);
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     * 
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference targetSparkConfiguration() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetSparkConfiguration();
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     * 
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity
+        withTargetSparkConfiguration(SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTargetSparkConfiguration(targetSparkConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     * 
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> sparkConfig() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sparkConfig();
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     * 
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity withSparkConfig(Map<String, Object> sparkConfig) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSparkConfig(sparkConfig);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SynapseNotebookActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SynapseNotebookActivity"));
         } else {
             innerTypeProperties().validate();
         }

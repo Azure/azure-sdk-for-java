@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for IotHubResource TestRoute. */
 public final class IotHubResourceTestRouteSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_testnewroute.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_testnewroute.json
      */
     /**
      * Sample code: IotHubResource_TestRoute.
@@ -32,8 +32,8 @@ public final class IotHubResourceTestRouteSamples {
                     .withMessage(
                         new RoutingMessage()
                             .withBody("Body of message")
-                            .withAppProperties(mapOf("key1", "value1"))
-                            .withSystemProperties(mapOf("key1", "value1")))
+                            .withAppProperties(mapOf("key1", "fakeTokenPlaceholder"))
+                            .withSystemProperties(mapOf("key1", "fakeTokenPlaceholder")))
                     .withRoute(
                         new RouteProperties()
                             .withName("Routeid")
@@ -43,6 +43,7 @@ public final class IotHubResourceTestRouteSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

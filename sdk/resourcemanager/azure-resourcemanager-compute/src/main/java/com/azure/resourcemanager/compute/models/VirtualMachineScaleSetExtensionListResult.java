@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List VM scale set extension operation response. */
+/**
+ * The List VM scale set extension operation response.
+ */
 @Fluent
 public final class VirtualMachineScaleSetExtensionListResult {
     /*
@@ -26,13 +28,15 @@ public final class VirtualMachineScaleSetExtensionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualMachineScaleSetExtensionListResult class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetExtensionListResult class.
+     */
     public VirtualMachineScaleSetExtensionListResult() {
     }
 
     /**
      * Get the value property: The list of VM scale set extensions.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineScaleSetExtensionInner> value() {
@@ -41,7 +45,7 @@ public final class VirtualMachineScaleSetExtensionListResult {
 
     /**
      * Set the value property: The list of VM scale set extensions.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineScaleSetExtensionListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class VirtualMachineScaleSetExtensionListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of VM scale set extensions. Call ListNext() with this
      * to fetch the next page of VM scale set extensions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class VirtualMachineScaleSetExtensionListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of VM scale set extensions. Call ListNext() with this
      * to fetch the next page of VM scale set extensions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineScaleSetExtensionListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class VirtualMachineScaleSetExtensionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -21,7 +21,7 @@ public class HttpUtilTest {
     @Test
     @Disabled("Disable this because it will cause pipeline failure: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=1196171&view=logs&j=4a83f3be-c53d-53dd-7954-86872056fb11&t=54174aae-5a55-579d-08e2-94fb446f7b77&l=29")
     public void testHttpUtilGet() {
-        String url = "https://mvnrepository.com/";
+        String url = "https://azure.com/";
         String result = HttpUtil.get(url, null);
         assertNotNull(result);
         assertFalse(result.isEmpty());

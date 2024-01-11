@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DicomServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DicomServicesClient.
+ */
 public final class DicomServicesClientImpl implements DicomServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DicomServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of DicomServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DicomServicesClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DicomServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DicomServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,187 +71,131 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface DicomServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/dicomservices")
-        @ExpectedResponses({200})
+    public interface DicomServicesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DicomServiceCollection>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DicomServiceCollection>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DicomServiceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dicomServiceName") String dicomServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DicomServiceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
             @PathParam("dicomServiceName") String dicomServiceName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DicomServiceInner dicomservice, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("dicomServiceName") String dicomServiceName,
-            @BodyParam("application/json") DicomServiceInner dicomservice,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("dicomServiceName") String dicomServiceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("dicomServiceName") String dicomServiceName,
             @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") DicomServicePatchResource dicomservicePatchResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/dicomservices/{dicomServiceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("dicomServiceName") String dicomServiceName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("dicomServiceName") String dicomServiceName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DicomServiceCollection>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<DicomServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, accept, context))
+            .<PagedResponse<DicomServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -253,28 +203,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,14 +221,13 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DicomServiceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -301,16 +237,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the collection of Dicom Services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DicomServiceInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<DicomServiceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +260,7 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -335,14 +270,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the collection of Dicom Services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DicomServiceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<DicomServiceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Gets the properties of the specified DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -350,26 +285,22 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified DICOM Service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DicomServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dicomServiceName) {
+    private Mono<Response<DicomServiceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dicomServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -381,23 +312,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            dicomServiceName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), workspaceName, dicomServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -406,26 +328,22 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified DICOM Service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DicomServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dicomServiceName, Context context) {
+    private Mono<Response<DicomServiceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dicomServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -436,21 +354,13 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                dicomServiceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, dicomServiceName, accept, context);
     }
 
     /**
      * Gets the properties of the specified DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -462,35 +372,12 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DicomServiceInner> getAsync(String resourceGroupName, String workspaceName, String dicomServiceName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dicomServiceName)
-            .flatMap(
-                (Response<DicomServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified DICOM Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified DICOM Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DicomServiceInner get(String resourceGroupName, String workspaceName, String dicomServiceName) {
-        return getAsync(resourceGroupName, workspaceName, dicomServiceName).block();
-    }
-
-    /**
-     * Gets the properties of the specified DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -501,14 +388,30 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the properties of the specified DICOM Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DicomServiceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dicomServiceName, Context context) {
+    public Response<DicomServiceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String dicomServiceName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dicomServiceName, context).block();
     }
 
     /**
+     * Gets the properties of the specified DICOM Service.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified DICOM Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DicomServiceInner get(String resourceGroupName, String workspaceName, String dicomServiceName) {
+        return getWithResponse(resourceGroupName, workspaceName, dicomServiceName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -519,23 +422,19 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -551,25 +450,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            dicomServiceName,
-                            dicomservice,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, dicomServiceName,
+                dicomservice, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -581,27 +470,19 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -617,22 +498,13 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                dicomServiceName,
-                dicomservice,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, dicomServiceName, dicomservice, accept, context);
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -645,21 +517,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice);
-        return this
-            .client
-            .<DicomServiceInner, DicomServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DicomServiceInner.class,
-                DicomServiceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice);
+        return this.client.<DicomServiceInner, DicomServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DicomServiceInner.class, DicomServiceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -672,23 +538,18 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
+        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context);
-        return this
-            .client
-            .<DicomServiceInner, DicomServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DicomServiceInner.class, DicomServiceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            dicomServiceName, dicomservice, context);
+        return this.client.<DicomServiceInner, DicomServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DicomServiceInner.class, DicomServiceInner.class, context);
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -699,15 +560,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice)
+    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -719,19 +580,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context)
+    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -742,16 +599,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DicomServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice)
-            .last()
+    private Mono<DicomServiceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String dicomServiceName, DicomServiceInner dicomservice) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -763,20 +619,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DicomServiceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context) {
+    private Mono<DicomServiceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String dicomServiceName, DicomServiceInner dicomservice, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -787,14 +638,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DicomServiceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice) {
+    public DicomServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String dicomServiceName,
+        DicomServiceInner dicomservice) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice).block();
     }
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -806,18 +657,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DicomServiceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context) {
+    public DicomServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String dicomServiceName,
+        DicomServiceInner dicomservice, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, dicomServiceName, dicomservice, context).block();
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -828,26 +675,19 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName, DicomServicePatchResource dicomservicePatchResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dicomServiceName == null) {
             return Mono
@@ -857,34 +697,22 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dicomservicePatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dicomservicePatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dicomservicePatchResource is required and cannot be null."));
         } else {
             dicomservicePatchResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            dicomServiceName,
-                            workspaceName,
-                            dicomservicePatchResource,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), dicomServiceName, workspaceName,
+                dicomservicePatchResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -896,27 +724,19 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName, DicomServicePatchResource dicomservicePatchResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dicomServiceName == null) {
             return Mono
@@ -926,31 +746,21 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dicomservicePatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dicomservicePatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dicomservicePatchResource is required and cannot be null."));
         } else {
             dicomservicePatchResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                dicomServiceName,
-                workspaceName,
-                dicomservicePatchResource,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), dicomServiceName, workspaceName, dicomservicePatchResource, accept,
+            context);
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -961,26 +771,17 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link PollerFlux} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource);
-        return this
-            .client
-            .<DicomServiceInner, DicomServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DicomServiceInner.class,
-                DicomServiceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdateAsync(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource);
+        return this.client.<DicomServiceInner, DicomServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DicomServiceInner.class, DicomServiceInner.class, this.client.getContext());
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -992,71 +793,60 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link PollerFlux} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
+    private PollerFlux<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdateAsync(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, dicomServiceName,
+            workspaceName, dicomservicePatchResource, context);
+        return this.client.<DicomServiceInner, DicomServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DicomServiceInner.class, DicomServiceInner.class, context);
+    }
+
+    /**
+     * Patch DICOM Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource) {
+        return this.beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource)
+            .getSyncPoller();
+    }
+
+    /**
+     * Patch DICOM Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource,
+        Context context) {
         return this
-            .client
-            .<DicomServiceInner, DicomServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DicomServiceInner.class, DicomServiceInner.class, context);
-    }
-
-    /**
-     * Patch DICOM Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource) {
-        return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource)
+            .beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context)
             .getSyncPoller();
     }
 
     /**
      * Patch DICOM Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1067,19 +857,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DicomServiceInner> updateAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
+    private Mono<DicomServiceInner> updateAsync(String resourceGroupName, String dicomServiceName, String workspaceName,
         DicomServicePatchResource dicomservicePatchResource) {
-        return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource)
-            .last()
+        return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1091,20 +877,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DicomServiceInner> updateAsync(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context) {
+    private Mono<DicomServiceInner> updateAsync(String resourceGroupName, String dicomServiceName, String workspaceName,
+        DicomServicePatchResource dicomservicePatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1115,17 +896,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DicomServiceInner update(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
+    public DicomServiceInner update(String resourceGroupName, String dicomServiceName, String workspaceName,
         DicomServicePatchResource dicomservicePatchResource) {
         return updateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource).block();
     }
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1137,19 +915,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DicomServiceInner update(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context) {
+    public DicomServiceInner update(String resourceGroupName, String dicomServiceName, String workspaceName,
+        DicomServicePatchResource dicomservicePatchResource, Context context) {
         return updateAsync(resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, context)
             .block();
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1159,19 +933,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String dicomServiceName, String workspaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1186,24 +956,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dicomServiceName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, dicomServiceName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1214,19 +974,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String dicomServiceName, String workspaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1241,21 +997,13 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dicomServiceName,
-                workspaceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, dicomServiceName, workspaceName, accept, context);
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1265,19 +1013,17 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String dicomServiceName, String workspaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1288,19 +1034,18 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String dicomServiceName, String workspaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dicomServiceName,
+        String workspaceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, dicomServiceName, workspaceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1310,14 +1055,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dicomServiceName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dicomServiceName,
+        String workspaceName) {
+        return this.beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName).getSyncPoller();
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1328,14 +1073,14 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dicomServiceName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dicomServiceName,
+        String workspaceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName, context).getSyncPoller();
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1346,14 +1091,13 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String dicomServiceName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1364,16 +1108,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String dicomServiceName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String dicomServiceName, String workspaceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, dicomServiceName, workspaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1388,7 +1131,7 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1404,13 +1147,15 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -1418,61 +1163,44 @@ public final class DicomServicesClientImpl implements DicomServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DicomServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DicomServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the collection of Dicom Services along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DicomServiceInner>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

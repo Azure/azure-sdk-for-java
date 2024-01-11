@@ -15,10 +15,10 @@ public final class KubernetesClusterPatchPropertiesTests {
         KubernetesClusterPatchProperties model =
             BinaryData
                 .fromString(
-                    "{\"controlPlaneNodeConfiguration\":{\"count\":7156097712608977310},\"kubernetesVersion\":\"xkjzwrgxffm\"}")
+                    "{\"controlPlaneNodeConfiguration\":{\"count\":8867328731498350162},\"kubernetesVersion\":\"zopjhbzxliohr\"}")
                 .toObject(KubernetesClusterPatchProperties.class);
-        Assertions.assertEquals(7156097712608977310L, model.controlPlaneNodeConfiguration().count());
-        Assertions.assertEquals("xkjzwrgxffm", model.kubernetesVersion());
+        Assertions.assertEquals(8867328731498350162L, model.controlPlaneNodeConfiguration().count());
+        Assertions.assertEquals("zopjhbzxliohr", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,10 +26,10 @@ public final class KubernetesClusterPatchPropertiesTests {
         KubernetesClusterPatchProperties model =
             new KubernetesClusterPatchProperties()
                 .withControlPlaneNodeConfiguration(
-                    new ControlPlaneNodePatchConfiguration().withCount(7156097712608977310L))
-                .withKubernetesVersion("xkjzwrgxffm");
+                    new ControlPlaneNodePatchConfiguration().withCount(8867328731498350162L))
+                .withKubernetesVersion("zopjhbzxliohr");
         model = BinaryData.fromObject(model).toObject(KubernetesClusterPatchProperties.class);
-        Assertions.assertEquals(7156097712608977310L, model.controlPlaneNodeConfiguration().count());
-        Assertions.assertEquals("xkjzwrgxffm", model.kubernetesVersion());
+        Assertions.assertEquals(8867328731498350162L, model.controlPlaneNodeConfiguration().count());
+        Assertions.assertEquals("zopjhbzxliohr", model.kubernetesVersion());
     }
 }

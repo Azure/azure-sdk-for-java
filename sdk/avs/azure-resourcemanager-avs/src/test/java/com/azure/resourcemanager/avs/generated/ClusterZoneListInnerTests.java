@@ -15,14 +15,15 @@ public final class ClusterZoneListInnerTests {
         ClusterZoneListInner model =
             BinaryData
                 .fromString(
-                    "{\"zones\":[{\"hosts\":[\"hwankixzbinjepu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"],\"zone\":\"lsicohoqqnwv\"},{\"hosts\":[\"avwhheunm\"],\"zone\":\"hgyxzkonoc\"}]}")
+                    "{\"zones\":[{\"hosts\":[\"kgpwoz\"],\"zone\":\"kfpbs\"},{\"hosts\":[\"f\"],\"zone\":\"luu\"},{\"hosts\":[\"touwaboekqv\",\"elnsmvbxw\",\"jsflhhcaalnjix\",\"sxyawjoyaqcs\"],\"zone\":\"jpkiidzyexznelix\"},{\"hosts\":[\"ztfolhbnxk\"],\"zone\":\"laulppg\"}]}")
                 .toObject(ClusterZoneListInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterZoneListInner model =
-            new ClusterZoneListInner().withZones(Arrays.asList(new ClusterZone(), new ClusterZone()));
+            new ClusterZoneListInner()
+                .withZones(Arrays.asList(new ClusterZone(), new ClusterZone(), new ClusterZone(), new ClusterZone()));
         model = BinaryData.fromObject(model).toObject(ClusterZoneListInner.class);
     }
 }

@@ -39,6 +39,12 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
     @JsonProperty(value = "extendedLocations")
     private List<A2AExtendedLocationDetails> extendedLocations;
 
+    /*
+     * The location details.
+     */
+    @JsonProperty(value = "locationDetails")
+    private List<A2AFabricSpecificLocationDetails> locationDetails;
+
     /** Creates an instance of AzureFabricSpecificDetails class. */
     public AzureFabricSpecificDetails() {
     }
@@ -124,6 +130,26 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
     }
 
     /**
+     * Get the locationDetails property: The location details.
+     *
+     * @return the locationDetails value.
+     */
+    public List<A2AFabricSpecificLocationDetails> locationDetails() {
+        return this.locationDetails;
+    }
+
+    /**
+     * Set the locationDetails property: The location details.
+     *
+     * @param locationDetails the locationDetails value to set.
+     * @return the AzureFabricSpecificDetails object itself.
+     */
+    public AzureFabricSpecificDetails withLocationDetails(List<A2AFabricSpecificLocationDetails> locationDetails) {
+        this.locationDetails = locationDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +162,9 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
         }
         if (extendedLocations() != null) {
             extendedLocations().forEach(e -> e.validate());
+        }
+        if (locationDetails() != null) {
+            locationDetails().forEach(e -> e.validate());
         }
     }
 }

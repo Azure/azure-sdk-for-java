@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Table List. */
 public final class TableListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationList.json
      */
     /**
      * Sample code: TableOperationList.
@@ -17,6 +15,11 @@ public final class TableListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tableOperationList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.storageAccounts().manager().serviceClient().getTables().list("res9290", "sto328", Context.NONE);
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getTables()
+            .list("res9290", "sto328", com.azure.core.util.Context.NONE);
     }
 }

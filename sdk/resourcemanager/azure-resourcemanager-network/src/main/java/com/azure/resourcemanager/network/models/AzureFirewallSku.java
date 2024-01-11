@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of an Azure Firewall. */
+/**
+ * SKU of an Azure Firewall.
+ */
 @Fluent
 public final class AzureFirewallSku {
     /*
@@ -22,13 +24,15 @@ public final class AzureFirewallSku {
     @JsonProperty(value = "tier")
     private AzureFirewallSkuTier tier;
 
-    /** Creates an instance of AzureFirewallSku class. */
+    /**
+     * Creates an instance of AzureFirewallSku class.
+     */
     public AzureFirewallSku() {
     }
 
     /**
      * Get the name property: Name of an Azure Firewall SKU.
-     *
+     * 
      * @return the name value.
      */
     public AzureFirewallSkuName name() {
@@ -37,7 +41,7 @@ public final class AzureFirewallSku {
 
     /**
      * Set the name property: Name of an Azure Firewall SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureFirewallSku object itself.
      */
@@ -48,7 +52,7 @@ public final class AzureFirewallSku {
 
     /**
      * Get the tier property: Tier of an Azure Firewall.
-     *
+     * 
      * @return the tier value.
      */
     public AzureFirewallSkuTier tier() {
@@ -57,7 +61,7 @@ public final class AzureFirewallSku {
 
     /**
      * Set the tier property: Tier of an Azure Firewall.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the AzureFirewallSku object itself.
      */
@@ -68,7 +72,7 @@ public final class AzureFirewallSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

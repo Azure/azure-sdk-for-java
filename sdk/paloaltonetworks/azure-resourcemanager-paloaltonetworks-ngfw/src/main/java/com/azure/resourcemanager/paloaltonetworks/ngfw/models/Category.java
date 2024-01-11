@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** URL/EDL to match. */
+/**
+ * URL/EDL to match.
+ */
 @Fluent
 public final class Category {
     /*
@@ -24,13 +26,15 @@ public final class Category {
     @JsonProperty(value = "feeds", required = true)
     private List<String> feeds;
 
-    /** Creates an instance of Category class. */
+    /**
+     * Creates an instance of Category class.
+     */
     public Category() {
     }
 
     /**
      * Get the urlCustom property: custom URL.
-     *
+     * 
      * @return the urlCustom value.
      */
     public List<String> urlCustom() {
@@ -39,7 +43,7 @@ public final class Category {
 
     /**
      * Set the urlCustom property: custom URL.
-     *
+     * 
      * @param urlCustom the urlCustom value to set.
      * @return the Category object itself.
      */
@@ -50,7 +54,7 @@ public final class Category {
 
     /**
      * Get the feeds property: feed list.
-     *
+     * 
      * @return the feeds value.
      */
     public List<String> feeds() {
@@ -59,7 +63,7 @@ public final class Category {
 
     /**
      * Set the feeds property: feed list.
-     *
+     * 
      * @param feeds the feeds value to set.
      * @return the Category object itself.
      */
@@ -70,14 +74,13 @@ public final class Category {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (urlCustom() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property urlCustom in model Category"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property urlCustom in model Category"));
         }
         if (feeds() == null) {
             throw LOGGER

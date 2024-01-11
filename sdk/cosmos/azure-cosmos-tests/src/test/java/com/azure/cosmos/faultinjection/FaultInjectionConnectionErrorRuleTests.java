@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -48,7 +47,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
+public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBase {
     private static final int TIMEOUT = 60000;
     private CosmosAsyncClient client;
     private DatabaseAccount databaseAccount;
@@ -67,7 +66,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
         try {
             client = getClientBuilder().buildAsyncClient();
@@ -76,12 +75,20 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
             this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
             this.writeRegionMap = getRegionMap(this.databaseAccount, true);
+
+            // This test runs against a real account
+            // Creating collections can take some time in the remote region
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } finally {
             safeClose(client);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionConnectionErrorRuleTestWithNoConnectionWarmup(FaultInjectionConnectionErrorType errorType) {
 
         client = new CosmosClientBuilder()

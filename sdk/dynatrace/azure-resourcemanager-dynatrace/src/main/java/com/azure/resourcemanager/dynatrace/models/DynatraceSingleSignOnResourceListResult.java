@@ -25,6 +25,10 @@ public final class DynatraceSingleSignOnResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DynatraceSingleSignOnResourceListResult class. */
+    public DynatraceSingleSignOnResourceListResult() {
+    }
+
     /**
      * Get the value property: The items on this page.
      *

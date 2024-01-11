@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link HealthcareEntityRelation}
+ * The {@code HealthcareEntityRelation}
  * Every relation is an entity graph of a certain relationType, where all entities are connected and have specific roles
  * within the relation context.
  */
@@ -51,6 +51,12 @@ public final class HealthcareEntityRelation {
                     healthcareEntityRelation.setConfidenceScore(confidenceScore);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code HealthcareEntityRelation} model.
+     */
+    public HealthcareEntityRelation() {
     }
 
     /**

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import java.util.List;
@@ -32,13 +31,6 @@ public interface DaprComponent {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the componentType property: Component type.
@@ -114,11 +106,13 @@ public interface DaprComponent {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The DaprComponent definition stages. */
     interface DefinitionStages {
         /** The first stage of the DaprComponent definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DaprComponent definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -130,6 +124,7 @@ public interface DaprComponent {
              */
             WithCreate withExistingConnectedEnvironment(String resourceGroupName, String connectedEnvironmentName);
         }
+
         /**
          * The stage of the DaprComponent definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -158,6 +153,7 @@ public interface DaprComponent {
              */
             DaprComponent create(Context context);
         }
+
         /** The stage of the DaprComponent definition allowing to specify componentType. */
         interface WithComponentType {
             /**
@@ -168,6 +164,7 @@ public interface DaprComponent {
              */
             WithCreate withComponentType(String componentType);
         }
+
         /** The stage of the DaprComponent definition allowing to specify version. */
         interface WithVersion {
             /**
@@ -178,6 +175,7 @@ public interface DaprComponent {
              */
             WithCreate withVersion(String version);
         }
+
         /** The stage of the DaprComponent definition allowing to specify ignoreErrors. */
         interface WithIgnoreErrors {
             /**
@@ -188,6 +186,7 @@ public interface DaprComponent {
              */
             WithCreate withIgnoreErrors(Boolean ignoreErrors);
         }
+
         /** The stage of the DaprComponent definition allowing to specify initTimeout. */
         interface WithInitTimeout {
             /**
@@ -198,6 +197,7 @@ public interface DaprComponent {
              */
             WithCreate withInitTimeout(String initTimeout);
         }
+
         /** The stage of the DaprComponent definition allowing to specify secrets. */
         interface WithSecrets {
             /**
@@ -208,6 +208,7 @@ public interface DaprComponent {
              */
             WithCreate withSecrets(List<Secret> secrets);
         }
+
         /** The stage of the DaprComponent definition allowing to specify secretStoreComponent. */
         interface WithSecretStoreComponent {
             /**
@@ -218,6 +219,7 @@ public interface DaprComponent {
              */
             WithCreate withSecretStoreComponent(String secretStoreComponent);
         }
+
         /** The stage of the DaprComponent definition allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -228,6 +230,7 @@ public interface DaprComponent {
              */
             WithCreate withMetadata(List<DaprMetadata> metadata);
         }
+
         /** The stage of the DaprComponent definition allowing to specify scopes. */
         interface WithScopes {
             /**
@@ -239,6 +242,7 @@ public interface DaprComponent {
             WithCreate withScopes(List<String> scopes);
         }
     }
+
     /**
      * Begins update for the DaprComponent resource.
      *
@@ -271,6 +275,7 @@ public interface DaprComponent {
          */
         DaprComponent apply(Context context);
     }
+
     /** The DaprComponent update stages. */
     interface UpdateStages {
         /** The stage of the DaprComponent update allowing to specify componentType. */
@@ -283,6 +288,7 @@ public interface DaprComponent {
              */
             Update withComponentType(String componentType);
         }
+
         /** The stage of the DaprComponent update allowing to specify version. */
         interface WithVersion {
             /**
@@ -293,6 +299,7 @@ public interface DaprComponent {
              */
             Update withVersion(String version);
         }
+
         /** The stage of the DaprComponent update allowing to specify ignoreErrors. */
         interface WithIgnoreErrors {
             /**
@@ -303,6 +310,7 @@ public interface DaprComponent {
              */
             Update withIgnoreErrors(Boolean ignoreErrors);
         }
+
         /** The stage of the DaprComponent update allowing to specify initTimeout. */
         interface WithInitTimeout {
             /**
@@ -313,6 +321,7 @@ public interface DaprComponent {
              */
             Update withInitTimeout(String initTimeout);
         }
+
         /** The stage of the DaprComponent update allowing to specify secrets. */
         interface WithSecrets {
             /**
@@ -323,6 +332,7 @@ public interface DaprComponent {
              */
             Update withSecrets(List<Secret> secrets);
         }
+
         /** The stage of the DaprComponent update allowing to specify secretStoreComponent. */
         interface WithSecretStoreComponent {
             /**
@@ -333,6 +343,7 @@ public interface DaprComponent {
              */
             Update withSecretStoreComponent(String secretStoreComponent);
         }
+
         /** The stage of the DaprComponent update allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -343,6 +354,7 @@ public interface DaprComponent {
              */
             Update withMetadata(List<DaprMetadata> metadata);
         }
+
         /** The stage of the DaprComponent update allowing to specify scopes. */
         interface WithScopes {
             /**
@@ -354,6 +366,7 @@ public interface DaprComponent {
             Update withScopes(List<String> scopes);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -23,7 +23,7 @@ public final class ServicePrincipalInformation {
     /*
      * The password of the service principal.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*

@@ -19,6 +19,12 @@ public final class BuildDocumentModelOptions {
     private String modelId;
 
     /**
+     * Create a BuildDocumentModelOptions instance.
+     */
+    public BuildDocumentModelOptions() {
+    }
+
+    /**
      * Get the model description.
      *
      * @return the model description value.

@@ -13,7 +13,7 @@ public final class EndpointDependencyTests {
         EndpointDependency model =
             BinaryData
                 .fromString(
-                    "{\"domainName\":\"haq\",\"description\":\"ss\",\"endpointDetails\":[{\"port\":1174161651}]}")
+                    "{\"domainName\":\"evufuztck\",\"description\":\"h\",\"endpointDetails\":[{\"port\":1558169297},{\"port\":1002446412},{\"port\":950056847}]}")
                 .toObject(EndpointDependency.class);
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DNS Proxy settings for Firewall. */
+/**
+ * DNS Proxy settings for Firewall.
+ */
 @Fluent
 public final class DnsSettings {
     /*
@@ -29,13 +31,15 @@ public final class DnsSettings {
     @JsonProperty(value = "dnsServers")
     private List<IpAddress> dnsServers;
 
-    /** Creates an instance of DnsSettings class. */
+    /**
+     * Creates an instance of DnsSettings class.
+     */
     public DnsSettings() {
     }
 
     /**
      * Get the enableDnsProxy property: Enable DNS proxy, disabled by default.
-     *
+     * 
      * @return the enableDnsProxy value.
      */
     public DnsProxy enableDnsProxy() {
@@ -44,7 +48,7 @@ public final class DnsSettings {
 
     /**
      * Set the enableDnsProxy property: Enable DNS proxy, disabled by default.
-     *
+     * 
      * @param enableDnsProxy the enableDnsProxy value to set.
      * @return the DnsSettings object itself.
      */
@@ -55,7 +59,7 @@ public final class DnsSettings {
 
     /**
      * Get the enabledDnsType property: Enabled DNS proxy type, disabled by default.
-     *
+     * 
      * @return the enabledDnsType value.
      */
     public EnabledDnsType enabledDnsType() {
@@ -64,7 +68,7 @@ public final class DnsSettings {
 
     /**
      * Set the enabledDnsType property: Enabled DNS proxy type, disabled by default.
-     *
+     * 
      * @param enabledDnsType the enabledDnsType value to set.
      * @return the DnsSettings object itself.
      */
@@ -75,7 +79,7 @@ public final class DnsSettings {
 
     /**
      * Get the dnsServers property: List of IPs associated with the Firewall.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<IpAddress> dnsServers() {
@@ -84,7 +88,7 @@ public final class DnsSettings {
 
     /**
      * Set the dnsServers property: List of IPs associated with the Firewall.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the DnsSettings object itself.
      */
@@ -95,7 +99,7 @@ public final class DnsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

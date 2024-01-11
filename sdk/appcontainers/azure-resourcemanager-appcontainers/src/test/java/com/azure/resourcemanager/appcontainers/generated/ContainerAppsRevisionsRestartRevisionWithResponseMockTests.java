@@ -58,7 +58,6 @@ public final class ContainerAppsRevisionsRestartRevisionWithResponseMockTests {
 
         manager
             .containerAppsRevisions()
-            .restartRevisionWithResponse(
-                "ztlvtmvagbwidqlv", "ukoveofi", "rvjfnmjmvlw", com.azure.core.util.Context.NONE);
+            .restartRevisionWithResponse("jkxibda", "hrkmdyomkxfbvfbh", "y", com.azure.core.util.Context.NONE);
     }
 }

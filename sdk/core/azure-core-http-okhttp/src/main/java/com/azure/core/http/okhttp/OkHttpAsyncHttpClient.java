@@ -10,20 +10,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.okhttp.implementation.BinaryDataRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
-import com.azure.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
-import com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestBody;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.ByteBufferContent;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -169,25 +163,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof ByteArrayContent
-            || content instanceof StringContent
-            || content instanceof SerializableContent
-            || content instanceof ByteBufferContent) {
-            return RequestBody.create(content.toBytes(), mediaType);
+        long effectiveContentLength = getRequestContentLength(content, headers);
+        if (content instanceof FluxByteBufferContent) {
+            // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
+            // TODO (alzimmer): Is this still required? Specifically find out if the timeout is needed.
+            return new OkHttpFluxRequestBody(
+                content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
         } else {
-            long effectiveContentLength = getRequestContentLength(content, headers);
-            if (content instanceof InputStreamContent) {
-                // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpInputStreamRequestBody(
-                    (InputStreamContent) content, effectiveContentLength, mediaType);
-            } else if (content instanceof FileContent) {
-                // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
-            } else {
-                // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return new OkHttpFluxRequestBody(
-                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
-            }
+            // Default is to use a generic BinaryData RequestBody.
+            return new BinaryDataRequestBody(bodyContent, mediaType, effectiveContentLength);
         }
     }
 

@@ -15,10 +15,10 @@ public final class WorkloadNetworkDhcpInnerTests {
         WorkloadNetworkDhcpInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"bwwaloa\",\"segments\":[\"gwrtzju\",\"gwyzm\",\"txon\"],\"provisioningState\":\"Succeeded\",\"revision\":8812233749068130125},\"id\":\"jcbpwxqpsrknft\",\"name\":\"uvriuhprwm\",\"type\":\"yvxqtayriwwroy\"}")
+                    "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"jhfjxwm\",\"segments\":[\"kfoqreyfkzikfj\",\"wneaiv\"],\"provisioningState\":\"Building\",\"revision\":8376736309034828237},\"id\":\"pcirelsfeaen\",\"name\":\"abfatkl\",\"type\":\"dxbjhwuaanozj\"}")
                 .toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("bwwaloa", model.properties().displayName());
-        Assertions.assertEquals(8812233749068130125L, model.properties().revision());
+        Assertions.assertEquals("jhfjxwm", model.properties().displayName());
+        Assertions.assertEquals(8376736309034828237L, model.properties().revision());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ public final class WorkloadNetworkDhcpInnerTests {
         WorkloadNetworkDhcpInner model =
             new WorkloadNetworkDhcpInner()
                 .withProperties(
-                    new WorkloadNetworkDhcpEntity().withDisplayName("bwwaloa").withRevision(8812233749068130125L));
+                    new WorkloadNetworkDhcpEntity().withDisplayName("jhfjxwm").withRevision(8376736309034828237L));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("bwwaloa", model.properties().displayName());
-        Assertions.assertEquals(8812233749068130125L, model.properties().revision());
+        Assertions.assertEquals("jhfjxwm", model.properties().displayName());
+        Assertions.assertEquals(8376736309034828237L, model.properties().revision());
     }
 }

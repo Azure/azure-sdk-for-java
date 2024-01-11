@@ -15,6 +15,12 @@ import java.util.Map;
 @Immutable
 public final class DocumentModelDetails {
 
+    /**
+     * Creates a DocumentModelDetails object.
+     */
+    public DocumentModelDetails() {
+    }
+
     /*
      * Unique model identifier.
      */
@@ -39,6 +45,7 @@ public final class DocumentModelDetails {
 
     private OffsetDateTime expiresOn;
 
+    private String serviceVersion;
 
     /**
      * Get the Unique model identifier.
@@ -119,6 +126,24 @@ public final class DocumentModelDetails {
         this.expiresOn = expiresOn;
     }
 
+    /**
+     * Get the Service version used to create this document classifier.
+     *
+     * @return the serviceVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the service version value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
+
     static {
         DocumentModelDetailsHelper.setAccessor(new DocumentModelDetailsHelper.DocumentModelDetailsAccessor() {
             @Override
@@ -149,6 +174,11 @@ public final class DocumentModelDetails {
             @Override
             public void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn) {
                 documentModelDetails.setExpiresOn(expiresOn);
+            }
+
+            @Override
+            public void setServiceVersion(DocumentModelDetails documentModelDetails, String serviceVersion) {
+                documentModelDetails.setServiceVersion(serviceVersion);
             }
         });
     }

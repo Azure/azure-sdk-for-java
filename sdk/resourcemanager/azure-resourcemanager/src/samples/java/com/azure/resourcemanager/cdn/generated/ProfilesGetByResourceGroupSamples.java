@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Profiles GetByResourceGroup. */
 public final class ProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Profiles_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_Get.json
      */
     /**
      * Sample code: Profiles_Get.
@@ -22,6 +20,6 @@ public final class ProfilesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getProfiles()
-            .getByResourceGroupWithResponse("RG", "profile1", Context.NONE);
+            .getByResourceGroupWithResponse("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

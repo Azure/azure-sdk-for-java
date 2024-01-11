@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DataMaskingEntity {
     /*
-     * The name of an entity to mask (e.g. a name of a header or a query
-     * parameter).
+     * The name of an entity to mask (e.g. a name of a header or a query parameter).
      */
     @JsonProperty(value = "value")
     private String value;
@@ -22,6 +21,10 @@ public final class DataMaskingEntity {
      */
     @JsonProperty(value = "mode")
     private DataMaskingMode mode;
+
+    /** Creates an instance of DataMaskingEntity class. */
+    public DataMaskingEntity() {
+    }
 
     /**
      * Get the value property: The name of an entity to mask (e.g. a name of a header or a query parameter).

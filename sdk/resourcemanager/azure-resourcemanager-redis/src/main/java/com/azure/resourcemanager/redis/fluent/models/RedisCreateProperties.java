@@ -11,6 +11,7 @@ import com.azure.resourcemanager.redis.models.RedisCommonProperties;
 import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.azure.resourcemanager.redis.models.UpdateChannel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -167,6 +168,13 @@ public class RedisCreateProperties extends RedisCommonProperties {
     @Override
     public RedisCreateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withUpdateChannel(UpdateChannel updateChannel) {
+        super.withUpdateChannel(updateChannel);
         return this;
     }
 

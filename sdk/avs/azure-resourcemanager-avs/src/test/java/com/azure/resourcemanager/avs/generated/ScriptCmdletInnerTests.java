@@ -13,7 +13,7 @@ public final class ScriptCmdletInnerTests {
         ScriptCmdletInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"yodnwzxltj\",\"timeout\":\"nhltiugcxn\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"ibyqunyowxwlmdj\",\"description\":\"vfgbvfvpdboda\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Credential\",\"name\":\"krribdeibqi\",\"description\":\"kghv\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Credential\",\"name\":\"efajpj\",\"description\":\"wkqnyhg\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]},\"id\":\"ivfxzsjabibsyst\",\"name\":\"wfsdjpvkvpbj\",\"type\":\"bkzbzkd\"}")
+                    "{\"properties\":{\"description\":\"eydbsd\",\"timeout\":\"m\",\"parameters\":[{\"type\":\"Credential\",\"name\":\"vbbxuripl\",\"description\":\"n\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Bool\",\"name\":\"ywrckp\",\"description\":\"lyhpluodpvruud\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"SecureString\",\"name\":\"stgktst\",\"description\":\"xeclzedqbcvhzlhp\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"dlwwqfbumlkxt\",\"name\":\"qjfsmlmbtxhw\",\"type\":\"fwsrtawcoezbrhu\"}")
                 .toObject(ScriptCmdletInner.class);
     }
 

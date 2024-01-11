@@ -7,6 +7,9 @@ package com.azure.resourcemanager.communication.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.communication.fluent.models.CommunicationServiceResourceInner;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResourceList;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,50 +18,48 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationServiceResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationServiceResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"mkkvnip\",\"dataLocation\":\"oxzjnchgejspod\",\"notificationHubId\":\"ilzyd\",\"version\":\"o\",\"immutableResourceId\":\"yahux\",\"linkedDomains\":[]},\"location\":\"mqnjaqw\",\"tags\":{\"gjvw\":\"sprozvcput\",\"dvpjhulsuuvmk\":\"fdatsc\",\"jdpvwryo\":\"ozkrwfndiodjpslw\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"hostName\":\"dphlxaolt\",\"dataLocation\":\"qtrgqjbpfzfsinzg\",\"notificationHubId\":\"cjrwzoxxjtfellu\",\"version\":\"zitonpeqfpjkjl\",\"immutableResourceId\":\"fpdvhpfxxypi\",\"linkedDomains\":[]},\"location\":\"mayhuybbkpodepoo\",\"tags\":{\"eotusivyevc\":\"uvamiheognarxzxt\",\"un\":\"iqihn\",\"fygxgispemvtzfk\":\"bwjzr\"},\"id\":\"fublj\",\"name\":\"fxqeof\",\"type\":\"aeqjhqjbasvms\"}],\"nextLink\":\"qulngsntnbybkzgc\"}")
-                .toObject(CommunicationServiceResourceList.class);
-        Assertions.assertEquals("mqnjaqw", model.value().get(0).location());
-        Assertions.assertEquals("sprozvcput", model.value().get(0).tags().get("gjvw"));
+        CommunicationServiceResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"mkkvnip\",\"dataLocation\":\"oxzjnchgejspod\",\"notificationHubId\":\"ilzyd\",\"version\":\"o\",\"immutableResourceId\":\"yahux\",\"linkedDomains\":[\"mqnjaqw\",\"xj\"]},\"identity\":{\"principalId\":\"f23243a9-97a8-4db7-9630-79edf0f5ec5b\",\"tenantId\":\"8bda4b90-13fd-4b49-967f-939e714660f3\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tegjvwmf\":{\"principalId\":\"918e4f18-5c32-48e7-b6fd-ffac2b2256f4\",\"clientId\":\"05fae119-b77b-4d17-8814-96e439c2fb82\"},\"scmdvpjhulsuu\":{\"principalId\":\"3a087802-ad98-4d9d-9f8f-6217eba9e6ce\",\"clientId\":\"a378160e-3ffa-4c66-88a3-403fabb2932b\"},\"jozkrwfndiod\":{\"principalId\":\"5e1a04a4-5740-460c-8ed5-423b2500ba73\",\"clientId\":\"b4b0ea7a-f230-4708-8133-960a22271c73\"},\"lwejdpv\":{\"principalId\":\"9ec2ade8-bd9d-4015-b062-94498fb8d4cb\",\"clientId\":\"f49d609a-4d01-4c6e-9317-3466b417bd76\"}}},\"location\":\"yoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"},\"id\":\"qtrgqjbpfzfsinzg\",\"name\":\"f\",\"type\":\"jrwzox\"},{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"lluwfzitonpeq\",\"dataLocation\":\"pjkjlxofpdv\",\"notificationHubId\":\"fxxypininmayhuy\",\"version\":\"kpode\",\"immutableResourceId\":\"oginuvamiheognar\",\"linkedDomains\":[\"theotusiv\"]},\"identity\":{\"principalId\":\"ca5f15e1-4a32-4f3d-b695-af9387168a20\",\"tenantId\":\"e9113944-d7cd-4fa8-b7ea-9324f26b9eb5\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nhungbw\":{\"principalId\":\"ae3f5fa4-ccd9-4efe-b9fb-5a87f0690c7e\",\"clientId\":\"a4717b06-5633-4bac-aa21-86fac88b45fc\"}}},\"location\":\"rnfygxgispem\",\"tags\":{\"fxqeof\":\"fkufublj\",\"jqul\":\"aeqjhqjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\"},\"id\":\"skcqvkocrcjd\",\"name\":\"wtnhxbnjbiksqr\",\"type\":\"lssai\"}],\"nextLink\":\"p\"}")
+            .toObject(CommunicationServiceResourceList.class);
+        Assertions.assertEquals("yoqpsoaccta", model.value().get(0).location());
+        Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            model.value().get(0).identity().type());
         Assertions.assertEquals("oxzjnchgejspod", model.value().get(0).dataLocation());
-        Assertions.assertEquals("qulngsntnbybkzgc", model.nextLink());
+        Assertions.assertEquals("mqnjaqw", model.value().get(0).linkedDomains().get(0));
+        Assertions.assertEquals("p", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceResourceList model =
-            new CommunicationServiceResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CommunicationServiceResourceInner()
-                                .withLocation("mqnjaqw")
-                                .withTags(
-                                    mapOf(
-                                        "gjvw",
-                                        "sprozvcput",
-                                        "dvpjhulsuuvmk",
-                                        "fdatsc",
-                                        "jdpvwryo",
-                                        "ozkrwfndiodjpslw"))
-                                .withDataLocation("oxzjnchgejspod")
-                                .withLinkedDomains(Arrays.asList()),
-                            new CommunicationServiceResourceInner()
-                                .withLocation("mayhuybbkpodepoo")
-                                .withTags(
-                                    mapOf("eotusivyevc", "uvamiheognarxzxt", "un", "iqihn", "fygxgispemvtzfk", "bwjzr"))
-                                .withDataLocation("qtrgqjbpfzfsinzg")
-                                .withLinkedDomains(Arrays.asList())))
-                .withNextLink("qulngsntnbybkzgc");
+        CommunicationServiceResourceList model
+            = new CommunicationServiceResourceList()
+                .withValue(Arrays.asList(
+                    new CommunicationServiceResourceInner().withLocation("yoqpsoaccta")
+                        .withTags(mapOf("dfdosygexp", "ljlahbcryf", "dphlxaolt", "ojakhmsbzjhcrze"))
+                        .withIdentity(new ManagedServiceIdentity()
+                            .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("tegjvwmf", new UserAssignedIdentity(), "scmdvpjhulsuu",
+                                new UserAssignedIdentity(), "jozkrwfndiod", new UserAssignedIdentity(), "lwejdpv",
+                                new UserAssignedIdentity())))
+                        .withDataLocation("oxzjnchgejspod").withLinkedDomains(Arrays.asList("mqnjaqw", "xj")),
+                    new CommunicationServiceResourceInner().withLocation("rnfygxgispem")
+                        .withTags(mapOf("fxqeof", "fkufublj", "jqul", "aeqjhqjbasvms", "clxxwrljdo", "gsntnbybkzgcwr"))
+                        .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("nhungbw", new UserAssignedIdentity())))
+                        .withDataLocation("pjkjlxofpdv").withLinkedDomains(Arrays.asList("theotusiv"))))
+                .withNextLink("p");
         model = BinaryData.fromObject(model).toObject(CommunicationServiceResourceList.class);
-        Assertions.assertEquals("mqnjaqw", model.value().get(0).location());
-        Assertions.assertEquals("sprozvcput", model.value().get(0).tags().get("gjvw"));
+        Assertions.assertEquals("yoqpsoaccta", model.value().get(0).location());
+        Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            model.value().get(0).identity().type());
         Assertions.assertEquals("oxzjnchgejspod", model.value().get(0).dataLocation());
-        Assertions.assertEquals("qulngsntnbybkzgc", model.nextLink());
+        Assertions.assertEquals("mqnjaqw", model.value().get(0).linkedDomains().get(0));
+        Assertions.assertEquals("p", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -21,11 +21,11 @@ public final class ProtectedItemResourceListTests {
         ProtectedItemResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"Invalid\",\"workloadType\":\"Client\",\"containerName\":\"euojgjrwju\",\"sourceResourceId\":\"otwmcdyt\",\"policyId\":\"wit\",\"lastRecoveryPoint\":\"2021-05-14T21:36:27Z\",\"backupSetName\":\"awgqwgxhni\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-05-28T01:48:43Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"cg\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[],\"isArchiveEnabled\":false,\"policyName\":\"auwhvylwzbtdhx\",\"softDeleteRetentionPeriod\":1267034334},\"eTag\":\"bm\",\"location\":\"ow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"DefaultBackup\",\"workloadType\":\"SAPAseDatabase\",\"containerName\":\"xiebwwaloayqcg\",\"sourceResourceId\":\"tzjuzgwyzmhtxo\",\"policyId\":\"mtsavjcbpwxqp\",\"lastRecoveryPoint\":\"2021-07-31T13:26:15Z\",\"backupSetName\":\"ftguv\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-06-29T08:45:17Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"dyvxqtayriww\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[],\"isArchiveEnabled\":false,\"policyName\":\"cqibycnojv\",\"softDeleteRetentionPeriod\":2121055666},\"eTag\":\"fqsgzvahapjy\",\"location\":\"hpvgqz\",\"tags\":{\"zovawjvz\":\"vxdjzlmwlxkvugf\",\"nxipeil\":\"nluthnnp\",\"dzumveekg\":\"jzuaejxdultskzbb\"},\"id\":\"wozuhkf\",\"name\":\"bsjyofdx\",\"type\":\"uusdttouwa\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureIaasVM\",\"workloadType\":\"Invalid\",\"containerName\":\"elnsmvbxw\",\"sourceResourceId\":\"sflhhca\",\"policyId\":\"n\",\"lastRecoveryPoint\":\"2021-03-25T19:19:56Z\",\"backupSetName\":\"sxyawjoyaqcs\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-01-08T06:10:15Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"zyexzn\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[],\"isArchiveEnabled\":true,\"policyName\":\"folhbnxknal\",\"softDeleteRetentionPeriod\":338367472},\"eTag\":\"p\",\"location\":\"gdtpnapnyiro\",\"tags\":{\"edjvcslynqw\":\"pigvpgylgqgitx\",\"zhxgktrmgucn\":\"ncw\"},\"id\":\"pkteo\",\"name\":\"llwptfdy\",\"type\":\"pfqbuaceopzf\"}],\"nextLink\":\"hhuao\"}")
+                    "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"Invalid\",\"workloadType\":\"Client\",\"containerName\":\"euojgjrwju\",\"sourceResourceId\":\"otwmcdyt\",\"policyId\":\"wit\",\"lastRecoveryPoint\":\"2021-05-14T21:36:27Z\",\"backupSetName\":\"awgqwgxhni\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-05-28T01:48:43Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"cg\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"jdauwhvy\",\"wzbtdhxu\",\"znbmpowuwprzq\"],\"isArchiveEnabled\":true,\"policyName\":\"alupjm\",\"softDeleteRetentionPeriodInDays\":46275154},\"eTag\":\"obbc\",\"location\":\"wsrtjriplrbpbe\",\"tags\":{\"wxzvlvqhjkb\":\"hfgblc\"},\"id\":\"gibtnm\",\"name\":\"iebwwaloayqcgwrt\",\"type\":\"j\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"Invalid\",\"workloadType\":\"FileFolder\",\"containerName\":\"htxongmtsavjc\",\"sourceResourceId\":\"wxqpsrknftguvri\",\"policyId\":\"prwmdyvxqt\",\"lastRecoveryPoint\":\"2021-09-21T09:24:54Z\",\"backupSetName\":\"ww\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-02-13T03:31:18Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"mcqibycnojv\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"gzva\",\"apj\",\"zhpvgqzcjrvxd\",\"zlmwlxkvugfhz\"],\"isArchiveEnabled\":true,\"policyName\":\"jvzunluthnnp\",\"softDeleteRetentionPeriodInDays\":1427151650},\"eTag\":\"peilpjzuaejxdu\",\"location\":\"tskzbbtdzumveek\",\"tags\":{\"sjyofdx\":\"ozuhkfp\",\"oekqvk\":\"uusdttouwa\"},\"id\":\"lns\",\"name\":\"vbxwyjsflhh\",\"type\":\"aalnjixi\"},{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureBackupServer\",\"workloadType\":\"AzureSqlDb\",\"containerName\":\"yaqcslyjpkiidz\",\"sourceResourceId\":\"xznelixhnrztf\",\"policyId\":\"hb\",\"lastRecoveryPoint\":\"2021-09-08T07:53:31Z\",\"backupSetName\":\"alaulppggdtpnapn\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-05-11T07:31:24Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"igvpgylg\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"djvcsl\",\"n\",\"wwncwzzhxgk\"],\"isArchiveEnabled\":false,\"policyName\":\"ucnapkteoellwp\",\"softDeleteRetentionPeriodInDays\":220477618},\"eTag\":\"gpfqbuace\",\"location\":\"pzfqrhhuaoppp\",\"tags\":{\"t\":\"qxolzdahzx\"},\"id\":\"bgbkdmoizpost\",\"name\":\"grcfb\",\"type\":\"nrmfqjhhk\"}],\"nextLink\":\"pvjymjhxxjyng\"}")
                 .toObject(ProtectedItemResourceList.class);
-        Assertions.assertEquals("hhuao", model.nextLink());
-        Assertions.assertEquals("ow", model.value().get(0).location());
-        Assertions.assertEquals("rzqlveu", model.value().get(0).tags().get("lupj"));
+        Assertions.assertEquals("pvjymjhxxjyng", model.nextLink());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.value().get(0).location());
+        Assertions.assertEquals("hfgblc", model.value().get(0).tags().get("wxzvlvqhjkb"));
         Assertions.assertEquals("euojgjrwju", model.value().get(0).properties().containerName());
         Assertions.assertEquals("otwmcdyt", model.value().get(0).properties().sourceResourceId());
         Assertions.assertEquals("wit", model.value().get(0).properties().policyId());
@@ -42,23 +42,24 @@ public final class ProtectedItemResourceListTests {
         Assertions.assertEquals("cg", model.value().get(0).properties().deferredDeleteTimeRemaining());
         Assertions.assertEquals(false, model.value().get(0).properties().isDeferredDeleteScheduleUpcoming());
         Assertions.assertEquals(true, model.value().get(0).properties().isRehydrate());
-        Assertions.assertEquals(false, model.value().get(0).properties().isArchiveEnabled());
-        Assertions.assertEquals("auwhvylwzbtdhx", model.value().get(0).properties().policyName());
-        Assertions.assertEquals(1267034334, model.value().get(0).properties().softDeleteRetentionPeriod());
-        Assertions.assertEquals("bm", model.value().get(0).etag());
+        Assertions.assertEquals("jdauwhvy", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, model.value().get(0).properties().isArchiveEnabled());
+        Assertions.assertEquals("alupjm", model.value().get(0).properties().policyName());
+        Assertions.assertEquals(46275154, model.value().get(0).properties().softDeleteRetentionPeriod());
+        Assertions.assertEquals("obbc", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectedItemResourceList model =
             new ProtectedItemResourceList()
-                .withNextLink("hhuao")
+                .withNextLink("pvjymjhxxjyng")
                 .withValue(
                     Arrays
                         .asList(
                             new ProtectedItemResourceInner()
-                                .withLocation("ow")
-                                .withTags(mapOf("lupj", "rzqlveu", "riplrbpbewtg", "khfxobbcswsrt"))
+                                .withLocation("wsrtjriplrbpbe")
+                                .withTags(mapOf("wxzvlvqhjkb", "hfgblc"))
                                 .withProperties(
                                     new ProtectedItem()
                                         .withContainerName("euojgjrwju")
@@ -72,64 +73,59 @@ public final class ProtectedItemResourceListTests {
                                         .withDeferredDeleteTimeRemaining("cg")
                                         .withIsDeferredDeleteScheduleUpcoming(false)
                                         .withIsRehydrate(true)
-                                        .withResourceGuardOperationRequests(Arrays.asList())
-                                        .withIsArchiveEnabled(false)
-                                        .withPolicyName("auwhvylwzbtdhx")
-                                        .withSoftDeleteRetentionPeriod(1267034334))
-                                .withEtag("bm"),
-                            new ProtectedItemResourceInner()
-                                .withLocation("hpvgqz")
-                                .withTags(
-                                    mapOf(
-                                        "zovawjvz",
-                                        "vxdjzlmwlxkvugf",
-                                        "nxipeil",
-                                        "nluthnnp",
-                                        "dzumveekg",
-                                        "jzuaejxdultskzbb"))
-                                .withProperties(
-                                    new ProtectedItem()
-                                        .withContainerName("xiebwwaloayqcg")
-                                        .withSourceResourceId("tzjuzgwyzmhtxo")
-                                        .withPolicyId("mtsavjcbpwxqp")
-                                        .withLastRecoveryPoint(OffsetDateTime.parse("2021-07-31T13:26:15Z"))
-                                        .withBackupSetName("ftguv")
-                                        .withCreateMode(CreateMode.INVALID)
-                                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-06-29T08:45:17Z"))
-                                        .withIsScheduledForDeferredDelete(true)
-                                        .withDeferredDeleteTimeRemaining("dyvxqtayriww")
-                                        .withIsDeferredDeleteScheduleUpcoming(true)
-                                        .withIsRehydrate(false)
-                                        .withResourceGuardOperationRequests(Arrays.asList())
-                                        .withIsArchiveEnabled(false)
-                                        .withPolicyName("cqibycnojv")
-                                        .withSoftDeleteRetentionPeriod(2121055666))
-                                .withEtag("fqsgzvahapjy"),
-                            new ProtectedItemResourceInner()
-                                .withLocation("gdtpnapnyiro")
-                                .withTags(mapOf("edjvcslynqw", "pigvpgylgqgitx", "zhxgktrmgucn", "ncw"))
-                                .withProperties(
-                                    new ProtectedItem()
-                                        .withContainerName("elnsmvbxw")
-                                        .withSourceResourceId("sflhhca")
-                                        .withPolicyId("n")
-                                        .withLastRecoveryPoint(OffsetDateTime.parse("2021-03-25T19:19:56Z"))
-                                        .withBackupSetName("sxyawjoyaqcs")
-                                        .withCreateMode(CreateMode.DEFAULT)
-                                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-01-08T06:10:15Z"))
-                                        .withIsScheduledForDeferredDelete(true)
-                                        .withDeferredDeleteTimeRemaining("zyexzn")
-                                        .withIsDeferredDeleteScheduleUpcoming(false)
-                                        .withIsRehydrate(false)
-                                        .withResourceGuardOperationRequests(Arrays.asList())
+                                        .withResourceGuardOperationRequests(
+                                            Arrays.asList("jdauwhvy", "wzbtdhxu", "znbmpowuwprzq"))
                                         .withIsArchiveEnabled(true)
-                                        .withPolicyName("folhbnxknal")
-                                        .withSoftDeleteRetentionPeriod(338367472))
-                                .withEtag("p")));
+                                        .withPolicyName("alupjm")
+                                        .withSoftDeleteRetentionPeriod(46275154))
+                                .withEtag("obbc"),
+                            new ProtectedItemResourceInner()
+                                .withLocation("tskzbbtdzumveek")
+                                .withTags(mapOf("sjyofdx", "ozuhkfp", "oekqvk", "uusdttouwa"))
+                                .withProperties(
+                                    new ProtectedItem()
+                                        .withContainerName("htxongmtsavjc")
+                                        .withSourceResourceId("wxqpsrknftguvri")
+                                        .withPolicyId("prwmdyvxqt")
+                                        .withLastRecoveryPoint(OffsetDateTime.parse("2021-09-21T09:24:54Z"))
+                                        .withBackupSetName("ww")
+                                        .withCreateMode(CreateMode.RECOVER)
+                                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-02-13T03:31:18Z"))
+                                        .withIsScheduledForDeferredDelete(true)
+                                        .withDeferredDeleteTimeRemaining("mcqibycnojv")
+                                        .withIsDeferredDeleteScheduleUpcoming(true)
+                                        .withIsRehydrate(true)
+                                        .withResourceGuardOperationRequests(
+                                            Arrays.asList("gzva", "apj", "zhpvgqzcjrvxd", "zlmwlxkvugfhz"))
+                                        .withIsArchiveEnabled(true)
+                                        .withPolicyName("jvzunluthnnp")
+                                        .withSoftDeleteRetentionPeriod(1427151650))
+                                .withEtag("peilpjzuaejxdu"),
+                            new ProtectedItemResourceInner()
+                                .withLocation("pzfqrhhuaoppp")
+                                .withTags(mapOf("t", "qxolzdahzx"))
+                                .withProperties(
+                                    new ProtectedItem()
+                                        .withContainerName("yaqcslyjpkiidz")
+                                        .withSourceResourceId("xznelixhnrztf")
+                                        .withPolicyId("hb")
+                                        .withLastRecoveryPoint(OffsetDateTime.parse("2021-09-08T07:53:31Z"))
+                                        .withBackupSetName("alaulppggdtpnapn")
+                                        .withCreateMode(CreateMode.DEFAULT)
+                                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-05-11T07:31:24Z"))
+                                        .withIsScheduledForDeferredDelete(false)
+                                        .withDeferredDeleteTimeRemaining("igvpgylg")
+                                        .withIsDeferredDeleteScheduleUpcoming(true)
+                                        .withIsRehydrate(true)
+                                        .withResourceGuardOperationRequests(Arrays.asList("djvcsl", "n", "wwncwzzhxgk"))
+                                        .withIsArchiveEnabled(false)
+                                        .withPolicyName("ucnapkteoellwp")
+                                        .withSoftDeleteRetentionPeriod(220477618))
+                                .withEtag("gpfqbuace")));
         model = BinaryData.fromObject(model).toObject(ProtectedItemResourceList.class);
-        Assertions.assertEquals("hhuao", model.nextLink());
-        Assertions.assertEquals("ow", model.value().get(0).location());
-        Assertions.assertEquals("rzqlveu", model.value().get(0).tags().get("lupj"));
+        Assertions.assertEquals("pvjymjhxxjyng", model.nextLink());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.value().get(0).location());
+        Assertions.assertEquals("hfgblc", model.value().get(0).tags().get("wxzvlvqhjkb"));
         Assertions.assertEquals("euojgjrwju", model.value().get(0).properties().containerName());
         Assertions.assertEquals("otwmcdyt", model.value().get(0).properties().sourceResourceId());
         Assertions.assertEquals("wit", model.value().get(0).properties().policyId());
@@ -146,12 +142,14 @@ public final class ProtectedItemResourceListTests {
         Assertions.assertEquals("cg", model.value().get(0).properties().deferredDeleteTimeRemaining());
         Assertions.assertEquals(false, model.value().get(0).properties().isDeferredDeleteScheduleUpcoming());
         Assertions.assertEquals(true, model.value().get(0).properties().isRehydrate());
-        Assertions.assertEquals(false, model.value().get(0).properties().isArchiveEnabled());
-        Assertions.assertEquals("auwhvylwzbtdhx", model.value().get(0).properties().policyName());
-        Assertions.assertEquals(1267034334, model.value().get(0).properties().softDeleteRetentionPeriod());
-        Assertions.assertEquals("bm", model.value().get(0).etag());
+        Assertions.assertEquals("jdauwhvy", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, model.value().get(0).properties().isArchiveEnabled());
+        Assertions.assertEquals("alupjm", model.value().get(0).properties().policyName());
+        Assertions.assertEquals(46275154, model.value().get(0).properties().softDeleteRetentionPeriod());
+        Assertions.assertEquals("obbc", model.value().get(0).etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

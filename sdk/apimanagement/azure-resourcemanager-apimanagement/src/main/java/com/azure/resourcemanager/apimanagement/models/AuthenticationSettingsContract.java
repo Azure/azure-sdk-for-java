@@ -6,6 +6,7 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** API Authentication Settings. */
 @Fluent
@@ -21,6 +22,22 @@ public final class AuthenticationSettingsContract {
      */
     @JsonProperty(value = "openid")
     private OpenIdAuthenticationSettingsContract openid;
+
+    /*
+     * Collection of OAuth2 authentication settings included into this API.
+     */
+    @JsonProperty(value = "oAuth2AuthenticationSettings")
+    private List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings;
+
+    /*
+     * Collection of Open ID Connect authentication settings included into this API.
+     */
+    @JsonProperty(value = "openidAuthenticationSettings")
+    private List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings;
+
+    /** Creates an instance of AuthenticationSettingsContract class. */
+    public AuthenticationSettingsContract() {
+    }
 
     /**
      * Get the oAuth2 property: OAuth2 Authentication settings.
@@ -63,6 +80,52 @@ public final class AuthenticationSettingsContract {
     }
 
     /**
+     * Get the oAuth2AuthenticationSettings property: Collection of OAuth2 authentication settings included into this
+     * API.
+     *
+     * @return the oAuth2AuthenticationSettings value.
+     */
+    public List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings() {
+        return this.oAuth2AuthenticationSettings;
+    }
+
+    /**
+     * Set the oAuth2AuthenticationSettings property: Collection of OAuth2 authentication settings included into this
+     * API.
+     *
+     * @param oAuth2AuthenticationSettings the oAuth2AuthenticationSettings value to set.
+     * @return the AuthenticationSettingsContract object itself.
+     */
+    public AuthenticationSettingsContract withOAuth2AuthenticationSettings(
+        List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings) {
+        this.oAuth2AuthenticationSettings = oAuth2AuthenticationSettings;
+        return this;
+    }
+
+    /**
+     * Get the openidAuthenticationSettings property: Collection of Open ID Connect authentication settings included
+     * into this API.
+     *
+     * @return the openidAuthenticationSettings value.
+     */
+    public List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings() {
+        return this.openidAuthenticationSettings;
+    }
+
+    /**
+     * Set the openidAuthenticationSettings property: Collection of Open ID Connect authentication settings included
+     * into this API.
+     *
+     * @param openidAuthenticationSettings the openidAuthenticationSettings value to set.
+     * @return the AuthenticationSettingsContract object itself.
+     */
+    public AuthenticationSettingsContract withOpenidAuthenticationSettings(
+        List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings) {
+        this.openidAuthenticationSettings = openidAuthenticationSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -73,6 +136,12 @@ public final class AuthenticationSettingsContract {
         }
         if (openid() != null) {
             openid().validate();
+        }
+        if (oAuth2AuthenticationSettings() != null) {
+            oAuth2AuthenticationSettings().forEach(e -> e.validate());
+        }
+        if (openidAuthenticationSettings() != null) {
+            openidAuthenticationSettings().forEach(e -> e.validate());
         }
     }
 }

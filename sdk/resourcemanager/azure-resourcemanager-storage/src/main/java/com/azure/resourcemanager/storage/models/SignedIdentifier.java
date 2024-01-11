@@ -22,6 +22,10 @@ public final class SignedIdentifier {
     @JsonProperty(value = "accessPolicy")
     private AccessPolicy accessPolicy;
 
+    /** Creates an instance of SignedIdentifier class. */
+    public SignedIdentifier() {
+    }
+
     /**
      * Get the id property: An unique identifier of the stored access policy.
      *

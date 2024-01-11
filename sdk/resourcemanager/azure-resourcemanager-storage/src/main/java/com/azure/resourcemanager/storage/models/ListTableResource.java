@@ -24,6 +24,10 @@ public final class ListTableResource {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ListTableResource class. */
+    public ListTableResource() {
+    }
+
     /**
      * Get the value property: List of tables returned.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdEndpoints ListResourceUsage. */
 public final class AfdEndpointsListResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_ListResourceUsage.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDEndpoints_ListResourceUsage.json
      */
     /**
      * Sample code: AFDEndpoints_ListResourceUsage.
@@ -22,6 +20,6 @@ public final class AfdEndpointsListResourceUsageSamples {
             .manager()
             .serviceClient()
             .getAfdEndpoints()
-            .listResourceUsage("RG", "profile1", "endpoint1", Context.NONE);
+            .listResourceUsage("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

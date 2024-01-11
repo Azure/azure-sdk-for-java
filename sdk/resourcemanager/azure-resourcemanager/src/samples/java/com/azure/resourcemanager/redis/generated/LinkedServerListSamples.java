@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for LinkedServer List. */
 public final class LinkedServerListSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheLinkedServer_List.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheLinkedServer_List.json
      */
     /**
      * Sample code: LinkedServer_List.

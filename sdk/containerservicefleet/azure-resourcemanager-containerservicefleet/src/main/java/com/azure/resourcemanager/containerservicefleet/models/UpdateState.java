@@ -22,6 +22,9 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
     /** Static value Stopped for UpdateState. */
     public static final UpdateState STOPPED = fromString("Stopped");
 
+    /** Static value Skipped for UpdateState. */
+    public static final UpdateState SKIPPED = fromString("Skipped");
+
     /** Static value Failed for UpdateState. */
     public static final UpdateState FAILED = fromString("Failed");
 

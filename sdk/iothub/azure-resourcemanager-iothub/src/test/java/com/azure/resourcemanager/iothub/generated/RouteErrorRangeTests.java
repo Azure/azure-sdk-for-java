@@ -15,24 +15,24 @@ public final class RouteErrorRangeTests {
         RouteErrorRange model =
             BinaryData
                 .fromString(
-                    "{\"start\":{\"line\":900444322,\"column\":1157139188},\"end\":{\"line\":2137392775,\"column\":1769895546}}")
+                    "{\"start\":{\"line\":996289807,\"column\":1448079009},\"end\":{\"line\":608982569,\"column\":146904581}}")
                 .toObject(RouteErrorRange.class);
-        Assertions.assertEquals(900444322, model.start().line());
-        Assertions.assertEquals(1157139188, model.start().column());
-        Assertions.assertEquals(2137392775, model.end().line());
-        Assertions.assertEquals(1769895546, model.end().column());
+        Assertions.assertEquals(996289807, model.start().line());
+        Assertions.assertEquals(1448079009, model.start().column());
+        Assertions.assertEquals(608982569, model.end().line());
+        Assertions.assertEquals(146904581, model.end().column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteErrorRange model =
             new RouteErrorRange()
-                .withStart(new RouteErrorPosition().withLine(900444322).withColumn(1157139188))
-                .withEnd(new RouteErrorPosition().withLine(2137392775).withColumn(1769895546));
+                .withStart(new RouteErrorPosition().withLine(996289807).withColumn(1448079009))
+                .withEnd(new RouteErrorPosition().withLine(608982569).withColumn(146904581));
         model = BinaryData.fromObject(model).toObject(RouteErrorRange.class);
-        Assertions.assertEquals(900444322, model.start().line());
-        Assertions.assertEquals(1157139188, model.start().column());
-        Assertions.assertEquals(2137392775, model.end().line());
-        Assertions.assertEquals(1769895546, model.end().column());
+        Assertions.assertEquals(996289807, model.start().line());
+        Assertions.assertEquals(1448079009, model.start().column());
+        Assertions.assertEquals(608982569, model.end().line());
+        Assertions.assertEquals(146904581, model.end().column());
     }
 }

@@ -148,7 +148,7 @@ public class BulkExecutorTest extends BatchTestBase {
 
     // Write operations should not be retried on a gone exception because the operation might have succeeded.
     @Test(groups = { "emulator" }, timeOut =  TIMEOUT)
-    public void executeBulk_OnGoneFailure() throws InterruptedException {
+    public void executeBulk_OnGoneFailure() {
         this.container = createContainer(database);
         if (!ImplementationBridgeHelpers
             .CosmosAsyncClientHelper
@@ -231,9 +231,7 @@ public class BulkExecutorTest extends BatchTestBase {
             serverResponseDelayRule.disable();
         }
     }
-
-
-
+    
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_complete() throws InterruptedException {
         int totalRequest = 10;

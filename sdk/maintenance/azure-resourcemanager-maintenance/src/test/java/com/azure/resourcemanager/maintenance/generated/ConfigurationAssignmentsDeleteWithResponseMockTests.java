@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
+import com.azure.resourcemanager.maintenance.models.TagOperators;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class ConfigurationAssignmentsDeleteWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"khaj\",\"properties\":{\"maintenanceConfigurationId\":\"eamdp\",\"resourceId\":\"g\"},\"id\":\"pbuxwgipwhon\",\"name\":\"wkgshwa\",\"type\":\"kix\"}";
+            "{\"location\":\"tawfsdjpvkvp\",\"properties\":{\"maintenanceConfigurationId\":\"bkzbzkd\",\"resourceId\":\"cjabudurgkakmo\",\"filter\":{\"resourceTypes\":[\"jk\",\"ffhmouwqlgzr\"],\"resourceGroups\":[\"eyebizikayuhql\",\"jbsybbqw\"],\"osTypes\":[\"ldgmfpgvmpip\"],\"locations\":[\"thaqfxssmwu\"],\"tagSettings\":{\"tags\":{\"kdw\":[\"rezpdr\",\"neuyow\"],\"ib\":[\"i\"],\"zimejzanlfzx\":[\"cgpik\"],\"i\":[\"vrmbzono\"]},\"filterOperator\":\"All\"}}},\"id\":\"cirgzp\",\"name\":\"rlazszrnw\",\"type\":\"iin\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +64,22 @@ public final class ConfigurationAssignmentsDeleteWithResponseMockTests {
             manager
                 .configurationAssignments()
                 .deleteWithResponse(
-                    "npiucgygevqznty",
-                    "mrbpizcdrqj",
-                    "dpydn",
-                    "yhxdeoejzicwi",
-                    "sjttgzfbish",
+                    "lhkrribdeibqipqk",
+                    "hvxndzwmkrefajpj",
+                    "rwkq",
+                    "yhgbijtjivfx",
+                    "sjabibs",
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("khaj", response.location());
-        Assertions.assertEquals("eamdp", response.maintenanceConfigurationId());
-        Assertions.assertEquals("g", response.resourceId());
+        Assertions.assertEquals("tawfsdjpvkvp", response.location());
+        Assertions.assertEquals("bkzbzkd", response.maintenanceConfigurationId());
+        Assertions.assertEquals("cjabudurgkakmo", response.resourceId());
+        Assertions.assertEquals("jk", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("eyebizikayuhql", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("ldgmfpgvmpip", response.filter().osTypes().get(0));
+        Assertions.assertEquals("thaqfxssmwu", response.filter().locations().get(0));
+        Assertions.assertEquals("rezpdr", response.filter().tagSettings().tags().get("kdw").get(0));
+        Assertions.assertEquals(TagOperators.ALL, response.filter().tagSettings().filterOperator());
     }
 }

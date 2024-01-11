@@ -72,6 +72,8 @@ public class DataLakeServiceAsyncClient {
 
     private final AzureSasCredential sasToken;
 
+    private final boolean isTokenCredentialAuthenticated;
+
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      *
@@ -82,7 +84,8 @@ public class DataLakeServiceAsyncClient {
      * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken) {
+        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken,
+        boolean isTokenCredentialAuthenticated) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -95,6 +98,8 @@ public class DataLakeServiceAsyncClient {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
 
         this.sasToken = sasToken;
+
+        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -120,7 +125,7 @@ public class DataLakeServiceAsyncClient {
         }
         return new DataLakeFileSystemAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName),
-            sasToken);
+            sasToken, isTokenCredentialAuthenticated);
     }
 
     /**
@@ -401,12 +406,17 @@ public class DataLakeServiceAsyncClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * client.setProperties&#40;properties&#41;.subscribe&#40;
@@ -441,12 +451,17 @@ public class DataLakeServiceAsyncClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * client.setPropertiesWithResponse&#40;properties&#41;.subscribe&#40;response -&gt;

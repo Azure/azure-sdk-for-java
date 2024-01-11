@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelp
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
+ * The {@code SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
  * sentiment label, sentence opinions, and offset of sentence within a document.
  */
 public final class SentenceSentiment {
@@ -19,7 +19,7 @@ public final class SentenceSentiment {
     private int length;
 
     /**
-     * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
+     * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App container environment variable. */
+/**
+ * Container App container environment variable.
+ */
 @Fluent
 public final class EnvironmentVar {
     /*
@@ -28,13 +30,15 @@ public final class EnvironmentVar {
     @JsonProperty(value = "secretRef")
     private String secretRef;
 
-    /** Creates an instance of EnvironmentVar class. */
+    /**
+     * Creates an instance of EnvironmentVar class.
+     */
     public EnvironmentVar() {
     }
 
     /**
      * Get the name property: Environment variable name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the name property: Environment variable name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -54,7 +58,7 @@ public final class EnvironmentVar {
 
     /**
      * Get the value property: Non-secret environment variable value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +67,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the value property: Non-secret environment variable value.
-     *
+     * 
      * @param value the value value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -74,7 +78,7 @@ public final class EnvironmentVar {
 
     /**
      * Get the secretRef property: Name of the Container App secret from which to pull the environment variable value.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -83,7 +87,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the secretRef property: Name of the Container App secret from which to pull the environment variable value.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -94,7 +98,7 @@ public final class EnvironmentVar {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

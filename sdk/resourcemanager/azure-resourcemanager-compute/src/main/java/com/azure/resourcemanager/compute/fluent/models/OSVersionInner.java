@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.OSVersionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a cloud service OS version. */
+/**
+ * Describes a cloud service OS version.
+ */
 @Fluent
 public final class OSVersionInner {
     /*
@@ -41,13 +43,15 @@ public final class OSVersionInner {
     @JsonProperty(value = "properties")
     private OSVersionProperties properties;
 
-    /** Creates an instance of OSVersionInner class. */
+    /**
+     * Creates an instance of OSVersionInner class.
+     */
     public OSVersionInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class OSVersionInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class OSVersionInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -74,7 +78,7 @@ public final class OSVersionInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -83,7 +87,7 @@ public final class OSVersionInner {
 
     /**
      * Get the properties property: OS version properties.
-     *
+     * 
      * @return the properties value.
      */
     public OSVersionProperties properties() {
@@ -92,7 +96,7 @@ public final class OSVersionInner {
 
     /**
      * Set the properties property: OS version properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OSVersionInner object itself.
      */
@@ -103,7 +107,7 @@ public final class OSVersionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

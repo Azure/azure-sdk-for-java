@@ -37,7 +37,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDatabaseWithFilter() throws Exception {
         String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
 
@@ -63,7 +63,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryAllDatabase() throws Exception {
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s')",
@@ -91,7 +91,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDatabases_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -107,14 +107,14 @@ public class DatabaseQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabases.add(createDatabase(client, databaseId1));
         createdDatabases.add(createDatabase(client, databaseId2));
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabases.get(0));
         safeDeleteDatabase(createdDatabases.get(1));

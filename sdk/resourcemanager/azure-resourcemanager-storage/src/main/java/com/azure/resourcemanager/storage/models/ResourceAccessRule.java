@@ -22,6 +22,10 @@ public final class ResourceAccessRule {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of ResourceAccessRule class. */
+    public ResourceAccessRule() {
+    }
+
     /**
      * Get the tenantId property: Tenant Id.
      *

@@ -99,7 +99,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"simple"}, dataProvider = "groupByConfigProvider", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "groupByConfigProvider", timeOut = TIMEOUT)
     public void queryDocuments(Triple<String, Function<Person, Object>, Integer> groupByConfig) {
         boolean qmEnabled = true;
 
@@ -186,12 +186,12 @@ public class GroupByQueryTests extends TestSuiteBase {
         return new Person(name, city, income, people, age, pet, guid);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

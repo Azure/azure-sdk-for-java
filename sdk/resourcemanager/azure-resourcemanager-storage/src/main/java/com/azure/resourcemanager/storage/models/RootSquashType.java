@@ -20,6 +20,15 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
     public static final RootSquashType ALL_SQUASH = fromString("AllSquash");
 
     /**
+     * Creates a new instance of RootSquashType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RootSquashType() {
+    }
+
+    /**
      * Creates or finds a RootSquashType from its string representation.
      *
      * @param name a name to look for.

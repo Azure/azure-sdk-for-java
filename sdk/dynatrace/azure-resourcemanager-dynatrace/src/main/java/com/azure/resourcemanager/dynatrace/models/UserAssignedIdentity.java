@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A managed identity assigned by the user. */
 @Fluent
-public class UserAssignedIdentity {
+public final class UserAssignedIdentity {
     /*
      * The active directory client identifier for this principal.
      */
@@ -22,6 +22,10 @@ public class UserAssignedIdentity {
      */
     @JsonProperty(value = "principalId", required = true)
     private String principalId;
+
+    /** Creates an instance of UserAssignedIdentity class. */
+    public UserAssignedIdentity() {
+    }
 
     /**
      * Get the clientId property: The active directory client identifier for this principal.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GroupUser Create. */
 public final class GroupUserCreateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGroupUser.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGroupUser.json
      */
     /**
      * Sample code: ApiManagementCreateGroupUser.
@@ -20,6 +18,7 @@ public final class GroupUserCreateSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .groupUsers()
-            .createWithResponse("rg1", "apimService1", "tempgroup", "59307d350af58404d8a26300", Context.NONE);
+            .createWithResponse(
+                "rg1", "apimService1", "tempgroup", "59307d350af58404d8a26300", com.azure.core.util.Context.NONE);
     }
 }

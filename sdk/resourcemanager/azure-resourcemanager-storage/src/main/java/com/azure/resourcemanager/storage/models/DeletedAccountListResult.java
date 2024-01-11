@@ -25,6 +25,10 @@ public final class DeletedAccountListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DeletedAccountListResult class. */
+    public DeletedAccountListResult() {
+    }
+
     /**
      * Get the value property: Gets the list of deleted accounts and their properties.
      *

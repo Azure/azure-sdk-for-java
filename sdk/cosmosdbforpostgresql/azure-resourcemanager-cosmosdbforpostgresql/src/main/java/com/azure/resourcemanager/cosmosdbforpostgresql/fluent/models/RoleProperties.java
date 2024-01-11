@@ -15,7 +15,7 @@ public final class RoleProperties {
     /*
      * The password of the cluster role.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*

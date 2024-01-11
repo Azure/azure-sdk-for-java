@@ -78,11 +78,13 @@ public interface ActiveDirectoryAdministrator {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ActiveDirectoryAdministrator definition stages. */
     interface DefinitionStages {
         /** The first stage of the ActiveDirectoryAdministrator definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ActiveDirectoryAdministrator definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -94,6 +96,7 @@ public interface ActiveDirectoryAdministrator {
              */
             WithCreate withExistingFlexibleServer(String resourceGroupName, String serverName);
         }
+
         /**
          * The stage of the ActiveDirectoryAdministrator definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -117,6 +120,7 @@ public interface ActiveDirectoryAdministrator {
              */
             ActiveDirectoryAdministrator create(Context context);
         }
+
         /** The stage of the ActiveDirectoryAdministrator definition allowing to specify principalType. */
         interface WithPrincipalType {
             /**
@@ -128,6 +132,7 @@ public interface ActiveDirectoryAdministrator {
              */
             WithCreate withPrincipalType(PrincipalType principalType);
         }
+
         /** The stage of the ActiveDirectoryAdministrator definition allowing to specify principalName. */
         interface WithPrincipalName {
             /**
@@ -138,6 +143,7 @@ public interface ActiveDirectoryAdministrator {
              */
             WithCreate withPrincipalName(String principalName);
         }
+
         /** The stage of the ActiveDirectoryAdministrator definition allowing to specify tenantId. */
         interface WithTenantId {
             /**
@@ -149,6 +155,7 @@ public interface ActiveDirectoryAdministrator {
             WithCreate withTenantId(String tenantId);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -38,6 +38,15 @@ public final class Permissions extends ExpandableStringEnum<Permissions> {
     public static final Permissions P = fromString("p");
 
     /**
+     * Creates a new instance of Permissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Permissions() {
+    }
+
+    /**
      * Creates or finds a Permissions from its string representation.
      *
      * @param name a name to look for.

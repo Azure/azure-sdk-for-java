@@ -93,12 +93,12 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public Object[][] queryProvider() {
         return new Object[][] {
                 // query, maxItemCount, max expected back pressure buffered, total number of expected query results
-            { "SELECT * FROM r", 1, Queues.SMALL_BUFFER_SIZE, numberOfDocs},
-            { "SELECT * FROM r", 100, Queues.SMALL_BUFFER_SIZE, numberOfDocs},
-            { "SELECT * FROM r ORDER BY r.prop", 100, Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions, numberOfDocs},
-            { "SELECT TOP 500 * FROM r", 1, Queues.SMALL_BUFFER_SIZE, 500},
-            { "SELECT TOP 500 * FROM r", 100, Queues.SMALL_BUFFER_SIZE, 500},
-            { "SELECT TOP 500 * FROM r ORDER BY r.prop", 100, Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions , 500},
+            { "SELECT * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+            { "SELECT * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, numberOfDocs},
+            { "SELECT * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions, numberOfDocs},
+            { "SELECT TOP 500 * FROM r", 1, 2 * Queues.SMALL_BUFFER_SIZE, 500},
+            { "SELECT TOP 500 * FROM r", 100, 2 * Queues.SMALL_BUFFER_SIZE, 500},
+            { "SELECT TOP 500 * FROM r ORDER BY r.prop", 100, 2 * Queues.SMALL_BUFFER_SIZE + 3 * numberOfPartitions , 500},
         };
     }
 
@@ -206,7 +206,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
                 createdCollection,
                 docDefList);
 
-        numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
+        numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());

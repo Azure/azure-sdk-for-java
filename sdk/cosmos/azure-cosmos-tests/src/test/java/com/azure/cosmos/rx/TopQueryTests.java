@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.query.LimitContinuationToken;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -14,7 +15,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.query.TakeContinuationToken;
+import com.azure.cosmos.implementation.query.TopContinuationToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
@@ -46,7 +47,7 @@ public class TopQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -58,6 +59,7 @@ public class TopQueryTests extends TestSuiteBase {
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
+        int pageSize = 9;
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
@@ -81,11 +83,24 @@ public class TopQueryTests extends TestSuiteBase {
 
             CosmosPagedFlux<InternalObjectNode> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, InternalObjectNode.class);
 
+            // validate the pageSize in byPage() will be honored
             FeedResponseListValidator<InternalObjectNode> validator3 = new FeedResponseListValidator.Builder<InternalObjectNode>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
                     .hasValidQueryMetrics(qmEnabled).build();
 
-            validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
+            validateQuerySuccess(queryObservable3.byPage(pageSize), validator3, TIMEOUT);
+
+            // validate default value will be used for byPage
+            FeedResponseListValidator<InternalObjectNode> validator4 =
+                new FeedResponseListValidator
+                    .Builder<InternalObjectNode>()
+                    .totalSize(expectedTotalSize)
+                    .numberOfPages(1)
+                    .pageLengths(new int[] { expectedTotalSize })
+                    .hasValidQueryMetrics(qmEnabled)
+                    .build();
+
+            validateQuerySuccess(queryObservable3.byPage(), validator4, TIMEOUT);
 
             if (i == 0) {
                 options.setPartitionKey(new PartitionKey(firstPk));
@@ -97,37 +112,61 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void topContinuationTokenRoundTrips() throws Exception {
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    public void limitContinuationTokenRoundTrips() throws Exception {
         {
             // Positive
-            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(42, "asdf");
-            String serialized = takeContinuationToken.toString();
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            LimitContinuationToken limitContinuationToken = new LimitContinuationToken(42, "asdf");
+            String serialized = limitContinuationToken.toString();
+            ValueHolder<LimitContinuationToken> outLimitContinuationToken = new ValueHolder<LimitContinuationToken>();
 
-            assertThat(TakeContinuationToken.tryParse(serialized, outTakeContinuationToken)).isTrue();
-            TakeContinuationToken deserialized = outTakeContinuationToken.v;
+            assertThat(LimitContinuationToken.tryParse(serialized, outLimitContinuationToken)).isTrue();
+            LimitContinuationToken deserialized = outLimitContinuationToken.v;
 
-            assertThat(deserialized.getTakeCount()).isEqualTo(42);
+            assertThat(deserialized.getLimitCount()).isEqualTo(42);
             assertThat(deserialized.getSourceToken()).isEqualTo("asdf");
         }
 
         {
             // Negative
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            ValueHolder<LimitContinuationToken> outLimitContinuationToken = new ValueHolder<LimitContinuationToken>();
             assertThat(
-                    TakeContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outTakeContinuationToken))
+                LimitContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outLimitContinuationToken))
                             .isFalse();
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    public void topContinuationTokenRoundTrips() throws Exception {
+        {
+            // Positive
+            TopContinuationToken topContinuationToken = new TopContinuationToken(42, "asdf");
+            String serialized = topContinuationToken.toString();
+            ValueHolder<TopContinuationToken> outTopContinuationToken = new ValueHolder<TopContinuationToken>();
+
+            assertThat(TopContinuationToken.tryParse(serialized, outTopContinuationToken)).isTrue();
+            TopContinuationToken deserialized = outTopContinuationToken.v;
+
+            assertThat(deserialized.getTopCount()).isEqualTo(42);
+            assertThat(deserialized.getSourceToken()).isEqualTo("asdf");
+        }
+
+        {
+            // Negative
+            ValueHolder<TopContinuationToken> outTopContinuationToken = new ValueHolder<TopContinuationToken>();
+            assertThat(
+                TopContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outTopContinuationToken))
+                .isFalse();
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTopContinuationTokens() throws Exception {
         String query = "SELECT TOP 8 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTopGreaterThanItemsContinuationTokens() throws Exception {
         String query = "SELECT TOP 2147483647 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1}, 20);
@@ -199,12 +238,12 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_TopQueryTests() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);

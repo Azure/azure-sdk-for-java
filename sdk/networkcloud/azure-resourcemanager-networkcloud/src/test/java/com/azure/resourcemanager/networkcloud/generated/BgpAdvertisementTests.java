@@ -16,12 +16,12 @@ public final class BgpAdvertisementTests {
         BgpAdvertisement model =
             BinaryData
                 .fromString(
-                    "{\"advertiseToFabric\":\"True\",\"communities\":[\"auvfbtkuwhhmhyk\"],\"ipAddressPools\":[\"oxafn\",\"dlpichkoymkcdyhb\",\"kkpwdreqnovvq\"],\"peers\":[\"ljxywsu\",\"syrsndsytgadgvra\"]}")
+                    "{\"advertiseToFabric\":\"True\",\"communities\":[\"abnetshh\"],\"ipAddressPools\":[\"h\",\"d\",\"lvwiwubmwmbesl\"],\"peers\":[\"wwtppj\"]}")
                 .toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
-        Assertions.assertEquals("auvfbtkuwhhmhyk", model.communities().get(0));
-        Assertions.assertEquals("oxafn", model.ipAddressPools().get(0));
-        Assertions.assertEquals("ljxywsu", model.peers().get(0));
+        Assertions.assertEquals("abnetshh", model.communities().get(0));
+        Assertions.assertEquals("h", model.ipAddressPools().get(0));
+        Assertions.assertEquals("wwtppj", model.peers().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,13 @@ public final class BgpAdvertisementTests {
         BgpAdvertisement model =
             new BgpAdvertisement()
                 .withAdvertiseToFabric(AdvertiseToFabric.TRUE)
-                .withCommunities(Arrays.asList("auvfbtkuwhhmhyk"))
-                .withIpAddressPools(Arrays.asList("oxafn", "dlpichkoymkcdyhb", "kkpwdreqnovvq"))
-                .withPeers(Arrays.asList("ljxywsu", "syrsndsytgadgvra"));
+                .withCommunities(Arrays.asList("abnetshh"))
+                .withIpAddressPools(Arrays.asList("h", "d", "lvwiwubmwmbesl"))
+                .withPeers(Arrays.asList("wwtppj"));
         model = BinaryData.fromObject(model).toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
-        Assertions.assertEquals("auvfbtkuwhhmhyk", model.communities().get(0));
-        Assertions.assertEquals("oxafn", model.ipAddressPools().get(0));
-        Assertions.assertEquals("ljxywsu", model.peers().get(0));
+        Assertions.assertEquals("abnetshh", model.communities().get(0));
+        Assertions.assertEquals("h", model.ipAddressPools().get(0));
+        Assertions.assertEquals("wwtppj", model.peers().get(0));
     }
 }

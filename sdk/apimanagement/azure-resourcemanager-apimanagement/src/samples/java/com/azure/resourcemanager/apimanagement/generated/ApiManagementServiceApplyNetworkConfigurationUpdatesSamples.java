@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceApplyNetworkConfigurationParameters;
 
 /** Samples for ApiManagementService ApplyNetworkConfigurationUpdates. */
 public final class ApiManagementServiceApplyNetworkConfigurationUpdatesSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementApplyNetworkConfigurationUpdates.json
      */
     /**
      * Sample code: ApiManagementApplyNetworkConfigurationUpdates.
@@ -25,6 +24,6 @@ public final class ApiManagementServiceApplyNetworkConfigurationUpdatesSamples {
                 "rg1",
                 "apimService1",
                 new ApiManagementServiceApplyNetworkConfigurationParameters().withLocation("west us"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

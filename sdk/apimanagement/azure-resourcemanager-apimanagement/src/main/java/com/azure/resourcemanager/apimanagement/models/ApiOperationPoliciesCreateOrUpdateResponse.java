@@ -30,7 +30,11 @@ public final class ApiOperationPoliciesCreateOrUpdateResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public PolicyContractInner getValue() {
         return super.getValue();

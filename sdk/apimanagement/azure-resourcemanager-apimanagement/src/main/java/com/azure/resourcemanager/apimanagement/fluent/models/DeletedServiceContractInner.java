@@ -24,6 +24,10 @@ public final class DeletedServiceContractInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of DeletedServiceContractInner class. */
+    public DeletedServiceContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Deleted API Management Service details.
      *

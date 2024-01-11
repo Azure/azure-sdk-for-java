@@ -72,6 +72,8 @@ public final class KeyVaultSettingsClientBuilder implements
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties;
 
@@ -377,8 +379,7 @@ public final class KeyVaultSettingsClientBuilder implements
 
         if (vaultUrl == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
@@ -390,20 +391,18 @@ public final class KeyVaultSettingsClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, httpLogOptions);
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
 
-        if (clientOptions != null) {
-            HttpHeaders headers = new HttpHeaders();
-
-            clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-
-            if (headers.getSize() > 0) {
-                policies.add(new AddHeadersPolicy(headers));
-            }
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
         }
 
         policies.addAll(
@@ -424,14 +423,14 @@ public final class KeyVaultSettingsClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .clientOptions(clientOptions)
+            .clientOptions(localClientOptions)
             .tracer(tracer)
             .build();
     }

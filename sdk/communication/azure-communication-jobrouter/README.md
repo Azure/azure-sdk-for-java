@@ -2,8 +2,7 @@
 
 Azure Communication Job Router contains the APIs used in job router applications for Azure Communication Services.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][product_docs]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][product_docs]
 
 ## Getting started
 
@@ -52,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-jobrouter</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -131,13 +130,20 @@ An exception policy controls the behavior of a Job based on a trigger and execut
 ## Examples
 
 ### Client Initialization
-To initialize the JobRouter Client, the connection string can be used to instantiate.
-Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
+JobRouter has two clients, JobRouterAdministrationClient and JobRouterClient. Both of them
+can be initialized using the endpoint and access key.
 
 ```java 
-JobRouterClient jobRouterClient = new JobRouterClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+String endpoint = <endpoint>;
+String accessKey = <accessKey>;
+JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+        .endpoint(endpoint)
+        .addPolicy(new HmacAuthenticationPolicy(new AzureKeyCredential(accessKey)))
+        .buildClient();
+JobRouterClient routerClient = new JobRouterClientBuilder()
+        .endpoint(endpoint)
+        .addPolicy(new HmacAuthenticationPolicy(new AzureKeyCredential(accessKey)))
+        .buildClient();
 ```
 
 Using `JobRouterClient` created from builder, create Job Router entities as described below.
@@ -152,14 +158,14 @@ CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDist
         .setMinConcurrentOffers(1)
         .setMaxConcurrentOffers(10)
 );
-DistributionPolicy distributionPolicy = jobRouterClient.createDistributionPolicy(createDistributionPolicyOptions);
+DistributionPolicy distributionPolicy = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
 ```
 
 ### Create a Queue
 
 ```java 
 CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
-RouterQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
+RouterQueue jobQueue = routerAdminClient.createQueue(createQueueOptions);
 ```
 
 ### Create a Job
@@ -176,33 +182,35 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
                         .setValue(new LabelValue(10));
                 }}
             );
-RouterJob routerJob = jobRouterClient.createJob(createJobOptions);
+RouterJob routerJob = routerClient.createJob(createJobOptions);
 ```
 
 ### Create a Worker
 
 ```java 
-Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
+Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
     {
-        put("Label", new LabelValue("Value"));
+        put("Label", new RouterValue("Value"));
     }
 };
 
-Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
+Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
     {
-        put("Tag", new LabelValue("Value"));
+        put("Tag", new RouterValue("Value"));
     }
 };
 
-Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+RouterChannel channel = new RouterChannel("router-channel", 1);
+
+List<RouterChannel> channels = new ArrayList<RouterChannel>() {
     {
-        put("channel1", new ChannelConfiguration().setCapacityCostPerJob(1));
+        add(channel);
     }
 };
 
-Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
+List<String> queues = new ArrayList<String>() {
     {
-        put(jobQueue.getId(), new RouterQueueAssignment());
+        add(jobQueue.getId());
     }
 };
 
@@ -210,10 +218,10 @@ CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
     .setLabels(labels)
     .setTags(tags)
     .setAvailableForOffers(true)
-    .setChannelConfigurations(channelConfigurations)
-    .setQueueAssignments(queueAssignments);
+    .setChannels(channels)
+    .setQueues(queues);
 
-RouterWorker routerWorker = jobRouterClient.createWorker(createWorkerOptions);
+RouterWorker routerWorker = routerClient.createWorker(createWorkerOptions);
 ```
 
 ## Troubleshooting
@@ -234,3 +242,16 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+
+<!-- LINKS -->
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/src
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-jobrouter
+[api_documentation]: https://aka.ms/java-docs
+[rest_docs]: https://learn.microsoft.com/rest/api/communication/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-jobrouter%2FREADME.png)

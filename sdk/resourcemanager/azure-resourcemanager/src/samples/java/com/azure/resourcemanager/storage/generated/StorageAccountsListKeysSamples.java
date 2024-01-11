@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageAccounts ListKeys. */
 public final class StorageAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListKeys.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListKeys.json
      */
     /**
      * Sample code: StorageAccountListKeys.
@@ -22,6 +20,6 @@ public final class StorageAccountsListKeysSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .listKeysWithResponse("res418", "sto2220", null, Context.NONE);
+            .listKeysWithResponse("res418", "sto2220", null, com.azure.core.util.Context.NONE);
     }
 }

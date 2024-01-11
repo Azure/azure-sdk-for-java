@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for ContainerServiceManagementClient class. */
+/**
+ * The interface for ContainerServiceManagementClient class.
+ */
 public interface ContainerServiceManagementClient {
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
@@ -107,4 +109,18 @@ public interface ContainerServiceManagementClient {
      * @return the SnapshotsClient object.
      */
     SnapshotsClient getSnapshots();
+
+    /**
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     *
+     * @return the TrustedAccessRoleBindingsClient object.
+     */
+    TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
+
+    /**
+     * Gets the TrustedAccessRolesClient object to access its operations.
+     *
+     * @return the TrustedAccessRolesClient object.
+     */
+    TrustedAccessRolesClient getTrustedAccessRoles();
 }

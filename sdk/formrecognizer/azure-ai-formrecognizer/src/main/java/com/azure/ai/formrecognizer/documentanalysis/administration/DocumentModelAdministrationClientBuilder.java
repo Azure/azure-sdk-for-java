@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
@@ -37,9 +36,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient DocumentModelAdministrationClient}
- * and {@link DocumentModelAdministrationAsyncClient DocumentModelAdministrationAsyncClient}, call {@link #buildClient()} buildClient} and
- * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * This class provides a fluent builder API to help instantiation of
+ * {@link DocumentModelAdministrationClient DocumentModelAdministrationClient} and
+ * {@link DocumentModelAdministrationAsyncClient DocumentModelAdministrationAsyncClient}, call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
@@ -102,6 +103,14 @@ public final class DocumentModelAdministrationClientBuilder implements
     EndpointTrait<DocumentModelAdministrationClientBuilder>,
     HttpTrait<DocumentModelAdministrationClientBuilder>,
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder> {
+
+    /**
+     * Constructs a DocumentModelAdministrationClientBuilder object.
+     */
+    public DocumentModelAdministrationClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -153,29 +162,16 @@ public final class DocumentModelAdministrationClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentModelAdministrationClient(formRecognizerAPI, audience);
+        return new DocumentModelAdministrationClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), audience);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
+            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy,
+                retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
                 httpClient);
         }
         return pipeline;
@@ -215,13 +211,8 @@ public final class DocumentModelAdministrationClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion, audience);
+        return new DocumentModelAdministrationAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion, audience);
     }
 
     /**

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rule Collection Group resource. */
+/**
+ * Rule Collection Group resource.
+ */
 @Fluent
 public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of FirewallPolicyRuleCollectionGroupInner class. */
+    /**
+     * Creates an instance of FirewallPolicyRuleCollectionGroupInner class.
+     */
     public FirewallPolicyRuleCollectionGroupInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the firewall policy rule collection group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallPolicyRuleCollectionGroupProperties innerProperties() {
@@ -54,7 +58,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyRuleCollectionGroupInner object itself.
      */
@@ -75,7 +79,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -84,14 +88,16 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Get the type property: Rule Group type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FirewallPolicyRuleCollectionGroupInner withId(String id) {
         super.withId(id);
@@ -99,8 +105,18 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     }
 
     /**
+     * Get the size property: A read-only string that represents the size of the
+     * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
+     * 
+     * @return the size value.
+     */
+    public String size() {
+        return this.innerProperties() == null ? null : this.innerProperties().size();
+    }
+
+    /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -109,7 +125,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Set the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the FirewallPolicyRuleCollectionGroupInner object itself.
      */
@@ -123,7 +139,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Get the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @return the ruleCollections value.
      */
     public List<FirewallPolicyRuleCollection> ruleCollections() {
@@ -132,12 +148,12 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Set the ruleCollections property: Group of Firewall Policy rule collections.
-     *
+     * 
      * @param ruleCollections the ruleCollections value to set.
      * @return the FirewallPolicyRuleCollectionGroupInner object itself.
      */
-    public FirewallPolicyRuleCollectionGroupInner withRuleCollections(
-        List<FirewallPolicyRuleCollection> ruleCollections) {
+    public FirewallPolicyRuleCollectionGroupInner
+        withRuleCollections(List<FirewallPolicyRuleCollection> ruleCollections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FirewallPolicyRuleCollectionGroupProperties();
         }
@@ -146,8 +162,9 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group resource.
-     *
+     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group
+     * resource.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -156,7 +173,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

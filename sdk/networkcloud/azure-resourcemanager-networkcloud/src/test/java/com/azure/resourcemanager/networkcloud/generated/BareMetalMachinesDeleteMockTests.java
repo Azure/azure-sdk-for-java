@@ -56,6 +56,6 @@ public final class BareMetalMachinesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.bareMetalMachines().delete("p", "ofyuicd", com.azure.core.util.Context.NONE);
+        manager.bareMetalMachines().delete("wjksghudgzhxo", "jggsvo", com.azure.core.util.Context.NONE);
     }
 }

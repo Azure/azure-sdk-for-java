@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maps.generated;
 /** Samples for Maps List. */
 public final class MapsListSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/GetOperationsSubscription.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetOperationsSubscription.json
      */
     /**
      * Sample code: Get Operations by Subscription.

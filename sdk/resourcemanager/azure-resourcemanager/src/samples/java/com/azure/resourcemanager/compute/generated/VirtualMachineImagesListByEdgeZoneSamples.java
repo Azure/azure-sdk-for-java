@@ -4,41 +4,39 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-/** Samples for VirtualMachineImages ListByEdgeZone. */
+/**
+ * Samples for VirtualMachineImages ListByEdgeZone.
+ */
 public final class VirtualMachineImagesListByEdgeZoneSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesEdgeZoneListByEdgeZoneMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineImages()
-            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+    public static void
+        virtualMachineImagesEdgeZoneListByEdgeZoneMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
+            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesEdgeZoneListByEdgeZoneMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineImages()
-            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+    public static void
+        virtualMachineImagesEdgeZoneListByEdgeZoneMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
+            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 }

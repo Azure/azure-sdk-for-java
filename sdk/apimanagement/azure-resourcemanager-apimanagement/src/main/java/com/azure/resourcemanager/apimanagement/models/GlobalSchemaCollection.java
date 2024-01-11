@@ -30,6 +30,10 @@ public final class GlobalSchemaCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GlobalSchemaCollection class. */
+    public GlobalSchemaCollection() {
+    }
+
     /**
      * Get the value property: Global Schema Contract value.
      *

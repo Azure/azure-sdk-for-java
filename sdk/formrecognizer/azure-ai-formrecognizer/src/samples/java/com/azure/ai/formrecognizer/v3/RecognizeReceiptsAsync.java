@@ -28,8 +28,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 /**
  * Async sample for recognizing commonly found receipt fields from a local file input stream.
  * For a suggested approach to extracting information from receipts, see StronglyTypedRecognizedForm.java.
- * See fields found on a receipt here:
- * https://aka.ms/formrecognizer/receiptfields
+ * See fields found on a receipt <a href="https://aka.ms/formrecognizer/receiptfields">here</a>
  */
 public class RecognizeReceiptsAsync {
 

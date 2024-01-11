@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -47,10 +46,26 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
     private String osName;
 
     /*
+     * Gets or sets the current version status of VMware Tools installed in the guest operating system.
+     */
+    @JsonProperty(value = "toolsVersionStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private String toolsVersionStatus;
+
+    /*
+     * Gets or sets the current version of VMware Tools.
+     */
+    @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String toolsVersion;
+
+    /*
      * Gets or sets the folder path of the template.
      */
     @JsonProperty(value = "folderPath")
     private String folderPath;
+
+    /** Creates an instance of VirtualMachineTemplateInventoryItem class. */
+    public VirtualMachineTemplateInventoryItem() {
+    }
 
     /**
      * Get the memorySizeMB property: Gets or sets memory size in MBs for the template.
@@ -152,6 +167,25 @@ public final class VirtualMachineTemplateInventoryItem extends InventoryItemProp
     public VirtualMachineTemplateInventoryItem withOsName(String osName) {
         this.osName = osName;
         return this;
+    }
+
+    /**
+     * Get the toolsVersionStatus property: Gets or sets the current version status of VMware Tools installed in the
+     * guest operating system.
+     *
+     * @return the toolsVersionStatus value.
+     */
+    public String toolsVersionStatus() {
+        return this.toolsVersionStatus;
+    }
+
+    /**
+     * Get the toolsVersion property: Gets or sets the current version of VMware Tools.
+     *
+     * @return the toolsVersion value.
+     */
+    public String toolsVersion() {
+        return this.toolsVersion;
     }
 
     /**

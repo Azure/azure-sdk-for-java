@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LocalUsersOperation RegeneratePassword. */
 public final class LocalUsersOperationRegeneratePasswordSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUserRegeneratePassword.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUserRegeneratePassword.json
      */
     /**
      * Sample code: RegenerateLocalUserPassword.
@@ -22,6 +20,6 @@ public final class LocalUsersOperationRegeneratePasswordSamples {
             .manager()
             .serviceClient()
             .getLocalUsersOperations()
-            .regeneratePasswordWithResponse("res6977", "sto2527", "user1", Context.NONE);
+            .regeneratePasswordWithResponse("res6977", "sto2527", "user1", com.azure.core.util.Context.NONE);
     }
 }

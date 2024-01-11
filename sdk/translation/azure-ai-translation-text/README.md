@@ -62,15 +62,16 @@ update the API key without creating a new client.
 
 With the value of the endpoint, `AzureKeyCredential` and a `Region`, you can create the [TextTranslationClient][translator_client_class]:
 
-```Java
+```java createTextTranslationRestClient
 String apiKey = System.getenv("TEXT_TRANSLATOR_API_KEY");
 String region = System.getenv("TEXT_TRANSLATOR_API_REGION");
 AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
 TextTranslationClient client = new TextTranslationClientBuilder()
-.credential(credential)
-.region(region)
-.buildClient();
+        .credential(credential)
+        .region(region)
+        .endpoint("https://api.cognitive.microsofttranslator.com")
+        .buildClient();
 ```
 
 ## Key concepts
@@ -94,7 +95,7 @@ The following section provides several code snippets using the `client` [created
 
 Gets the set of languages currently supported by other operations of the Translator.
 
-```Java
+```java getTextTranslationLanguages
 GetLanguagesResult languages = client.getLanguages();
 
 System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
@@ -123,7 +124,7 @@ Please refer to the service documentation for a conceptual discussion of [langua
 
 Renders single source-language text to multiple target-language texts with a single request.
 
-```Java
+```java getTextTranslationMultiple
 String from = "en";
 List<String> targetLanguages = new ArrayList<>();
 targetLanguages.add("cs");
@@ -145,7 +146,7 @@ Please refer to the service documentation for a conceptual discussion of [transl
 
 Converts characters or letters of a source language to the corresponding characters or letters of a target language.
 
-```Java
+```java getTextTranslationTransliterate
 String language = "zh-Hans";
 String fromScript = "Hans";
 String toScript = "Latn";
@@ -165,7 +166,7 @@ Please refer to the service documentation for a conceptual discussion of [transl
 
 Identifies the positioning of sentence boundaries in a piece of text.
 
-```Java
+```java getTextTranslationSentenceBoundaries
 String sourceLanguage = "zh-Hans";
 String sourceScript = "Latn";
 List<InputTextItem> content = new ArrayList<>();
@@ -184,7 +185,7 @@ Please refer to the service documentation for a conceptual discussion of [break 
 
 Returns equivalent words for the source term in the target language.
 
-```Java
+```java getTextTranslationDictionaryLookup
 String sourceLanguage = "en";
 String targetLanguage = "es";
 List<InputTextItem> content = new ArrayList<>();
@@ -204,7 +205,7 @@ Please refer to the service documentation for a conceptual discussion of [dictio
 
 Returns grammatical structure and context examples for the source term and target term pair.
 
-```Java
+```java getTextTranslationDictionaryExamples
 String sourceLanguage = "en";
 String targetLanguage = "es";
 List<DictionaryExampleTextItem> content = new ArrayList<>();

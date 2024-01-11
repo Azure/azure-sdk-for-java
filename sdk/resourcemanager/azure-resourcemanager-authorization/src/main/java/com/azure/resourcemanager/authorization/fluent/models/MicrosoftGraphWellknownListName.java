@@ -23,6 +23,15 @@ public final class MicrosoftGraphWellknownListName extends ExpandableStringEnum<
     public static final MicrosoftGraphWellknownListName UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphWellknownListName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphWellknownListName() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphWellknownListName from its string representation.
      *
      * @param name a name to look for.

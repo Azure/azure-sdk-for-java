@@ -5,16 +5,30 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalyIncidentStatus. */
+/**
+ * Defines values for AnomalyIncidentStatus.
+ */
 public final class AnomalyIncidentStatus extends ExpandableStringEnum<AnomalyIncidentStatus> {
-    /** Static value Active for AnomalyIncidentStatus. */
+    /**
+     * Static value Active for AnomalyIncidentStatus.
+     */
     public static final AnomalyIncidentStatus ACTIVE = fromString("Active");
 
-    /** Static value Resolved for AnomalyIncidentStatus. */
+    /**
+     * Static value Resolved for AnomalyIncidentStatus.
+     */
     public static final AnomalyIncidentStatus RESOLVED = fromString("Resolved");
+
+    /**
+     * Constructs a AnomalyIncidentStatus object.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnomalyIncidentStatus() {
+    }
 
     /**
      * Creates or finds a AnomalyIncidentStatus from its string representation.
@@ -22,12 +36,15 @@ public final class AnomalyIncidentStatus extends ExpandableStringEnum<AnomalyInc
      * @param name a name to look for.
      * @return the corresponding AnomalyIncidentStatus.
      */
-    @JsonCreator
     public static AnomalyIncidentStatus fromString(String name) {
         return fromString(name, AnomalyIncidentStatus.class);
     }
 
-    /** @return known AnomalyIncidentStatus values. */
+    /**
+     * Returns the known AnomalyIncidentStatus values.
+     *
+     * @return known AnomalyIncidentStatus values.
+     */
     public static Collection<AnomalyIncidentStatus> values() {
         return values(AnomalyIncidentStatus.class);
     }

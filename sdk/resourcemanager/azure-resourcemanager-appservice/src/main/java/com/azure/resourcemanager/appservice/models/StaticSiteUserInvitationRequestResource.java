@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationRequestResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static sites user roles invitation resource. */
+/**
+ * Static sites user roles invitation resource.
+ */
 @Fluent
 public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
     @JsonProperty(value = "properties")
     private StaticSiteUserInvitationRequestResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteUserInvitationRequestResource class. */
+    /**
+     * Creates an instance of StaticSiteUserInvitationRequestResource class.
+     */
     public StaticSiteUserInvitationRequestResource() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteUserInvitationRequestResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteUserInvitationRequestResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteUserInvitationRequestResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -48,7 +54,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -62,7 +68,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the provider property: The identity provider for the static site user.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -71,7 +77,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the provider property: The identity provider for the static site user.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -85,7 +91,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the userDetails property: The user id for the static site user.
-     *
+     * 
      * @return the userDetails value.
      */
     public String userDetails() {
@@ -94,7 +100,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the userDetails property: The user id for the static site user.
-     *
+     * 
      * @param userDetails the userDetails value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -108,7 +114,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @return the roles value.
      */
     public String roles() {
@@ -117,7 +123,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -131,7 +137,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @return the numHoursToExpiration value.
      */
     public Integer numHoursToExpiration() {
@@ -140,7 +146,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @param numHoursToExpiration the numHoursToExpiration value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -154,7 +160,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

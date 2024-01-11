@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Function linked service. */
+/**
+ * Azure Function linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFunction")
 @Fluent
@@ -22,44 +24,54 @@ public final class AzureFunctionLinkedService extends LinkedService {
      * Azure Function linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private AzureFunctionLinkedServiceTypeProperties innerTypeProperties =
-        new AzureFunctionLinkedServiceTypeProperties();
+    private AzureFunctionLinkedServiceTypeProperties innerTypeProperties
+        = new AzureFunctionLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureFunctionLinkedService class. */
+    /**
+     * Creates an instance of AzureFunctionLinkedService class.
+     */
     public AzureFunctionLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Function linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureFunctionLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * 
      * @return the functionAppUrl value.
      */
     public Object functionAppUrl() {
@@ -79,7 +91,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
     /**
      * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * 
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -93,7 +105,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @return the functionKey value.
      */
     public SecretBase functionKey() {
@@ -102,7 +114,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Set the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @param functionKey the functionKey value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -115,23 +127,23 @@ public final class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
-    public AzureFunctionLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureFunctionLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
         }
@@ -141,7 +153,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -150,7 +162,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -164,7 +176,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the resourceId property: Allowed token audiences for azure function.
-     *
+     * 
      * @return the resourceId value.
      */
     public Object resourceId() {
@@ -173,7 +185,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Set the resourceId property: Allowed token audiences for azure function.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -188,7 +200,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
     /**
      * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to
      * AzureFunction. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authentication value.
      */
     public Object authentication() {
@@ -198,7 +210,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
     /**
      * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to
      * AzureFunction. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -212,17 +224,15 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureFunctionLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureFunctionLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

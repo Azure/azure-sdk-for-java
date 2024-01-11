@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Container App Revision. */
+/**
+ * Container App Revision.
+ */
 @Fluent
 public final class RevisionInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class RevisionInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of RevisionInner class. */
+    /**
+     * Creates an instance of RevisionInner class.
+     */
     public RevisionInner() {
     }
 
     /**
      * Get the innerProperties property: Revision resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RevisionProperties innerProperties() {
@@ -43,7 +47,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -52,7 +56,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the RevisionInner object itself.
      */
@@ -61,14 +65,18 @@ public final class RevisionInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RevisionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RevisionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,8 +84,9 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Get the createdTime property: Timestamp describing when the revision was created by controller.
-     *
+     * Get the createdTime property: Timestamp describing when the revision was created
+     * by controller.
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -86,7 +95,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the revision.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -94,9 +103,10 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Get the template property: Container App Revision Template with all possible settings and the defaults if user
-     * did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * Get the template property: Container App Revision Template with all possible settings and the
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -105,7 +115,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the active property: Boolean describing if the Revision is Active.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -114,7 +124,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the replicas property: Number of pods currently running for this revision.
-     *
+     * 
      * @return the replicas value.
      */
     public Integer replicas() {
@@ -123,7 +133,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the trafficWeight property: Traffic weight assigned to this revision.
-     *
+     * 
      * @return the trafficWeight value.
      */
     public Integer trafficWeight() {
@@ -132,7 +142,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the provisioningError property: Optional Field - Platform Error Message.
-     *
+     * 
      * @return the provisioningError value.
      */
     public String provisioningError() {
@@ -141,7 +151,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the healthState property: Current health State of the revision.
-     *
+     * 
      * @return the healthState value.
      */
     public RevisionHealthState healthState() {
@@ -150,7 +160,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the provisioningState property: Current provisioning State of the revision.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RevisionProvisioningState provisioningState() {
@@ -159,7 +169,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

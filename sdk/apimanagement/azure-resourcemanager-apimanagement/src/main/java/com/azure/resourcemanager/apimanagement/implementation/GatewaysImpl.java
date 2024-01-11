@@ -48,22 +48,13 @@ public final class GatewaysImpl implements Gateways {
         return Utils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId);
-    }
-
     public GatewaysGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, context);
     }
 
-    public GatewayContract get(String resourceGroupName, String serviceName, String gatewayId) {
-        GatewayContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, gatewayId);
-        if (inner != null) {
-            return new GatewayContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId);
     }
 
     public Response<GatewayContract> getWithResponse(
@@ -81,8 +72,13 @@ public final class GatewaysImpl implements Gateways {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String gatewayId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, ifMatch);
+    public GatewayContract get(String resourceGroupName, String serviceName, String gatewayId) {
+        GatewayContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, gatewayId);
+        if (inner != null) {
+            return new GatewayContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -90,13 +86,8 @@ public final class GatewaysImpl implements Gateways {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, gatewayId, ifMatch, context);
     }
 
-    public GatewayKeysContract listKeys(String resourceGroupName, String serviceName, String gatewayId) {
-        GatewayKeysContractInner inner = this.serviceClient().listKeys(resourceGroupName, serviceName, gatewayId);
-        if (inner != null) {
-            return new GatewayKeysContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String gatewayId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, ifMatch);
     }
 
     public Response<GatewayKeysContract> listKeysWithResponse(
@@ -114,12 +105,13 @@ public final class GatewaysImpl implements Gateways {
         }
     }
 
-    public void regenerateKey(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayKeyRegenerationRequestContract parameters) {
-        this.serviceClient().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
+    public GatewayKeysContract listKeys(String resourceGroupName, String serviceName, String gatewayId) {
+        GatewayKeysContractInner inner = this.serviceClient().listKeys(resourceGroupName, serviceName, gatewayId);
+        if (inner != null) {
+            return new GatewayKeysContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> regenerateKeyWithResponse(
@@ -133,15 +125,12 @@ public final class GatewaysImpl implements Gateways {
             .regenerateKeyWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
     }
 
-    public GatewayTokenContract generateToken(
-        String resourceGroupName, String serviceName, String gatewayId, GatewayTokenRequestContract parameters) {
-        GatewayTokenContractInner inner =
-            this.serviceClient().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
-        if (inner != null) {
-            return new GatewayTokenContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void regenerateKey(
+        String resourceGroupName,
+        String serviceName,
+        String gatewayId,
+        GatewayKeyRegenerationRequestContract parameters) {
+        this.serviceClient().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
     public Response<GatewayTokenContract> generateTokenWithResponse(
@@ -160,6 +149,17 @@ public final class GatewaysImpl implements Gateways {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GatewayTokenContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GatewayTokenContract generateToken(
+        String resourceGroupName, String serviceName, String gatewayId, GatewayTokenRequestContract parameters) {
+        GatewayTokenContractInner inner =
+            this.serviceClient().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
+        if (inner != null) {
+            return new GatewayTokenContractImpl(inner, this.manager());
         } else {
             return null;
         }

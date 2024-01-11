@@ -4,18 +4,24 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for LengthUnit. */
+/**
+ * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is
+ * "inch".
+ */
 public enum LengthUnit {
-    /** Enum value pixel. */
+    /**
+     * Enum value pixel.
+     */
     PIXEL("pixel"),
 
-    /** Enum value inch. */
+    /**
+     * Enum value inch.
+     */
     INCH("inch");
 
-    /** The actual serialized value for a LengthUnit instance. */
+    /**
+     * The actual serialized value for a LengthUnit instance.
+     */
     private final String value;
 
     LengthUnit(String value) {
@@ -24,12 +30,14 @@ public enum LengthUnit {
 
     /**
      * Parses a serialized value to a LengthUnit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LengthUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static LengthUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LengthUnit[] items = LengthUnit.values();
         for (LengthUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +47,9 @@ public enum LengthUnit {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

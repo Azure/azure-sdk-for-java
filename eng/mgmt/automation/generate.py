@@ -39,7 +39,7 @@ def update_parameters(suffix):
     OUTPUT_FOLDER_FORMAT = 'sdk/{{0}}/{0}'.format(ARTIFACT_FORMAT)
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--spec-root',
@@ -87,7 +87,7 @@ def parse_args() -> argparse.Namespace:
         nargs='*',
     )
 
-    return parser.parse_args()
+    return (parser, parser.parse_args())
 
 
 def sdk_automation(input_file: str, output_file: str):
@@ -200,7 +200,8 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
 
 def main():
-    args = vars(parse_args())
+    (parser, args) = parse_args()
+    args = vars(args)
 
     if args.get('config'):
         return sdk_automation(args['config'][0], args['config'][1])
@@ -208,6 +209,10 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
+
+    if not args.get('readme'):
+        parser.print_help()
+        sys.exit(0)
 
     readme = args['readme']
     match = re.match(

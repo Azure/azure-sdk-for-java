@@ -19,25 +19,22 @@ public final class QuotaCounterContractInner {
     private String counterKey;
 
     /*
-     * Identifier of the Period for which the counter was collected. Must not
-     * be empty.
+     * Identifier of the Period for which the counter was collected. Must not be empty.
      */
     @JsonProperty(value = "periodKey", required = true)
     private String periodKey;
 
     /*
-     * The date of the start of Counter Period. The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
+     * The date of the start of Counter Period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "periodStartTime", required = true)
     private OffsetDateTime periodStartTime;
 
     /*
-     * The date of the end of Counter Period. The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
+     * The date of the end of Counter Period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "periodEndTime", required = true)
@@ -48,6 +45,10 @@ public final class QuotaCounterContractInner {
      */
     @JsonProperty(value = "value")
     private QuotaCounterValueContractProperties value;
+
+    /** Creates an instance of QuotaCounterContractInner class. */
+    public QuotaCounterContractInner() {
+    }
 
     /**
      * Get the counterKey property: The Key value of the Counter. Must not be empty.

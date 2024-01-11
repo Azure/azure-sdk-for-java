@@ -2,13 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query.metrics;
 
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.Instant;
 
 /**
  * Stores information about fetch execution
  */
 public class FetchExecutionRange {
+    @JsonSerialize(using = DiagnosticsInstantSerializer.class)
     private final Instant startTime;
+
+    @JsonSerialize(using = DiagnosticsInstantSerializer.class)
     private final Instant endTime;
     private final String partitionId;
     private final long numberOfDocuments;

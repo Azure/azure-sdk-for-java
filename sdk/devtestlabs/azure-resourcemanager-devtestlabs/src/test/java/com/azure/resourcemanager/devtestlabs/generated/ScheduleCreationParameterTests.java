@@ -22,73 +22,65 @@ public final class ScheduleCreationParameterTests {
         ScheduleCreationParameter model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"kpzi\",\"weeklyRecurrence\":{\"weekdays\":[\"anlfzxiavrmbz\"],\"time\":\"okixrjqcir\"},\"dailyRecurrence\":{\"time\":\"frl\"},\"hourlyRecurrence\":{\"minute\":1054852433},\"timeZoneId\":\"nwoiind\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":2003190846,\"webhookUrl\":\"wbtlhflsjcdh\",\"emailRecipient\":\"fjvfbgofeljagr\",\"notificationLocale\":\"qhl\"},\"targetResourceId\":\"riiiojnalghfkv\"},\"name\":\"sexso\",\"location\":\"el\",\"tags\":{\"wws\":\"hahhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\",\"syqtfi\":\"grjguufzd\",\"phoszqz\":\"whbotzingamv\"}}")
+                    "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"azpxdtnkdmkqjjl\",\"weeklyRecurrence\":{\"weekdays\":[\"vrkpyouaibreb\"],\"time\":\"aysjkixqtnqttez\"},\"dailyRecurrence\":{\"time\":\"ffiakp\"},\"hourlyRecurrence\":{\"minute\":658417740},\"timeZoneId\":\"tedltmmj\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":968506113,\"webhookUrl\":\"hvwauyqncy\",\"emailRecipient\":\"p\",\"notificationLocale\":\"ipmdscwx\"},\"targetResourceId\":\"pevzhfst\"},\"name\":\"xhojuj\",\"location\":\"pelmcuvhixbjxyf\",\"tags\":{\"kkbnu\":\"lrcoolsttpki\"}}")
                 .toObject(ScheduleCreationParameter.class);
-        Assertions.assertEquals("sexso", model.name());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.tags().get("wws"));
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
-        Assertions.assertEquals("kpzi", model.taskType());
-        Assertions.assertEquals("anlfzxiavrmbz", model.weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("okixrjqcir", model.weeklyRecurrence().time());
-        Assertions.assertEquals("frl", model.dailyRecurrence().time());
-        Assertions.assertEquals(1054852433, model.hourlyRecurrence().minute());
-        Assertions.assertEquals("nwoiind", model.timeZoneId());
+        Assertions.assertEquals("xhojuj", model.name());
+        Assertions.assertEquals("lrcoolsttpki", model.tags().get("kkbnu"));
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("azpxdtnkdmkqjjl", model.taskType());
+        Assertions.assertEquals("vrkpyouaibreb", model.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("aysjkixqtnqttez", model.weeklyRecurrence().time());
+        Assertions.assertEquals("ffiakp", model.dailyRecurrence().time());
+        Assertions.assertEquals(658417740, model.hourlyRecurrence().minute());
+        Assertions.assertEquals("tedltmmj", model.timeZoneId());
         Assertions.assertEquals(EnableStatus.ENABLED, model.notificationSettings().status());
-        Assertions.assertEquals(2003190846, model.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("wbtlhflsjcdh", model.notificationSettings().webhookUrl());
-        Assertions.assertEquals("fjvfbgofeljagr", model.notificationSettings().emailRecipient());
-        Assertions.assertEquals("qhl", model.notificationSettings().notificationLocale());
-        Assertions.assertEquals("riiiojnalghfkv", model.targetResourceId());
+        Assertions.assertEquals(968506113, model.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("hvwauyqncy", model.notificationSettings().webhookUrl());
+        Assertions.assertEquals("p", model.notificationSettings().emailRecipient());
+        Assertions.assertEquals("ipmdscwx", model.notificationSettings().notificationLocale());
+        Assertions.assertEquals("pevzhfst", model.targetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduleCreationParameter model =
             new ScheduleCreationParameter()
-                .withName("sexso")
-                .withTags(
-                    mapOf(
-                        "wws",
-                        "hahhxvrhmzkwpj",
-                        "qxujxukndxd",
-                        "ughftqsx",
-                        "syqtfi",
-                        "grjguufzd",
-                        "phoszqz",
-                        "whbotzingamv"))
-                .withStatus(EnableStatus.ENABLED)
-                .withTaskType("kpzi")
+                .withName("xhojuj")
+                .withTags(mapOf("kkbnu", "lrcoolsttpki"))
+                .withStatus(EnableStatus.DISABLED)
+                .withTaskType("azpxdtnkdmkqjjl")
                 .withWeeklyRecurrence(
-                    new WeekDetails().withWeekdays(Arrays.asList("anlfzxiavrmbz")).withTime("okixrjqcir"))
-                .withDailyRecurrence(new DayDetails().withTime("frl"))
-                .withHourlyRecurrence(new HourDetails().withMinute(1054852433))
-                .withTimeZoneId("nwoiind")
+                    new WeekDetails().withWeekdays(Arrays.asList("vrkpyouaibreb")).withTime("aysjkixqtnqttez"))
+                .withDailyRecurrence(new DayDetails().withTime("ffiakp"))
+                .withHourlyRecurrence(new HourDetails().withMinute(658417740))
+                .withTimeZoneId("tedltmmj")
                 .withNotificationSettings(
                     new NotificationSettings()
                         .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(2003190846)
-                        .withWebhookUrl("wbtlhflsjcdh")
-                        .withEmailRecipient("fjvfbgofeljagr")
-                        .withNotificationLocale("qhl"))
-                .withTargetResourceId("riiiojnalghfkv");
+                        .withTimeInMinutes(968506113)
+                        .withWebhookUrl("hvwauyqncy")
+                        .withEmailRecipient("p")
+                        .withNotificationLocale("ipmdscwx"))
+                .withTargetResourceId("pevzhfst");
         model = BinaryData.fromObject(model).toObject(ScheduleCreationParameter.class);
-        Assertions.assertEquals("sexso", model.name());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.tags().get("wws"));
-        Assertions.assertEquals(EnableStatus.ENABLED, model.status());
-        Assertions.assertEquals("kpzi", model.taskType());
-        Assertions.assertEquals("anlfzxiavrmbz", model.weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("okixrjqcir", model.weeklyRecurrence().time());
-        Assertions.assertEquals("frl", model.dailyRecurrence().time());
-        Assertions.assertEquals(1054852433, model.hourlyRecurrence().minute());
-        Assertions.assertEquals("nwoiind", model.timeZoneId());
+        Assertions.assertEquals("xhojuj", model.name());
+        Assertions.assertEquals("lrcoolsttpki", model.tags().get("kkbnu"));
+        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("azpxdtnkdmkqjjl", model.taskType());
+        Assertions.assertEquals("vrkpyouaibreb", model.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("aysjkixqtnqttez", model.weeklyRecurrence().time());
+        Assertions.assertEquals("ffiakp", model.dailyRecurrence().time());
+        Assertions.assertEquals(658417740, model.hourlyRecurrence().minute());
+        Assertions.assertEquals("tedltmmj", model.timeZoneId());
         Assertions.assertEquals(EnableStatus.ENABLED, model.notificationSettings().status());
-        Assertions.assertEquals(2003190846, model.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("wbtlhflsjcdh", model.notificationSettings().webhookUrl());
-        Assertions.assertEquals("fjvfbgofeljagr", model.notificationSettings().emailRecipient());
-        Assertions.assertEquals("qhl", model.notificationSettings().notificationLocale());
-        Assertions.assertEquals("riiiojnalghfkv", model.targetResourceId());
+        Assertions.assertEquals(968506113, model.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("hvwauyqncy", model.notificationSettings().webhookUrl());
+        Assertions.assertEquals("p", model.notificationSettings().emailRecipient());
+        Assertions.assertEquals("ipmdscwx", model.notificationSettings().notificationLocale());
+        Assertions.assertEquals("pevzhfst", model.targetResourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

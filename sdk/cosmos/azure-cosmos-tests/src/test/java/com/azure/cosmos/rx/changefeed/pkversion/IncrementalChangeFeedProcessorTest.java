@@ -4,14 +4,23 @@ package com.azure.cosmos.rx.changefeed.pkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -35,6 +44,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -49,6 +59,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -71,13 +82,26 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
+    private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 10000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
+    private final String MULTI_WRITE_DATABASE_NAME = "multi-write-test-database";
+    private final String MULTI_WRITE_MONITORED_COLLECTION_NAME = "multi-write-test-monitored-container";
+    private final String MULTI_WRITE_LEASE_COLLECTION_NAME = "multi-write-test-lease-container";
 
     private CosmosAsyncClient client;
 
     private ChangeFeedProcessor changeFeedProcessor;
+
+    @DataProvider(name = "throughputControlConfigArgProvider")
+    public static Object[][] throughputControlConfigArgProvider() {
+        return new Object[][]{
+            // throughput control config enabled
+            { true },
+            { false }
+        };
+    }
 
     @Factory(dataProvider = "clientBuilders")
     public IncrementalChangeFeedProcessorTest(CosmosClientBuilder clientBuilder) {
@@ -203,6 +227,421 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
 
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsStartFromCustomDateForMultiWrite_test() throws InterruptedException {
+        CosmosClientBuilder clientBuilder = getClientBuilder();
+
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+        GlobalEndpointManager globalEndpointManager = rxDocumentClient.getGlobalEndpointManager();
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getWritableLocations().iterator();
+        List<String> preferredRegions = new ArrayList<>();
+
+        while (databaseAccountLocationIterator.hasNext()) {
+            DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();
+            preferredRegions.add(databaseAccountLocation.getName());
+        }
+
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+        CosmosAsyncClient cosmosAsyncClient = clientBuilder
+            .multipleWriteRegionsEnabled(true)
+            .endpointDiscoveryEnabled(true)
+            .preferredRegions(preferredRegions)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer createdFeedCollection = null;
+        CosmosAsyncContainer createdLeaseCollection = null;
+        CosmosAsyncDatabase cosmosAsyncDatabase = null;
+
+        try {
+
+            cosmosAsyncClient.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
+            cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabase.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+
+            createdFeedCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollection = cosmosAsyncDatabase.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
+
+            try {
+                List<InternalObjectNode> createdDocuments = new ArrayList<>();
+                Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+                // create a gap between previously written documents
+                Thread.sleep(3000);
+
+                ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                    .hostName(hostName)
+                    .feedContainer(createdFeedCollection)
+                    .leaseContainer(createdLeaseCollection)
+                    .handleChanges((List<JsonNode> docs) -> {
+                        logger.info("START processing from thread {}", Thread.currentThread().getId());
+                        for (JsonNode item : docs) {
+                            processItem(item, receivedDocuments);
+                        }
+                        logger.info("END processing from thread {}", Thread.currentThread().getId());
+                    })
+                    .options(new ChangeFeedProcessorOptions()
+                        .setLeaseRenewInterval(Duration.ofSeconds(20))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                        .setFeedPollDelay(Duration.ofSeconds(1))
+                        .setLeasePrefix("TEST")
+                        .setMaxItemCount(10)
+                        .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).toInstant())
+                        .setMinScaleCount(1)
+                        .setMaxScaleCount(3)
+                    )
+                    .buildChangeFeedProcessor();
+
+                try {
+                    changeFeedProcessor.start().publishOn(Schedulers.boundedElastic()).subscribe();
+                } catch (Exception ex) {
+                    logger.error("Change feed processor did not start in the expected time", ex);
+                    throw ex;
+                }
+
+                Thread.sleep(1000);
+                List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+                // Wait for the feed processor to receive and process the documents.
+                waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+
+                assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                assertThat(receivedDocuments.keySet().size()).isEqualTo(createdDocumentsAfterCFPStart.size());
+
+                for (InternalObjectNode item : createdDocumentsAfterCFPStart) {
+                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                }
+
+                // Wait for the feed processor to shutdown.
+                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+            }
+            catch (Exception exception) {
+                logger.error("Error in creating the ChangeFeedProcessor...");
+            }
+        } catch (Exception exception) {
+            logger.error("Error in creating containers...");
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            safeDeleteDatabase(cosmosAsyncDatabase);
+            safeClose(cosmosAsyncClient);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsStartFromCustomDateForMultiWrite_WithCFPReadFromSatelliteRegion_test() throws InterruptedException {
+        CosmosClientBuilder clientBuilder = getClientBuilder();
+
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+        GlobalEndpointManager globalEndpointManager = rxDocumentClient.getGlobalEndpointManager();
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getWritableLocations().iterator();
+        List<String> preferredRegions = new ArrayList<>();
+
+        while (databaseAccountLocationIterator.hasNext()) {
+            DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();
+            preferredRegions.add(databaseAccountLocation.getName());
+        }
+
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+        CosmosAsyncClient cosmosAsyncClientForLocalRegion = clientBuilder
+            .multipleWriteRegionsEnabled(true)
+            .endpointDiscoveryEnabled(true)
+            .preferredRegions(preferredRegions)
+            .buildAsyncClient();
+
+        CosmosAsyncClient cosmosAsyncClientForSatelliteRegion = clientBuilder
+            .multipleWriteRegionsEnabled(true)
+            .endpointDiscoveryEnabled(true)
+            .preferredRegions(Arrays.asList(preferredRegions.get(1)))
+            .buildAsyncClient();
+
+
+        CosmosAsyncContainer createdFeedCollectionLocalRegion = null;
+        CosmosAsyncContainer createdLeaseCollectionLocalRegion = null;
+        CosmosAsyncContainer createdFeedCollectionSatelliteRegion = null;
+        CosmosAsyncContainer createdLeaseCollectionSatelliteRegion = null;
+        CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = null;
+
+        try {
+
+            cosmosAsyncClientForLocalRegion.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
+            cosmosAsyncDatabaseRegionOne = cosmosAsyncClientForLocalRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id", ThroughputProperties.createManualThroughput(400)).block();
+
+            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
+
+            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientForSatelliteRegion.getDatabase(MULTI_WRITE_DATABASE_NAME);
+            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_MONITORED_COLLECTION_NAME);
+            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(MULTI_WRITE_LEASE_COLLECTION_NAME);
+
+            // allow some time to ensure collection is available for read
+            Thread.sleep(5_000);
+
+            try {
+
+                List<InternalObjectNode> createdDocuments = new ArrayList<>();
+                Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+
+                // create a gap between previously written documents
+                Thread.sleep(3000);
+
+                ChangeFeedProcessor changeFeedProcessorSatelliteRegion = new ChangeFeedProcessorBuilder()
+                    .hostName(hostName)
+                    .feedContainer(createdFeedCollectionSatelliteRegion)
+                    .leaseContainer(createdLeaseCollectionSatelliteRegion)
+                    .handleChanges((List<JsonNode> docs) -> {
+                        logger.info("START processing from thread {}", Thread.currentThread().getId());
+                        for (JsonNode item : docs) {
+                            processItem(item, receivedDocuments);
+                        }
+                        logger.info("END processing from thread {}", Thread.currentThread().getId());
+                    })
+                    .options(new ChangeFeedProcessorOptions()
+                        .setLeaseRenewInterval(Duration.ofSeconds(20))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                        .setFeedPollDelay(Duration.ofSeconds(1))
+                        .setLeasePrefix("TEST")
+                        .setMaxItemCount(10)
+                        .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).toInstant())
+                        .setMinScaleCount(1)
+                        .setMaxScaleCount(3)
+                    )
+                    .buildChangeFeedProcessor();
+
+                try {
+                    changeFeedProcessorSatelliteRegion.start().publishOn(Schedulers.boundedElastic()).subscribe();
+                } catch (Exception ex) {
+                    logger.error("Change feed processor did not start in the expected time", ex);
+                    throw ex;
+                }
+
+                // allow some time to ensure CFP instance has started
+                Thread.sleep(1000);
+
+                List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
+
+                // Wait for the feed processor to receive and process the documents.
+                waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+
+                assertThat(changeFeedProcessorSatelliteRegion.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+                changeFeedProcessorSatelliteRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                for (InternalObjectNode item : createdDocumentsAfterCFPStart) {
+                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                }
+
+                // Wait for the feed processor to shutdown.
+                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+            }
+            catch (Exception exception) {
+                logger.error("Error in creating the ChangeFeedProcessor...");
+            }
+        } finally {
+            safeDeleteCollection(createdFeedCollectionLocalRegion);
+            safeDeleteCollection(createdLeaseCollectionLocalRegion);
+            safeDeleteDatabase(cosmosAsyncDatabaseRegionOne);
+            safeClose(cosmosAsyncClientForLocalRegion);
+            safeClose(cosmosAsyncClientForSatelliteRegion);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsStartFromCustomDateForMultiWrite_WithCFPReadSwitchToSatelliteRegion_test() throws InterruptedException {
+        CosmosClientBuilder clientBuilder = getClientBuilder();
+
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+        GlobalEndpointManager globalEndpointManager = rxDocumentClient.getGlobalEndpointManager();
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getWritableLocations().iterator();
+        List<String> preferredRegions = new ArrayList<>();
+
+        while (databaseAccountLocationIterator.hasNext()) {
+            DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();
+            preferredRegions.add(databaseAccountLocation.getName());
+        }
+
+        assertThat(preferredRegions).isNotNull();
+        assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+        CosmosAsyncClient cosmosAsyncClientLocalRegion = clientBuilder
+            .multipleWriteRegionsEnabled(true)
+            .endpointDiscoveryEnabled(true)
+            .preferredRegions(preferredRegions)
+            .buildAsyncClient();
+
+        CosmosAsyncClient cosmosAsyncClientRemoteRegion = clientBuilder
+            .multipleWriteRegionsEnabled(true)
+            .endpointDiscoveryEnabled(true)
+            .preferredRegions(Arrays.asList(preferredRegions.get(1)))
+            .buildAsyncClient();
+
+        CosmosAsyncContainer createdFeedCollectionLocalRegion = null;
+        CosmosAsyncContainer createdLeaseCollectionLocalRegion = null;
+        CosmosAsyncContainer createdFeedCollectionSatelliteRegion = null;
+        CosmosAsyncContainer createdLeaseCollectionSatelliteRegion = null;
+        CosmosAsyncDatabase cosmosAsyncDatabaseRegionOne = null;
+
+        String dbId = UUID.randomUUID().toString();
+        String feedContainerId = UUID.randomUUID().toString();
+        String leaseContainerId = UUID.randomUUID().toString();
+
+        try {
+
+            cosmosAsyncClientLocalRegion.createDatabaseIfNotExists(dbId).block();
+            cosmosAsyncDatabaseRegionOne = cosmosAsyncClientLocalRegion.getDatabase(dbId);
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(feedContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
+            cosmosAsyncDatabaseRegionOne.createContainerIfNotExists(leaseContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
+
+            createdFeedCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(feedContainerId);
+            createdLeaseCollectionLocalRegion = cosmosAsyncDatabaseRegionOne.getContainer(leaseContainerId);
+
+            CosmosAsyncDatabase cosmosAsyncDatabaseRegionTwo = cosmosAsyncClientRemoteRegion.getDatabase(dbId);
+            createdFeedCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(feedContainerId);
+            createdLeaseCollectionSatelliteRegion = cosmosAsyncDatabaseRegionTwo.getContainer(leaseContainerId);
+
+            // allow some time to ensure collection is available for read
+            Thread.sleep(5_000);
+
+            try {
+                Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+                Instant cfpStartTimeSnapshot = ZonedDateTime.now(ZoneOffset.UTC).toInstant();
+
+                ChangeFeedProcessor changeFeedProcessorLocalRegion = new ChangeFeedProcessorBuilder()
+                    .hostName(RandomStringUtils.randomAlphabetic(6))
+                    .feedContainer(createdFeedCollectionLocalRegion)
+                    .leaseContainer(createdLeaseCollectionLocalRegion)
+                    .handleChanges((List<JsonNode> docs) -> {
+                        logger.info("START processing from thread {}", Thread.currentThread().getId());
+                        for (JsonNode item : docs) {
+                            processItem(item, receivedDocuments);
+                        }
+                        logger.info("END processing from thread {}", Thread.currentThread().getId());
+                    })
+                    .options(new ChangeFeedProcessorOptions()
+                        .setLeaseRenewInterval(Duration.ofSeconds(20))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                        .setFeedPollDelay(Duration.ofSeconds(1))
+                        .setLeasePrefix("TEST-1")
+                        .setMaxItemCount(10)
+                        .setStartTime(cfpStartTimeSnapshot)
+                        .setMinScaleCount(1)
+                        .setMaxScaleCount(3)
+                    )
+                    .buildChangeFeedProcessor();
+
+                ChangeFeedProcessor changeFeedProcessorSatelliteRegion = new ChangeFeedProcessorBuilder()
+                    .hostName(RandomStringUtils.randomAlphabetic(6))
+                    .feedContainer(createdFeedCollectionSatelliteRegion)
+                    .leaseContainer(createdLeaseCollectionSatelliteRegion)
+                    .handleChanges((List<JsonNode> docs) -> {
+                        logger.info("START processing from thread {}", Thread.currentThread().getId());
+                        for (JsonNode item : docs) {
+                            processItem(item, receivedDocuments);
+                        }
+                        logger.info("END processing from thread {}", Thread.currentThread().getId());
+                    })
+                    .options(new ChangeFeedProcessorOptions()
+                        .setLeaseRenewInterval(Duration.ofSeconds(20))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                        .setFeedPollDelay(Duration.ofSeconds(1))
+                        .setLeasePrefix("TEST-2")
+                        .setMaxItemCount(10)
+                        .setStartTime(cfpStartTimeSnapshot)
+                        .setMinScaleCount(1)
+                        .setMaxScaleCount(3)
+                    )
+                    .buildChangeFeedProcessor();
+
+                try {
+                    // enforce both CFP instances are started
+                    changeFeedProcessorLocalRegion
+                        .start()
+                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .publishOn(Schedulers.boundedElastic())
+                        .block();
+                    changeFeedProcessorSatelliteRegion
+                        .start()
+                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .publishOn(Schedulers.boundedElastic())
+                        .block();
+                } catch (Exception ex) {
+                    logger.error("Change feed processor did not start in the expected time", ex);
+                    throw ex;
+                }
+
+                assertThat(changeFeedProcessorLocalRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
+                assertThat(changeFeedProcessorSatelliteRegion.isStarted()).as("Change feed processor instance is running...").isTrue();
+
+                List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+
+                // abruptly initiate stopping the CFP instance for the local region
+                changeFeedProcessorLocalRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
+
+                // Wait for the feed processor to receive and process the documents.
+                waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+
+                setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
+
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
+                // Wait for the feed processor to receive and process the documents.
+                waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
+
+                changeFeedProcessorSatelliteRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                for (InternalObjectNode item : createdDocumentsAfterCFPStart) {
+                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                }
+
+                // Wait for the feed processor to shutdown.
+                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+            }
+            catch (Exception exception) {
+                logger.error("Error in creating the ChangeFeedProcessor...");
+            }
+        } finally {
+            safeDeleteCollection(createdFeedCollectionLocalRegion);
+            safeDeleteCollection(createdLeaseCollectionLocalRegion);
+            safeDeleteDatabase(cosmosAsyncDatabaseRegionOne);
+            safeClose(cosmosAsyncClientLocalRegion);
+            safeClose(cosmosAsyncClientRemoteRegion);
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
         }
@@ -753,8 +1192,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void readFeedDocumentsAfterSplit() throws InterruptedException {
+    @Test(groups = { "cfp-split" }, dataProvider = "throughputControlConfigArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsAfterSplit(boolean throughputControlConfigEnabled) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -777,24 +1216,34 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxItemCount(100)
                     .setLeaseExpirationInterval(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .setFeedPollDelay(Duration.ofMillis(200))
-                )
+                    .setFeedPollDelay(Duration.ofMillis(200)))
                 .buildChangeFeedProcessor();
 
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            ChangeFeedProcessorOptions options =
+                new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseRenewInterval(Duration.ofSeconds(2));
+
+            if (throughputControlConfigEnabled) {
+                options.setFeedPollThroughputControlConfig(
+                    new ThroughputControlGroupConfigBuilder()
+                        .groupName("splitTest-" + UUID.randomUUID())
+                        .targetThroughputThreshold(1.0) // just to make sure enabling throughput control config will not cause exceptions/errors
+                        .build()
+                );
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeasePrefix("TEST")
-                    .setStartFromBeginning(true)
-                    .setMaxItemCount(10)
-                    .setLeaseRenewInterval(Duration.ofSeconds(2))
-                )
+                .options(options)
                 .buildChangeFeedProcessor();
 
             leaseMonitoringChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -877,7 +1326,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Flux.just(1).subscribeOn(Schedulers.boundedElastic())
                 .flatMap(value -> {
                     log.warn("Reading current throughput change.");
-                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
+                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, (CosmosQueryRequestOptions) null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {
                     int count = partitionKeyRangeFeedResponse.getResults().size();
@@ -962,7 +1411,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1271,6 +1720,159 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    public void endToEndTimeoutConfigShouldBeSuppressed() throws InterruptedException {
+        CosmosAsyncClient clientWithE2ETimeoutConfig = null;
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            clientWithE2ETimeoutConfig = this.getClientBuilder()
+                    .endToEndOperationLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(1)).build())
+                    .contentResponseOnWriteEnabled(true)
+                    .buildAsyncClient();
+
+            CosmosAsyncDatabase testDatabase = clientWithE2ETimeoutConfig.getDatabase(this.createdDatabase.getId());
+            CosmosAsyncContainer createdFeedCollectionDuplicate = testDatabase.getContainer(createdFeedCollection.getId());
+            CosmosAsyncContainer createdLeaseCollectionDuplicate = testDatabase.getContainer(createdLeaseCollection.getId());
+
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollectionDuplicate)
+                .leaseContainer(createdLeaseCollectionDuplicate)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(10)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // reset the endToEnd config
+            this.getClientBuilder().endToEndOperationLatencyPolicyConfig(null);
+            safeClose(clientWithE2ETimeoutConfig);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
+        // Create a separate client as throughput control group will be applied to it
+        CosmosAsyncClient clientWithThroughputControl =
+            getClientBuilder()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+        CosmosAsyncDatabase database = clientWithThroughputControl.getDatabase(this.createdDatabase.getId());
+
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(database, 4000); // using a large value as we plan to create more docs
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(database, LEASE_COLLECTION_THROUGHPUT);
+
+        ThroughputControlGroupConfig throughputControlGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("changeFeedProcessor")
+                .targetThroughput(1)
+                .build();
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            int maxItemCount = 100; // force the RU usage per requests > 1
+            int feedCount = maxItemCount * 2; // force to do two fetches
+            // using the original client to create the docs to isolate possible throttling
+            setupReadFeedDocuments(
+                createdDocuments,
+                receivedDocuments,
+                this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                feedCount);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(maxItemCount)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            safeClose(clientWithThroughputControl);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, int sleepTime) throws InterruptedException {
         try {
             changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -1389,11 +1991,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    @BeforeMethod(groups = { "emulator", "simple" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "emulator", "cfp-split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
      public void beforeMethod() {
      }
 
-    @BeforeClass(groups = { "emulator", "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator", "cfp-split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -1420,11 +2022,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 //        createdDatabase = createDatabase(client, databaseId);
     }
 
-    @AfterMethod(groups = { "emulator", "simple" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "emulator", "cfp-split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
     }
 
-    @AfterClass(groups = { "emulator", "simple" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "cfp-split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
 //        try {
 //            client.readAllDatabases()
@@ -1472,16 +2074,24 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private CosmosAsyncContainer createFeedCollection(int provisionedThroughput) {
+        return createFeedCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createFeedCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
-        return createCollection(createdDatabase, getCollectionDefinition(), optionsFeedCollection, provisionedThroughput);
+        return createCollection(database, getCollectionDefinition(), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {
+        return createLeaseCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createLeaseCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
             "leases_" + UUID.randomUUID(),
             "/id");
-        return createCollection(createdDatabase, collectionDefinition, options, provisionedThroughput);
+        return createCollection(database, collectionDefinition, options, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseMonitorCollection(int provisionedThroughput) {

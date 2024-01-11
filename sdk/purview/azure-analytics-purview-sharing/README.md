@@ -443,7 +443,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src
-[package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-sharing
+[package]: https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-sharing
 [share_product_documentation]: https://docs.microsoft.com/azure/purview/concept-data-share
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src/samples/
 [docs]: https://azure.github.io/azure-sdk-for-java/

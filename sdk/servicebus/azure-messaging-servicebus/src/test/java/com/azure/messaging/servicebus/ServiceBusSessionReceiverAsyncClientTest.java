@@ -19,14 +19,13 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -64,13 +63,15 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
     private final TestPublisher<Message> messageProcessor = TestPublisher.createCold();
-    private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false);
+    private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
+    private ConnectionCacheWrapper connectionCacheWrapper;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable autoCloseable;
 
@@ -84,17 +85,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
-
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
@@ -129,6 +119,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
     }
 
     @AfterEach
@@ -180,7 +171,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, instrumentation,
+            connectionCacheWrapper, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER
         );
@@ -198,7 +189,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .thenCancel().verify();
+            .thenCancel()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -206,7 +198,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
             false, null, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, instrumentation.getTracer());
 
         final int numberOfMessages = 5;
@@ -275,7 +267,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, instrumentation,
+            connectionCacheWrapper, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER
         );
@@ -288,22 +280,13 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messageProcessor.next(message);
                 }
             })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .thenAwait(Duration.ofSeconds(1)).thenCancel().verify();
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .thenAwait(Duration.ofSeconds(1)).thenCancel()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(client.acceptNextSession()
                 .flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
@@ -312,18 +295,12 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messagePublisher2.next(message2);
                 }
             })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
             .thenAwait(Duration.ofSeconds(1))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -358,7 +335,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), eq(sessionId))).thenReturn(Mono.just(amqpReceiveLink));
 
         final ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, instrumentation,
+            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER);
 
@@ -381,7 +358,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messageProcessor.complete();
                 })
                 .expectComplete()
-                .verify();
+                .verify(DEFAULT_TIMEOUT);
         } finally {
             client.close();
         }

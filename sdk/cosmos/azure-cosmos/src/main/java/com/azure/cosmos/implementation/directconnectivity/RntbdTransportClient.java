@@ -617,6 +617,12 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration timeoutDetectionOnWriteTimeLimit;
 
+        @JsonProperty()
+        private final Duration nonRespondingChannelReadDelayTimeLimit;
+
+        @JsonProperty()
+        private final int cancellationCountSinceLastReadThreshold;
+
         /**
          * Used during the open connections flow to determine the
          * minimum no. of connections to keep open to a particular
@@ -667,6 +673,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteThreshold = builder.timeoutDetectionOnWriteThreshold;
             this.timeoutDetectionOnWriteTimeLimit = builder.timeoutDetectionOnWriteTimeLimit;
             this.minConnectionPoolSizePerEndpoint = builder.minConnectionPoolSizePerEndpoint;
+            this.nonRespondingChannelReadDelayTimeLimit = builder.nonRespondingChannelReadDelayTimeLimit;
+            this.cancellationCountSinceLastReadThreshold = builder.cancellationCountSinceLastReadThreshold;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -709,6 +717,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
             this.minConnectionPoolSizePerEndpoint = connectionPolicy.getMinConnectionPoolSizePerEndpoint();
+            this.cancellationCountSinceLastReadThreshold = 3;
+            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(10);
         }
 
         // endregion
@@ -839,6 +849,14 @@ public class RntbdTransportClient extends TransportClient {
 
         public Duration timeoutDetectionOnWriteTimeLimit() {
             return this.timeoutDetectionOnWriteTimeLimit;
+        }
+
+        public Duration nonRespondingChannelReadDelayTimeLimit() {
+            return this.nonRespondingChannelReadDelayTimeLimit;
+        }
+
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.cancellationCountSinceLastReadThreshold;
         }
 
         public int minConnectionPoolSizePerEndpoint() {
@@ -1018,6 +1036,8 @@ public class RntbdTransportClient extends TransportClient {
             private int timeoutDetectionOnWriteThreshold;
             private Duration timeoutDetectionOnWriteTimeLimit;
             private int minConnectionPoolSizePerEndpoint;
+            private Duration nonRespondingChannelReadDelayTimeLimit;
+            private int cancellationCountSinceLastReadThreshold;
 
             // endregion
 
@@ -1060,6 +1080,8 @@ public class RntbdTransportClient extends TransportClient {
                 this.timeoutDetectionOnWriteThreshold = DEFAULT_OPTIONS.timeoutDetectionOnWriteThreshold;
                 this.timeoutDetectionOnWriteTimeLimit = DEFAULT_OPTIONS.timeoutDetectionOnWriteTimeLimit;
                 this.minConnectionPoolSizePerEndpoint = connectionPolicy.getMinConnectionPoolSizePerEndpoint();
+                this.nonRespondingChannelReadDelayTimeLimit = DEFAULT_OPTIONS.nonRespondingChannelReadDelayTimeLimit;
+                this.cancellationCountSinceLastReadThreshold = DEFAULT_OPTIONS.cancellationCountSinceLastReadThreshold;
             }
 
             // endregion

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workbooks GetByResourceGroup. */
 public final class WorkbooksGetByResourceGroupSamples {
     /*
@@ -20,7 +18,7 @@ public final class WorkbooksGetByResourceGroupSamples {
         manager
             .workbooks()
             .getByResourceGroupWithResponse(
-                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +34,7 @@ public final class WorkbooksGetByResourceGroupSamples {
         manager
             .workbooks()
             .getByResourceGroupWithResponse(
-                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -51,6 +49,6 @@ public final class WorkbooksGetByResourceGroupSamples {
         manager
             .workbooks()
             .getByResourceGroupWithResponse(
-                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, com.azure.core.util.Context.NONE);
     }
 }

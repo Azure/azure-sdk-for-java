@@ -14,17 +14,16 @@ public final class ClusterDeployParametersTests {
     public void testDeserialize() throws Exception {
         ClusterDeployParameters model =
             BinaryData
-                .fromString("{\"skipValidationsForMachines\":[\"kvnlvxbcuiiznkt\",\"f\",\"nsnvpd\",\"bmikost\"]}")
+                .fromString("{\"skipValidationsForMachines\":[\"wpusxjbaqehg\",\"dohzjq\"]}")
                 .toObject(ClusterDeployParameters.class);
-        Assertions.assertEquals("kvnlvxbcuiiznkt", model.skipValidationsForMachines().get(0));
+        Assertions.assertEquals("wpusxjbaqehg", model.skipValidationsForMachines().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterDeployParameters model =
-            new ClusterDeployParameters()
-                .withSkipValidationsForMachines(Arrays.asList("kvnlvxbcuiiznkt", "f", "nsnvpd", "bmikost"));
+            new ClusterDeployParameters().withSkipValidationsForMachines(Arrays.asList("wpusxjbaqehg", "dohzjq"));
         model = BinaryData.fromObject(model).toObject(ClusterDeployParameters.class);
-        Assertions.assertEquals("kvnlvxbcuiiznkt", model.skipValidationsForMachines().get(0));
+        Assertions.assertEquals("wpusxjbaqehg", model.skipValidationsForMachines().get(0));
     }
 }

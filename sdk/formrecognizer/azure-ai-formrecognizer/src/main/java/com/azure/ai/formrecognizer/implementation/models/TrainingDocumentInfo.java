@@ -5,39 +5,47 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Report for a custom model training document. */
+/**
+ * Report for a custom model training document.
+ */
 @Fluent
-public final class TrainingDocumentInfo {
+public final class TrainingDocumentInfo implements JsonSerializable<TrainingDocumentInfo> {
     /*
      * Training document name.
      */
-    @JsonProperty(value = "documentName", required = true)
     private String documentName;
 
     /*
      * Total number of pages trained.
      */
-    @JsonProperty(value = "pages", required = true)
     private int pages;
 
     /*
      * List of errors.
      */
-    @JsonProperty(value = "errors", required = true)
     private List<ErrorInformation> errors;
 
     /*
      * Status of the training operation.
      */
-    @JsonProperty(value = "status", required = true)
     private TrainStatus status;
 
     /**
+     * Creates an instance of TrainingDocumentInfo class.
+     */
+    public TrainingDocumentInfo() {
+    }
+
+    /**
      * Get the documentName property: Training document name.
-     *
+     * 
      * @return the documentName value.
      */
     public String getDocumentName() {
@@ -46,7 +54,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the documentName property: Training document name.
-     *
+     * 
      * @param documentName the documentName value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -57,7 +65,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the pages property: Total number of pages trained.
-     *
+     * 
      * @return the pages value.
      */
     public int getPages() {
@@ -66,7 +74,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the pages property: Total number of pages trained.
-     *
+     * 
      * @param pages the pages value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -77,7 +85,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the errors property: List of errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -86,7 +94,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the errors property: List of errors.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the TrainingDocumentInfo object itself.
      */
@@ -97,7 +105,7 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the status property: Status of the training operation.
-     *
+     * 
      * @return the status value.
      */
     public TrainStatus getStatus() {
@@ -106,12 +114,56 @@ public final class TrainingDocumentInfo {
 
     /**
      * Set the status property: Status of the training operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the TrainingDocumentInfo object itself.
      */
     public TrainingDocumentInfo setStatus(TrainStatus status) {
         this.status = status;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("documentName", this.documentName);
+        jsonWriter.writeIntField("pages", this.pages);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrainingDocumentInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrainingDocumentInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrainingDocumentInfo.
+     */
+    public static TrainingDocumentInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrainingDocumentInfo deserializedTrainingDocumentInfo = new TrainingDocumentInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("documentName".equals(fieldName)) {
+                    deserializedTrainingDocumentInfo.documentName = reader.getString();
+                } else if ("pages".equals(fieldName)) {
+                    deserializedTrainingDocumentInfo.pages = reader.getInt();
+                } else if ("errors".equals(fieldName)) {
+                    List<ErrorInformation> errors = reader.readArray(reader1 -> ErrorInformation.fromJson(reader1));
+                    deserializedTrainingDocumentInfo.errors = errors;
+                } else if ("status".equals(fieldName)) {
+                    deserializedTrainingDocumentInfo.status = TrainStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrainingDocumentInfo;
+        });
     }
 }

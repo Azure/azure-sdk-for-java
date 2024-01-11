@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.ManagedCertificateProperti
 /** Samples for ManagedCertificates CreateOrUpdate. */
 public final class ManagedCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedCertificate_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedCertificate_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Certificate.

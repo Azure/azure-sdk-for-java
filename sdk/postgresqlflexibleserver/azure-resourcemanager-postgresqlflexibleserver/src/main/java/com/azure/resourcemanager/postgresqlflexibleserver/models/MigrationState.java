@@ -25,6 +25,12 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
     /** Static value Succeeded for MigrationState. */
     public static final MigrationState SUCCEEDED = fromString("Succeeded");
 
+    /** Static value ValidationFailed for MigrationState. */
+    public static final MigrationState VALIDATION_FAILED = fromString("ValidationFailed");
+
+    /** Static value CleaningUp for MigrationState. */
+    public static final MigrationState CLEANING_UP = fromString("CleaningUp");
+
     /**
      * Creates a new instance of MigrationState value.
      *

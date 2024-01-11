@@ -13,6 +13,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resourcegraph.ResourceGraphManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class SamplesTestBase extends ResourceManagerTestProxyTestBase {
     protected AzureResourceManager azureResourceManager;
+    protected ResourceGraphManager resourceGraphManager;
 
     public SamplesTestBase() {
         addSanitizers(
@@ -57,6 +59,7 @@ public class SamplesTestBase extends ResourceManagerTestProxyTestBase {
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         azureResourceManager = buildManager(AzureResourceManager.class, httpPipeline, profile);
+        resourceGraphManager = ResourceGraphManager.authenticate(httpPipeline, profile);
         setInternalContext(internalContext, azureResourceManager);
     }
 

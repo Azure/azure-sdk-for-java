@@ -13,8 +13,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class CertificateInformation {
     /*
-     * Expiration date of the certificate. The date conforms to the following
-     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "expiry", required = true)
     private OffsetDateTime expiry;
@@ -30,6 +30,10 @@ public final class CertificateInformation {
      */
     @JsonProperty(value = "subject", required = true)
     private String subject;
+
+    /** Creates an instance of CertificateInformation class. */
+    public CertificateInformation() {
+    }
 
     /**
      * Get the expiry property: Expiration date of the certificate. The date conforms to the following format:

@@ -17,28 +17,28 @@ public final class DatastorePropertiesTests {
         DatastoreProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Deleting\",\"netAppVolume\":{\"id\":\"cxgod\"},\"diskPoolVolume\":{\"targetId\":\"fqkkr\",\"lunName\":\"mpukgriw\",\"mountOption\":\"ATTACH\",\"path\":\"fbxzpuzycisp\"},\"status\":\"Attached\"}")
+                    "{\"provisioningState\":\"Creating\",\"netAppVolume\":{\"id\":\"cgjbirxbp\"},\"diskPoolVolume\":{\"targetId\":\"srfbjfdtwss\",\"lunName\":\"t\",\"mountOption\":\"MOUNT\",\"path\":\"jzbexilzznfq\"},\"status\":\"Inaccessible\"}")
                 .toObject(DatastoreProperties.class);
-        Assertions.assertEquals("cxgod", model.netAppVolume().id());
-        Assertions.assertEquals("fqkkr", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("mpukgriw", model.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("cgjbirxbp", model.netAppVolume().id());
+        Assertions.assertEquals("srfbjfdtwss", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("t", model.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatastoreProperties model =
             new DatastoreProperties()
-                .withNetAppVolume(new NetAppVolume().withId("cxgod"))
+                .withNetAppVolume(new NetAppVolume().withId("cgjbirxbp"))
                 .withDiskPoolVolume(
                     new DiskPoolVolume()
-                        .withTargetId("fqkkr")
-                        .withLunName("mpukgriw")
-                        .withMountOption(MountOptionEnum.ATTACH));
+                        .withTargetId("srfbjfdtwss")
+                        .withLunName("t")
+                        .withMountOption(MountOptionEnum.MOUNT));
         model = BinaryData.fromObject(model).toObject(DatastoreProperties.class);
-        Assertions.assertEquals("cxgod", model.netAppVolume().id());
-        Assertions.assertEquals("fqkkr", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("mpukgriw", model.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("cgjbirxbp", model.netAppVolume().id());
+        Assertions.assertEquals("srfbjfdtwss", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("t", model.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
     }
 }

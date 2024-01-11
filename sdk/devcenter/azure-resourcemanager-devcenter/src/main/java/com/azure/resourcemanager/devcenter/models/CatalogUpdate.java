@@ -106,6 +106,29 @@ public final class CatalogUpdate {
     }
 
     /**
+     * Get the syncType property: Indicates the type of sync that is configured for the catalog.
+     *
+     * @return the syncType value.
+     */
+    public CatalogSyncType syncType() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncType();
+    }
+
+    /**
+     * Set the syncType property: Indicates the type of sync that is configured for the catalog.
+     *
+     * @param syncType the syncType value to set.
+     * @return the CatalogUpdate object itself.
+     */
+    public CatalogUpdate withSyncType(CatalogSyncType syncType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CatalogUpdateProperties();
+        }
+        this.innerProperties().withSyncType(syncType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

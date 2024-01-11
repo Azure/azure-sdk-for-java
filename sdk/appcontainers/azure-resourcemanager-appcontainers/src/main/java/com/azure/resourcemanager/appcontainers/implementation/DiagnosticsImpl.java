@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsInner;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticsProperties;
@@ -34,10 +33,6 @@ public final class DiagnosticsImpl implements Diagnostics {
 
     public DiagnosticsProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public DiagnosticsInner innerModel() {

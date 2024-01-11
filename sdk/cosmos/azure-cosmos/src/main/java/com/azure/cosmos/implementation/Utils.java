@@ -8,17 +8,19 @@ import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,6 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -55,6 +56,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class Utils {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
+    public static final Class<?> byteArrayClass = new byte[0].getClass();
+
     private static final int JAVA_VERSION = getJavaVersion();
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
@@ -67,6 +70,7 @@ public class Utils {
     private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
         createAndInitializeObjectMapper(false);
 
+    private static final ObjectMapper durationEnabledObjectMapper = createAndInitializeDurationObjectMapper();
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
@@ -101,6 +105,14 @@ public class Utils {
         return objectMapper;
     }
 
+    private static ObjectMapper createAndInitializeDurationObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new SimpleModule()
+                .addSerializer(Duration.class, ToStringSerializer.instance)
+                .addSerializer(Instant.class, ToStringSerializer.instance));
+        return objectMapper;
+    }
+
     private static int getJavaVersion() {
         int version = -1;
         try {
@@ -123,12 +135,12 @@ public class Utils {
         }
     }
 
-    public static byte[] getUTF8BytesOrNull(String str) {
+    public static ByteBuf getUTF8BytesOrNull(String str) {
         if (str == null) {
             return null;
         }
 
-        return str.getBytes(StandardCharsets.UTF_8);
+        return Unpooled.wrappedBuffer(str.getBytes(StandardCharsets.UTF_8));
     }
 
     public static byte[] getUTF8Bytes(String str) {
@@ -368,6 +380,10 @@ public class Utils {
         return Utils.simpleObjectMapper;
     }
 
+    public static ObjectMapper getDurationEnabledObjectMapper() {
+        return durationEnabledObjectMapper;
+    }
+
     /**
      * Returns Current Time in RFC 1123 format, e.g,
      * Fri, 01 Dec 2017 19:22:30 GMT.
@@ -515,6 +531,18 @@ public class Utils {
         }
     }
 
+    public static ObjectNode parseJson(String itemResponseBodyAsString) {
+        if (StringUtils.isEmpty(itemResponseBodyAsString)) {
+            return null;
+        }
+        try {
+            return (ObjectNode)getSimpleObjectMapper().readTree(itemResponseBodyAsString);
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                String.format("Failed to parse json string [%s] to ObjectNode.", itemResponseBodyAsString), e);
+        }
+    }
+
     public static <T> T parse(byte[] item, Class<T> itemClassType) {
         if (Utils.isEmpty(item)) {
             return null;
@@ -524,7 +552,7 @@ public class Utils {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
+                String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);
         }
     }
 
@@ -553,38 +581,6 @@ public class Utils {
 
     public static boolean isEmpty(byte[] bytes) {
         return bytes == null || bytes.length == 0;
-    }
-
-    public static String utf8StringFromOrNull(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-
-        return new String(bytes, StandardCharsets.UTF_8);
-    }
-
-    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
-        if (pagedFluxOptions == null) {
-            return;
-        }
-        if (pagedFluxOptions.getRequestContinuation() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(cosmosQueryRequestOptions, pagedFluxOptions.getRequestContinuation());
-        }
-        if (pagedFluxOptions.getMaxItemCount() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
-        } else {
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .applyMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions);
-
-            // if query request options also don't have maxItemCount set, apply defaults
-            if (pagedFluxOptions.getMaxItemCount() == null) {
-                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
-                    cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-                pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-            }
-        }
     }
 
     public static CosmosChangeFeedRequestOptions getEffectiveCosmosChangeFeedRequestOptions(

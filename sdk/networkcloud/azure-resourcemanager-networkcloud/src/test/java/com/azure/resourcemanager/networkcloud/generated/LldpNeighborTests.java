@@ -13,7 +13,7 @@ public final class LldpNeighborTests {
         LldpNeighbor model =
             BinaryData
                 .fromString(
-                    "{\"portDescription\":\"tymw\",\"portName\":\"dkfthwxmnt\",\"systemDescription\":\"waopvkmijcmmxd\",\"systemName\":\"fufsrpymzi\"}")
+                    "{\"portDescription\":\"ozwyiftyhxhuro\",\"portName\":\"tyxolniwpwc\",\"systemDescription\":\"jfkgiawxk\",\"systemName\":\"ypl\"}")
                 .toObject(LldpNeighbor.class);
     }
 

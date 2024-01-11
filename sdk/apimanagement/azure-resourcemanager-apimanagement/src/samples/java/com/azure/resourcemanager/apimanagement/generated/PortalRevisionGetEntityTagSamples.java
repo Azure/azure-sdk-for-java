@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PortalRevision GetEntityTag. */
 public final class PortalRevisionGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadPortalRevision.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadPortalRevision.json
      */
     /**
      * Sample code: ApiManagementHeadPortalRevision.
@@ -18,6 +16,8 @@ public final class PortalRevisionGetEntityTagSamples {
      */
     public static void apiManagementHeadPortalRevision(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.portalRevisions().getEntityTagWithResponse("rg1", "apimService1", "20201112101010", Context.NONE);
+        manager
+            .portalRevisions()
+            .getEntityTagWithResponse("rg1", "apimService1", "20201112101010", com.azure.core.util.Context.NONE);
     }
 }

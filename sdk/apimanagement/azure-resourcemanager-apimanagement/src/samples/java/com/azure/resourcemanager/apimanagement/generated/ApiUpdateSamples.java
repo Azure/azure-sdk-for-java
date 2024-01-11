@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ApiContract;
 
 /** Samples for Api Update. */
 public final class ApiUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApi.json
      */
     /**
      * Sample code: ApiManagementUpdateApi.
@@ -19,7 +18,10 @@ public final class ApiUpdateSamples {
      */
     public static void apiManagementUpdateApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         ApiContract resource =
-            manager.apis().getWithResponse("rg1", "apimService1", "echo-api", Context.NONE).getValue();
+            manager
+                .apis()
+                .getWithResponse("rg1", "apimService1", "echo-api", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDisplayName("Echo API New")

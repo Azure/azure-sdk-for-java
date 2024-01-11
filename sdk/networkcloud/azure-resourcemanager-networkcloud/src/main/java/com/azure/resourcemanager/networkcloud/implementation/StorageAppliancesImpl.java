@@ -10,10 +10,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.StorageAppliancesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInner;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliance;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliances;
 
 public final class StorageAppliancesImpl implements StorageAppliances {
@@ -83,50 +84,55 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         this.serviceClient().delete(resourceGroupName, storageApplianceName, context);
     }
 
-    public void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        this.serviceClient().disableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+    public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().disableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
-        this.serviceClient().disableRemoteVendorManagement(resourceGroupName, storageApplianceName, context);
+    public OperationStatusResult disableRemoteVendorManagement(
+        String resourceGroupName, String storageApplianceName, Context context) {
+        OperationStatusResultInner inner =
+            this.serviceClient().disableRemoteVendorManagement(resourceGroupName, storageApplianceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        this.serviceClient().enableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+    public OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().enableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void enableRemoteVendorManagement(
+    public OperationStatusResult enableRemoteVendorManagement(
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        this
-            .serviceClient()
-            .enableRemoteVendorManagement(
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                context);
-    }
-
-    public void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        this
-            .serviceClient()
-            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
-    }
-
-    public void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        this
-            .serviceClient()
-            .runReadCommands(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context);
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .enableRemoteVendorManagement(
+                    resourceGroupName,
+                    storageApplianceName,
+                    storageApplianceEnableRemoteVendorManagementParameters,
+                    context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public StorageAppliance getById(String id) {

@@ -34,6 +34,7 @@ import com.azure.resourcemanager.compute.samples.ManageVirtualMachineWithDisk;
 import com.azure.resourcemanager.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.azure.resourcemanager.compute.samples.ManageVirtualMachinesInParallel;
 import com.azure.resourcemanager.compute.samples.ConvertVirtualMachineToManagedDisks;
+import com.azure.resourcemanager.compute.samples.CreateMultipleVirtualMachinesAndBatchQueryStatus;
 import com.azure.resourcemanager.compute.samples.ManageZonalVirtualMachine;
 import com.azure.resourcemanager.compute.samples.ManageZonalVirtualMachineScaleSet;
 import org.junit.jupiter.api.Assertions;
@@ -186,6 +187,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testManageDiskEncryptionSet() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(ManageDiskEncryptionSet.runSample(azureResourceManager, clientId));
     }
 
@@ -194,6 +196,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testCreateVirtualMachineEncryptedUsingCustomerManagedKey() {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertNotNull(clientId);
         Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 
@@ -206,5 +209,10 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testCreateVirtualMachineWithTrustedLaunchFromGalleryImage() {
         Assertions.assertTrue(CreateVirtualMachineWithTrustedLaunchFromGalleryImage.runSample(azureResourceManager));
+    }
+
+    @Test
+    public void testCreateMultipleVirtualMachinesAndBatchQueryStatus() {
+        Assertions.assertTrue(CreateMultipleVirtualMachinesAndBatchQueryStatus.runSample(azureResourceManager, resourceGraphManager));
     }
 }

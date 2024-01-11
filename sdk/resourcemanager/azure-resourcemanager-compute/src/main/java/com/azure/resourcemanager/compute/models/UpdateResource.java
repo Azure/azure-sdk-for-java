@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Update Resource model definition. */
+/**
+ * The Update Resource model definition.
+ */
 @Fluent
 public class UpdateResource {
     /*
@@ -19,13 +21,15 @@ public class UpdateResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of UpdateResource class. */
+    /**
+     * Creates an instance of UpdateResource class.
+     */
     public UpdateResource() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public class UpdateResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the UpdateResource object itself.
      */
@@ -45,7 +49,7 @@ public class UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

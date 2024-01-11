@@ -16,6 +16,10 @@ public final class ClientSecretContractInner {
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
+    /** Creates an instance of ClientSecretContractInner class. */
+    public ClientSecretContractInner() {
+    }
+
     /**
      * Get the clientSecret property: Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
      *

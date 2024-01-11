@@ -16,23 +16,23 @@ public final class ApplyUpdatePropertiesTests {
         ApplyUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Pending\",\"resourceId\":\"ainqpjwnzlljfm\",\"lastUpdateTime\":\"2021-03-13T08:06:39Z\"}")
+                    "{\"status\":\"RetryLater\",\"resourceId\":\"dcsi\",\"lastUpdateTime\":\"2021-11-05T13:04:28Z\"}")
                 .toObject(ApplyUpdateProperties.class);
-        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
-        Assertions.assertEquals("ainqpjwnzlljfm", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T08:06:39Z"), model.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.RETRY_LATER, model.status());
+        Assertions.assertEquals("dcsi", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T13:04:28Z"), model.lastUpdateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplyUpdateProperties model =
             new ApplyUpdateProperties()
-                .withStatus(UpdateStatus.PENDING)
-                .withResourceId("ainqpjwnzlljfm")
-                .withLastUpdateTime(OffsetDateTime.parse("2021-03-13T08:06:39Z"));
+                .withStatus(UpdateStatus.RETRY_LATER)
+                .withResourceId("dcsi")
+                .withLastUpdateTime(OffsetDateTime.parse("2021-11-05T13:04:28Z"));
         model = BinaryData.fromObject(model).toObject(ApplyUpdateProperties.class);
-        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
-        Assertions.assertEquals("ainqpjwnzlljfm", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T08:06:39Z"), model.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.RETRY_LATER, model.status());
+        Assertions.assertEquals("dcsi", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T13:04:28Z"), model.lastUpdateTime());
     }
 }

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 
 /** Samples for BlobContainers Create. */
 public final class BlobContainersCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPutDefaultEncryptionScope.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutDefaultEncryptionScope.json
      */
     /**
      * Sample code: PutContainerWithDefaultEncryptionScope.
@@ -31,11 +30,11 @@ public final class BlobContainersCreateSamples {
                 new BlobContainerInner()
                     .withDefaultEncryptionScope("encryptionscope185")
                     .withDenyEncryptionScopeOverride(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPutObjectLevelWorm.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutObjectLevelWorm.json
      */
     /**
      * Sample code: PutContainerWithObjectLevelWorm.
@@ -54,11 +53,11 @@ public final class BlobContainersCreateSamples {
                 "container6185",
                 new BlobContainerInner()
                     .withImmutableStorageWithVersioning(new ImmutableStorageWithVersioning().withEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPut.json
      */
     /**
      * Sample code: PutContainers.
@@ -71,6 +70,7 @@ public final class BlobContainersCreateSamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .createWithResponse("res3376", "sto328", "container6185", new BlobContainerInner(), Context.NONE);
+            .createWithResponse(
+                "res3376", "sto328", "container6185", new BlobContainerInner(), com.azure.core.util.Context.NONE);
     }
 }

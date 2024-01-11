@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -284,7 +285,13 @@ public final class FluxUtil {
         // the FileInputStream to generated MappedByteBuffers which aren't loaded into memory until the content is
         // consumed. This at least defers the memory usage until later and may also provide downstream calls ways to
         // optimize if they have special cases for MappedByteBuffer.
-        if (inputStream instanceof FileInputStream) {
+        //
+        // NOTE: DO NOT use this logic in Windows! https://bugs.java.com/bugdatabase/view_bug?bug_id=6359560
+        // Java/Windows has a bad runtime behavior where when the MappedByteBuffer is garbage collected the underlying
+        // file may not be deletable. For Windows use the less favorable behavior by reading the file into memory.
+        // Ideally, we push users to using BinaryData.fromFile as that can leverage zero-copy, or low copy,
+        // functionality deeper in the stack.
+        if (inputStream instanceof FileInputStream && !System.getProperty("os.name").contains("Windows")) {
             FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
 
             return Flux.<ByteBuffer, FileChannel>generate(() -> fileChannel, (channel, sink) -> {
@@ -665,12 +672,10 @@ public final class FluxUtil {
 
         return content.publishOn(Schedulers.boundedElastic())
             .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    try {
-                        channel.write(buffer);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
+                try {
+                    ImplUtils.fullyWriteBuffer(buffer, channel);
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
                 }
                 return buffer;
             }).then();

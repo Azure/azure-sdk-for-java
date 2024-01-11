@@ -15,7 +15,7 @@ public class RecognizeEntitiesResultCollection extends IterableStream<RecognizeE
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Creates a {@link RecognizeEntitiesResultCollection} model that maintains a list of {@link RecognizeEntitiesResult}
+     * Creates a {@code RecognizeEntitiesResultCollection} model that maintains a list of {@link RecognizeEntitiesResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizeEntitiesResult}.

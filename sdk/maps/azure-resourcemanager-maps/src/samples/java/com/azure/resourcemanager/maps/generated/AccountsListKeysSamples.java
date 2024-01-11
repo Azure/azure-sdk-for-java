@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maps.generated;
 /** Samples for Accounts ListKeys. */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/ListKeys.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListKeys.json
      */
     /**
      * Sample code: List Keys.

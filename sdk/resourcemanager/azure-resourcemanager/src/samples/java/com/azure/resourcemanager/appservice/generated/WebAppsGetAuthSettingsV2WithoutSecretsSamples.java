@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for WebApps GetAuthSettingsV2WithoutSecrets. */
+/**
+ * Samples for WebApps GetAuthSettingsV2WithoutSecrets.
+ */
 public final class WebAppsGetAuthSettingsV2WithoutSecretsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetAuthSettingsV2WithoutSecrets.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetAuthSettingsV2WithoutSecrets.json
      */
     /**
      * Sample code: List Auth Settings without Secrets.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAuthSettingsWithoutSecrets(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .getAuthSettingsV2WithoutSecretsWithResponse("testrg123", "sitef6141", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getWebApps().getAuthSettingsV2WithoutSecretsWithResponse("testrg123",
+            "sitef6141", com.azure.core.util.Context.NONE);
     }
 }

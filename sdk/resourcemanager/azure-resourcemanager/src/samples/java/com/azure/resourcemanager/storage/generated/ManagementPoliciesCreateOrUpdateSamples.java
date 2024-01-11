@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.DateAfterCreation;
 import com.azure.resourcemanager.storage.models.DateAfterModification;
@@ -24,7 +23,7 @@ import java.util.Arrays;
 /** Samples for ManagementPolicies CreateOrUpdate. */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyColdTierActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyColdTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyColdTierActions.
@@ -94,11 +93,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
@@ -170,11 +169,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
@@ -227,11 +226,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
                                                             .withBlobTypes(
                                                                 Arrays.asList("blockBlob", "appendBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicyHotTierActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyHotTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyHotTierActions.
@@ -283,11 +282,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
@@ -343,11 +342,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.
@@ -438,11 +437,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                             .withName("tag2")
                                                                             .withOp("==")
                                                                             .withValue("val2")))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.
@@ -490,11 +489,11 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastTierChangeTimeActions.
@@ -559,6 +558,6 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                         new ManagementPolicyFilter()
                                                             .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
                                                             .withBlobTypes(Arrays.asList("blockBlob"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
 /** Samples for Vaults Delete. */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/DeleteVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/DeleteVault.json
      */
     /**
      * Sample code: Delete Recovery Services Vault.

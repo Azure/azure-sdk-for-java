@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 
 /** Samples for ManagementPolicies Get. */
 public final class ManagementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountGetManagementPolicies.
@@ -23,6 +22,6 @@ public final class ManagementPoliciesGetSamples {
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .getWithResponse("res6977", "sto2527", ManagementPolicyName.DEFAULT, Context.NONE);
+            .getWithResponse("res6977", "sto2527", ManagementPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

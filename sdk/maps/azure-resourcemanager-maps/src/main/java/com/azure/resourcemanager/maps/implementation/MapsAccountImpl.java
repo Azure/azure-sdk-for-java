@@ -10,13 +10,20 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
+import com.azure.resourcemanager.maps.models.AccountSasParameters;
+import com.azure.resourcemanager.maps.models.CorsRules;
+import com.azure.resourcemanager.maps.models.Encryption;
 import com.azure.resourcemanager.maps.models.Kind;
+import com.azure.resourcemanager.maps.models.LinkedResource;
+import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.MapsAccountKeys;
+import com.azure.resourcemanager.maps.models.MapsAccountSasToken;
 import com.azure.resourcemanager.maps.models.MapsAccountUpdateParameters;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
 import com.azure.resourcemanager.maps.models.Sku;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definition, MapsAccount.Update {
@@ -59,6 +66,10 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public MapsAccountProperties properties() {
@@ -174,6 +185,17 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
         return this;
     }
 
+    public Response<MapsAccountSasToken> listSasWithResponse(
+        AccountSasParameters mapsAccountSasParameters, Context context) {
+        return serviceManager
+            .accounts()
+            .listSasWithResponse(resourceGroupName, accountName, mapsAccountSasParameters, context);
+    }
+
+    public MapsAccountSasToken listSas(AccountSasParameters mapsAccountSasParameters) {
+        return serviceManager.accounts().listSas(resourceGroupName, accountName, mapsAccountSasParameters);
+    }
+
     public Response<MapsAccountKeys> listKeysWithResponse(Context context) {
         return serviceManager.accounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
@@ -233,6 +255,16 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
         }
     }
 
+    public MapsAccountImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateMapsAccountUpdateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public MapsAccountImpl withProperties(MapsAccountProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
@@ -240,6 +272,21 @@ public final class MapsAccountImpl implements MapsAccount, MapsAccount.Definitio
 
     public MapsAccountImpl withDisableLocalAuth(Boolean disableLocalAuth) {
         this.updateMapsAccountUpdateParameters.withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    public MapsAccountImpl withLinkedResources(List<LinkedResource> linkedResources) {
+        this.updateMapsAccountUpdateParameters.withLinkedResources(linkedResources);
+        return this;
+    }
+
+    public MapsAccountImpl withCors(CorsRules cors) {
+        this.updateMapsAccountUpdateParameters.withCors(cors);
+        return this;
+    }
+
+    public MapsAccountImpl withEncryption(Encryption encryption) {
+        this.updateMapsAccountUpdateParameters.withEncryption(encryption);
         return this;
     }
 

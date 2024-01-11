@@ -59,11 +59,10 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface EncryptionScopesService {
+    public interface EncryptionScopesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionScopeInner>> put(
@@ -79,8 +78,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionScopeInner>> patch(
@@ -96,8 +94,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionScopeInner>> get(
@@ -112,8 +109,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/encryptionScopes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EncryptionScopeListResult>> list(
@@ -321,33 +317,6 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param encryptionScope Encryption scope properties to be used for the create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionScopeInner put(
-        String resourceGroupName,
-        String accountName,
-        String encryptionScopeName,
-        EncryptionScopeInner encryptionScope) {
-        return putAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope).block();
-    }
-
-    /**
-     * Synchronously creates or updates an encryption scope under the specified storage account. If an encryption scope
-     * is already created and a subsequent request is issued with different properties, the encryption scope properties
-     * will be updated per the specified request.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
-     *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
-     *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope Encryption scope properties to be used for the create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -363,6 +332,34 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         Context context) {
         return putWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope, context)
             .block();
+    }
+
+    /**
+     * Synchronously creates or updates an encryption scope under the specified storage account. If an encryption scope
+     * is already created and a subsequent request is issued with different properties, the encryption scope properties
+     * will be updated per the specified request.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
+     *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
+     *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param encryptionScope Encryption scope properties to be used for the create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Encryption Scope resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EncryptionScopeInner put(
+        String resourceGroupName,
+        String accountName,
+        String encryptionScopeName,
+        EncryptionScopeInner encryptionScope) {
+        return putWithResponse(resourceGroupName, accountName, encryptionScopeName, encryptionScope, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -543,32 +540,6 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
      * @param encryptionScope Encryption scope properties to be used for the update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionScopeInner patch(
-        String resourceGroupName,
-        String accountName,
-        String encryptionScopeName,
-        EncryptionScopeInner encryptionScope) {
-        return patchAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope).block();
-    }
-
-    /**
-     * Update encryption scope properties as specified in the request body. Update fails if the specified encryption
-     * scope does not already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
-     *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
-     *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param encryptionScope Encryption scope properties to be used for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -584,6 +555,33 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         Context context) {
         return patchWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope, context)
             .block();
+    }
+
+    /**
+     * Update encryption scope properties as specified in the request body. Update fails if the specified encryption
+     * scope does not already exist.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
+     *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
+     *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param encryptionScope Encryption scope properties to be used for the update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Encryption Scope resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EncryptionScopeInner patch(
+        String resourceGroupName,
+        String accountName,
+        String encryptionScopeName,
+        EncryptionScopeInner encryptionScope) {
+        return patchWithResponse(resourceGroupName, accountName, encryptionScopeName, encryptionScope, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -732,14 +730,16 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptionScopeInner get(String resourceGroupName, String accountName, String encryptionScopeName) {
-        return getAsync(resourceGroupName, accountName, encryptionScopeName).block();
+    public Response<EncryptionScopeInner> getWithResponse(
+        String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, context).block();
     }
 
     /**
@@ -752,16 +752,14 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @param encryptionScopeName The name of the encryption scope within the specified storage account. Encryption
      *     scope names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-)
      *     only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource along with {@link Response}.
+     * @return the Encryption Scope resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EncryptionScopeInner> getWithResponse(
-        String resourceGroupName, String accountName, String encryptionScopeName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, context).block();
+    public EncryptionScopeInner get(String resourceGroupName, String accountName, String encryptionScopeName) {
+        return getWithResponse(resourceGroupName, accountName, encryptionScopeName, Context.NONE).getValue();
     }
 
     /**

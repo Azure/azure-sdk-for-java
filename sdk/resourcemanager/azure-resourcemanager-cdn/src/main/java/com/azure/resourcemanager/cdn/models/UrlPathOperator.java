@@ -44,6 +44,15 @@ public final class UrlPathOperator extends ExpandableStringEnum<UrlPathOperator>
     public static final UrlPathOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of UrlPathOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UrlPathOperator() {
+    }
+
+    /**
      * Creates or finds a UrlPathOperator from its string representation.
      *
      * @param name a name to look for.

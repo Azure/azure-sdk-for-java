@@ -34,6 +34,10 @@ public final class StorageAccountSkuConversionStatus {
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private String endTime;
 
+    /** Creates an instance of StorageAccountSkuConversionStatus class. */
+    public StorageAccountSkuConversionStatus() {
+    }
+
     /**
      * Get the skuConversionStatus property: This property indicates the current sku conversion status.
      *

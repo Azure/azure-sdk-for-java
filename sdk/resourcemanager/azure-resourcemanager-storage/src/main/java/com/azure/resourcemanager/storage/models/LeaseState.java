@@ -26,6 +26,15 @@ public final class LeaseState extends ExpandableStringEnum<LeaseState> {
     public static final LeaseState BROKEN = fromString("Broken");
 
     /**
+     * Creates a new instance of LeaseState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseState() {
+    }
+
+    /**
      * Creates or finds a LeaseState from its string representation.
      *
      * @param name a name to look for.

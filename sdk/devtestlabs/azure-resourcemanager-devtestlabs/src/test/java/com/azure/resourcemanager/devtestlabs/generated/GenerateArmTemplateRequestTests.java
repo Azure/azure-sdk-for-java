@@ -17,34 +17,28 @@ public final class GenerateArmTemplateRequestTests {
         GenerateArmTemplateRequest model =
             BinaryData
                 .fromString(
-                    "{\"virtualMachineName\":\"napnyiropuhpigv\",\"parameters\":[{\"name\":\"gqgitxmedjvcsl\",\"value\":\"qwwncw\"},{\"name\":\"hxg\",\"value\":\"rmgucnap\"},{\"name\":\"eoellwptfdygp\",\"value\":\"b\"},{\"name\":\"ceopzfqrhhuaopp\",\"value\":\"qeqxo\"}],\"location\":\"dahzxctobg\",\"fileUploadOptions\":\"None\"}")
+                    "{\"virtualMachineName\":\"tdum\",\"parameters\":[{\"name\":\"xe\",\"value\":\"nzbtbhj\"}],\"location\":\"lkfg\",\"fileUploadOptions\":\"UploadFilesAndGenerateSasTokens\"}")
                 .toObject(GenerateArmTemplateRequest.class);
-        Assertions.assertEquals("napnyiropuhpigv", model.virtualMachineName());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.parameters().get(0).name());
-        Assertions.assertEquals("qwwncw", model.parameters().get(0).value());
-        Assertions.assertEquals("dahzxctobg", model.location());
-        Assertions.assertEquals(FileUploadOptions.NONE, model.fileUploadOptions());
+        Assertions.assertEquals("tdum", model.virtualMachineName());
+        Assertions.assertEquals("xe", model.parameters().get(0).name());
+        Assertions.assertEquals("nzbtbhj", model.parameters().get(0).value());
+        Assertions.assertEquals("lkfg", model.location());
+        Assertions.assertEquals(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS, model.fileUploadOptions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenerateArmTemplateRequest model =
             new GenerateArmTemplateRequest()
-                .withVirtualMachineName("napnyiropuhpigv")
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new ParameterInfo().withName("gqgitxmedjvcsl").withValue("qwwncw"),
-                            new ParameterInfo().withName("hxg").withValue("rmgucnap"),
-                            new ParameterInfo().withName("eoellwptfdygp").withValue("b"),
-                            new ParameterInfo().withName("ceopzfqrhhuaopp").withValue("qeqxo")))
-                .withLocation("dahzxctobg")
-                .withFileUploadOptions(FileUploadOptions.NONE);
+                .withVirtualMachineName("tdum")
+                .withParameters(Arrays.asList(new ParameterInfo().withName("xe").withValue("nzbtbhj")))
+                .withLocation("lkfg")
+                .withFileUploadOptions(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS);
         model = BinaryData.fromObject(model).toObject(GenerateArmTemplateRequest.class);
-        Assertions.assertEquals("napnyiropuhpigv", model.virtualMachineName());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.parameters().get(0).name());
-        Assertions.assertEquals("qwwncw", model.parameters().get(0).value());
-        Assertions.assertEquals("dahzxctobg", model.location());
-        Assertions.assertEquals(FileUploadOptions.NONE, model.fileUploadOptions());
+        Assertions.assertEquals("tdum", model.virtualMachineName());
+        Assertions.assertEquals("xe", model.parameters().get(0).name());
+        Assertions.assertEquals("nzbtbhj", model.parameters().get(0).value());
+        Assertions.assertEquals("lkfg", model.location());
+        Assertions.assertEquals(FileUploadOptions.UPLOAD_FILES_AND_GENERATE_SAS_TOKENS, model.fileUploadOptions());
     }
 }

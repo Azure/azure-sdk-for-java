@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"G2\",\"tier\":\"oo\"}").toObject(Sku.class);
+        Sku model = BinaryData.fromString("{\"name\":\"G2\",\"tier\":\"eupewnwreitjz\"}").toObject(Sku.class);
         Assertions.assertEquals(Name.G2, model.name());
     }
 

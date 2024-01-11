@@ -14,12 +14,13 @@ import com.azure.resourcemanager.apimanagement.models.OpenIdAuthenticationSettin
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SoapApiType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
+import com.azure.resourcemanager.apimanagement.models.TranslateRequiredQueryParametersConduct;
 import java.util.Arrays;
 
 /** Samples for Api CreateOrUpdate. */
 public final class ApiCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiUsingSwaggerImport.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingSwaggerImport.json
      */
     /**
      * Sample code: ApiManagementCreateApiUsingSwaggerImport.
@@ -39,7 +40,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiRevisionFromExistingApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiRevisionFromExistingApi.json
      */
     /**
      * Sample code: ApiManagementCreateApiRevisionFromExistingApi.
@@ -61,7 +62,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiClone.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiClone.json
      */
     /**
      * Sample code: ApiManagementCreateApiClone.
@@ -87,7 +88,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiUsingOai3Import.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingOai3Import.json
      */
     /**
      * Sample code: ApiManagementCreateApiUsingOai3Import.
@@ -107,7 +108,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiWithOpenIdConnect.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithOpenIdConnect.json
      */
     /**
      * Sample code: ApiManagementCreateApiWithOpenIdConnect.
@@ -144,7 +145,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateWebsocketApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateWebsocketApi.json
      */
     /**
      * Sample code: ApiManagementCreateWebSocketApi.
@@ -167,7 +168,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGraphQLApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGraphQLApi.json
      */
     /**
      * Sample code: ApiManagementCreateGraphQLApi.
@@ -190,7 +191,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
      */
     /**
      * Sample code: ApiManagementCreateSoapPassThroughApiUsingWsdlImport.
@@ -215,7 +216,63 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiUsingImportOverrideServiceUrl.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.json
+     */
+    /**
+     * Sample code: ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.
+     *
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager
+            .apis()
+            .define("petstore")
+            .withExistingService("rg1", "apimService1")
+            .withValue("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml")
+            .withFormat(ContentFormat.OPENAPI_LINK)
+            .withTranslateRequiredQueryParametersConduct(TranslateRequiredQueryParametersConduct.TEMPLATE)
+            .withPath("petstore")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithMultipleAuthServers.json
+     */
+    /**
+     * Sample code: ApiManagementCreateApiWithMultipleAuthServers.
+     *
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateApiWithMultipleAuthServers(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager
+            .apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withDisplayName("apiname1463")
+            .withServiceUrl("http://newechoapi.cloudapp.net/api")
+            .withPath("newapiPath")
+            .withProtocols(Arrays.asList(Protocol.HTTPS, Protocol.HTTP))
+            .withDescription("apidescription5200")
+            .withAuthenticationSettings(
+                new AuthenticationSettingsContract()
+                    .withOAuth2AuthenticationSettings(
+                        Arrays
+                            .asList(
+                                new OAuth2AuthenticationSettingsContract()
+                                    .withAuthorizationServerId("fakeTokenPlaceholder")
+                                    .withScope("oauth2scope2580"),
+                                new OAuth2AuthenticationSettingsContract()
+                                    .withAuthorizationServerId("fakeTokenPlaceholder")
+                                    .withScope("oauth2scope2581"))))
+            .withSubscriptionKeyParameterNames(
+                new SubscriptionKeyParameterNamesContract().withHeaderProperty("header4520").withQuery("query3037"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingImportOverrideServiceUrl.json
      */
     /**
      * Sample code: ApiManagementCreateApiUsingImportOverrideServiceUrl.
@@ -236,7 +293,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiUsingWadlImport.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingWadlImport.json
      */
     /**
      * Sample code: ApiManagementCreateApiUsingWadlImport.
@@ -257,7 +314,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiNewVersionUsingExistingApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiNewVersionUsingExistingApi.json
      */
     /**
      * Sample code: ApiManagementCreateApiNewVersionUsingExistingApi.
@@ -286,7 +343,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApi.json
      */
     /**
      * Sample code: ApiManagementCreateApi.
@@ -307,7 +364,7 @@ public final class ApiCreateOrUpdateSamples {
                 new AuthenticationSettingsContract()
                     .withOAuth2(
                         new OAuth2AuthenticationSettingsContract()
-                            .withAuthorizationServerId("authorizationServerId2283")
+                            .withAuthorizationServerId("fakeTokenPlaceholder")
                             .withScope("oauth2scope2580")))
             .withSubscriptionKeyParameterNames(
                 new SubscriptionKeyParameterNamesContract().withHeaderProperty("header4520").withQuery("query3037"))
@@ -315,7 +372,7 @@ public final class ApiCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateSoapToRestApiUsingWsdlImport.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateSoapToRestApiUsingWsdlImport.json
      */
     /**
      * Sample code: ApiManagementCreateSoapToRestApiUsingWsdlImport.
@@ -335,6 +392,43 @@ public final class ApiCreateOrUpdateSamples {
                     .withWsdlServiceName("CurrencyConvertor")
                     .withWsdlEndpointName("CurrencyConvertorSoap"))
             .withPath("currency")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithMultipleOpenIdConnectProviders.json
+     */
+    /**
+     * Sample code: ApiManagementCreateApiWithMultipleOpenIdConnectProviders.
+     *
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateApiWithMultipleOpenIdConnectProviders(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager
+            .apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withDisplayName("apiname1463")
+            .withServiceUrl("http://newechoapi.cloudapp.net/api")
+            .withPath("newapiPath")
+            .withProtocols(Arrays.asList(Protocol.HTTPS, Protocol.HTTP))
+            .withDescription("apidescription5200")
+            .withAuthenticationSettings(
+                new AuthenticationSettingsContract()
+                    .withOpenidAuthenticationSettings(
+                        Arrays
+                            .asList(
+                                new OpenIdAuthenticationSettingsContract()
+                                    .withOpenidProviderId("openidProviderId2283")
+                                    .withBearerTokenSendingMethods(
+                                        Arrays.asList(BearerTokenSendingMethods.AUTHORIZATION_HEADER)),
+                                new OpenIdAuthenticationSettingsContract()
+                                    .withOpenidProviderId("openidProviderId2284")
+                                    .withBearerTokenSendingMethods(
+                                        Arrays.asList(BearerTokenSendingMethods.AUTHORIZATION_HEADER)))))
+            .withSubscriptionKeyParameterNames(
+                new SubscriptionKeyParameterNamesContract().withHeaderProperty("header4520").withQuery("query3037"))
             .create();
     }
 }

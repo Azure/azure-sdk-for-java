@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.common;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,7 @@ public final class TestConstants {
     public static final String ID_2 = "id-2";
     public static final String ID_3 = "id-3";
     public static final String ID_4 = "id-4";
+    public static final String ID_5 = "id-5";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
     public static final Integer NEW_ZIP_CODE = 67890;
@@ -71,6 +73,7 @@ public final class TestConstants {
     public static final String LEVEL = "B";
     public static final String LEVEL_2 = "C";
     public static final String ROLE_NAME = "Developer";
+    public static final String ROLE_NAME_2 = "Engineer";
     public static final String NOT_EXIST_ID = "non_exist_id";
 
     public static final String DATE_STRING = "8/8/2017";
@@ -133,6 +136,18 @@ public final class TestConstants {
     //  Some constants from Cosmos HttpConstants
     public static final int PRECONDITION_FAILED_STATUS_CODE = 412;
     public static final int CONFLICT_STATUS_CODE = 409;
+
+    public static final Long LONG_ID_1 = Long.valueOf(10000001);
+    public static final Long LONG_ID_2 = Long.valueOf(20000002);
+    public static final Long LONG_ID_3 = Long.valueOf(54600003);
+
+    public static final Integer HOME_NUMBER_1 = 1;
+    public static final Integer HOME_NUMBER_2 = 99;
+    public static final Integer HOME_NUMBER_3 = 4445;
+
+    public static final LocalDate REGISTRATION_TIME_1D_AGO = LocalDate.now().minusDays(1);
+    public static final LocalDate REGISTRATION_TIME_1W_AGO = LocalDate.now().minusDays(7);
+    public static final LocalDate REGISTRATION_TIME_1M_AGO = LocalDate.now().minusMonths(1);
 
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");

@@ -17,20 +17,6 @@ public interface Datastores {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    Datastore getByResourceGroup(String resourceGroupName, String datastoreName);
-
-    /**
-     * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,18 +26,18 @@ public interface Datastores {
     Response<Datastore> getByResourceGroupWithResponse(String resourceGroupName, String datastoreName, Context context);
 
     /**
-     * Deletes an datastore.
+     * Gets a datastore.
      *
-     * <p>Implements datastore DELETE method.
+     * <p>Implements datastore GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
      */
-    void delete(String resourceGroupName, String datastoreName, Boolean force);
+    Datastore getByResourceGroup(String resourceGroupName, String datastoreName);
 
     /**
      * Deletes an datastore.

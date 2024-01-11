@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobContainers LockImmutabilityPolicy. */
 public final class BlobContainersLockImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersLockImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersLockImmutabilityPolicy.json
      */
     /**
      * Sample code: LockImmutabilityPolicy.
@@ -23,6 +21,6 @@ public final class BlobContainersLockImmutabilityPolicySamples {
             .serviceClient()
             .getBlobContainers()
             .lockImmutabilityPolicyWithResponse(
-                "res2702", "sto5009", "container1631", "\"8d59f825b721dd3\"", Context.NONE);
+                "res2702", "sto5009", "container1631", "8d59f825b721dd3", com.azure.core.util.Context.NONE);
     }
 }

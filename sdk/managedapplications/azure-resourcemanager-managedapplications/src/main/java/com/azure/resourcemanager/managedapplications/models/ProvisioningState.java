@@ -10,20 +10,14 @@ import java.util.Collection;
 
 /** Provisioning status of the managed application. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value NotSpecified for ProvisioningState. */
+    public static final ProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
+
     /** Static value Accepted for ProvisioningState. */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 
     /** Static value Running for ProvisioningState. */
     public static final ProvisioningState RUNNING = fromString("Running");
-
-    /** Static value Ready for ProvisioningState. */
-    public static final ProvisioningState READY = fromString("Ready");
-
-    /** Static value Creating for ProvisioningState. */
-    public static final ProvisioningState CREATING = fromString("Creating");
-
-    /** Static value Created for ProvisioningState. */
-    public static final ProvisioningState CREATED = fromString("Created");
 
     /** Static value Deleting for ProvisioningState. */
     public static final ProvisioningState DELETING = fromString("Deleting");

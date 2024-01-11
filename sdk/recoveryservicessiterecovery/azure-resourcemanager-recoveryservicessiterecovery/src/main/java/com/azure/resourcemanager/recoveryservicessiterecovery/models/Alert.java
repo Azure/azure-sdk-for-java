@@ -70,11 +70,13 @@ public interface Alert {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Alert definition stages. */
     interface DefinitionStages {
         /** The first stage of the Alert definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Alert definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -86,6 +88,7 @@ public interface Alert {
              */
             WithCreate withExistingVault(String resourceName, String resourceGroupName);
         }
+
         /**
          * The stage of the Alert definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -106,6 +109,7 @@ public interface Alert {
              */
             Alert create(Context context);
         }
+
         /** The stage of the Alert definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -117,6 +121,7 @@ public interface Alert {
             WithCreate withProperties(ConfigureAlertRequestProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

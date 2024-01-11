@@ -8,32 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of an application gateway SKU. */
+/**
+ * Name of an application gateway SKU.
+ */
 public final class ApplicationGatewaySkuName extends ExpandableStringEnum<ApplicationGatewaySkuName> {
-    /** Static value Standard_Small for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Small for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName STANDARD_SMALL = fromString("Standard_Small");
 
-    /** Static value Standard_Medium for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Medium for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName STANDARD_MEDIUM = fromString("Standard_Medium");
 
-    /** Static value Standard_Large for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Large for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName STANDARD_LARGE = fromString("Standard_Large");
 
-    /** Static value WAF_Medium for ApplicationGatewaySkuName. */
+    /**
+     * Static value WAF_Medium for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName WAF_MEDIUM = fromString("WAF_Medium");
 
-    /** Static value WAF_Large for ApplicationGatewaySkuName. */
+    /**
+     * Static value WAF_Large for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName WAF_LARGE = fromString("WAF_Large");
 
-    /** Static value Standard_v2 for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_v2 for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName STANDARD_V2 = fromString("Standard_v2");
 
-    /** Static value WAF_v2 for ApplicationGatewaySkuName. */
+    /**
+     * Static value WAF_v2 for ApplicationGatewaySkuName.
+     */
     public static final ApplicationGatewaySkuName WAF_V2 = fromString("WAF_v2");
 
     /**
+     * Static value Basic for ApplicationGatewaySkuName.
+     */
+    public static final ApplicationGatewaySkuName BASIC = fromString("Basic");
+
+    /**
      * Creates a new instance of ApplicationGatewaySkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +63,7 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
 
     /**
      * Creates or finds a ApplicationGatewaySkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewaySkuName.
      */
@@ -53,7 +74,7 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
 
     /**
      * Gets known ApplicationGatewaySkuName values.
-     *
+     * 
      * @return known ApplicationGatewaySkuName values.
      */
     public static Collection<ApplicationGatewaySkuName> values() {

@@ -64,11 +64,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface ObjectReplicationPoliciesOperationsService {
+    public interface ObjectReplicationPoliciesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ObjectReplicationPolicies>> list(
@@ -82,8 +81,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ObjectReplicationPolicyInner>> get(
@@ -98,8 +96,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ObjectReplicationPolicyInner>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -467,15 +463,16 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ObjectReplicationPolicyInner get(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
-        return getAsync(resourceGroupName, accountName, objectReplicationPolicyId).block();
+    public Response<ObjectReplicationPolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
     }
 
     /**
@@ -489,16 +486,15 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID along with {@link Response}.
+     * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ObjectReplicationPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
+    public ObjectReplicationPolicyInner get(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        return getWithResponse(resourceGroupName, accountName, objectReplicationPolicyId, Context.NONE).getValue();
     }
 
     /**
@@ -687,33 +683,6 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ObjectReplicationPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties) {
-        return createOrUpdateAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties).block();
-    }
-
-    /**
-     * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -730,6 +699,35 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, accountName, objectReplicationPolicyId, properties, context)
             .block();
+    }
+
+    /**
+     * Create or update the object replication policy of the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the replication policy between two storage accounts.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ObjectReplicationPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, accountName, objectReplicationPolicyId, properties, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -885,13 +883,16 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
-        deleteAsync(resourceGroupName, accountName, objectReplicationPolicyId).block();
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
     }
 
     /**
@@ -905,15 +906,12 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      *     on the destination account first. For the source account, provide the value of the policy ID that is returned
      *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
      *     file.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
+    public void delete(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        deleteWithResponse(resourceGroupName, accountName, objectReplicationPolicyId, Context.NONE);
     }
 }

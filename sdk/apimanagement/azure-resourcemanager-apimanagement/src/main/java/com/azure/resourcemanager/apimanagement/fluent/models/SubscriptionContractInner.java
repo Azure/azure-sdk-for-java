@@ -19,6 +19,10 @@ public final class SubscriptionContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SubscriptionContractProperties innerProperties;
 
+    /** Creates an instance of SubscriptionContractInner class. */
+    public SubscriptionContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Subscription contract properties.
      *

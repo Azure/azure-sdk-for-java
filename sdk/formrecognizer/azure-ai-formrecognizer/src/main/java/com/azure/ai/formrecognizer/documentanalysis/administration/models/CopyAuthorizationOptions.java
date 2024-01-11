@@ -17,6 +17,12 @@ public final class CopyAuthorizationOptions {
     private String modelId;
 
     /**
+     * Create a CopyAuthorizationOptions instance.
+     */
+    public CopyAuthorizationOptions() {
+    }
+
+    /**
      * Get the model description.
      *
      * @return the model description value.

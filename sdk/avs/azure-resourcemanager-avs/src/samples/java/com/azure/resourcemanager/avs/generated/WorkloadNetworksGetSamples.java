@@ -9,7 +9,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkName;
 /** Samples for WorkloadNetworks Get. */
 public final class WorkloadNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_Get.json
      */
     /**
      * Sample code: WorkloadNetworks_Get.

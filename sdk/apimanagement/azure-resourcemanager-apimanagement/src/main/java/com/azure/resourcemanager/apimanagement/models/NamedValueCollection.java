@@ -30,6 +30,10 @@ public final class NamedValueCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NamedValueCollection class. */
+    public NamedValueCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

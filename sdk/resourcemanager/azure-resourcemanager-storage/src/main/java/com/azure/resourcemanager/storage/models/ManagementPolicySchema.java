@@ -22,6 +22,10 @@ public final class ManagementPolicySchema {
     @JsonProperty(value = "rules", required = true)
     private List<ManagementPolicyRule> rules;
 
+    /** Creates an instance of ManagementPolicySchema class. */
+    public ManagementPolicySchema() {
+    }
+
     /**
      * Get the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.

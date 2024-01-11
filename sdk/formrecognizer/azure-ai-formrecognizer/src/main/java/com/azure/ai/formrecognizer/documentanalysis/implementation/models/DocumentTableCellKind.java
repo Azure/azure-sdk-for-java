@@ -5,48 +5,59 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Table cell kind. */
+/**
+ * Table cell kind.
+ */
 public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTableCellKind> {
-    /** Static value content for DocumentTableCellKind. */
+    /**
+     * Contains the main content/data.
+     */
     public static final DocumentTableCellKind CONTENT = fromString("content");
 
-    /** Static value rowHeader for DocumentTableCellKind. */
+    /**
+     * Describes the content of the row.
+     */
     public static final DocumentTableCellKind ROW_HEADER = fromString("rowHeader");
 
-    /** Static value columnHeader for DocumentTableCellKind. */
+    /**
+     * Describes the content of the column.
+     */
     public static final DocumentTableCellKind COLUMN_HEADER = fromString("columnHeader");
 
-    /** Static value stubHead for DocumentTableCellKind. */
+    /**
+     * Describes the row headers, usually located at the top left corner of a table.
+     */
     public static final DocumentTableCellKind STUB_HEAD = fromString("stubHead");
 
-    /** Static value description for DocumentTableCellKind. */
+    /**
+     * Describes the content in (parts of) the table.
+     */
     public static final DocumentTableCellKind DESCRIPTION = fromString("description");
 
     /**
      * Creates a new instance of DocumentTableCellKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentTableCellKind() {}
+    public DocumentTableCellKind() {
+    }
 
     /**
      * Creates or finds a DocumentTableCellKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DocumentTableCellKind.
      */
-    @JsonCreator
     public static DocumentTableCellKind fromString(String name) {
         return fromString(name, DocumentTableCellKind.class);
     }
 
     /**
      * Gets known DocumentTableCellKind values.
-     *
+     * 
      * @return known DocumentTableCellKind values.
      */
     public static Collection<DocumentTableCellKind> values() {

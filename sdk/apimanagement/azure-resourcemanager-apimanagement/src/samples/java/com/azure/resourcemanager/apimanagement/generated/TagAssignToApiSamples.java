@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag AssignToApi. */
 public final class TagAssignToApiSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiTag.json
      */
     /**
      * Sample code: ApiManagementCreateApiTag.
@@ -19,6 +17,7 @@ public final class TagAssignToApiSamples {
     public static void apiManagementCreateApiTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .tags()
-            .assignToApiWithResponse("rg1", "apimService1", "5931a75ae4bbd512a88c680b", "tagId1", Context.NONE);
+            .assignToApiWithResponse(
+                "rg1", "apimService1", "5931a75ae4bbd512a88c680b", "tagId1", com.azure.core.util.Context.NONE);
     }
 }

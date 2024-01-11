@@ -10,17 +10,13 @@ import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.METRIC_ID;
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -42,17 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FeedbackAsyncTest extends FeedbackTestBase {
     private MetricsAdvisorAsyncClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     /**
      * Verifies the result of the list metric feedback  method when no options specified.
@@ -87,7 +71,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     metricFeedbackPagedResponse.getValue().forEach(actualMetricFeedbackList::add);
                     return true;
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
                 .map(MetricFeedback::getId)
@@ -138,7 +123,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     .setMaxPageSize(10)))
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }, ANOMALY);
 
     }
@@ -166,7 +152,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                 }
                 return matched;
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         Assertions.assertTrue(count[0] > 0);
     }
@@ -192,7 +179,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getCreatedTime().isAfter(createdMetricFeedback.getCreatedTime())
                         || metricFeedback.getCreatedTime().isEqual(createdMetricFeedback.getCreatedTime()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
         }, ANOMALY);
     }
@@ -212,7 +200,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         StepVerifier.create(client.getFeedback(null))
             .expectErrorMatches(throwable -> throwable instanceof NullPointerException
                 && throwable.getMessage().equals("'feedbackId' is required."))
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -228,7 +216,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         StepVerifier.create(client.getFeedback(INCORRECT_UUID))
             .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                 && throwable.getMessage().equals(INCORRECT_UUID_ERROR))
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -250,7 +238,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     assertEquals(metricFeedbackResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateMetricFeedbackResult(getCommentFeedback(), metricFeedbackResponse.getValue(), COMMENT);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }, COMMENT);
     }
 
@@ -271,7 +260,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
             StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback ->
                     validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, COMMENT))
-                .verifyComplete(), COMMENT);
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), COMMENT);
     }
 
     /**
@@ -289,7 +279,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
             StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback ->
                     validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, ANOMALY))
-                .verifyComplete(), ANOMALY);
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), ANOMALY);
     }
 
     /**
@@ -307,7 +298,8 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
             StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback ->
                     validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, PERIOD))
-                .verifyComplete(), PERIOD);
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), PERIOD);
     }
 
     /**
@@ -323,6 +315,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
             // Act & Assert
             StepVerifier.create(client.addFeedback(METRIC_ID, expectedMetricFeedback))
                 .assertNext(createdMetricFeedback -> validateMetricFeedbackResult(expectedMetricFeedback, createdMetricFeedback, CHANGE_POINT))
-                .verifyComplete(), CHANGE_POINT);
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), CHANGE_POINT);
     }
 }

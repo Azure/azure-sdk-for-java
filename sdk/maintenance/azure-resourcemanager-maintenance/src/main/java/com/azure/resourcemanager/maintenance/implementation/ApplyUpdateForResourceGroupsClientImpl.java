@@ -60,8 +60,7 @@ public final class ApplyUpdateForResourceGroupsClientImpl implements ApplyUpdate
     public interface ApplyUpdateForResourceGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/applyUpdates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListApplyUpdate>> listByResourceGroup(

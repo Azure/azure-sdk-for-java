@@ -18,6 +18,10 @@ public final class GatewayContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GatewayContractProperties innerProperties;
 
+    /** Creates an instance of GatewayContractInner class. */
+    public GatewayContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Gateway details.
      *

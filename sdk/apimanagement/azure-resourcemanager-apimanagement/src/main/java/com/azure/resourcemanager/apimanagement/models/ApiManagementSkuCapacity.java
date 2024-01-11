@@ -34,6 +34,10 @@ public final class ApiManagementSkuCapacity {
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ApiManagementSkuCapacityScaleType scaleType;
 
+    /** Creates an instance of ApiManagementSkuCapacity class. */
+    public ApiManagementSkuCapacity() {
+    }
+
     /**
      * Get the minimum property: The minimum capacity.
      *

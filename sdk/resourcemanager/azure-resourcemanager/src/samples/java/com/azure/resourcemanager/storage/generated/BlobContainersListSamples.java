@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.ListContainersInclude;
 
 /** Samples for BlobContainers List. */
 public final class BlobContainersListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersList.json
      */
     /**
      * Sample code: ListContainers.
@@ -23,11 +22,11 @@ public final class BlobContainersListSamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .list("res9290", "sto1590", null, null, null, Context.NONE);
+            .list("res9290", "sto1590", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/DeletedBlobContainersList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/DeletedBlobContainersList.json
      */
     /**
      * Sample code: ListDeletedContainers.
@@ -40,6 +39,6 @@ public final class BlobContainersListSamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .list("res9290", "sto1590", null, null, ListContainersInclude.DELETED, Context.NONE);
+            .list("res9290", "sto1590", null, null, ListContainersInclude.DELETED, com.azure.core.util.Context.NONE);
     }
 }

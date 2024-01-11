@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
 /** Samples for Notification CreateOrUpdate. */
 public final class NotificationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateNotification.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNotification.json
      */
     /**
      * Sample code: ApiManagementCreateNotification.
@@ -22,6 +21,10 @@ public final class NotificationCreateOrUpdateSamples {
         manager
             .notifications()
             .createOrUpdateWithResponse(
-                "rg1", "apimService1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, null, Context.NONE);
+                "rg1",
+                "apimService1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

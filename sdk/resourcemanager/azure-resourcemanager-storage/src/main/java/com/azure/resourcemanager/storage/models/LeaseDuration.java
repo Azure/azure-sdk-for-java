@@ -17,6 +17,15 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
     public static final LeaseDuration FIXED = fromString("Fixed");
 
     /**
+     * Creates a new instance of LeaseDuration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseDuration() {
+    }
+
+    /**
      * Creates or finds a LeaseDuration from its string representation.
      *
      * @param name a name to look for.

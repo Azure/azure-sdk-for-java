@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -30,6 +31,9 @@ import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
+/**
+ * A synchronous REST proxy implementation.
+ */
 public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
@@ -54,14 +58,14 @@ public class SyncRestProxy extends RestProxyBase {
         return httpPipeline.sendSync(request, contextData);
     }
 
+    @SuppressWarnings({"try", "unused"})
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
 
         context = startTracingSpan(methodParser, context);
-        AutoCloseable scope = tracer.makeSpanCurrent(context);
-        try {
+        try (AutoCloseable scope = tracer.makeSpanCurrent(context)) {
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
             if (options != null && requestCallback != null) {
@@ -80,22 +84,17 @@ public class SyncRestProxy extends RestProxyBase {
 
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             tracer.end(null, e, context);
-            throw LOGGER.logExceptionAsError(e);
-        } finally {
-            try {
-                scope.close();
-            } catch (Exception e) {
-                LOGGER.verbose("Failed to close scope");
-            }
+            ImplUtils.sneakyThrows(e);
+            return null;
         }
     }
 
     /**
      * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
      * code' OR (2) emits provided response if it's status code ia allowed.
-     *
+     * <p>
      * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
      * of additional allowed status codes.
      *
@@ -117,24 +116,17 @@ public class SyncRestProxy extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        Exception e;
         BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
-        }
-
-        if (e instanceof RuntimeException) {
-            throw LOGGER.logExceptionAsError((RuntimeException) e);
-        } else {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -192,7 +184,7 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Object or Page<T>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBody(null);
         }
         return result;
     }
@@ -226,11 +218,16 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
+    @Override
     public void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
+
+        if (bodyContentObject == null) {
+            return;
+        }
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
@@ -253,13 +250,9 @@ public class SyncRestProxy extends RestProxyBase {
                 request.setBody(bodyContentString);
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
-            if (((ByteBuffer) bodyContentObject).hasArray()) {
-                request.setBody(((ByteBuffer) bodyContentObject).array());
-            } else {
-                byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
-                ((ByteBuffer) bodyContentObject).get(array);
-                request.setBody(array);
-            }
+            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
+        } else if (bodyContentObject instanceof InputStream) {
+            request.setBody(BinaryData.fromStream((InputStream) bodyContentObject));
         } else {
             SerializerEncoding encoding = SerializerEncoding.fromHeaders(request.getHeaders());
             request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, encoding));

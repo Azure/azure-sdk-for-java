@@ -31,7 +31,7 @@ public final class WorkloadNetworksCreatePublicIpMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"bxiqxeiiqbimht\",\"numberOfPublicIPs\":1851749746038265021,\"publicIPBlock\":\"h\",\"provisioningState\":\"Succeeded\"},\"id\":\"qpofvwbc\",\"name\":\"lembnkbwvqvxkdi\",\"type\":\"qihebw\"}";
+            "{\"properties\":{\"displayName\":\"qepvufhbzeh\",\"numberOfPublicIPs\":5833531132490364986,\"publicIPBlock\":\"hnl\",\"provisioningState\":\"Succeeded\"},\"id\":\"bldxeaclgscho\",\"name\":\"imkrsrrmouc\",\"type\":\"ofldpuviyfcaa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class WorkloadNetworksCreatePublicIpMockTests {
         WorkloadNetworkPublicIp response =
             manager
                 .workloadNetworks()
-                .definePublicIp("gzwywak")
-                .withExistingPrivateCloud("s", "sphaivmxyasflvg")
-                .withDisplayName("knsmjblmljhlnymz")
-                .withNumberOfPublicIPs(6462643283553404764L)
+                .definePublicIp("oxoyyukp")
+                .withExistingPrivateCloud("fmuvapckccr", "vwe")
+                .withDisplayName("mmoiroqboshbra")
+                .withNumberOfPublicIPs(7328880240070265535L)
                 .create();
 
-        Assertions.assertEquals("bxiqxeiiqbimht", response.displayName());
-        Assertions.assertEquals(1851749746038265021L, response.numberOfPublicIPs());
+        Assertions.assertEquals("qepvufhbzeh", response.displayName());
+        Assertions.assertEquals(5833531132490364986L, response.numberOfPublicIPs());
     }
 }

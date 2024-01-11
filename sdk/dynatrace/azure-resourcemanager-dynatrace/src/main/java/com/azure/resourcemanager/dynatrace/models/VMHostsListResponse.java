@@ -24,6 +24,10 @@ public final class VMHostsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VMHostsListResponse class. */
+    public VMHostsListResponse() {
+    }
+
     /**
      * Get the value property: The items on this page.
      *

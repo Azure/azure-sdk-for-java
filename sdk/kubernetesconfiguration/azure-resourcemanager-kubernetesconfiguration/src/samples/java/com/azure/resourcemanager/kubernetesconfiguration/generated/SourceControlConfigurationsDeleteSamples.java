@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.generated;
 /** Samples for SourceControlConfigurations Delete. */
 public final class SourceControlConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/DeleteSourceControlConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/DeleteSourceControlConfiguration.json
      */
     /**
      * Sample code: Delete Source Control Configuration.

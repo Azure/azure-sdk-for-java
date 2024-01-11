@@ -12,9 +12,9 @@ public final class AppliancesGetByResourceGroupSamples {
     /**
      * Sample code: Get Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void getAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void getAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         manager
             .appliances()
             .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);

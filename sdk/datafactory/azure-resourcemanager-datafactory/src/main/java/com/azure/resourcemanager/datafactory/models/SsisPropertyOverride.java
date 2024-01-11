@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS property override. */
+/**
+ * SSIS property override.
+ */
 @Fluent
 public final class SsisPropertyOverride {
     /*
@@ -23,14 +25,16 @@ public final class SsisPropertyOverride {
     @JsonProperty(value = "isSensitive")
     private Boolean isSensitive;
 
-    /** Creates an instance of SsisPropertyOverride class. */
+    /**
+     * Creates an instance of SsisPropertyOverride class.
+     */
     public SsisPropertyOverride() {
     }
 
     /**
      * Get the value property: SSIS package property override value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -40,7 +44,7 @@ public final class SsisPropertyOverride {
     /**
      * Set the value property: SSIS package property override value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisPropertyOverride object itself.
      */
@@ -52,7 +56,7 @@ public final class SsisPropertyOverride {
     /**
      * Get the isSensitive property: Whether SSIS package property override value is sensitive data. Value will be
      * encrypted in SSISDB if it is true.
-     *
+     * 
      * @return the isSensitive value.
      */
     public Boolean isSensitive() {
@@ -62,7 +66,7 @@ public final class SsisPropertyOverride {
     /**
      * Set the isSensitive property: Whether SSIS package property override value is sensitive data. Value will be
      * encrypted in SSISDB if it is true.
-     *
+     * 
      * @param isSensitive the isSensitive value to set.
      * @return the SsisPropertyOverride object itself.
      */
@@ -73,14 +77,13 @@ public final class SsisPropertyOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SsisPropertyOverride"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SsisPropertyOverride"));
         }
     }
 

@@ -23,7 +23,7 @@ public interface AuthorizationServersClient {
     /**
      * Lists a collection of authorization servers defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +36,7 @@ public interface AuthorizationServersClient {
     /**
      * Lists a collection of authorization servers defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -57,20 +57,7 @@ public interface AuthorizationServersClient {
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param authsid Identifier of the authorization server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, String authsid);
-
-    /**
-     * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param context The context to associate with this operation.
@@ -84,23 +71,22 @@ public interface AuthorizationServersClient {
         String resourceGroupName, String serviceName, String authsid, Context context);
 
     /**
-     * Gets the details of the authorization server specified by its identifier.
+     * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerContractInner get(String resourceGroupName, String serviceName, String authsid);
+    void getEntityTag(String resourceGroupName, String serviceName, String authsid);
 
     /**
      * Gets the details of the authorization server specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param context The context to associate with this operation.
@@ -114,25 +100,23 @@ public interface AuthorizationServersClient {
         String resourceGroupName, String serviceName, String authsid, Context context);
 
     /**
-     * Creates new authorization server or updates an existing authorization server.
+     * Gets the details of the authorization server specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
-     * @param parameters Create or update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return external OAuth authorization server settings.
+     * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String authsid, AuthorizationServerContractInner parameters);
+    AuthorizationServerContractInner get(String resourceGroupName, String serviceName, String authsid);
 
     /**
      * Creates new authorization server or updates an existing authorization server.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param parameters Create or update parameters.
@@ -153,31 +137,25 @@ public interface AuthorizationServersClient {
         Context context);
 
     /**
-     * Updates the details of the authorization server specified by its identifier.
+     * Creates new authorization server or updates an existing authorization server.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters OAuth2 Server settings Update parameters.
+     * @param parameters Create or update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters);
+    AuthorizationServerContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String authsid, AuthorizationServerContractInner parameters);
 
     /**
      * Updates the details of the authorization server specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -199,24 +177,31 @@ public interface AuthorizationServersClient {
         Context context);
 
     /**
-     * Deletes specific authorization server instance.
+     * Updates the details of the authorization server specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
+     * @param parameters OAuth2 Server settings Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, String authsid, String ifMatch);
+    AuthorizationServerContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String authsid,
+        String ifMatch,
+        AuthorizationServerUpdateContract parameters);
 
     /**
      * Deletes specific authorization server instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -232,23 +217,24 @@ public interface AuthorizationServersClient {
         String resourceGroupName, String serviceName, String authsid, String ifMatch, Context context);
 
     /**
-     * Gets the client secret details of the authorization server.
+     * Deletes specific authorization server instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerSecretsContractInner listSecrets(String resourceGroupName, String serviceName, String authsid);
+    void delete(String resourceGroupName, String serviceName, String authsid, String ifMatch);
 
     /**
      * Gets the client secret details of the authorization server.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authsid Identifier of the authorization server.
      * @param context The context to associate with this operation.
@@ -260,4 +246,18 @@ public interface AuthorizationServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     AuthorizationServersListSecretsResponse listSecretsWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context);
+
+    /**
+     * Gets the client secret details of the authorization server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param authsid Identifier of the authorization server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the client secret details of the authorization server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AuthorizationServerSecretsContractInner listSecrets(String resourceGroupName, String serviceName, String authsid);
 }

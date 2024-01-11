@@ -14,9 +14,15 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
+import com.azure.resourcemanager.maintenance.models.TagOperators;
+import com.azure.resourcemanager.maintenance.models.TagSettingsProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -32,7 +38,7 @@ public final class ConfigurationAssignmentsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"ur\",\"properties\":{\"maintenanceConfigurationId\":\"xjnspy\",\"resourceId\":\"tko\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"}";
+            "{\"location\":\"uhhziuiefozbhdm\",\"properties\":{\"maintenanceConfigurationId\":\"mzqhoftrmaequi\",\"resourceId\":\"xicslfao\",\"filter\":{\"resourceTypes\":[\"yylhalnswhccsp\",\"kaivwit\",\"scywuggwoluhc\",\"bwemhairs\"],\"resourceGroups\":[\"z\"],\"osTypes\":[\"swe\",\"pqwd\",\"ggicccnxqhue\",\"mkttlstvlzywem\"],\"locations\":[\"ncsdtclusiyp\",\"sfgytguslfead\",\"ygqukyhejh\"],\"tagSettings\":{\"tags\":{\"bhshfwpracstwity\":[\"fpel\",\"lppvksrpq\",\"ujzra\",\"htwdwrftswibyrcd\"],\"odn\":[\"evxccedcp\",\"md\"],\"xqi\":[\"xltjcvnhltiu\",\"cxnavv\"]},\"filterOperator\":\"Any\"}}},\"id\":\"nyowxwlmdjrkvfg\",\"name\":\"vfvpdbodaciz\",\"type\":\"j\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,20 +70,48 @@ public final class ConfigurationAssignmentsCreateOrUpdateWithResponseMockTests {
             manager
                 .configurationAssignments()
                 .createOrUpdateWithResponse(
-                    "ghsauuimjmvxied",
-                    "ugidyjrr",
-                    "byao",
-                    "v",
-                    "xc",
+                    "rvtp",
+                    "qujmqlgkf",
+                    "tndoaongbjc",
+                    "tujitcjedft",
+                    "waezkojvd",
                     new ConfigurationAssignmentInner()
-                        .withLocation("npc")
-                        .withMaintenanceConfigurationId("cohslkev")
-                        .withResourceId("ggzfbu"),
+                        .withLocation("zfoqouicybxar")
+                        .withMaintenanceConfigurationId("zuf")
+                        .withResourceId("ciqopidoa")
+                        .withFilter(
+                            new ConfigurationAssignmentFilterProperties()
+                                .withResourceTypes(Arrays.asList("dhkha", "xkhnzbonlwnto"))
+                                .withResourceGroups(Arrays.asList("kdwbwhkszz", "mrv"))
+                                .withOsTypes(Arrays.asList("tvb", "qgsfraoyzkoow", "lmnguxaw"))
+                                .withLocations(Arrays.asList("dsyuuximerqfob", "yznkby", "utwpfhp", "gmhrskdsnfdsdoak"))
+                                .withTagSettings(
+                                    new TagSettingsProperties()
+                                        .withTags(mapOf("bbejdcngqqm", Arrays.asList("kkze", "dlhewp", "sdsttwvog")))
+                                        .withFilterOperator(TagOperators.ALL))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ur", response.location());
-        Assertions.assertEquals("xjnspy", response.maintenanceConfigurationId());
-        Assertions.assertEquals("tko", response.resourceId());
+        Assertions.assertEquals("uhhziuiefozbhdm", response.location());
+        Assertions.assertEquals("mzqhoftrmaequi", response.maintenanceConfigurationId());
+        Assertions.assertEquals("xicslfao", response.resourceId());
+        Assertions.assertEquals("yylhalnswhccsp", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("z", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("swe", response.filter().osTypes().get(0));
+        Assertions.assertEquals("ncsdtclusiyp", response.filter().locations().get(0));
+        Assertions.assertEquals("fpel", response.filter().tagSettings().tags().get("bhshfwpracstwity").get(0));
+        Assertions.assertEquals(TagOperators.ANY, response.filter().tagSettings().filterOperator());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

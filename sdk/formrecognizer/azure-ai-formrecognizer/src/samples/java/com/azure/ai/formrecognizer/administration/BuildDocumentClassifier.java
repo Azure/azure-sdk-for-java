@@ -5,11 +5,11 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -46,8 +46,8 @@ public class BuildDocumentClassifier {
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
 
-        TrainingDataContentSource sourceA = new AzureBlobContentSource(blobContainerUrl1040D);
-        TrainingDataContentSource sourceB = new AzureBlobContentSource(blobContainerUrl1040A);
+        ContentSource sourceA = new BlobContentSource(blobContainerUrl1040D);
+        ContentSource sourceB = new BlobContentSource(blobContainerUrl1040A);
 
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails(sourceA));
@@ -61,10 +61,10 @@ public class BuildDocumentClassifier {
         System.out.printf("Classifier description: %s%n", documentClassifierDetails.getDescription());
         System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedOn());
         System.out.printf("Classifier expires on: %s%n", documentClassifierDetails.getExpiresOn());
-        documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
-            if (documentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobContentSource) {
-                System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
-                    .getTrainingDataContentSource()).getContainerUrl());
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                    .getContentSource()).getContainerUrl());
             }
         });
     }

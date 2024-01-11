@@ -12,6 +12,7 @@ module com.azure.identity {
     requires java.xml;
 
     exports com.azure.identity;
-
-    opens com.azure.identity.implementation to com.fasterxml.jackson.databind;
+    exports com.azure.identity.implementation to com.azure.identity.broker;
+    opens com.azure.identity to com.azure.identity.broker;
+    opens com.azure.identity.implementation to com.fasterxml.jackson.databind, com.azure.identity.broker, com.azure.core;
 }

@@ -19,6 +19,10 @@ public final class ListQueueProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
+    /** Creates an instance of ListQueueProperties class. */
+    public ListQueueProperties() {
+    }
+
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
      *

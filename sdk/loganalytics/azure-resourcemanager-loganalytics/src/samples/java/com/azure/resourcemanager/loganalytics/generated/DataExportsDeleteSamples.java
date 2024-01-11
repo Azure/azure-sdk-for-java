@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataExports Delete. */
 public final class DataExportsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class DataExportsDeleteSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().deleteWithResponse("RgTest1", "DeWnTest1234", "export1", Context.NONE);
+        manager
+            .dataExports()
+            .deleteWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }

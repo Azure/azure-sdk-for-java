@@ -188,11 +188,13 @@ public interface BareMetalMachineKeySet {
             DefinitionStages.WithUserList,
             DefinitionStages.WithCreate {
     }
+
     /** The BareMetalMachineKeySet definition stages. */
     interface DefinitionStages {
         /** The first stage of the BareMetalMachineKeySet definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -211,6 +213,7 @@ public interface BareMetalMachineKeySet {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -222,6 +225,7 @@ public interface BareMetalMachineKeySet {
              */
             WithExtendedLocation withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -237,6 +241,7 @@ public interface BareMetalMachineKeySet {
              */
             WithAzureGroupId withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify azureGroupId. */
         interface WithAzureGroupId {
             /**
@@ -249,6 +254,7 @@ public interface BareMetalMachineKeySet {
              */
             WithExpiration withAzureGroupId(String azureGroupId);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -261,6 +267,7 @@ public interface BareMetalMachineKeySet {
              */
             WithJumpHostsAllowed withExpiration(OffsetDateTime expiration);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify jumpHostsAllowed. */
         interface WithJumpHostsAllowed {
             /**
@@ -273,6 +280,7 @@ public interface BareMetalMachineKeySet {
              */
             WithPrivilegeLevel withJumpHostsAllowed(List<String> jumpHostsAllowed);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify privilegeLevel. */
         interface WithPrivilegeLevel {
             /**
@@ -283,6 +291,7 @@ public interface BareMetalMachineKeySet {
              */
             WithUserList withPrivilegeLevel(BareMetalMachineKeySetPrivilegeLevel privilegeLevel);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify userList. */
         interface WithUserList {
             /**
@@ -293,6 +302,7 @@ public interface BareMetalMachineKeySet {
              */
             WithCreate withUserList(List<KeySetUser> userList);
         }
+
         /**
          * The stage of the BareMetalMachineKeySet definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -313,6 +323,7 @@ public interface BareMetalMachineKeySet {
              */
             BareMetalMachineKeySet create(Context context);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -323,6 +334,7 @@ public interface BareMetalMachineKeySet {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the BareMetalMachineKeySet definition allowing to specify osGroupName. */
         interface WithOsGroupName {
             /**
@@ -336,6 +348,7 @@ public interface BareMetalMachineKeySet {
             WithCreate withOsGroupName(String osGroupName);
         }
     }
+
     /**
      * Begins update for the BareMetalMachineKeySet resource.
      *
@@ -364,6 +377,7 @@ public interface BareMetalMachineKeySet {
          */
         BareMetalMachineKeySet apply(Context context);
     }
+
     /** The BareMetalMachineKeySet update stages. */
     interface UpdateStages {
         /** The stage of the BareMetalMachineKeySet update allowing to specify tags. */
@@ -376,6 +390,7 @@ public interface BareMetalMachineKeySet {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BareMetalMachineKeySet update allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -388,6 +403,7 @@ public interface BareMetalMachineKeySet {
              */
             Update withExpiration(OffsetDateTime expiration);
         }
+
         /** The stage of the BareMetalMachineKeySet update allowing to specify jumpHostsAllowed. */
         interface WithJumpHostsAllowed {
             /**
@@ -400,6 +416,7 @@ public interface BareMetalMachineKeySet {
              */
             Update withJumpHostsAllowed(List<String> jumpHostsAllowed);
         }
+
         /** The stage of the BareMetalMachineKeySet update allowing to specify userList. */
         interface WithUserList {
             /**
@@ -411,6 +428,7 @@ public interface BareMetalMachineKeySet {
             Update withUserList(List<KeySetUser> userList);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

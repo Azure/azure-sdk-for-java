@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataSources Get. */
 public final class DataSourcesGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class DataSourcesGetSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataSources().getWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", Context.NONE);
+        manager
+            .dataSources()
+            .getWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 /** Samples for ApiIssueComment CreateOrUpdate. */
 public final class ApiIssueCommentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiIssueComment.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiIssueComment.json
      */
     /**
      * Sample code: ApiManagementCreateApiIssueComment.

@@ -247,11 +247,13 @@ public interface KubernetesCluster {
             DefinitionStages.WithNetworkConfiguration,
             DefinitionStages.WithCreate {
     }
+
     /** The KubernetesCluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the KubernetesCluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -270,6 +272,7 @@ public interface KubernetesCluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -280,6 +283,7 @@ public interface KubernetesCluster {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -295,6 +299,7 @@ public interface KubernetesCluster {
              */
             WithControlPlaneNodeConfiguration withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify controlPlaneNodeConfiguration. */
         interface WithControlPlaneNodeConfiguration {
             /**
@@ -311,6 +316,7 @@ public interface KubernetesCluster {
             WithInitialAgentPoolConfigurations withControlPlaneNodeConfiguration(
                 ControlPlaneNodeConfiguration controlPlaneNodeConfiguration);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify initialAgentPoolConfigurations. */
         interface WithInitialAgentPoolConfigurations {
             /**
@@ -328,6 +334,7 @@ public interface KubernetesCluster {
             WithKubernetesVersion withInitialAgentPoolConfigurations(
                 List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify kubernetesVersion. */
         interface WithKubernetesVersion {
             /**
@@ -341,6 +348,7 @@ public interface KubernetesCluster {
              */
             WithNetworkConfiguration withKubernetesVersion(String kubernetesVersion);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify networkConfiguration. */
         interface WithNetworkConfiguration {
             /**
@@ -358,6 +366,7 @@ public interface KubernetesCluster {
              */
             WithCreate withNetworkConfiguration(NetworkConfiguration networkConfiguration);
         }
+
         /**
          * The stage of the KubernetesCluster definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -382,6 +391,7 @@ public interface KubernetesCluster {
              */
             KubernetesCluster create(Context context);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -392,6 +402,7 @@ public interface KubernetesCluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify aadConfiguration. */
         interface WithAadConfiguration {
             /**
@@ -406,6 +417,7 @@ public interface KubernetesCluster {
              */
             WithCreate withAadConfiguration(AadConfiguration aadConfiguration);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify administratorConfiguration. */
         interface WithAdministratorConfiguration {
             /**
@@ -424,6 +436,7 @@ public interface KubernetesCluster {
              */
             WithCreate withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration);
         }
+
         /** The stage of the KubernetesCluster definition allowing to specify managedResourceGroupConfiguration. */
         interface WithManagedResourceGroupConfiguration {
             /**
@@ -441,6 +454,7 @@ public interface KubernetesCluster {
                 ManagedResourceGroupConfiguration managedResourceGroupConfiguration);
         }
     }
+
     /**
      * Begins update for the KubernetesCluster resource.
      *
@@ -468,6 +482,7 @@ public interface KubernetesCluster {
          */
         KubernetesCluster apply(Context context);
     }
+
     /** The KubernetesCluster update stages. */
     interface UpdateStages {
         /** The stage of the KubernetesCluster update allowing to specify tags. */
@@ -480,6 +495,7 @@ public interface KubernetesCluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the KubernetesCluster update allowing to specify controlPlaneNodeConfiguration. */
         interface WithControlPlaneNodeConfiguration {
             /**
@@ -495,6 +511,7 @@ public interface KubernetesCluster {
              */
             Update withControlPlaneNodeConfiguration(ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration);
         }
+
         /** The stage of the KubernetesCluster update allowing to specify kubernetesVersion. */
         interface WithKubernetesVersion {
             /**
@@ -509,6 +526,7 @@ public interface KubernetesCluster {
             Update withKubernetesVersion(String kubernetesVersion);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -533,8 +551,9 @@ public interface KubernetesCluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restartNode(KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters);
+    OperationStatusResult restartNode(KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters);
 
     /**
      * Restart a targeted node.
@@ -546,6 +565,8 @@ public interface KubernetesCluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restartNode(KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
+    OperationStatusResult restartNode(
+        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
 }

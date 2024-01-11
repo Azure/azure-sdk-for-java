@@ -8,22 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Wait activity properties. */
+/**
+ * Wait activity properties.
+ */
 @Fluent
 public final class WaitActivityTypeProperties {
     /*
-     * Duration in seconds.
+     * Duration in seconds. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "waitTimeInSeconds", required = true)
     private Object waitTimeInSeconds;
 
-    /** Creates an instance of WaitActivityTypeProperties class. */
+    /**
+     * Creates an instance of WaitActivityTypeProperties class.
+     */
     public WaitActivityTypeProperties() {
     }
 
     /**
-     * Get the waitTimeInSeconds property: Duration in seconds.
-     *
+     * Get the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
+     * 
      * @return the waitTimeInSeconds value.
      */
     public Object waitTimeInSeconds() {
@@ -31,8 +35,8 @@ public final class WaitActivityTypeProperties {
     }
 
     /**
-     * Set the waitTimeInSeconds property: Duration in seconds.
-     *
+     * Set the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
+     * 
      * @param waitTimeInSeconds the waitTimeInSeconds value to set.
      * @return the WaitActivityTypeProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class WaitActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (waitTimeInSeconds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property waitTimeInSeconds in model WaitActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property waitTimeInSeconds in model WaitActivityTypeProperties"));
         }
     }
 

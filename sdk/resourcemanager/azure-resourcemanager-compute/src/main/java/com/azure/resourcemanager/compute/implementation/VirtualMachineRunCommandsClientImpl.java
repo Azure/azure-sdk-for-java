@@ -44,24 +44,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineRunCommandsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineRunCommandsClient.
+ */
 public final class VirtualMachineRunCommandsClientImpl implements VirtualMachineRunCommandsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineRunCommandsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineRunCommandsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineRunCommandsClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VirtualMachineRunCommandsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineRunCommandsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,229 +76,158 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface VirtualMachineRunCommandsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RunCommandListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandDocumentInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @PathParam("commandId") String commandId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RunCommandDocumentInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @PathParam("commandId") String commandId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmName") String vmName,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmName") String vmName,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineRunCommandInner runCommand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmName") String vmName,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmName") String vmName,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineRunCommandUpdate runCommand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmName") String vmName,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmName") String vmName,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands/{runCommandName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachine(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmName") String vmName,
-            @PathParam("runCommandName") String runCommandName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachine(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmName") String vmName,
+            @PathParam("runCommandName") String runCommandName, @QueryParam("$expand") String expand,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommands")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineRunCommandsListResult>> listByVirtualMachine(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmName") String vmName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VirtualMachineRunCommandsListResult>> listByVirtualMachine(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmName") String vmName,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunCommandListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RunCommandListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineRunCommandsListResult>> listByVirtualMachineNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunCommandDocumentBaseInner>> listSinglePageAsync(String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            location,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RunCommandDocumentBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RunCommandDocumentBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunCommandDocumentBaseInner>> listSinglePageAsync(String location, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -308,7 +241,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,13 +251,13 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunCommandDocumentBaseInner> listAsync(String location, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(location, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +271,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,22 +286,20 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunCommandDocumentInner>> getWithResponseAsync(String location, String commandId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -377,31 +308,20 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            location,
-                            commandId,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), location, commandId, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
@@ -409,16 +329,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific run command for a subscription in a location along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunCommandDocumentInner>> getWithResponseAsync(
-        String location, String commandId, Context context) {
+    private Mono<Response<RunCommandDocumentInner>> getWithResponseAsync(String location, String commandId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -427,28 +345,19 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                location,
-                commandId,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), location, commandId, apiVersion, this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,7 +372,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
@@ -479,7 +388,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,7 +403,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -502,17 +411,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandInner runCommand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -525,38 +432,25 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmName,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            runCommand,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName,
+                runCommandName, apiVersion, this.client.getSubscriptionId(), runCommand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -565,21 +459,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandInner runCommand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -592,35 +480,24 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmName,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                runCommand,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
+            this.client.getSubscriptionId(), runCommand, accept, context);
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -632,23 +509,18 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String runCommandName,
+            VirtualMachineRunCommandInner runCommand) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -661,28 +533,19 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmName,
-            String runCommandName,
-            VirtualMachineRunCommandInner runCommand,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String runCommandName,
+            VirtualMachineRunCommandInner runCommand, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand, context);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand, context);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            context);
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -700,7 +563,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -713,19 +576,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
+        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context)
             .getSyncPoller();
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -736,16 +595,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand)
-            .last()
+    public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandInner runCommand) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -757,20 +615,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context)
-            .last()
+    private Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandInner runCommand, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -781,14 +634,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand) {
+    public VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmName, String runCommandName,
+        VirtualMachineRunCommandInner runCommand) {
         return createOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).block();
     }
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -800,18 +653,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context) {
+    public VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmName, String runCommandName,
+        VirtualMachineRunCommandInner runCommand, Context context) {
         return createOrUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).block();
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -819,17 +668,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -842,38 +689,25 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmName,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            runCommand,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
+                apiVersion, this.client.getSubscriptionId(), runCommand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -882,21 +716,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -909,35 +737,24 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (runCommand == null) {
             return Mono.error(new IllegalArgumentException("Parameter runCommand is required and cannot be null."));
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmName,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                runCommand,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
+            this.client.getSubscriptionId(), runCommand, accept, context);
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -950,21 +767,16 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
         String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -977,27 +789,19 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
+        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand, context);
-        return this
-            .client
-            .<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineRunCommandInner.class,
-                VirtualMachineRunCommandInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, vmName, runCommandName, runCommand, context);
+        return this.client.<VirtualMachineRunCommandInner, VirtualMachineRunCommandInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualMachineRunCommandInner.class, VirtualMachineRunCommandInner.class,
+            context);
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1015,7 +819,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1028,17 +832,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
+        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand,
         Context context) {
         return this.beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).getSyncPoller();
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1049,16 +850,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> updateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
-        return beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand)
-            .last()
+    public Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
+        return beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1070,20 +870,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineRunCommandInner> updateAsync(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context)
-            .last()
+    private Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmName,
+        String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
+        return beginUpdateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1094,14 +889,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner update(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand) {
+    public VirtualMachineRunCommandInner update(String resourceGroupName, String vmName, String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand) {
         return updateAsync(resourceGroupName, vmName, runCommandName, runCommand).block();
     }
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -1113,18 +908,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner update(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context) {
+    public VirtualMachineRunCommandInner update(String resourceGroupName, String vmName, String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand, Context context) {
         return updateAsync(resourceGroupName, vmName, runCommandName, runCommand, context).block();
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1134,13 +925,11 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1153,32 +942,20 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmName,
-                            runCommandName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1189,13 +966,11 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
+        String runCommandName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1208,29 +983,19 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmName,
-                runCommandName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1240,18 +1005,16 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmName, String runCommandName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
+        String runCommandName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmName, runCommandName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1262,19 +1025,18 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmName, String runCommandName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
+        String runCommandName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmName, runCommandName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vmName, runCommandName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1284,14 +1046,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmName, String runCommandName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
+        String runCommandName) {
         return this.beginDeleteAsync(resourceGroupName, vmName, runCommandName).getSyncPoller();
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1302,14 +1064,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmName, String runCommandName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName,
+        String runCommandName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vmName, runCommandName, context).getSyncPoller();
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1320,14 +1082,13 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vmName, String runCommandName) {
-        return beginDeleteAsync(resourceGroupName, vmName, runCommandName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vmName, runCommandName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1339,14 +1100,13 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vmName, String runCommandName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmName, runCommandName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vmName, runCommandName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1361,7 +1121,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1377,7 +1137,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1385,17 +1145,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, String expand) {
+    public Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(String resourceGroupName,
+        String vmName, String runCommandName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1408,33 +1166,20 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByVirtualMachine(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmName,
-                            runCommandName,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
+                runCommandName, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1443,17 +1188,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, String expand, Context context) {
+    private Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(String resourceGroupName,
+        String vmName, String runCommandName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1466,30 +1209,19 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByVirtualMachine(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmName,
-                runCommandName,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, expand,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1499,8 +1231,8 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String runCommandName) {
+    public Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(String resourceGroupName, String vmName,
+        String runCommandName) {
         final String expand = null;
         return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1508,7 +1240,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1520,14 +1252,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(
-        String resourceGroupName, String vmName, String runCommandName, String expand, Context context) {
+    public Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(String resourceGroupName,
+        String vmName, String runCommandName, String expand, Context context) {
         return getByVirtualMachineWithResponseAsync(resourceGroupName, vmName, runCommandName, expand, context).block();
     }
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1537,8 +1269,8 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineRunCommandInner getByVirtualMachine(
-        String resourceGroupName, String vmName, String runCommandName) {
+    public VirtualMachineRunCommandInner getByVirtualMachine(String resourceGroupName, String vmName,
+        String runCommandName) {
         final String expand = null;
         return getByVirtualMachineWithResponse(resourceGroupName, vmName, runCommandName, expand, Context.NONE)
             .getValue();
@@ -1546,7 +1278,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1554,16 +1286,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listByVirtualMachineSinglePageAsync(
-        String resourceGroupName, String vmName, String expand) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>>
+        listByVirtualMachineSinglePageAsync(String resourceGroupName, String vmName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1573,41 +1303,22 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVirtualMachine(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmName,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<VirtualMachineRunCommandInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
+                expand, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<VirtualMachineRunCommandInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1616,16 +1327,14 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listByVirtualMachineSinglePageAsync(
-        String resourceGroupName, String vmName, String expand, Context context) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>>
+        listByVirtualMachineSinglePageAsync(String resourceGroupName, String vmName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1635,38 +1344,22 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVirtualMachine(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmName,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName, expand, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1676,16 +1369,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String expand) {
-        return new PagedFlux<>(
-            () -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand),
+    public PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName,
+        String expand) {
+        return new PagedFlux<>(() -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand),
             nextLink -> listByVirtualMachineNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1696,14 +1388,13 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName) {
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand),
+        return new PagedFlux<>(() -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand),
             nextLink -> listByVirtualMachineNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1714,16 +1405,15 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand, context),
+    private PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName,
+        String expand, Context context) {
+        return new PagedFlux<>(() -> listByVirtualMachineSinglePageAsync(resourceGroupName, vmName, expand, context),
             nextLink -> listByVirtualMachineNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1739,7 +1429,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1750,21 +1440,22 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(
-        String resourceGroupName, String vmName, String expand, Context context) {
+    public PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName,
+        String expand, Context context) {
         return new PagedIterable<>(listByVirtualMachineAsync(resourceGroupName, vmName, expand, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunCommandDocumentBaseInner>> listNextSinglePageAsync(String nextLink) {
@@ -1772,37 +1463,28 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RunCommandDocumentBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RunCommandDocumentBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunCommandDocumentBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1810,101 +1492,74 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listByVirtualMachineNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>>
+        listByVirtualMachineNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context -> service.listByVirtualMachineNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualMachineRunCommandInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VirtualMachineRunCommandInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List run command operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listByVirtualMachineNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualMachineRunCommandInner>> listByVirtualMachineNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByVirtualMachineNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByVirtualMachineNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

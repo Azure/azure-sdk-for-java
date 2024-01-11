@@ -17,6 +17,15 @@ public final class BearerTokenSendingMethod extends ExpandableStringEnum<BearerT
     public static final BearerTokenSendingMethod QUERY = fromString("query");
 
     /**
+     * Creates a new instance of BearerTokenSendingMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BearerTokenSendingMethod() {
+    }
+
+    /**
      * Creates or finds a BearerTokenSendingMethod from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class BearerTokenSendingMethod extends ExpandableStringEnum<BearerT
         return fromString(name, BearerTokenSendingMethod.class);
     }
 
-    /** @return known BearerTokenSendingMethod values. */
+    /**
+     * Gets known BearerTokenSendingMethod values.
+     *
+     * @return known BearerTokenSendingMethod values.
+     */
     public static Collection<BearerTokenSendingMethod> values() {
         return values(BearerTokenSendingMethod.class);
     }

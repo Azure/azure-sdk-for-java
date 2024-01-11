@@ -54,7 +54,42 @@ import static com.azure.messaging.eventgrid.implementation.Constants.EVENT_GRID_
 
 /**
  * A Builder class to create service clients that can publish events to EventGrid.
+ *
+ * This builder will construct publishers for {@link CloudEvent}, {@link EventGridEvent}, and custom events. It will do
+ * for both sync and async clients.
+ *
+ * <p><b>Sample: Create a {@link EventGridEvent} asynchronous publisher client.</b>
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of EventGridEvent schema
+ * EventGridPublisherAsyncClient&lt;EventGridEvent&gt; eventGridEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_EVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts EventGridEvent
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_EVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildEventGridEventPublisherAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient -->
+ * <p><b>Sample: Create a {@link CloudEvent} synchronous client</b>
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCloudEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of CloudEvent schema &#40;com.azure.core.models.CloudEvent&#41;
+ * EventGridPublisherClient&lt;CloudEvent&gt; cloudEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts CloudEvent
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_CLOUDEVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildCloudEventPublisherClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCloudEventClient -->
+ * <p><b>Sample: Create a custom event asynchronous client</b>
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of custom event
+ * EventGridPublisherAsyncClient&lt;BinaryData&gt; customEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_CUSTOM_EVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts custom events
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_CUSTOM_EVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildCustomEventPublisherAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient -->
  * @see EventGridPublisherAsyncClient
+ * @see EventGridPublisherClient
  * @see EventGridEvent
  * @see CloudEvent
  */
@@ -132,14 +167,21 @@ public final class EventGridPublisherClientBuilder implements
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
+
+        return new EventGridPublisherAsyncClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
+            endpoint,
+            getEventGridServiceVersion(),
+            eventClass);
+    }
+
+    private EventGridServiceVersion getEventGridServiceVersion() {
         EventGridServiceVersion buildServiceVersion = serviceVersion == null
             ? EventGridServiceVersion.getLatest()
             : serviceVersion;
+        return buildServiceVersion;
+    }
 
-        if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient<T>(httpPipeline, endpoint, buildServiceVersion, eventClass);
-        }
-
+    private HttpPipeline getHttpPipeline() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -216,20 +258,21 @@ public final class EventGridPublisherClientBuilder implements
             .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
-
-
-        return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
+        return buildPipeline;
     }
 
     /**
      * Build a publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
-     * Note that currently the asynchronous client created by the method above is the recommended version for higher
-     * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
      */
     private <T> EventGridPublisherClient<T> buildClient(Class<T> eventClass) {
-        return new EventGridPublisherClient<T>(buildAsyncClient(eventClass));
+        Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
+
+        return new EventGridPublisherClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
+            endpoint,
+            getEventGridServiceVersion(),
+            eventClass);
     }
 
     @Override

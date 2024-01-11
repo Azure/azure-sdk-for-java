@@ -14,26 +14,26 @@ public final class WorkloadNetworkDhcpServerTests {
         WorkloadNetworkDhcpServer model =
             BinaryData
                 .fromString(
-                    "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"p\",\"leaseTime\":3268839905872976093,\"displayName\":\"xqupevzhf\",\"segments\":[\"txhojujb\",\"pelmcuvhixbjxyf\",\"n\"],\"provisioningState\":\"Canceled\",\"revision\":3135284928958606229}")
+                    "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"py\",\"leaseTime\":3485711592453889453,\"displayName\":\"dcnifmz\",\"segments\":[\"ymbrnysuxmpraf\",\"g\"],\"provisioningState\":\"Updating\",\"revision\":8975968727108219865}")
                 .toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("xqupevzhf", model.displayName());
-        Assertions.assertEquals(3135284928958606229L, model.revision());
-        Assertions.assertEquals("p", model.serverAddress());
-        Assertions.assertEquals(3268839905872976093L, model.leaseTime());
+        Assertions.assertEquals("dcnifmz", model.displayName());
+        Assertions.assertEquals(8975968727108219865L, model.revision());
+        Assertions.assertEquals("py", model.serverAddress());
+        Assertions.assertEquals(3485711592453889453L, model.leaseTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDhcpServer model =
             new WorkloadNetworkDhcpServer()
-                .withDisplayName("xqupevzhf")
-                .withRevision(3135284928958606229L)
-                .withServerAddress("p")
-                .withLeaseTime(3268839905872976093L);
+                .withDisplayName("dcnifmz")
+                .withRevision(8975968727108219865L)
+                .withServerAddress("py")
+                .withLeaseTime(3485711592453889453L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("xqupevzhf", model.displayName());
-        Assertions.assertEquals(3135284928958606229L, model.revision());
-        Assertions.assertEquals("p", model.serverAddress());
-        Assertions.assertEquals(3268839905872976093L, model.leaseTime());
+        Assertions.assertEquals("dcnifmz", model.displayName());
+        Assertions.assertEquals(8975968727108219865L, model.revision());
+        Assertions.assertEquals("py", model.serverAddress());
+        Assertions.assertEquals(3485711592453889453L, model.leaseTime());
     }
 }

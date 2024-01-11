@@ -10,13 +10,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A copy activity Azure Data Lake Storage Gen2 sink. */
+/**
+ * A copy activity Azure Data Lake Storage Gen2 sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSSink")
 @Fluent
 public final class AzureBlobFSSink extends CopySink {
     /*
-     * The type of copy behavior for copy sink.
+     * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
@@ -28,13 +30,16 @@ public final class AzureBlobFSSink extends CopySink {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
-    /** Creates an instance of AzureBlobFSSink class. */
+    /**
+     * Creates an instance of AzureBlobFSSink class.
+     */
     public AzureBlobFSSink() {
     }
 
     /**
-     * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the copyBehavior value.
      */
     public Object copyBehavior() {
@@ -42,8 +47,9 @@ public final class AzureBlobFSSink extends CopySink {
     }
 
     /**
-     * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.
      */
@@ -55,7 +61,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
      * Expression with resultType array of objects).
-     *
+     * 
      * @return the metadata value.
      */
     public List<MetadataItem> metadata() {
@@ -65,7 +71,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
      * Expression with resultType array of objects).
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AzureBlobFSSink object itself.
      */
@@ -74,42 +80,54 @@ public final class AzureBlobFSSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -118,7 +136,7 @@ public final class AzureBlobFSSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

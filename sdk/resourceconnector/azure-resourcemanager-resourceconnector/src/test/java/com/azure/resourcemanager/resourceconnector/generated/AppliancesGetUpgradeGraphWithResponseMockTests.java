@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resourceconnector.AppliancesManager;
+import com.azure.resourcemanager.resourceconnector.ResourceConnectorManager;
 import com.azure.resourcemanager.resourceconnector.models.UpgradeGraph;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +30,7 @@ public final class AppliancesGetUpgradeGraphWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"pbtoqcjmkl\",\"name\":\"vbqid\",\"properties\":{\"applianceVersion\":\"jzyulpk\",\"supportedVersions\":[]}}";
+            "{\"id\":\"ngxlefgugnxkrxdq\",\"name\":\"dt\",\"properties\":{\"applianceVersion\":\"rvqdra\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{}},\"version\":\"gehoqfbowskany\"},{\"metadata\":{\"catalogVersion\":{}},\"version\":\"cuiywgqyw\"}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,8 +50,8 @@ public final class AppliancesGetUpgradeGraphWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        AppliancesManager manager =
-            AppliancesManager
+        ResourceConnectorManager manager =
+            ResourceConnectorManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(
@@ -61,7 +61,7 @@ public final class AppliancesGetUpgradeGraphWithResponseMockTests {
         UpgradeGraph response =
             manager
                 .appliances()
-                .getUpgradeGraphWithResponse("jxvsnbyxqabn", "ocpcy", "hurzafblj", com.azure.core.util.Context.NONE)
+                .getUpgradeGraphWithResponse("m", "uhrzayvvt", "gvdfgiotkftutq", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

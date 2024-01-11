@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subscription Delete. */
 public final class SubscriptionDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteSubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteSubscription.json
      */
     /**
      * Sample code: ApiManagementDeleteSubscription.
@@ -18,6 +16,8 @@ public final class SubscriptionDeleteSamples {
      */
     public static void apiManagementDeleteSubscription(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.subscriptions().deleteWithResponse("rg1", "apimService1", "testsub", "*", Context.NONE);
+        manager
+            .subscriptions()
+            .deleteWithResponse("rg1", "apimService1", "testsub", "*", com.azure.core.util.Context.NONE);
     }
 }

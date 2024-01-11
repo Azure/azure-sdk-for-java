@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -41,8 +43,14 @@ import com.azure.resourcemanager.apimanagement.implementation.ApiRevisionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiSchemasImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiTagDescriptionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApiVersionSetsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiWikisImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ApiWikisOperationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ApisImpl;
+import com.azure.resourcemanager.apimanagement.implementation.AuthorizationAccessPoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.AuthorizationLoginLinksImpl;
+import com.azure.resourcemanager.apimanagement.implementation.AuthorizationProvidersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.AuthorizationServersImpl;
+import com.azure.resourcemanager.apimanagement.implementation.AuthorizationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.BackendsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.CachesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.CertificatesImpl;
@@ -51,12 +59,15 @@ import com.azure.resourcemanager.apimanagement.implementation.ContentTypesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.DelegationSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.DeletedServicesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.DiagnosticsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.DocumentationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.EmailTemplatesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewayApisImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewayCertificateAuthoritiesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewayHostnameConfigurationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GatewaysImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GlobalSchemasImpl;
+import com.azure.resourcemanager.apimanagement.implementation.GraphQLApiResolverPoliciesImpl;
+import com.azure.resourcemanager.apimanagement.implementation.GraphQLApiResolversImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GroupUsersImpl;
 import com.azure.resourcemanager.apimanagement.implementation.GroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.IdentityProvidersImpl;
@@ -72,6 +83,8 @@ import com.azure.resourcemanager.apimanagement.implementation.OperationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.OutboundNetworkDependenciesEndpointsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PolicyDescriptionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.PolicyFragmentsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.PortalConfigsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalRevisionsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PortalSettingsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.PrivateEndpointConnectionsImpl;
@@ -79,6 +92,8 @@ import com.azure.resourcemanager.apimanagement.implementation.ProductApisImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductGroupsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductPoliciesImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductSubscriptionsImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ProductWikisImpl;
+import com.azure.resourcemanager.apimanagement.implementation.ProductWikisOperationsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.ProductsImpl;
 import com.azure.resourcemanager.apimanagement.implementation.QuotaByCounterKeysImpl;
 import com.azure.resourcemanager.apimanagement.implementation.QuotaByPeriodKeysImpl;
@@ -117,8 +132,14 @@ import com.azure.resourcemanager.apimanagement.models.ApiRevisions;
 import com.azure.resourcemanager.apimanagement.models.ApiSchemas;
 import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptions;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSets;
+import com.azure.resourcemanager.apimanagement.models.ApiWikis;
+import com.azure.resourcemanager.apimanagement.models.ApiWikisOperations;
 import com.azure.resourcemanager.apimanagement.models.Apis;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicies;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginLinks;
+import com.azure.resourcemanager.apimanagement.models.AuthorizationProviders;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServers;
+import com.azure.resourcemanager.apimanagement.models.Authorizations;
 import com.azure.resourcemanager.apimanagement.models.Backends;
 import com.azure.resourcemanager.apimanagement.models.Caches;
 import com.azure.resourcemanager.apimanagement.models.Certificates;
@@ -127,12 +148,15 @@ import com.azure.resourcemanager.apimanagement.models.ContentTypes;
 import com.azure.resourcemanager.apimanagement.models.DelegationSettings;
 import com.azure.resourcemanager.apimanagement.models.DeletedServices;
 import com.azure.resourcemanager.apimanagement.models.Diagnostics;
+import com.azure.resourcemanager.apimanagement.models.Documentations;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplates;
 import com.azure.resourcemanager.apimanagement.models.GatewayApis;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorities;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurations;
 import com.azure.resourcemanager.apimanagement.models.Gateways;
 import com.azure.resourcemanager.apimanagement.models.GlobalSchemas;
+import com.azure.resourcemanager.apimanagement.models.GraphQLApiResolverPolicies;
+import com.azure.resourcemanager.apimanagement.models.GraphQLApiResolvers;
 import com.azure.resourcemanager.apimanagement.models.GroupUsers;
 import com.azure.resourcemanager.apimanagement.models.Groups;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviders;
@@ -148,6 +172,8 @@ import com.azure.resourcemanager.apimanagement.models.Operations;
 import com.azure.resourcemanager.apimanagement.models.OutboundNetworkDependenciesEndpoints;
 import com.azure.resourcemanager.apimanagement.models.Policies;
 import com.azure.resourcemanager.apimanagement.models.PolicyDescriptions;
+import com.azure.resourcemanager.apimanagement.models.PolicyFragments;
+import com.azure.resourcemanager.apimanagement.models.PortalConfigs;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisions;
 import com.azure.resourcemanager.apimanagement.models.PortalSettings;
 import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnections;
@@ -155,6 +181,8 @@ import com.azure.resourcemanager.apimanagement.models.ProductApis;
 import com.azure.resourcemanager.apimanagement.models.ProductGroups;
 import com.azure.resourcemanager.apimanagement.models.ProductPolicies;
 import com.azure.resourcemanager.apimanagement.models.ProductSubscriptions;
+import com.azure.resourcemanager.apimanagement.models.ProductWikis;
+import com.azure.resourcemanager.apimanagement.models.ProductWikisOperations;
 import com.azure.resourcemanager.apimanagement.models.Products;
 import com.azure.resourcemanager.apimanagement.models.QuotaByCounterKeys;
 import com.azure.resourcemanager.apimanagement.models.QuotaByPeriodKeys;
@@ -196,6 +224,10 @@ public final class ApiManagementManager {
 
     private Tags tags;
 
+    private GraphQLApiResolvers graphQLApiResolvers;
+
+    private GraphQLApiResolverPolicies graphQLApiResolverPolicies;
+
     private ApiProducts apiProducts;
 
     private ApiPolicies apiPolicies;
@@ -214,11 +246,23 @@ public final class ApiManagementManager {
 
     private Operations operations;
 
+    private ApiWikis apiWikis;
+
+    private ApiWikisOperations apiWikisOperations;
+
     private ApiExports apiExports;
 
     private ApiVersionSets apiVersionSets;
 
     private AuthorizationServers authorizationServers;
+
+    private AuthorizationProviders authorizationProviders;
+
+    private Authorizations authorizations;
+
+    private AuthorizationLoginLinks authorizationLoginLinks;
+
+    private AuthorizationAccessPolicies authorizationAccessPolicies;
 
     private Backends backends;
 
@@ -280,6 +324,10 @@ public final class ApiManagementManager {
 
     private PolicyDescriptions policyDescriptions;
 
+    private PolicyFragments policyFragments;
+
+    private PortalConfigs portalConfigs;
+
     private PortalRevisions portalRevisions;
 
     private PortalSettings portalSettings;
@@ -301,6 +349,10 @@ public final class ApiManagementManager {
     private ProductSubscriptions productSubscriptions;
 
     private ProductPolicies productPolicies;
+
+    private ProductWikis productWikis;
+
+    private ProductWikisOperations productWikisOperations;
 
     private QuotaByCounterKeys quotaByCounterKeys;
 
@@ -336,6 +388,8 @@ public final class ApiManagementManager {
 
     private UserConfirmationPasswords userConfirmationPasswords;
 
+    private Documentations documentations;
+
     private final ApiManagementClient clientObject;
 
     private ApiManagementManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
@@ -364,6 +418,19 @@ public final class ApiManagementManager {
     }
 
     /**
+     * Creates an instance of ApiManagement service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the ApiManagement service API instance.
+     */
+    public static ApiManagementManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new ApiManagementManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create ApiManagementManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -381,6 +448,7 @@ public final class ApiManagementManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -442,6 +510,19 @@ public final class ApiManagementManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
@@ -474,7 +555,7 @@ public final class ApiManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.apimanagement")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -492,10 +573,15 @@ public final class ApiManagementManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -526,7 +612,11 @@ public final class ApiManagementManager {
         }
     }
 
-    /** @return Resource collection API of Apis. */
+    /**
+     * Gets the resource collection API of Apis. It manages ApiContract.
+     *
+     * @return Resource collection API of Apis.
+     */
     public Apis apis() {
         if (this.apis == null) {
             this.apis = new ApisImpl(clientObject.getApis(), this);
@@ -534,7 +624,11 @@ public final class ApiManagementManager {
         return apis;
     }
 
-    /** @return Resource collection API of ApiRevisions. */
+    /**
+     * Gets the resource collection API of ApiRevisions.
+     *
+     * @return Resource collection API of ApiRevisions.
+     */
     public ApiRevisions apiRevisions() {
         if (this.apiRevisions == null) {
             this.apiRevisions = new ApiRevisionsImpl(clientObject.getApiRevisions(), this);
@@ -542,7 +636,11 @@ public final class ApiManagementManager {
         return apiRevisions;
     }
 
-    /** @return Resource collection API of ApiReleases. */
+    /**
+     * Gets the resource collection API of ApiReleases. It manages ApiReleaseContract.
+     *
+     * @return Resource collection API of ApiReleases.
+     */
     public ApiReleases apiReleases() {
         if (this.apiReleases == null) {
             this.apiReleases = new ApiReleasesImpl(clientObject.getApiReleases(), this);
@@ -550,7 +648,11 @@ public final class ApiManagementManager {
         return apiReleases;
     }
 
-    /** @return Resource collection API of ApiOperations. */
+    /**
+     * Gets the resource collection API of ApiOperations. It manages OperationContract.
+     *
+     * @return Resource collection API of ApiOperations.
+     */
     public ApiOperations apiOperations() {
         if (this.apiOperations == null) {
             this.apiOperations = new ApiOperationsImpl(clientObject.getApiOperations(), this);
@@ -558,7 +660,11 @@ public final class ApiManagementManager {
         return apiOperations;
     }
 
-    /** @return Resource collection API of ApiOperationPolicies. */
+    /**
+     * Gets the resource collection API of ApiOperationPolicies. It manages PolicyContract.
+     *
+     * @return Resource collection API of ApiOperationPolicies.
+     */
     public ApiOperationPolicies apiOperationPolicies() {
         if (this.apiOperationPolicies == null) {
             this.apiOperationPolicies = new ApiOperationPoliciesImpl(clientObject.getApiOperationPolicies(), this);
@@ -566,7 +672,11 @@ public final class ApiManagementManager {
         return apiOperationPolicies;
     }
 
-    /** @return Resource collection API of Tags. */
+    /**
+     * Gets the resource collection API of Tags. It manages TagContract.
+     *
+     * @return Resource collection API of Tags.
+     */
     public Tags tags() {
         if (this.tags == null) {
             this.tags = new TagsImpl(clientObject.getTags(), this);
@@ -574,7 +684,36 @@ public final class ApiManagementManager {
         return tags;
     }
 
-    /** @return Resource collection API of ApiProducts. */
+    /**
+     * Gets the resource collection API of GraphQLApiResolvers. It manages ResolverContract.
+     *
+     * @return Resource collection API of GraphQLApiResolvers.
+     */
+    public GraphQLApiResolvers graphQLApiResolvers() {
+        if (this.graphQLApiResolvers == null) {
+            this.graphQLApiResolvers = new GraphQLApiResolversImpl(clientObject.getGraphQLApiResolvers(), this);
+        }
+        return graphQLApiResolvers;
+    }
+
+    /**
+     * Gets the resource collection API of GraphQLApiResolverPolicies.
+     *
+     * @return Resource collection API of GraphQLApiResolverPolicies.
+     */
+    public GraphQLApiResolverPolicies graphQLApiResolverPolicies() {
+        if (this.graphQLApiResolverPolicies == null) {
+            this.graphQLApiResolverPolicies =
+                new GraphQLApiResolverPoliciesImpl(clientObject.getGraphQLApiResolverPolicies(), this);
+        }
+        return graphQLApiResolverPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of ApiProducts.
+     *
+     * @return Resource collection API of ApiProducts.
+     */
     public ApiProducts apiProducts() {
         if (this.apiProducts == null) {
             this.apiProducts = new ApiProductsImpl(clientObject.getApiProducts(), this);
@@ -582,7 +721,11 @@ public final class ApiManagementManager {
         return apiProducts;
     }
 
-    /** @return Resource collection API of ApiPolicies. */
+    /**
+     * Gets the resource collection API of ApiPolicies.
+     *
+     * @return Resource collection API of ApiPolicies.
+     */
     public ApiPolicies apiPolicies() {
         if (this.apiPolicies == null) {
             this.apiPolicies = new ApiPoliciesImpl(clientObject.getApiPolicies(), this);
@@ -590,7 +733,11 @@ public final class ApiManagementManager {
         return apiPolicies;
     }
 
-    /** @return Resource collection API of ApiSchemas. */
+    /**
+     * Gets the resource collection API of ApiSchemas. It manages SchemaContract.
+     *
+     * @return Resource collection API of ApiSchemas.
+     */
     public ApiSchemas apiSchemas() {
         if (this.apiSchemas == null) {
             this.apiSchemas = new ApiSchemasImpl(clientObject.getApiSchemas(), this);
@@ -598,7 +745,11 @@ public final class ApiManagementManager {
         return apiSchemas;
     }
 
-    /** @return Resource collection API of ApiDiagnostics. */
+    /**
+     * Gets the resource collection API of ApiDiagnostics. It manages DiagnosticContract.
+     *
+     * @return Resource collection API of ApiDiagnostics.
+     */
     public ApiDiagnostics apiDiagnostics() {
         if (this.apiDiagnostics == null) {
             this.apiDiagnostics = new ApiDiagnosticsImpl(clientObject.getApiDiagnostics(), this);
@@ -606,7 +757,11 @@ public final class ApiManagementManager {
         return apiDiagnostics;
     }
 
-    /** @return Resource collection API of ApiIssues. */
+    /**
+     * Gets the resource collection API of ApiIssues. It manages IssueContract.
+     *
+     * @return Resource collection API of ApiIssues.
+     */
     public ApiIssues apiIssues() {
         if (this.apiIssues == null) {
             this.apiIssues = new ApiIssuesImpl(clientObject.getApiIssues(), this);
@@ -614,7 +769,11 @@ public final class ApiManagementManager {
         return apiIssues;
     }
 
-    /** @return Resource collection API of ApiIssueComments. */
+    /**
+     * Gets the resource collection API of ApiIssueComments. It manages IssueCommentContract.
+     *
+     * @return Resource collection API of ApiIssueComments.
+     */
     public ApiIssueComments apiIssueComments() {
         if (this.apiIssueComments == null) {
             this.apiIssueComments = new ApiIssueCommentsImpl(clientObject.getApiIssueComments(), this);
@@ -622,7 +781,11 @@ public final class ApiManagementManager {
         return apiIssueComments;
     }
 
-    /** @return Resource collection API of ApiIssueAttachments. */
+    /**
+     * Gets the resource collection API of ApiIssueAttachments. It manages IssueAttachmentContract.
+     *
+     * @return Resource collection API of ApiIssueAttachments.
+     */
     public ApiIssueAttachments apiIssueAttachments() {
         if (this.apiIssueAttachments == null) {
             this.apiIssueAttachments = new ApiIssueAttachmentsImpl(clientObject.getApiIssueAttachments(), this);
@@ -630,7 +793,11 @@ public final class ApiManagementManager {
         return apiIssueAttachments;
     }
 
-    /** @return Resource collection API of ApiTagDescriptions. */
+    /**
+     * Gets the resource collection API of ApiTagDescriptions. It manages TagDescriptionContract.
+     *
+     * @return Resource collection API of ApiTagDescriptions.
+     */
     public ApiTagDescriptions apiTagDescriptions() {
         if (this.apiTagDescriptions == null) {
             this.apiTagDescriptions = new ApiTagDescriptionsImpl(clientObject.getApiTagDescriptions(), this);
@@ -638,7 +805,11 @@ public final class ApiManagementManager {
         return apiTagDescriptions;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -646,7 +817,35 @@ public final class ApiManagementManager {
         return operations;
     }
 
-    /** @return Resource collection API of ApiExports. */
+    /**
+     * Gets the resource collection API of ApiWikis.
+     *
+     * @return Resource collection API of ApiWikis.
+     */
+    public ApiWikis apiWikis() {
+        if (this.apiWikis == null) {
+            this.apiWikis = new ApiWikisImpl(clientObject.getApiWikis(), this);
+        }
+        return apiWikis;
+    }
+
+    /**
+     * Gets the resource collection API of ApiWikisOperations.
+     *
+     * @return Resource collection API of ApiWikisOperations.
+     */
+    public ApiWikisOperations apiWikisOperations() {
+        if (this.apiWikisOperations == null) {
+            this.apiWikisOperations = new ApiWikisOperationsImpl(clientObject.getApiWikisOperations(), this);
+        }
+        return apiWikisOperations;
+    }
+
+    /**
+     * Gets the resource collection API of ApiExports.
+     *
+     * @return Resource collection API of ApiExports.
+     */
     public ApiExports apiExports() {
         if (this.apiExports == null) {
             this.apiExports = new ApiExportsImpl(clientObject.getApiExports(), this);
@@ -654,7 +853,11 @@ public final class ApiManagementManager {
         return apiExports;
     }
 
-    /** @return Resource collection API of ApiVersionSets. */
+    /**
+     * Gets the resource collection API of ApiVersionSets. It manages ApiVersionSetContract.
+     *
+     * @return Resource collection API of ApiVersionSets.
+     */
     public ApiVersionSets apiVersionSets() {
         if (this.apiVersionSets == null) {
             this.apiVersionSets = new ApiVersionSetsImpl(clientObject.getApiVersionSets(), this);
@@ -662,7 +865,11 @@ public final class ApiManagementManager {
         return apiVersionSets;
     }
 
-    /** @return Resource collection API of AuthorizationServers. */
+    /**
+     * Gets the resource collection API of AuthorizationServers. It manages AuthorizationServerContract.
+     *
+     * @return Resource collection API of AuthorizationServers.
+     */
     public AuthorizationServers authorizationServers() {
         if (this.authorizationServers == null) {
             this.authorizationServers = new AuthorizationServersImpl(clientObject.getAuthorizationServers(), this);
@@ -670,7 +877,62 @@ public final class ApiManagementManager {
         return authorizationServers;
     }
 
-    /** @return Resource collection API of Backends. */
+    /**
+     * Gets the resource collection API of AuthorizationProviders. It manages AuthorizationProviderContract.
+     *
+     * @return Resource collection API of AuthorizationProviders.
+     */
+    public AuthorizationProviders authorizationProviders() {
+        if (this.authorizationProviders == null) {
+            this.authorizationProviders =
+                new AuthorizationProvidersImpl(clientObject.getAuthorizationProviders(), this);
+        }
+        return authorizationProviders;
+    }
+
+    /**
+     * Gets the resource collection API of Authorizations. It manages AuthorizationContract.
+     *
+     * @return Resource collection API of Authorizations.
+     */
+    public Authorizations authorizations() {
+        if (this.authorizations == null) {
+            this.authorizations = new AuthorizationsImpl(clientObject.getAuthorizations(), this);
+        }
+        return authorizations;
+    }
+
+    /**
+     * Gets the resource collection API of AuthorizationLoginLinks.
+     *
+     * @return Resource collection API of AuthorizationLoginLinks.
+     */
+    public AuthorizationLoginLinks authorizationLoginLinks() {
+        if (this.authorizationLoginLinks == null) {
+            this.authorizationLoginLinks =
+                new AuthorizationLoginLinksImpl(clientObject.getAuthorizationLoginLinks(), this);
+        }
+        return authorizationLoginLinks;
+    }
+
+    /**
+     * Gets the resource collection API of AuthorizationAccessPolicies. It manages AuthorizationAccessPolicyContract.
+     *
+     * @return Resource collection API of AuthorizationAccessPolicies.
+     */
+    public AuthorizationAccessPolicies authorizationAccessPolicies() {
+        if (this.authorizationAccessPolicies == null) {
+            this.authorizationAccessPolicies =
+                new AuthorizationAccessPoliciesImpl(clientObject.getAuthorizationAccessPolicies(), this);
+        }
+        return authorizationAccessPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of Backends. It manages BackendContract.
+     *
+     * @return Resource collection API of Backends.
+     */
     public Backends backends() {
         if (this.backends == null) {
             this.backends = new BackendsImpl(clientObject.getBackends(), this);
@@ -678,7 +940,11 @@ public final class ApiManagementManager {
         return backends;
     }
 
-    /** @return Resource collection API of Caches. */
+    /**
+     * Gets the resource collection API of Caches. It manages CacheContract.
+     *
+     * @return Resource collection API of Caches.
+     */
     public Caches caches() {
         if (this.caches == null) {
             this.caches = new CachesImpl(clientObject.getCaches(), this);
@@ -686,7 +952,11 @@ public final class ApiManagementManager {
         return caches;
     }
 
-    /** @return Resource collection API of Certificates. */
+    /**
+     * Gets the resource collection API of Certificates. It manages CertificateContract.
+     *
+     * @return Resource collection API of Certificates.
+     */
     public Certificates certificates() {
         if (this.certificates == null) {
             this.certificates = new CertificatesImpl(clientObject.getCertificates(), this);
@@ -694,7 +964,11 @@ public final class ApiManagementManager {
         return certificates;
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -702,7 +976,11 @@ public final class ApiManagementManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of ContentTypes. */
+    /**
+     * Gets the resource collection API of ContentTypes. It manages ContentTypeContract.
+     *
+     * @return Resource collection API of ContentTypes.
+     */
     public ContentTypes contentTypes() {
         if (this.contentTypes == null) {
             this.contentTypes = new ContentTypesImpl(clientObject.getContentTypes(), this);
@@ -710,7 +988,11 @@ public final class ApiManagementManager {
         return contentTypes;
     }
 
-    /** @return Resource collection API of ContentItems. */
+    /**
+     * Gets the resource collection API of ContentItems. It manages ContentItemContract.
+     *
+     * @return Resource collection API of ContentItems.
+     */
     public ContentItems contentItems() {
         if (this.contentItems == null) {
             this.contentItems = new ContentItemsImpl(clientObject.getContentItems(), this);
@@ -718,7 +1000,11 @@ public final class ApiManagementManager {
         return contentItems;
     }
 
-    /** @return Resource collection API of DeletedServices. */
+    /**
+     * Gets the resource collection API of DeletedServices.
+     *
+     * @return Resource collection API of DeletedServices.
+     */
     public DeletedServices deletedServices() {
         if (this.deletedServices == null) {
             this.deletedServices = new DeletedServicesImpl(clientObject.getDeletedServices(), this);
@@ -726,7 +1012,11 @@ public final class ApiManagementManager {
         return deletedServices;
     }
 
-    /** @return Resource collection API of ApiManagementOperations. */
+    /**
+     * Gets the resource collection API of ApiManagementOperations.
+     *
+     * @return Resource collection API of ApiManagementOperations.
+     */
     public ApiManagementOperations apiManagementOperations() {
         if (this.apiManagementOperations == null) {
             this.apiManagementOperations =
@@ -735,7 +1025,11 @@ public final class ApiManagementManager {
         return apiManagementOperations;
     }
 
-    /** @return Resource collection API of ApiManagementServiceSkus. */
+    /**
+     * Gets the resource collection API of ApiManagementServiceSkus.
+     *
+     * @return Resource collection API of ApiManagementServiceSkus.
+     */
     public ApiManagementServiceSkus apiManagementServiceSkus() {
         if (this.apiManagementServiceSkus == null) {
             this.apiManagementServiceSkus =
@@ -744,7 +1038,11 @@ public final class ApiManagementManager {
         return apiManagementServiceSkus;
     }
 
-    /** @return Resource collection API of ApiManagementServices. */
+    /**
+     * Gets the resource collection API of ApiManagementServices. It manages ApiManagementServiceResource.
+     *
+     * @return Resource collection API of ApiManagementServices.
+     */
     public ApiManagementServices apiManagementServices() {
         if (this.apiManagementServices == null) {
             this.apiManagementServices = new ApiManagementServicesImpl(clientObject.getApiManagementServices(), this);
@@ -752,7 +1050,11 @@ public final class ApiManagementManager {
         return apiManagementServices;
     }
 
-    /** @return Resource collection API of Diagnostics. */
+    /**
+     * Gets the resource collection API of Diagnostics.
+     *
+     * @return Resource collection API of Diagnostics.
+     */
     public Diagnostics diagnostics() {
         if (this.diagnostics == null) {
             this.diagnostics = new DiagnosticsImpl(clientObject.getDiagnostics(), this);
@@ -760,7 +1062,11 @@ public final class ApiManagementManager {
         return diagnostics;
     }
 
-    /** @return Resource collection API of EmailTemplates. */
+    /**
+     * Gets the resource collection API of EmailTemplates. It manages EmailTemplateContract.
+     *
+     * @return Resource collection API of EmailTemplates.
+     */
     public EmailTemplates emailTemplates() {
         if (this.emailTemplates == null) {
             this.emailTemplates = new EmailTemplatesImpl(clientObject.getEmailTemplates(), this);
@@ -768,7 +1074,11 @@ public final class ApiManagementManager {
         return emailTemplates;
     }
 
-    /** @return Resource collection API of Gateways. */
+    /**
+     * Gets the resource collection API of Gateways. It manages GatewayContract.
+     *
+     * @return Resource collection API of Gateways.
+     */
     public Gateways gateways() {
         if (this.gateways == null) {
             this.gateways = new GatewaysImpl(clientObject.getGateways(), this);
@@ -776,7 +1086,12 @@ public final class ApiManagementManager {
         return gateways;
     }
 
-    /** @return Resource collection API of GatewayHostnameConfigurations. */
+    /**
+     * Gets the resource collection API of GatewayHostnameConfigurations. It manages
+     * GatewayHostnameConfigurationContract.
+     *
+     * @return Resource collection API of GatewayHostnameConfigurations.
+     */
     public GatewayHostnameConfigurations gatewayHostnameConfigurations() {
         if (this.gatewayHostnameConfigurations == null) {
             this.gatewayHostnameConfigurations =
@@ -785,7 +1100,11 @@ public final class ApiManagementManager {
         return gatewayHostnameConfigurations;
     }
 
-    /** @return Resource collection API of GatewayApis. */
+    /**
+     * Gets the resource collection API of GatewayApis.
+     *
+     * @return Resource collection API of GatewayApis.
+     */
     public GatewayApis gatewayApis() {
         if (this.gatewayApis == null) {
             this.gatewayApis = new GatewayApisImpl(clientObject.getGatewayApis(), this);
@@ -793,7 +1112,12 @@ public final class ApiManagementManager {
         return gatewayApis;
     }
 
-    /** @return Resource collection API of GatewayCertificateAuthorities. */
+    /**
+     * Gets the resource collection API of GatewayCertificateAuthorities. It manages
+     * GatewayCertificateAuthorityContract.
+     *
+     * @return Resource collection API of GatewayCertificateAuthorities.
+     */
     public GatewayCertificateAuthorities gatewayCertificateAuthorities() {
         if (this.gatewayCertificateAuthorities == null) {
             this.gatewayCertificateAuthorities =
@@ -802,7 +1126,11 @@ public final class ApiManagementManager {
         return gatewayCertificateAuthorities;
     }
 
-    /** @return Resource collection API of Groups. */
+    /**
+     * Gets the resource collection API of Groups. It manages GroupContract.
+     *
+     * @return Resource collection API of Groups.
+     */
     public Groups groups() {
         if (this.groups == null) {
             this.groups = new GroupsImpl(clientObject.getGroups(), this);
@@ -810,7 +1138,11 @@ public final class ApiManagementManager {
         return groups;
     }
 
-    /** @return Resource collection API of GroupUsers. */
+    /**
+     * Gets the resource collection API of GroupUsers.
+     *
+     * @return Resource collection API of GroupUsers.
+     */
     public GroupUsers groupUsers() {
         if (this.groupUsers == null) {
             this.groupUsers = new GroupUsersImpl(clientObject.getGroupUsers(), this);
@@ -818,7 +1150,11 @@ public final class ApiManagementManager {
         return groupUsers;
     }
 
-    /** @return Resource collection API of IdentityProviders. */
+    /**
+     * Gets the resource collection API of IdentityProviders. It manages IdentityProviderContract.
+     *
+     * @return Resource collection API of IdentityProviders.
+     */
     public IdentityProviders identityProviders() {
         if (this.identityProviders == null) {
             this.identityProviders = new IdentityProvidersImpl(clientObject.getIdentityProviders(), this);
@@ -826,7 +1162,11 @@ public final class ApiManagementManager {
         return identityProviders;
     }
 
-    /** @return Resource collection API of Issues. */
+    /**
+     * Gets the resource collection API of Issues.
+     *
+     * @return Resource collection API of Issues.
+     */
     public Issues issues() {
         if (this.issues == null) {
             this.issues = new IssuesImpl(clientObject.getIssues(), this);
@@ -834,7 +1174,11 @@ public final class ApiManagementManager {
         return issues;
     }
 
-    /** @return Resource collection API of Loggers. */
+    /**
+     * Gets the resource collection API of Loggers. It manages LoggerContract.
+     *
+     * @return Resource collection API of Loggers.
+     */
     public Loggers loggers() {
         if (this.loggers == null) {
             this.loggers = new LoggersImpl(clientObject.getLoggers(), this);
@@ -842,7 +1186,11 @@ public final class ApiManagementManager {
         return loggers;
     }
 
-    /** @return Resource collection API of NamedValues. */
+    /**
+     * Gets the resource collection API of NamedValues. It manages NamedValueContract.
+     *
+     * @return Resource collection API of NamedValues.
+     */
     public NamedValues namedValues() {
         if (this.namedValues == null) {
             this.namedValues = new NamedValuesImpl(clientObject.getNamedValues(), this);
@@ -850,7 +1198,11 @@ public final class ApiManagementManager {
         return namedValues;
     }
 
-    /** @return Resource collection API of NetworkStatus. */
+    /**
+     * Gets the resource collection API of NetworkStatus.
+     *
+     * @return Resource collection API of NetworkStatus.
+     */
     public NetworkStatus networkStatus() {
         if (this.networkStatus == null) {
             this.networkStatus = new NetworkStatusImpl(clientObject.getNetworkStatus(), this);
@@ -858,7 +1210,11 @@ public final class ApiManagementManager {
         return networkStatus;
     }
 
-    /** @return Resource collection API of Notifications. */
+    /**
+     * Gets the resource collection API of Notifications.
+     *
+     * @return Resource collection API of Notifications.
+     */
     public Notifications notifications() {
         if (this.notifications == null) {
             this.notifications = new NotificationsImpl(clientObject.getNotifications(), this);
@@ -866,7 +1222,11 @@ public final class ApiManagementManager {
         return notifications;
     }
 
-    /** @return Resource collection API of NotificationRecipientUsers. */
+    /**
+     * Gets the resource collection API of NotificationRecipientUsers.
+     *
+     * @return Resource collection API of NotificationRecipientUsers.
+     */
     public NotificationRecipientUsers notificationRecipientUsers() {
         if (this.notificationRecipientUsers == null) {
             this.notificationRecipientUsers =
@@ -875,7 +1235,11 @@ public final class ApiManagementManager {
         return notificationRecipientUsers;
     }
 
-    /** @return Resource collection API of NotificationRecipientEmails. */
+    /**
+     * Gets the resource collection API of NotificationRecipientEmails.
+     *
+     * @return Resource collection API of NotificationRecipientEmails.
+     */
     public NotificationRecipientEmails notificationRecipientEmails() {
         if (this.notificationRecipientEmails == null) {
             this.notificationRecipientEmails =
@@ -884,7 +1248,11 @@ public final class ApiManagementManager {
         return notificationRecipientEmails;
     }
 
-    /** @return Resource collection API of OpenIdConnectProviders. */
+    /**
+     * Gets the resource collection API of OpenIdConnectProviders. It manages OpenidConnectProviderContract.
+     *
+     * @return Resource collection API of OpenIdConnectProviders.
+     */
     public OpenIdConnectProviders openIdConnectProviders() {
         if (this.openIdConnectProviders == null) {
             this.openIdConnectProviders =
@@ -893,7 +1261,11 @@ public final class ApiManagementManager {
         return openIdConnectProviders;
     }
 
-    /** @return Resource collection API of OutboundNetworkDependenciesEndpoints. */
+    /**
+     * Gets the resource collection API of OutboundNetworkDependenciesEndpoints.
+     *
+     * @return Resource collection API of OutboundNetworkDependenciesEndpoints.
+     */
     public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
         if (this.outboundNetworkDependenciesEndpoints == null) {
             this.outboundNetworkDependenciesEndpoints =
@@ -903,7 +1275,11 @@ public final class ApiManagementManager {
         return outboundNetworkDependenciesEndpoints;
     }
 
-    /** @return Resource collection API of Policies. */
+    /**
+     * Gets the resource collection API of Policies.
+     *
+     * @return Resource collection API of Policies.
+     */
     public Policies policies() {
         if (this.policies == null) {
             this.policies = new PoliciesImpl(clientObject.getPolicies(), this);
@@ -911,7 +1287,11 @@ public final class ApiManagementManager {
         return policies;
     }
 
-    /** @return Resource collection API of PolicyDescriptions. */
+    /**
+     * Gets the resource collection API of PolicyDescriptions.
+     *
+     * @return Resource collection API of PolicyDescriptions.
+     */
     public PolicyDescriptions policyDescriptions() {
         if (this.policyDescriptions == null) {
             this.policyDescriptions = new PolicyDescriptionsImpl(clientObject.getPolicyDescriptions(), this);
@@ -919,7 +1299,35 @@ public final class ApiManagementManager {
         return policyDescriptions;
     }
 
-    /** @return Resource collection API of PortalRevisions. */
+    /**
+     * Gets the resource collection API of PolicyFragments. It manages PolicyFragmentContract.
+     *
+     * @return Resource collection API of PolicyFragments.
+     */
+    public PolicyFragments policyFragments() {
+        if (this.policyFragments == null) {
+            this.policyFragments = new PolicyFragmentsImpl(clientObject.getPolicyFragments(), this);
+        }
+        return policyFragments;
+    }
+
+    /**
+     * Gets the resource collection API of PortalConfigs. It manages PortalConfigContract.
+     *
+     * @return Resource collection API of PortalConfigs.
+     */
+    public PortalConfigs portalConfigs() {
+        if (this.portalConfigs == null) {
+            this.portalConfigs = new PortalConfigsImpl(clientObject.getPortalConfigs(), this);
+        }
+        return portalConfigs;
+    }
+
+    /**
+     * Gets the resource collection API of PortalRevisions. It manages PortalRevisionContract.
+     *
+     * @return Resource collection API of PortalRevisions.
+     */
     public PortalRevisions portalRevisions() {
         if (this.portalRevisions == null) {
             this.portalRevisions = new PortalRevisionsImpl(clientObject.getPortalRevisions(), this);
@@ -927,7 +1335,11 @@ public final class ApiManagementManager {
         return portalRevisions;
     }
 
-    /** @return Resource collection API of PortalSettings. */
+    /**
+     * Gets the resource collection API of PortalSettings.
+     *
+     * @return Resource collection API of PortalSettings.
+     */
     public PortalSettings portalSettings() {
         if (this.portalSettings == null) {
             this.portalSettings = new PortalSettingsImpl(clientObject.getPortalSettings(), this);
@@ -935,7 +1347,11 @@ public final class ApiManagementManager {
         return portalSettings;
     }
 
-    /** @return Resource collection API of SignInSettings. */
+    /**
+     * Gets the resource collection API of SignInSettings.
+     *
+     * @return Resource collection API of SignInSettings.
+     */
     public SignInSettings signInSettings() {
         if (this.signInSettings == null) {
             this.signInSettings = new SignInSettingsImpl(clientObject.getSignInSettings(), this);
@@ -943,7 +1359,11 @@ public final class ApiManagementManager {
         return signInSettings;
     }
 
-    /** @return Resource collection API of SignUpSettings. */
+    /**
+     * Gets the resource collection API of SignUpSettings.
+     *
+     * @return Resource collection API of SignUpSettings.
+     */
     public SignUpSettings signUpSettings() {
         if (this.signUpSettings == null) {
             this.signUpSettings = new SignUpSettingsImpl(clientObject.getSignUpSettings(), this);
@@ -951,7 +1371,11 @@ public final class ApiManagementManager {
         return signUpSettings;
     }
 
-    /** @return Resource collection API of DelegationSettings. */
+    /**
+     * Gets the resource collection API of DelegationSettings.
+     *
+     * @return Resource collection API of DelegationSettings.
+     */
     public DelegationSettings delegationSettings() {
         if (this.delegationSettings == null) {
             this.delegationSettings = new DelegationSettingsImpl(clientObject.getDelegationSettings(), this);
@@ -959,7 +1383,11 @@ public final class ApiManagementManager {
         return delegationSettings;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -968,7 +1396,11 @@ public final class ApiManagementManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of Products. */
+    /**
+     * Gets the resource collection API of Products. It manages ProductContract.
+     *
+     * @return Resource collection API of Products.
+     */
     public Products products() {
         if (this.products == null) {
             this.products = new ProductsImpl(clientObject.getProducts(), this);
@@ -976,7 +1408,11 @@ public final class ApiManagementManager {
         return products;
     }
 
-    /** @return Resource collection API of ProductApis. */
+    /**
+     * Gets the resource collection API of ProductApis.
+     *
+     * @return Resource collection API of ProductApis.
+     */
     public ProductApis productApis() {
         if (this.productApis == null) {
             this.productApis = new ProductApisImpl(clientObject.getProductApis(), this);
@@ -984,7 +1420,11 @@ public final class ApiManagementManager {
         return productApis;
     }
 
-    /** @return Resource collection API of ProductGroups. */
+    /**
+     * Gets the resource collection API of ProductGroups.
+     *
+     * @return Resource collection API of ProductGroups.
+     */
     public ProductGroups productGroups() {
         if (this.productGroups == null) {
             this.productGroups = new ProductGroupsImpl(clientObject.getProductGroups(), this);
@@ -992,7 +1432,11 @@ public final class ApiManagementManager {
         return productGroups;
     }
 
-    /** @return Resource collection API of ProductSubscriptions. */
+    /**
+     * Gets the resource collection API of ProductSubscriptions.
+     *
+     * @return Resource collection API of ProductSubscriptions.
+     */
     public ProductSubscriptions productSubscriptions() {
         if (this.productSubscriptions == null) {
             this.productSubscriptions = new ProductSubscriptionsImpl(clientObject.getProductSubscriptions(), this);
@@ -1000,7 +1444,11 @@ public final class ApiManagementManager {
         return productSubscriptions;
     }
 
-    /** @return Resource collection API of ProductPolicies. */
+    /**
+     * Gets the resource collection API of ProductPolicies.
+     *
+     * @return Resource collection API of ProductPolicies.
+     */
     public ProductPolicies productPolicies() {
         if (this.productPolicies == null) {
             this.productPolicies = new ProductPoliciesImpl(clientObject.getProductPolicies(), this);
@@ -1008,7 +1456,36 @@ public final class ApiManagementManager {
         return productPolicies;
     }
 
-    /** @return Resource collection API of QuotaByCounterKeys. */
+    /**
+     * Gets the resource collection API of ProductWikis.
+     *
+     * @return Resource collection API of ProductWikis.
+     */
+    public ProductWikis productWikis() {
+        if (this.productWikis == null) {
+            this.productWikis = new ProductWikisImpl(clientObject.getProductWikis(), this);
+        }
+        return productWikis;
+    }
+
+    /**
+     * Gets the resource collection API of ProductWikisOperations.
+     *
+     * @return Resource collection API of ProductWikisOperations.
+     */
+    public ProductWikisOperations productWikisOperations() {
+        if (this.productWikisOperations == null) {
+            this.productWikisOperations =
+                new ProductWikisOperationsImpl(clientObject.getProductWikisOperations(), this);
+        }
+        return productWikisOperations;
+    }
+
+    /**
+     * Gets the resource collection API of QuotaByCounterKeys.
+     *
+     * @return Resource collection API of QuotaByCounterKeys.
+     */
     public QuotaByCounterKeys quotaByCounterKeys() {
         if (this.quotaByCounterKeys == null) {
             this.quotaByCounterKeys = new QuotaByCounterKeysImpl(clientObject.getQuotaByCounterKeys(), this);
@@ -1016,7 +1493,11 @@ public final class ApiManagementManager {
         return quotaByCounterKeys;
     }
 
-    /** @return Resource collection API of QuotaByPeriodKeys. */
+    /**
+     * Gets the resource collection API of QuotaByPeriodKeys.
+     *
+     * @return Resource collection API of QuotaByPeriodKeys.
+     */
     public QuotaByPeriodKeys quotaByPeriodKeys() {
         if (this.quotaByPeriodKeys == null) {
             this.quotaByPeriodKeys = new QuotaByPeriodKeysImpl(clientObject.getQuotaByPeriodKeys(), this);
@@ -1024,7 +1505,11 @@ public final class ApiManagementManager {
         return quotaByPeriodKeys;
     }
 
-    /** @return Resource collection API of Regions. */
+    /**
+     * Gets the resource collection API of Regions.
+     *
+     * @return Resource collection API of Regions.
+     */
     public Regions regions() {
         if (this.regions == null) {
             this.regions = new RegionsImpl(clientObject.getRegions(), this);
@@ -1032,7 +1517,11 @@ public final class ApiManagementManager {
         return regions;
     }
 
-    /** @return Resource collection API of Reports. */
+    /**
+     * Gets the resource collection API of Reports.
+     *
+     * @return Resource collection API of Reports.
+     */
     public Reports reports() {
         if (this.reports == null) {
             this.reports = new ReportsImpl(clientObject.getReports(), this);
@@ -1040,7 +1529,11 @@ public final class ApiManagementManager {
         return reports;
     }
 
-    /** @return Resource collection API of GlobalSchemas. */
+    /**
+     * Gets the resource collection API of GlobalSchemas. It manages GlobalSchemaContract.
+     *
+     * @return Resource collection API of GlobalSchemas.
+     */
     public GlobalSchemas globalSchemas() {
         if (this.globalSchemas == null) {
             this.globalSchemas = new GlobalSchemasImpl(clientObject.getGlobalSchemas(), this);
@@ -1048,7 +1541,11 @@ public final class ApiManagementManager {
         return globalSchemas;
     }
 
-    /** @return Resource collection API of TenantSettings. */
+    /**
+     * Gets the resource collection API of TenantSettings.
+     *
+     * @return Resource collection API of TenantSettings.
+     */
     public TenantSettings tenantSettings() {
         if (this.tenantSettings == null) {
             this.tenantSettings = new TenantSettingsImpl(clientObject.getTenantSettings(), this);
@@ -1056,7 +1553,11 @@ public final class ApiManagementManager {
         return tenantSettings;
     }
 
-    /** @return Resource collection API of ApiManagementSkus. */
+    /**
+     * Gets the resource collection API of ApiManagementSkus.
+     *
+     * @return Resource collection API of ApiManagementSkus.
+     */
     public ApiManagementSkus apiManagementSkus() {
         if (this.apiManagementSkus == null) {
             this.apiManagementSkus = new ApiManagementSkusImpl(clientObject.getApiManagementSkus(), this);
@@ -1064,7 +1565,11 @@ public final class ApiManagementManager {
         return apiManagementSkus;
     }
 
-    /** @return Resource collection API of Subscriptions. */
+    /**
+     * Gets the resource collection API of Subscriptions.
+     *
+     * @return Resource collection API of Subscriptions.
+     */
     public Subscriptions subscriptions() {
         if (this.subscriptions == null) {
             this.subscriptions = new SubscriptionsImpl(clientObject.getSubscriptions(), this);
@@ -1072,7 +1577,11 @@ public final class ApiManagementManager {
         return subscriptions;
     }
 
-    /** @return Resource collection API of TagResources. */
+    /**
+     * Gets the resource collection API of TagResources.
+     *
+     * @return Resource collection API of TagResources.
+     */
     public TagResources tagResources() {
         if (this.tagResources == null) {
             this.tagResources = new TagResourcesImpl(clientObject.getTagResources(), this);
@@ -1080,7 +1589,11 @@ public final class ApiManagementManager {
         return tagResources;
     }
 
-    /** @return Resource collection API of TenantAccess. */
+    /**
+     * Gets the resource collection API of TenantAccess. It manages AccessInformationContract.
+     *
+     * @return Resource collection API of TenantAccess.
+     */
     public TenantAccess tenantAccess() {
         if (this.tenantAccess == null) {
             this.tenantAccess = new TenantAccessImpl(clientObject.getTenantAccess(), this);
@@ -1088,7 +1601,11 @@ public final class ApiManagementManager {
         return tenantAccess;
     }
 
-    /** @return Resource collection API of TenantAccessGits. */
+    /**
+     * Gets the resource collection API of TenantAccessGits.
+     *
+     * @return Resource collection API of TenantAccessGits.
+     */
     public TenantAccessGits tenantAccessGits() {
         if (this.tenantAccessGits == null) {
             this.tenantAccessGits = new TenantAccessGitsImpl(clientObject.getTenantAccessGits(), this);
@@ -1096,7 +1613,11 @@ public final class ApiManagementManager {
         return tenantAccessGits;
     }
 
-    /** @return Resource collection API of TenantConfigurations. */
+    /**
+     * Gets the resource collection API of TenantConfigurations.
+     *
+     * @return Resource collection API of TenantConfigurations.
+     */
     public TenantConfigurations tenantConfigurations() {
         if (this.tenantConfigurations == null) {
             this.tenantConfigurations = new TenantConfigurationsImpl(clientObject.getTenantConfigurations(), this);
@@ -1104,7 +1625,11 @@ public final class ApiManagementManager {
         return tenantConfigurations;
     }
 
-    /** @return Resource collection API of Users. */
+    /**
+     * Gets the resource collection API of Users. It manages UserContract.
+     *
+     * @return Resource collection API of Users.
+     */
     public Users users() {
         if (this.users == null) {
             this.users = new UsersImpl(clientObject.getUsers(), this);
@@ -1112,7 +1637,11 @@ public final class ApiManagementManager {
         return users;
     }
 
-    /** @return Resource collection API of UserGroups. */
+    /**
+     * Gets the resource collection API of UserGroups.
+     *
+     * @return Resource collection API of UserGroups.
+     */
     public UserGroups userGroups() {
         if (this.userGroups == null) {
             this.userGroups = new UserGroupsImpl(clientObject.getUserGroups(), this);
@@ -1120,7 +1649,11 @@ public final class ApiManagementManager {
         return userGroups;
     }
 
-    /** @return Resource collection API of UserSubscriptions. */
+    /**
+     * Gets the resource collection API of UserSubscriptions.
+     *
+     * @return Resource collection API of UserSubscriptions.
+     */
     public UserSubscriptions userSubscriptions() {
         if (this.userSubscriptions == null) {
             this.userSubscriptions = new UserSubscriptionsImpl(clientObject.getUserSubscriptions(), this);
@@ -1128,7 +1661,11 @@ public final class ApiManagementManager {
         return userSubscriptions;
     }
 
-    /** @return Resource collection API of UserIdentities. */
+    /**
+     * Gets the resource collection API of UserIdentities.
+     *
+     * @return Resource collection API of UserIdentities.
+     */
     public UserIdentities userIdentities() {
         if (this.userIdentities == null) {
             this.userIdentities = new UserIdentitiesImpl(clientObject.getUserIdentities(), this);
@@ -1136,7 +1673,11 @@ public final class ApiManagementManager {
         return userIdentities;
     }
 
-    /** @return Resource collection API of UserConfirmationPasswords. */
+    /**
+     * Gets the resource collection API of UserConfirmationPasswords.
+     *
+     * @return Resource collection API of UserConfirmationPasswords.
+     */
     public UserConfirmationPasswords userConfirmationPasswords() {
         if (this.userConfirmationPasswords == null) {
             this.userConfirmationPasswords =
@@ -1146,8 +1687,22 @@ public final class ApiManagementManager {
     }
 
     /**
-     * @return Wrapped service client ApiManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of Documentations. It manages DocumentationContract.
+     *
+     * @return Resource collection API of Documentations.
+     */
+    public Documentations documentations() {
+        if (this.documentations == null) {
+            this.documentations = new DocumentationsImpl(clientObject.getDocumentations(), this);
+        }
+        return documentations;
+    }
+
+    /**
+     * Gets wrapped service client ApiManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ApiManagementClient.
      */
     public ApiManagementClient serviceClient() {
         return this.clientObject;

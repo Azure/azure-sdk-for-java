@@ -37,24 +37,24 @@ import reactor.core.publisher.Mono;
  */
 public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     implements VirtualMachineScaleSetRollingUpgradesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineScaleSetRollingUpgradesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineScaleSetRollingUpgradesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetRollingUpgradesClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VirtualMachineScaleSetRollingUpgradesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineScaleSetRollingUpgradesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,66 +65,46 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface VirtualMachineScaleSetRollingUpgradesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> startOSUpgrade(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> startOSUpgrade(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> startExtensionUpgrade(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> startExtensionUpgrade(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RollingUpgradeStatusInfoInner>> getLatest(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RollingUpgradeStatusInfoInner>> getLatest(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmScaleSetName") String vmScaleSetName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,10 +115,8 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String vmScaleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -148,31 +126,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -182,13 +149,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -198,28 +163,19 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,15 +186,13 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -248,18 +202,17 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String vmScaleSetName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,7 +227,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -284,14 +237,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName,
+        Context context) {
         return this.beginCancelAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,14 +254,13 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String vmScaleSetName) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName)
-            .last()
+        return beginCancelAsync(resourceGroupName, vmScaleSetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -319,14 +271,13 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginCancelAsync(resourceGroupName, vmScaleSetName, context)
-            .last()
+        return beginCancelAsync(resourceGroupName, vmScaleSetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +291,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -356,7 +307,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,13 +316,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName) {
+    public Mono<Response<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -381,32 +330,21 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .startOSUpgrade(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.startOSUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -416,13 +354,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,29 +368,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .startOSUpgrade(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.startOSUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,19 +390,17 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
-        String resourceGroupName, String vmScaleSetName) {
+    public PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(String resourceGroupName,
+        String vmScaleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -485,20 +410,19 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(String resourceGroupName, String vmScaleSetName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startOSUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -514,7 +438,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -524,15 +448,15 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName,
+        Context context) {
         return this.beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,15 +466,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startOSUpgradeAsync(String resourceGroupName, String vmScaleSetName) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName)
-            .last()
+        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -561,15 +484,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startOSUpgradeAsync(String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context)
-            .last()
+        return beginStartOSUpgradeAsync(resourceGroupName, vmScaleSetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,7 +506,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -600,7 +522,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -609,13 +531,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName) {
+    public Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -625,32 +545,21 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .startExtensionUpgrade(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.startExtensionUpgrade(this.client.getEndpoint(), resourceGroupName,
+                vmScaleSetName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -660,13 +569,11 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -676,29 +583,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .startExtensionUpgrade(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.startExtensionUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -707,20 +605,18 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(
-        String resourceGroupName, String vmScaleSetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(String resourceGroupName,
+        String vmScaleSetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -730,20 +626,19 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startExtensionUpgradeWithResponseAsync(resourceGroupName, vmScaleSetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -752,15 +647,15 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
-        String resourceGroupName, String vmScaleSetName) {
+    public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(String resourceGroupName,
+        String vmScaleSetName) {
         return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).getSyncPoller();
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -770,15 +665,15 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         return this.beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).getSyncPoller();
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -788,15 +683,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName)
-            .last()
+        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -807,15 +701,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName, Context context) {
-        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context)
-            .last()
+        return beginStartExtensionUpgradeAsync(resourceGroupName, vmScaleSetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,7 +723,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -845,23 +738,21 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the latest virtual machine scale set rolling upgrade along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName) {
+    public Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -871,31 +762,20 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLatest(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getLatest(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -903,16 +783,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the latest virtual machine scale set rolling upgrade along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    private Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,35 +800,26 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLatest(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getLatest(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the latest virtual machine scale set rolling upgrade on successful completion of {@link
-     *     Mono}.
+     * @return the status of the latest virtual machine scale set rolling upgrade on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RollingUpgradeStatusInfoInner> getLatestAsync(String resourceGroupName, String vmScaleSetName) {
@@ -960,7 +829,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -970,14 +839,14 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
      * @return the status of the latest virtual machine scale set rolling upgrade along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(
-        String resourceGroupName, String vmScaleSetName, Context context) {
+    public Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(String resourceGroupName,
+        String vmScaleSetName, Context context) {
         return getLatestWithResponseAsync(resourceGroupName, vmScaleSetName, context).block();
     }
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

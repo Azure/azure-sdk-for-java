@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorage;
@@ -30,10 +29,6 @@ public final class ConnectedEnvironmentStorageImpl
 
     public ConnectedEnvironmentStorageProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

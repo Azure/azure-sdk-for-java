@@ -285,8 +285,9 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             senderAsyncClient.createMessageBatch().flatMap(batch -> {
                 assertTrue(batch.tryAddMessage(testData));
                 return senderAsyncClient.sendMessages(batch);
-            })
-            ).verifyComplete();
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
@@ -309,8 +310,9 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             senderAsyncClient.createMessageBatch().flatMap(batch -> {
                 assertTrue(batch.tryAddMessage(testData));
                 return senderAsyncClient.sendMessages(batch);
-            })
-        ).verifyComplete();
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Dataworld linked service type properties. */
+/**
+ * Dataworld linked service type properties.
+ */
 @Fluent
 public final class DataworldLinkedServiceTypeProperties {
     /*
@@ -20,18 +22,20 @@ public final class DataworldLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of DataworldLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of DataworldLinkedServiceTypeProperties class.
+     */
     public DataworldLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the apiToken property: The api token for the Dataworld source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase apiToken() {
@@ -40,7 +44,7 @@ public final class DataworldLinkedServiceTypeProperties {
 
     /**
      * Set the apiToken property: The api token for the Dataworld source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the DataworldLinkedServiceTypeProperties object itself.
      */
@@ -50,38 +54,36 @@ public final class DataworldLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DataworldLinkedServiceTypeProperties object itself.
      */
-    public DataworldLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public DataworldLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (apiToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property apiToken in model DataworldLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property apiToken in model DataworldLinkedServiceTypeProperties"));
         } else {
             apiToken().validate();
         }

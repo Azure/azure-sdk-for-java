@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AAD Vpn authentication type related parameters. */
+/**
+ * AAD Vpn authentication type related parameters.
+ */
 @Fluent
 public final class AadAuthenticationParameters {
     /*
@@ -28,13 +30,15 @@ public final class AadAuthenticationParameters {
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;
 
-    /** Creates an instance of AadAuthenticationParameters class. */
+    /**
+     * Creates an instance of AadAuthenticationParameters class.
+     */
     public AadAuthenticationParameters() {
     }
 
     /**
      * Get the aadTenant property: AAD Vpn authentication parameter AAD tenant.
-     *
+     * 
      * @return the aadTenant value.
      */
     public String aadTenant() {
@@ -43,7 +47,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Set the aadTenant property: AAD Vpn authentication parameter AAD tenant.
-     *
+     * 
      * @param aadTenant the aadTenant value to set.
      * @return the AadAuthenticationParameters object itself.
      */
@@ -54,7 +58,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Get the aadAudience property: AAD Vpn authentication parameter AAD audience.
-     *
+     * 
      * @return the aadAudience value.
      */
     public String aadAudience() {
@@ -63,7 +67,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Set the aadAudience property: AAD Vpn authentication parameter AAD audience.
-     *
+     * 
      * @param aadAudience the aadAudience value to set.
      * @return the AadAuthenticationParameters object itself.
      */
@@ -74,7 +78,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Get the aadIssuer property: AAD Vpn authentication parameter AAD issuer.
-     *
+     * 
      * @return the aadIssuer value.
      */
     public String aadIssuer() {
@@ -83,7 +87,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Set the aadIssuer property: AAD Vpn authentication parameter AAD issuer.
-     *
+     * 
      * @param aadIssuer the aadIssuer value to set.
      * @return the AadAuthenticationParameters object itself.
      */
@@ -94,7 +98,7 @@ public final class AadAuthenticationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

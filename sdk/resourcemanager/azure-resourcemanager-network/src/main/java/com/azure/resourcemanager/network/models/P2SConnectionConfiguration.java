@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPol
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** P2SConnectionConfiguration Resource. */
+/**
+ * P2SConnectionConfiguration Resource.
+ */
 @Fluent
 public final class P2SConnectionConfiguration extends SubResource {
     /*
@@ -32,13 +34,15 @@ public final class P2SConnectionConfiguration extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of P2SConnectionConfiguration class. */
+    /**
+     * Creates an instance of P2SConnectionConfiguration class.
+     */
     public P2SConnectionConfiguration() {
     }
 
     /**
      * Get the innerProperties property: Properties of the P2S connection configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private P2SConnectionConfigurationProperties innerProperties() {
@@ -48,7 +52,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the P2SConnectionConfiguration object itself.
      */
@@ -69,14 +73,16 @@ public final class P2SConnectionConfiguration extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public P2SConnectionConfiguration withId(String id) {
         super.withId(id);
@@ -84,9 +90,9 @@ public final class P2SConnectionConfiguration extends SubResource {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
-     * for P2S VpnClient.
-     *
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
+     * space for P2S VpnClient.
+     * 
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -94,9 +100,9 @@ public final class P2SConnectionConfiguration extends SubResource {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
-     * for P2S VpnClient.
-     *
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
+     * space for P2S VpnClient.
+     * 
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the P2SConnectionConfiguration object itself.
      */
@@ -111,7 +117,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
@@ -121,7 +127,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the P2SConnectionConfiguration object itself.
      */
@@ -136,7 +142,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Get the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
      * for the P2S Connections or not.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -146,7 +152,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Set the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
      * for the P2S Connections or not.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the P2SConnectionConfiguration object itself.
      */
@@ -161,7 +167,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Get the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
      * P2SConnectionConfiguration is attached to.
-     *
+     * 
      * @return the configurationPolicyGroupAssociations value.
      */
     public List<SubResource> configurationPolicyGroupAssociations() {
@@ -171,18 +177,17 @@ public final class P2SConnectionConfiguration extends SubResource {
     /**
      * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
      * this P2SConnectionConfiguration was attached to.
-     *
+     * 
      * @return the previousConfigurationPolicyGroupAssociations value.
      */
     public List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().previousConfigurationPolicyGroupAssociations();
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -191,7 +196,7 @@ public final class P2SConnectionConfiguration extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

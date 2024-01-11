@@ -30,6 +30,10 @@ public final class NotificationCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NotificationCollection class. */
+    public NotificationCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

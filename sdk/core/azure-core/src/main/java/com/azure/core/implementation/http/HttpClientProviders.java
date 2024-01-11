@@ -29,10 +29,21 @@ public final class HttpClientProviders {
         // no-op
     }
 
+    /**
+     * Creates an instance of the default {@link HttpClient}.
+     *
+     * @return An {@link HttpClient} instance.
+     */
     public static HttpClient createInstance() {
         return createInstance(null);
     }
 
+    /**
+     * Creates an instance of the default {@link HttpClient} with the provided {@link ClientOptions}.
+     *
+     * @param clientOptions The {@link ClientOptions} to configure the {@link HttpClient} with.
+     * @return An {@link HttpClient} instance.
+     */
     public static HttpClient createInstance(ClientOptions clientOptions) {
         Class<? extends HttpClientProvider> selectedImplementation = null;
         final HttpClientOptions httpClientOptions;

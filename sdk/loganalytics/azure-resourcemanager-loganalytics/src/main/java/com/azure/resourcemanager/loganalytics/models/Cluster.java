@@ -169,11 +169,13 @@ public interface Cluster {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -192,6 +194,7 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -202,6 +205,7 @@ public interface Cluster {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -231,6 +235,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -241,6 +246,7 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -251,6 +257,7 @@ public interface Cluster {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the Cluster definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -261,6 +268,7 @@ public interface Cluster {
              */
             WithCreate withSku(ClusterSku sku);
         }
+
         /** The stage of the Cluster definition allowing to specify isDoubleEncryptionEnabled. */
         interface WithIsDoubleEncryptionEnabled {
             /**
@@ -273,6 +281,7 @@ public interface Cluster {
              */
             WithCreate withIsDoubleEncryptionEnabled(Boolean isDoubleEncryptionEnabled);
         }
+
         /** The stage of the Cluster definition allowing to specify isAvailabilityZonesEnabled. */
         interface WithIsAvailabilityZonesEnabled {
             /**
@@ -289,6 +298,7 @@ public interface Cluster {
              */
             WithCreate withIsAvailabilityZonesEnabled(Boolean isAvailabilityZonesEnabled);
         }
+
         /** The stage of the Cluster definition allowing to specify billingType. */
         interface WithBillingType {
             /**
@@ -299,6 +309,7 @@ public interface Cluster {
              */
             WithCreate withBillingType(BillingType billingType);
         }
+
         /** The stage of the Cluster definition allowing to specify keyVaultProperties. */
         interface WithKeyVaultProperties {
             /**
@@ -309,6 +320,7 @@ public interface Cluster {
              */
             WithCreate withKeyVaultProperties(KeyVaultProperties keyVaultProperties);
         }
+
         /** The stage of the Cluster definition allowing to specify associatedWorkspaces. */
         interface WithAssociatedWorkspaces {
             /**
@@ -320,6 +332,7 @@ public interface Cluster {
              */
             WithCreate withAssociatedWorkspaces(List<AssociatedWorkspace> associatedWorkspaces);
         }
+
         /** The stage of the Cluster definition allowing to specify capacityReservationProperties. */
         interface WithCapacityReservationProperties {
             /**
@@ -331,6 +344,7 @@ public interface Cluster {
             WithCreate withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -360,6 +374,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -372,6 +387,7 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -382,6 +398,7 @@ public interface Cluster {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the Cluster update allowing to specify sku. */
         interface WithSku {
             /**
@@ -392,6 +409,7 @@ public interface Cluster {
              */
             Update withSku(ClusterSku sku);
         }
+
         /** The stage of the Cluster update allowing to specify keyVaultProperties. */
         interface WithKeyVaultProperties {
             /**
@@ -402,6 +420,7 @@ public interface Cluster {
              */
             Update withKeyVaultProperties(KeyVaultProperties keyVaultProperties);
         }
+
         /** The stage of the Cluster update allowing to specify billingType. */
         interface WithBillingType {
             /**
@@ -413,6 +432,7 @@ public interface Cluster {
             Update withBillingType(BillingType billingType);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

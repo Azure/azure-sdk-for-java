@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.TeamDeskAuthenticationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** TeamDesk linked service type properties. */
+/**
+ * TeamDesk linked service type properties.
+ */
 @Fluent
 public final class TeamDeskLinkedServiceTypeProperties {
     /*
@@ -45,18 +47,20 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of TeamDeskLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of TeamDeskLinkedServiceTypeProperties class.
+     */
     public TeamDeskLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     *
+     * 
      * @return the authenticationType value.
      */
     public TeamDeskAuthenticationType authenticationType() {
@@ -65,7 +69,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Get the url property: The url to connect TeamDesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -85,7 +89,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Set the url property: The url to connect TeamDesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
     /**
      * Get the username property: The username of the TeamDesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -107,7 +111,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
     /**
      * Set the username property: The username of the TeamDesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password of the TeamDesk source.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -127,7 +131,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password of the TeamDesk source.
-     *
+     * 
      * @param password the password value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
@@ -138,7 +142,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Get the apiToken property: The api token for the TeamDesk source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase apiToken() {
@@ -147,7 +151,7 @@ public final class TeamDeskLinkedServiceTypeProperties {
 
     /**
      * Set the apiToken property: The api token for the TeamDesk source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
@@ -157,44 +161,40 @@ public final class TeamDeskLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeamDeskLinkedServiceTypeProperties object itself.
      */
-    public TeamDeskLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public TeamDeskLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model TeamDeskLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authenticationType in model TeamDeskLinkedServiceTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model TeamDeskLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property url in model TeamDeskLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

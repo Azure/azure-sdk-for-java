@@ -15,29 +15,29 @@ public final class AvailableWorkloadProfilePropertiesTests {
         AvailableWorkloadProfileProperties model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"ivkwlzuvccfwnfnb\",\"applicability\":\"LocationDefault\",\"cores\":2055969856,\"memoryGiB\":198217735,\"displayName\":\"bxetqgtzxdpn\"}")
+                    "{\"category\":\"mcmatuokthfuiu\",\"applicability\":\"Custom\",\"cores\":680550088,\"memoryGiB\":397485144,\"displayName\":\"vxodpu\"}")
                 .toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
-        Assertions.assertEquals(2055969856, model.cores());
-        Assertions.assertEquals(198217735, model.memoryGiB());
-        Assertions.assertEquals("bxetqgtzxdpn", model.displayName());
+        Assertions.assertEquals("mcmatuokthfuiu", model.category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.applicability());
+        Assertions.assertEquals(680550088, model.cores());
+        Assertions.assertEquals(397485144, model.memoryGiB());
+        Assertions.assertEquals("vxodpu", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AvailableWorkloadProfileProperties model =
             new AvailableWorkloadProfileProperties()
-                .withCategory("ivkwlzuvccfwnfnb")
-                .withApplicability(Applicability.LOCATION_DEFAULT)
-                .withCores(2055969856)
-                .withMemoryGiB(198217735)
-                .withDisplayName("bxetqgtzxdpn");
+                .withCategory("mcmatuokthfuiu")
+                .withApplicability(Applicability.CUSTOM)
+                .withCores(680550088)
+                .withMemoryGiB(397485144)
+                .withDisplayName("vxodpu");
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
-        Assertions.assertEquals(2055969856, model.cores());
-        Assertions.assertEquals(198217735, model.memoryGiB());
-        Assertions.assertEquals("bxetqgtzxdpn", model.displayName());
+        Assertions.assertEquals("mcmatuokthfuiu", model.category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.applicability());
+        Assertions.assertEquals(680550088, model.cores());
+        Assertions.assertEquals(397485144, model.memoryGiB());
+        Assertions.assertEquals("vxodpu", model.displayName());
     }
 }

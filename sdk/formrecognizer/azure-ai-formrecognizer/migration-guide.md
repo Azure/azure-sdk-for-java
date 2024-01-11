@@ -1,8 +1,8 @@
-# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`
+# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - lower)`
 
-This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
+This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - lower)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
 
-We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - below)`. If you are new to this library, please refer to the SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
+We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - lower)`. If you are new to this library, please refer to the SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
 
 ## Table of contents
 - [Migration benefits](#migration-benefits)
@@ -32,6 +32,7 @@ The below table describes the relationship of each client and its supported API 
 
 |API version|Supported clients
 |-|-
+|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
@@ -51,6 +52,9 @@ Also, when using the `getModel()` model, users can get the field schema (field n
 - Added methods for getting/listing operations of the past 24 hours, useful to track the status of model creation/copying operations and any resulting errors.
 - `FormRecognizerClient` and `FormTrainingClient` will continue to work targeting API version 2.1 and 2.0.
 
+> Note: on July 2023, the Azure Cognitive Services Form Recognizer service was renamed to Azure AI Document Intelligence.
+Any mentions to Form Recognizer or Document Intelligence in documentation refer to the same Azure service.
+ 
 Please refer to the [README][README] for more information on these new clients.
 
 ## Important changes
@@ -107,7 +111,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
   `RecognizedForm` which included hierarchical relationships between `FormElements` for instance tables were an element
   of a `FormPage` and not a top-level element.
 - provides the functionality of `beginRecognizeCustomForms`, `beginRecognizeContent`, `beginRecognizeReceipt`,
-  `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - below) package versions.
+  `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - lower) package versions.
 - accepts unified `AnalyzeDocumentOptions` to specify pages and locale information for the outgoing request
 - the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-08-31` and later.
 - the `readingOrder` parameter does not exist as the service uses `natural` reading order for the returned data.

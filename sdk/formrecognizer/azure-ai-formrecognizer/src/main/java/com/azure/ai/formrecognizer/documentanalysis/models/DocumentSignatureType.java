@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Defines values for DocumentSignatureType. */
 @Immutable
 public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
+
+    /**
+     * Creates a DocumentSignatureType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentSignatureType() {
+    }
+
     /** Static value signed for DocumentSignatureType. */
     public static final DocumentSignatureType SIGNED = fromString("signed");
 
@@ -27,7 +36,10 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
         return fromString(name, DocumentSignatureType.class);
     }
 
-    /** @return known DocumentSignatureType values. */
+    /**
+     * Returns  known DocumentSignatureType values.
+     * @return known DocumentSignatureType values.
+     */
     public static Collection<DocumentSignatureType> values() {
         return values(DocumentSignatureType.class);
     }

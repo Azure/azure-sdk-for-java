@@ -1,14 +1,70 @@
 # Release History
 
-## 2.30.0-beta.1 (Unreleased)
+## 2.35.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
+
+### Features Added
+
+- Supported `userData` for `VirtualMachine` in create and update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
 
 ### Bugs Fixed
 
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+
+## 2.30.0 (2023-08-25)
+
+### Features Added
+
+- Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-07-01`.
 
 ## 2.29.0 (2023-07-28)
 

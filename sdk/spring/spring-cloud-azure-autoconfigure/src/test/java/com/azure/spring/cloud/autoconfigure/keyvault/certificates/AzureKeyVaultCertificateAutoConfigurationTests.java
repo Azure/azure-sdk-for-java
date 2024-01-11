@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AzureKeyVaultCertificateAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     CertificateClientBuilderFactory, AzureKeyVaultCertificateProperties> {
@@ -139,13 +140,15 @@ class AzureKeyVaultCertificateAutoConfigurationTests extends AbstractAzureServic
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.certificate.endpoint=" + endpoint,
-                "spring.cloud.azure.keyvault.certificate.service-version=V7_2"
+                "spring.cloud.azure.keyvault.certificate.service-version=V7_2",
+                "spring.cloud.azure.keyvault.certificate.challenge-resource-verification-enabled=false"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateProperties.class);
                 AzureKeyVaultCertificateProperties properties = context.getBean(AzureKeyVaultCertificateProperties.class);
                 assertEquals(endpoint, properties.getEndpoint());
                 assertEquals(CertificateServiceVersion.V7_2, properties.getServiceVersion());
+                assertFalse(properties.isChallengeResourceVerificationEnabled());
             });
     }
 

@@ -53,6 +53,10 @@ public final class EncryptionScopeProperties {
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
 
+    /** Creates an instance of EncryptionScopeProperties class. */
+    public EncryptionScopeProperties() {
+    }
+
     /**
      * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
      * Microsoft.Storage, Microsoft.KeyVault.

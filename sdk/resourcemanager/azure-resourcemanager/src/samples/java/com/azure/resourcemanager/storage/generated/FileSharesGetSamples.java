@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FileShares Get. */
 public final class FileSharesGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesGet_Stats.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesGet_Stats.json
      */
     /**
      * Sample code: GetShareStats.
@@ -22,11 +20,11 @@ public final class FileSharesGetSamples {
             .manager()
             .serviceClient()
             .getFileShares()
-            .getWithResponse("res9871", "sto6217", "share1634", "stats", null, Context.NONE);
+            .getWithResponse("res9871", "sto6217", "share1634", "stats", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesGet.json
      */
     /**
      * Sample code: GetShares.
@@ -39,6 +37,6 @@ public final class FileSharesGetSamples {
             .manager()
             .serviceClient()
             .getFileShares()
-            .getWithResponse("res9871", "sto6217", "share1634", null, null, Context.NONE);
+            .getWithResponse("res9871", "sto6217", "share1634", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -7,19 +7,18 @@ package com.azure.resourcemanager.dashboard.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dashboard.models.ResourceSku;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceSkuTests {
-    @Test
-    public void testDeserialize() {
-        ResourceSku model = BinaryData.fromString("{\"name\":\"skcqvkocrcjd\"}").toObject(ResourceSku.class);
-        Assertions.assertEquals("skcqvkocrcjd", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceSku model = BinaryData.fromString("{\"name\":\"wlokjyem\"}").toObject(ResourceSku.class);
+        Assertions.assertEquals("wlokjyem", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceSku model = new ResourceSku().withName("skcqvkocrcjd");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceSku model = new ResourceSku().withName("wlokjyem");
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("skcqvkocrcjd", model.name());
+        Assertions.assertEquals("wlokjyem", model.name());
     }
 }

@@ -64,11 +64,10 @@ public final class VCentersClientImpl implements VCentersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface VCentersService {
+    public interface VCentersService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -83,8 +82,7 @@ public final class VCentersClientImpl implements VCentersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCenterInner>> getByResourceGroup(
@@ -98,8 +96,7 @@ public final class VCentersClientImpl implements VCentersClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCenterInner>> update(
@@ -114,8 +111,7 @@ public final class VCentersClientImpl implements VCentersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters/{vcenterName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -141,8 +137,7 @@ public final class VCentersClientImpl implements VCentersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/vcenters")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/vcenters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCentersList>> listByResourceGroup(
@@ -312,6 +307,29 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of defines the vCenter.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginCreateAsync(
+        String resourceGroupName, String vcenterName) {
+        final VCenterInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, vcenterName, body);
+        return this
+            .client
+            .<VCenterInner, VCenterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VCenterInner.class, VCenterInner.class, this.client.getContext());
+    }
+
+    /**
+     * Implements vCenter PUT method.
+     *
+     * <p>Create Or Update vCenter.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,7 +355,6 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,8 +362,9 @@ public final class VCentersClientImpl implements VCentersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(
-        String resourceGroupName, String vcenterName, VCenterInner body) {
-        return beginCreateAsync(resourceGroupName, vcenterName, body).getSyncPoller();
+        String resourceGroupName, String vcenterName) {
+        final VCenterInner body = null;
+        return this.beginCreateAsync(resourceGroupName, vcenterName, body).getSyncPoller();
     }
 
     /**
@@ -366,7 +384,7 @@ public final class VCentersClientImpl implements VCentersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(
         String resourceGroupName, String vcenterName, VCenterInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, vcenterName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, vcenterName, body, context).getSyncPoller();
     }
 
     /**
@@ -429,24 +447,6 @@ public final class VCentersClientImpl implements VCentersClient {
         return beginCreateAsync(resourceGroupName, vcenterName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements vCenter PUT method.
-     *
-     * <p>Create Or Update vCenter.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner create(String resourceGroupName, String vcenterName, VCenterInner body) {
-        return createAsync(resourceGroupName, vcenterName, body).block();
     }
 
     /**
@@ -609,23 +609,6 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner getByResourceGroup(String resourceGroupName, String vcenterName) {
-        return getByResourceGroupAsync(resourceGroupName, vcenterName).block();
-    }
-
-    /**
-     * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,6 +619,23 @@ public final class VCentersClientImpl implements VCentersClient {
     public Response<VCenterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String vcenterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vcenterName, context).block();
+    }
+
+    /**
+     * Gets a vCenter.
+     *
+     * <p>Implements vCenter GET method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the vCenter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VCenterInner getByResourceGroup(String resourceGroupName, String vcenterName) {
+        return getByResourceGroupWithResponse(resourceGroupName, vcenterName, Context.NONE).getValue();
     }
 
     /**
@@ -753,25 +753,6 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> updateAsync(String resourceGroupName, String vcenterName, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, vcenterName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a vCenter.
-     *
-     * <p>API to update certain properties of the vCenter resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -782,24 +763,6 @@ public final class VCentersClientImpl implements VCentersClient {
         final ResourcePatch body = null;
         return updateWithResponseAsync(resourceGroupName, vcenterName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a vCenter.
-     *
-     * <p>API to update certain properties of the vCenter resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner update(String resourceGroupName, String vcenterName) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, vcenterName, body).block();
     }
 
     /**
@@ -820,6 +783,24 @@ public final class VCentersClientImpl implements VCentersClient {
     public Response<VCenterInner> updateWithResponse(
         String resourceGroupName, String vcenterName, ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, vcenterName, body, context).block();
+    }
+
+    /**
+     * Updates a vCenter.
+     *
+     * <p>API to update certain properties of the vCenter resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the vCenter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VCenterInner update(String resourceGroupName, String vcenterName) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, vcenterName, body, Context.NONE).getValue();
     }
 
     /**
@@ -954,6 +935,28 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vcenterName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vcenterName, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes an vCenter.
+     *
+     * <p>Implements vCenter DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -978,15 +981,15 @@ public final class VCentersClientImpl implements VCentersClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vcenterName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, vcenterName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vcenterName) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, vcenterName, force).getSyncPoller();
     }
 
     /**
@@ -1006,7 +1009,7 @@ public final class VCentersClientImpl implements VCentersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vcenterName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, vcenterName, force, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vcenterName, force, context).getSyncPoller();
     }
 
     /**
@@ -1068,23 +1071,6 @@ public final class VCentersClientImpl implements VCentersClient {
         return beginDeleteAsync(resourceGroupName, vcenterName, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vcenterName, Boolean force) {
-        deleteAsync(resourceGroupName, vcenterName, force).block();
     }
 
     /**
@@ -1452,7 +1438,8 @@ public final class VCentersClientImpl implements VCentersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1487,7 +1474,8 @@ public final class VCentersClientImpl implements VCentersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1523,7 +1511,8 @@ public final class VCentersClientImpl implements VCentersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1559,7 +1548,8 @@ public final class VCentersClientImpl implements VCentersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

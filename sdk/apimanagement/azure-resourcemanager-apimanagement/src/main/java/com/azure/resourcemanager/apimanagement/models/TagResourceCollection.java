@@ -30,6 +30,10 @@ public final class TagResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of TagResourceCollection class. */
+    public TagResourceCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

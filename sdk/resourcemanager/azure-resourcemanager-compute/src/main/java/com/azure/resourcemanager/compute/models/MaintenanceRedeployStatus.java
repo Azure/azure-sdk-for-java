@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Maintenance Operation Status. */
+/**
+ * Maintenance Operation Status.
+ */
 @Fluent
 public final class MaintenanceRedeployStatus {
     /*
@@ -53,13 +55,15 @@ public final class MaintenanceRedeployStatus {
     @JsonProperty(value = "lastOperationMessage")
     private String lastOperationMessage;
 
-    /** Creates an instance of MaintenanceRedeployStatus class. */
+    /**
+     * Creates an instance of MaintenanceRedeployStatus class.
+     */
     public MaintenanceRedeployStatus() {
     }
 
     /**
      * Get the isCustomerInitiatedMaintenanceAllowed property: True, if customer is allowed to perform Maintenance.
-     *
+     * 
      * @return the isCustomerInitiatedMaintenanceAllowed value.
      */
     public Boolean isCustomerInitiatedMaintenanceAllowed() {
@@ -68,19 +72,19 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the isCustomerInitiatedMaintenanceAllowed property: True, if customer is allowed to perform Maintenance.
-     *
+     * 
      * @param isCustomerInitiatedMaintenanceAllowed the isCustomerInitiatedMaintenanceAllowed value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
-    public MaintenanceRedeployStatus withIsCustomerInitiatedMaintenanceAllowed(
-        Boolean isCustomerInitiatedMaintenanceAllowed) {
+    public MaintenanceRedeployStatus
+        withIsCustomerInitiatedMaintenanceAllowed(Boolean isCustomerInitiatedMaintenanceAllowed) {
         this.isCustomerInitiatedMaintenanceAllowed = isCustomerInitiatedMaintenanceAllowed;
         return this;
     }
 
     /**
      * Get the preMaintenanceWindowStartTime property: Start Time for the Pre Maintenance Window.
-     *
+     * 
      * @return the preMaintenanceWindowStartTime value.
      */
     public OffsetDateTime preMaintenanceWindowStartTime() {
@@ -89,7 +93,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the preMaintenanceWindowStartTime property: Start Time for the Pre Maintenance Window.
-     *
+     * 
      * @param preMaintenanceWindowStartTime the preMaintenanceWindowStartTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -100,7 +104,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the preMaintenanceWindowEndTime property: End Time for the Pre Maintenance Window.
-     *
+     * 
      * @return the preMaintenanceWindowEndTime value.
      */
     public OffsetDateTime preMaintenanceWindowEndTime() {
@@ -109,7 +113,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the preMaintenanceWindowEndTime property: End Time for the Pre Maintenance Window.
-     *
+     * 
      * @param preMaintenanceWindowEndTime the preMaintenanceWindowEndTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -120,7 +124,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the maintenanceWindowStartTime property: Start Time for the Maintenance Window.
-     *
+     * 
      * @return the maintenanceWindowStartTime value.
      */
     public OffsetDateTime maintenanceWindowStartTime() {
@@ -129,7 +133,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the maintenanceWindowStartTime property: Start Time for the Maintenance Window.
-     *
+     * 
      * @param maintenanceWindowStartTime the maintenanceWindowStartTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -140,7 +144,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the maintenanceWindowEndTime property: End Time for the Maintenance Window.
-     *
+     * 
      * @return the maintenanceWindowEndTime value.
      */
     public OffsetDateTime maintenanceWindowEndTime() {
@@ -149,7 +153,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the maintenanceWindowEndTime property: End Time for the Maintenance Window.
-     *
+     * 
      * @param maintenanceWindowEndTime the maintenanceWindowEndTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -160,7 +164,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the lastOperationResultCode property: The Last Maintenance Operation Result Code.
-     *
+     * 
      * @return the lastOperationResultCode value.
      */
     public MaintenanceOperationResultCodeTypes lastOperationResultCode() {
@@ -169,19 +173,19 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the lastOperationResultCode property: The Last Maintenance Operation Result Code.
-     *
+     * 
      * @param lastOperationResultCode the lastOperationResultCode value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
-    public MaintenanceRedeployStatus withLastOperationResultCode(
-        MaintenanceOperationResultCodeTypes lastOperationResultCode) {
+    public MaintenanceRedeployStatus
+        withLastOperationResultCode(MaintenanceOperationResultCodeTypes lastOperationResultCode) {
         this.lastOperationResultCode = lastOperationResultCode;
         return this;
     }
 
     /**
      * Get the lastOperationMessage property: Message returned for the last Maintenance Operation.
-     *
+     * 
      * @return the lastOperationMessage value.
      */
     public String lastOperationMessage() {
@@ -190,7 +194,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the lastOperationMessage property: Message returned for the last Maintenance Operation.
-     *
+     * 
      * @param lastOperationMessage the lastOperationMessage value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -201,7 +205,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

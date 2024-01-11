@@ -1,7 +1,26 @@
 matrix:
-  image:
-    - Dockerfile
   scenarios:
-    send-process:
-      chaos: "true"
+    composite:
       imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: MessageSenderAsync
+      senderConcurrency: 5
+      sendRate: 600 # per each container, so 1.2k messages per sec total
+      batchSize: 3
+      receiverTestClass: MessageProcessor
+      processingConcurrency: 64
+      abandonRatio: 0.002
+      noDispositionRatio: 0.001
+      lockRenewalNeededRatio: 0.01
+      processCallbackDurationMaxInMs: 10
+      lockDurationInSec: 5
+    happy-case:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: MessageSenderAsync
+      sendRate: 2600 # per each container, so 5.2k messages per sec total
+      batchSize: 10
+      senderConcurrency: 20
+      receiverTestClass: MessageProcessor
+      processingConcurrency: 256
+

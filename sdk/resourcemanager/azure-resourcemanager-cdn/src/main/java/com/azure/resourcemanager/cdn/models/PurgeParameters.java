@@ -18,6 +18,10 @@ public final class PurgeParameters {
     @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
 
+    /** Creates an instance of PurgeParameters class. */
+    public PurgeParameters() {
+    }
+
     /**
      * Get the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.

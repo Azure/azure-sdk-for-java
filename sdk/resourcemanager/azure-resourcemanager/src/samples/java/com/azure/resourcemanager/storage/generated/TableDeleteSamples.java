@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Table Delete. */
 public final class TableDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationDelete.json
      */
     /**
      * Sample code: TableOperationDelete.
@@ -22,6 +20,6 @@ public final class TableDeleteSamples {
             .manager()
             .serviceClient()
             .getTables()
-            .deleteWithResponse("res3376", "sto328", "table6185", Context.NONE);
+            .deleteWithResponse("res3376", "sto328", "table6185", com.azure.core.util.Context.NONE);
     }
 }

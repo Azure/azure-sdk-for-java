@@ -14,7 +14,7 @@ public interface ResourceProviders {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.Solutions operations as paginated response with {@link
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<Operation> listOperations();
@@ -26,7 +26,7 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.Solutions operations as paginated response with {@link
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<Operation> listOperations(Context context);

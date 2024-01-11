@@ -17,6 +17,10 @@ public final class SubscriptionCreateParameters {
     @JsonProperty(value = "properties")
     private SubscriptionCreateParameterProperties innerProperties;
 
+    /** Creates an instance of SubscriptionCreateParameters class. */
+    public SubscriptionCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Subscription contract properties.
      *

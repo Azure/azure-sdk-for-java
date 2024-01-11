@@ -27,16 +27,6 @@ public final class ComponentCurrentBillingFeaturesImpl implements ComponentCurre
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationInsightsComponentBillingFeatures get(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentBillingFeaturesInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplicationInsightsComponentBillingFeaturesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationInsightsComponentBillingFeatures> getWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<ApplicationInsightsComponentBillingFeaturesInner> inner =
@@ -52,12 +42,9 @@ public final class ComponentCurrentBillingFeaturesImpl implements ComponentCurre
         }
     }
 
-    public ApplicationInsightsComponentBillingFeatures update(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
+    public ApplicationInsightsComponentBillingFeatures get(String resourceGroupName, String resourceName) {
         ApplicationInsightsComponentBillingFeaturesInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, billingFeaturesProperties);
+            this.serviceClient().get(resourceGroupName, resourceName);
         if (inner != null) {
             return new ApplicationInsightsComponentBillingFeaturesImpl(inner, this.manager());
         } else {
@@ -80,6 +67,19 @@ public final class ComponentCurrentBillingFeaturesImpl implements ComponentCurre
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentBillingFeaturesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentBillingFeatures update(
+        String resourceGroupName,
+        String resourceName,
+        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
+        ApplicationInsightsComponentBillingFeaturesInner inner =
+            this.serviceClient().update(resourceGroupName, resourceName, billingFeaturesProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentBillingFeaturesImpl(inner, this.manager());
         } else {
             return null;
         }

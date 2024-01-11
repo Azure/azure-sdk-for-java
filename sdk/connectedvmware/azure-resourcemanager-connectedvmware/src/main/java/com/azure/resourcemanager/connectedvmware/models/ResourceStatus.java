@@ -47,6 +47,10 @@ public final class ResourceStatus {
     @JsonProperty(value = "lastUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedAt;
 
+    /** Creates an instance of ResourceStatus class. */
+    public ResourceStatus() {
+    }
+
     /**
      * Get the type property: The type of the condition.
      *

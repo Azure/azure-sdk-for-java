@@ -14,6 +14,15 @@ public final class ListContainersInclude extends ExpandableStringEnum<ListContai
     public static final ListContainersInclude DELETED = fromString("deleted");
 
     /**
+     * Creates a new instance of ListContainersInclude value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ListContainersInclude() {
+    }
+
+    /**
      * Creates or finds a ListContainersInclude from its string representation.
      *
      * @param name a name to look for.

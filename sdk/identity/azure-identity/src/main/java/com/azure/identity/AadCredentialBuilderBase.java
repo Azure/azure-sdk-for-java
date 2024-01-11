@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host and
- * additionally allowed tenants for an Azure Active Directory.</p>
+ * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host, and
+ * additionally allowed tenants for Microsoft Entra ID.</p>
  *
  * @param <T> the type of the credential builder
  */
@@ -25,8 +25,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     String tenantId;
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.
      */
     @SuppressWarnings("unchecked")
@@ -130,11 +130,14 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Enables additional support logging for public and confidential client applications. This enables
      * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
+     *
+     * <p><b>This operation will log PII including tokens. It should only be used when directed by support.</b>
+     *
      * @return An updated instance of this builder with additional support logging enabled.
      */
     @SuppressWarnings("unchecked")
-    public T enableSupportLogging() {
-        this.identityClientOptions.enableSupportLogging();
+    public T enableUnsafeSupportLogging() {
+        this.identityClientOptions.enableUnsafeSupportLogging();
         return (T) this;
     }
 }

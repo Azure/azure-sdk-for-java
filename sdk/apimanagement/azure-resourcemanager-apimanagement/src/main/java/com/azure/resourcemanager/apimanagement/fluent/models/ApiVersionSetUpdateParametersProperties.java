@@ -19,11 +19,14 @@ public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSet
     private String displayName;
 
     /*
-     * An value that determines where the API Version identifier will be
-     * located in a HTTP request.
+     * An value that determines where the API Version identifier will be located in a HTTP request.
      */
     @JsonProperty(value = "versioningScheme")
     private VersioningScheme versioningScheme;
+
+    /** Creates an instance of ApiVersionSetUpdateParametersProperties class. */
+    public ApiVersionSetUpdateParametersProperties() {
+    }
 
     /**
      * Get the displayName property: Name of API Version Set.

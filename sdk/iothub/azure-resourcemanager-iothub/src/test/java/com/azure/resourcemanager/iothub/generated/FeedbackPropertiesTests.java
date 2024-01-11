@@ -15,23 +15,23 @@ public final class FeedbackPropertiesTests {
         FeedbackProperties model =
             BinaryData
                 .fromString(
-                    "{\"lockDurationAsIso8601\":\"PT19H28M11S\",\"ttlAsIso8601\":\"PT104H38M10S\",\"maxDeliveryCount\":1236632858}")
+                    "{\"lockDurationAsIso8601\":\"PT101H36M29S\",\"ttlAsIso8601\":\"PT205H18M18S\",\"maxDeliveryCount\":551724215}")
                 .toObject(FeedbackProperties.class);
-        Assertions.assertEquals(Duration.parse("PT19H28M11S"), model.lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT104H38M10S"), model.ttlAsIso8601());
-        Assertions.assertEquals(1236632858, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT101H36M29S"), model.lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT205H18M18S"), model.ttlAsIso8601());
+        Assertions.assertEquals(551724215, model.maxDeliveryCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FeedbackProperties model =
             new FeedbackProperties()
-                .withLockDurationAsIso8601(Duration.parse("PT19H28M11S"))
-                .withTtlAsIso8601(Duration.parse("PT104H38M10S"))
-                .withMaxDeliveryCount(1236632858);
+                .withLockDurationAsIso8601(Duration.parse("PT101H36M29S"))
+                .withTtlAsIso8601(Duration.parse("PT205H18M18S"))
+                .withMaxDeliveryCount(551724215);
         model = BinaryData.fromObject(model).toObject(FeedbackProperties.class);
-        Assertions.assertEquals(Duration.parse("PT19H28M11S"), model.lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT104H38M10S"), model.ttlAsIso8601());
-        Assertions.assertEquals(1236632858, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT101H36M29S"), model.lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT205H18M18S"), model.ttlAsIso8601());
+        Assertions.assertEquals(551724215, model.maxDeliveryCount());
     }
 }

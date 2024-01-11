@@ -23,7 +23,7 @@ public final class IdentityProperties {
     private String tenantId;
 
     /*
-     * Identity type
+     * Specifies the identity type of the Datadog Monitor. At this time the only allowed value is 'SystemAssigned'.
      */
     @JsonProperty(value = "type")
     private ManagedIdentityTypes type;
@@ -51,7 +51,8 @@ public final class IdentityProperties {
     }
 
     /**
-     * Get the type property: Identity type.
+     * Get the type property: Specifies the identity type of the Datadog Monitor. At this time the only allowed value is
+     * 'SystemAssigned'.
      *
      * @return the type value.
      */
@@ -60,7 +61,8 @@ public final class IdentityProperties {
     }
 
     /**
-     * Set the type property: Identity type.
+     * Set the type property: Specifies the identity type of the Datadog Monitor. At this time the only allowed value is
+     * 'SystemAssigned'.
      *
      * @param type the type value to set.
      * @return the IdentityProperties object itself.

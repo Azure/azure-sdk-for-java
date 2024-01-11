@@ -7,11 +7,11 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auth Secrets for Container App Scale Rule. */
+/** Auth Secrets for Scale Rule. */
 @Fluent
 public final class ScaleRuleAuth {
     /*
-     * Name of the Container App secret from which to pull the auth params.
+     * Name of the secret from which to pull the auth params.
      */
     @JsonProperty(value = "secretRef")
     private String secretRef;
@@ -27,7 +27,7 @@ public final class ScaleRuleAuth {
     }
 
     /**
-     * Get the secretRef property: Name of the Container App secret from which to pull the auth params.
+     * Get the secretRef property: Name of the secret from which to pull the auth params.
      *
      * @return the secretRef value.
      */
@@ -36,7 +36,7 @@ public final class ScaleRuleAuth {
     }
 
     /**
-     * Set the secretRef property: Name of the Container App secret from which to pull the auth params.
+     * Set the secretRef property: Name of the secret from which to pull the auth params.
      *
      * @param secretRef the secretRef value to set.
      * @return the ScaleRuleAuth object itself.

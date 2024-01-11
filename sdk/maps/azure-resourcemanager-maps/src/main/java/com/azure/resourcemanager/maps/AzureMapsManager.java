@@ -211,7 +211,7 @@ public final class AzureMapsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.maps")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -305,8 +305,10 @@ public final class AzureMapsManager {
     }
 
     /**
-     * @return Wrapped service client AzureMapsManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureMapsManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client AzureMapsManagementClient.
      */
     public AzureMapsManagementClient serviceClient() {
         return this.clientObject;

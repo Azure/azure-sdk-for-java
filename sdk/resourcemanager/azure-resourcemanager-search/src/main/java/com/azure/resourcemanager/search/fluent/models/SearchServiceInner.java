@@ -6,18 +6,21 @@ package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
+import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.HostingMode;
 import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import com.azure.resourcemanager.search.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Describes an Azure Cognitive Search service and its current state. */
+/** Describes a search service and its current state. */
 @Fluent
 public final class SearchServiceInner extends Resource {
     /*
@@ -27,8 +30,8 @@ public final class SearchServiceInner extends Resource {
     private SearchServiceProperties innerProperties;
 
     /*
-     * The SKU of the Search Service, which determines price tier and capacity
-     * limits. This property is required when creating a new Search Service.
+     * The SKU of the search service, which determines billing rate and capacity limits. This property is required when
+     * creating a new search service.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -38,6 +41,10 @@ public final class SearchServiceInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /** Creates an instance of SearchServiceInner class. */
+    public SearchServiceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the search service.
@@ -49,8 +56,8 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sku property: The SKU of the Search Service, which determines price tier and capacity limits. This
-     * property is required when creating a new Search Service.
+     * Get the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * property is required when creating a new search service.
      *
      * @return the sku value.
      */
@@ -59,8 +66,8 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The SKU of the Search Service, which determines price tier and capacity limits. This
-     * property is required when creating a new Search Service.
+     * Set the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * property is required when creating a new search service.
      *
      * @param sku the sku value to set.
      * @return the SearchServiceInner object itself.
@@ -219,9 +226,9 @@ public final class SearchServiceInner extends Resource {
      * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
      * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
      * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
-     * state. If your service is in the degraded, disabled, or error states, it means the Azure Cognitive Search team is
-     * actively investigating the underlying issue. Dedicated services in these states are still chargeable based on the
-     * number of search units provisioned.
+     * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
+     * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
+     * provisioned.
      *
      * @return the status value.
      */
@@ -254,8 +261,7 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the networkRuleSet property: Network specific rules that determine how the Azure Cognitive Search service may
-     * be reached.
+     * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
      *
      * @return the networkRuleSet value.
      */
@@ -264,8 +270,7 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the networkRuleSet property: Network specific rules that determine how the Azure Cognitive Search service may
-     * be reached.
+     * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
      *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceInner object itself.
@@ -279,8 +284,82 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure Cognitive
-     * Search service.
+     * Get the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
+     * using customer manager keys within a search service.
+     *
+     * @return the encryptionWithCmk value.
+     */
+    public EncryptionWithCmk encryptionWithCmk() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionWithCmk();
+    }
+
+    /**
+     * Set the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
+     * using customer manager keys within a search service.
+     *
+     * @param encryptionWithCmk the encryptionWithCmk value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withEncryptionWithCmk(EncryptionWithCmk encryptionWithCmk) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withEncryptionWithCmk(encryptionWithCmk);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
+     * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
+     * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the authOptions property: Defines the options for how the data plane API of a search service authenticates
+     * requests. This cannot be set if 'disableLocalAuth' is set to true.
+     *
+     * @return the authOptions value.
+     */
+    public DataPlaneAuthOptions authOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().authOptions();
+    }
+
+    /**
+     * Set the authOptions property: Defines the options for how the data plane API of a search service authenticates
+     * requests. This cannot be set if 'disableLocalAuth' is set to true.
+     *
+     * @param authOptions the authOptions value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withAuthOptions(DataPlaneAuthOptions authOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withAuthOptions(authOptions);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
      *
      * @return the privateEndpointConnections value.
      */
@@ -289,8 +368,33 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure
-     * Cognitive Search service.
+     * Get the semanticSearch property: Sets options that control the availability of semantic search. This
+     * configuration is only possible for certain search SKUs in certain locations.
+     *
+     * @return the semanticSearch value.
+     */
+    public SearchSemanticSearch semanticSearch() {
+        return this.innerProperties() == null ? null : this.innerProperties().semanticSearch();
+    }
+
+    /**
+     * Set the semanticSearch property: Sets options that control the availability of semantic search. This
+     * configuration is only possible for certain search SKUs in certain locations.
+     *
+     * @param semanticSearch the semanticSearch value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withSemanticSearch(SearchSemanticSearch semanticSearch) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withSemanticSearch(semanticSearch);
+        return this;
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
+     * service.
      *
      * @return the sharedPrivateLinkResources value.
      */

@@ -836,7 +836,7 @@ public final class ClientTelemetryMetrics {
         private void recordStoreResponseStatistics(
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
-            List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;

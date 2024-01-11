@@ -52,7 +52,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         random = new Random();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryWithFeedRange() {
         String query = "select * from root";
 
@@ -78,7 +78,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         assertThat(feedResultIds).containsExactlyElementsOf(actualIds);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryWithFeedRangePartitionKey() {
         String query = "select * from root";
         FeedRange feedRange = FeedRange.forLogicalPartition(new PartitionKey(PK_2));
@@ -97,7 +97,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         assertThat(actualIds).containsExactlyInAnyOrderElementsOf(expectedIds);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryWithFeedRangeFiltering() {
 
         String query = "select * from root";
@@ -134,7 +134,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void queryWithPartitionKeyAndFeedRange() {
         String query = "select * from root";
         FeedRange feedRange = FeedRange.forLogicalPartition(new PartitionKey(PK_2));
@@ -155,7 +155,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
         return testSubscriber.values();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdContainer = getSharedMultiPartitionCosmosContainer(client);

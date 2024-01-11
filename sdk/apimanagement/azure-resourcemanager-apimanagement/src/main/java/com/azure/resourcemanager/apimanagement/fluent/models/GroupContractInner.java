@@ -18,6 +18,10 @@ public final class GroupContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GroupContractProperties innerProperties;
 
+    /** Creates an instance of GroupContractInner class. */
+    public GroupContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Group entity contract properties.
      *

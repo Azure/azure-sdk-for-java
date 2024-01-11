@@ -38,6 +38,13 @@ public interface TagContract {
     String displayName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.TagContractInner object.
      *
      * @return the inner object.
@@ -48,22 +55,25 @@ public interface TagContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The TagContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the TagContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TagContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the TagContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -84,6 +94,7 @@ public interface TagContract {
              */
             TagContract create(Context context);
         }
+
         /** The stage of the TagContract definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -94,6 +105,7 @@ public interface TagContract {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the TagContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -107,6 +119,7 @@ public interface TagContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the TagContract resource.
      *
@@ -131,6 +144,7 @@ public interface TagContract {
          */
         TagContract apply(Context context);
     }
+
     /** The TagContract update stages. */
     interface UpdateStages {
         /** The stage of the TagContract update allowing to specify displayName. */
@@ -143,6 +157,7 @@ public interface TagContract {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the TagContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -156,6 +171,7 @@ public interface TagContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

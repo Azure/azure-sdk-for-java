@@ -15,15 +15,15 @@ public final class IscsiTargetInfoTests {
         IscsiTargetInfo model =
             BinaryData
                 .fromString(
-                    "{\"targetIqn\":\"pnvjtoqnermclf\",\"targetPortalHostname\":\"phoxus\",\"targetPortalPort\":2041952882,\"provisioningState\":\"Canceled\",\"status\":\"Invalid\"}")
+                    "{\"targetIqn\":\"unmpxttd\",\"targetPortalHostname\":\"rbnlankxmyskp\",\"targetPortalPort\":743667383,\"provisioningState\":\"Deleting\",\"status\":\"Unhealthy\"}")
                 .toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.INVALID, model.status());
+        Assertions.assertEquals(OperationalStatus.UNHEALTHY, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.INVALID);
+        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.UNHEALTHY);
         model = BinaryData.fromObject(model).toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.INVALID, model.status());
+        Assertions.assertEquals(OperationalStatus.UNHEALTHY, model.status());
     }
 }

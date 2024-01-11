@@ -12,20 +12,15 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,7 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -44,17 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     private MetricsAdvisorAdministrationClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     /**
      * Verifies the result of the list anomaly alert configuration method when no options specified.
      */
@@ -62,7 +45,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void testListAnomalyAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<List<String>>();
+        AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<>();
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -215,11 +198,9 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
             assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
             // Act & Assert
-            Exception exception = assertThrows(MetricsAdvisorResponseException.class, () ->
-                client.getAlertConfig(createdAnomalyAlert.getId()));
-            assertEquals(MetricsAdvisorResponseException.class, exception.getClass());
-            final MetricsAdvisorResponseException errorCodeException = ((MetricsAdvisorResponseException) exception);
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
+            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class,
+                () -> client.getAlertConfig(createdAnomalyAlert.getId()));
+            assertEquals(HttpResponseStatus.NOT_FOUND.code(), exception.getResponse().getStatusCode());
         });
     }
 

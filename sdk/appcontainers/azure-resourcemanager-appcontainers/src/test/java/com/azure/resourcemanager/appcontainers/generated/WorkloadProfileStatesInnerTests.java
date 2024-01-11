@@ -15,11 +15,11 @@ public final class WorkloadProfileStatesInnerTests {
         WorkloadProfileStatesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"minimumCount\":842063408,\"maximumCount\":1640256851,\"currentCount\":1918007053},\"id\":\"rbdkelvidiz\",\"name\":\"zsdbccxjmon\",\"type\":\"dgnwncypuuwwlt\"}")
+                    "{\"properties\":{\"minimumCount\":1591085258,\"maximumCount\":2130021286,\"currentCount\":1715283989},\"id\":\"f\",\"name\":\"xnmwmqtibxyijddt\",\"type\":\"qcttadijaeukmrsi\"}")
                 .toObject(WorkloadProfileStatesInner.class);
-        Assertions.assertEquals(842063408, model.properties().minimumCount());
-        Assertions.assertEquals(1640256851, model.properties().maximumCount());
-        Assertions.assertEquals(1918007053, model.properties().currentCount());
+        Assertions.assertEquals(1591085258, model.properties().minimumCount());
+        Assertions.assertEquals(2130021286, model.properties().maximumCount());
+        Assertions.assertEquals(1715283989, model.properties().currentCount());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,12 +28,12 @@ public final class WorkloadProfileStatesInnerTests {
             new WorkloadProfileStatesInner()
                 .withProperties(
                     new WorkloadProfileStatesProperties()
-                        .withMinimumCount(842063408)
-                        .withMaximumCount(1640256851)
-                        .withCurrentCount(1918007053));
+                        .withMinimumCount(1591085258)
+                        .withMaximumCount(2130021286)
+                        .withCurrentCount(1715283989));
         model = BinaryData.fromObject(model).toObject(WorkloadProfileStatesInner.class);
-        Assertions.assertEquals(842063408, model.properties().minimumCount());
-        Assertions.assertEquals(1640256851, model.properties().maximumCount());
-        Assertions.assertEquals(1918007053, model.properties().currentCount());
+        Assertions.assertEquals(1591085258, model.properties().minimumCount());
+        Assertions.assertEquals(2130021286, model.properties().maximumCount());
+        Assertions.assertEquals(1715283989, model.properties().currentCount());
     }
 }

@@ -19,6 +19,8 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
 * [Image Generation sample](#image-generation "Image Generation")
+* [Audio Transcription sample](#audio-transcription "Audio Transcription")
+* [Audio Translation sample](#audio-translation "Audio Translation")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -40,7 +42,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -72,19 +74,21 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
 
 ### Support for non-Azure OpenAI
 
-The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the setup of the `OpenAIClient` is slightly different. First, get Non-Azure OpenAI API key from [Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `OpenAIClient` as follows: 
+The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the
+setup of the `OpenAIClient` is slightly different. First, get Non-Azure OpenAI API key from
+[Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `OpenAIClient` as follows: 
 
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
 OpenAIClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildClient();
 ```
 or 
 
 ```java readme-sample-createNonAzureOpenAIAsyncClientApiKey
 OpenAIAsyncClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildAsyncClient();
 ```
 
@@ -100,7 +104,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -150,14 +154,18 @@ The following sections provide several code snippets covering some of the most c
 * [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
 * [Embeddings sample](#text-embeddings "Text Embeddings")
 * [Image Generation sample](#image-generation "Image Generation")
+* [Audio Transcription sample](#audio-transcription "Audio Transcription")
+* [Audio Translation sample](#audio-translation "Audio Translation")
 
-### Text completions
+### Legacy completions
+
+It is generally preferable to use Chat Completions instead. However, Completions are still supported:
 
 ``` java readme-sample-getCompletions
 List<String> prompt = new ArrayList<>();
 prompt.add("Say this is a test");
 
-Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
+Completions completions = client.getCompletions("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
 System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
 for (Choice choice : completions.getChoices()) {
@@ -167,21 +175,22 @@ for (Choice choice : completions.getChoices()) {
 
 For a complete sample example, see sample [Text Completions][sample_get_completions].
 
-### Streaming text completions
+### Streaming legacy completions
 
 ```java readme-sample-getCompletionsStream
 List<String> prompt = new ArrayList<>();
 prompt.add("How to bake a cake?");
 
 IterableStream<Completions> completionsStream = client
-    .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+    .getCompletionsStream("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
-completionsStream.forEach(completions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
-    for (Choice choice : completions.getChoices()) {
-        System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
-    }
-});
+completionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
 ```
 
 For a complete sample example, see sample [Streaming Text Completions][sample_get_completions_streaming].
@@ -189,18 +198,18 @@ For a complete sample example, see sample [Streaming Text Completions][sample_ge
 ### Chat completions
 
 ``` java readme-sample-getChatCompletions
-List<ChatMessage> chatMessages = new ArrayList<>();
-chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
 
 System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
 for (ChatChoice choice : chatCompletions.getChoices()) {
-    ChatMessage message = choice.getMessage();
+    ChatResponseMessage message = choice.getMessage();
     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
     System.out.println("Message:");
     System.out.println(message.getContent());
@@ -208,40 +217,40 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-For `function call` sample, see sample [function call][sample_chat_completion_function_call].
+For `function call` sample, see [function call][sample_chat_completion_function_call]. However, they are considered 
+a legacy feature. Using tools is the preferred way. For more details see sample [tool calls][sample_tool_calls].
+
+For `Bring Your Own Data` sample, see [Bring Your Own Data][sample_chat_completion_function_call].
 
 Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
 
 ### Streaming chat completions
 
 ```java readme-sample-getChatCompletionsStream
-List<ChatMessage> chatMessages = new ArrayList<>();
-chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
     new ChatCompletionsOptions(chatMessages));
 
-chatCompletionsStream.forEach(chatCompletions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-    for (ChatChoice choice : chatCompletions.getChoices()) {
-        ChatMessage message = choice.getDelta();
-        if (message != null) {
-            System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-            System.out.println("Message:");
-            System.out.println(message.getContent());
+chatCompletionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(chatCompletions -> {
+        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+        if (delta.getRole() != null) {
+            System.out.println("Role = " + delta.getRole());
         }
-    }
-
-    CompletionsUsage usage = chatCompletions.getUsage();
-    if (usage != null) {
-        System.out.printf("Usage: number of prompt token is %d, "
-                + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-            usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-    }
-});
+        if (delta.getContent() != null) {
+            System.out.print(delta.getContent());
+        }
+    });
 ```
 For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
@@ -251,7 +260,7 @@ For a complete sample example, see sample [Streaming Chat Completions][sample_ge
 EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
     Arrays.asList("Your text string goes here"));
 
-Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
+Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddingsOptions);
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
@@ -269,22 +278,130 @@ Please refer to the service documentation for a conceptual discussion of [openAI
 ```java readme-sample-imageGeneration
 ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
     "A drawing of the Seattle skyline in the style of Van Gogh");
-ImageResponse images = client.getImages(imageGenerationOptions);
+ImageGenerations images = client.getImageGenerations("{deploymentOrModelName}", imageGenerationOptions);
 
-for (ImageLocation imageLocation : images.getData()) {
-    ResponseError error = imageLocation.getError();
-    if (error != null) {
-        System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-            error.getCode(), error.getMessage());
-    } else {
-        System.out.printf(
-            "Image location URL that provides temporary access to download the generated image is %s.%n",
-            imageLocation.getUrl());
-    }
+for (ImageGenerationData imageGenerationData : images.getData()) {
+    System.out.printf(
+        "Image location URL that provides temporary access to download the generated image is %s.%n",
+        imageGenerationData.getUrl());
 }
 ```
 
 For a complete sample example, see sample [Image Generation][sample_image_generation].
+
+### Audio Transcription
+The OpenAI service starts supporting `audio transcription` with the introduction of `Whisper` models. 
+The following code snippet shows how to use the service to transcribe audio.
+
+```java readme-sample-audioTranscription
+String fileName = "{your-file-name}";
+Path filePath = Paths.get("{your-file-path}" + fileName);
+
+byte[] file = BinaryData.fromFile(filePath).toBytes();
+AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
+    .setResponseFormat(AudioTranscriptionFormat.JSON);
+
+AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelName}", fileName, transcriptionOptions);
+
+System.out.println("Transcription: " + transcription.getText());
+```
+For a complete sample example, see sample [Audio Transcription][sample_audio_transcription].
+Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
+
+### Audio Translation
+The OpenAI service starts supporting `audio translation` with the introduction of `Whisper` models.
+The following code snippet shows how to use the service to translate audio.
+
+```java readme-sample-audioTranslation
+String fileName = "{your-file-name}";
+Path filePath = Paths.get("{your-file-path}" + fileName);
+
+byte[] file = BinaryData.fromFile(filePath).toBytes();
+AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
+    .setResponseFormat(AudioTranslationFormat.JSON);
+
+AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelName}", fileName, translationOptions);
+
+System.out.println("Translation: " + translation.getText());
+```
+For a complete sample example, see sample [Audio Translation][sample_audio_translation].
+Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
+
+### Text completions with images
+
+Currently, only available in OpenAI. For more details please visit the [OpenAI vision documentation page](https://platform.openai.com/docs/guides/vision). 
+By providing image URLs, it is possible to use images along with prompts. For more details see the usage samples for
+[chat completions with images][sample_chat_with_images].
+
+```java readme-sample-chatWithImages
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+        new ChatMessageTextContentItem("Please describe this image"),
+        new ChatMessageImageContentItem(
+                new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+)));
+
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+System.out.println("Chat completion: " + chatCompletions.getChoices().get(0).getMessage().getContent());
+```
+
+### Tool calls
+
+**Tools** extend chat completions by allowing an assistant to invoke defined functions and other capabilities in the
+process of fulfilling a chat completions request. To use chat tools, start by defining a function tool:
+
+```java readme-sample-toolCalls
+List<ChatRequestMessage> chatMessages = Arrays.asList(
+        new ChatRequestSystemMessage("You are a helpful assistant."),
+        new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
+);
+ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+        new FunctionDefinition("MyFunctionName"));
+
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+ChatChoice choice = chatCompletions.getChoices().get(0);
+// The LLM is requesting the calling of the function we defined in the original request
+if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
+    ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) choice.getMessage().getToolCalls().get(0);
+    String functionArguments = toolCall.getFunction().getArguments();
+
+    // As an additional step, you may want to deserialize the parameters, so you can call your function
+    MyFunctionCallArguments parameters = BinaryData.fromString(functionArguments).toObject(MyFunctionCallArguments.class);
+
+    String functionCallResult = "{the-result-of-my-function}"; // myFunction(parameters...);
+
+    ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
+    assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
+
+    // We include:
+    // - The past 2 messages from the original request
+    // - A new ChatRequestAssistantMessage with the tool calls from the original request
+    // - A new ChatRequestToolMessage with the result of our function call
+    List<ChatRequestMessage> followUpMessages = Arrays.asList(
+            chatMessages.get(0),
+            chatMessages.get(1),
+            assistantMessage,
+            new ChatRequestToolMessage(functionCallResult, toolCall.getId())
+    );
+
+    ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
+
+    ChatCompletions followUpChatCompletions = client.getChatCompletions("{deploymentOrModelName}", followUpChatCompletionsOptions);
+
+    // This time the finish reason is STOPPED
+    ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
+    if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
+        System.out.println("Chat Completions Result: " + followUpChoice.getMessage().getContent());
+    }
+}
+```
 
 ## Troubleshooting
 ### Enable client logging
@@ -327,6 +444,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
+[microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
@@ -334,13 +452,18 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
-[sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
-[sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
+[sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsFunctionCall.java
+[sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
+[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
 [sample_get_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsStreamSample.java
 [sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetEmbeddingsSample.java
 [sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
+[sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
+[sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
+[sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
+[sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

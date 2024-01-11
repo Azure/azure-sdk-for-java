@@ -9,6 +9,14 @@ import com.azure.core.annotation.Immutable;
 /** Build document model operation details */
 @Immutable
 public final class DocumentModelBuildOperationDetails extends OperationDetails {
+
+    /**
+     * Creates a DocumentModelBuildOperationDetails object.
+     */
+    public DocumentModelBuildOperationDetails() {
+        super();
+    }
+
     /*
      * Operation result upon success.
      */

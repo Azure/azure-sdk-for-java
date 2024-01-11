@@ -17,6 +17,10 @@ public final class CheckHostnameAvailabilityInput {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
+    /** Creates an instance of CheckHostnameAvailabilityInput class. */
+    public CheckHostnameAvailabilityInput() {
+    }
+
     /**
      * Get the hostname property: The host name to validate.
      *

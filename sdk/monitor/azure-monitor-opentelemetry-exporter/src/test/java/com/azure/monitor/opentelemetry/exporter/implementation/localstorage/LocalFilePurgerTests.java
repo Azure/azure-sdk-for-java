@@ -25,9 +25,6 @@ public class LocalFilePurgerTests {
         LocalFileCache cache = new LocalFileCache(tempFolder);
         LocalFileWriter writer = new LocalFileWriter(50, cache, tempFolder, null, false);
 
-        // run purge task every second to delete files that are 5 seconds old
-        LocalFilePurger purger = new LocalFilePurger(tempFolder, 5L, 1L, false);
-
         // persist 100 files to disk
         for (int i = 0; i < 100; i++) {
             writer.writeToDisk(
@@ -39,7 +36,10 @@ public class LocalFilePurgerTests {
         List<File> files = FileUtil.listTrnFiles(tempFolder);
         assertThat(files.size()).isEqualTo(100);
 
-        Thread.sleep(10000); // wait 10 seconds
+        // run purge task every second to delete files that are 1 second old
+        LocalFilePurger purger = new LocalFilePurger(tempFolder, 1L, 1L, false);
+
+        Thread.sleep(5000); // wait 5 seconds
 
         files = FileUtil.listTrnFiles(tempFolder);
         assertThat(files.size()).isEqualTo(0);

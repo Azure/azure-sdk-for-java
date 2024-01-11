@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for PostgreSQL data source. */
+/**
+ * Linked service for PostgreSQL data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PostgreSql")
 @Fluent
@@ -24,41 +26,51 @@ public final class PostgreSqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PostgreSqlLinkedServiceTypeProperties innerTypeProperties = new PostgreSqlLinkedServiceTypeProperties();
 
-    /** Creates an instance of PostgreSqlLinkedService class. */
+    /**
+     * Creates an instance of PostgreSqlLinkedService class.
+     */
     public PostgreSqlLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: PostgreSQL linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private PostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -66,8 +78,9 @@ public final class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the connectionString property: The connection string.
-     *
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -75,8 +88,9 @@ public final class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the connectionString property: The connection string.
-     *
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
      * @param connectionString the connectionString value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
@@ -90,7 +104,7 @@ public final class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference password() {
@@ -99,7 +113,7 @@ public final class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
@@ -112,23 +126,23 @@ public final class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
-    public PostgreSqlLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public PostgreSqlLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new PostgreSqlLinkedServiceTypeProperties();
         }
@@ -138,17 +152,15 @@ public final class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model PostgreSqlLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model PostgreSqlLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

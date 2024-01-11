@@ -17,6 +17,10 @@ public final class ManagedRuleSetList {
     @JsonProperty(value = "managedRuleSets")
     private List<ManagedRuleSet> managedRuleSets;
 
+    /** Creates an instance of ManagedRuleSetList class. */
+    public ManagedRuleSetList() {
+    }
+
     /**
      * Get the managedRuleSets property: List of rule sets.
      *

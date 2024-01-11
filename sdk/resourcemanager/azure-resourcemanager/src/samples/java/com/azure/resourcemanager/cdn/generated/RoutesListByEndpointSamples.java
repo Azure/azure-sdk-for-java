@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Routes ListByEndpoint. */
 public final class RoutesListByEndpointSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Routes_ListByEndpoint.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Routes_ListByEndpoint.json
      */
     /**
      * Sample code: Routes_ListByEndpoint.
@@ -22,6 +20,6 @@ public final class RoutesListByEndpointSamples {
             .manager()
             .serviceClient()
             .getRoutes()
-            .listByEndpoint("RG", "profile1", "endpoint1", Context.NONE);
+            .listByEndpoint("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

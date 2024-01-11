@@ -3,10 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-/**
- * The helper class to set the non-public properties of an {@link DocumentKeyValuePair} instance.
- */
-
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;

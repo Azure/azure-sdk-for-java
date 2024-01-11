@@ -33,7 +33,7 @@ public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Completed\",\"resourceId\":\"hnrztfol\",\"lastUpdateTime\":\"2021-01-02T16:04:01Z\"},\"id\":\"knalaulppg\",\"name\":\"dtpnapnyiropuhp\",\"type\":\"gvpgy\"}]}";
+            "{\"value\":[{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"x\",\"lastUpdateTime\":\"2021-04-30T06:35:53Z\"},\"id\":\"rclnpkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class ApplyUpdateForResourceGroupsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplyUpdate> response =
-            manager.applyUpdateForResourceGroups().listByResourceGroup("yexz", com.azure.core.util.Context.NONE);
+            manager.applyUpdateForResourceGroups().listByResourceGroup("kpvzmlq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UpdateStatus.COMPLETED, response.iterator().next().status());
-        Assertions.assertEquals("hnrztfol", response.iterator().next().resourceId());
+        Assertions.assertEquals(UpdateStatus.PENDING, response.iterator().next().status());
+        Assertions.assertEquals("x", response.iterator().next().resourceId());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-02T16:04:01Z"), response.iterator().next().lastUpdateTime());
+            .assertEquals(OffsetDateTime.parse("2021-04-30T06:35:53Z"), response.iterator().next().lastUpdateTime());
     }
 }

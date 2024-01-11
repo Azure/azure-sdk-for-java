@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Hubspot Service linked service. */
+/**
+ * Hubspot Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Hubspot")
 @Fluent
@@ -24,41 +26,51 @@ public final class HubspotLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HubspotLinkedServiceTypeProperties innerTypeProperties = new HubspotLinkedServiceTypeProperties();
 
-    /** Creates an instance of HubspotLinkedService class. */
+    /**
+     * Creates an instance of HubspotLinkedService class.
+     */
     public HubspotLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Hubspot Service linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HubspotLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubspotLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubspotLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubspotLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubspotLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -67,7 +79,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: The client ID associated with your Hubspot application.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -76,7 +88,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: The client ID associated with your Hubspot application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -90,7 +102,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret associated with your Hubspot application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -99,7 +111,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret associated with your Hubspot application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -113,7 +125,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Get the accessToken property: The access token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase accessToken() {
@@ -122,7 +134,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Set the accessToken property: The access token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -136,7 +148,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Get the refreshToken property: The refresh token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @return the refreshToken value.
      */
     public SecretBase refreshToken() {
@@ -145,7 +157,7 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Set the refreshToken property: The refresh token obtained when initially authenticating your OAuth integration.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -160,7 +172,7 @@ public final class HubspotLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -170,7 +182,7 @@ public final class HubspotLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -185,7 +197,7 @@ public final class HubspotLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -195,7 +207,7 @@ public final class HubspotLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -208,9 +220,9 @@ public final class HubspotLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -218,9 +230,9 @@ public final class HubspotLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the HubspotLinkedService object itself.
      */
@@ -233,23 +245,23 @@ public final class HubspotLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HubspotLinkedService object itself.
      */
-    public HubspotLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public HubspotLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HubspotLinkedServiceTypeProperties();
         }
@@ -259,17 +271,15 @@ public final class HubspotLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HubspotLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model HubspotLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

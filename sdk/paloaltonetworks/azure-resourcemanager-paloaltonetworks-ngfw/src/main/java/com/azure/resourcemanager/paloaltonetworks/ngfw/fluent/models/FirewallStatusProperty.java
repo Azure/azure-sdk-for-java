@@ -11,7 +11,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PanoramaStatus;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ReadOnlyProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Firewall Status. */
+/**
+ * Firewall Status.
+ */
 @Immutable
 public final class FirewallStatusProperty {
     /*
@@ -44,13 +46,15 @@ public final class FirewallStatusProperty {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ReadOnlyProvisioningState provisioningState;
 
-    /** Creates an instance of FirewallStatusProperty class. */
+    /**
+     * Creates an instance of FirewallStatusProperty class.
+     */
     public FirewallStatusProperty() {
     }
 
     /**
      * Get the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @return the isPanoramaManaged value.
      */
     public BooleanEnum isPanoramaManaged() {
@@ -59,7 +63,7 @@ public final class FirewallStatusProperty {
 
     /**
      * Get the healthStatus property: Current status of the Firewall.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -68,7 +72,7 @@ public final class FirewallStatusProperty {
 
     /**
      * Get the healthReason property: Detail description of current health of the Firewall.
-     *
+     * 
      * @return the healthReason value.
      */
     public String healthReason() {
@@ -77,7 +81,7 @@ public final class FirewallStatusProperty {
 
     /**
      * Get the panoramaStatus property: Panorama Status.
-     *
+     * 
      * @return the panoramaStatus value.
      */
     public PanoramaStatus panoramaStatus() {
@@ -86,7 +90,7 @@ public final class FirewallStatusProperty {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ReadOnlyProvisioningState provisioningState() {
@@ -95,7 +99,7 @@ public final class FirewallStatusProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

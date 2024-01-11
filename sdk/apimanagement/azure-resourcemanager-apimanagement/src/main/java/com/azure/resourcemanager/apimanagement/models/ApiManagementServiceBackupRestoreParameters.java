@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiManagementServiceBackupRestoreParameters {
     /*
-     * The name of the Azure storage account (used to place/retrieve the
-     * backup).
+     * The name of the Azure storage account (used to place/retrieve the backup).
      */
     @JsonProperty(value = "storageAccount", required = true)
     private String storageAccount;
@@ -37,18 +36,21 @@ public final class ApiManagementServiceBackupRestoreParameters {
     private AccessType accessType;
 
     /*
-     * Storage account access key. Required only if `accessType` is set to
-     * `AccessKey`.
+     * Storage account access key. Required only if `accessType` is set to `AccessKey`.
      */
     @JsonProperty(value = "accessKey")
     private String accessKey;
 
     /*
-     * The Client ID of user assigned managed identity. Required only if
-     * `accessType` is set to `UserAssignedManagedIdentity`.
+     * The Client ID of user assigned managed identity. Required only if `accessType` is set to
+     * `UserAssignedManagedIdentity`.
      */
     @JsonProperty(value = "clientId")
     private String clientId;
+
+    /** Creates an instance of ApiManagementServiceBackupRestoreParameters class. */
+    public ApiManagementServiceBackupRestoreParameters() {
+    }
 
     /**
      * Get the storageAccount property: The name of the Azure storage account (used to place/retrieve the backup).

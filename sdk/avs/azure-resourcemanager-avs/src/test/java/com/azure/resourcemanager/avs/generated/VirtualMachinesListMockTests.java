@@ -31,7 +31,7 @@ public final class VirtualMachinesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"xwpndfcpf\",\"moRefId\":\"nthjtwkjaosrxuzv\",\"folderPath\":\"mktcqiosmgbza\",\"restrictMovement\":\"Disabled\"},\"id\":\"qdlyrtl\",\"name\":\"laprlt\",\"type\":\"katbhjm\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"zolxrzvhqjwtr\",\"moRefId\":\"gv\",\"folderPath\":\"pcrrk\",\"restrictMovement\":\"Enabled\"},\"id\":\"w\",\"name\":\"mjsmwr\",\"type\":\"kcdxfzzzw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class VirtualMachinesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VirtualMachine> response =
-            manager.virtualMachines().list("fmpcycilrmca", "kggnoxu", "t", com.azure.core.util.Context.NONE);
+            manager.virtualMachines().list("ovvtzejetjkln", "ikyju", "k", com.azure.core.util.Context.NONE);
     }
 }

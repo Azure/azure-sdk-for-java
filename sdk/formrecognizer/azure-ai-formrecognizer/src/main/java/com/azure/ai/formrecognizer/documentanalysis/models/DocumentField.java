@@ -18,6 +18,13 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentField extends TypedDocumentField<Object> {
+    /**
+     * Constructs a DocumentField object.
+     */
+    public DocumentField() {
+        super();
+    }
+
     // Ignore custom getters in the class to prevent serialization and deserialization issues
 
     /**
@@ -159,7 +166,7 @@ public final class DocumentField extends TypedDocumentField<Object> {
      * @return the value.
      */
     @JsonIgnore
-    public Boolean isValueBoolean() {
+    public Boolean getValueAsBoolean() {
         return (Boolean) super.getValue();
     }
 

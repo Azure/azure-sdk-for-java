@@ -27,7 +27,7 @@ public class HandleReauthentication {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Host Name, Port, Username and Azure AD Token are required here.
+        // Host Name, Port, Username, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", defaultAzureCredential);
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);

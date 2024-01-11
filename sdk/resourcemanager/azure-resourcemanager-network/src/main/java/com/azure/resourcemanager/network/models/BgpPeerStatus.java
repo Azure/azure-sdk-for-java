@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BGP peer status details. */
+/**
+ * BGP peer status details.
+ */
 @Immutable
 public final class BgpPeerStatus {
     /*
@@ -58,13 +60,15 @@ public final class BgpPeerStatus {
     @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesReceived;
 
-    /** Creates an instance of BgpPeerStatus class. */
+    /**
+     * Creates an instance of BgpPeerStatus class.
+     */
     public BgpPeerStatus() {
     }
 
     /**
      * Get the localAddress property: The virtual network gateway's local address.
-     *
+     * 
      * @return the localAddress value.
      */
     public String localAddress() {
@@ -73,7 +77,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the neighbor property: The remote BGP peer.
-     *
+     * 
      * @return the neighbor value.
      */
     public String neighbor() {
@@ -82,7 +86,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the asn property: The autonomous system number of the remote BGP peer.
-     *
+     * 
      * @return the asn value.
      */
     public Long asn() {
@@ -91,7 +95,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the state property: The BGP peer state.
-     *
+     * 
      * @return the state value.
      */
     public BgpPeerState state() {
@@ -100,7 +104,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the connectedDuration property: For how long the peering has been up.
-     *
+     * 
      * @return the connectedDuration value.
      */
     public String connectedDuration() {
@@ -109,7 +113,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the routesReceived property: The number of routes learned from this peer.
-     *
+     * 
      * @return the routesReceived value.
      */
     public Long routesReceived() {
@@ -118,7 +122,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the messagesSent property: The number of BGP messages sent.
-     *
+     * 
      * @return the messagesSent value.
      */
     public Long messagesSent() {
@@ -127,7 +131,7 @@ public final class BgpPeerStatus {
 
     /**
      * Get the messagesReceived property: The number of BGP messages received.
-     *
+     * 
      * @return the messagesReceived value.
      */
     public Long messagesReceived() {
@@ -136,7 +140,7 @@ public final class BgpPeerStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -35,7 +35,7 @@ public final class SignalRPrivateEndpointConnectionsUpdateWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Moving\",\"privateEndpoint\":{\"id\":\"kxw\"},\"groupIds\":[\"lbqpvuzlmvfelf\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"crpw\",\"actionsRequired\":\"eznoig\"}},\"id\":\"rnjwmw\",\"name\":\"pn\",\"type\":\"saz\"}";
+            "{\"properties\":{\"provisioningState\":\"Moving\",\"privateEndpoint\":{\"id\":\"czezkhhlt\"},\"groupIds\":[\"dhqoawj\",\"oyueayfbpcmsp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ueq\",\"actionsRequired\":\"wmgn\"}},\"id\":\"scbbxig\",\"name\":\"hxiidlopedb\",\"type\":\"dpyqyybxubmd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,24 +67,24 @@ public final class SignalRPrivateEndpointConnectionsUpdateWithResponseMockTests 
             manager
                 .signalRPrivateEndpointConnections()
                 .updateWithResponse(
-                    "wjygvjayvblmhvk",
-                    "uhbxvvy",
-                    "gsopbyrqufegxu",
+                    "fx",
+                    "dcoxnbk",
+                    "ja",
                     new PrivateEndpointConnectionInner()
-                        .withPrivateEndpoint(new PrivateEndpoint().withId("lmctlpd"))
+                        .withPrivateEndpoint(new PrivateEndpoint().withId("bnqbpizxqltgrd"))
                         .withPrivateLinkServiceConnectionState(
                             new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                                .withDescription("ijnhyjsvfycxzbf")
-                                .withActionsRequired("owvrvmtgjqppyos")),
+                                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                                .withDescription("li")
+                                .withActionsRequired("xihspnxwq")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kxw", response.privateEndpoint().id());
+        Assertions.assertEquals("czezkhhlt", response.privateEndpoint().id());
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("crpw", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("eznoig", response.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ueq", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wmgn", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.StorageQueueInner;
 
 /** Samples for Queue Update. */
 public final class QueueUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/QueueOperationPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/QueueOperationPatch.json
      */
     /**
      * Sample code: QueueOperationPatch.
@@ -23,6 +22,7 @@ public final class QueueUpdateSamples {
             .manager()
             .serviceClient()
             .getQueues()
-            .updateWithResponse("res3376", "sto328", "queue6185", new StorageQueueInner(), Context.NONE);
+            .updateWithResponse(
+                "res3376", "sto328", "queue6185", new StorageQueueInner(), com.azure.core.util.Context.NONE);
     }
 }

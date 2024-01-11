@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.KubernetesClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.KubernetesClusterInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterList;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterPatchParameters;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterRestartNodeParameters;
@@ -153,7 +154,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/restartNode")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restartNode(
             @HostParam("$host") String endpoint,
@@ -1660,7 +1661,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartNodeWithResponseAsync(
@@ -1724,7 +1726,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartNodeWithResponseAsync(
@@ -1785,10 +1788,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartNodeAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNodeAsync(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
@@ -1797,8 +1800,12 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
                 resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1813,10 +1820,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartNodeAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNodeAsync(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
@@ -1827,7 +1834,12 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
                 resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -1841,10 +1853,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestartNode(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
@@ -1865,10 +1877,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestartNode(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
@@ -1890,10 +1902,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartNodeAsync(
+    private Mono<OperationStatusResultInner> restartNodeAsync(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
@@ -1914,10 +1926,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartNodeAsync(
+    private Mono<OperationStatusResultInner> restartNodeAsync(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
@@ -1939,13 +1951,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restartNode(
+    public OperationStatusResultInner restartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
-        restartNodeAsync(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters).block();
+        return restartNodeAsync(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters)
+            .block();
     }
 
     /**
@@ -1960,14 +1974,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restartNode(
+    public OperationStatusResultInner restartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
         Context context) {
-        restartNodeAsync(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context)
+        return restartNodeAsync(
+                resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context)
             .block();
     }
 

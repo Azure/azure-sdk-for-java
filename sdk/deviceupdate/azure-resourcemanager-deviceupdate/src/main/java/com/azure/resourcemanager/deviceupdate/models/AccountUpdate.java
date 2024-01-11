@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Request payload used to update and existing Accounts. */
+/**
+ * Request payload used to update and existing Accounts.
+ */
 @Fluent
 public final class AccountUpdate extends TagUpdate {
     /*
@@ -24,8 +26,14 @@ public final class AccountUpdate extends TagUpdate {
     private String location;
 
     /**
+     * Creates an instance of AccountUpdate class.
+     */
+    public AccountUpdate() {
+    }
+
+    /**
      * Get the identity property: The type of identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -34,7 +42,7 @@ public final class AccountUpdate extends TagUpdate {
 
     /**
      * Set the identity property: The type of identity used for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountUpdate object itself.
      */
@@ -45,7 +53,7 @@ public final class AccountUpdate extends TagUpdate {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +62,7 @@ public final class AccountUpdate extends TagUpdate {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the AccountUpdate object itself.
      */
@@ -63,7 +71,9 @@ public final class AccountUpdate extends TagUpdate {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -72,7 +82,7 @@ public final class AccountUpdate extends TagUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

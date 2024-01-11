@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,74 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-08-22)
+
+- Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.TagOperators` was added
+
+* `models.ConfigurationAssignment$DefinitionStages` was added
+
+* `models.InputPatchConfiguration` was added
+
+* `models.TagSettingsProperties` was added
+
+* `models.ConfigurationAssignment$Update` was added
+
+* `models.ConfigurationAssignmentsWithinSubscriptions` was added
+
+* `models.ConfigurationAssignmentFilterProperties` was added
+
+* `models.ConfigurationAssignment$UpdateStages` was added
+
+* `models.RebootOptions` was added
+
+* `models.ConfigurationAssignmentsForResourceGroups` was added
+
+* `models.ConfigurationAssignmentsForSubscriptions` was added
+
+* `models.InputLinuxParameters` was added
+
+* `models.ConfigurationAssignment$Definition` was added
+
+* `models.InputWindowsParameters` was added
+
+#### `models.MaintenanceConfiguration$Definition` was modified
+
+* `withInstallPatches(models.InputPatchConfiguration)` was added
+
+#### `models.ConfigurationAssignments` was modified
+
+* `getParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getParentWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `MaintenanceManager` was modified
+
+* `configurationAssignmentsForResourceGroups()` was added
+* `configurationAssignmentsForSubscriptions()` was added
+* `configurationAssignmentsWithinSubscriptions()` was added
+
+#### `models.ConfigurationAssignment` was modified
+
+* `filter()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `regionName()` was added
+* `refresh()` was added
+* `region()` was added
+* `update()` was added
+
+#### `models.MaintenanceConfiguration` was modified
+
+* `installPatches()` was added
+
+#### `models.MaintenanceConfiguration$Update` was modified
+
+* `withInstallPatches(models.InputPatchConfiguration)` was added
 
 ## 1.0.0-beta.3 (2023-01-18)
 

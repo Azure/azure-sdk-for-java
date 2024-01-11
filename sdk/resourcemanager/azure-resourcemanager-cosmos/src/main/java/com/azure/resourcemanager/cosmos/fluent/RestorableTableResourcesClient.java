@@ -11,13 +11,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableTableResourcesGetResultInner;
 
-/** An instance of this class provides access to all the operations defined in RestorableTableResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableTableResourcesClient.
+ */
 public interface RestorableTableResourcesClient {
     /**
      * Return a list of tables that exist on the account at the given timestamp and location. This helps in scenarios to
      * validate what resources exist at given timestamp and location. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restoreLocation The location where the restorable resources are located.
@@ -28,14 +30,14 @@ public interface RestorableTableResourcesClient {
      * @return list of restorable table names as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RestorableTableResourcesGetResultInner> listAsync(
-        String location, String instanceId, String restoreLocation, String restoreTimestampInUtc);
+    PagedFlux<RestorableTableResourcesGetResultInner> listAsync(String location, String instanceId,
+        String restoreLocation, String restoreTimestampInUtc);
 
     /**
      * Return a list of tables that exist on the account at the given timestamp and location. This helps in scenarios to
      * validate what resources exist at given timestamp and location. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +52,7 @@ public interface RestorableTableResourcesClient {
      * Return a list of tables that exist on the account at the given timestamp and location. This helps in scenarios to
      * validate what resources exist at given timestamp and location. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface RestorableTableResourcesClient {
      * Return a list of tables that exist on the account at the given timestamp and location. This helps in scenarios to
      * validate what resources exist at given timestamp and location. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restoreLocation The location where the restorable resources are located.
@@ -77,6 +79,6 @@ public interface RestorableTableResourcesClient {
      * @return list of restorable table names as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableTableResourcesGetResultInner> list(
-        String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context);
+    PagedIterable<RestorableTableResourcesGetResultInner> list(String location, String instanceId,
+        String restoreLocation, String restoreTimestampInUtc, Context context);
 }

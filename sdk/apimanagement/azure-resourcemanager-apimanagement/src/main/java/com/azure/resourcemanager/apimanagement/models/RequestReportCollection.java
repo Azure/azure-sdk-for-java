@@ -24,6 +24,10 @@ public final class RequestReportCollection {
     @JsonProperty(value = "count")
     private Long count;
 
+    /** Creates an instance of RequestReportCollection class. */
+    public RequestReportCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

@@ -58,6 +58,6 @@ public final class ResourceGuardProxyOperationsDeleteWithResponseMockTests {
 
         manager
             .resourceGuardProxyOperations()
-            .deleteWithResponse("kmhmnulwempdc", "frhjulrsulwzp", "lusnawmhhgzotfr", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lrlohewjjmajnkdf", "q", "onswae", com.azure.core.util.Context.NONE);
     }
 }

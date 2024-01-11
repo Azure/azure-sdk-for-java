@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Logger GetEntityTag. */
 public final class LoggerGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadLogger.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadLogger.json
      */
     /**
      * Sample code: ApiManagementHeadLogger.
@@ -17,6 +15,8 @@ public final class LoggerGetEntityTagSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementHeadLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.loggers().getEntityTagWithResponse("rg1", "apimService1", "templateLogger", Context.NONE);
+        manager
+            .loggers()
+            .getEntityTagWithResponse("rg1", "apimService1", "templateLogger", com.azure.core.util.Context.NONE);
     }
 }

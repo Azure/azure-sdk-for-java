@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for PlacementPolicies Get. */
 public final class PlacementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_Get.json
      */
     /**
      * Sample code: PlacementPolicies_Get.

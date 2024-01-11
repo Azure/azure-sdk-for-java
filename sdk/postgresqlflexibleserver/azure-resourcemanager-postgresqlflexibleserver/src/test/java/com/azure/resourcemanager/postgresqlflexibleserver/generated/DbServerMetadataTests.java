@@ -16,25 +16,25 @@ public final class DbServerMetadataTests {
         DbServerMetadata model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"kpikadrgvt\",\"version\":\"gnbuy\",\"storageMb\":850338934,\"sku\":{\"name\":\"gg\",\"tier\":\"Burstable\"}}")
+                    "{\"location\":\"uuximerq\",\"version\":\"bw\",\"storageMb\":880028215,\"sku\":{\"name\":\"ykutwpf\",\"tier\":\"MemoryOptimized\"}}")
                 .toObject(DbServerMetadata.class);
-        Assertions.assertEquals("gnbuy", model.version());
-        Assertions.assertEquals(850338934, model.storageMb());
-        Assertions.assertEquals("gg", model.sku().name());
-        Assertions.assertEquals(SkuTier.BURSTABLE, model.sku().tier());
+        Assertions.assertEquals("bw", model.version());
+        Assertions.assertEquals(880028215, model.storageMb());
+        Assertions.assertEquals("ykutwpf", model.sku().name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DbServerMetadata model =
             new DbServerMetadata()
-                .withVersion("gnbuy")
-                .withStorageMb(850338934)
-                .withSku(new ServerSku().withName("gg").withTier(SkuTier.BURSTABLE));
+                .withVersion("bw")
+                .withStorageMb(880028215)
+                .withSku(new ServerSku().withName("ykutwpf").withTier(SkuTier.MEMORY_OPTIMIZED));
         model = BinaryData.fromObject(model).toObject(DbServerMetadata.class);
-        Assertions.assertEquals("gnbuy", model.version());
-        Assertions.assertEquals(850338934, model.storageMb());
-        Assertions.assertEquals("gg", model.sku().name());
-        Assertions.assertEquals(SkuTier.BURSTABLE, model.sku().tier());
+        Assertions.assertEquals("bw", model.version());
+        Assertions.assertEquals(880028215, model.storageMb());
+        Assertions.assertEquals("ykutwpf", model.sku().name());
+        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
     }
 }

@@ -30,6 +30,10 @@ public final class OperationCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of OperationCollection class. */
+    public OperationCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

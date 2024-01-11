@@ -24,6 +24,15 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
     public static final BlobRestoreProgressStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of BlobRestoreProgressStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobRestoreProgressStatus() {
+    }
+
+    /**
      * Creates or finds a BlobRestoreProgressStatus from its string representation.
      *
      * @param name a name to look for.

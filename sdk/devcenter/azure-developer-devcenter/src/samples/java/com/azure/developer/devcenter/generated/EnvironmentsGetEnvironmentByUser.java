@@ -7,22 +7,22 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.EnvironmentsClient;
-import com.azure.developer.devcenter.EnvironmentsClientBuilder;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EnvironmentsGetEnvironmentByUser {
     public static void main(String[] args) {
-        EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
+        DeploymentEnvironmentsClient deploymentEnvironmentsClient =
+                new DeploymentEnvironmentsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.environmentsgetenvironmentbyuser.environmentsgetenvironmentbyuser
+        // BEGIN:com.azure.developer.devcenter.generated.deploymentenvironmentsgetenvironment.environmentsgetenvironmentbyuser
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.getEnvironmentByUserWithResponse("myProject", "me", "mydevenv", requestOptions);
-        // END:com.azure.developer.devcenter.generated.environmentsgetenvironmentbyuser.environmentsgetenvironmentbyuser
+                deploymentEnvironmentsClient.getEnvironmentWithResponse("myProject", "me", "mydevenv", requestOptions);
+        // END:com.azure.developer.devcenter.generated.deploymentenvironmentsgetenvironment.environmentsgetenvironmentbyuser
     }
 }

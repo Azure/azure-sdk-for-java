@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.deviceupdate.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceupdate.fluent.models.AccountInner;
 import com.azure.resourcemanager.deviceupdate.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.deviceupdate.models.Account;
 import com.azure.resourcemanager.deviceupdate.models.AccountUpdate;
+import com.azure.resourcemanager.deviceupdate.models.Encryption;
 import com.azure.resourcemanager.deviceupdate.models.Location;
 import com.azure.resourcemanager.deviceupdate.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointConnection;
@@ -55,6 +57,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this.innerModel().identity();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -70,12 +76,8 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -83,6 +85,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public Sku sku() {
         return this.innerModel().sku();
+    }
+
+    public Encryption encryption() {
+        return this.innerModel().encryption();
     }
 
     public List<Location> locations() {
@@ -126,20 +132,14 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAccounts().create(resourceGroupName, accountName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public Account create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getAccounts().create(resourceGroupName, accountName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -155,20 +155,14 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateAccountUpdatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName,
+            updateAccountUpdatePayload, Context.NONE);
         return this;
     }
 
     public Account apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateAccountUpdatePayload, context);
+        this.innerObject = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName,
+            updateAccountUpdatePayload, context);
         return this;
     }
 
@@ -180,22 +174,14 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
         return this;
     }
 
     public Account refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context).getValue();
         return this;
     }
 
@@ -241,6 +227,11 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public AccountImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public AccountImpl withEncryption(Encryption encryption) {
+        this.innerModel().withEncryption(encryption);
         return this;
     }
 

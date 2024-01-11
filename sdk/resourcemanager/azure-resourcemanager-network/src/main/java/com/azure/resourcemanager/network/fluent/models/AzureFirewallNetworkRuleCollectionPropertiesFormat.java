@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the network rule collection. */
+/**
+ * Properties of the network rule collection.
+ */
 @Fluent
 public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
     /*
@@ -38,13 +40,15 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AzureFirewallNetworkRuleCollectionPropertiesFormat class. */
+    /**
+     * Creates an instance of AzureFirewallNetworkRuleCollectionPropertiesFormat class.
+     */
     public AzureFirewallNetworkRuleCollectionPropertiesFormat() {
     }
 
     /**
      * Get the priority property: Priority of the network rule collection resource.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -53,7 +57,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Set the priority property: Priority of the network rule collection resource.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AzureFirewallNetworkRuleCollectionPropertiesFormat object itself.
      */
@@ -64,7 +68,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Get the action property: The action type of a rule collection.
-     *
+     * 
      * @return the action value.
      */
     public AzureFirewallRCAction action() {
@@ -73,7 +77,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Set the action property: The action type of a rule collection.
-     *
+     * 
      * @param action the action value to set.
      * @return the AzureFirewallNetworkRuleCollectionPropertiesFormat object itself.
      */
@@ -84,7 +88,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Get the rules property: Collection of rules used by a network rule collection.
-     *
+     * 
      * @return the rules value.
      */
     public List<AzureFirewallNetworkRule> rules() {
@@ -93,7 +97,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Set the rules property: Collection of rules used by a network rule collection.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the AzureFirewallNetworkRuleCollectionPropertiesFormat object itself.
      */
@@ -104,7 +108,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the network rule collection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -113,7 +117,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

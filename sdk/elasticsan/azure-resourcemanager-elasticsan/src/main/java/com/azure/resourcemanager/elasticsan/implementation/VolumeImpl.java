@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.elasticsan.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
@@ -28,6 +31,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String volumeId() {
         return this.innerModel().volumeId();
     }
@@ -42,6 +49,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public IscsiTargetInfo storageTarget() {
         return this.innerModel().storageTarget();
+    }
+
+    public ManagedByInfo managedBy() {
+        return this.innerModel().managedBy();
+    }
+
+    public ProvisioningStates provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public String resourceGroupName() {
@@ -160,8 +175,22 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withManagedBy(ManagedByInfo managedBy) {
+        if (isInCreateMode()) {
+            this.innerModel().withManagedBy(managedBy);
+            return this;
+        } else {
+            this.updateParameters.withManagedBy(managedBy);
+            return this;
+        }
+    }
+
     public VolumeImpl withSizeGiB(Long sizeGiB) {
         this.updateParameters.withSizeGiB(sizeGiB);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

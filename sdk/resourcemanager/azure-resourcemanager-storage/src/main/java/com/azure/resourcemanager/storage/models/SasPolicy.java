@@ -23,6 +23,10 @@ public final class SasPolicy {
     @JsonProperty(value = "expirationAction", required = true)
     private ExpirationAction expirationAction;
 
+    /** Creates an instance of SasPolicy class. */
+    public SasPolicy() {
+    }
+
     /**
      * Get the sasExpirationPeriod property: The SAS expiration period, DD.HH:MM:SS.
      *

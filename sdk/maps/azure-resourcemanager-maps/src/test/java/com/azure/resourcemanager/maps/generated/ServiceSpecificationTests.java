@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maps.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.maps.models.Dimension;
 import com.azure.resourcemanager.maps.models.MetricSpecification;
 import com.azure.resourcemanager.maps.models.ServiceSpecification;
 import java.util.Arrays;
@@ -16,16 +17,29 @@ public final class ServiceSpecificationTests {
         ServiceSpecification model =
             BinaryData
                 .fromString(
-                    "{\"metricSpecifications\":[{\"name\":\"gou\",\"displayName\":\"ndlik\",\"displayDescription\":\"qkgfgibma\",\"unit\":\"akeqs\",\"dimensions\":[],\"aggregationType\":\"zqqedq\",\"fillGapWithZero\":true,\"category\":\"iqfouflmmnkz\",\"resourceIdDimensionNameOverride\":\"odmgl\"},{\"name\":\"gpbkwtmut\",\"displayName\":\"qktapspwgcuert\",\"displayDescription\":\"kdosvqw\",\"unit\":\"mdgbbjfdd\",\"dimensions\":[],\"aggregationType\":\"bexppb\",\"fillGapWithZero\":false,\"category\":\"rolfpfp\",\"resourceIdDimensionNameOverride\":\"lgbquxig\"},{\"name\":\"jgzjaoyfhrtx\",\"displayName\":\"n\",\"displayDescription\":\"kujysvlejuvfq\",\"unit\":\"rlyxwjkcprbnw\",\"dimensions\":[],\"aggregationType\":\"vtb\",\"fillGapWithZero\":true,\"category\":\"szdnr\",\"resourceIdDimensionNameOverride\":\"qguhmuo\"}]}")
+                    "{\"metricSpecifications\":[{\"name\":\"naamde\",\"displayName\":\"eh\",\"displayDescription\":\"qsc\",\"unit\":\"ypvhezrkg\",\"dimensions\":[{\"name\":\"refovgmkqsleyyvx\",\"displayName\":\"jpkcattpng\",\"internalName\":\"rcczsqpjhvmd\",\"internalMetricName\":\"v\",\"sourceMdmNamespace\":\"sounqecanoaeu\",\"toBeExportedToShoebox\":false}],\"aggregationType\":\"hltrpmopjmcmatuo\",\"fillGapWithZero\":true,\"category\":\"uiuaodsfcpkvxodp\",\"resourceIdDimensionNameOverride\":\"zmyzydagf\",\"sourceMdmAccount\":\"xbezyiuokktwh\",\"internalMetricName\":\"xw\",\"lockAggregationType\":\"wqsmbsur\",\"sourceMdmNamespace\":\"imoryocfsfksym\",\"supportedAggregationTypes\":\"ys\"},{\"name\":\"i\",\"displayName\":\"xhqyudxorrqnb\",\"displayDescription\":\"czvyifq\",\"unit\":\"kdvjsll\",\"dimensions\":[{\"name\":\"d\",\"displayName\":\"atkpnp\",\"internalName\":\"exxbczwtr\",\"internalMetricName\":\"iqzbq\",\"sourceMdmNamespace\":\"sovmyokacspkwl\",\"toBeExportedToShoebox\":true},{\"name\":\"bpxjmfl\",\"displayName\":\"vnchrkcci\",\"internalName\":\"zjuqkhrsaj\",\"internalMetricName\":\"ku\",\"sourceMdmNamespace\":\"oskg\",\"toBeExportedToShoebox\":false},{\"name\":\"uimjmvx\",\"displayName\":\"duugidyjr\",\"internalName\":\"byao\",\"internalMetricName\":\"e\",\"sourceMdmNamespace\":\"sonpclhocohs\",\"toBeExportedToShoebox\":false},{\"name\":\"leggzfbu\",\"displayName\":\"mvfaxkffeiith\",\"internalName\":\"m\",\"internalMetricName\":\"yvshxmz\",\"sourceMdmNamespace\":\"bzoggigrx\",\"toBeExportedToShoebox\":false}],\"aggregationType\":\"vjxxjnsp\",\"fillGapWithZero\":true,\"category\":\"koen\",\"resourceIdDimensionNameOverride\":\"uknvudwti\",\"sourceMdmAccount\":\"bldngkpoc\",\"internalMetricName\":\"azyxoegukg\",\"lockAggregationType\":\"piu\",\"sourceMdmNamespace\":\"ygevqzntypmrbpiz\",\"supportedAggregationTypes\":\"r\"}]}")
                 .toObject(ServiceSpecification.class);
-        Assertions.assertEquals("gou", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("ndlik", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("qkgfgibma", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("akeqs", model.metricSpecifications().get(0).unit());
-        Assertions.assertEquals("zqqedq", model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("naamde", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("eh", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("qsc", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("ypvhezrkg", model.metricSpecifications().get(0).unit());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.metricSpecifications().get(0).dimensions().get(0).name());
+        Assertions.assertEquals("jpkcattpng", model.metricSpecifications().get(0).dimensions().get(0).displayName());
+        Assertions.assertEquals("rcczsqpjhvmd", model.metricSpecifications().get(0).dimensions().get(0).internalName());
+        Assertions.assertEquals("v", model.metricSpecifications().get(0).dimensions().get(0).internalMetricName());
+        Assertions
+            .assertEquals(
+                "sounqecanoaeu", model.metricSpecifications().get(0).dimensions().get(0).sourceMdmNamespace());
+        Assertions.assertEquals(false, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedToShoebox());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.metricSpecifications().get(0).aggregationType());
         Assertions.assertEquals(true, model.metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("iqfouflmmnkz", model.metricSpecifications().get(0).category());
-        Assertions.assertEquals("odmgl", model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.metricSpecifications().get(0).category());
+        Assertions.assertEquals("zmyzydagf", model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
+        Assertions.assertEquals("xbezyiuokktwh", model.metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals("xw", model.metricSpecifications().get(0).internalMetricName());
+        Assertions.assertEquals("wqsmbsur", model.metricSpecifications().get(0).lockAggregationType());
+        Assertions.assertEquals("imoryocfsfksym", model.metricSpecifications().get(0).sourceMdmNamespace());
+        Assertions.assertEquals("ys", model.metricSpecifications().get(0).supportedAggregationTypes());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,43 +50,95 @@ public final class ServiceSpecificationTests {
                     Arrays
                         .asList(
                             new MetricSpecification()
-                                .withName("gou")
-                                .withDisplayName("ndlik")
-                                .withDisplayDescription("qkgfgibma")
-                                .withUnit("akeqs")
-                                .withDimensions(Arrays.asList())
-                                .withAggregationType("zqqedq")
+                                .withName("naamde")
+                                .withDisplayName("eh")
+                                .withDisplayDescription("qsc")
+                                .withUnit("ypvhezrkg")
+                                .withDimensions(
+                                    Arrays
+                                        .asList(
+                                            new Dimension()
+                                                .withName("refovgmkqsleyyvx")
+                                                .withDisplayName("jpkcattpng")
+                                                .withInternalName("rcczsqpjhvmd")
+                                                .withInternalMetricName("v")
+                                                .withSourceMdmNamespace("sounqecanoaeu")
+                                                .withToBeExportedToShoebox(false)))
+                                .withAggregationType("hltrpmopjmcmatuo")
                                 .withFillGapWithZero(true)
-                                .withCategory("iqfouflmmnkz")
-                                .withResourceIdDimensionNameOverride("odmgl"),
+                                .withCategory("uiuaodsfcpkvxodp")
+                                .withResourceIdDimensionNameOverride("zmyzydagf")
+                                .withSourceMdmAccount("xbezyiuokktwh")
+                                .withInternalMetricName("xw")
+                                .withLockAggregationType("wqsmbsur")
+                                .withSourceMdmNamespace("imoryocfsfksym")
+                                .withSupportedAggregationTypes("ys"),
                             new MetricSpecification()
-                                .withName("gpbkwtmut")
-                                .withDisplayName("qktapspwgcuert")
-                                .withDisplayDescription("kdosvqw")
-                                .withUnit("mdgbbjfdd")
-                                .withDimensions(Arrays.asList())
-                                .withAggregationType("bexppb")
-                                .withFillGapWithZero(false)
-                                .withCategory("rolfpfp")
-                                .withResourceIdDimensionNameOverride("lgbquxig"),
-                            new MetricSpecification()
-                                .withName("jgzjaoyfhrtx")
-                                .withDisplayName("n")
-                                .withDisplayDescription("kujysvlejuvfq")
-                                .withUnit("rlyxwjkcprbnw")
-                                .withDimensions(Arrays.asList())
-                                .withAggregationType("vtb")
+                                .withName("i")
+                                .withDisplayName("xhqyudxorrqnb")
+                                .withDisplayDescription("czvyifq")
+                                .withUnit("kdvjsll")
+                                .withDimensions(
+                                    Arrays
+                                        .asList(
+                                            new Dimension()
+                                                .withName("d")
+                                                .withDisplayName("atkpnp")
+                                                .withInternalName("exxbczwtr")
+                                                .withInternalMetricName("iqzbq")
+                                                .withSourceMdmNamespace("sovmyokacspkwl")
+                                                .withToBeExportedToShoebox(true),
+                                            new Dimension()
+                                                .withName("bpxjmfl")
+                                                .withDisplayName("vnchrkcci")
+                                                .withInternalName("zjuqkhrsaj")
+                                                .withInternalMetricName("ku")
+                                                .withSourceMdmNamespace("oskg")
+                                                .withToBeExportedToShoebox(false),
+                                            new Dimension()
+                                                .withName("uimjmvx")
+                                                .withDisplayName("duugidyjr")
+                                                .withInternalName("byao")
+                                                .withInternalMetricName("e")
+                                                .withSourceMdmNamespace("sonpclhocohs")
+                                                .withToBeExportedToShoebox(false),
+                                            new Dimension()
+                                                .withName("leggzfbu")
+                                                .withDisplayName("mvfaxkffeiith")
+                                                .withInternalName("m")
+                                                .withInternalMetricName("yvshxmz")
+                                                .withSourceMdmNamespace("bzoggigrx")
+                                                .withToBeExportedToShoebox(false)))
+                                .withAggregationType("vjxxjnsp")
                                 .withFillGapWithZero(true)
-                                .withCategory("szdnr")
-                                .withResourceIdDimensionNameOverride("qguhmuo")));
+                                .withCategory("koen")
+                                .withResourceIdDimensionNameOverride("uknvudwti")
+                                .withSourceMdmAccount("bldngkpoc")
+                                .withInternalMetricName("azyxoegukg")
+                                .withLockAggregationType("piu")
+                                .withSourceMdmNamespace("ygevqzntypmrbpiz")
+                                .withSupportedAggregationTypes("r")));
         model = BinaryData.fromObject(model).toObject(ServiceSpecification.class);
-        Assertions.assertEquals("gou", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("ndlik", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("qkgfgibma", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("akeqs", model.metricSpecifications().get(0).unit());
-        Assertions.assertEquals("zqqedq", model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("naamde", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("eh", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("qsc", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("ypvhezrkg", model.metricSpecifications().get(0).unit());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.metricSpecifications().get(0).dimensions().get(0).name());
+        Assertions.assertEquals("jpkcattpng", model.metricSpecifications().get(0).dimensions().get(0).displayName());
+        Assertions.assertEquals("rcczsqpjhvmd", model.metricSpecifications().get(0).dimensions().get(0).internalName());
+        Assertions.assertEquals("v", model.metricSpecifications().get(0).dimensions().get(0).internalMetricName());
+        Assertions
+            .assertEquals(
+                "sounqecanoaeu", model.metricSpecifications().get(0).dimensions().get(0).sourceMdmNamespace());
+        Assertions.assertEquals(false, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedToShoebox());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.metricSpecifications().get(0).aggregationType());
         Assertions.assertEquals(true, model.metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("iqfouflmmnkz", model.metricSpecifications().get(0).category());
-        Assertions.assertEquals("odmgl", model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.metricSpecifications().get(0).category());
+        Assertions.assertEquals("zmyzydagf", model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
+        Assertions.assertEquals("xbezyiuokktwh", model.metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals("xw", model.metricSpecifications().get(0).internalMetricName());
+        Assertions.assertEquals("wqsmbsur", model.metricSpecifications().get(0).lockAggregationType());
+        Assertions.assertEquals("imoryocfsfksym", model.metricSpecifications().get(0).sourceMdmNamespace());
+        Assertions.assertEquals("ys", model.metricSpecifications().get(0).supportedAggregationTypes());
     }
 }

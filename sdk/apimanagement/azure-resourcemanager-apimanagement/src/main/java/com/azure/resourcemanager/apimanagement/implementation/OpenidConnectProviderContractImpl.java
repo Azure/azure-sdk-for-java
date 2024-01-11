@@ -51,6 +51,18 @@ public final class OpenidConnectProviderContractImpl
         return this.innerModel().clientSecret();
     }
 
+    public Boolean useInTestConsole() {
+        return this.innerModel().useInTestConsole();
+    }
+
+    public Boolean useInApiDocumentation() {
+        return this.innerModel().useInApiDocumentation();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public OpenidConnectProviderContractInner innerModel() {
         return this.innerObject;
     }
@@ -163,14 +175,14 @@ public final class OpenidConnectProviderContractImpl
         return this;
     }
 
-    public ClientSecretContract listSecrets() {
-        return serviceManager.openIdConnectProviders().listSecrets(resourceGroupName, serviceName, opid);
-    }
-
     public Response<ClientSecretContract> listSecretsWithResponse(Context context) {
         return serviceManager
             .openIdConnectProviders()
             .listSecretsWithResponse(resourceGroupName, serviceName, opid, context);
+    }
+
+    public ClientSecretContract listSecrets() {
+        return serviceManager.openIdConnectProviders().listSecrets(resourceGroupName, serviceName, opid);
     }
 
     public OpenidConnectProviderContractImpl withDisplayName(String displayName) {
@@ -219,6 +231,26 @@ public final class OpenidConnectProviderContractImpl
             return this;
         } else {
             this.updateParameters.withClientSecret(clientSecret);
+            return this;
+        }
+    }
+
+    public OpenidConnectProviderContractImpl withUseInTestConsole(Boolean useInTestConsole) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInTestConsole(useInTestConsole);
+            return this;
+        } else {
+            this.updateParameters.withUseInTestConsole(useInTestConsole);
+            return this;
+        }
+    }
+
+    public OpenidConnectProviderContractImpl withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInApiDocumentation(useInApiDocumentation);
+            return this;
+        } else {
+            this.updateParameters.withUseInApiDocumentation(useInApiDocumentation);
             return this;
         }
     }

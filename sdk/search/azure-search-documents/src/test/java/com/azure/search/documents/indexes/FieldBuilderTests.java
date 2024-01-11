@@ -19,6 +19,8 @@ import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynony
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
 import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class FieldBuilderTests {
     @Test
     public void hotelSearchableThrowException() {
@@ -123,7 +126,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(17, fields.size());
+        assertEquals(19, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -145,6 +148,8 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.GEOGRAPHY_POINT, fieldToDataType.get("geoPoint"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intList"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatList"));
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -250,6 +255,19 @@ public class FieldBuilderTests {
         public List<Integer> getIntList() {
             return intList;
         }
+
+        // 18. name = 'floatList', OData type = COMPLEX
+        private List<Float> floatList;
+
+        public List<Float> getFloatList() {
+            return floatList;
+        }
+
+        // 19. name = 'floatArray', OData type = COMPLEX
+        private Float[] floatArray;
+        public Float[] getFloatArray() {
+            return floatArray;
+        }
     }
 
     @Test
@@ -330,6 +348,51 @@ public class FieldBuilderTests {
     public static final class IndexAndSearchAnalyzerNames {
         @SearchableField(indexAnalyzerName = "indexAnalyzer", searchAnalyzerName = "searchAnalyzer")
         public String indexAndSearchAnalyzer;
+    }
+
+    @Test
+    public void vectorSearchField() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertEquals(1536, field.getVectorSearchDimensions());
+        assertEquals("myprofile", field.getVectorSearchProfileName());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorSearchField {
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingDimensions() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingDimensions {
+        @SearchableField(vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingProfile() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingProfile {
+        @SearchableField(vectorSearchDimensions = 1536)
+        public List<Float> vectorSearchField;
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

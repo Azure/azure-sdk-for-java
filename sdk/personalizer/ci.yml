@@ -35,3 +35,4 @@ extends:
       - name: azure-ai-personalizer
         groupId: com.azure
         safeName: azureaipersonalizer
+        skipPublishDocMs: true

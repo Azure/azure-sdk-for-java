@@ -15,8 +15,7 @@ public final class CountriesResponseImpl implements CountriesResponse {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    CountriesResponseImpl(
-        CountriesResponseInner innerObject,
+    CountriesResponseImpl(CountriesResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

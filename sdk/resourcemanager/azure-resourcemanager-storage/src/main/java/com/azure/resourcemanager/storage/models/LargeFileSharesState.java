@@ -17,6 +17,15 @@ public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSh
     public static final LargeFileSharesState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of LargeFileSharesState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LargeFileSharesState() {
+    }
+
+    /**
      * Creates or finds a LargeFileSharesState from its string representation.
      *
      * @param name a name to look for.

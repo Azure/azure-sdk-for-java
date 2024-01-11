@@ -26,7 +26,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 /**
  * Async sample to show the differences in output that arise when RecognizeCustomForms
  * is called with custom models trained with labeled and unlabeled data.
- * For this sample, you can use the training forms found in https://aka.ms/azsdk/formrecognizer/docs/trainingdocs for
+ * For this sample, you can use the training forms found in <a href="https://aka.ms/azsdk/formrecognizer/docs/trainingdocs">here</a> for
  * creating your custom models.
  * The models used in this sample can be created using TrainModelsWithLabels.java and TrainModelsWithoutLabels.java.
  * <p>

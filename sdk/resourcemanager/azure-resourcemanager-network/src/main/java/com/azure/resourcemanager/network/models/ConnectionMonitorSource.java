@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the source of connection monitor. */
+/**
+ * Describes the source of connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorSource {
     /*
@@ -23,13 +25,15 @@ public final class ConnectionMonitorSource {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of ConnectionMonitorSource class. */
+    /**
+     * Creates an instance of ConnectionMonitorSource class.
+     */
     public ConnectionMonitorSource() {
     }
 
     /**
      * Get the resourceId property: The ID of the resource used as the source by connection monitor.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -38,7 +42,7 @@ public final class ConnectionMonitorSource {
 
     /**
      * Set the resourceId property: The ID of the resource used as the source by connection monitor.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectionMonitorSource object itself.
      */
@@ -49,7 +53,7 @@ public final class ConnectionMonitorSource {
 
     /**
      * Get the port property: The source port used by connection monitor.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -58,7 +62,7 @@ public final class ConnectionMonitorSource {
 
     /**
      * Set the port property: The source port used by connection monitor.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectionMonitorSource object itself.
      */
@@ -69,15 +73,13 @@ public final class ConnectionMonitorSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model ConnectionMonitorSource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model ConnectionMonitorSource"));
         }
     }
 

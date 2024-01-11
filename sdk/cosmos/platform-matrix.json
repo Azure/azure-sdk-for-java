@@ -1,9 +1,13 @@
 {
   "displayNames": {
     "-Pe2e": "E2E",
+    "-Pcfp-split": "ChangeFeedSplit",
+    "-Pquery": "Query",
+    "-Psplit": "Split",
     "-Pfast": "Fast",
     "-Pdirect": "Direct",
     "-Pmulti-master": "MultiMaster",
+    "-Pflaky-multi-master": "FlakyMultiMaster",
     "-Pmulti-region": "MultiRegion",
     "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
@@ -30,7 +34,7 @@
         }
       },
       "AdditionalArgs": [
-          "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
+        "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
       ],
       "ProfileFlag": "-Pe2e",
       "Agent": {
@@ -41,7 +45,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pdirect" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -52,7 +56,7 @@
       "ACCOUNT_CONSISTENCY": "Strong",
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": "-Pfast",
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
@@ -75,8 +79,7 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": ["1.8", "1.11"]
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -86,8 +89,7 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": ["1.8", "1.11"]
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -96,14 +98,10 @@
         "MultiMaster_MultiRegion": {
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
           "PREFERRED_LOCATIONS": "[\"East US 2\"]"
-        },
-        "MultiMaster_SingleRegion": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }",
-          "PREFERRED_LOCATIONS": null
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pmulti-master", "-Pflaky-multi-master", "-Pfast", "-Pdirect" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }

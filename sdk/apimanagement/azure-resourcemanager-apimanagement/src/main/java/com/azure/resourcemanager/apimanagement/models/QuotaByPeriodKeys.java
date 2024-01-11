@@ -13,27 +13,7 @@ public interface QuotaByPeriodKeys {
      * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
      * service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
-     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-     *     by "ba" key.
-     * @param quotaPeriodKey Quota period key identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
-     */
-    QuotaCounterContract get(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey);
-
-    /**
-     * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
-     * service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
      *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
@@ -51,32 +31,29 @@ public interface QuotaByPeriodKeys {
         String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey, Context context);
 
     /**
-     * Updates an existing quota counter value in the specified service instance.
+     * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
+     * service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
      *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
      *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
      *     by "ba" key.
      * @param quotaPeriodKey Quota period key identifier.
-     * @param parameters The value of the Quota counter to be applied on the specified period.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
+     *     service instance.
      */
-    QuotaCounterContract update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters);
+    QuotaCounterContract get(
+        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey);
 
     /**
      * Updates an existing quota counter value in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
      *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
@@ -97,4 +74,27 @@ public interface QuotaByPeriodKeys {
         String quotaPeriodKey,
         QuotaCounterValueUpdateContract parameters,
         Context context);
+
+    /**
+     * Updates an existing quota counter value in the specified service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
+     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
+     *     by "ba" key.
+     * @param quotaPeriodKey Quota period key identifier.
+     * @param parameters The value of the Quota counter to be applied on the specified period.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota counter details.
+     */
+    QuotaCounterContract update(
+        String resourceGroupName,
+        String serviceName,
+        String quotaCounterKey,
+        String quotaPeriodKey,
+        QuotaCounterValueUpdateContract parameters);
 }

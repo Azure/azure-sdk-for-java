@@ -57,9 +57,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
     public interface UpdatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/updates")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListUpdatesResult>> listParent(
@@ -77,8 +75,7 @@ public final class UpdatesClientImpl implements UpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/updates")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListUpdatesResult>> list(

@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ApiOperation CreateOrUpdate. */
 public final class ApiOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiOperation.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiOperation.json
      */
     /**
      * Sample code: ApiManagementCreateApiOperation.

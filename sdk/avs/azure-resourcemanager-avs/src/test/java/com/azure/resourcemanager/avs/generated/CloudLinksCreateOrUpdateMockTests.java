@@ -31,7 +31,7 @@ public final class CloudLinksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"Building\",\"linkedCloud\":\"dewemxswv\"},\"id\":\"uun\",\"name\":\"zjgehkfkim\",\"type\":\"tixo\"}";
+            "{\"properties\":{\"status\":\"Deleting\",\"linkedCloud\":\"glh\"},\"id\":\"rr\",\"name\":\"yejylmbkzudnigrf\",\"type\":\"hotj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class CloudLinksCreateOrUpdateMockTests {
         CloudLink response =
             manager
                 .cloudLinks()
-                .define("waxfewzjkj")
-                .withExistingPrivateCloud("zvaylptrsqqw", "tcmwqkchc")
-                .withLinkedCloud("qvhpsylkkshkbff")
+                .define("ubhvj")
+                .withExistingPrivateCloud("uic", "hvtrrmhwrbfdpyf")
+                .withLinkedCloud("uyzlw")
                 .create();
 
-        Assertions.assertEquals("dewemxswv", response.linkedCloud());
+        Assertions.assertEquals("glh", response.linkedCloud());
     }
 }

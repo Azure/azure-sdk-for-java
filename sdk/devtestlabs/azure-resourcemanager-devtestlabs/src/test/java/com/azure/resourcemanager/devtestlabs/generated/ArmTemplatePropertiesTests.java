@@ -13,7 +13,7 @@ public final class ArmTemplatePropertiesTests {
         ArmTemplateProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"bzpfzab\",\"description\":\"cuh\",\"publisher\":\"tcty\",\"icon\":\"klbb\",\"contents\":\"dataplwzbhvgyugu\",\"createdDate\":\"2021-08-08T10:54:54Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ss\",\"parametersValueInfo\":\"dataukkfplgmgs\"},{\"fileName\":\"kjz\",\"parametersValueInfo\":\"dataes\"},{\"fileName\":\"vlopwiyighx\",\"parametersValueInfo\":\"datadwzbaiue\"}],\"enabled\":false}")
+                    "{\"displayName\":\"j\",\"description\":\"xxivetv\",\"publisher\":\"qaqtdoqmcbxvwvxy\",\"icon\":\"qbhsfxobl\",\"contents\":\"datak\",\"createdDate\":\"2021-11-17T19:10:27Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"wwfbkrvrnsvshq\",\"parametersValueInfo\":\"datahxcr\"},{\"fileName\":\"fovasr\",\"parametersValueInfo\":\"datav\"},{\"fileName\":\"hsqfsubcgjbirxbp\",\"parametersValueInfo\":\"datasrfbjfdtwss\"},{\"fileName\":\"ftpvjzbexil\",\"parametersValueInfo\":\"datanfqqnvwp\"}],\"enabled\":true}")
                 .toObject(ArmTemplateProperties.class);
     }
 

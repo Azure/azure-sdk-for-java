@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProductPolicy ListByProduct. */
 public final class ProductPolicyListByProductSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListProductPolicies.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListProductPolicies.json
      */
     /**
      * Sample code: ApiManagementListProductPolicies.
@@ -18,6 +16,8 @@ public final class ProductPolicyListByProductSamples {
      */
     public static void apiManagementListProductPolicies(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.productPolicies().listByProductWithResponse("rg1", "apimService1", "armTemplateProduct4", Context.NONE);
+        manager
+            .productPolicies()
+            .listByProductWithResponse("rg1", "apimService1", "armTemplateProduct4", com.azure.core.util.Context.NONE);
     }
 }

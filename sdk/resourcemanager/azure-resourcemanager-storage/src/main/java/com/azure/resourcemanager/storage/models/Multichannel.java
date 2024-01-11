@@ -16,6 +16,10 @@ public final class Multichannel {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of Multichannel class. */
+    public Multichannel() {
+    }
+
     /**
      * Get the enabled property: Indicates whether multichannel is enabled.
      *

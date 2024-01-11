@@ -40,28 +40,29 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CapacityReservationGroupsClient. */
-public final class CapacityReservationGroupsClientImpl
-    implements InnerSupportsGet<CapacityReservationGroupInner>,
-        InnerSupportsListing<CapacityReservationGroupInner>,
-        InnerSupportsDelete<Void>,
-        CapacityReservationGroupsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in CapacityReservationGroupsClient.
+ */
+public final class CapacityReservationGroupsClientImpl implements InnerSupportsGet<CapacityReservationGroupInner>,
+    InnerSupportsListing<CapacityReservationGroupInner>, InnerSupportsDelete<Void>, CapacityReservationGroupsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CapacityReservationGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of CapacityReservationGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CapacityReservationGroupsClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CapacityReservationGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CapacityReservationGroupsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,116 +73,89 @@ public final class CapacityReservationGroupsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface CapacityReservationGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CapacityReservationGroupInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CapacityReservationGroupInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("capacityReservationGroupName") String capacityReservationGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CapacityReservationGroupInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CapacityReservationGroupInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CapacityReservationGroupInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("capacityReservationGroupName") String capacityReservationGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CapacityReservationGroupUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("capacityReservationGroupName") String capacityReservationGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CapacityReservationGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CapacityReservationGroupInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("capacityReservationGroupName") String capacityReservationGroupName,
             @QueryParam("$expand") CapacityReservationGroupInstanceViewTypes expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CapacityReservationGroupListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CapacityReservationGroupListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") ExpandTypesForGetCapacityReservationGroups expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/capacityReservationGroups")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CapacityReservationGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CapacityReservationGroupListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") ExpandTypesForGetCapacityReservationGroups expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationGroupListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationGroupListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
-     * tags may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -189,60 +163,44 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CapacityReservationGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
+    public Mono<Response<CapacityReservationGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            capacityReservationGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                capacityReservationGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
-     * tags may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -251,60 +209,43 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CapacityReservationGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupInner parameters,
-        Context context) {
+    private Mono<Response<CapacityReservationGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                capacityReservationGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
+            apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
-     * tags may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -312,19 +253,19 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to on successful completion of {@link Mono}.
+     * assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapacityReservationGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
+    public Mono<CapacityReservationGroupInner> createOrUpdateAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
-     * tags may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -333,22 +274,19 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response}.
+     * assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CapacityReservationGroupInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupInner parameters,
-        Context context) {
+    public Response<CapacityReservationGroupInner> createOrUpdateWithResponse(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters, context)
             .block();
     }
 
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
-     * tags may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -356,19 +294,19 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     * assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityReservationGroupInner createOrUpdate(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
+    public CapacityReservationGroupInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
+        CapacityReservationGroupInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, capacityReservationGroupName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
+     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
+     * sharing profile may be modified.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -376,60 +314,44 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CapacityReservationGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
+    public Mono<Response<CapacityReservationGroupInner>> updateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            capacityReservationGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
+                capacityReservationGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
+     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
+     * sharing profile may be modified.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -438,60 +360,43 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CapacityReservationGroupInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupUpdate parameters,
-        Context context) {
+    private Mono<Response<CapacityReservationGroupInner>> updateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                capacityReservationGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName, apiVersion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
+     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
+     * sharing profile may be modified.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -499,19 +404,19 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to on successful completion of {@link Mono}.
+     * assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapacityReservationGroupInner> updateAsync(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
+    public Mono<CapacityReservationGroupInner> updateAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
+     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
+     * sharing profile may be modified.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -520,21 +425,18 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response}.
+     * assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CapacityReservationGroupInner> updateWithResponse(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupUpdate parameters,
-        Context context) {
+    public Response<CapacityReservationGroupInner> updateWithResponse(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters, context).block();
     }
 
     /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
+     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
+     * sharing profile may be modified.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -542,11 +444,11 @@ public final class CapacityReservationGroupsClientImpl
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     * assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityReservationGroupInner update(
-        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
+    public CapacityReservationGroupInner update(String resourceGroupName, String capacityReservationGroupName,
+        CapacityReservationGroupUpdate parameters) {
         return updateWithResponse(resourceGroupName, capacityReservationGroupName, parameters, Context.NONE).getValue();
     }
 
@@ -554,7 +456,7 @@ public final class CapacityReservationGroupsClientImpl
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,41 +467,26 @@ public final class CapacityReservationGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            capacityReservationGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
+                capacityReservationGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -607,7 +494,7 @@ public final class CapacityReservationGroupsClientImpl
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -617,49 +504,36 @@ public final class CapacityReservationGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String capacityReservationGroupName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                capacityReservationGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -677,7 +551,7 @@ public final class CapacityReservationGroupsClientImpl
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -687,8 +561,8 @@ public final class CapacityReservationGroupsClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String capacityReservationGroupName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String capacityReservationGroupName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName, context).block();
     }
 
@@ -696,7 +570,7 @@ public final class CapacityReservationGroupsClientImpl
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,137 +584,102 @@ public final class CapacityReservationGroupsClientImpl
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
-     *     properties of a capacity reservation that is managed by the platform and can change outside of control plane
-     *     operations.
+     * views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
+     * properties of a capacity reservation that is managed by the platform and can change outside of control plane
+     * operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CapacityReservationGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupInstanceViewTypes expand) {
+    public Mono<Response<CapacityReservationGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInstanceViewTypes expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            capacityReservationGroupName,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                capacityReservationGroupName, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
-     *     properties of a capacity reservation that is managed by the platform and can change outside of control plane
-     *     operations.
+     * views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
+     * properties of a capacity reservation that is managed by the platform and can change outside of control plane
+     * operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
+     * assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CapacityReservationGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupInstanceViewTypes expand,
-        Context context) {
+    private Mono<Response<CapacityReservationGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInstanceViewTypes expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (capacityReservationGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter capacityReservationGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter capacityReservationGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                capacityReservationGroupName,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
+            expand, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to on successful completion of {@link Mono}.
+     * assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapacityReservationGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String capacityReservationGroupName) {
+    public Mono<CapacityReservationGroupInner> getByResourceGroupAsync(String resourceGroupName,
+        String capacityReservationGroupName) {
         final CapacityReservationGroupInstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -848,44 +687,41 @@ public final class CapacityReservationGroupsClientImpl
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
-     *     properties of a capacity reservation that is managed by the platform and can change outside of control plane
-     *     operations.
+     * views of the capacity reservations under the capacity reservation group which is a snapshot of the runtime
+     * properties of a capacity reservation that is managed by the platform and can change outside of control plane
+     * operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to along with {@link Response}.
+     * assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CapacityReservationGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        CapacityReservationGroupInstanceViewTypes expand,
-        Context context) {
+    public Response<CapacityReservationGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String capacityReservationGroupName, CapacityReservationGroupInstanceViewTypes expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand, context)
             .block();
     }
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     * assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityReservationGroupInner getByResourceGroup(
-        String resourceGroupName, String capacityReservationGroupName) {
+    public CapacityReservationGroupInner getByResourceGroup(String resourceGroupName,
+        String capacityReservationGroupName) {
         final CapacityReservationGroupInstanceViewTypes expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, capacityReservationGroupName, expand, Context.NONE)
             .getValue();
@@ -894,193 +730,153 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationGroupInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, ExpandTypesForGetCapacityReservationGroups expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<CapacityReservationGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                apiVersion, this.client.getSubscriptionId(), expand, accept, context))
+            .<PagedResponse<CapacityReservationGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationGroupInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, ExpandTypesForGetCapacityReservationGroups expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), expand, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
-        String resourceGroupName, ExpandTypesForGetCapacityReservationGroups expand) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
+    public PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName,
+        ExpandTypesForGetCapacityReservationGroups expand) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         final ExpandTypesForGetCapacityReservationGroups expand = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
-        String resourceGroupName, ExpandTypesForGetCapacityReservationGroups expand, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, expand, context),
+    private PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName,
+        ExpandTypesForGetCapacityReservationGroups expand, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, expand, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -1091,187 +887,156 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapacityReservationGroupInner> listByResourceGroup(
-        String resourceGroupName, ExpandTypesForGetCapacityReservationGroups expand, Context context) {
+    public PagedIterable<CapacityReservationGroupInner> listByResourceGroup(String resourceGroupName,
+        ExpandTypesForGetCapacityReservationGroups expand, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, expand, context));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapacityReservationGroupInner>> listSinglePageAsync(
-        ExpandTypesForGetCapacityReservationGroups expand) {
+    private Mono<PagedResponse<CapacityReservationGroupInner>>
+        listSinglePageAsync(ExpandTypesForGetCapacityReservationGroups expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<CapacityReservationGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                expand, accept, context))
+            .<PagedResponse<CapacityReservationGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapacityReservationGroupInner>> listSinglePageAsync(
-        ExpandTypesForGetCapacityReservationGroups expand, Context context) {
+    private Mono<PagedResponse<CapacityReservationGroupInner>>
+        listSinglePageAsync(ExpandTypesForGetCapacityReservationGroups expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), expand, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listAsync(ExpandTypesForGetCapacityReservationGroups expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(expand), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(expand),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listAsync() {
         final ExpandTypesForGetCapacityReservationGroups expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(expand), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(expand),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CapacityReservationGroupInner> listAsync(
-        ExpandTypesForGetCapacityReservationGroups expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(expand, context),
+    private PagedFlux<CapacityReservationGroupInner> listAsync(ExpandTypesForGetCapacityReservationGroups expand,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(expand, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> list() {
@@ -1282,33 +1047,34 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     *
+     * 
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
-     *     Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation
-     *     group in the response.
+     * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
+     * in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List capacity reservation group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CapacityReservationGroupInner> list(
-        ExpandTypesForGetCapacityReservationGroups expand, Context context) {
+    public PagedIterable<CapacityReservationGroupInner> list(ExpandTypesForGetCapacityReservationGroups expand,
+        Context context) {
         return new PagedIterable<>(listAsync(expand, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1316,76 +1082,59 @@ public final class CapacityReservationGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CapacityReservationGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CapacityReservationGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapacityReservationGroupInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CapacityReservationGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationGroupInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1393,63 +1142,45 @@ public final class CapacityReservationGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CapacityReservationGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CapacityReservationGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CapacityReservationGroupInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CapacityReservationGroupInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

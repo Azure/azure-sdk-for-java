@@ -9,55 +9,45 @@ import com.azure.resourcemanager.compute.models.RestorePointCollectionUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RestorePointCollections Update. */
+/**
+ * Samples for RestorePointCollections Update.
+ */
 public final class RestorePointCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getRestorePointCollections()
-            .updateWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaaaa",
-                new RestorePointCollectionUpdate()
-                    .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
-                    .withSource(
-                        new RestorePointCollectionSourceProperties()
-                            .withId(
-                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().updateWithResponse("rgcompute",
+            "aaaaaaaaaaaaaaaaaaaa",
+            new RestorePointCollectionUpdate().withTags(mapOf("key8536", "fakeTokenPlaceholder"))
+                .withSource(new RestorePointCollectionSourceProperties().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getRestorePointCollections()
-            .updateWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaa",
-                new RestorePointCollectionUpdate(),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getRestorePointCollections().updateWithResponse("rgcompute",
+            "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

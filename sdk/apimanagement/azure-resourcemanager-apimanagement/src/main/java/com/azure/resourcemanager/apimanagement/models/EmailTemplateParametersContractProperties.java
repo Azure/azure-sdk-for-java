@@ -28,6 +28,10 @@ public final class EmailTemplateParametersContractProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of EmailTemplateParametersContractProperties class. */
+    public EmailTemplateParametersContractProperties() {
+    }
+
     /**
      * Get the name property: Template parameter name.
      *

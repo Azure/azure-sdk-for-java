@@ -27,15 +27,6 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
         this.serviceManager = serviceManager;
     }
 
-    public OutboundEnvironmentEndpointList listByService(String resourceGroupName, String serviceName) {
-        OutboundEnvironmentEndpointListInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new OutboundEnvironmentEndpointListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<OutboundEnvironmentEndpointListInner> inner =
@@ -46,6 +37,15 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OutboundEnvironmentEndpointListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OutboundEnvironmentEndpointList listByService(String resourceGroupName, String serviceName) {
+        OutboundEnvironmentEndpointListInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new OutboundEnvironmentEndpointListImpl(inner, this.manager());
         } else {
             return null;
         }

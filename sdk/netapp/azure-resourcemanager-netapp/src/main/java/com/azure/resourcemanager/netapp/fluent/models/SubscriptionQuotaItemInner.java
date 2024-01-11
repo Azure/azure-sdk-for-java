@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information regarding Subscription Quota Item. */
+/**
+ * Information regarding Subscription Quota Item.
+ */
 @Immutable
 public final class SubscriptionQuotaItemInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SubscriptionQuotaItemInner class. */
+    /**
+     * Creates an instance of SubscriptionQuotaItemInner class.
+     */
     public SubscriptionQuotaItemInner() {
     }
 
     /**
      * Get the innerProperties property: SubscriptionQuotaItem properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionQuotaItemProperties innerProperties() {
@@ -39,7 +43,7 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +52,7 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
 
     /**
      * Get the current property: The current quota value.
-     *
+     * 
      * @return the current value.
      */
     public Integer current() {
@@ -57,7 +61,7 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
 
     /**
      * Get the defaultProperty property: The default quota value.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -66,7 +70,7 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

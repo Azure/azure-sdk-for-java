@@ -34,7 +34,7 @@ public final class RacksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"hez\",\"type\":\"quwusq\"},\"properties\":{\"availabilityZone\":\"utrpbr\",\"clusterId\":\"yuuatvlmbjwcolbm\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"w\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"pa\",\"rackSerialNumber\":\"pr\",\"rackSkuId\":\"rvxhmtfhocnxzcm\"},\"location\":\"ngxno\",\"tags\":{\"dwhepfwwtjfdoes\":\"tdisnjevhdlmyd\",\"dbckyo\":\"xhmw\",\"jzrbhtmeplv\":\"kxkxhnegk\"},\"id\":\"kaobrl\",\"name\":\"pgsn\",\"type\":\"agnchjhgemuowaky\"}";
+            "{\"extendedLocation\":{\"name\":\"gsmgb\",\"type\":\"mt\"},\"properties\":{\"availabilityZone\":\"wrqbebjnfv\",\"clusterId\":\"labt\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"wznhtfgfic\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"hizpaczmuh\",\"rackSerialNumber\":\"cakznhokhoitwhrj\",\"rackSkuId\":\"dmmazdnc\"},\"location\":\"dbjp\",\"tags\":{\"fhbssdpjeyoqxded\":\"zqpxzbawkikcd\",\"shzz\":\"cfiwhagxsurejq\",\"ll\":\"g\",\"gl\":\"xiqqzjkoxdupna\"},\"id\":\"ouigdmfivjqte\",\"name\":\"dqqigdydkghpc\",\"type\":\"rwqirvtktyhhmvf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,36 +65,30 @@ public final class RacksCreateOrUpdateMockTests {
         Rack response =
             manager
                 .racks()
-                .define("jrhuzgf")
-                .withRegion("ugam")
-                .withExistingResourceGroup("l")
-                .withExtendedLocation(new ExtendedLocation().withName("on").withType("tpusllywp"))
-                .withAvailabilityZone("tiotzb")
-                .withRackLocation("kqevadrmmw")
-                .withRackSerialNumber("uawvcmjzk")
-                .withRackSkuId("iidisczskoswoqiq")
+                .define("ahfsgb")
+                .withRegion("tfshksnyzm")
+                .withExistingResourceGroup("qzusitoq")
+                .withExtendedLocation(new ExtendedLocation().withName("mlree").withType("rfwss"))
+                .withAvailabilityZone("vlcwlisolntfxxc")
+                .withRackLocation("bulnvgskjtoxjdz")
+                .withRackSerialNumber("sjznvhx")
+                .withRackSkuId("qmqipaydhfnzoc")
                 .withTags(
                     mapOf(
-                        "sbamnppcc",
-                        "rrcoi",
-                        "zxuizhyhnepkpe",
-                        "kuztdsbezaxyfu",
-                        "xdazv",
-                        "iarxqiubxdukec",
-                        "dblnsntrp",
-                        "hctmmkosz"))
+                        "iqdktwtkvih", "mwbwmbnlslce", "nguuzhwvla", "pfliwo", "mhjhaus", "p", "ekymffztsilscvqs", "b"))
                 .create();
 
-        Assertions.assertEquals("ngxno", response.location());
-        Assertions.assertEquals("tdisnjevhdlmyd", response.tags().get("dwhepfwwtjfdoes"));
-        Assertions.assertEquals("hez", response.extendedLocation().name());
-        Assertions.assertEquals("quwusq", response.extendedLocation().type());
-        Assertions.assertEquals("utrpbr", response.availabilityZone());
-        Assertions.assertEquals("pa", response.rackLocation());
-        Assertions.assertEquals("pr", response.rackSerialNumber());
-        Assertions.assertEquals("rvxhmtfhocnxzcm", response.rackSkuId());
+        Assertions.assertEquals("dbjp", response.location());
+        Assertions.assertEquals("zqpxzbawkikcd", response.tags().get("fhbssdpjeyoqxded"));
+        Assertions.assertEquals("gsmgb", response.extendedLocation().name());
+        Assertions.assertEquals("mt", response.extendedLocation().type());
+        Assertions.assertEquals("wrqbebjnfv", response.availabilityZone());
+        Assertions.assertEquals("hizpaczmuh", response.rackLocation());
+        Assertions.assertEquals("cakznhokhoitwhrj", response.rackSerialNumber());
+        Assertions.assertEquals("dmmazdnc", response.rackSkuId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

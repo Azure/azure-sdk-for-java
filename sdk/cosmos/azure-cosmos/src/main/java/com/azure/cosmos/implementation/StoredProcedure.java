@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a stored procedure in the Azure Cosmos DB database service.
@@ -24,10 +25,10 @@ public class StoredProcedure extends Resource {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the stored procedure.
+     * @param jsonNode the json node that represents the stored procedure.
      */
-    public StoredProcedure(String jsonString) {
-        super(jsonString);
+    public StoredProcedure(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**

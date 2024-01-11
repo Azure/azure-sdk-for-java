@@ -24,6 +24,10 @@ public final class ListQueueResource {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ListQueueResource class. */
+    public ListQueueResource() {
+    }
+
     /**
      * Get the value property: List of queues returned.
      *

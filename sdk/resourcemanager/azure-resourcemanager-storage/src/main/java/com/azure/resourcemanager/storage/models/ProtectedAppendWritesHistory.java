@@ -24,6 +24,10 @@ public final class ProtectedAppendWritesHistory {
     @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
+    /** Creates an instance of ProtectedAppendWritesHistory class. */
+    public ProtectedAppendWritesHistory() {
+    }
+
     /**
      * Get the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
      * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing

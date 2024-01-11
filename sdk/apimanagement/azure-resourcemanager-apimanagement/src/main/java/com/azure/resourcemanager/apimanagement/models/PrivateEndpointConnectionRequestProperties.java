@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PrivateEndpointConnectionRequestProperties {
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of PrivateEndpointConnectionRequestProperties class. */
+    public PrivateEndpointConnectionRequestProperties() {
+    }
 
     /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
