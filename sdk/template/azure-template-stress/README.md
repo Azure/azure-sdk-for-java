@@ -74,6 +74,18 @@ Stop and remove deployed package:
 helm uninstall <stress test name> -n <stress test namespace>
 ```
 
+### Other useful commands
+
+Execute commands in the container:
+
+```shell
+kubectl exec --stdin --tty -n <stress test namespace> <pod name> -c <container name> -- /bin/bash
+````
+
+### Share data from within the container
+
+Stress containers run with `$DEBUG_SHARE` environment variable set to the location of the shared folder. You can put anything you want to share there and access it - check out https://aka.ms/azsdk/stress/fileshare.
+
 ## Key concepts
 
 ### Project Structure
@@ -105,7 +117,7 @@ Start with [Azure SDK stress Wiki](https://aka.ms/azsdk/stress) to learn about s
 
 Now you can run stress tests locally. Remaining steps are required to run tests on a stress cluster. 
   
-3. Update `Dockerfile` to build your service artifacts and any dependencies of current version.
+3. Update `dockerfiles` to build your service artifacts and any dependencies of current version.
 4. Describe Azure resources necessary for your tests in `stress-test-resources.bicep`
 5. Update `Chart.yaml`:
    - change chart `name` to include your service name. Please keep `java-` prefix.
@@ -113,7 +125,7 @@ Now you can run stress tests locally. Remaining steps are required to run tests 
 5. Update `templates/job.yaml`
    - remove `server` container as you probably don't need it 
    - replace occurrences of `java-template` to match name in the `Chart.yaml`
-   - update test parameters for `test` container
+   - update test parameters for `test` container, feel free to rename the container as you see fit
 6. Define scenarios and parameters in `scenarios-matrix.yaml`
 
 Now you're ready to run tests with `.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<your service directory>`.
@@ -134,27 +146,31 @@ Stress test dashboard does not know about local stress test runs.
 
 #### Application Insights
 
-Application Insights agent brings rich monitoring experience including:
+Stress test template comes with OpenTelemetry and rich monitoring experience including:
 - resource utilization metrics (CPU, memory, GC, threads, etc.)
 - live metrics, performance overview, etc
 - distributed tracing and dependency calls (HTTP, Azure SDK calls)
 - exceptions and logs
 - profiling in production
 
-Application Insights is useful to:
+The telemetry is sent to Application Insights where it's useful to:
 - monitor and compare throughput and latency across runs
 - investigate issues and find bottlenecks
 
-Application Insights is available for local runs (as long as you provide `-javaagent` option and make sure connection string is configured).
-It's also possible to use Azure Monitor Profiler for Java inside the stress test ApplicationInsights resource to capture JFR profiles.
+Application Insights is available for local runs (as long as you provide `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable).
+
+You may choose to use [ApplicationInsights Java agent](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java#install-the-client-library) if
+your test throughput (and amount of telemetry it generates) is relatively low.
+Since agent does a lot og things, it might create some noise during performance analysis and micro-optimizations.   
 
 ### Logging
 
 We use [logback.xml][logback_xml] to configure the logging. By default, the stress test run on cluster will output
 `WARN` level log which you may adjust based on your needs.
-You may also control the verbosity of logs that go to Application Insights - see [Application Insights logging configuration][application-insights-logging] for more details.
+You may also control the verbosity of logs that go to Application Insights - see [OpenTelemetry logback appender][opentelemetry-logback] for more details.
 
 Since logs are hard to query and are extremely verbose (in case of high-scale stress tests), we're relying on metrics and workbooks for test result analysis.
+
 See also [Logging in Azure SDK][logging-azure-sdk].
 
 ### Metrics
@@ -174,23 +190,25 @@ The metric should measure exactly one test operation, so we'll be able to derive
 - duration of one operation
 - error rate (how frequently errors of different types occur)
 
-Each metric collected with OpenTelemetry (directly or via Application Insights) also has the following dimensions:
-- `cloud_RoleName` - in case of stress tests, it matches test name and run id (`{{ .Release.Name }}-{{ .Stress.BaseName }}` in helm chart).
-- `cloud_RoleInstance` - in case of k8s it matches pod name and identifies the test container.
+Each metric collected with OpenTelemetry (and exported to Application Insights) also has the following dimensions:
+- `cloud_RoleName` - in case of stress tests, it matches value of `otel.service.name` property configured in `Chart.yaml` to `{{ .Release.Name }}-{{ .Stress.BaseName }}`.
+- `cloud_RoleInstance` - in case of k8s it matches pod name and is auto-detected.
 
-When running multiple test containers, make sure to assign different role instances to them by setting `APPLICATIONINSIGHTS_ROLE_INSTANCE` environment variable.
-(e.g. `{{ .Stress.BaseName }}-consumer` and `{{ .Stress.BaseName }}-producer`). This would allow you to distinguish telemetry coming from different containers.  
-You may additionally consider assigning different `APPLICATIONINSIGHTS_ROLE_NAME`.
-In any case, you may need to adjust the workbook to accomodate those changes and break down metrics by role instance.
+When running multiple test containers, make sure to assign different role instances to them, for example use `{{ .Stress.BaseName }}-consumer` and `{{ .Stress.BaseName }}-producer`. 
+This would allow you to distinguish telemetry coming from different containers.  
+
+You would need to adjust the workbook to accommodate those changes.
 
 In addition to `test.run_duration`, we're also collecting:
-- [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/main/docs/asciidoc/metrics.adoc)
-- [JVM metrics](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md) measured by OpenTelemetry:
-    - Normalized CPU percentage (based on [OperatingSystemMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/OperatingSystemMXBean.html) and [RuntimeMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/RuntimeMXBean.html)))
-      Note: if 0.5 CPU is configured for pod, maximum normalized CPU percentage for it would be 50%.
-    - GC time (based on [GarbageCollectorMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/GarbageCollectorMXBean.html))
-    - Heap memory usage (based on [MemoryMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/MemoryMXBean.html))
-    - Thread count (based on [ThreadMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/ThreadMXBean.html))
+- [JVM metrics](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/runtime-telemetry/runtime-telemetry-java8/library/README.md) measured by OpenTelemetry:
+    - CPU and memory usage
+    - GC stats
+    - Thread count
+    - Class stats
+    - See [JVM metrics semantic conventions for the details](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md)
+
+You can also enable [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/main/docs/asciidoc/metrics.adoc) collection by installing `micrometer-core` and
+[OpenTelemetry micrometer bridge](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library).
 
 ### Stress test workbook
 
@@ -235,5 +253,5 @@ thread pool issues, or other performance issues in the code. So make sure to con
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
-[application-insights-logging]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/java-standalone-config#autocollected-logging
+[opentelemetry-logback]: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/logback/logback-appender-1.0/library
 [logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK

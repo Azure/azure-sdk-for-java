@@ -63,9 +63,9 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
-        response.buffer().close();
-        response.close();
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            response.buffer().close();
+        }
     }
 
     @Override
@@ -74,12 +74,11 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private Mono<Void> runInternalAsync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, options.getServiceEndpoint());
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        return pipeline.send(request)
-                .flatMapMany(response -> response.getBody()
-                    .doFinally(i -> response.close()))
-            .then();
+        return Mono.usingWhen(pipeline.send(request),
+                response -> response.getBody().then(),
+                response -> Mono.fromRunnable(response::close));
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
@@ -88,30 +87,11 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy("java-stress-test"));
-        policies.add(new RequestIdPolicy());
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
         policies.add(new RetryPolicy());
-        policies.add(new AddDatePolicy());
-        policies.add(new RedirectPolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
 
-        HttpClientOptions httpClientOptions = new HttpClientOptions()
-            .setHttpClientProvider(getHttpClientProvider());
         return new HttpPipelineBuilder()
-            .clientOptions(httpClientOptions)
+            .httpClient(super.httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]));
-    }
-
-    private Class<? extends HttpClientProvider> getHttpClientProvider() {
-        switch (options.getHttpClient()) {
-            case OKHTTP:
-                return OkHttpAsyncClientProvider.class;
-            case NETTY:
-                return NettyAsyncHttpClientProvider.class;
-            default:
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown HTTP Client provider: " + options.getHttpClient()));
-        }
     }
 }

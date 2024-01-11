@@ -19,7 +19,7 @@ import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.instrumentation.micrometer.v1_5.OpenTelemetryMeterRegistry;
+import io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender;
 import io.opentelemetry.instrumentation.runtimemetrics.java8.Classes;
 import io.opentelemetry.instrumentation.runtimemetrics.java8.Cpu;
 import io.opentelemetry.instrumentation.runtimemetrics.java8.GarbageCollector;
@@ -79,11 +79,16 @@ public class TelemetryHelper {
      */
     public static void init() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        new AzureMonitorExporterBuilder()
-                .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
+        String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
+        if (applicationInsightsConnectionString != null) {
+            new AzureMonitorExporterBuilder()
+                .connectionString(applicationInsightsConnectionString)
                 .install(sdkBuilder);
+        }
 
         OpenTelemetry otel = sdkBuilder
+                // in case of multi-container test, customize instance id to distinguish telemetry from different containers
+                //.addResourceCustomizer((resource, props) -> resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), "container-name-1").build())
                 .addSamplerCustomizer((sampler, props) -> new Sampler() {
                     @Override
                     public SamplingResult shouldSample(Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
@@ -106,8 +111,7 @@ public class TelemetryHelper {
         MemoryPools.registerObservers(otel);
         Threads.registerObservers(otel);
         GarbageCollector.registerObservers(otel);
-
-        MeterRegistry meterRegistry = OpenTelemetryMeterRegistry.builder(otel).build();
+        OpenTelemetryAppender.install(otel);
     }
 
     /**
@@ -199,7 +203,7 @@ public class TelemetryHelper {
         } catch (ClassNotFoundException e) {
             logger.atWarning()
                 .addKeyValue("class", HttpClientProvider.class.getName())
-                .log("could not find class", e);
+                .log("Could not determine azure-core version, HttpClientProvider class is not found", e);
         }
 
         Span before = startSampledInSpan("before run");
@@ -237,6 +241,6 @@ public class TelemetryHelper {
     }
 
     private static double getDuration(Instant start) {
-        return (Instant.now().toEpochMilli() - start.toEpochMilli()) / 1000d;
+        return Math.max(0d, Instant.now().toEpochMilli() - start.toEpochMilli()) / 1000d;
     }
 }

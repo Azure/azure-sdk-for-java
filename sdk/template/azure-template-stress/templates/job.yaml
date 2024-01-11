@@ -19,8 +19,8 @@ spec:
           dotnet /app/dotnet_simple.dll
       resources:
         limits:
-          memory: "200Mi"
-          cpu: "1"
+          memory: "400Mi"
+          cpu: "2"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: test
       image: {{ .Stress.imageTag }}
@@ -43,7 +43,7 @@ spec:
           --duration {{ mul .Stress.testDurationMin 60 }} \
           --endpoint https://localhost:8081 \
           {{ ternary "--sync" "" .Stress.sync }} \
-          --http-client {{ default "NETTY" .Stress.httpClient }} \
+          --http-client {{ default "netty" .Stress.httpClient }} \
           --warmup 0
       # add your test parameters here
       resources:

@@ -45,11 +45,6 @@
       <artifactId>opentelemetry-logback-appender-1.0</artifactId> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
       <version>1.32.0-alpha</version>
     </dependency>
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-micrometer-1.5</artifactId>
-      <version>1.32.0-alpha</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -64,7 +59,6 @@
               <includes>
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5;external_dependency} -->
                 <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->              </includes>
             </bannedDependencies>
           </rules>
