@@ -6,12 +6,6 @@
 
 * Added Support for Feature Variants
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 5.8.0 (2023-12-14)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#580-2023-12-14) for more details.
