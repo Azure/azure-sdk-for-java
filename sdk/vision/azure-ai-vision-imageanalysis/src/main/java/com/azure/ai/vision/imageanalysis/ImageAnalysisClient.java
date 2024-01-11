@@ -5,6 +5,7 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -564,6 +565,7 @@ public final class ImageAnalysisClient {
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -592,6 +594,7 @@ public final class ImageAnalysisClient {
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
