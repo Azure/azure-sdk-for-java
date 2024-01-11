@@ -14,6 +14,7 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -340,7 +341,10 @@ public class JdkHttpClientBuilderTests {
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 3);
     }
 
+    // Logic has changed where this no longer needs to be case-insensitive as the header values are now filtered using
+    // the lowercase header names in the raw HttpHeaders map.
     @Test
+    @Disabled
     void testCaseInsensitivity() {
         Properties properties = new Properties();
         properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
