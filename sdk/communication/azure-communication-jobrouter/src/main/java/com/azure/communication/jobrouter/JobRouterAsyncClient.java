@@ -128,10 +128,10 @@ public final class JobRouterAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     assignments (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -140,7 +140,7 @@ public final class JobRouterAsyncClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -183,10 +183,10 @@ public final class JobRouterAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     assignments (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -195,7 +195,7 @@ public final class JobRouterAsyncClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -583,10 +583,10 @@ public final class JobRouterAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     assignments (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -595,7 +595,7 @@ public final class JobRouterAsyncClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -850,10 +850,10 @@ public final class JobRouterAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     assignments (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -862,7 +862,7 @@ public final class JobRouterAsyncClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1059,7 +1059,7 @@ public final class JobRouterAsyncClient {
      *     queueId: String (Required)
      *     length: int (Required)
      *     estimatedWaitTimeMinutes (Optional): {
-     *         String: double (Required)
+     *         String: double (Optional)
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
@@ -1119,10 +1119,10 @@ public final class JobRouterAsyncClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1165,10 +1165,10 @@ public final class JobRouterAsyncClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1535,10 +1535,10 @@ public final class JobRouterAsyncClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1660,10 +1660,10 @@ public final class JobRouterAsyncClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     tags (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     channels (Optional): [
      *          (Optional){

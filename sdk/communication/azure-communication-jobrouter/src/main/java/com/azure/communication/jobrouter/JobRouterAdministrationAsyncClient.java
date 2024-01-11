@@ -1293,7 +1293,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1308,7 +1308,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1528,7 +1528,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1580,7 +1580,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Required)
+     *         String: Object (Optional)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
