@@ -48,7 +48,7 @@ See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob
 
 * Open a command-prompt / terminal window and navigate to the samples folder `sdk\vision\azure-ai-vision-imageanalysis\src\samples\java\com\azure\ai\vision\imageanalysis`.
 
-* Edit the [pom.xml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/pom.xml) file in this folder to make sure it uses the latest `azure-ai-vision-imageanalysis` package version as shown in the [Maven repository](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis).
+* Edit the [pom.xml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/pom.xml) file in this folder to ensure it uses the latest `azure-ai-vision-imageanalysis` package version shown in the [Maven repository](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis).
 
 * Run the following to copy all dependencies locally:
   ```
