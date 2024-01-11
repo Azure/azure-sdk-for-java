@@ -422,18 +422,18 @@ public interface StorageAccount
         }
 
         /**
-         * The stage of the User Assigned (Local) Managed Service Identity enabled storage account allowing to set
-         * access role for the identity.
+         * The stage of the storage account definition allowing to specify User Assigned (External) Managed Service
+         * Identities.
          */
-        interface WithUserAssignedManagedServiceIdentityAccessOrCreate extends WithCreate {
+        interface WithUserAssignedManagedServiceIdentity {
             /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
-             * machine.
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the Storage
+             * Account.
              *
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the storage account definition
              */
-            WithUserAssignedManagedServiceIdentityAccessOrCreate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+            WithCreate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
 
             /**
              * Specifies an existing user assigned identity to be associated with the storage account.
@@ -441,20 +441,7 @@ public interface StorageAccount
              * @param identity the identity
              * @return the next stage of the storage account definition
              */
-            WithUserAssignedManagedServiceIdentityAccessOrCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
-        }
-
-        /**
-         * The stage of the storage account definition allowing to specify User Assigned (External) Managed Service
-         * Identities.
-         */
-        interface WithUserAssignedManagedServiceIdentity {
-            /**
-             * Specifies that implicit managed service identity (MSI) needs to be enabled.
-             *
-             * @return the next stage of storage account definition
-             */
-            WithUserAssignedManagedServiceIdentityAccessOrCreate withUserAssignedManagedServiceIdentity();
+            WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
         /** The stage of storage account definition allowing to restrict access protocol. */
@@ -783,30 +770,13 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withSystemAssignedManagedServiceIdentity();
-        }
-
-        /**
-         * The stage of the User Assigned Managed Service Identity enabled storage account allowing to set
-         * access role for the identity.
-         */
-        interface WithUserAssignedManagedServiceIdentityAccessOrUpdate extends Update {
 
             /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
-             * machine.
+             * Specifies that a system assigned identity associated with the storage account should be removed.
              *
-             * @param creatableIdentity a creatable identity definition
              * @return the next stage of the storage account update
              */
-            WithUserAssignedManagedServiceIdentityAccessOrUpdate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
-
-            /**
-             * Specifies an existing user assigned identity to be associated with the storage account.
-             *
-             * @param identity the identity
-             * @return the next stage of the storage account update
-             */
-            WithUserAssignedManagedServiceIdentityAccessOrUpdate withExistingUserAssignedManagedServiceIdentity(Identity identity);
+            Update withoutSystemAssignedManagedServiceIdentity();
         }
 
         /**
@@ -814,13 +784,22 @@ public interface StorageAccount
          * Identities.
          */
         interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the storage
+             * account.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the storage account update
+             */
+            Update withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
 
             /**
-             * Specifies that implicit managed service identity (MSI) needs to be enabled.
+             * Specifies an existing user assigned identity to be associated with the storage account.
              *
-             * @return the next stage of storage account definition
+             * @param identity the identity
+             * @return the next stage of the storage account update
              */
-            WithUserAssignedManagedServiceIdentityAccessOrUpdate withUserAssignedManagedServiceIdentity();
+            Update withExistingUserAssignedManagedServiceIdentity(Identity identity);
 
             /**
              * Specifies that an user assigned identity associated with the storage account should be removed.

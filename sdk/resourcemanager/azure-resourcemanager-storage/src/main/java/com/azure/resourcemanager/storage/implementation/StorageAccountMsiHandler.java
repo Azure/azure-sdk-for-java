@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Utility class to set Managed Service Identity (MSI) property on a virtual machine, install or update MSI extension
+ * Utility class to set Managed Service Identity (MSI) property on a storage account, install or update MSI extension
  * and create role assignments for the service principal associated with the virtual machine.
  */
 class StorageAccountMsiHandler extends RoleAssignmentHelper {
@@ -33,18 +33,28 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
 
     private List<String> creatableIdentityKeys;
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
+    private StorageAccountCreateParameters createParameters;
+    private StorageAccountUpdateParameters updateParameters;
+    private Boolean isInCreateMode;
     private final ClientLogger logger = new ClientLogger(StorageAccountMsiHandler.class);
 
     /**
-     * Creates VirtualMachineMsiHandler.
+     * Creates StorageAccountMsiHandler.
      *
      * @param authorizationManager the graph rbac manager
      * @param storageAccount the storage account to which MSI extension needs to be installed and for which role
      *     assignments needs to be created
      */
-    StorageAccountMsiHandler(final AuthorizationManager authorizationManager, StorageAccountImpl storageAccount) {
+    StorageAccountMsiHandler(final AuthorizationManager authorizationManager,
+                             StorageAccountImpl storageAccount,
+                             StorageAccountCreateParameters createParameters,
+                             StorageAccountUpdateParameters updateParameters,
+                             Boolean isInCreateMode) {
         super(authorizationManager, storageAccount.taskGroup(), storageAccount.idProvider());
         this.storageAccount = storageAccount;
+        this.createParameters = createParameters;
+        this.updateParameters = updateParameters;
+        this.isInCreateMode = isInCreateMode;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();
     }
@@ -53,7 +63,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * Specifies that Local Managed Service Identity needs to be enabled in the storage account. If MSI extension is not
      * already installed then it will be installed with access token port as 50342.
      *
-     * @return VirtualMachineMsiHandler
+     * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withLocalManagedServiceIdentity() {
         this.initStorageAccountIdentity(IdentityType.SYSTEM_ASSIGNED);
@@ -63,33 +73,28 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     /**
      * Specifies that Local Managed Service Identity needs to be disabled in the storage account.
      *
-     * @return VirtualMachineMsiHandler
+     * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withoutLocalManagedServiceIdentity() {
-        if (this.storageAccount.innerModel().identity() == null
-            || this.storageAccount.innerModel().identity().type() == null
-            || this.storageAccount.innerModel().identity().type().equals(IdentityType.NONE)
-            || this.storageAccount.innerModel().identity().type().equals(IdentityType.USER_ASSIGNED)) {
+        StorageAccountInner inner = storageAccount.innerModel();
+        if (inner.identity() == null
+            || IdentityType.NONE.equals(inner.identity().type())
+            || IdentityType.USER_ASSIGNED.equals(inner.identity().type())) {
             return this;
-        } else if (this.storageAccount.innerModel().identity().type().equals(IdentityType.SYSTEM_ASSIGNED)) {
-            this.storageAccount.innerModel().identity().withType(IdentityType.NONE);
-        } else if (this
-            .storageAccount
-            .innerModel()
-            .identity()
-            .type()
-            .equals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-            this.storageAccount.innerModel().identity().withType(IdentityType.USER_ASSIGNED);
+        } else if (IdentityType.SYSTEM_ASSIGNED.equals(inner.identity().type())) {
+            updateParameters.withIdentity(inner.identity().withType(IdentityType.NONE));
+        } else {
+            updateParameters.withIdentity(inner.identity().withType(IdentityType.USER_ASSIGNED));
         }
         return this;
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
-     * machine.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the storage
+     * account.
      *
      * @param creatableIdentity yet-to-be-created identity to be associated with the storage account
-     * @return VirtualMachineMsiHandler
+     * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withNewExternalManagedServiceIdentity(Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
         this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED);
@@ -104,11 +109,11 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
-     * machine.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the storage
+     * account.
      *
      * @param identity an identity to associate
-     * @return VirtualMachineMsiHandler
+     * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withExistingExternalManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
         this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED);
@@ -121,10 +126,16 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * with the storage account machine.
      *
      * @param identityId resource id of the identity
-     * @return VirtualMachineMsiHandler
+     * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
         // mark as to be removed
+        updateParameters.withIdentity(storageAccount.innerModel().identity());
+        if (IdentityType.USER_ASSIGNED.equals(storageAccount.innerModel().identity().type())) {
+            updateParameters.identity().withType(IdentityType.NONE);
+        } else if (IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED.equals(storageAccount.innerModel().identity().type())) {
+            updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED);
+        }
         this.userAssignedIdentities.put(identityId, null);
         return this;
     }
@@ -138,46 +149,44 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
         this.creatableIdentityKeys.clear();
     }
 
-    void handleExternalIdentities(StorageAccountCreateParameters storageCreate) {
-        if (!this.userAssignedIdentities.isEmpty()) {
-            storageCreate.identity().withUserAssignedIdentities(this.userAssignedIdentities);
-        }
-    }
-
-    void handleExternalIdentities(StorageAccountUpdateParameters storageUpdate) {
-        if (this.handleRemoveAllExternalIdentitiesCase(storageUpdate)) {
-            return;
-        } else {
-            // At this point one of the following condition is met:
-            //
-            // 1. User don't want touch the 'VM.Identity.userAssignedIdentities' property
-            //      [this.userAssignedIdentities.empty() == true]
-            // 2. User want to add some identities to 'VM.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.virtualMachine.inner().identity() != null]
-            // 3. User want to remove some (not all) identities in 'VM.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.virtualMachine.inner().identity() != null]
-            //      Note: The scenario where this.virtualMachine.inner().identity() is null in #3 is already handled in
-            //      handleRemoveAllExternalIdentitiesCase method
-            // 4. User want to add and remove (all or subset) some identities in 'VM.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.virtualMachine.inner().identity() != null]
-            //
-            Identity currentIdentity = this.storageAccount.innerModel().identity();
-            storageUpdate.withIdentity(currentIdentity);
+    void handleExternalIdentities() {
+        if (isInCreateMode) {
             if (!this.userAssignedIdentities.isEmpty()) {
-                // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
-                storageUpdate.identity().withUserAssignedIdentities(this.userAssignedIdentities);
-            } else {
-                // User don't want to touch 'VM.Identity.userAssignedIdentities' property
-                if (currentIdentity != null) {
-                    // and currently there is identity exists or user want to manipulate some other properties of
-                    // identity, set identities to null so that it won't send over wire.
-                    currentIdentity.withUserAssignedIdentities(null);
+                createParameters.identity().withUserAssignedIdentities(this.userAssignedIdentities);
+            }
+        } else {
+            if (!this.handleRemoveAllExternalIdentitiesCase()) {
+                // At this point one of the following condition is met:
+                //
+                // 1. User don't want touch the 'StorageAccount.Identity.userAssignedIdentities' property
+                //      [this.userAssignedIdentities.empty() == true]
+                // 2. User want to add some identities to 'StorageAccount.Identity.userAssignedIdentities'
+                //      [this.userAssignedIdentities.empty() == false and this.StorageAccount.inner().identity() != null]
+                // 3. User want to remove some (not all) identities in 'StorageAccount.Identity.userAssignedIdentities'
+                //      [this.userAssignedIdentities.empty() == false and this.StorageAccount.inner().identity() != null]
+                //      Note: The scenario where this.StorageAccount.inner().identity() is null in #3 is already handled in
+                //      handleRemoveAllExternalIdentitiesCase method
+                // 4. User want to add and remove (all or subset) some identities in 'StorageAccount.Identity.userAssignedIdentities'
+                //      [this.userAssignedIdentities.empty() == false and this.StorageAccount.inner().identity() != null]
+                //
+                if (!this.userAssignedIdentities.isEmpty()) {
+                    // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
+                    updateParameters.identity().withUserAssignedIdentities(this.userAssignedIdentities);
+                } else {
+                    // User don't want to touch 'StorageAccount.Identity.userAssignedIdentities' property
+                    if (storageAccount.innerModel().identity() != null) {
+                        // and currently there is identity exists or user want to manipulate some other properties of
+                        // identity, set identities to null so that it won't send over wire.
+                        storageAccount.innerModel().identity().withUserAssignedIdentities(null);
+                        updateParameters.identity().withUserAssignedIdentities(null);
+                    }
                 }
             }
         }
+
     }
 
-    /** Clear VirtualMachineMsiHandler post-run specific internal state. */
+    /** Clear StorageAccountMsiHandler post-run specific internal state. */
     void clear() {
         this.userAssignedIdentities = new HashMap<>();
     }
@@ -186,10 +195,9 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * Method that handle the case where user request indicates all it want to do is remove all identities associated
      * with the storage account.
      *
-     * @param storageUpdate the vm update payload model
      * @return true if user indented to remove all the identities.
      */
-    private boolean handleRemoveAllExternalIdentitiesCase(StorageAccountUpdateParameters storageUpdate) {
+    private boolean handleRemoveAllExternalIdentitiesCase() {
         if (!this.userAssignedIdentities.isEmpty()) {
             int rmCount = 0;
             for (UserAssignedIdentity v : this.userAssignedIdentities.values()) {
@@ -223,24 +231,24 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
-                        storageUpdate.withIdentity(new Identity().withType(IdentityType.NONE));
+                        updateParameters.withIdentity(new Identity().withType(IdentityType.NONE));
                     } else if (currentIdentity.type().equals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-                        storageUpdate.withIdentity(currentIdentity);
-                        storageUpdate.identity().withType(IdentityType.SYSTEM_ASSIGNED);
+                        updateParameters.withIdentity(currentIdentity);
+                        updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(IdentityType.USER_ASSIGNED)) {
-                        storageUpdate.withIdentity(currentIdentity);
-                        storageUpdate.identity().withType(IdentityType.NONE);
+                        updateParameters.withIdentity(currentIdentity);
+                        updateParameters.identity().withType(IdentityType.NONE);
                     }
                     // and set identities property in the payload model to null so that it won't be sent
-                    storageUpdate.identity().withUserAssignedIdentities(null);
+                    updateParameters.identity().withUserAssignedIdentities(null);
                     return true;
                 } else {
                     // Check user is asking to remove identities though there is no identities currently associated
                     if (currentIds.isEmpty() && !removeIds.isEmpty() && currentIdentity == null) {
                         // If so we are in a invalid state but we want to send user input to service and let service
                         // handle it (ignore or error).
-                        storageUpdate.withIdentity(new Identity().withType(IdentityType.NONE));
-                        storageUpdate.identity().withUserAssignedIdentities(null);
+                        updateParameters.withIdentity(new Identity().withType(IdentityType.NONE));
+                        updateParameters.identity().withUserAssignedIdentities(null);
                         return true;
                     }
                 }
@@ -250,7 +258,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Initialize VM's identity property.
+     * Initialize storage account's identity property.
      *
      * @param identityType the identity type to set
      */
@@ -259,17 +267,27 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
             && !identityType.equals(IdentityType.SYSTEM_ASSIGNED)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
-
-        StorageAccountInner storageAccountInner = this.storageAccount.innerModel();
-        if (storageAccountInner.identity() == null) {
-            storageAccountInner.withIdentity(new Identity());
-        }
-        if (storageAccountInner.identity().type() == null
-            || storageAccountInner.identity().type().equals(IdentityType.NONE)
-            || storageAccountInner.identity().type().equals(identityType)) {
-            storageAccountInner.identity().withType(identityType);
+        if (this.isInCreateMode) {
+            if (createParameters.identity() == null
+                || createParameters.identity().type() == null
+                || createParameters.identity().type().equals(IdentityType.NONE)
+                || createParameters.identity().type().equals(identityType)) {
+                createParameters.withIdentity(new Identity().withType(identityType));
+            } else {
+                createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+            }
         } else {
-            storageAccountInner.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            StorageAccountInner inner = storageAccount.innerModel();
+            if (inner.identity() == null
+                || inner.identity().type() == null
+                || inner.identity().type().equals(IdentityType.NONE)
+                || inner.identity().type().equals(identityType)) {
+                Identity identity = Objects.isNull(inner.identity()) ? new Identity().withType(identityType) : inner.identity().withType(identityType);
+                updateParameters.withIdentity(identity);
+                storageAccount.innerModel().withIdentity(identity);
+            } else {
+                updateParameters.withIdentity(inner.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+            }
         }
     }
 }

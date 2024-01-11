@@ -48,7 +48,7 @@ public abstract class StorageManagementTest extends ResourceManagerTestProxyTest
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         storageManager = buildManager(StorageManager.class, httpPipeline, profile);
-        msiManager = MsiManager.authenticate(httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
         resourceManager = storageManager.resourceManager();
     }
 }

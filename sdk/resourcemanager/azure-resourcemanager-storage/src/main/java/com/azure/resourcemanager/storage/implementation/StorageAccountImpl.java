@@ -26,8 +26,6 @@ import com.azure.resourcemanager.storage.models.AccountStatuses;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
-import com.azure.resourcemanager.storage.models.Identity;
-import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
@@ -60,9 +58,7 @@ import reactor.core.publisher.Mono;
 /** Implementation for {@link StorageAccount}. */
 class StorageAccountImpl
     extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager>
-    implements StorageAccount, StorageAccount.Definition, StorageAccount.Update,
-    StorageAccount.DefinitionStages.WithUserAssignedManagedServiceIdentityAccessOrCreate,
-    StorageAccount.UpdateStages.WithUserAssignedManagedServiceIdentityAccessOrUpdate {
+    implements StorageAccount, StorageAccount.Definition, StorageAccount.Update {
 
     private final ClientLogger logger = new ClientLogger(getClass());
     private PublicEndpoints publicEndpoints;
@@ -80,7 +76,7 @@ class StorageAccountImpl
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
         this.encryptionHelper = new StorageEncryptionHelper(this.createParameters);
-        this.storageAccountMsiHandler = new StorageAccountMsiHandler(authorizationManager, this);
+        this.storageAccountMsiHandler = new StorageAccountMsiHandler(authorizationManager, this, this.createParameters, this.updateParameters, this.isInCreateMode());
     }
 
     @Override
@@ -480,7 +476,7 @@ class StorageAccountImpl
         updateParameters = new StorageAccountUpdateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.innerModel());
         this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.innerModel());
-        this.storageAccountMsiHandler = new StorageAccountMsiHandler(this.authorizationManager, this);
+        this.storageAccountMsiHandler = new StorageAccountMsiHandler(this.authorizationManager, this, createParameters, this.updateParameters, isInCreateMode());
         return super.update();
     }
 
@@ -520,15 +516,16 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
-        if (this.innerModel().identity() == null) {
-            if (isInCreateMode()) {
-                createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
-            } else {
-                updateParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED));
-            }
-        }
+        this.storageAccountMsiHandler.withLocalManagedServiceIdentity();
         return this;
     }
+
+    @Override
+    public StorageAccountImpl withoutSystemAssignedManagedServiceIdentity() {
+        this.storageAccountMsiHandler.withoutLocalManagedServiceIdentity();
+        return this;
+    }
+
     public StorageAccountImpl withOnlyHttpsTraffic() {
         if (isInCreateMode()) {
             createParameters.withEnableHttpsTrafficOnly(true);
@@ -735,7 +732,7 @@ class StorageAccountImpl
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.innerModel().tags());
         this.storageAccountMsiHandler.processCreatedExternalIdentities();
-        this.storageAccountMsiHandler.handleExternalIdentities(createParameters);
+        this.storageAccountMsiHandler.handleExternalIdentities();
         final StorageAccountsClient client = this.manager().serviceClient().getStorageAccounts();
         return this
             .manager()
@@ -755,7 +752,7 @@ class StorageAccountImpl
         this.networkRulesHelper.setDefaultActionIfRequired();
         updateParameters.withTags(this.innerModel().tags());
         this.storageAccountMsiHandler.processCreatedExternalIdentities();
-        this.storageAccountMsiHandler.handleExternalIdentities(updateParameters);
+        this.storageAccountMsiHandler.handleExternalIdentities();
         return this
             .manager()
             .serviceClient()
@@ -829,18 +826,6 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withoutUserAssignedManagedServiceIdentity(String identityId) {
         this.storageAccountMsiHandler.withoutExternalManagedServiceIdentity(identityId);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withUserAssignedManagedServiceIdentity() {
-        if (this.innerModel().identity() == null) {
-            if (isInCreateMode()) {
-                createParameters.withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED));
-            } else {
-                updateParameters.withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED));
-            }
-        }
         return this;
     }
 
