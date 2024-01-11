@@ -275,7 +275,7 @@ Options are available to customize how targeting evaluation is performed across 
 
 When new features are added to an application, there may come a time when a feature has multiple different proposed design options. A common solution for deciding on a design is some form of A/B testing, which involves providing a different version of the feature to different segments of the user base and choosing a version based on user interaction. In this library, this functionality is enabled by representing different configurations of a feature with variants.
 
-Variants enable a feature flag to become more than a simple on/off flag. A variant represents a value of a feature flag that can be a string, a number, a boolean, or even a configuration object. A feature flag that declares variants should define under what circumstances each variant should be used, which is covered in greater detail in the [Allocating a Variant](./README.md#allocating-a-variant) section.
+Variants enable a feature flag to become more than a simple on/off flag. A variant represents a value of a feature flag that can be a string, a number, a boolean, or even a configuration object. A feature flag that declares variants should define under what circumstances each variant should be used, which is covered in greater detail in the [Allocating a Variant](#allocating-a-variant) section.
 
 ```java
 public class Variant {
@@ -309,7 +309,7 @@ public class Variant {
 
 ### Getting a Feature's Variant
 
-A feature's variant can be retrieved using the `IVariantFeatureManager`'s `GetVariantAsync`/`GetVariant` methods. What the value is depends on the type of variant. If the variant uses "ConfigurationValue" then the value will be a `Map<String, Object>` that represents the fully resolved configuration object. If the variant uses "ConfigurationReference" then the value will be an actual instance of the referenced object, if this is don't the `@ConfigurationProperties` must be modified to support this, see [Configuration Reference](./README.md#configuration-reference) for more details.
+A feature's variant can be retrieved using the `IVariantFeatureManager`'s `GetVariantAsync`/`GetVariant` methods. What the value is depends on the type of variant. If the variant uses "ConfigurationValue" then the value will be a `Map<String, Object>` that represents the fully resolved configuration object. If the variant uses "ConfigurationReference" then the value will be an actual instance of the referenced object, if this is don't the `@ConfigurationProperties` must be modified to support this, see [Configuration Reference](#configuration-reference) for more details.
 
 ```java
 …
@@ -409,7 +409,7 @@ In the above example, if the feature is not enabled, `GetVariantAsync` would ret
 
 If the feature is enabled, the feature manager will check the `User`, `Group`, and `Percentile` allocations in that order to allocate a variant for this feature. If the user being evaluated is named `Marsha`, in the group named `Ring1`, or the user happens to fall between the 0 and 10th percentile calculated with the given `Seed`, then the specified variant is returned for that allocation. In this case, all of these would return the `Big` variant. If none of these allocations match, the `DefaultWhenEnabled` variant is returned, which is `Small`.
 
-Allocation logic is similar to the [Microsoft.Targeting](./README.md#TargetingFilter) feature filter, but there are some parameters that are present in targeting that aren't in allocation, and vice versa. The outcomes of targeting and allocation are not related.
+Allocation logic is similar to the [Microsoft.Targeting](#TargetingFilter) feature filter, but there are some parameters that are present in targeting that aren't in allocation, and vice versa. The outcomes of targeting and allocation are not related.
 
 ### Overriding Enabled State with a Variant
 
