@@ -10,7 +10,6 @@ import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.models.Checkpoint;
-import com.azure.storage.blob.models.BlobItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -201,7 +199,7 @@ public class MetricsHelperTests {
             assertEquals(1, subs.getMeasurements().size());
             TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
             assertEquals(i[0], seqNoMeasurement.getValue());
-            assertAttributes(checkpoints.get(i[0]),null,  seqNoMeasurement.getAttributes());
+            assertAttributes(checkpoints.get(i[0]), null,  seqNoMeasurement.getAttributes());
             i[0]++;
         });
 
