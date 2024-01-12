@@ -34,7 +34,7 @@ import com.azure.core.credential.KeyCredential;
 // END: imports-for-create-client-snippet
 
 // BEGIN: imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;
@@ -66,7 +66,7 @@ public class SampleCaptionImageFile {
         // Generate a caption for an input image buffer. This is a synchronous (blocking) call.
         // BEGIN: caption-file-snippet
         ImageAnalysisResult result = client.analyze(
-            BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+            BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
             new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 

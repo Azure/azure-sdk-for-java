@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.implementation.DefaultJsonReader.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.implementation.DefaultJsonWriter.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.JsonReader.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.JsonWriteContext.java" />
+</suppressions>

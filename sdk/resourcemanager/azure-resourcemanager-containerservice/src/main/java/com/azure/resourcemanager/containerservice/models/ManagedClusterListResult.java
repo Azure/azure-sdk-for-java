@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Managed Clusters operation. */
+/**
+ * The response from the List Managed Clusters operation.
+ */
 @Fluent
 public final class ManagedClusterListResult {
     /*
@@ -24,7 +26,9 @@ public final class ManagedClusterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedClusterListResult class. */
+    /**
+     * Creates an instance of ManagedClusterListResult class.
+     */
     public ManagedClusterListResult() {
     }
 

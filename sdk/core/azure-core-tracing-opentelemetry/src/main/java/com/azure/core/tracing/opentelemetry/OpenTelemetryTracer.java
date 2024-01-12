@@ -308,6 +308,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         @Override
         @SuppressWarnings("deprecation")
         public String get(Function<String, String> headerGetter, String headerName) {
+            if (headerGetter == null) {
+                // headerGetter is annotated with Nullable, guard.
+                return null;
+            }
+
             String value = headerGetter.apply(headerName);
             if ("traceparent".equals(headerName) && value == null) {
                 value = headerGetter.apply(DIAGNOSTIC_ID_KEY);

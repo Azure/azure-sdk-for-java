@@ -81,10 +81,11 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      *                 less chatty network and faster message processing on the client).
      * @param creditFlowMode the mode indicating how to compute the credit and when to send it to the broker.
      * @param retryPolicy the retry policy to use to obtain a new receiver upon current receiver termination.
-     * @throws IllegalStateException if the {@code prefetch} is a negative value.
+     * @throws IllegalArgumentException if the {@code prefetch} is a negative value.
      * @throws NullPointerException if the {@code retryPolicy} is {@code null}.
      */
-    public MessageFlux(Flux<? extends AmqpReceiveLink> source, int prefetch, CreditFlowMode creditFlowMode, AmqpRetryPolicy retryPolicy) {
+    public MessageFlux(Flux<? extends AmqpReceiveLink> source, int prefetch, CreditFlowMode creditFlowMode,
+        AmqpRetryPolicy retryPolicy) {
         super(source);
 
         final Map<String, Object> loggingContext = new HashMap<>(1);

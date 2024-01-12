@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster HTTP proxy configuration. */
+/**
+ * Cluster HTTP proxy configuration.
+ */
 @Fluent
 public final class ManagedClusterHttpProxyConfig {
     /*
@@ -35,7 +37,9 @@ public final class ManagedClusterHttpProxyConfig {
     @JsonProperty(value = "trustedCa")
     private String trustedCa;
 
-    /** Creates an instance of ManagedClusterHttpProxyConfig class. */
+    /**
+     * Creates an instance of ManagedClusterHttpProxyConfig class.
+     */
     public ManagedClusterHttpProxyConfig() {
     }
 

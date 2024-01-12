@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A run command request. */
+/**
+ * A run command request.
+ */
 @Fluent
 public final class RunCommandRequest {
     /*
@@ -29,7 +31,9 @@ public final class RunCommandRequest {
     @JsonProperty(value = "clusterToken")
     private String clusterToken;
 
-    /** Creates an instance of RunCommandRequest class. */
+    /**
+     * Creates an instance of RunCommandRequest class.
+     */
     public RunCommandRequest() {
     }
 
@@ -100,9 +104,8 @@ public final class RunCommandRequest {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
         }
     }
 
