@@ -8,34 +8,23 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
     private final HttpRequest request;
-    private BinaryData binaryData = null;
-    private final byte[] bodyBytes;
+    private final BinaryData body;
 
     /**
      * Creates an instance of {@link HttpResponse}.
      *
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
      */
-    protected HttpResponse(HttpRequest request) {
+    protected HttpResponse(HttpRequest request, BinaryData body) {
         this.request = request;
-        this.bodyBytes = null;
-    }
-
-    /**
-     * Creates an instance of {@link HttpResponse}.
-     *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param bodyBytes The response body as a byte array.
-     */
-    protected HttpResponse(HttpRequest request, byte[] bodyBytes) {
-        this.request = request;
-        this.bodyBytes = bodyBytes;
+        this.body = body;
     }
 
     /**
@@ -71,12 +60,7 @@ public abstract class HttpResponse implements Closeable {
      * @return The {@link BinaryData} response body.
      */
     public BinaryData getBody() {
-        // We shouldn't create multiple binary data instances for a single stream.
-        if (binaryData == null && bodyBytes != null) {
-            binaryData = BinaryData.fromBytes(bodyBytes);
-        }
-
-        return binaryData;
+        return body;
     }
 
     /**
@@ -89,9 +73,29 @@ public abstract class HttpResponse implements Closeable {
     }
 
     /**
+     * Buffers the {@link HttpResponse}.
+     * <p>
+     * If {@link #isBuffered()} is true, this instance of {@link HttpResponse} is returned. Otherwise, a new instance
+     * of {@link HttpResponse} is returned where {@link #getBody()} is buffered into memory.
+     *
+     * @return The buffered {@link HttpResponse}.
+     */
+    public abstract HttpResponse buffer();
+
+    /**
+     * Whether this {@link HttpResponse} is buffered.
+     *
+     * @return Whether this {@link HttpResponse} is buffered.
+     */
+    public abstract boolean isBuffered();
+
+    /**
      * Closes the response content stream, if any.
+     *
+     * @throws IOException If an I/O error occurs
      */
     @Override
-    public void close() {
+    public void close() throws IOException {
+        getBody().close();
     }
 }

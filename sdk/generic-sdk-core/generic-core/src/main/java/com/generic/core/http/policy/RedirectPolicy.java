@@ -9,6 +9,8 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -65,7 +67,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
 
-        redirectResponse.close();
+        try {
+            redirectResponse.close();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
 
         return redirectRequestCopy;
     }

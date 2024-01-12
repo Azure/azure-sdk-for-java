@@ -258,10 +258,9 @@ public abstract class HttpClientTests {
     /**
      * Tests that unbuffered response body can be accessed.
      *
-     * @throws IOException When IO fails.
      */
     @Test
-    public void canAccessResponseBody() throws IOException {
+    public void canAccessResponseBody() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         Supplier<HttpResponse> responseSupplier = () -> createHttpClient().send(request);
@@ -276,7 +275,7 @@ public abstract class HttpClientTests {
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
      */
     @Test
-    public void bufferedResponseCanBeReadMultipleTimes() {
+    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyReadResponse(true);
@@ -301,7 +300,7 @@ public abstract class HttpClientTests {
      * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
      */
     @Test
-    public void eagerlyConvertedHeadersAreHeaders() {
+    public void eagerlyConvertedHeadersAreHeaders() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyConvertHeaders(true);
@@ -320,7 +319,7 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
 
         try (HttpResponse response = createHttpClient().send(request)) {
@@ -447,7 +446,7 @@ public abstract class HttpClientTests {
         }
 
         @Override
-        public <T> T deserialize(Headers headers, Type type) throws IOException {
+        public <T> T deserialize(Headers headers, Type type) {
             return null;
         }
 
@@ -1479,7 +1478,7 @@ public abstract class HttpClientTests {
 
     @Test
     public void binaryDataUploadTest() throws Exception {
-        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        Path filePath = Paths.get(HttpClientTests.class.getClassLoader().getResource("upload.txt").toURI());
         BinaryData data = BinaryData.fromFile(filePath);
 
         final HttpClient httpClient = createHttpClient();
@@ -1488,9 +1487,8 @@ public abstract class HttpClientTests {
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(
-                new HttpLoggingPolicy(new HttpLoggingPolicy.HttpLogOptions()
-                    .setLogLevel(HttpLoggingPolicy.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .policies(new HttpLoggingPolicy(new HttpLoggingPolicy.HttpLogOptions()
+                .setLogLevel(HttpLoggingPolicy.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response =

@@ -3,6 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
+import com.generic.core.models.BinaryData;
 import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -15,14 +16,23 @@ import okhttp3.Response;
 abstract class OkHttpResponseBase extends HttpResponse {
     private final int statusCode;
     private final com.generic.core.models.Headers headers;
+    private final boolean isBuffered;
 
-    OkHttpResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
-        super(request);
+    OkHttpResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders, BinaryData body) {
+        super(request, body);
 
         this.statusCode = response.code();
         this.headers = eagerlyConvertHeaders
             ? fromOkHttpHeaders(response.headers())
             : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
+        this.isBuffered = body.isReplayable();
+    }
+
+    OkHttpResponseBase(HttpRequest request, com.generic.core.models.Headers headers, int statusCode, BinaryData body) {
+        super(request, body);
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.isBuffered = body.isReplayable();
     }
 
     @Override
@@ -40,6 +50,11 @@ abstract class OkHttpResponseBase extends HttpResponse {
         return this.headers;
     }
 
+    @Override
+    public final boolean isBuffered() {
+        return isBuffered;
+    }
+
     /**
      * Creates generic-core Headers from OkHttp headers.
      *
@@ -47,7 +62,6 @@ abstract class OkHttpResponseBase extends HttpResponse {
      *
      * @return generic-core Headers
      */
-    @SuppressWarnings("deprecation")
     static com.generic.core.models.Headers fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,

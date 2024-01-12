@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -97,22 +98,7 @@ public final class InputStreamBinaryData extends BinaryData {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        InputStream inputStream = content.get();
-        if (bufferedContent != null) {
-            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
-            for (ByteBuffer bb : bufferedContent) {
-                ImplUtils.writeByteBufferToStream(bb, outputStream);
-            }
-        } else {
-            // Otherwise use a generic write to.
-            // More optimizations can be done here based on the type of InputStream but this is the initial
-            // implementation, so it has been kept simple.
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
-        }
+        writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
@@ -160,6 +146,11 @@ public final class InputStreamBinaryData extends BinaryData {
         }
 
         return readAndBuffer(this.content.get(), length);
+    }
+
+    @Override
+    public void close() throws IOException {
+        content.get().close();
     }
 
     private static boolean canMarkReset(InputStream inputStream, Long length) {

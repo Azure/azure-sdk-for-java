@@ -12,13 +12,11 @@ import com.generic.core.models.Headers;
 class DefaultHttpClientResponse extends HttpResponse {
     private final int statusCode;
     private final Headers headers;
-    private final BinaryData body;
 
     public DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
-        super(request);
+        super(request, body);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.body = body;
     }
 
     @Override
@@ -37,10 +35,12 @@ class DefaultHttpClientResponse extends HttpResponse {
     }
 
     @Override
-    public BinaryData getBody() {
-        return this.body;
-    }
     public HttpResponse buffer() {
         return this;
+    }
+
+    @Override
+    public boolean isBuffered() {
+        return true;
     }
 }

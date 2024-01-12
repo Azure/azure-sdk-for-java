@@ -78,6 +78,10 @@ public final class ByteBufferBinaryData extends BinaryData {
         return this;
     }
 
+    @Override
+    public void close() throws IOException {
+    }
+
     private byte[] getBytes() {
         byte[] bytes = new byte[content.remaining()];
 

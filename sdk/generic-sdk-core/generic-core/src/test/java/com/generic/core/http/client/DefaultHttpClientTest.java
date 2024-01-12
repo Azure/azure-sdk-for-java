@@ -3,13 +3,13 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.test.LocalTestServer;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import static com.generic.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -94,7 +94,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
+    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = doRequest(client, "/error")) {
@@ -128,7 +128,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() {
+    public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
@@ -141,9 +141,8 @@ public class DefaultHttpClientTest {
             .set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (HttpResponse response =
-                 client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
-                     .setHeaders(headers))) {
+        try (HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             Headers responseHeaders = response.getHeaders();
@@ -161,7 +160,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testBufferedResponse() {
+    public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
@@ -170,7 +169,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testEmptyBufferResponse() {
+    public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client,"/empty", Context.NONE)) {
@@ -179,7 +178,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testRequestBodyPost() {
+    public void testRequestBodyPost() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;

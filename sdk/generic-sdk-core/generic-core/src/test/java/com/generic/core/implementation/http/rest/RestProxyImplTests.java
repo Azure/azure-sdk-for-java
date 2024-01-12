@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +94,7 @@ public class RestProxyImplTests {
 
             return new MockHttpResponse(request, success ? 200 : 400) {
                 @Override
-                public void close() {
+                public void close() throws IOException {
                     lastResponseClosed = true;
 
                     super.close();
