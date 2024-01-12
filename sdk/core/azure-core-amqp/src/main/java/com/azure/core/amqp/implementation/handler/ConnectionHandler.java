@@ -58,7 +58,9 @@ public class ConnectionHandler extends Handler {
      *
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
+     * @param peerDetails The peer details for this connection.
      * @deprecated use {@link ConnectionHandler#ConnectionHandler(String, ConnectionOptions, SslPeerDetails, AmqpMetricsProvider)} instead.
+     * @throws NullPointerException if {@code connectionOptions} or {@code peerDetails} is null.
      */
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
@@ -72,6 +74,10 @@ public class ConnectionHandler extends Handler {
      *
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
+     * @param peerDetails The peer details for this connection.
+     * @param metricProvider The AMQP metrics provider.
+     * @throws NullPointerException if {@code connectionOptions}, {@code peerDetails}, or {@code metricProvider} is
+     * null.
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
@@ -334,6 +340,11 @@ public class ConnectionHandler extends Handler {
         close();
     }
 
+    /**
+     * Gets the error context for this connection.
+     *
+     * @return The error context for this connection.
+     */
     public AmqpErrorContext getErrorContext() {
         return new AmqpErrorContext(getHostname());
     }

@@ -8,22 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current provisioning state of trusted access role binding. */
+/**
+ * The current provisioning state of trusted access role binding.
+ */
 public final class TrustedAccessRoleBindingProvisioningState
     extends ExpandableStringEnum<TrustedAccessRoleBindingProvisioningState> {
-    /** Static value Canceled for TrustedAccessRoleBindingProvisioningState. */
+    /**
+     * Static value Canceled for TrustedAccessRoleBindingProvisioningState.
+     */
     public static final TrustedAccessRoleBindingProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for TrustedAccessRoleBindingProvisioningState. */
+    /**
+     * Static value Deleting for TrustedAccessRoleBindingProvisioningState.
+     */
     public static final TrustedAccessRoleBindingProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Failed for TrustedAccessRoleBindingProvisioningState. */
+    /**
+     * Static value Failed for TrustedAccessRoleBindingProvisioningState.
+     */
     public static final TrustedAccessRoleBindingProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for TrustedAccessRoleBindingProvisioningState. */
+    /**
+     * Static value Succeeded for TrustedAccessRoleBindingProvisioningState.
+     */
     public static final TrustedAccessRoleBindingProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Updating for TrustedAccessRoleBindingProvisioningState. */
+    /**
+     * Static value Updating for TrustedAccessRoleBindingProvisioningState.
+     */
     public static final TrustedAccessRoleBindingProvisioningState UPDATING = fromString("Updating");
 
     /**

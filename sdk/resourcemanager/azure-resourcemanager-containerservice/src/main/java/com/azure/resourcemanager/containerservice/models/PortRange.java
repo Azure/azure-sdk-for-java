@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The port range. */
+/**
+ * The port range.
+ */
 @Fluent
 public final class PortRange {
     /*
@@ -30,7 +32,9 @@ public final class PortRange {
     @JsonProperty(value = "protocol")
     private Protocol protocol;
 
-    /** Creates an instance of PortRange class. */
+    /**
+     * Creates an instance of PortRange class.
+     */
     public PortRange() {
     }
 

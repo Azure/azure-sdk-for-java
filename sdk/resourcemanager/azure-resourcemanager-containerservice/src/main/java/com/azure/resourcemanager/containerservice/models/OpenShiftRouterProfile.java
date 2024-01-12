@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an OpenShift router. */
+/**
+ * Represents an OpenShift router.
+ */
 @Fluent
 public final class OpenShiftRouterProfile {
     /*
@@ -28,7 +30,9 @@ public final class OpenShiftRouterProfile {
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
-    /** Creates an instance of OpenShiftRouterProfile class. */
+    /**
+     * Creates an instance of OpenShiftRouterProfile class.
+     */
     public OpenShiftRouterProfile() {
     }
 

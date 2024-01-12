@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for upgrading a cluster. */
+/**
+ * Settings for upgrading a cluster.
+ */
 @Fluent
 public final class ClusterUpgradeSettings {
     /*
@@ -16,7 +18,9 @@ public final class ClusterUpgradeSettings {
     @JsonProperty(value = "overrideSettings")
     private UpgradeOverrideSettings overrideSettings;
 
-    /** Creates an instance of ClusterUpgradeSettings class. */
+    /**
+     * Creates an instance of ClusterUpgradeSettings class.
+     */
     public ClusterUpgradeSettings() {
     }
 

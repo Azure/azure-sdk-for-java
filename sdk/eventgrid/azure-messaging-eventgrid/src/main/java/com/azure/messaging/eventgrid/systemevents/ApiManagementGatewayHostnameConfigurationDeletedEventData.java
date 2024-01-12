@@ -5,30 +5,38 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted
  * event.
  */
 @Fluent
-public final class ApiManagementGatewayHostnameConfigurationDeletedEventData {
+public final class ApiManagementGatewayHostnameConfigurationDeletedEventData
+    implements JsonSerializable<ApiManagementGatewayHostnameConfigurationDeletedEventData> {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
-     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
+     * gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
-    /** Creates an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData class. */
-    public ApiManagementGatewayHostnameConfigurationDeletedEventData() {}
+    /**
+     * Creates an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData class.
+     */
+    public ApiManagementGatewayHostnameConfigurationDeletedEventData() {
+    }
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -39,12 +47,49 @@ public final class ApiManagementGatewayHostnameConfigurationDeletedEventData {
      * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the ApiManagementGatewayHostnameConfigurationDeletedEventData object itself.
      */
     public ApiManagementGatewayHostnameConfigurationDeletedEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementGatewayHostnameConfigurationDeletedEventData if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApiManagementGatewayHostnameConfigurationDeletedEventData.
+     */
+    public static ApiManagementGatewayHostnameConfigurationDeletedEventData fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementGatewayHostnameConfigurationDeletedEventData deserializedApiManagementGatewayHostnameConfigurationDeletedEventData
+                = new ApiManagementGatewayHostnameConfigurationDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedApiManagementGatewayHostnameConfigurationDeletedEventData.resourceUri
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementGatewayHostnameConfigurationDeletedEventData;
+        });
     }
 }

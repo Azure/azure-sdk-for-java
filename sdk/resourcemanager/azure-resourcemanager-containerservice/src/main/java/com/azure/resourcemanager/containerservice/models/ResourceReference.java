@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A reference to an Azure resource. */
+/**
+ * A reference to an Azure resource.
+ */
 @Fluent
 public final class ResourceReference {
     /*
@@ -16,7 +18,9 @@ public final class ResourceReference {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ResourceReference class. */
+    /**
+     * Creates an instance of ResourceReference class.
+     */
     public ResourceReference() {
     }
 

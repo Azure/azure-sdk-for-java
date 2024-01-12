@@ -3,19 +3,27 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.ImplUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link List} of {@link ByteBuffer}.
@@ -76,6 +84,29 @@ public class ListByteBufferContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Flux.fromIterable(content).map(ByteBuffer::asReadOnlyBuffer);
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        for (ByteBuffer bb : content) {
+            ImplUtils.writeByteBufferToStream(bb.asReadOnlyBuffer(), outputStream);
+        }
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        for (ByteBuffer bb : content) {
+            ImplUtils.fullyWriteBuffer(bb.asReadOnlyBuffer(), channel);
+        }
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
     }
 
     @Override

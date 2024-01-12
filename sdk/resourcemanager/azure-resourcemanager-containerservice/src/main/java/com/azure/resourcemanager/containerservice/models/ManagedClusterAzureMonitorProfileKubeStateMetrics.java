@@ -30,7 +30,9 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
     @JsonProperty(value = "metricAnnotationsAllowList")
     private String metricAnnotationsAllowList;
 
-    /** Creates an instance of ManagedClusterAzureMonitorProfileKubeStateMetrics class. */
+    /**
+     * Creates an instance of ManagedClusterAzureMonitorProfileKubeStateMetrics class.
+     */
     public ManagedClusterAzureMonitorProfileKubeStateMetrics() {
     }
 
@@ -59,9 +61,10 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
     }
 
     /**
-     * Get the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be used
-     * in the resource's labels metric (Example: 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...').
-     * By default the metric contains only resource name and namespace labels.
+     * Get the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be
+     * used in the resource's labels metric (Example:
+     * 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only
+     * resource name and namespace labels.
      *
      * @return the metricAnnotationsAllowList value.
      */
@@ -70,15 +73,16 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
     }
 
     /**
-     * Set the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be used
-     * in the resource's labels metric (Example: 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...').
-     * By default the metric contains only resource name and namespace labels.
+     * Set the metricAnnotationsAllowList property: Comma-separated list of Kubernetes annotation keys that will be
+     * used in the resource's labels metric (Example:
+     * 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only
+     * resource name and namespace labels.
      *
      * @param metricAnnotationsAllowList the metricAnnotationsAllowList value to set.
      * @return the ManagedClusterAzureMonitorProfileKubeStateMetrics object itself.
      */
-    public ManagedClusterAzureMonitorProfileKubeStateMetrics withMetricAnnotationsAllowList(
-        String metricAnnotationsAllowList) {
+    public ManagedClusterAzureMonitorProfileKubeStateMetrics
+        withMetricAnnotationsAllowList(String metricAnnotationsAllowList) {
         this.metricAnnotationsAllowList = metricAnnotationsAllowList;
         return this;
     }

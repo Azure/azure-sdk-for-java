@@ -4,10 +4,14 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-/** Samples for OpenShiftManagedClusters GetByResourceGroup. */
+/**
+ * Samples for OpenShiftManagedClusters GetByResourceGroup.
+ */
 public final class OpenShiftManagedClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/OpenShiftManagedClustersGet.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/
+     * OpenShiftManagedClustersGet.json
      */
     /**
      * Sample code: Get OpenShift Managed Cluster.
@@ -15,11 +19,7 @@ public final class OpenShiftManagedClustersGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getOpenShiftManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getOpenShiftManagedClusters()
+        azure.kubernetesClusters().manager().serviceClient().getOpenShiftManagedClusters()
             .getByResourceGroupWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

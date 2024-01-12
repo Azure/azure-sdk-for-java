@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the managed inbound Load Balancer BackendPool. */
+/**
+ * The type of the managed inbound Load Balancer BackendPool.
+ */
 public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType> {
-    /** Static value NodeIPConfiguration for BackendPoolType. */
+    /**
+     * Static value NodeIPConfiguration for BackendPoolType.
+     */
     public static final BackendPoolType NODE_IPCONFIGURATION = fromString("NodeIPConfiguration");
 
-    /** Static value NodeIP for BackendPoolType. */
+    /**
+     * Static value NodeIP for BackendPoolType.
+     */
     public static final BackendPoolType NODE_IP = fromString("NodeIP");
 
     /**

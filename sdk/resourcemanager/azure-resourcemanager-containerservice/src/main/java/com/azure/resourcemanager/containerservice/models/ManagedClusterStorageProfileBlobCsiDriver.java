@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureBlob CSI Driver settings for the storage profile. */
+/**
+ * AzureBlob CSI Driver settings for the storage profile.
+ */
 @Fluent
 public final class ManagedClusterStorageProfileBlobCsiDriver {
     /*
@@ -16,7 +18,9 @@ public final class ManagedClusterStorageProfileBlobCsiDriver {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterStorageProfileBlobCsiDriver class. */
+    /**
+     * Creates an instance of ManagedClusterStorageProfileBlobCsiDriver class.
+     */
     public ManagedClusterStorageProfileBlobCsiDriver() {
     }
 

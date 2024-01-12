@@ -28,8 +28,8 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.DetectedTag;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
@@ -59,7 +59,7 @@ public class SampleTagsImageFile {
         try {
             // Extract tags for an input image buffer. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.TAGS), // visualFeatures
                 new ImageAnalysisOptions().setLanguage("en")); // options: See https://aka.ms/cv-languages for supported languages. Or null to use the default of "en" (English).
 

@@ -5,6 +5,7 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -65,8 +66,7 @@ public final class ImageAnalysisAsyncClient {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -235,8 +235,7 @@ public final class ImageAnalysisAsyncClient {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -398,7 +397,6 @@ public final class ImageAnalysisAsyncClient {
      * @param language The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.
      * @param genderNeutralCaption Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions
      * features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
@@ -483,7 +481,6 @@ public final class ImageAnalysisAsyncClient {
      * @param language The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.
      * @param genderNeutralCaption Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions
      * features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
@@ -576,6 +573,7 @@ public final class ImageAnalysisAsyncClient {
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -589,7 +587,7 @@ public final class ImageAnalysisAsyncClient {
     /**
      * Performs a single Image Analysis operation on a give image buffer.
      *
-     * @param imageBuffer The image to analyze.
+     * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -604,12 +602,13 @@ public final class ImageAnalysisAsyncClient {
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
+            return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
                 options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }

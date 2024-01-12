@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
  *
- * <p>See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
+ * See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
  * planned maintenance.
  */
 @Fluent
@@ -45,7 +45,9 @@ public final class MaintenanceConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of MaintenanceConfigurationInner class. */
+    /**
+     * Creates an instance of MaintenanceConfigurationInner class.
+     */
     public MaintenanceConfigurationInner() {
     }
 
@@ -86,7 +88,9 @@ public final class MaintenanceConfigurationInner extends SubResource {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaintenanceConfigurationInner withId(String id) {
         super.withId(id);
@@ -96,7 +100,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
      *
-     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
      * entries.
      *
      * @return the timeInWeek value.
@@ -108,7 +112,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
      *
-     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
      * entries.
      *
      * @param timeInWeek the timeInWeek value to set.

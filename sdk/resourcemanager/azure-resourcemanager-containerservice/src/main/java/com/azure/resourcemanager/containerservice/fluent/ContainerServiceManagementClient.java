@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for ContainerServiceManagementClient class. */
+/**
+ * The interface for ContainerServiceManagementClient class.
+ */
 public interface ContainerServiceManagementClient {
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms

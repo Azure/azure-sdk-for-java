@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Mode of an ingress gateway. */
+/**
+ * Mode of an ingress gateway.
+ */
 public final class IstioIngressGatewayMode extends ExpandableStringEnum<IstioIngressGatewayMode> {
-    /** Static value External for IstioIngressGatewayMode. */
+    /**
+     * Static value External for IstioIngressGatewayMode.
+     */
     public static final IstioIngressGatewayMode EXTERNAL = fromString("External");
 
-    /** Static value Internal for IstioIngressGatewayMode. */
+    /**
+     * Static value Internal for IstioIngressGatewayMode.
+     */
     public static final IstioIngressGatewayMode INTERNAL = fromString("Internal");
 
     /**

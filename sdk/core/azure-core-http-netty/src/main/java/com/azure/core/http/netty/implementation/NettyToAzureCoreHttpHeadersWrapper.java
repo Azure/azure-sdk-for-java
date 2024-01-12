@@ -15,10 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-// This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
-// This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
-// Whilst it is not necessary to support mutability (as these headers are the result of a Netty response), we do so in
-// any case, given the additional implementation cost is minimal.
+/**
+ * This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
+ * <p>
+ * This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
+ * <p>
+ * Whilst it is not necessary to support mutability (as these headers are the result of a Netty response), we do so any
+ * case, given the additional implementation cost is minimal.
+ */
 public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     // This wrapper is frequently created, so we are OK with creating a single shared logger instance here,
     // to lessen the cost of this type.
@@ -35,6 +39,11 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     // toMultiMap API. We lazily instantiate it when toMap is called, and then reuse that for all future calls.
     private Map<String, String[]> abstractMultiMap;
 
+    /**
+     * Creates a new instance of NettyToAzureCoreHttpHeadersWrapper.
+     *
+     * @param nettyHeaders The Netty HttpHeaders to wrap.
+     */
     public NettyToAzureCoreHttpHeadersWrapper(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
         this.nettyHeaders = nettyHeaders;
     }
