@@ -74,6 +74,7 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
   val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
+  val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
@@ -161,6 +162,7 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningStrategy,
     ReadPartitioningTargetedCount,
     ReadPartitioningFeedRangeFilter,
+    ReadRuntimeFilteringEnabled,
     ViewsRepositoryPath,
     DiagnosticsMode,
     ClientTelemetryEnabled,
@@ -590,7 +592,8 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     prefetchBufferSize: Int,
                                     dedicatedGatewayRequestOptions: DedicatedGatewayRequestOptions,
                                     customQuery: Option[CosmosParameterizedQuery],
-                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
+                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
+                                    runtimeFilteringConfig: CosmosReadRuntimeFilteringConfig)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -661,6 +664,15 @@ private object CosmosReadConfig {
       "entry."
   )
 
+  private val RuntimeFilteringEnabled = CosmosConfigEntry[Boolean](
+      key = CosmosConfigNames.ReadRuntimeFilteringEnabled,
+      mandatory = false,
+      defaultValue = Some(false),
+      parseFromStringFunction = runtimeFilteringEnabled => runtimeFilteringEnabled.toBoolean,
+      helpMessage = "When enabled, will try to optimize the read using readMany vs query when spark dynamic partition pruning happens and there are runtime filters " +
+          "being pushed down. If for the customer's container, id is the also the partitionKey, this optimization will kick in automatically when applicable. Otherwise, " +
+          "in order to be able to use readMany, it requires the customer to construct a new column 'itemIdentity' which is a combination of id and partitionKey column.")
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
@@ -679,6 +691,7 @@ private object CosmosReadConfig {
     }
 
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
+    val runtimeFilteringConfig = CosmosReadRuntimeFilteringConfig.parseCosmosReadRuntimeFilteringConfig(cfg)
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -697,7 +710,8 @@ private object CosmosReadConfig {
       ),
       dedicatedGatewayRequestOptions,
       customQuery,
-      throughputControlConfigOpt)
+      throughputControlConfigOpt,
+      runtimeFilteringConfig)
   }
 }
 
@@ -1262,6 +1276,27 @@ private object CosmosContainerConfig {
     CosmosContainerConfig(databaseOpt, containerOpt)
   }
 }
+protected case class CosmosReadRuntimeFilteringConfig(readRuntimeFilteringEnabled: Boolean,
+                                                      readManyFilterProperty: String)
+private object CosmosReadRuntimeFilteringConfig {
+    // For now,we use a hardcoded name, if there are requirements to make it more dynamic, can open it to be configurable
+
+    private val defaultRuntimeFilteringProperty = "_itemIdentity"
+    private val runtimeFilteringEnabled = CosmosConfigEntry[Boolean](
+        key = CosmosConfigNames.ReadRuntimeFilteringEnabled,
+        mandatory = false,
+        defaultValue = Some(false),
+        parseFromStringFunction = runtimeFilteringEnabled => runtimeFilteringEnabled.toBoolean,
+        helpMessage = "When enabled, will try to optimize the read using readMany vs query when spark dynamic partition pruning happens and there are runtime filters " +
+            "being pushed down. " +
+            "In order to use readMany, it requires the customer to construct a new column '_itemIdentity' which value is a combination of id and partitionKey column.")
+
+    def parseCosmosReadRuntimeFilteringConfig(cfg: Map[String, String]): CosmosReadRuntimeFilteringConfig = {
+        val readRuntimeFilteringEnabled = CosmosConfigEntry.parse(cfg, runtimeFilteringEnabled)
+
+        CosmosReadRuntimeFilteringConfig(readRuntimeFilteringEnabled.get, defaultRuntimeFilteringProperty)
+    }
+}
 
 private case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int,
                                                inferSchemaEnabled: Boolean,
@@ -1327,7 +1362,7 @@ private object CosmosSchemaInferenceConfig {
       includeSystemProperties.get,
       includeTimestamp.get,
       allowNullForInferredProperties.get,
-      query)
+      None)
   }
 }
 

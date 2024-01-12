@@ -107,6 +107,7 @@ private object CosmosTableSchemaInferrer
                                     defaultSchema: StructType): StructType = {
     val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    var schema = Option.empty[StructType]
     if (cosmosInferenceConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
       val sourceContainer =
@@ -152,12 +153,18 @@ private object CosmosTableSchemaInferrer
         .limit(cosmosInferenceConfig.inferSchemaSamplingSize)
         .collect(Collectors.toList[ObjectNode]())
 
-      inferSchema(feedResponseList.asScala,
-        cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeSystemProperties,
-        cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeTimestamp,
-        cosmosInferenceConfig.allowNullForInferredProperties)
+        schema = Some(inferSchema(feedResponseList.asScala,
+            cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeSystemProperties,
+            cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeTimestamp,
+            cosmosInferenceConfig.allowNullForInferredProperties))
     } else {
-      defaultSchema
+        schema = Some(defaultSchema)
+    }
+
+    if (cosmosReadConfig.runtimeFilteringConfig.readRuntimeFilteringEnabled) {
+        schema.get.add(cosmosReadConfig.runtimeFilteringConfig.readManyFilterProperty, DataTypes.StringType, true)
+    } else {
+        schema.get
     }
   }
 

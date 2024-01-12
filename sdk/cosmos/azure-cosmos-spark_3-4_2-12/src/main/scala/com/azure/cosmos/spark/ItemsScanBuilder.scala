@@ -64,7 +64,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     }
 
     // TODO when inferring schema we should consolidate the schema from pruneColumns
-    ItemsScan(
+    new ItemsScan(
       session,
       inputSchema,
       this.configMap,

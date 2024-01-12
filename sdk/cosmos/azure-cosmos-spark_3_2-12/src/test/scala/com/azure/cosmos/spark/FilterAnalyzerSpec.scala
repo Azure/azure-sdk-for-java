@@ -19,7 +19,14 @@ class FilterAnalyzerSpec extends UnitSpec {
 
   private[this] val readConfigWithoutCustomQuery =
     new CosmosReadConfig(
-      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, new DedicatedGatewayRequestOptions, None)
+        true,
+        SchemaConversionModes.Relaxed,
+        100,
+        Queues.XS_BUFFER_SIZE,
+        new DedicatedGatewayRequestOptions,
+        None,
+        None,
+        CosmosReadRuntimeFilteringConfig(false, "_itemIdentity"))
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -31,7 +38,9 @@ class FilterAnalyzerSpec extends UnitSpec {
     100,
     Queues.XS_BUFFER_SIZE,
     new DedicatedGatewayRequestOptions,
-    query)
+    query,
+    None,
+    CosmosReadRuntimeFilteringConfig(false, "_itemIdentity"))
 
   "many filters" should "be translated to cosmos predicates with AND" in {
     val filterProcessor = FilterAnalyzer()
