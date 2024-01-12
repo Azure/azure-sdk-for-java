@@ -197,11 +197,11 @@ com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.8.0;5.9.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config;5.8.0;5.9.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;5.8.0;5.9.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;5.8.0;5.9.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;5.8.0;5.9.0-beta.1
+com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.8.0;5.9.0-beta.2
+com.azure.spring:spring-cloud-azure-appconfiguration-config;5.8.0;5.9.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management-web;5.8.0;5.9.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management;5.8.0;5.9.0-beta.2
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;5.8.0;5.9.0-beta.2
 com.azure.spring:spring-cloud-azure-dependencies;5.8.0;5.9.0-beta.1
 com.azure.spring:spring-messaging-azure;5.8.0;5.9.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;5.8.0;5.9.0-beta.1
