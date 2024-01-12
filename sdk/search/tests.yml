@@ -4,7 +4,6 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: search
-      JavadocSafeJavaBuildVersion: '1.21'
       # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
       Clouds: 'Preview'
       SupportedClouds: 'Preview,UsGov,China'

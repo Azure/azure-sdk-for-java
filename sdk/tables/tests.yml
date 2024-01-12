@@ -17,6 +17,5 @@ stages:
           groupId: com.azure
           safeName: azuretables
       ServiceDirectory: tables
-      JavadocSafeJavaBuildVersion: '1.21'
       TimeoutInMinutes: 60
       MaxParallel: 14

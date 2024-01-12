@@ -4,7 +4,6 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: metricsadvisor
-      JavadocSafeJavaBuildVersion: '1.21'
       Artifacts:
         - name: azure-ai-metricsadvisor
           groupId: com.azure
