@@ -1362,7 +1362,7 @@ private object CosmosSchemaInferenceConfig {
       includeSystemProperties.get,
       includeTimestamp.get,
       allowNullForInferredProperties.get,
-      None)
+      query)
   }
 }
 

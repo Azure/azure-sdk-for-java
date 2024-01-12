@@ -73,6 +73,7 @@ private abstract class ItemsScanBase(session: SparkSession,
         schema
     }
 
+    //scalastyle:off method.length
     override def planInputPartitions(): Array[InputPartition] = {
         if (plannedInputPartitionsRef.get() == null) {
             val partitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
@@ -120,7 +121,11 @@ private abstract class ItemsScanBase(session: SparkSession,
 
         if (readManyFilterMapRef.get() == null) {
             // there is nothing to prune, return the original planned input partition
-            plannedInputPartitionsRef.get().map(_.asInstanceOf[InputPartition])
+            val afterPrunePlannedPartitions = plannedInputPartitionsRef.get().map(_.asInstanceOf[InputPartition])
+            if (afterPrunePlannedPartitions.size < plannedInputPartitionsRef.get().size) {
+                log.logInfo(s"There are ${plannedInputPartitionsRef.get().size - afterPrunePlannedPartitions.size} partitions got pruned")
+            }
+            afterPrunePlannedPartitions
         } else {
             // only return partitions has matching filter criteria
             prunePartitions().map(_.asInstanceOf[InputPartition])
@@ -222,7 +227,7 @@ private abstract class ItemsScanBase(session: SparkSession,
         // for now, just always return the collection estimateStatistics
         // else by default internally spark will use Long.MaxValue
         // only do when there is no pushed down filters
-        if (cosmosQuery.queryText.equals("SELECT * FROM r") && readManyFilterMapRef.get() == null) {
+        if (readManyFilterMapRef.get() == null) {
             val plannedInputPartitions = this.planInputPartitions()
             val itemCount = new AtomicLong(0)
             val totalDocSizeInKB = new AtomicLong(0)
