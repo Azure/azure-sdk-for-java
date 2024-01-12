@@ -29,6 +29,8 @@
 
 ### Other Changes
 
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
+
 #### Dependency Updates
 - Upgraded `azure-core` from `1.44.1` to `1.45.0`.
 - Upgraded `azure-core-amqp` from `2.9.0-beta.6` to `2.9.0-beta.7`.
