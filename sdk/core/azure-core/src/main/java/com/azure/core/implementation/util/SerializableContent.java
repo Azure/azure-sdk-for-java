@@ -126,6 +126,10 @@ public final class SerializableContent extends BinaryDataContent {
         return BinaryDataContentType.OBJECT;
     }
 
+    @Override
+    public void close() {
+    }
+
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
     }

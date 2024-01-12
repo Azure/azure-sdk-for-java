@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.io.IOUtils;
@@ -118,5 +119,18 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             // It's safe to invoke close() multiple times, additional calls will be ignored.
             this.responseBody.close();
         }
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        HttpResponse bufferedResponse = super.buffer();
+        close();
+
+        return bufferedResponse;
+    }
+
+    @Override
+    public Mono<HttpResponse> bufferAsync() {
+        return Mono.using(() -> this, ignored -> super.bufferAsync(), OkHttpAsyncResponse::close);
     }
 }

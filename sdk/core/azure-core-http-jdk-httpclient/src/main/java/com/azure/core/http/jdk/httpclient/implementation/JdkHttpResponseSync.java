@@ -12,11 +12,13 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
@@ -82,6 +84,15 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     }
 
     @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        if (bodyBytes != null) {
+            return Mono.just(new ByteArrayInputStream(bodyBytes));
+        } else {
+            return Mono.just(bodyStream);
+        }
+    }
+
+    @Override
     public BinaryData getBodyAsBinaryData() {
         if (bodyBytes != null) {
             return BinaryData.fromBytes(bodyBytes);
@@ -106,6 +117,15 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     }
 
     @Override
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        if (bodyBytes != null) {
+            return getBinaryData().writeTo(channel);
+        } else {
+            return Mono.using(() -> this, ignored -> getBinaryData().writeTo(channel), JdkHttpResponseSync::close);
+        }
+    }
+
+    @Override
     public void close() {
         if (bodyStream != null && DISPOSED_UPDATER.compareAndSet(this, 0, 1)) {
             try {
@@ -126,6 +146,21 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
         return this; // This response is already buffered.
     }
 
+    @Override
+    public Mono<HttpResponse> bufferAsync() {
+        if (bodyBytes == null) {
+            bodyBytes = getBytes();
+            close();
+        }
+
+        return Mono.just(this); // This response is already buffered.
+    }
+
+    @Override
+    public boolean isBuffered() {
+        return bodyBytes != null;
+    }
+
     private byte[] getBytes() {
         try {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
@@ -142,7 +177,11 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
 
     private BinaryData getBinaryData() {
         if (binaryData == null) {
-            binaryData = BinaryData.fromStream(bodyStream);
+            if (bodyBytes != null) {
+                binaryData = BinaryData.fromBytes(bodyBytes);
+            } else {
+                binaryData = BinaryData.fromStream(bodyStream);
+            }
         }
         return binaryData;
     }

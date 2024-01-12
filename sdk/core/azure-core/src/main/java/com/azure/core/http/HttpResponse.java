@@ -8,7 +8,6 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +19,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
-import java.util.Objects;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -155,7 +153,26 @@ public abstract class HttpResponse implements Closeable {
      * @return A new {@link HttpResponse response} with the content buffered.
      */
     public HttpResponse buffer() {
-        return new BufferedHttpResponse(this);
+        return new BufferedHttpResponse(this, getBodyAsBinaryData().toReplayableBinaryData());
+    }
+
+    /**
+     * Gets a new {@link HttpResponse response} object wrapping this response with its content buffered into memory.
+     *
+     * @return A {@link Mono} that completes with a new {@link HttpResponse response} with the content buffered.
+     */
+    public Mono<HttpResponse> bufferAsync() {
+        return getBodyAsBinaryData().toReplayableBinaryDataAsync()
+            .map(bufferedResponseContent -> new BufferedHttpResponse(this, bufferedResponseContent));
+    }
+
+    /**
+     * Whether this response is buffered in memory.
+     *
+     * @return Whether this response is buffered in memory.
+     */
+    public boolean isBuffered() {
+        return false;
     }
 
     /**
@@ -165,13 +182,7 @@ public abstract class HttpResponse implements Closeable {
      * @throws NullPointerException When {@code channel} is null.
      */
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        Objects.requireNonNull(channel, "'channel' must not be null");
-        Flux<ByteBuffer> body = getBody();
-        if (body != null) {
-            return FluxUtil.writeToAsynchronousByteChannel(body, channel);
-        } else {
-            return Mono.empty();
-        }
+        return getBodyAsBinaryData().writeTo(channel);
     }
 
     /**
@@ -181,11 +192,7 @@ public abstract class HttpResponse implements Closeable {
      * @throws NullPointerException When {@code channel} is null.
      */
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
-        Flux<ByteBuffer> body = getBody();
-        if (body != null) {
-            Mono.using(() -> this, ignored -> FluxUtil.writeToWritableByteChannel(body, channel), HttpResponse::close)
-                .block();
-        }
+        getBodyAsBinaryData().writeTo(channel);
     }
 
     /**

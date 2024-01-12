@@ -113,4 +113,8 @@ public final class ByteArrayContent extends BinaryDataContent {
     public BinaryDataContentType getContentType() {
         return BinaryDataContentType.BINARY;
     }
+
+    @Override
+    public void close() {
+    }
 }

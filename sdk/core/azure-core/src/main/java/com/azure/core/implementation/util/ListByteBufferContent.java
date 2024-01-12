@@ -129,6 +129,10 @@ public class ListByteBufferContent extends BinaryDataContent {
         return BinaryDataContentType.BINARY;
     }
 
+    @Override
+    public void close() {
+    }
+
     private byte[] getBytes() {
         long length = getLength();
         if (length > MAX_ARRAY_SIZE) {

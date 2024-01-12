@@ -10,6 +10,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,7 +22,7 @@ import java.nio.channels.WritableByteChannel;
 /**
  * An abstract internal representation of the content stored in {@link BinaryData}.
  */
-public abstract class BinaryDataContent {
+public abstract class BinaryDataContent implements Closeable {
     public static final int STREAM_READ_SIZE = 8192;
 
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -190,4 +191,7 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} content type.
      */
     public abstract BinaryDataContentType getContentType();
+
+    @Override
+    public abstract void close();
 }

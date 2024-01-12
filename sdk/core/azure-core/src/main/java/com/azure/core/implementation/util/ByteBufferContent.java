@@ -119,6 +119,10 @@ public final class ByteBufferContent extends BinaryDataContent {
         return BinaryDataContentType.BINARY;
     }
 
+    @Override
+    public void close() {
+    }
+
     private byte[] getBytes() {
         byte[] bytes = new byte[content.remaining()];
 

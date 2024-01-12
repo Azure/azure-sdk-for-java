@@ -179,6 +179,15 @@ public final class InputStreamContent extends BinaryDataContent {
         return BinaryDataContentType.BINARY;
     }
 
+    @Override
+    public void close() {
+        try {
+            this.content.get().close();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
     private static boolean canMarkReset(InputStream inputStream, Long length) {
         return length != null && length < MAX_ARRAY_LENGTH && inputStream.markSupported();
     }
