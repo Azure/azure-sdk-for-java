@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service mesh profile for a managed cluster. */
+/**
+ * Service mesh profile for a managed cluster.
+ */
 @Fluent
 public final class ServiceMeshProfile {
     /*
@@ -23,7 +25,9 @@ public final class ServiceMeshProfile {
     @JsonProperty(value = "istio")
     private IstioServiceMesh istio;
 
-    /** Creates an instance of ServiceMeshProfile class. */
+    /**
+     * Creates an instance of ServiceMeshProfile class.
+     */
     public ServiceMeshProfile() {
     }
 
@@ -74,9 +78,8 @@ public final class ServiceMeshProfile {
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
         }
         if (istio() != null) {
             istio().validate();

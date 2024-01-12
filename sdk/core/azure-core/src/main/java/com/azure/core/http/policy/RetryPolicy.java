@@ -190,8 +190,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
-                } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                } catch (InterruptedException ex) {
+                    err.addSuppressed(ex);
+                    throw LOGGER.logExceptionAsError(err);
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;

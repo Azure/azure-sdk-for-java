@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private endpoint connections. */
+/**
+ * A list of private endpoint connections.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResultInner {
     /*
@@ -17,7 +19,9 @@ public final class PrivateEndpointConnectionListResultInner {
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
-    /** Creates an instance of PrivateEndpointConnectionListResultInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResultInner class.
+     */
     public PrivateEndpointConnectionListResultInner() {
     }
 

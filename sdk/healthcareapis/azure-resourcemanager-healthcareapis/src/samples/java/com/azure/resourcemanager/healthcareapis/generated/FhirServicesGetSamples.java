@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.healthcareapis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FhirServices Get. */
+/**
+ * Samples for FhirServices Get.
+ */
 public final class FhirServicesGetSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Get.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/
+     * FhirServices_Get.json
      */
     /**
      * Sample code: Get a Fhir Service.
-     *
+     * 
      * @param manager Entry point to HealthcareApisManager.
      */
     public static void getAFhirService(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.fhirServices().getWithResponse("testRG", "workspace1", "fhirservices1", Context.NONE);
+        manager.fhirServices().getWithResponse("testRG", "workspace1", "fhirservices1",
+            com.azure.core.util.Context.NONE);
     }
 }

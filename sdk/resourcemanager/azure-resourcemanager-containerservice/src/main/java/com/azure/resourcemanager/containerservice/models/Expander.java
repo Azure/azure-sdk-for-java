@@ -11,21 +11,29 @@ import java.util.Collection;
 /**
  * The expander to use when scaling up
  *
- * <p>If not specified, the default is 'random'. See
+ * If not specified, the default is 'random'. See
  * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders) for
  * more information.
  */
 public final class Expander extends ExpandableStringEnum<Expander> {
-    /** Static value least-waste for Expander. */
+    /**
+     * Static value least-waste for Expander.
+     */
     public static final Expander LEAST_WASTE = fromString("least-waste");
 
-    /** Static value most-pods for Expander. */
+    /**
+     * Static value most-pods for Expander.
+     */
     public static final Expander MOST_PODS = fromString("most-pods");
 
-    /** Static value priority for Expander. */
+    /**
+     * Static value priority for Expander.
+     */
     public static final Expander PRIORITY = fromString("priority");
 
-    /** Static value random for Expander. */
+    /**
+     * Static value random for Expander.
+     */
     public static final Expander RANDOM = fromString("random");
 
     /**

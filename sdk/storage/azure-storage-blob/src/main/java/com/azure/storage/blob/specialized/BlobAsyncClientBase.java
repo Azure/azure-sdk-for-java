@@ -239,7 +239,7 @@ public class BlobAsyncClientBase {
 
         this.accountName = accountName;
         this.containerName = containerName;
-        this.blobName = Utility.urlDecode(blobName);
+        this.blobName = blobName;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
@@ -258,7 +258,7 @@ public class BlobAsyncClientBase {
      *
      * @return the encryption scope used for encryption.
      */
-    protected String getEncryptionScope() {
+    public String getEncryptionScope() {
         if (encryptionScope == null) {
             return null;
         }
@@ -411,7 +411,7 @@ public class BlobAsyncClientBase {
      * @return The decoded name of the blob.
      */
     public final String getBlobName() {
-        return blobName; // The blob name is decoded when the client is constructor
+        return blobName;
     }
 
     /**

@@ -86,11 +86,11 @@ public class RestProxyTracingTests {
         assertEquals(getSpan(http.getStartContext()), restProxy);
         assertTrue(restProxy.getName().startsWith("myService.testMethodDelays"));
         assertNull(restProxy.getThrowable());
-        assertEquals("cancel", restProxy.getErrorMessage());
+        assertEquals("cancelled", restProxy.getErrorMessage());
 
-        assertTrue(http.getName().startsWith("HTTP PUT"));
+        assertTrue(http.getName().startsWith("PUT"));
         assertNull(http.getThrowable());
-        assertEquals("cancel", http.getErrorMessage());
+        assertEquals("cancelled", http.getErrorMessage());
     }
 
     @Test

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The complex type of the extended location. */
+/**
+ * The complex type of the extended location.
+ */
 @Fluent
 public final class ExtendedLocation {
     /*
@@ -22,7 +24,9 @@ public final class ExtendedLocation {
     @JsonProperty(value = "type")
     private ExtendedLocationTypes type;
 
-    /** Creates an instance of ExtendedLocation class. */
+    /**
+     * Creates an instance of ExtendedLocation class.
+     */
     public ExtendedLocation() {
     }
 

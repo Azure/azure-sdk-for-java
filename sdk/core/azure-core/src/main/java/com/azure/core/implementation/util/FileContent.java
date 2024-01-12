@@ -16,15 +16,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} backed by a file.
@@ -109,6 +115,11 @@ public class FileContent extends BinaryDataContent {
         return this.length;
     }
 
+    /**
+     * Gets the position, or offset, within the path where reading begins.
+     *
+     * @return The position, or offset, within the path where reading begins.
+     */
     public long getPosition() {
         return position;
     }
@@ -137,6 +148,12 @@ public class FileContent extends BinaryDataContent {
         }
     }
 
+    /**
+     * Gets the {@link FileInputStream} for the file.
+     *
+     * @return The {@link FileInputStream} for the file.
+     * @throws FileNotFoundException If the file doesn't exist.
+     */
     protected FileInputStream getFileInputStream() throws FileNotFoundException {
         return new FileInputStream(file.toFile());
     }
@@ -150,6 +167,12 @@ public class FileContent extends BinaryDataContent {
         return toByteBufferInternal();
     }
 
+    /**
+     * Gets the {@link ByteBuffer} for the file.
+     *
+     * @return The {@link ByteBuffer} for the file.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
     protected ByteBuffer toByteBufferInternal() {
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
@@ -175,6 +198,41 @@ public class FileContent extends BinaryDataContent {
             });
     }
 
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        writeTo(Channels.newChannel(outputStream));
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        long totalWritten = 0;
+        try (FileChannel fileChannel = FileChannel.open(file)) {
+            while (totalWritten < length) {
+                long written = fileChannel.transferTo(position + totalWritten, length - totalWritten, channel);
+                if (written < 0) {
+                    return;
+                }
+
+                totalWritten += written;
+            }
+        }
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    /**
+     * Opens an {@link AsynchronousFileChannel} for the file.
+     *
+     * @return The {@link AsynchronousFileChannel} for the file.
+     * @throws IOException If an I/O error occurs.
+     */
     protected AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
         return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }

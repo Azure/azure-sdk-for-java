@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'. */
+/**
+ * For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'.
+ */
 @Fluent
 public final class RelativeMonthlySchedule {
     /*
@@ -31,7 +33,9 @@ public final class RelativeMonthlySchedule {
     @JsonProperty(value = "dayOfWeek", required = true)
     private WeekDay dayOfWeek;
 
-    /** Creates an instance of RelativeMonthlySchedule class. */
+    /**
+     * Creates an instance of RelativeMonthlySchedule class.
+     */
     public RelativeMonthlySchedule() {
     }
 
@@ -58,7 +62,7 @@ public final class RelativeMonthlySchedule {
     /**
      * Get the weekIndex property: The week index.
      *
-     * <p>Specifies on which week of the month the dayOfWeek applies.
+     * Specifies on which week of the month the dayOfWeek applies.
      *
      * @return the weekIndex value.
      */
@@ -69,7 +73,7 @@ public final class RelativeMonthlySchedule {
     /**
      * Set the weekIndex property: The week index.
      *
-     * <p>Specifies on which week of the month the dayOfWeek applies.
+     * Specifies on which week of the month the dayOfWeek applies.
      *
      * @param weekIndex the weekIndex value to set.
      * @return the RelativeMonthlySchedule object itself.
@@ -106,16 +110,12 @@ public final class RelativeMonthlySchedule {
      */
     public void validate() {
         if (weekIndex() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property weekIndex in model RelativeMonthlySchedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property weekIndex in model RelativeMonthlySchedule"));
         }
         if (dayOfWeek() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dayOfWeek in model RelativeMonthlySchedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dayOfWeek in model RelativeMonthlySchedule"));
         }
     }
 

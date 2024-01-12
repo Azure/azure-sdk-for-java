@@ -24,7 +24,9 @@ import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClien
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ContainerServiceManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ContainerServiceManagementClientImpl type.
+ */
 @ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
 public final class ContainerServiceManagementClientImpl extends AzureServiceClient
     implements ContainerServiceManagementClient {
@@ -44,7 +46,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
@@ -56,7 +60,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -68,7 +74,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
@@ -80,7 +88,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
@@ -92,7 +102,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.defaultPollInterval;
     }
 
-    /** The OpenShiftManagedClustersClient object to access its operations. */
+    /**
+     * The OpenShiftManagedClustersClient object to access its operations.
+     */
     private final OpenShiftManagedClustersClient openShiftManagedClusters;
 
     /**
@@ -104,7 +116,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.openShiftManagedClusters;
     }
 
-    /** The ContainerServicesClient object to access its operations. */
+    /**
+     * The ContainerServicesClient object to access its operations.
+     */
     private final ContainerServicesClient containerServices;
 
     /**
@@ -116,7 +130,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.containerServices;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
@@ -128,7 +144,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.operations;
     }
 
-    /** The ManagedClustersClient object to access its operations. */
+    /**
+     * The ManagedClustersClient object to access its operations.
+     */
     private final ManagedClustersClient managedClusters;
 
     /**
@@ -140,7 +158,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.managedClusters;
     }
 
-    /** The MaintenanceConfigurationsClient object to access its operations. */
+    /**
+     * The MaintenanceConfigurationsClient object to access its operations.
+     */
     private final MaintenanceConfigurationsClient maintenanceConfigurations;
 
     /**
@@ -152,7 +172,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.maintenanceConfigurations;
     }
 
-    /** The AgentPoolsClient object to access its operations. */
+    /**
+     * The AgentPoolsClient object to access its operations.
+     */
     private final AgentPoolsClient agentPools;
 
     /**
@@ -164,7 +186,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.agentPools;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
@@ -176,7 +200,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
@@ -188,7 +214,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.privateLinkResources;
     }
 
-    /** The ResolvePrivateLinkServiceIdsClient object to access its operations. */
+    /**
+     * The ResolvePrivateLinkServiceIdsClient object to access its operations.
+     */
     private final ResolvePrivateLinkServiceIdsClient resolvePrivateLinkServiceIds;
 
     /**
@@ -200,7 +228,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
-    /** The SnapshotsClient object to access its operations. */
+    /**
+     * The SnapshotsClient object to access its operations.
+     */
     private final SnapshotsClient snapshots;
 
     /**
@@ -212,7 +242,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.snapshots;
     }
 
-    /** The TrustedAccessRoleBindingsClient object to access its operations. */
+    /**
+     * The TrustedAccessRoleBindingsClient object to access its operations.
+     */
     private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
 
     /**
@@ -224,7 +256,9 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.trustedAccessRoleBindings;
     }
 
-    /** The TrustedAccessRolesClient object to access its operations. */
+    /**
+     * The TrustedAccessRolesClient object to access its operations.
+     */
     private final TrustedAccessRolesClient trustedAccessRoles;
 
     /**
@@ -244,16 +278,11 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    ContainerServiceManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ContainerServiceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

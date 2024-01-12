@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateEndpointCon
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of private endpoint connection associated with the specified storage account. */
+/**
+ * List of private endpoint connection associated with the specified storage account.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResultDescription {
     /*
@@ -19,8 +21,14 @@ public final class PrivateEndpointConnectionListResultDescription {
     private List<PrivateEndpointConnectionDescriptionInner> value;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionListResultDescription class.
+     */
+    public PrivateEndpointConnectionListResultDescription() {
+    }
+
+    /**
      * Get the value property: Array of private endpoint connections.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionDescriptionInner> value() {
@@ -29,19 +37,19 @@ public final class PrivateEndpointConnectionListResultDescription {
 
     /**
      * Set the value property: Array of private endpoint connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResultDescription object itself.
      */
-    public PrivateEndpointConnectionListResultDescription withValue(
-        List<PrivateEndpointConnectionDescriptionInner> value) {
+    public PrivateEndpointConnectionListResultDescription
+        withValue(List<PrivateEndpointConnectionDescriptionInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

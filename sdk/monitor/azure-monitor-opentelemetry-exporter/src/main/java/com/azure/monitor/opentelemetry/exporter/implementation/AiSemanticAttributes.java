@@ -70,14 +70,6 @@ public final class AiSemanticAttributes {
     public static final AttributeKey<String> DEVICE_OS_VERSION =
         AttributeKey.stringKey("applicationinsights.internal.operating_system_version");
 
-    // TODO (trask) remove these once they make it into SemanticAttributes
-    public static final AttributeKey<String> NET_SOCK_PEER_NAME =
-        AttributeKey.stringKey("net.sock.peer.name");
-    public static final AttributeKey<String> NET_SOCK_PEER_ADDR =
-        AttributeKey.stringKey("net.sock.peer.addr");
-    public static final AttributeKey<Long> NET_SOCK_PEER_PORT =
-        AttributeKey.longKey("net.sock.peer.port");
-
     public static final AttributeKey<String> LEGACY_PARENT_ID =
         AttributeKey.stringKey("applicationinsights.internal.legacy_parent_id");
     public static final AttributeKey<String> LEGACY_ROOT_ID =

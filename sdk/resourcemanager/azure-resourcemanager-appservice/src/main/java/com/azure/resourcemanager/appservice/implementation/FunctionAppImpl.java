@@ -31,6 +31,7 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
@@ -62,6 +63,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -696,6 +698,31 @@ class FunctionAppImpl
         }
         siteConfig.withMinimumElasticInstanceCount(minReplicas);
         return this;
+    }
+
+    @Override
+    public Mono<Map<String, AppSetting>> getAppSettingsAsync() {
+        if (isFunctionAppOnACA()) {
+            // current function app on ACA doesn't support deployment slot, so appSettings sticky is false
+            return listAppSettings()
+                .map(
+                    appSettingsInner ->
+                        appSettingsInner
+                            .properties()
+                            .entrySet()
+                            .stream()
+                            .collect(
+                                Collectors
+                                    .toMap(
+                                        Map.Entry::getKey,
+                                        entry ->
+                                            new AppSettingImpl(
+                                                entry.getKey(),
+                                                entry.getValue(),
+                                                false))));
+        } else {
+            return super.getAppSettingsAsync();
+        }
     }
 
     /**

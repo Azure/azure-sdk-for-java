@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -26,10 +27,10 @@ public final class Conflict extends Resource {
     /**
      * Initialize a conflict object from json string.
      *
-     * @param jsonString the json string that represents the conflict.
+     * @param jsonNode the json node that represents the conflict.
      */
-    public Conflict(String jsonString) {
-        super(jsonString);
+    public Conflict(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**

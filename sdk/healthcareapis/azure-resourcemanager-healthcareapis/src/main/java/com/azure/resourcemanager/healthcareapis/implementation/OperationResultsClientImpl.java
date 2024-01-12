@@ -25,22 +25,28 @@ import com.azure.resourcemanager.healthcareapis.fluent.OperationResultsClient;
 import com.azure.resourcemanager.healthcareapis.fluent.models.OperationResultsDescriptionInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationResultsClient.
+ */
 public final class OperationResultsClientImpl implements OperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationResultsClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,48 +56,38 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface OperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/locations/{locationName}"
-                + "/operationresults/{operationResultId}")
-        @ExpectedResponses({200})
+    public interface OperationResultsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/locations/{locationName}/operationresults/{operationResultId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResultsDescriptionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("operationResultId") String operationResultId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationResultsDescriptionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @PathParam("operationResultId") String operationResultId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the operation result for a long running operation.
-     *
+     * 
      * @param locationName The location of the operation.
      * @param operationResultId The ID of the operation result to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result for a long running operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResultsDescriptionInner>> getWithResponseAsync(
-        String locationName, String operationResultId) {
+    private Mono<Response<OperationResultsDescriptionInner>> getWithResponseAsync(String locationName,
+        String operationResultId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -102,23 +98,14 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            operationResultId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), locationName, operationResultId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the operation result for a long running operation.
-     *
+     * 
      * @param locationName The location of the operation.
      * @param operationResultId The ID of the operation result to get.
      * @param context The context to associate with this operation.
@@ -126,22 +113,18 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result for a long running operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResultsDescriptionInner>> getWithResponseAsync(
-        String locationName, String operationResultId, Context context) {
+    private Mono<Response<OperationResultsDescriptionInner>> getWithResponseAsync(String locationName,
+        String operationResultId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -152,20 +135,13 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                locationName,
-                operationResultId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            locationName, operationResultId, accept, context);
     }
 
     /**
      * Get the operation result for a long running operation.
-     *
+     * 
      * @param locationName The location of the operation.
      * @param operationResultId The ID of the operation result to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,35 +151,12 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultsDescriptionInner> getAsync(String locationName, String operationResultId) {
-        return getWithResponseAsync(locationName, operationResultId)
-            .flatMap(
-                (Response<OperationResultsDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(locationName, operationResultId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the operation result for a long running operation.
-     *
-     * @param locationName The location of the operation.
-     * @param operationResultId The ID of the operation result to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a long running operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResultsDescriptionInner get(String locationName, String operationResultId) {
-        return getAsync(locationName, operationResultId).block();
-    }
-
-    /**
-     * Get the operation result for a long running operation.
-     *
+     * 
      * @param locationName The location of the operation.
      * @param operationResultId The ID of the operation result to get.
      * @param context The context to associate with this operation.
@@ -213,8 +166,23 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      * @return the operation result for a long running operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationResultsDescriptionInner> getWithResponse(
-        String locationName, String operationResultId, Context context) {
+    public Response<OperationResultsDescriptionInner> getWithResponse(String locationName, String operationResultId,
+        Context context) {
         return getWithResponseAsync(locationName, operationResultId, context).block();
+    }
+
+    /**
+     * Get the operation result for a long running operation.
+     * 
+     * @param locationName The location of the operation.
+     * @param operationResultId The ID of the operation result to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResultsDescriptionInner get(String locationName, String operationResultId) {
+        return getWithResponse(locationName, operationResultId, Context.NONE).getValue();
     }
 }

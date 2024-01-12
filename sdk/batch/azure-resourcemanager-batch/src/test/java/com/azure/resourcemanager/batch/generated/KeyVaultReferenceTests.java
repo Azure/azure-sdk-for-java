@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class KeyVaultReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KeyVaultReference model =
-            BinaryData.fromString("{\"id\":\"lzl\",\"url\":\"j\"}").toObject(KeyVaultReference.class);
+        KeyVaultReference model
+            = BinaryData.fromString("{\"id\":\"lzl\",\"url\":\"j\"}").toObject(KeyVaultReference.class);
         Assertions.assertEquals("lzl", model.id());
         Assertions.assertEquals("j", model.url());
     }

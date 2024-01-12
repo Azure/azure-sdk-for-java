@@ -201,6 +201,7 @@
     <module>sdk/tools</module>
     <module>sdk/translation</module>
     <module>sdk/videoanalyzer</module>
+    <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>

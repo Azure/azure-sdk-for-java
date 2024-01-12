@@ -10,7 +10,9 @@ import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Batch List supported SKUs operation response. */
+/**
+ * The Batch List supported SKUs operation response.
+ */
 @Fluent
 public final class SupportedSkusResult {
     /*
@@ -25,13 +27,15 @@ public final class SupportedSkusResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SupportedSkusResult class. */
+    /**
+     * Creates an instance of SupportedSkusResult class.
+     */
     public SupportedSkusResult() {
     }
 
     /**
      * Get the value property: The list of SKUs available for the Batch service in the location.
-     *
+     * 
      * @return the value value.
      */
     public List<SupportedSkuInner> value() {
@@ -40,7 +44,7 @@ public final class SupportedSkusResult {
 
     /**
      * Set the value property: The list of SKUs available for the Batch service in the location.
-     *
+     * 
      * @param value the value value to set.
      * @return the SupportedSkusResult object itself.
      */
@@ -51,7 +55,7 @@ public final class SupportedSkusResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class SupportedSkusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SupportedSkusResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SupportedSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }
