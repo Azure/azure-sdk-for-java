@@ -76,7 +76,8 @@ class StorageAccountImpl
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
         this.encryptionHelper = new StorageEncryptionHelper(this.createParameters);
-        this.storageAccountMsiHandler = new StorageAccountMsiHandler(authorizationManager, this, this.createParameters, this.updateParameters, this.isInCreateMode());
+        this.storageAccountMsiHandler =
+            new StorageAccountMsiHandler(authorizationManager, this, this.createParameters);
     }
 
     @Override
@@ -476,7 +477,8 @@ class StorageAccountImpl
         updateParameters = new StorageAccountUpdateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.innerModel());
         this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.innerModel());
-        this.storageAccountMsiHandler = new StorageAccountMsiHandler(this.authorizationManager, this, createParameters, this.updateParameters, isInCreateMode());
+        this.storageAccountMsiHandler =
+            new StorageAccountMsiHandler(authorizationManager, this, this.updateParameters);
         return super.update();
     }
 
@@ -933,5 +935,4 @@ class StorageAccountImpl
             return provisioningState;
         }
     }
-
 }
