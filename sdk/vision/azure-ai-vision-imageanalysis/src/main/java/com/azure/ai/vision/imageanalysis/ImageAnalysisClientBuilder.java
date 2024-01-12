@@ -219,7 +219,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
      * @return the ImageAnalysisClientBuilder.
      */
@@ -237,7 +237,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the ImageAnalysisClientBuilder.
      */
@@ -249,7 +249,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ImageAnalysisClientImpl.
      */
     @Generated
@@ -300,7 +300,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisAsyncClient class.
-     * 
+     *
      * @return an instance of ImageAnalysisAsyncClient.
      */
     @Generated
@@ -310,7 +310,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisClient class.
-     * 
+     *
      * @return an instance of ImageAnalysisClient.
      */
     @Generated
