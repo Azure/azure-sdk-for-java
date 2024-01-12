@@ -75,7 +75,7 @@ private case class ItemsPartitionReaderWithReadMany
     log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
 
     private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-    log.logInfo(s"Reading from feed range $feedRange of " +
+    log.logInfo(s"Using ReadMany from feed range $feedRange of " +
         s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
         s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
         s"readManyFilter: ${readManyFilterList.reduce((left, right) => s"$left;$right")}, " +
@@ -120,32 +120,24 @@ private case class ItemsPartitionReaderWithReadMany
     override def next(): Boolean = iterator.hasNext
 
     override def get(): InternalRow = {
+        // TODO: Optimization: Using the item factory
         val jsonNode = iterator.next()
         val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
-        if (readConfig.runtimeFilteringConfig.readRuntimeFilteringEnabled) {
+        val computedColumnsMap = Map(
+            readConfig.runtimeFilteringConfig.readManyFilterProperty ->
+                ((objectNodeParam: ObjectNode) => {
+                    val idValue = objectNodeParam.get(IdAttributeName).asText()
+                    val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
+                    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
+                })
+        )
 
-            val computedColumnsMap = Map(
-                readConfig.runtimeFilteringConfig.readManyFilterProperty ->
-                    ((objectNodeParam: ObjectNode) => {
-                        val idValue = objectNodeParam.get(IdAttributeName).asText()
-                        val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
-                        CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
-                    })
-            )
-
-            val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
-                objectNode,
-                readConfig.schemaConversionMode,
-                computedColumnsMap)
-            cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
-
-        } else {
-            val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-                objectNode,
-                readConfig.schemaConversionMode)
-            cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
-        }
+        val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
+            objectNode,
+            readConfig.schemaConversionMode,
+            computedColumnsMap)
+        cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
     }
 
     override def close(): Unit = {
