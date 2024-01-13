@@ -38,10 +38,10 @@ stages:
 
         # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors from the rest of the libraries for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
         - task: Maven@3
-          displayName: 'Build All Libraries (excluding Cosmos Spark connectors) with Java $(JavaBuildVersion)'
+          displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12'
+            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.microsoft.azure:azure-applicationinsights-query,!com.microsoft.azure:azure-batch,!com.microsoft.azure:azure-eventgrid,!com.microsoft.azure:azure-loganalytics,!com.microsoft.azure:azure-media'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -50,13 +50,13 @@ stages:
             goals: 'clean install'
 
         - task: Maven@3
-          displayName: 'Build Cosmos Spark connectors with Java $(JavaCosmosSparkBuildVersion)'
+          displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12'
+            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.microsoft.azure:azure-applicationinsights-query,com.microsoft.azure:azure-batch,com.microsoft.azure:azure-eventgrid,com.microsoft.azure:azure-loganalytics,com.microsoft.azure:azure-media'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaCosmosSparkBuildVersion)
+            jdkVersionOption: $(FallbackJavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
             goals: 'clean install'
