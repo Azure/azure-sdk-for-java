@@ -904,8 +904,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         Field fieldCollectionNameToCollectionResourceId1 = SessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
         fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
         fieldCollectionNameToCollectionResourceId1.setAccessible(true);
-        ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens1 =
-                (ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(sessionContainer1);
+        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens1 =
+                (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(sessionContainer1);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(sessionContainer1);
 
 
@@ -913,8 +913,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         Field fieldCollectionNameToCollectionResourceId2 = SessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
         fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
         fieldCollectionNameToCollectionResourceId2.setAccessible(true);
-        ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens2 =
-                (ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(sessionContainer2);
+        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens2 =
+                (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(sessionContainer2);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId2 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId2.get(sessionContainer2);
 
         if (collectionResourceIdToSessionTokens1.size() != collectionResourceIdToSessionTokens2.size() ||

@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PkRangeBasedRegionScopedSessionTokenRegistry {
+public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
 
-    private static final Logger logger = LoggerFactory.getLogger(PkRangeBasedRegionScopedSessionTokenRegistry.class);
+    private static final Logger logger = LoggerFactory.getLogger(PartitionKeyRangeBasedRegionScopedSessionTokenRegistry.class);
 
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> pkRangeIdToRegionScopedSessionTokens;
 
-    public PkRangeBasedRegionScopedSessionTokenRegistry() {
+    public PartitionKeyRangeBasedRegionScopedSessionTokenRegistry() {
         this.pkRangeIdToRegionScopedSessionTokens = new ConcurrentHashMap<>();
     }
 
@@ -35,7 +35,7 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PkRangeBasedRegionScopedSessionTokenRegistry that = (PkRangeBasedRegionScopedSessionTokenRegistry) o;
+        PartitionKeyRangeBasedRegionScopedSessionTokenRegistry that = (PartitionKeyRangeBasedRegionScopedSessionTokenRegistry) o;
         return Objects.equals(this.pkRangeIdToRegionScopedSessionTokens, that.pkRangeIdToRegionScopedSessionTokens);
     }
 
@@ -93,14 +93,13 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
         // case 1 : where the request is not targeted to a logical partition
         // therefore resolve session token representing all regions
-        // case 2 : where the session token for the first preferred writable region
-        // has not been recorded - then merge session token for all recorded regions - increases
-        // 404/1002 retries but ensures read your own write guarantee
-        if (!canUseRegionScopedSessionTokens || sessionTokenForFirstPreferredWritableRegion == null) {
-            return resolveSessionTokenRepresentingAllRegions(partitionKeyRangeId);
+        if (!canUseRegionScopedSessionTokens) {
+            return mergeSessionTokenRepresentingAllRegions(partitionKeyRangeId);
         }
 
-        regionSpecificSessionTokens.add(sessionTokenForFirstPreferredWritableRegion);
+        if (sessionTokenForFirstPreferredWritableRegion != null) {
+            regionSpecificSessionTokens.add(sessionTokenForFirstPreferredWritableRegion);
+        }
 
         for (String region : lesserPreferredRegionsPkProbablyRequestedFrom) {
             ISessionToken regionSpecificSessionToken = resolveRegionSpecificSessionToken(region, partitionKeyRangeId);
@@ -110,7 +109,7 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
             }
         }
 
-        return mergeSessionToken(regionSpecificSessionTokens);
+        return mergeSessionTokenRepresentingSpecificRegions(regionSpecificSessionTokens);
     }
 
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
@@ -127,19 +126,19 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         return null;
     }
 
-    private ISessionToken resolveSessionTokenRepresentingAllRegions(String partitionKeyRangeId) {
+    private ISessionToken mergeSessionTokenRepresentingAllRegions(String partitionKeyRangeId) {
         ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistryInner = this.pkRangeIdToRegionScopedSessionTokens.get(partitionKeyRangeId);
         List<ISessionToken> sessionTokensAcrossAllRegions = new ArrayList<>();
 
         if (pkRangeIdSpecificSessionTokenRegistryInner != null) {
             sessionTokensAcrossAllRegions = new ArrayList<>(pkRangeIdSpecificSessionTokenRegistryInner.values());
-            return mergeSessionToken(sessionTokensAcrossAllRegions);
+            return mergeSessionTokenRepresentingSpecificRegions(sessionTokensAcrossAllRegions);
         }
 
         return null;
     }
 
-    private ISessionToken mergeSessionToken(List<ISessionToken> sessionTokens) {
+    private ISessionToken mergeSessionTokenRepresentingSpecificRegions(List<ISessionToken> sessionTokens) {
 
         if (sessionTokens == null || sessionTokens.isEmpty()) {
             return null;

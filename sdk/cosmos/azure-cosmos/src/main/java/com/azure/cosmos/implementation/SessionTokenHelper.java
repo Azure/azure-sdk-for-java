@@ -113,7 +113,7 @@ public class SessionTokenHelper {
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
                                                            PartitionKeyBasedBloomFilter pkBasedBloomFilter,
-                                                           PkRangeBasedRegionScopedSessionTokenRegistry pkRangeBasedRegionScopedSessionTokenRegistry,
+                                                           PartitionKeyRangeBasedRegionScopedSessionTokenRegistry partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
                                                            PartitionKeyInternal partitionKey,
                                                            PartitionKeyDefinition partitionKeyDefinition,
                                                            Long collectionRid,
@@ -121,24 +121,24 @@ public class SessionTokenHelper {
                                                            String firstPreferredWritableRegion,
                                                            boolean canUseBloomFilter) {
 
-        if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
+        if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry != null) {
 
             List<String> partitionKeyPossibleRegions = new ArrayList<>();
 
-            if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
+            if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
 
                 if (canUseBloomFilter) {
                     partitionKeyPossibleRegions =
                         pkBasedBloomFilter.tryResolvePartitionKeyPossibleRegions(collectionRid, partitionKey,
                             partitionKeyDefinition);
 
-                    return pkRangeBasedRegionScopedSessionTokenRegistry
+                    return partitionKeyRangeBasedRegionScopedSessionTokenRegistry
                         .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
                             partitionKeyRangeId, true);
 
                 }
 
-                return pkRangeBasedRegionScopedSessionTokenRegistry
+                return partitionKeyRangeBasedRegionScopedSessionTokenRegistry
                     .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
                         partitionKeyRangeId, false);
 
@@ -156,12 +156,12 @@ public class SessionTokenHelper {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentId = parentsList.get(i);
-                        if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(parentId)) {
+                        if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(parentId)) {
                             // A partition can have more than 1 parent (merge). In that case, we apply Merge to
                             // generate a token with both parent's max LSNs
                             ISessionToken resolvedSessionTokenForParentPkRangeId = null;
 
-                            resolvedSessionTokenForParentPkRangeId = pkRangeBasedRegionScopedSessionTokenRegistry
+                            resolvedSessionTokenForParentPkRangeId = partitionKeyRangeBasedRegionScopedSessionTokenRegistry
                                 .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
                                     parentId, canUseBloomFilter);
 

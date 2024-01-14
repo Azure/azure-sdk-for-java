@@ -305,24 +305,24 @@ public class SessionContainerTest {
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
                 collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
         String sessionTokenWithPkRangeIdForRequest1 = partitionKeyRangeId + ":" + sessionToken;
-        
+
         Map<String, String> respHeaders = new HashMap<>();
         RxDocumentServiceResponse resp = Mockito.mock(RxDocumentServiceResponse.class);
         Mockito.doReturn(respHeaders).when(resp).getResponseHeaders();
         respHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest1);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
-        
+
         ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
         sessionTokenToRegionMappings.put(sessionTokenWithPkRangeIdForRequest1, regionContacted);
-        
+
         setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappings);
         sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         @SuppressWarnings("unchecked")
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = (ConcurrentHashMap<String, Long>) FieldUtils.readField(sessionContainer, "collectionNameToCollectionResourceId", true);
         @SuppressWarnings("unchecked")
-        ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToRegionScopedSessionTokens = (ConcurrentHashMap<Long, PkRangeBasedRegionScopedSessionTokenRegistry>) FieldUtils.readField(sessionContainer, "collectionResourceIdToRegionScopedSessionTokens", true);
+        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToRegionScopedSessionTokens = (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) FieldUtils.readField(sessionContainer, "collectionResourceIdToRegionScopedSessionTokens", true);
         assertThat(collectionNameToCollectionResourceId).hasSize(1);
         assertThat(collectionResourceIdToRegionScopedSessionTokens).hasSize(1);
         assertThat(collectionNameToCollectionResourceId.get(collectionName)).isEqualTo(collectionRidAsLong);
@@ -357,10 +357,10 @@ public class SessionContainerTest {
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
                 collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
         String initialSessionTokenWithPkRangeId = partitionKeyRangeId + ":" + initialSessionToken;
-        
+
         ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
         sessionTokenToRegionMappings.put(initialSessionTokenWithPkRangeId, regionContacted);
-        
+
         setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappings);
 
         RxDocumentServiceResponse resp = Mockito.mock(RxDocumentServiceResponse.class);
