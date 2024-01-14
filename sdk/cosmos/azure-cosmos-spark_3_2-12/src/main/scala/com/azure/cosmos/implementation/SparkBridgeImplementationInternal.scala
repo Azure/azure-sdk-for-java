@@ -364,9 +364,10 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val overrideJson = "{\"timeoutDetectionEnabled\": true, \"timeoutDetectionDisableCPUThreshold\": 70.0," +
       "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
       "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
-      "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
-      "\"connectTimeout\": \"PT10S\", \"connectionAcquisitionTimeout\": \"PT10S\"}"
+      "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT15S\", " +
+      "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
 
+    System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "PT30S");
     System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
   }
 }

@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -252,7 +252,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       if (cosmosClientConfiguration.useGatewayMode) {
-          builder = builder.gatewayMode()
+          val gatewayCfg = new GatewayConnectionConfig()
+            .setMaxConnectionPoolSize(cosmosClientConfiguration.httpConnectionPoolSize)
+            .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultHttpRequestTimeoutInSeconds))
+          builder = builder.gatewayMode(gatewayCfg)
       } else {
           var directConfig = new DirectConnectionConfig()
               .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
@@ -353,7 +356,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - (cleanupIntervalInSeconds * 1000)) {
               logDebug(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
                 s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-                s"${clientConfig.useEventualConsistency}")
+                s"${clientConfig.useEventualConsistency}, ${clientConfig.httpConnectionPoolSize}")
               purgeImpl(clientConfig, forceClosure = false)
             } else {
               logDebug("Client has not been retrieved from the cache recently and no spark task has been using " +
@@ -440,6 +443,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         authConfig: CosmosAuthConfig,
                                                         applicationName: String,
                                                         useGatewayMode: Boolean,
+                                                        httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String)
 
@@ -450,6 +454,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.authConfig,
         clientConfig.applicationName,
         clientConfig.useGatewayMode,
+        clientConfig.httpConnectionPoolSize,
         clientConfig.useEventualConsistency,
         clientConfig.preferredRegionsList match {
           case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
