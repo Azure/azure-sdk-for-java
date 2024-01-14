@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232) 
 
 ### 4.25.0 (2024-01-03)
 
