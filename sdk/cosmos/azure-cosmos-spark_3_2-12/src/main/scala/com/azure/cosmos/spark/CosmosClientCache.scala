@@ -251,10 +251,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       if (cosmosClientConfiguration.useGatewayMode) {
-          val gatewayCfg = SparkBridgeInternal.applyHttpRequestTimeout(
-            new GatewayConnectionConfig()
-              .setMaxConnectionPoolSize(cosmosClientConfiguration.httpConnectionPoolSize),
-            CosmosConstants.defaultHttpRequestTimeoutInSeconds)
+          val gatewayCfg = new GatewayConnectionConfig()
+              .setMaxConnectionPoolSize(cosmosClientConfiguration.httpConnectionPoolSize)
           builder = builder.gatewayMode(gatewayCfg)
       } else {
           var directConfig = new DirectConnectionConfig()

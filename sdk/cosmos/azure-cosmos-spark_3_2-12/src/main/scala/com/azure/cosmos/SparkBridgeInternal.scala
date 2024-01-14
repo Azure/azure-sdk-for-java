@@ -86,11 +86,4 @@ private[cosmos] object SparkBridgeInternal {
       .resolveByNameAsync(null, link, null, obsoleteValue)
       .block()
   }
-
-  private[cosmos] def applyHttpRequestTimeout(
-                               gatewayConnectionConfig: GatewayConnectionConfig,
-                               requestTimeoutInSeconds: Long): GatewayConnectionConfig = {
-
-    gatewayConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(requestTimeoutInSeconds))
-  }
 }
