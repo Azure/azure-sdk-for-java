@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
+ *
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
+ * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {

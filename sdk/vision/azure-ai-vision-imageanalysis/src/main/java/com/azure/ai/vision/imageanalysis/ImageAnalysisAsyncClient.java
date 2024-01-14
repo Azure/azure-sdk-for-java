@@ -30,6 +30,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
+ *
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {

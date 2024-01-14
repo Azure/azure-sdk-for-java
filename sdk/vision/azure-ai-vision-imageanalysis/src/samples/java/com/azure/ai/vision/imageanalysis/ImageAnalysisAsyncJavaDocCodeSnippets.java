@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+// Source code snippets from this file are embedded in Image Analysis SDK JavaDoc (API documentations).
 import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
