@@ -95,10 +95,10 @@ public class PartitionKeyBasedBloomFilter {
         Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
         List<String> regionsPartitionKeyHasProbablySeen = new ArrayList<>();
-        String effectivePartitionKeyAsString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
+        String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
         for (String region : this.recordedRegions) {
-            if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyAsString, region, collectionRid))) {
+            if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, region, collectionRid))) {
                 regionsPartitionKeyHasProbablySeen.add(region);
             }
         }

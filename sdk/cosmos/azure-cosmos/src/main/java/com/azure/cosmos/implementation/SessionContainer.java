@@ -269,22 +269,6 @@ public final class SessionContainer implements ISessionContainer {
         }
     }
 
-//    @Override
-//    public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
-//        if (this.disableSessionCapturing) {
-//            return;
-//        }
-//
-//        ResourceId resourceId = ResourceId.parse(collectionRid);
-//        String collectionName = PathsHelper.getCollectionPath(collectionFullName);
-//
-//        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-//
-//        if (!Strings.isNullOrEmpty(token)) {
-//            this.setSessionToken(null, resourceId, collectionName, token);
-//        }
-//    }
-
     @Override
     public void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
         if (this.disableSessionCapturing) {
@@ -296,7 +280,7 @@ public final class SessionContainer implements ISessionContainer {
 
         // needed to extract pkRangeId information
         String tokenFromResponseHeaderMap = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        Map<String, String> sessionTokenToRegionMappings = 
+        Map<String, String> sessionTokenToRegionMappings =
             diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics);
 
         if (sessionTokenToRegionMappings != null && !sessionTokenToRegionMappings.isEmpty()) {
@@ -535,11 +519,7 @@ public final class SessionContainer implements ISessionContainer {
             return false;
         }
 
-        if (globalEndpointManager.canUseMultipleWriteLocations(request)) {
-            return globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList()).size() > 1;
-        }
-
-        return false;
+        return globalEndpointManager.canUseMultipleWriteLocations(request);
     }
 
     // TODO (abhmohanty): cache if possible
