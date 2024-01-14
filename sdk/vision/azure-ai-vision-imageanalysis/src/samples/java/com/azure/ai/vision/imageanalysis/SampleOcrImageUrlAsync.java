@@ -40,6 +40,7 @@ import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import java.net.URL;
 import java.util.Arrays;
+import reactor.core.publisher.Mono;
 
 public class SampleOcrImageUrlAsync {
 
@@ -62,13 +63,12 @@ public class SampleOcrImageUrlAsync {
 
         try {
             // Extract text from an input image URL. This is an synchronous (non-blocking) call, but here we block until the service responds.
-            ImageAnalysisResult result = client.analyze(
+            Mono<ImageAnalysisResult> result = client.analyze(
                 new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
                 Arrays.asList(VisualFeatures.READ), // visualFeatures
-                null)
-                .block();
+                null);
 
-            printAnalysisResults(result);
+            printAnalysisResults(result.block());
         } catch (Exception e) {
             e.printStackTrace();
         }
