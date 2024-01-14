@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
@@ -14,6 +14,7 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 
+import java.time.Duration
 import scala.::
 import scala.collection.mutable
 
@@ -369,5 +370,12 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
     System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "PT30S");
     System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+  }
+
+  def applyHttpRequestTimeout(
+                               gatewayConnectionConfig: GatewayConnectionConfig,
+                               requestTimeoutInSeconds: Long): GatewayConnectionConfig = {
+
+    gatewayConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(requestTimeoutInSeconds))
   }
 }
