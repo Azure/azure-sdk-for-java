@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
+import java.time.Duration
 import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
@@ -84,5 +85,12 @@ private[cosmos] object SparkBridgeInternal {
       .getCollectionCache()
       .resolveByNameAsync(null, link, null, obsoleteValue)
       .block()
+  }
+
+  private[cosmos] def applyHttpRequestTimeout(
+                               gatewayConnectionConfig: GatewayConnectionConfig,
+                               requestTimeoutInSeconds: Long): GatewayConnectionConfig = {
+
+    gatewayConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(requestTimeoutInSeconds))
   }
 }

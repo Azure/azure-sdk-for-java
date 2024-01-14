@@ -4,13 +4,12 @@ package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
-import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, SparkBridgeInternal, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -252,7 +251,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       if (cosmosClientConfiguration.useGatewayMode) {
-          val gatewayCfg = SparkBridgeImplementationInternal.applyHttpRequestTimeout(
+          val gatewayCfg = SparkBridgeInternal.applyHttpRequestTimeout(
             new GatewayConnectionConfig()
               .setMaxConnectionPoolSize(cosmosClientConfiguration.httpConnectionPoolSize),
             CosmosConstants.defaultHttpRequestTimeoutInSeconds)
