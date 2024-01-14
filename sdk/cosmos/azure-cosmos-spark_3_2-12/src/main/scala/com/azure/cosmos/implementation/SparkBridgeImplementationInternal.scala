@@ -366,7 +366,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
 
     if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
-      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "PT45S");
+      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "45000");
     }
 
     if (System.getProperty(Configs.HTTP_MAX_REQUEST_TIMEOUT) == null) {
