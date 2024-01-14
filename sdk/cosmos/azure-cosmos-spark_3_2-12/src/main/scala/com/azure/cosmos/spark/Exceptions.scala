@@ -21,8 +21,6 @@ private object Exceptions {
       statusCode == CosmosConstants.StatusCodes.ServiceUnavailable ||
       statusCode == CosmosConstants.StatusCodes.InternalServerError ||
       statusCode == CosmosConstants.StatusCodes.Timeout ||
-      // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
-      statusCode == 0 ||
       statusCode == CosmosConstants.StatusCodes.NotFound && subStatusCode == 1002
   }
 
