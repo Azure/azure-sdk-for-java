@@ -365,7 +365,18 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
       "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
 
-    System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "PT45S");
-    System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
+      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "PT45S");
+    }
+
+    if (System.getProperty(Configs.HTTP_MAX_REQUEST_TIMEOUT) == null) {
+      System.setProperty(
+        Configs.HTTP_MAX_REQUEST_TIMEOUT,
+        "70");
+    }
+
+    if (System.getProperty("azure.cosmos.directTcp.defaultOptions") == null) {
+      System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    }
   }
 }
