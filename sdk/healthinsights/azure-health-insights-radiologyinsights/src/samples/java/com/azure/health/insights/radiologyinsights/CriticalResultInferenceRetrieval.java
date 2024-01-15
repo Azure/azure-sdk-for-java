@@ -198,7 +198,7 @@ public class CriticalResultInferenceRetrieval {
 
         PatientDocument patientDocument = getPatientDocument();
         patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
-        patientDocument.setLanguage("en-US");
+        patientDocument.setLanguage("EN");
 
         DocumentAuthor author = new DocumentAuthor();
         author.setId("authorid1");
