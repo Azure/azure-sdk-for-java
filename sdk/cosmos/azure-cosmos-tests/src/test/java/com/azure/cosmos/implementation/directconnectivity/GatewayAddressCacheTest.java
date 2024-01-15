@@ -1416,8 +1416,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         // unhealthy pending status
         AddressInformation address4 = new AddressInformation(true, false, "rntbd://127.0.0.1:4", Protocol.TCP);
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(address4.getPhysicalUri());
-        healthStatus.set(UnhealthyPending);
+        AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(address4.getPhysicalUri());
+        healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(address4.getPhysicalUri().getURIAsString()), UnhealthyPending));
 
         // Set the replica validation scope
         Set<Uri.HealthStatus> replicaValidationScopes = ReflectionUtils.getReplicaValidationScopes(cache);
