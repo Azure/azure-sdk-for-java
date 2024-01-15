@@ -619,7 +619,7 @@ public final class ImageAnalysisAsyncClient {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
         } else {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 
@@ -675,7 +675,7 @@ public final class ImageAnalysisAsyncClient {
             return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
             return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 }

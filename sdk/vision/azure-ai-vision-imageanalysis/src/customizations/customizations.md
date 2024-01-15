@@ -35,7 +35,7 @@ The following method was added to the class `ImagePoint` (file `ImagePoint.java`
 
 ## Add new class ImageAnalysisOptions
 
-A new Java file `ImageAnalysisOptions.java` was written and placed in the folder `src\main\java\com\azure\ai\vision\imageanalysis`.
+A new Java file `ImageAnalysisOptions.java` was written and placed in the folder `src\main\java\com\azure\ai\vision\imageanalysis\models`.
 
 ## Updates to class ImageAnalysisClient
 
@@ -72,7 +72,7 @@ import java.net.URL;
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
         } else {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 
@@ -104,7 +104,7 @@ import java.net.URL;
             return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
             return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 ```
@@ -144,7 +144,7 @@ import java.net.URL;
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
         } else {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 
@@ -176,7 +176,7 @@ import java.net.URL;
             return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
             return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
-                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 ```
