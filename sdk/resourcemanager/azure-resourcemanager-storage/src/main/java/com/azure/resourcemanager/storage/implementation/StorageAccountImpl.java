@@ -63,8 +63,8 @@ class StorageAccountImpl
     private final ClientLogger logger = new ClientLogger(getClass());
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
-    private StorageAccountCreateParameters createParameters;
-    private StorageAccountUpdateParameters updateParameters;
+    StorageAccountCreateParameters createParameters;
+    StorageAccountUpdateParameters updateParameters;
     private StorageNetworkRulesHelper networkRulesHelper;
     private StorageEncryptionHelper encryptionHelper;
     private StorageAccountMsiHandler storageAccountMsiHandler;
@@ -76,8 +76,7 @@ class StorageAccountImpl
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
         this.encryptionHelper = new StorageEncryptionHelper(this.createParameters);
-        this.storageAccountMsiHandler =
-            new StorageAccountMsiHandler(authorizationManager, this, this.createParameters);
+        this.storageAccountMsiHandler = new StorageAccountMsiHandler(authorizationManager, this);
     }
 
     @Override
@@ -474,11 +473,9 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl update() {
         createParameters = null;
-        updateParameters = new StorageAccountUpdateParameters();
+        updateParameters = new StorageAccountUpdateParameters().withIdentity(this.innerModel().identity());
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.innerModel());
         this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.innerModel());
-        this.storageAccountMsiHandler =
-            new StorageAccountMsiHandler(authorizationManager, this, this.updateParameters);
         return super.update();
     }
 
