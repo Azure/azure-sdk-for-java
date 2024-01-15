@@ -354,12 +354,9 @@ public final class SessionContainer implements ISessionContainer {
 
     private void recordRegionScopedSessionToken(
         PartitionKeyRangeBasedRegionScopedSessionTokenRegistry partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
-        Map<String, String> sessionTokenToRegionMapping,
-        String pkRangeId) {
+        Map<String, String> sessionTokenToRegionMapping) {
 
-        partitionKeyRangeBasedRegionScopedSessionTokenRegistry.tryRecordSessionToken(
-            sessionTokenToRegionMapping,
-            pkRangeId);
+        partitionKeyRangeBasedRegionScopedSessionTokenRegistry.tryRecordSessionToken(sessionTokenToRegionMapping);
     }
 
     private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId) {
@@ -389,8 +386,8 @@ public final class SessionContainer implements ISessionContainer {
 
             this.recordRegionScopedSessionToken(
                 partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
-                sessionTokenToRegionMapping,
-                partitionKeyRangeId);
+                sessionTokenToRegionMapping
+            );
 
         } else {
             // populate partitionKeyRangeBasedRegionScopedSessionTokenRegistry
@@ -414,8 +411,8 @@ public final class SessionContainer implements ISessionContainer {
             if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry != null) {
                 this.recordRegionScopedSessionToken(
                     partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
-                    sessionTokenToRegionMapping,
-                    partitionKeyRangeId);
+                    sessionTokenToRegionMapping
+                );
             }
 
             if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal, partitionKeyDefinition)) {

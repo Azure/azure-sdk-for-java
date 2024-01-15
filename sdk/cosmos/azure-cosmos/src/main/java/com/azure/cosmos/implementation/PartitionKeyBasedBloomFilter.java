@@ -35,7 +35,7 @@ public class PartitionKeyBasedBloomFilter {
             public void funnel(PartitionKeyBasedBloomFilterType from, PrimitiveSink into) {
                 into
                     .putLong(from.collectionRid)
-                    .putString(from.partitionKeyAsStringifiedJson, StandardCharsets.UTF_8)
+                    .putString(from.effectivePartitionKeyString, StandardCharsets.UTF_8)
                     .putString(from.region, StandardCharsets.UTF_8);
             }
         };
@@ -108,18 +108,18 @@ public class PartitionKeyBasedBloomFilter {
 
     public static class PartitionKeyBasedBloomFilterType {
 
-        private final String partitionKeyAsStringifiedJson;
+        private final String effectivePartitionKeyString;
         private final String region;
         private final Long collectionRid;
 
-        public PartitionKeyBasedBloomFilterType(String partitionKeyAsStringifiedJson, String region, Long collectionRid) {
-            this.partitionKeyAsStringifiedJson = partitionKeyAsStringifiedJson;
+        public PartitionKeyBasedBloomFilterType(String effectivePartitionKeyString, String region, Long collectionRid) {
+            this.effectivePartitionKeyString = effectivePartitionKeyString;
             this.region = region;
             this.collectionRid = collectionRid;
         }
 
-        public String getPartitionKeyAsStringifiedJson() {
-            return partitionKeyAsStringifiedJson;
+        public String getEffectivePartitionKeyString() {
+            return effectivePartitionKeyString;
         }
 
         public String getRegion() {

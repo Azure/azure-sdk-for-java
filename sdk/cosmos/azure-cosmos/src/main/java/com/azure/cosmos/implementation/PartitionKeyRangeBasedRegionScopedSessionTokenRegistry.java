@@ -44,7 +44,7 @@ public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
         return Objects.hash(pkRangeIdToRegionScopedSessionTokens);
     }
 
-    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId) {
+    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping) {
 
         if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
             return;
@@ -74,6 +74,10 @@ public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
 
                         return regionToSessionTokensAsVal;
                     });
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Unparsed session token - {} cannot be parsed.", sessionTokenUnparsedInner);
+                    }
                 }
             }
 

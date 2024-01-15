@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
 import com.azure.cosmos.implementation.guava25.hash.Funnel;
-import com.azure.cosmos.implementation.guava25.hash.Funnels;
 import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -22,12 +21,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -190,7 +186,7 @@ public class SessionConsistencyTests extends TestSuiteBase {
             public void funnel(PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType from, PrimitiveSink into) {
                 into
                     .putLong(from.getCollectionRid())
-                    .putString(from.getPartitionKeyAsStringifiedJson(), Charsets.UTF_8)
+                    .putString(from.getEffectivePartitionKeyString(), Charsets.UTF_8)
                     .putString(from.getRegion(), Charsets.UTF_8);
             }
         };
