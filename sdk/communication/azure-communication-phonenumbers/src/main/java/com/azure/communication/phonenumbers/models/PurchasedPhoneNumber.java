@@ -39,7 +39,7 @@ public final class PurchasedPhoneNumber {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private PhoneNumberCapabilities capabilities;
+    private PurchasedPhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned
@@ -119,7 +119,7 @@ public final class PurchasedPhoneNumber {
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilities getCapabilities() {
+    public PurchasedPhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
