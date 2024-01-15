@@ -34,7 +34,6 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
-import com.azure.health.insights.radiologyinsights.models.Resource;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
@@ -50,11 +49,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
 /**
- * The SampleRadiologyInsightsSync class is responsible for performing Radiology
- * Insights operations. It contains various methods to initialize, use, and
- * print the results of the RadiologyInsightsClient.
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
+ * with the Radiology Insights service. It will initialize an asynchronous 
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
+ * results and display the Critical Results extracted by the Radiology Insights service.  
+ * 
  */
-public class CriticalResultInferenceRetrieval {
+public class SampleCriticalResultInferenceAsync {
 
     private static final String DOC_CONTENT = "CLINICAL HISTORY:   "
             + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
@@ -107,18 +108,18 @@ public class CriticalResultInferenceRetrieval {
         });
 
         latch.await();
-        printResults(mono.block());
+        displayCriticalResults(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
     /**
-     * Prints the results of the Radiology Insights request.
+     * Display the critical results of the Radiology Insights request.
      *
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
      */
-    private static void printResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+    private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
             List<RadiologyInsightsInference> inferences = patientResult.getInferences();
@@ -165,19 +166,7 @@ public class CriticalResultInferenceRetrieval {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientInfo.setBirthDate(dateTime.toLocalDate());
-
-        List<Resource> clinicalInfoList = new ArrayList<>();
-        Resource clinicalInfo = new Resource("Observation");
-        clinicalInfoList.add(clinicalInfo);
-
-        CodeableConcept code = new CodeableConcept();
-        Coding coding = new Coding();
-        coding.setSystem("http://www.nlm.nih.gov/research/umls");
-        coding.setCode("C0018802");
-        coding.setDisplay("MalignantNeoplasms");
-        code.setCoding(Arrays.asList(coding));
-
-        patientInfo.setClinicalInfo(Arrays.asList(clinicalInfo));
+        
         patientRecord.setInfo(patientInfo);
 
         Encounter encounter = new Encounter("encounterid1");
