@@ -6,11 +6,8 @@ package com.azure.health.insights.radiologyinsights;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,10 +29,9 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
         try {
             testRadiologyInsightsgWithResponse(request -> {
 
-                BinaryData responseValue = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(request, new RequestOptions())).waitForCompletion().getValue();
-                RadiologyInsightsInferenceResult riResponse = responseValue
-                        .toObject(TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
+                        getClient().beginInferRadiologyInsights(request)).getFinalResult();
+
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
                 RadiologyInsightsPatientResult patient = patients.get(0);

@@ -3,16 +3,42 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.io.File;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
+import com.azure.health.insights.radiologyinsights.models.CodeableConcept;
+import com.azure.health.insights.radiologyinsights.models.Coding;
+import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
+import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.DocumentContent;
+import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
+import com.azure.health.insights.radiologyinsights.models.DocumentType;
+import com.azure.health.insights.radiologyinsights.models.Encounter;
+import com.azure.health.insights.radiologyinsights.models.EncounterClass;
+import com.azure.health.insights.radiologyinsights.models.FindingOptions;
+import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
+import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientInfo;
+import com.azure.health.insights.radiologyinsights.models.PatientInfoSex;
+import com.azure.health.insights.radiologyinsights.models.PatientRecord;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
+import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
+import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 /**
  * Base class for Radiology Insights clients test.
@@ -22,8 +48,8 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
-    void testRadiologyInsightsgWithResponse(Consumer<BinaryData> testRunner) {
-        testRunner.accept(getRadiologyInsightsRequest());
+    void testRadiologyInsightsgWithResponse(Consumer<RadiologyInsightsData> testRunner) {
+        testRunner.accept(createRadiologyInsightsRequest());
     }
 
     RadiologyInsightsClientBuilder getClientBuilder() {
@@ -44,14 +70,112 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    private BinaryData getRadiologyInsightsRequest() {
-        File requestFile = new File(RadiologyInsightsClientTestBase.class.getResource("/RadiologyInsightsClientTest.request.json").getPath());
-        try {
-            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
-            return requestBody;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static RadiologyInsightsData createRadiologyInsightsRequest() {
+        List<PatientRecord> patientRecords = createPatientRecords();
+        RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
+        RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
+        radiologyInsightsData.setConfiguration(modelConfiguration);
+        return radiologyInsightsData;
+    }
+    
+    private static List<PatientRecord> createPatientRecords() {
+        List<PatientRecord> patientRecords = new ArrayList<>();
+        // Patients
+        PatientRecord patientRecord = new PatientRecord("Sharona");
+
+        PatientInfo patientInfo = new PatientInfo();
+        patientInfo.setSex(PatientInfoSex.FEMALE);
+        // Define a formatter that matches the input pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+
+        // Parse the string to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
+        patientInfo.setBirthDate(dateTime.toLocalDate());
+        
+        patientRecord.setInfo(patientInfo);
+
+        Encounter encounter = new Encounter("encounterid1");
+
+        TimePeriod period = new TimePeriod();
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d'T'HH:mm:ssXXX");
+
+        OffsetDateTime startTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
+        OffsetDateTime endTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
+
+        period.setStart(startTime);
+        period.setEnd(endTime);
+
+        encounter.setPeriod(period);
+        encounter.setClassProperty(EncounterClass.IN_PATIENT);
+
+        patientRecord.setEncounters(Arrays.asList(encounter));
+
+        PatientDocument patientDocument = getPatientDocument();
+        patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
+        patientDocument.setLanguage("EN");
+
+        DocumentAuthor author = new DocumentAuthor();
+        author.setId("authorid1");
+        author.setFullName("authorname1");
+
+        patientDocument.setAuthors(Arrays.asList(author));
+        patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
+
+        DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
+
+        CodeableConcept procedureCode = new CodeableConcept();
+        Coding procedureCoding = new Coding();
+        procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
+        procedureCoding.setCode("MVLW");
+        procedureCoding.setDisplay("IH Hip 1 View Left");
+
+        procedureCode.setCoding(Arrays.asList(procedureCoding));
+        orderedProcedure.setCode(procedureCode);
+        orderedProcedure.setDescription("IH Hip 1 View Left");
+
+        adminMetadata.setOrderedProcedures(Arrays.asList(orderedProcedure));
+        adminMetadata.setEncounterId("encounterid1");
+
+        patientDocument.setAdministrativeMetadata(adminMetadata);
+
+        // Define a formatter to handle milliseconds
+        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
+        OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter3);
+        patientDocument.setCreatedDateTime(createdDateTime);
+
+        patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
+        patientRecords.add(patientRecord);
+        return patientRecords;
+    }
+    
+    private static PatientDocument getPatientDocument() {
+        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, "Findings: There is a total hip prosthesis.");
+        return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+    }
+   
+    private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
+        RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
+        RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
+        configuration.setInferenceOptions(inferenceOptions);
+        configuration.setInferenceTypes(Arrays.asList(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY));
+        configuration.setLocale("en-US");
+        configuration.setVerbose(false);
+        configuration.setIncludeEvidence(true);
+        return configuration;
+    }
+    
+    private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
+        RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
+        FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
+        FindingOptions findingOptions = new FindingOptions();
+        followupOptions.setIncludeRecommendationsWithNoSpecifiedModality(false);
+        followupOptions.setIncludeRecommendationsInReferences(false);
+        followupOptions.setProvideFocusedSentenceEvidence(false);
+        findingOptions.setProvideFocusedSentenceEvidence(false);
+        inferenceOptions.setFollowupRecommendation(followupOptions);
+        inferenceOptions.setFinding(findingOptions);
+        return inferenceOptions;
     }
 }
