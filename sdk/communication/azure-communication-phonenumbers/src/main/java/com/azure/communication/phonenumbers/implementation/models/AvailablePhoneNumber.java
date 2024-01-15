@@ -5,7 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCost;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
@@ -36,7 +36,7 @@ public final class AvailablePhoneNumber {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true)
-    private PhoneNumberCapabilities capabilities;
+    private PurchasedPhoneNumberCapabilities capabilities;
 
     /*
      * Represents the number type of the offering.
@@ -100,7 +100,7 @@ public final class AvailablePhoneNumber {
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilities getCapabilities() {
+    public PurchasedPhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
@@ -110,7 +110,7 @@ public final class AvailablePhoneNumber {
      * @param capabilities the capabilities value to set.
      * @return the AvailablePhoneNumber object itself.
      */
-    public AvailablePhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
+    public AvailablePhoneNumber setCapabilities(PurchasedPhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }

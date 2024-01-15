@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
@@ -175,7 +175,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
             client.getPurchasedPhoneNumberWithResponse(phoneNumber)
                 .flatMap(responseAcquiredPhone -> {
-                    PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+                    PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
                     capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities()
                         .getCalling() == PhoneNumberCapabilityType.INBOUND
                         ? PhoneNumberCapabilityType.OUTBOUND
@@ -231,14 +231,14 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void beginUpdatePhoneNumberCapabilitiesNullPhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesNullPhoneNumber")
-                        .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilities()))
+                        .beginUpdatePhoneNumberCapabilities(null, new PurchasedPhoneNumberCapabilities()))
                 .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber(HttpClient httpClient) {
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber")
@@ -250,7 +250,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber(HttpClient httpClient) {
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber")
@@ -482,7 +482,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
         PhoneNumbersAsyncClient client, boolean withOptions) {
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
@@ -517,7 +517,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     }
 
     private PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(
-        PhoneNumbersAsyncClient client, String phoneNumber, PhoneNumberCapabilities capabilities) {
+        PhoneNumbersAsyncClient client, String phoneNumber, PurchasedPhoneNumberCapabilities capabilities) {
 
         return setPollInterval(client
                 .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));

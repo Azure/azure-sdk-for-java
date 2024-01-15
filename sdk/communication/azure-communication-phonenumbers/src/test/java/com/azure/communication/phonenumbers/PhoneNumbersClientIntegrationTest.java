@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.implementation.models.CommunicationE
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
@@ -451,7 +451,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
             HttpClient httpClient, String testName, boolean withContext) {
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
@@ -500,7 +500,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, testName);
         Response<PurchasedPhoneNumber> responseAcquiredPhone = client.getPurchasedPhoneNumberWithResponse(phoneNumber,
                 Context.NONE);
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities.setCalling(
                 responseAcquiredPhone.getValue().getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND
                         ? PhoneNumberCapabilityType.OUTBOUND

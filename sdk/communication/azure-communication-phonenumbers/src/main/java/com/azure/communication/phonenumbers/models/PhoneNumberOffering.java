@@ -26,7 +26,7 @@ public final class PhoneNumberOffering {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "availableCapabilities", access = JsonProperty.Access.WRITE_ONLY)
-    private PhoneNumberCapabilities availableCapabilities;
+    private PurchasedPhoneNumberCapabilities availableCapabilities;
 
     /*
      * The incurred cost for a single phone number.
@@ -57,7 +57,7 @@ public final class PhoneNumberOffering {
      *
      * @return the availableCapabilities value.
      */
-    public PhoneNumberCapabilities getAvailableCapabilities() {
+    public PurchasedPhoneNumberCapabilities getAvailableCapabilities() {
         return this.availableCapabilities;
     }
 

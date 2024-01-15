@@ -18,7 +18,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import com.azure.communication.phonenumbers.models.PhoneNumberErrorResponseException;
@@ -229,7 +229,7 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PurchasedPhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
@@ -238,7 +238,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
             String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities) {
+            PurchasedPhoneNumberCapabilities capabilities) {
         return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities, null, null);
     }
 
@@ -281,7 +281,7 @@ public final class PhoneNumbersAsyncClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PurchasedPhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @param searchOptions The phone number search options.
      * @return A {@link PollerFlux} object with the reservation result.
@@ -292,14 +292,14 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
             String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions) {
+            PurchasedPhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions) {
         return beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities,
                 searchOptions, null);
     }
 
     PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
             String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+            PurchasedPhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
         try {
             Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
             Objects.requireNonNull(phoneNumberType, "'phoneNumberType' cannot be null.");
@@ -566,12 +566,12 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities) {
+            PurchasedPhoneNumberCapabilities capabilities) {
         return beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, null);
     }
 
     PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities, Context context) {
+            PurchasedPhoneNumberCapabilities capabilities, Context context) {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             Objects.requireNonNull(capabilities, "'capabilities' cannot be null.");

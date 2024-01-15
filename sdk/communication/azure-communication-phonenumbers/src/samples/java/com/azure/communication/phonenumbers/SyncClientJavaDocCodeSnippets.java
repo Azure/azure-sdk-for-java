@@ -4,7 +4,7 @@
 package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -126,7 +126,7 @@ public class SyncClientJavaDocCodeSnippets {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
 
         // BEGIN: com.azure.communication.phonenumbers.client.beginSearchAvailable
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
 
@@ -159,7 +159,7 @@ public class SyncClientJavaDocCodeSnippets {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
 
         // BEGIN: com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
@@ -219,7 +219,7 @@ public class SyncClientJavaDocCodeSnippets {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
 
         // BEGIN: com.azure.communication.phonenumbers.client.beginUpdateCapabilities
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
@@ -243,7 +243,7 @@ public class SyncClientJavaDocCodeSnippets {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
 
         // BEGIN: com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
-        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);

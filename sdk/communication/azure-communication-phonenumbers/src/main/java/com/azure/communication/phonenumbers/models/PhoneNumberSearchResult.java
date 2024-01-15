@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.implementation.models.Error;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -42,7 +41,7 @@ public final class PhoneNumberSearchResult {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private PhoneNumberCapabilities capabilities;
+    private PurchasedPhoneNumberCapabilities capabilities;
 
     /*
      * The incurred cost for a single phone number.
@@ -112,7 +111,7 @@ public final class PhoneNumberSearchResult {
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilities getCapabilities() {
+    public PurchasedPhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 

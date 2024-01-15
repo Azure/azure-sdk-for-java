@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
@@ -225,7 +225,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PurchasedPhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @return A {@link SyncPoller} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
@@ -234,7 +234,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
             String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities) {
+            PurchasedPhoneNumberCapabilities capabilities) {
         return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities)
                 .getSyncPoller();
     }
@@ -283,7 +283,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PurchasedPhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @param searchOptions The phone number search options.
      * @param context A {@link Context} representing the request context.
@@ -294,7 +294,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
             String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
-            PhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
+            PurchasedPhoneNumberCapabilities capabilities, PhoneNumberSearchOptions searchOptions, Context context) {
         return asyncClient.beginSearchAvailablePhoneNumbers(countryCode, phoneNumberType, assignmentType, capabilities,
                 searchOptions, context).getSyncPoller();
     }
@@ -473,7 +473,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities) {
+            PurchasedPhoneNumberCapabilities capabilities) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities).getSyncPoller();
     }
 
@@ -524,7 +524,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
-            PhoneNumberCapabilities capabilities, Context context) {
+            PurchasedPhoneNumberCapabilities capabilities, Context context) {
         return asyncClient.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, context).getSyncPoller();
     }
 
