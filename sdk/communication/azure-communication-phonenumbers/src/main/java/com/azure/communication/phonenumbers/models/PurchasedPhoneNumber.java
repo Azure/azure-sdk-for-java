@@ -4,12 +4,14 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSource;
+import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumberCapabilities;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PurchasedPhoneNumber model. */
-@Immutable
+@Fluent
 public final class PurchasedPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
@@ -39,7 +41,7 @@ public final class PurchasedPhoneNumber {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private PhoneNumberCapabilities capabilities;
+    private PurchasedPhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned
@@ -59,6 +61,24 @@ public final class PurchasedPhoneNumber {
      */
     @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
+
+    /*
+     * Id of the operator that provided the number
+     */
+    @JsonProperty(value = "operatorId")
+    private String operatorId;
+
+    /*
+     * Name of the operator that provided the number
+     */
+    @JsonProperty(value = "operatorName")
+    private String operatorName;
+
+    /*
+     * Source of the number, e.g. Cloud or OperatorConnect
+     */
+    @JsonProperty(value = "phoneNumberSource")
+    private PhoneNumberSource phoneNumberSource;
 
     /**
      * Get the id property: The id of the phone number, e.g. 11234567890.
@@ -101,7 +121,7 @@ public final class PurchasedPhoneNumber {
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilities getCapabilities() {
+    public PurchasedPhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
@@ -131,5 +151,65 @@ public final class PurchasedPhoneNumber {
      */
     public PhoneNumberCost getCost() {
         return this.cost;
+    }
+
+    /**
+     * Get the operatorId property: Id of the operator that provided the number.
+     *
+     * @return the operatorId value.
+     */
+    public String getOperatorId() {
+        return this.operatorId;
+    }
+
+    /**
+     * Set the operatorId property: Id of the operator that provided the number.
+     *
+     * @param operatorId the operatorId value to set.
+     * @return the PurchasedPhoneNumber object itself.
+     */
+    public PurchasedPhoneNumber setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+        return this;
+    }
+
+    /**
+     * Get the operatorName property: Name of the operator that provided the number.
+     *
+     * @return the operatorName value.
+     */
+    public String getOperatorName() {
+        return this.operatorName;
+    }
+
+    /**
+     * Set the operatorName property: Name of the operator that provided the number.
+     *
+     * @param operatorName the operatorName value to set.
+     * @return the PurchasedPhoneNumber object itself.
+     */
+    public PurchasedPhoneNumber setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+        return this;
+    }
+
+    /**
+     * Get the phoneNumberSource property: Source of the number, e.g. Cloud or OperatorConnect.
+     *
+     * @return the phoneNumberSource value.
+     */
+    public PhoneNumberSource getPhoneNumberSource() {
+        return this.phoneNumberSource;
+    }
+
+    /**
+     * Set the phoneNumberSource property: Source of the number, e.g. Cloud or OperatorConnect.
+     *
+     * @param phoneNumberSource the phoneNumberSource value to set.
+     * @return the PurchasedPhoneNumber object itself.
+     */
+    public PurchasedPhoneNumber setPhoneNumberSource(PhoneNumberSource phoneNumberSource) {
+        this.phoneNumberSource = phoneNumberSource;
+        return this;
     }
 }

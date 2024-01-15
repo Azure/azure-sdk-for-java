@@ -23,8 +23,8 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-12-01
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/edf1d7365a436f0b124c0cecbefd63499e049af0/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-preview-2024-01
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a443d2d3c562d91419d11bed6326b5907d38848c/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode
 custom-types-subpackage: models

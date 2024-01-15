@@ -23,6 +23,9 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
     public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES =
             fromString("updatePhoneNumberCapabilities");
 
+    /** Static value reservationPurchase for PhoneNumberOperationType. */
+    public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
+
     /**
      * Creates or finds a PhoneNumberOperationType from its string representation.
      *
@@ -34,11 +37,7 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
         return fromString(name, PhoneNumberOperationType.class);
     }
 
-    /** 
-     * Gives a collection of PhoneNumberOperationType values
-     * 
-     * @return known PhoneNumberOperationType values
-     */
+    /** @return known PhoneNumberOperationType values. */
     public static Collection<PhoneNumberOperationType> values() {
         return values(PhoneNumberOperationType.class);
     }

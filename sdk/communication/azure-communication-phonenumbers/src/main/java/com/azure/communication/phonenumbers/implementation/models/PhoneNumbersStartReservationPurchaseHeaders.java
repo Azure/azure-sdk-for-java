@@ -7,9 +7,9 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumbersPurchasePhoneNumbersHeaders model. */
+/** The PhoneNumbersStartReservationPurchaseHeaders model. */
 @Fluent
-public final class PhoneNumbersPurchasePhoneNumbersHeaders {
+public final class PhoneNumbersStartReservationPurchaseHeaders {
     /*
      * The operation-id property.
      */
@@ -17,10 +17,10 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
     private String operationId;
 
     /*
-     * The purchase-id property.
+     * The reservation-purchase-id property.
      */
-    @JsonProperty(value = "purchase-id")
-    private String purchaseId;
+    @JsonProperty(value = "reservation-purchase-id")
+    private String reservationPurchaseId;
 
     /*
      * The Operation-Location property.
@@ -41,30 +41,30 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * Set the operationId property: The operation-id property.
      *
      * @param operationId the operationId value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     * @return the PhoneNumbersStartReservationPurchaseHeaders object itself.
      */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setOperationId(String operationId) {
+    public PhoneNumbersStartReservationPurchaseHeaders setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
     }
 
     /**
-     * Get the purchaseId property: The purchase-id property.
+     * Get the reservationPurchaseId property: The reservation-purchase-id property.
      *
-     * @return the purchaseId value.
+     * @return the reservationPurchaseId value.
      */
-    public String getPurchaseId() {
-        return this.purchaseId;
+    public String getReservationPurchaseId() {
+        return this.reservationPurchaseId;
     }
 
     /**
-     * Set the purchaseId property: The purchase-id property.
+     * Set the reservationPurchaseId property: The reservation-purchase-id property.
      *
-     * @param purchaseId the purchaseId value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     * @param reservationPurchaseId the reservationPurchaseId value to set.
+     * @return the PhoneNumbersStartReservationPurchaseHeaders object itself.
      */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setPurchaseId(String purchaseId) {
-        this.purchaseId = purchaseId;
+    public PhoneNumbersStartReservationPurchaseHeaders setReservationPurchaseId(String reservationPurchaseId) {
+        this.reservationPurchaseId = reservationPurchaseId;
         return this;
     }
 
@@ -81,9 +81,9 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * Set the operationLocation property: The Operation-Location property.
      *
      * @param operationLocation the operationLocation value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     * @return the PhoneNumbersStartReservationPurchaseHeaders object itself.
      */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setOperationLocation(String operationLocation) {
+    public PhoneNumbersStartReservationPurchaseHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }
