@@ -5,10 +5,7 @@ package com.azure.health.insights.radiologyinsights;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollOperationDetails;
-import com.azure.core.util.polling.PollerFlux;
+
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.Coding;
@@ -37,25 +34,21 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatie
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
-import reactor.core.publisher.Mono;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
+ * The SampleCriticalResultInferenceSync class processes a sample radiology document 
+ * with the Radiology Insights service. It will initialize a synchronous 
+ * RadiologyInsightsClient, build a Radiology Insights request with the sample document, submit it to the client 
+ * and display the Critical Results extracted by the Radiology Insights service.  
  * 
  */
-public class SampleCriticalResultInferenceAsync {
+public class SampleCriticalResultInferenceSync {
 
     private static final String DOC_CONTENT = "CLINICAL HISTORY:   "
             + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
@@ -81,7 +74,7 @@ public class SampleCriticalResultInferenceAsync {
 
     /**
      * The main method is the entry point for the application. It initializes and uses
-     * the RadiologyInsightsAsyncClient to perform Radiology Insights operations.
+     * the RadiologyInsightsClient to perform Radiology Insights operations.
      *
      * @param args The command-line arguments passed to the program.
      */
@@ -89,29 +82,14 @@ public class SampleCriticalResultInferenceAsync {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
-        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
+        RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
-                .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+                .credential(new AzureKeyCredential(apiKey)).buildClient();
 
-        PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights(createRadiologyInsightsRequest());
-        
-        asyncPoller.takeUntil(isComplete).filter(isComplete).subscribe(completedResult -> {
-            System.out.println("Completed poll response, status: " + completedResult.getStatus());
-            if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                mono = completedResult.getFinalResult();
-            } else {
-                System.out.println(
-                        "Poll Request Failed with message: " + completedResult.getValue().getError().getMessage());
-            }
-            latch.countDown();
-        });
+        RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
 
-        latch.await();
-        displayCriticalResults(mono.block());
+        displayCriticalResults(riResults);
     }
-
-    private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
     /**
      * Display the critical results of the Radiology Insights request.
@@ -277,11 +255,4 @@ public class SampleCriticalResultInferenceAsync {
         inferenceOptions.setFinding(findingOptions);
         return inferenceOptions;
     }
-
-    private static Predicate<AsyncPollResponse<PollOperationDetails, RadiologyInsightsInferenceResult>> isComplete = response -> {
-        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
-                && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
-    };
-
-    private static CountDownLatch latch = new CountDownLatch(1);
 }
