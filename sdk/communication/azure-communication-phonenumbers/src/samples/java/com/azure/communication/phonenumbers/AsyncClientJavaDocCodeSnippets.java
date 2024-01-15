@@ -4,7 +4,7 @@
 package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -105,7 +105,7 @@ public class AsyncClientJavaDocCodeSnippets {
         PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.asyncclient.beginSearchAvailable
-        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities()
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
 
@@ -138,7 +138,7 @@ public class AsyncClientJavaDocCodeSnippets {
         PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.asyncclient.beginSearchAvailableWithOptions
-        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities()
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
@@ -178,7 +178,7 @@ public class AsyncClientJavaDocCodeSnippets {
         PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.asyncclient.beginUpdateCapabilities
-        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);

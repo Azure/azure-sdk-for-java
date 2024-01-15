@@ -4,7 +4,7 @@
 package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -109,7 +109,7 @@ public class ReadmeSamples {
     public void searchAvailablePhoneNumbersAndPurchasePhoneNumbers() {
         // BEGIN: readme-sample-searchAvailablePhoneNumbers
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities()
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setAreaCode("800").setQuantity(1);
@@ -155,7 +155,7 @@ public class ReadmeSamples {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
 
         // BEGIN: readme-sample-updatePhoneNumberCapabilities
-        PurchasedPhoneNumberCapabilities capabilities = new PurchasedPhoneNumberCapabilities();
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
             .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);

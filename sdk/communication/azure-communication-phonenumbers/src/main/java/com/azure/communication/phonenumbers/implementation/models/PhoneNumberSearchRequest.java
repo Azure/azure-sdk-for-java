@@ -5,7 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,7 +30,7 @@ public final class PhoneNumberSearchRequest {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true)
-    private PurchasedPhoneNumberCapabilities capabilities;
+    private PhoneNumberCapabilities capabilities;
 
     /*
      * The area code of the desired phone number, e.g. 425.
@@ -91,7 +91,7 @@ public final class PhoneNumberSearchRequest {
      *
      * @return the capabilities value.
      */
-    public PurchasedPhoneNumberCapabilities getCapabilities() {
+    public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
@@ -101,7 +101,7 @@ public final class PhoneNumberSearchRequest {
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    public PhoneNumberSearchRequest setCapabilities(PurchasedPhoneNumberCapabilities capabilities) {
+    public PhoneNumberSearchRequest setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }
