@@ -12,9 +12,7 @@ import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, Sp
 import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.Gson
 
-import scala.::
 import scala.collection.mutable
 
 // scalastyle:off underscore.import
@@ -365,8 +363,20 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
       "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
       "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
-      "\"connectTimeout\": \"PT10S\", \"connectionAcquisitionTimeout\": \"PT10S\"}"
+      "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
 
-    System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
+      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "45000");
+    }
+
+    if (System.getProperty(Configs.HTTP_MAX_REQUEST_TIMEOUT) == null) {
+      System.setProperty(
+        Configs.HTTP_MAX_REQUEST_TIMEOUT,
+        "70");
+    }
+
+    if (System.getProperty("azure.cosmos.directTcp.defaultOptions") == null) {
+      System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    }
   }
 }
