@@ -314,7 +314,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
                     this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
             if (isKnownCollection) {
-                this.addSessionToken(request, resourceId, partitionKeyRangeId);
+                this.addSessionToken(request, resourceId);
             }
         } finally {
             this.readLock.unlock();
@@ -327,7 +327,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
                     this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
                 }
-                addSessionToken(request, resourceId, partitionKeyRangeId);
+                addSessionToken(request, resourceId);
             } finally {
                 this.writeLock.unlock();
             }
@@ -359,7 +359,7 @@ public final class SessionContainer implements ISessionContainer {
         partitionKeyRangeBasedRegionScopedSessionTokenRegistry.tryRecordSessionToken(sessionTokenToRegionMapping);
     }
 
-    private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId) {
+    private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId) {
 
         final Long collectionResourceId = resourceId.getUniqueDocumentCollectionId();
 
@@ -375,7 +375,6 @@ public final class SessionContainer implements ISessionContainer {
                 diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics) : new HashMap<>();
         }
 
-        // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
         if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry != null) {
 
             if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal, partitionKeyDefinition)) {
