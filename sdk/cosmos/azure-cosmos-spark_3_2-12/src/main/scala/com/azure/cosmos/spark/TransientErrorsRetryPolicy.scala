@@ -12,6 +12,7 @@ import scala.util.control.Breaks
 private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
   private val rnd = Random
 
+  //scalastyle:off method.length
   def executeWithRetry[T]
   (
     func: () => T,
@@ -56,8 +57,9 @@ private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
         }
 
         if (statusResetFuncBetweenRetry.isDefined) {
-            statusResetFuncBetweenRetry.get.apply()
+          statusResetFuncBetweenRetry.get.apply()
         }
+
         Thread.sleep(retryIntervalInMs)
         currentMaxRetryIntervalInMs = Math.min(2 * currentMaxRetryIntervalInMs, maxRetryIntervalInMs)
       }

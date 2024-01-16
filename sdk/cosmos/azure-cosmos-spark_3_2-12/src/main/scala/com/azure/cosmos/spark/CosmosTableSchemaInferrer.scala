@@ -3,13 +3,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.sql.catalyst.analysis.TypeCoercion
 
-import java.time.Duration
 import java.util.stream.Collectors
 
 // scalastyle:off underscore.import
@@ -158,13 +157,13 @@ private object CosmosTableSchemaInferrer
             cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeTimestamp,
             cosmosInferenceConfig.allowNullForInferredProperties))
     } else {
-        schema = Some(defaultSchema)
+      schema = Some(defaultSchema)
     }
 
-    if (cosmosReadConfig.runtimeFilteringConfig.readRuntimeFilteringEnabled) {
-        schema.get.add(cosmosReadConfig.runtimeFilteringConfig.readManyFilterProperty, DataTypes.StringType, true)
+    if (cosmosReadConfig.readManyFilteringConfig.readManyFilteringEnabled) {
+      schema.get.add(cosmosReadConfig.readManyFilteringConfig.readManyFilterProperty, DataTypes.StringType, true)
     } else {
-        schema.get
+      schema.get
     }
   }
 

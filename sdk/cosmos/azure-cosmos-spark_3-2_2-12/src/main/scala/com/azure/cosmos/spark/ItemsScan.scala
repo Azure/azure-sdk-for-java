@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.expressions.NamedReference
@@ -12,29 +11,28 @@ import org.apache.spark.sql.sources.Filter
 import org.apache.spark.sql.types.StructType
 
 private[spark] class ItemsScan(session: SparkSession,
-                        schema: StructType,
-                        config: Map[String, String],
-                        readConfig: CosmosReadConfig,
-                        cosmosQuery: CosmosParameterizedQuery,
-                        cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-                        diagnosticsConfig: DiagnosticsConfig,
-                        sparkEnvironmentInfo: String)
-    extends ItemsScanBase(
-        session,
-        schema,
-        config,
-        readConfig,
-        cosmosQuery,
-        cosmosClientStateHandles,
-        diagnosticsConfig,
-        sparkEnvironmentInfo)
+                               schema: StructType,
+                               config: Map[String, String],
+                               readConfig: CosmosReadConfig,
+                               analyzedFilters: AnalyzedAggregatedFilters,
+                               cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
+                               diagnosticsConfig: DiagnosticsConfig,
+                               sparkEnvironmentInfo: String)
+  extends ItemsScanBase(
+    session,
+    schema,
+    config,
+    readConfig,
+    analyzedFilters,
+    cosmosClientStateHandles,
+    diagnosticsConfig,
+    sparkEnvironmentInfo)
     with SupportsRuntimeFiltering { // SupportsRuntimeFiltering extends scan
-    override def filterAttributes(): Array[NamedReference] = {
-        filterAttributesCore()
-    }
+  override def filterAttributes(): Array[NamedReference] = {
+    runtimeFilterAttributesCore()
+  }
 
-    // scalastyle:off
-    override def filter(filters: Array[Filter]): Unit = {
-        filterCore(filters)
-    }
+  override def filter(filters: Array[Filter]): Unit = {
+    runtimeFilterCore(filters)
+  }
 }

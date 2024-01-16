@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParameterizedQuery
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -29,9 +28,10 @@ private case class ItemsScanBuilder(session: SparkSession,
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val configMap = config.asScala.toMap
-  val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
-  var processedPredicates : Option[AnalyzedFilters] = Option.empty
+  private val configMap = config.asScala.toMap
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
+  private var processedPredicates : Option[AnalyzedAggregatedFilters] = Option.empty
+  private val filterAnalyzer = FilterAnalyzer(readConfig)
 
   /**
     * Pushes down filters, and returns filters that need to be evaluated after scanning.
@@ -39,7 +39,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     * @return the filters that spark need to evaluate
     */
   override def pushFilters(filters: Array[Filter]): Array[Filter] = {
-    this.processedPredicates = Option.apply(FilterAnalyzer().analyze(filters, this.readConfig))
+    this.processedPredicates = Option.apply(filterAnalyzer.analyze(filters))
 
     // return the filters that spark need to evaluate
     this.processedPredicates.get.filtersNotSupportedByCosmos
@@ -58,9 +58,9 @@ private case class ItemsScanBuilder(session: SparkSession,
   }
 
   override def build(): Scan = {
-    val effectiveQuery:CosmosParameterizedQuery = this.processedPredicates match {
-      case Some(analyzedFilters) => analyzedFilters.cosmosParametrizedQuery
-      case None => FilterAnalyzer().analyze(Array.empty[Filter], this.readConfig).cosmosParametrizedQuery
+    val effectiveAnalyzedFilters = this.processedPredicates match {
+      case Some(analyzedFilters) => analyzedFilters
+      case None => filterAnalyzer.analyze(Array.empty[Filter])
     }
 
     // TODO when inferring schema we should consolidate the schema from pruneColumns
@@ -69,7 +69,7 @@ private case class ItemsScanBuilder(session: SparkSession,
       inputSchema,
       this.configMap,
       this.readConfig,
-      effectiveQuery,
+      effectiveAnalyzedFilters,
       cosmosClientStateHandles,
       diagnosticsConfig,
       sparkEnvironmentInfo)

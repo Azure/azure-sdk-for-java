@@ -801,10 +801,10 @@ private[cosmos] class CosmosRowConverterBase(
         }
 
     private def convertStructToSparkDataTypeWithComputedColumns(
-                                                                  schema: StructType,
-                                                                  objectNode: ObjectNode,
-                                                                  schemaConversionMode: SchemaConversionMode,
-                                                                  computedColumns: Map[String, (ObjectNode) => Any]): Seq[Any] =
+                                                                 schema: StructType,
+                                                                 objectNode: ObjectNode,
+                                                                 schemaConversionMode: SchemaConversionMode,
+                                                                 computedColumns: Map[String, (ObjectNode) => Any]): Seq[Any] =
         schema.fields.map {
             case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString

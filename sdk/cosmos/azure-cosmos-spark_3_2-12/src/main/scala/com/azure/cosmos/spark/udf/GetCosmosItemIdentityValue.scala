@@ -9,14 +9,14 @@ import com.azure.cosmos.spark.CosmosPredicates.{requireNotNull, requireNotNullOr
 import org.apache.spark.sql.api.java.UDF2
 
 @SerialVersionUID(1L)
-class GetCosmosItemIdentityValue extends UDF2[String, Object, String]{
-    override def call
-    (
-        id: String,
-        partitionKeyValue: Object
-    ): String = {
-        requireNotNullOrEmpty(id, "id")
-        requireNotNull(partitionKeyValue, "partitionKeyValue")
-        CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, new PartitionKey(partitionKeyValue))
-    }
+class GetCosmosItemIdentityValue extends UDF2[String, Object, String] {
+  override def call
+  (
+    id: String,
+    partitionKeyValue: Object
+  ): String = {
+    requireNotNullOrEmpty(id, "id")
+    requireNotNull(partitionKeyValue, "partitionKeyValue")
+    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, new PartitionKey(partitionKeyValue))
+  }
 }

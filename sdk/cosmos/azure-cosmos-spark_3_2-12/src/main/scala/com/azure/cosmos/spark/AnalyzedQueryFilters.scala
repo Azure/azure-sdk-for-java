@@ -13,7 +13,7 @@ import org.apache.spark.sql.sources.Filter
 //  the antlr query parsing support can eliminate the need for query plan fetch from GW
 //  partitionKeyValue would also be the only filter I would consider as an option for
 //  pushing down filters to change feed
-private case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParameterizedQuery,
-                                   filtersToBePushedDownToCosmos: Array[Filter],
-                                   filtersNotSupportedByCosmos: Array[Filter])
-
+private case class AnalyzedQueryFilters(
+                                       cosmosParametrizedQuery: CosmosParameterizedQuery,
+                                       filtersToBePushedDownToCosmos: Array[Filter],
+                                       filtersNotSupportedByCosmos: Array[Filter])

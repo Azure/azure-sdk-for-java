@@ -21,131 +21,129 @@ import org.apache.spark.sql.types.StructType
 
 private case class ItemsPartitionReaderWithReadMany
 (
-    config: Map[String, String],
-    feedRange: NormalizedRange,
-    readSchema: StructType,
-    diagnosticsContext: DiagnosticsContext,
-    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-    diagnosticsConfig: DiagnosticsConfig,
-    sparkEnvironmentInfo: String,
-    readManyFilterList: List[String]
+  config: Map[String, String],
+  feedRange: NormalizedRange,
+  readSchema: StructType,
+  diagnosticsContext: DiagnosticsContext,
+  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String,
+  readManyFilters: List[String]
 )
-    extends PartitionReader[InternalRow] {
+  extends PartitionReader[InternalRow] {
 
-    private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-    private val cosmosItemIdentityList =
-        readManyFilterList.map(identityString => CosmosItemIdentityHelper.tryParseCosmosItemIdentity(identityString).get)
+  private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-    private val queryOptions = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
+  private val queryOptions = ImplementationBridgeHelpers
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
+
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+  ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
+
+  private val operationContext = {
+    val taskContext = TaskContext.get
+    assert(taskContext != null)
+
+    SparkTaskContext(diagnosticsContext.correlationActivityId,
+      taskContext.stageId(),
+      taskContext.partitionId(),
+      taskContext.taskAttemptId(),
+      feedRange.toString + " " + readManyFilters.reduce((left, right) => s"$left;$right"))
+  }
+
+  private val operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val listener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+
+      val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
+
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
         .getCosmosQueryRequestOptionsAccessor
-        .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
+        .setOperationContext(queryOptions, ctxAndListener)
 
-    private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-    ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
-
-    private val operationContext = {
-        val taskContext = TaskContext.get
-        assert(taskContext != null)
-
-        SparkTaskContext(diagnosticsContext.correlationActivityId,
-            taskContext.stageId(),
-            taskContext.partitionId(),
-            taskContext.taskAttemptId(),
-            feedRange.toString + " " + readManyFilterList.reduce((left, right) => s"$left;$right"))
+      Some(ctxAndListener)
+    } else {
+      None
     }
+  }
 
-    private val operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
-        if (diagnosticsConfig.mode.isDefined) {
-            val listener =
-                DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
 
-            val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
+  private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+  log.logInfo(s"Using ReadMany from feed range $feedRange of " +
+    s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
+    s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
+    s"readManyFilter: [ total size ${readManyFilters.size}. Details: ${readManyFilters.reduce((left, right) => s"$left;$right")}], " +
+    s"Context: ${operationContext.toString} ${getThreadInfo}")
 
-            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor
-                .setOperationContext(queryOptions, ctxAndListener)
+  private val clientCacheItem = CosmosClientCache(
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
+    Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+    s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
+  )
 
-            Some(ctxAndListener)
-        } else {
-            None
-        }
-    }
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles),
+      sparkEnvironmentInfo)
 
-    log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
+  private val cosmosAsyncContainer =
+    ThroughputControlHelper.getContainer(
+      config,
+      containerTargetConfig,
+      clientCacheItem,
+      throughputControlClientCacheItemOpt)
+  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
-    private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-    log.logInfo(s"Using ReadMany from feed range $feedRange of " +
-        s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
-        s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
-        s"readManyFilter: ${readManyFilterList.reduce((left, right) => s"$left;$right")}, " +
-        s"Context: ${operationContext.toString} ${getThreadInfo}")
+  private val partitionKeyDefinition: PartitionKeyDefinition = cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
 
-    private val clientCacheItem = CosmosClientCache(
-        CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
-        Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
-        s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
+  private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[JsonNode](
+    cosmosAsyncContainer,
+    readManyFilters.map(CosmosItemIdentityHelper.tryParseCosmosItemIdentity(_).get),
+    queryOptions,
+    readConfig.maxItemCount,
+    operationContextAndListenerTuple,
+    classOf[JsonNode])
+
+  private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
+
+  override def next(): Boolean = iterator.hasNext
+
+  override def get(): InternalRow = {
+    // TODO: Optimization: Using the item factory
+    val jsonNode = iterator.next()
+    val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
+
+    val computedColumnsMap = Map(
+      readConfig.readManyFilteringConfig.readManyFilterProperty ->
+        ((objectNodeParam: ObjectNode) => {
+          val idValue = objectNodeParam.get(IdAttributeName).asText()
+          val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
+          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
+        })
     )
 
-    private val throughputControlClientCacheItemOpt =
-        ThroughputControlHelper.getThroughputControlClientCacheItem(
-            config,
-            clientCacheItem.context,
-            Some(cosmosClientStateHandles),
-            sparkEnvironmentInfo)
+    val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
+      objectNode,
+      readConfig.schemaConversionMode,
+      computedColumnsMap)
+    cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
+  }
 
-    private val cosmosAsyncContainer =
-        ThroughputControlHelper.getContainer(
-            config,
-            containerTargetConfig,
-            clientCacheItem,
-            throughputControlClientCacheItemOpt)
-    SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
-
-    private val partitionKeyDefinition: PartitionKeyDefinition = cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
-
-    private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
-    private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
-
-    private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[JsonNode](
-        cosmosAsyncContainer,
-        cosmosItemIdentityList,
-        queryOptions,
-        readConfig.maxItemCount,
-        operationContextAndListenerTuple,
-        classOf[JsonNode])
-
-    private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
-
-    override def next(): Boolean = iterator.hasNext
-
-    override def get(): InternalRow = {
-        // TODO: Optimization: Using the item factory
-        val jsonNode = iterator.next()
-        val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
-
-        val computedColumnsMap = Map(
-            readConfig.runtimeFilteringConfig.readManyFilterProperty ->
-                ((objectNodeParam: ObjectNode) => {
-                    val idValue = objectNodeParam.get(IdAttributeName).asText()
-                    val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
-                    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
-                })
-        )
-
-        val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
-            objectNode,
-            readConfig.schemaConversionMode,
-            computedColumnsMap)
-        cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
+  override def close(): Unit = {
+    this.iterator.close()
+    RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+    clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
     }
-
-    override def close(): Unit = {
-        this.iterator.close()
-        RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
-        clientCacheItem.close()
-        if (throughputControlClientCacheItemOpt.isDefined) {
-            throughputControlClientCacheItemOpt.get.close()
-        }
-    }
+  }
 }
