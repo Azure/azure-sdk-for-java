@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -20,7 +19,6 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +28,7 @@ import java.util.regex.Pattern;
  */
 public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     private static final String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
+    private static final Pattern PROVIDER_PATTERN = Pattern.compile(".*'(.*)'");
     private Providers providers;
 
     /**
@@ -78,80 +77,66 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (providers == null) {
             return next.process();
         }
-        return next.clone().process().flatMap(
-            response -> {
-                if (!isResponseSuccessful(response)) {
-                    HttpResponse bufferedResponse = response.buffer();
-                    return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).flatMap(
-                        body -> {
-                            String bodyStr = new String(body, StandardCharsets.UTF_8);
-
-                            SerializerAdapter jacksonAdapter =
-                                SerializerFactory.createDefaultManagementSerializerAdapter();
-                            ManagementError managementError;
-                            try {
-                                managementError = jacksonAdapter.deserialize(
-                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
-                            } catch (IOException e) {
-                                return Mono.just(bufferedResponse);
-                            }
-
-                            if (managementError != null
-                                && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
-
-                                String resourceNamespace = null;
-
-                                if (managementError.getDetails() != null) {
-                                    // find in details.target
-                                    resourceNamespace = managementError.getDetails().stream()
-                                        .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode())
-                                            && d.getTarget() != null)
-                                        .map(ManagementError::getTarget)
-                                        .findFirst().orElse(null);
-                                }
-                                if (resourceNamespace == null) {
-                                    // find in message
-                                    Pattern providerPattern = Pattern.compile(".*'(.*)'");
-                                    Matcher providerMatcher = providerPattern.matcher(managementError.getMessage());
-                                    if (!providerMatcher.find()) {
-                                        return Mono.just(bufferedResponse);
-                                    }
-                                    resourceNamespace = providerMatcher.group(1);
-                                }
-
-                                // Retry after registration
-                                return registerProviderUntilSuccess(resourceNamespace)
-                                    // in case error, return the response before registering resource provider
-                                    // if not error, this will be ignored
-                                    .then(Mono.just(bufferedResponse))
-                                    .onErrorReturn(bufferedResponse)
-                                    .then(next.clone().process());
-                            }
-                            return Mono.just(bufferedResponse);
-                        }
-                    );
-                }
+        return next.clone().process().flatMap(response -> {
+            if (isResponseSuccessful(response)) {
                 return Mono.just(response);
             }
-        );
+
+            return response.bufferAsync().flatMap(bufferedResponse -> bufferedResponse.getBodyAsByteArray()
+                .flatMap(body -> {
+                    SerializerAdapter jacksonAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+                    ManagementError managementError;
+                    try {
+                        managementError = jacksonAdapter.deserialize(body, ManagementError.class,
+                            SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        return Mono.just(bufferedResponse);
+                    }
+
+                    if (managementError != null
+                        && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
+
+                        String resourceNamespace = null;
+
+                        if (managementError.getDetails() != null) {
+                            // find in details.target
+                            resourceNamespace = managementError.getDetails().stream()
+                                .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode())
+                                    && d.getTarget() != null)
+                                .map(ManagementError::getTarget).findFirst().orElse(null);
+                        }
+
+                        if (resourceNamespace == null) {
+                            // find in message
+                            Matcher providerMatcher = PROVIDER_PATTERN.matcher(managementError.getMessage());
+                            if (!providerMatcher.find()) {
+                                return Mono.just(bufferedResponse);
+                            }
+                            resourceNamespace = providerMatcher.group(1);
+                        }
+
+                        // Retry after registration
+                        return registerProviderUntilSuccess(resourceNamespace)
+                            // in case error, return the response before registering resource provider
+                            // if not error, this will be ignored
+                            .then(Mono.just(bufferedResponse)).onErrorReturn(bufferedResponse)
+                            .then(next.clone().process());
+                    }
+                    return Mono.just(bufferedResponse);
+                }));
+        });
     }
 
     private Mono<Void> registerProviderUntilSuccess(String namespace) {
-        return providers.registerAsync(namespace)
-            .flatMap(
-                provider -> {
-                    if (isProviderRegistered(provider)) {
-                        return Mono.empty();
-                    }
-                    return providers.getByNameAsync(namespace)
-                        .flatMap(this::checkProviderRegistered)
-                        .retryWhen(Retry
-                            // 30 * 10sec
-                            .fixedDelay(30,
-                                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
-                            .filter(ProviderUnregisteredException.class::isInstance));
-                }
-            );
+        return providers.registerAsync(namespace).flatMap(provider -> {
+            if (isProviderRegistered(provider)) {
+                return Mono.empty();
+            }
+            return providers.getByNameAsync(namespace).flatMap(this::checkProviderRegistered).retryWhen(Retry
+                // 30 * 10sec
+                .fixedDelay(30, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
+                .filter(ProviderUnregisteredException.class::isInstance));
+        });
     }
 
     private Mono<Void> checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {

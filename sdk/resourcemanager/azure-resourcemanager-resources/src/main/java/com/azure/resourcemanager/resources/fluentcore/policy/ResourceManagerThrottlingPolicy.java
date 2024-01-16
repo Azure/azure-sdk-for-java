@@ -29,10 +29,10 @@ public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.clone().process()
-            .flatMap(response -> {
-                HttpResponse bufferedResponse = response.buffer();
-                callback.accept(bufferedResponse, ResourceManagerThrottlingInfo.fromHeaders(response.getHeaders()));
+        return next.clone().process().flatMap(HttpResponse::bufferAsync)
+            .flatMap(bufferedResponse -> {
+                callback.accept(bufferedResponse,
+                    ResourceManagerThrottlingInfo.fromHeaders(bufferedResponse.getHeaders()));
                 return Mono.just(bufferedResponse);
             });
     }

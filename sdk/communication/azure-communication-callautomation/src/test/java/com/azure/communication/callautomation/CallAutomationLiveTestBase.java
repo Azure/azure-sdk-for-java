@@ -139,16 +139,12 @@ public class CallAutomationLiveTestBase extends TestBase {
     }
 
     protected Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
-
-                /* Should sanitize printed response url */
-                System.out.println("Chain-ID header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl()
-                    + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
-                return Mono.just(bufferedResponse);
-            });
+        return next.process().map(httpResponse -> {
+            /* Should sanitize printed response url */
+            System.out.println("Chain-ID header for " + testName + " request " + httpResponse.getRequest().getUrl()
+                + ": " + httpResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
+            return httpResponse;
+        });
     }
 
     protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {

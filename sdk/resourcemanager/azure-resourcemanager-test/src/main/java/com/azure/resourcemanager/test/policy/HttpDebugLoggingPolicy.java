@@ -165,21 +165,21 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
         long contentLength = getContentLength(logger, response.getHeaders());
 
         if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-            HttpResponse bufferedResponse = response.buffer();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
-            WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
-            return bufferedResponse.getBody()
-                .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
-                .doFinally(ignored -> {
-                    responseLogMessage.append("Response body:")
-                        .append(System.lineSeparator())
-                        .append(prettyPrintIfNeeded(logger, contentTypeHeader,
-                            convertStreamToString(outputStream, logger)))
-                        .append(System.lineSeparator())
-                        .append("<-- END HTTP");
+            return response.bufferAsync().flatMap(bufferedResponse -> {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
+                WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
 
-                    logger.info(responseLogMessage.toString());
-                }).then(Mono.just(bufferedResponse));
+                return bufferedResponse.getBody()
+                    .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
+                    .doFinally(ignored -> {
+                        responseLogMessage.append("Response body:").append(System.lineSeparator())
+                            .append(prettyPrintIfNeeded(logger, contentTypeHeader,
+                                convertStreamToString(outputStream, logger)))
+                            .append(System.lineSeparator()).append("<-- END HTTP");
+
+                        logger.info(responseLogMessage.toString());
+                    }).then(Mono.just(bufferedResponse));
+            });
         } else {
             responseLogMessage.append("(body content not logged)")
                 .append(System.lineSeparator())

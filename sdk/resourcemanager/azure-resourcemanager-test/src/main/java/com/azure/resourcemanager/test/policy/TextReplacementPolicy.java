@@ -88,24 +88,21 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
                 networkCallRecord.setException(new NetworkCallError(throwable));
                 recordedData.addNetworkCall(networkCallRecord);
                 throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
-            }).flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+            }).flatMap(HttpResponse::bufferAsync)
+            .flatMap(bufferedResponse -> extractResponseData(bufferedResponse).map(responseData -> {
+                networkCallRecord.setResponse(responseData);
+                String body = responseData.get(BODY);
 
-                return extractResponseData(bufferedResponse).map(responseData -> {
-                    networkCallRecord.setResponse(responseData);
-                    String body = responseData.get(BODY);
+                // Remove pre-added header if this is a waiting or redirection
+                if (body != null && body.contains("<Status>InProgress</Status>")
+                    || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    logger.info("Waiting for a response or redirection.");
+                } else {
+                    recordedData.addNetworkCall(networkCallRecord);
+                }
 
-                    // Remove pre-added header if this is a waiting or redirection
-                    if (body != null && body.contains("<Status>InProgress</Status>")
-                        || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
-                        logger.info("Waiting for a response or redirection.");
-                    } else {
-                        recordedData.addNetworkCall(networkCallRecord);
-                    }
-
-                    return bufferedResponse;
-                });
-            });
+                return bufferedResponse;
+            }));
     }
 
     private String applyReplacementRule(String text) {

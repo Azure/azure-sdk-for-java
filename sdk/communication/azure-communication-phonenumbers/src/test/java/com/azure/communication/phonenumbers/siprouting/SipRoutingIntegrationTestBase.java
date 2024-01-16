@@ -6,6 +6,7 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
@@ -16,12 +17,12 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -95,6 +96,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteNumberPattern\",\"message\":\"Route with an invalid number pattern.\"}}}\"";
     protected static final String MESSAGE_INVALID_ROUTE_NAME =
         "Status code 422, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidRouteName\",\"message\":\"Route with an invalid name.\"}}}\"";
+
+    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
 
     protected SipRoutingClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
@@ -171,15 +174,12 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
-
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+        return next.process().map(httpResponse -> {
+            // Should sanitize printed reponse url
+            System.out.println("MS-CV header for " + testName + " request " + httpResponse.getRequest().getUrl() + ": "
+                + httpResponse.getHeaderValue(MS_CV));
+            return httpResponse;
+        });
     }
 
     private static String getUniqueFqdn(String order) {
@@ -187,7 +187,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             return order + ".redacted" + "." + AZURE_TEST_DOMAIN;
         }
 
-        String unique = UUID.randomUUID().toString().replace("-", "");
+        String unique = CoreUtils.randomUuid().toString().replace("-", "");
         return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
 }
