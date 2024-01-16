@@ -25,9 +25,6 @@ public class IdentityTestBase extends TestProxyTestBase {
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
 
-        String endpoint = AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
-        String authenticationScope = "https://vault.azure.net/.default";
-
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
@@ -54,5 +51,21 @@ public class IdentityTestBase extends TestProxyTestBase {
             .build();
 
         return pipeline;
+    }
+
+    String getClientId() {
+        return Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+    }
+
+    String getTenantId() {
+        return Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+    }
+
+    String getClientSecret() {
+        return Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
+    }
+
+    boolean isPlaybackMode() {
+        return interceptorManager.isPlaybackMode();
     }
 }

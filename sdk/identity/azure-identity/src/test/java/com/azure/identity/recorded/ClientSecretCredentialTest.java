@@ -2,48 +2,63 @@ package com.azure.identity.recorded;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.OffsetDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ClientSecretCredentialTest extends IdentityTestBase {
 
-    private ClientSecretCredential getCredential() {
-        return new ClientSecretCredentialBuilder()
-            .clientSecret("Client-Secret")
-            .clientId("Client-Id")
-            .tenantId("tenant-id")
+    private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    private ClientSecretCredential credential;
+
+    private void initializeClient(HttpClient httpClient) {
+        credential = new ClientSecretCredentialBuilder()
+            .clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
+            .tenantId(isPlaybackMode() ? "Dummy-Id" : getTenantId())
+            .clientSecret(isPlaybackMode() ? "Dummy-Secret" : getClientSecret())
+            .pipeline(super.getHttpPipeline(httpClient))
             .build();
     }
 
-    @Test
-    public void create() {
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientSecret("Client-Secret")
-            .clientId("Client-Id")
-            .tenantId("tenant-id")
-            .build();
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getToken(HttpClient httpClient) {
+        // arrange
+        initializeClient(httpClient);
 
-        assertNotNull(credential);
+        // act
+        AccessToken actual = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
+
+        // assert
+        assertNotNull(actual);
+        assertNotNull(actual.getToken());
+        assertNotNull(actual.getExpiresAt());
     }
 
-    @Test
-    public void getTokenSync() {
-        String expectedAccessTokenValue =
-            "3ff503e0-15ef-4be9-bd99-29e6026d4bf6:M2ZmNTAzZTAtMTVlZi00YmU5LWJkOTktMjllNjAyNmQ0YmY2";
-        OffsetDateTime expectedExpiration = OffsetDateTime.MAX;
-        ClientSecretCredential credential = getCredential();
-
-        AccessToken token = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
-
-        assertNotNull(token);
-        assertEquals(expectedAccessTokenValue, token.getToken());
-        assertEquals(expectedExpiration, token.getExpiresAt());
-    }
-
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("getHttpClients")
+//    public void getTokenWithResponse(HttpClient httpClient) {
+//        // arrange
+//        initializeClient(httpClient);
+//
+//        // act
+//        Response<AccessToken> actualResponse = this.client.getTokenWithResponse(Context.NONE);
+//
+//        // assert
+//        assertNotNull(actualResponse);
+//        assertEquals(200, actualResponse.getStatusCode());
+//
+//        // act
+//        AccessToken actual = actualResponse.getValue();
+//
+//        // assert
+//        assertNotNull(actual);
+//        assertNotNull(actual.getToken());
+//        assertNotNull(actual.getExpiresAt());
+//    }
 }
