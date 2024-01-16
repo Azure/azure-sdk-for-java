@@ -5,6 +5,7 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -38,7 +39,7 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Initializes an instance of ImageAnalysisAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -195,7 +196,7 @@ public final class ImageAnalysisAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -366,7 +367,7 @@ public final class ImageAnalysisAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -388,7 +389,7 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -446,7 +447,7 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -472,7 +473,7 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -530,7 +531,7 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * 
+     *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -562,16 +563,17 @@ public final class ImageAnalysisAsyncClient {
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
      * @param options Additional image analysis options.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * 
+     *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -590,16 +592,17 @@ public final class ImageAnalysisAsyncClient {
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
      * @param options Additional image analysis options.
-     * 
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * 
+     *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {

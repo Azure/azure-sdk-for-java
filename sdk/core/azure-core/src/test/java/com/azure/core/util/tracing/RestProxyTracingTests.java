@@ -88,7 +88,7 @@ public class RestProxyTracingTests {
         assertNull(restProxy.getThrowable());
         assertEquals("cancelled", restProxy.getErrorMessage());
 
-        assertTrue(http.getName().startsWith("HTTP PUT"));
+        assertTrue(http.getName().startsWith("PUT"));
         assertNull(http.getThrowable());
         assertEquals("cancelled", http.getErrorMessage());
     }

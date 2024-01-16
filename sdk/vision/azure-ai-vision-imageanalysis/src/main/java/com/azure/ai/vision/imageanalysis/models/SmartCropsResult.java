@@ -26,7 +26,7 @@ public final class SmartCropsResult {
 
     /**
      * Creates an instance of SmartCropsResult class.
-     * 
+     *
      * @param values the values value to set.
      */
     @Generated
@@ -37,7 +37,7 @@ public final class SmartCropsResult {
 
     /**
      * Get the values property: A list of crop regions.
-     * 
+     *
      * @return the values value.
      */
     @Generated
