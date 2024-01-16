@@ -371,7 +371,7 @@ additional questions or comments.
 <!-- LINKS -->
 [image_analysis_overview]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0
 [image_analysis_concepts]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40
-[vision_studio]: https://portal.vision.cognitive.azure.com/gallery/imageanalysis
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples
+[vision_studio]: https://aka.ms/vision-studio/image-analysis
+[samples]: https://aka.ms/azsdk/image-analysis/samples/java
 [sdk_source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main/java/com/azure/ai/vision/imageanalysis
 [supported_regions]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-describe-images-40
