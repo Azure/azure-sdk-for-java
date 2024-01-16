@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRootSquash;
@@ -21,6 +22,7 @@ public class ShareCreateOptions {
     private ShareAccessTier accessTier;
     private ShareProtocols protocols;
     private ShareRootSquash rootSquash;
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /**
      * @return Size in GB to limit the share's growth.
@@ -100,6 +102,27 @@ public class ShareCreateOptions {
      */
     public ShareCreateOptions setRootSquash(ShareRootSquash rootSquash) {
         this.rootSquash = rootSquash;
+        return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setEnableSnapshotVirtualDirectoryAccess(
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;
     }
 }

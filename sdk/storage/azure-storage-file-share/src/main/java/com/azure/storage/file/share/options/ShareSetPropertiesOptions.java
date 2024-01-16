@@ -18,6 +18,7 @@ public class ShareSetPropertiesOptions {
     private ShareAccessTier accessTier;
     private ShareRootSquash rootSquash;
     private ShareRequestConditions requestConditions;
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /**
      * @return {@link ShareAccessTier}
@@ -80,6 +81,27 @@ public class ShareSetPropertiesOptions {
      */
     public ShareSetPropertiesOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareSetPropertiesOptions setEnableSnapshotVirtualDirectoryAccess(
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;
     }
 }

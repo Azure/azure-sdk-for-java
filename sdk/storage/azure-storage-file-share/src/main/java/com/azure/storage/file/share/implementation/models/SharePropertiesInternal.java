@@ -128,6 +128,12 @@ public final class SharePropertiesInternal {
     private ShareRootSquash rootSquash;
 
     /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    @JsonProperty(value = "EnableSnapshotVirtualDirectoryAccess")
+    private Boolean enableSnapshotVirtualDirectoryAccess;
+
+    /*
      * Dictionary of <string>
      */
     @JsonProperty(value = "Metadata")
@@ -523,6 +529,27 @@ public final class SharePropertiesInternal {
      */
     public SharePropertiesInternal setRootSquash(ShareRootSquash rootSquash) {
         this.rootSquash = rootSquash;
+        return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal setEnableSnapshotVirtualDirectoryAccess(
+            Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;
     }
 

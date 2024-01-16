@@ -6,6 +6,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -130,6 +131,12 @@ public final class ShareProperties {
      * The provisioned bandwidth.
      */
     private Integer provisionedBandwidthMiBps;
+
+    /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    @JsonProperty(value = "EnableSnapshotVirtualDirectoryAccess")
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -568,4 +575,26 @@ public final class ShareProperties {
         this.metadata = metadata;
         return this;
     }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setEnableSnapshotVirtualDirectoryAccess(
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
 }
