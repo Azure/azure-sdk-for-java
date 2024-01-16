@@ -1,11 +1,11 @@
 ## Generate autorest code
 ## input-file: https://dev.loganalytics.io/swagger/api.loganalytics.io/v1/swagger.json
 
-## Log Query 
+## Log Query
 These settings apply only when `--tag=package-log` is specified on the command line.
 
 ```yaml $(tag) == 'package-log'
-use: '@autorest/java@4.1.23'
+use: '@autorest/java@4.1.25'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 java: true
 output-folder: ../
@@ -16,7 +16,7 @@ sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
-required-parameter-client-methods: false 
+required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
@@ -29,8 +29,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics'
-use: '@autorest/java@4.1.23'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
+use: '@autorest/java@4.1.25'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-10-01/metrics_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metrics
@@ -75,9 +75,9 @@ directive:
 These settings apply only when `--tag=package-metrics-namespaces` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-namespaces'
-use: '@autorest/java@4.1.23'
+use: '@autorest/java@4.1.25'
 service-name: MetricsNamespaces
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
@@ -100,8 +100,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics-definitions` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-definitions'
-use: '@autorest/java@4.1.23'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
+use: '@autorest/java@4.1.25'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-10-01/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../
@@ -125,8 +125,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics-batch` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-batch'
-use: '@autorest/java@4.1.23'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/data-plane/Microsoft.Insights/preview/2023-05-01-preview/metricBatch.json
+use: '@autorest/java@4.1.25'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/data-plane/Microsoft.Insights/stable/2023-10-01/metricBatch.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../
@@ -137,7 +137,7 @@ sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
-required-parameter-client-methods: false 
+required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
@@ -149,8 +149,17 @@ enable-sync-stack: true
 
 ```yaml $(tag) == 'package-metrics-batch' 
 directive:
-- from: swagger-document
-  where: $.parameters.IntervalParameter
-  transform: >
-   $["format"] = "duration";
+    - from: swagger-document
+      where: $.parameters.IntervalParameter
+      transform: >
+          $["format"] = "duration";
+```
+
+### Change subscriptionId to type 'String'
+```yaml $(tag) == 'package-metrics-batch' 
+directive:
+    - from: swagger-document
+      where: $.parameters.SubscriptionIdParameter
+      transform: >
+          $["format"] = "";
 ```

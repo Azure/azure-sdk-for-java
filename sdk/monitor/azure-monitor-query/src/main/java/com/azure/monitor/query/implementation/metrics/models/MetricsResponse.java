@@ -51,7 +51,7 @@ public final class MetricsResponse {
     private String resourceregion;
 
     /*
-     * the value of the collection.
+     * The value of the collection.
      */
     @JsonProperty(value = "value", required = true)
     private List<Metric> value;
@@ -169,7 +169,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Get the value property: the value of the collection.
+     * Get the value property: The value of the collection.
      * 
      * @return the value value.
      */

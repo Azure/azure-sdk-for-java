@@ -13,20 +13,21 @@ import java.util.List;
  * Represents collection of metric definitions.
  */
 @Immutable
-public final class MetricDefinitionCollection {
+public final class SubscriptionScopeMetricDefinitionCollection {
     /*
      * The values for the metric definitions.
      */
     @JsonProperty(value = "value", required = true)
-    private List<MetricDefinition> value;
+    private List<SubscriptionScopeMetricDefinition> value;
 
     /**
-     * Creates an instance of MetricDefinitionCollection class.
+     * Creates an instance of SubscriptionScopeMetricDefinitionCollection class.
      * 
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricDefinitionCollection(@JsonProperty(value = "value", required = true) List<MetricDefinition> value) {
+    public SubscriptionScopeMetricDefinitionCollection(
+        @JsonProperty(value = "value", required = true) List<SubscriptionScopeMetricDefinition> value) {
         this.value = value;
     }
 
@@ -35,7 +36,7 @@ public final class MetricDefinitionCollection {
      * 
      * @return the value value.
      */
-    public List<MetricDefinition> getValue() {
+    public List<SubscriptionScopeMetricDefinition> getValue() {
         return this.value;
     }
 }

@@ -91,7 +91,9 @@ public final class MetricsBatchQueryAsyncClient {
         Integer top = null;
         String orderBy = null;
         String endTime = null;
+        String rollupBy = null;
         if (options != null) {
+            rollupBy = options.getRollupBy();
             filter = options.getFilter();
             granularity = options.getGranularity();
 
@@ -122,7 +124,7 @@ public final class MetricsBatchQueryAsyncClient {
         resourceIdList.setResourceids(resourceUris);
         Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
             .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter, null);
+                endTime, granularity, aggregations, top, orderBy, filter, rollupBy);
 
 
         return responseMono.map(response -> {

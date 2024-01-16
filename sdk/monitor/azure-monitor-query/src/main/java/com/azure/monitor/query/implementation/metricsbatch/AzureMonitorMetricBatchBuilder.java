@@ -214,7 +214,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -232,7 +232,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -250,7 +250,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -262,13 +262,13 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Builds an instance of AzureMonitorMetricBatch with the provided parameters.
-     * 
+     *
      * @return an instance of AzureMonitorMetricBatch.
      */
     @Generated
     public AzureMonitorMetricBatch buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-05-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureMonitorMetricBatch client
