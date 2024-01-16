@@ -263,7 +263,7 @@ public final class SessionContainer implements ISessionContainer {
             ValueHolder<String> collectionName = ValueHolder.initialize(null);
 
             if (shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
-                this.setSessionToken(request, resourceId.v, collectionName.v, token);
+                this.setSessionToken(request, resourceId.v, collectionName.v);
             }
         }
     }
@@ -283,26 +283,19 @@ public final class SessionContainer implements ISessionContainer {
             diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics);
 
         if (sessionTokenToRegionMappings != null && !sessionTokenToRegionMappings.isEmpty()) {
-            this.setSessionToken(request, resourceId, collectionName, tokenFromResponseHeaderMap);
+            this.setSessionToken(request, resourceId, collectionName);
         }
     }
 
     private void setSessionToken(
         RxDocumentServiceRequest request,
         ResourceId resourceId,
-        String collectionName,
-        String token) {
+        String collectionName) {
 
-        String partitionKeyRangeId;
-        String[] tokenParts = StringUtils.split(token, ':');
-
-        assert tokenParts.length > 1;
-
-        partitionKeyRangeId = tokenParts[0];
-
-        if (logger.isTraceEnabled()) {
-            logger.trace("UPDATE SESSION token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, tokenParts[1]);
-        }
+        // todo: evaluate below trace call with region-scoped session tokens
+//        if (logger.isTraceEnabled()) {
+//            logger.trace("UPDATE SESSION token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, tokenParts[1]);
+//        }
 
         boolean isKnownCollection;
 
