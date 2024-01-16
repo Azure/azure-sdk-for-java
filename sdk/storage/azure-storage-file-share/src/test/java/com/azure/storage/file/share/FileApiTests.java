@@ -13,6 +13,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2424,6 +2425,7 @@ class FileApiTests extends FileShareTestBase {
         fileClient.create(512);
         ShareFileClient destClient = fileClient.rename("test-file-destination" + specialChar + " pdf.txt");
         assertNotNull(destClient);
+        assertTrue(Utility.urlEncode(destClient.getFileUrl()).contains(Utility.urlEncode(specialChar)));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
