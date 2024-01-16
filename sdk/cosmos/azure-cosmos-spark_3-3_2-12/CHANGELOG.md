@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed warning related to custom metrics in Spark 3.2 / 3.3 and 3.4. - See [PR 38315](https://github.com/Azure/azure-sdk-for-java/pull/38315)
 
 #### Other Changes
 
