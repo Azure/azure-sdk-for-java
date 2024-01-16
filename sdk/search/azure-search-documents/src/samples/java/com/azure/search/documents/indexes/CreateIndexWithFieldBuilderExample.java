@@ -32,9 +32,14 @@ public class CreateIndexWithFieldBuilderExample {
         // with @SimpleField or @SearchableField.
         List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions());
         String indexName = "hotels";
-        SearchIndex newIndex = new SearchIndex(indexName, indexFields);
-
-        // Create index.
+        List<SearchField> searchFieldList = new ArrayList<>();
+        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+	                            .setKey(true)
+	                            .setFilterable(true)
+	                            .setSortable(true));
+        SearchIndex newIndex = new SearchIndex(indexName, indexFields)
+	                            .setFields(searchFieldList);
+         // Create index.
         client.createIndex(newIndex);
 
         // Cleanup index resource.
