@@ -130,9 +130,12 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             } else {
                 httpClientProvider = VertxAsyncHttpClientProvider.class;
             }
-        } else {
-            httpClientProvider = getHttpclientProvider(httpClientType);
         }
+
+        if (httpClientProvider == null) {
+            httpClientProvider = getHttpClientProvider(httpClientType);
+        }
+
         try {
             return httpClientProvider.getDeclaredConstructor().newInstance().createInstance();
         } catch (Throwable e) {
@@ -141,7 +144,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     }
 
     @SuppressWarnings("unchecked")
-    private static Class<? extends HttpClientProvider> getHttpclientProvider(PerfStressOptions.HttpClientType httpClientType) {
+    private static Class<? extends HttpClientProvider> getHttpClientProvider(PerfStressOptions.HttpClientType httpClientType) {
         String providerClassName = httpClientType.toString();
         try {
             Class<?> provider = Class.forName(providerClassName, false, ApiPerfTestBase.class.getClassLoader());

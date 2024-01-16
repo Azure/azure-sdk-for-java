@@ -5,7 +5,6 @@ package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -95,7 +94,6 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
-            .serviceVersion(CommunicationIdentityServiceVersion.V2022_10_01)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

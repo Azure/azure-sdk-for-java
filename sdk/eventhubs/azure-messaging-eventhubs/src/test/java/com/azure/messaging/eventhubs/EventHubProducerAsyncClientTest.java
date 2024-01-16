@@ -980,8 +980,8 @@ class EventHubProducerAsyncClientTest {
 
         assertEquals(1, measurements.get(0).getValue());
         assertEquals(2, measurements.get(1).getValue());
-        assertAttributes(eventHub1, null, "ok", measurements.get(0).getAttributes());
-        assertAttributes(eventHub2, null, "ok", measurements.get(1).getAttributes());
+        assertAttributes(eventHub1, null, null, measurements.get(0).getAttributes());
+        assertAttributes(eventHub2, null, null, measurements.get(1).getAttributes());
     }
 
 
@@ -1042,7 +1042,7 @@ class EventHubProducerAsyncClientTest {
         assertEquals(1, measurements.size());
 
         assertEquals(1, measurements.get(0).getValue());
-        assertAttributes(EVENT_HUB_NAME, partitionId, "ok", measurements.get(0).getAttributes());
+        assertAttributes(EVENT_HUB_NAME, partitionId, null, measurements.get(0).getAttributes());
     }
 
     @Test
@@ -1096,7 +1096,7 @@ class EventHubProducerAsyncClientTest {
         assertEquals(1, measurements.size());
 
         assertEquals(1, measurements.get(0).getValue());
-        assertAttributes(EVENT_HUB_NAME, null, "ok", measurements.get(0).getAttributes());
+        assertAttributes(EVENT_HUB_NAME, null, null, measurements.get(0).getAttributes());
 
         assertEquals("parent span", measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
     }
@@ -1492,7 +1492,15 @@ class EventHubProducerAsyncClientTest {
     }
 
     private void assertAttributes(String entityName, String entityPath, String status, Map<String, Object> attributes) {
-        assertEquals(entityPath == null ? 3 : 4, attributes.size());
+        int expectedAttributeCount = 4;
+        if (entityPath == null) {
+            expectedAttributeCount--;
+        }
+        if (status == null) {
+            expectedAttributeCount--;
+        }
+
+        assertEquals(expectedAttributeCount, attributes.size());
         assertEquals(HOSTNAME, attributes.get("hostName"));
         assertEquals(entityName, attributes.get("entityName"));
         assertEquals(entityPath, attributes.get("partitionId"));

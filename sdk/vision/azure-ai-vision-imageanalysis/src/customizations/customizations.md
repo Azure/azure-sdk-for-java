@@ -62,6 +62,7 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -90,6 +91,7 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -126,6 +128,7 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
@@ -154,6 +157,7 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {

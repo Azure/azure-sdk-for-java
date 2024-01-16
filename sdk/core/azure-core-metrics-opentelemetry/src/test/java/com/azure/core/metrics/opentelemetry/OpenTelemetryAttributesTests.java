@@ -81,7 +81,7 @@ public class OpenTelemetryAttributesTests {
 
         assertEquals(13, attributes.size());
         assertEquals("value", attributes.get(AttributeKey.stringKey("foobar")));
-        assertEquals("host", attributes.get(AttributeKey.stringKey("net.peer.name")));
+        assertEquals("host", attributes.get(AttributeKey.stringKey("server.address")));
         assertEquals("entity", attributes.get(AttributeKey.stringKey("messaging.destination.name")));
         assertEquals("path", attributes.get(AttributeKey.stringKey("messaging.az.entity_path")));
         assertEquals("amqp::error::code", attributes.get(AttributeKey.stringKey("amqp.error_condition")));
@@ -89,7 +89,7 @@ public class OpenTelemetryAttributesTests {
         assertEquals("peek", attributes.get(AttributeKey.stringKey("amqp.operation")));
         assertEquals("no_content", attributes.get(AttributeKey.stringKey("amqp.status_code")));
         assertEquals(42, attributes.get(AttributeKey.longKey("messaging.eventhubs.partition_id")));
-        assertEquals("error", attributes.get(AttributeKey.stringKey("otel.status_code")));
+        assertEquals("error", attributes.get(AttributeKey.stringKey("error.type")));
         assertEquals("/foo/subscriptions/bar", attributes.get(AttributeKey.stringKey("messaging.servicebus.subscription_name")));
         assertEquals("abandon", attributes.get(AttributeKey.stringKey("messaging.servicebus.disposition_status")));
     }
