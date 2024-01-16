@@ -473,7 +473,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl update() {
         createParameters = null;
-        updateParameters = new StorageAccountUpdateParameters().withIdentity(this.innerModel().identity());
+        updateParameters = new StorageAccountUpdateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.updateParameters, this.innerModel());
         this.encryptionHelper = new StorageEncryptionHelper(this.updateParameters, this.innerModel());
         return super.update();

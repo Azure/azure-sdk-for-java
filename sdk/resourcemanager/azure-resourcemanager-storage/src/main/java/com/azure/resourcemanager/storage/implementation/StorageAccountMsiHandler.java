@@ -62,6 +62,9 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withoutLocalManagedServiceIdentity() {
+        if (Objects.isNull(storageAccount.updateParameters.identity())) {
+            storageAccount.updateParameters.withIdentity(storageAccount.innerModel().identity());
+        }
         if (storageAccount.updateParameters.identity() == null
             || IdentityType.NONE.equals(storageAccount.updateParameters.identity().type())
             || IdentityType.USER_ASSIGNED.equals(storageAccount.updateParameters.identity().type())) {
@@ -115,14 +118,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      */
     StorageAccountMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
         // mark as to be removed
-        if (storageAccount.updateParameters.identity() == null
-            || IdentityType.NONE.equals(storageAccount.updateParameters.identity().type())
-            || IdentityType.SYSTEM_ASSIGNED.equals(storageAccount.updateParameters.identity().type())) {
-            return this;
-        } else if (IdentityType.USER_ASSIGNED.equals(storageAccount.updateParameters.identity().type())) {
-            storageAccount.updateParameters.identity().withType(IdentityType.NONE);
-        } else if (IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED.equals(storageAccount.updateParameters.identity().type())) {
-            storageAccount.updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED);
+        if (Objects.isNull(storageAccount.updateParameters.identity())) {
+            storageAccount.updateParameters.withIdentity(storageAccount.innerModel().identity());
         }
         this.userAssignedIdentities.put(identityId, null);
         return this;
@@ -261,14 +258,14 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                 storageAccount.createParameters.withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
             }
         } else {
-            if (storageAccount.updateParameters.identity() == null
-                || storageAccount.updateParameters.identity().type() == null
-                || storageAccount.updateParameters.identity().type().equals(IdentityType.NONE)
-                || storageAccount.updateParameters.identity().type().equals(identityType)) {
-                Identity identity = Objects.isNull(storageAccount.updateParameters.identity()) ? new Identity().withType(identityType) : storageAccount.updateParameters.identity().withType(identityType);
+            if (storageAccount.innerModel().identity() == null
+                || storageAccount.innerModel().identity().type() == null
+                || storageAccount.innerModel().identity().type().equals(IdentityType.NONE)
+                || storageAccount.innerModel().identity().type().equals(identityType)) {
+                Identity identity = Objects.isNull(storageAccount.innerModel().identity()) ? new Identity().withType(identityType) : storageAccount.innerModel().identity().withType(identityType);
                 storageAccount.updateParameters.withIdentity(identity);
             } else {
-                storageAccount.updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+                storageAccount.updateParameters.withIdentity(storageAccount.innerModel().identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
             }
         }
     }

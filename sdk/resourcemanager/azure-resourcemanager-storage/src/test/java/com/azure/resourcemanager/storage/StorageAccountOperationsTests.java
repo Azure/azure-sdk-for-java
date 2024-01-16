@@ -271,6 +271,67 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
+    public void createStorageAccountWithSystemAssigned() {
+
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateStorageAccountWithSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+        Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+
+    @Test
+    public void updateStorageAccountWithoutSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
     public void createStorageAccountWithNewUserAssigned() {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
@@ -290,6 +351,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .create();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
     }
 
@@ -312,12 +375,16 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .create();
 
         Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update()
             .withNewUserAssignedManagedServiceIdentity(identityCreatable).apply();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
     }
 
@@ -341,6 +408,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .create();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
     }
 
@@ -363,6 +432,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .create();
 
         Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update()
@@ -391,31 +462,15 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
             .create();
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
 
         storageAccount.update().withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
         Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
-        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
-    }
-
-    @Test
-    public void updateStorageAccountWithoutSystemAssigned() {
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        StorageAccount storageAccount = storageManager
-            .storageAccounts()
-            .define(saName)
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withSystemAssignedManagedServiceIdentity()
-            .create();
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
-        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
-        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-
-        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
-        Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
