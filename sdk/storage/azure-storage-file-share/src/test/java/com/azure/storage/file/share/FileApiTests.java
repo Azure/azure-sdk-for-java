@@ -2294,12 +2294,10 @@ class FileApiTests extends FileShareTestBase {
             assertEquals(ShareErrorCode.PREVIOUS_SNAPSHOT_NOT_FOUND, e.getErrorCode());
         } else {
             Response<ShareFileRangeList> response = destFile.listRangesDiffWithResponse(options, null, null);
-            System.out.println(response);
             assertEquals(200, response.getStatusCode());
             assertEquals(0, response.getValue().getRanges().size());
         }
 
-        //todo isbr am i deleting these correctly?
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
         destFile.delete();
     }
@@ -2309,7 +2307,6 @@ class FileApiTests extends FileShareTestBase {
             Arguments.of(true),
             Arguments.of(false),
             Arguments.of((Boolean) null));
-        //todo isbr: examples of parameterized tests with headers that are nullable
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")

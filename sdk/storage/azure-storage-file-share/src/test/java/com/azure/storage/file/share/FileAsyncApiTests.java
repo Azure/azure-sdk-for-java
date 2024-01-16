@@ -26,12 +26,14 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +47,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -1403,6 +1406,56 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(expectedRange.getEnd(), actualRange.getEnd());
             }
         }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("listRangesDiffWithRenameSupplier")
+    public void listRangesDiffWithRename(Boolean renameSupport) throws IOException {
+        //create a file
+        String fileName = generateShareName();
+        //upload some content and take snapshot
+        ShareSnapshotInfo previousSnapshot = primaryFileAsyncClient.create(Constants.MB)
+            .then(primaryFileAsyncClient.uploadFromFile(FileShareTestHelper.createRandomFileWithLength(Constants.KB, testFolder, fileName)))
+            .then(primaryFileAsyncClient.uploadRange(Flux.just(FileShareTestHelper.getRandomByteBuffer(Constants.KB)), Constants.KB))
+            .then(primaryFileServiceAsyncClient.getShareAsyncClient(primaryFileAsyncClient.getShareName()).createSnapshot())
+            .block();
+
+        //rename file
+        ShareFileAsyncClient destFile = primaryFileAsyncClient.rename(generatePathName()).block();
+
+        //take another snapshot
+        primaryFileServiceAsyncClient.getShareAsyncClient(primaryFileAsyncClient.getShareName()).createSnapshot().block();
+
+        //setup options
+        ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
+        options.setSupportRename(renameSupport);
+
+        //call
+        if (renameSupport == null || !renameSupport) {
+            StepVerifier.create(destFile.listRangesDiffWithResponse(options))
+                .verifyErrorSatisfies(r -> {
+                    ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                    assertEquals(ShareErrorCode.PREVIOUS_SNAPSHOT_NOT_FOUND, e.getErrorCode());
+                });
+        } else {
+            StepVerifier.create(destFile.listRangesDiffWithResponse(options))
+                .assertNext(r -> {
+                    assertEquals(200, r.getStatusCode());
+                    assertEquals(0, r.getValue().getRanges().size());
+                })
+                .verifyComplete();
+        }
+
+        FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
+        destFile.delete().block();
+    }
+
+    private static Stream<Arguments> listRangesDiffWithRenameSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
     }
 
     @Test
