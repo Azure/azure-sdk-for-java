@@ -70,7 +70,7 @@ public class PartitionKeyBasedBloomFilter {
             return;
         }
 
-        String effectivePartitionKeyHashAsString = PartitionKeyInternalHelper
+        String effectivePartitionKeyString = PartitionKeyInternalHelper
             .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
         for (Map.Entry<String, String> sessionTokenToRegionPair : sessionTokenToRegionMapping.entrySet()) {
@@ -83,7 +83,7 @@ public class PartitionKeyBasedBloomFilter {
             if (!regionInner.equals(firstPreferredWritableRegion) && !Strings.isNullOrEmpty(sessionTokenUnparsedInner)) {
 
                 if (isBloomFilterInitialized.get()) {
-                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyHashAsString,
+                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
                         regionInner, collectionRid));
                     this.recordedRegions.add(regionInner);
                 }

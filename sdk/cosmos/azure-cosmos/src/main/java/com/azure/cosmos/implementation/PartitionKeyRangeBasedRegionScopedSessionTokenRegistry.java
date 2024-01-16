@@ -97,7 +97,9 @@ public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
 
         // case 1 : where the request is not targeted to a logical partition
         // therefore resolve session token representing all regions
-        if (!canUseRegionScopedSessionTokens) {
+        // case 2 : where the request targets a logical partition not seen by
+        // the bloom filter / lesser preferred regions
+        if (!canUseRegionScopedSessionTokens || lesserPreferredRegionsPkProbablyRequestedFrom.isEmpty()) {
             return mergeSessionTokenRepresentingAllRegions(partitionKeyRangeId);
         }
 
