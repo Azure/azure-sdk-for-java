@@ -29,10 +29,10 @@ private class ItemsScan(session: SparkSession,
     sparkEnvironmentInfo)
     with SupportsRuntimeFiltering { // SupportsRuntimeFiltering extends scan
   override def filterAttributes(): Array[NamedReference] = {
-    filterAttributesCore()
+    runtimeFilterAttributesCore()
   }
   
   override def filter(filters: Array[Filter]): Unit = {
-    filterCore(filters)
+    runtimeFilterCore(filters)
   }
 }

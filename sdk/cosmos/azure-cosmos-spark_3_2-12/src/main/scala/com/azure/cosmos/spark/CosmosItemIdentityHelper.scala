@@ -15,10 +15,11 @@ private object CosmosItemIdentityHelper {
   // id[(](.*?)[)]: id value
   // [.]pk[(](.*)[)]: partitionKey Value
   private val cosmosItemIdentityStringRegx = """(?i)id[(](.*?)[)][.]pk[(](.*)[)]""".r
+  private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosItemIdentityValueString(id: String, partitionKey: PartitionKey): String = {
     val internalPartitionKey = ModelBridgeInternal.getPartitionKeyInternal(partitionKey)
-    s"id($id).pk(${Utils.getSimpleObjectMapper.writeValueAsString(internalPartitionKey)})"
+    s"id($id).pk(${objectMapper.writeValueAsString(internalPartitionKey)})"
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {

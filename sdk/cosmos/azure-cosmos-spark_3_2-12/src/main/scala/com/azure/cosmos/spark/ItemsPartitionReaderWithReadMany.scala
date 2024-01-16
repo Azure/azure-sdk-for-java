@@ -28,6 +28,7 @@ private case class ItemsPartitionReaderWithReadMany
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   diagnosticsConfig: DiagnosticsConfig,
   sparkEnvironmentInfo: String,
+  taskContext: TaskContext,
   readManyFilters: List[String]
 )
   extends PartitionReader[InternalRow] {
@@ -43,14 +44,13 @@ private case class ItemsPartitionReaderWithReadMany
   ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
 
   private val operationContext = {
-    val taskContext = TaskContext.get
     assert(taskContext != null)
 
     SparkTaskContext(diagnosticsContext.correlationActivityId,
       taskContext.stageId(),
       taskContext.partitionId(),
       taskContext.taskAttemptId(),
-      feedRange.toString + " " + readManyFilters.reduce((left, right) => s"$left;$right"))
+      feedRange.toString)
   }
 
   private val operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
@@ -73,11 +73,17 @@ private case class ItemsPartitionReaderWithReadMany
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+
   log.logInfo(s"Using ReadMany from feed range $feedRange of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
     s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
-    s"readManyFilter: [ total size ${readManyFilters.size}. Details: ${readManyFilters.reduce((left, right) => s"$left;$right")}], " +
+    s"readManyFilter: [ feedRange: $feedRange. total size ${readManyFilters.size}], " +
     s"Context: ${operationContext.toString} ${getThreadInfo}")
+
+  log.logTrace(s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
+    s"readManyFilterDetails: [feedRange: $feedRange. Details: ${readManyFilters.reduce((left, right) => s"$left;$right")}]" +
+    s"Context: ${operationContext.toString} ${getThreadInfo}"
+  )
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),

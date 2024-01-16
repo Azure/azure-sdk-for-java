@@ -217,7 +217,7 @@ private abstract class ItemsScanBase(session: SparkSession,
     // for now, we will only care about partition dynamic pruning filters which is a IN filter
     // and the filter property matches the read runtime filter property '_itemIdentity'
     // but that being said, other optimizations can be done in future as well - for example filter by only pk value
-    log.logInfo("Runtime filter is called")
+    log.logDebug("Runtime filter is called")
 
     if (shouldApplyRuntimeFilter() && readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
       val readManyFilters = readManyFilterAnalyzer.analyze(filters)

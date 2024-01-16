@@ -1802,6 +1802,30 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     }
   }
 
+  "basic ObjectNode" should "translate to Row with computed column" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+    val col3Name = "testCol3"
+    val colVal3 = "computed"
+
+    val schema = StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType), StructField(col3Name, StringType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+
+    val computedColumnFucMap =
+      Map(
+        col3Name -> { (objectNode: ObjectNode) => colVal3 }
+      )
+
+    val row = defaultRowConverter.fromObjectNodeToRowWithComputedColumns(schema, objectNode, SchemaConversionModes.Relaxed, computedColumnFucMap)
+    row.getInt(0) shouldEqual colVal1
+    row.getString(1) shouldEqual colVal2
+    row.getString(2) shouldEqual colVal3
+  }
+
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
   //scalastyle:on file.size.limit

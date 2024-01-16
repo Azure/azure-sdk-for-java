@@ -6,6 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.models.CosmosParameterizedQuery
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
+import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.read.{InputPartition, PartitionReader, PartitionReaderFactory}
@@ -67,6 +68,7 @@ private case class ItemsScanPartitionReaderFactory
           cosmosClientStateHandles,
           diagnosticsConfig,
           sparkEnvironmentInfo,
+          TaskContext.get(),
           readManyFilters)
       } else {
         log.logInfo(s"Creating an EmptyPartitionReader to read from feed-range [$feedRange] ${containerConfig.container} " +
