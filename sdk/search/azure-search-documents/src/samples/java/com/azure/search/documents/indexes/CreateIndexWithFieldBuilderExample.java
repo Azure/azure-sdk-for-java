@@ -41,7 +41,6 @@ public class CreateIndexWithFieldBuilderExample {
 	                            .setFields(searchFieldList);
          // Create index.
         client.createIndex(newIndex);
-
         // Cleanup index resource.
         client.deleteIndex(indexName);
     }
