@@ -11,26 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Recommendation Finding - finding reference for recommendation.
+ * Finding reference for recommendation.
  */
 @Fluent
 public final class RecommendationFinding extends Extendible {
     /*
-     * finding inference
+     * Finding linked to a recommendation.
      */
     @Generated
     @JsonProperty(value = "finding")
     private Observation finding;
 
     /*
-     * critical finding inference
+     * Critical result linked to a recommendation.
      */
     @Generated
     @JsonProperty(value = "criticalFinding")
     private CriticalResult criticalFinding;
 
     /*
-     * recommendation finding status
+     * Recommendation finding status.
      */
     @Generated
     @JsonProperty(value = "recommendationFindingStatus")
@@ -49,7 +49,7 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Get the finding property: finding inference.
+     * Get the finding property: Finding linked to a recommendation.
      * 
      * @return the finding value.
      */
@@ -59,7 +59,7 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Set the finding property: finding inference.
+     * Set the finding property: Finding linked to a recommendation.
      * 
      * @param finding the finding value to set.
      * @return the RecommendationFinding object itself.
@@ -71,7 +71,7 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Get the criticalFinding property: critical finding inference.
+     * Get the criticalFinding property: Critical result linked to a recommendation.
      * 
      * @return the criticalFinding value.
      */
@@ -81,7 +81,7 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Set the criticalFinding property: critical finding inference.
+     * Set the criticalFinding property: Critical result linked to a recommendation.
      * 
      * @param criticalFinding the criticalFinding value to set.
      * @return the RecommendationFinding object itself.
@@ -93,7 +93,7 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Get the recommendationFindingStatus property: recommendation finding status.
+     * Get the recommendationFindingStatus property: Recommendation finding status.
      * 
      * @return the recommendationFindingStatus value.
      */

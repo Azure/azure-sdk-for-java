@@ -9,19 +9,19 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The options for the Radiology Insights Inferences.
+ * Options regarding follow up recommendation inferences and finding inferences.
  */
 @Fluent
 public final class RadiologyInsightsInferenceOptions {
     /*
-     * Followup Recommendation Options
+     * Follow-up recommendation options.
      */
     @Generated
     @JsonProperty(value = "followupRecommendation")
     private FollowupRecommendationOptions followupRecommendation;
 
     /*
-     * Finding Options
+     * Finding options.
      */
     @Generated
     @JsonProperty(value = "finding")
@@ -35,7 +35,7 @@ public final class RadiologyInsightsInferenceOptions {
     }
 
     /**
-     * Get the followupRecommendation property: Followup Recommendation Options.
+     * Get the followupRecommendation property: Follow-up recommendation options.
      * 
      * @return the followupRecommendation value.
      */
@@ -45,7 +45,7 @@ public final class RadiologyInsightsInferenceOptions {
     }
 
     /**
-     * Set the followupRecommendation property: Followup Recommendation Options.
+     * Set the followupRecommendation property: Follow-up recommendation options.
      * 
      * @param followupRecommendation the followupRecommendation value to set.
      * @return the RadiologyInsightsInferenceOptions object itself.
@@ -58,7 +58,7 @@ public final class RadiologyInsightsInferenceOptions {
     }
 
     /**
-     * Get the finding property: Finding Options.
+     * Get the finding property: Finding options.
      * 
      * @return the finding value.
      */
@@ -68,7 +68,7 @@ public final class RadiologyInsightsInferenceOptions {
     }
 
     /**
-     * Set the finding property: Finding Options.
+     * Set the finding property: Finding options.
      * 
      * @param finding the finding value to set.
      * @return the RadiologyInsightsInferenceOptions object itself.

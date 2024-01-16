@@ -19,14 +19,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
     /*
-     * The procedure modality
+     * Procedure modality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "code")
     private CodeableConcept code;
 
     /*
-     * The procedure description
+     * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
      */
     @Generated
     @JsonProperty(value = "description")
@@ -44,7 +44,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the code property: The procedure modality.
+     * Get the code property: Procedure modality : SNOMED CT code.
      * 
      * @return the code value.
      */
@@ -54,7 +54,8 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the description property: The procedure description.
+     * Get the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION
+     * (PROCEDURE) based on SNOMED CT.
      * 
      * @return the description value.
      */
@@ -64,7 +65,8 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Set the description property: The procedure description.
+     * Set the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION
+     * (PROCEDURE) based on SNOMED CT.
      * 
      * @param description the description value to set.
      * @return the GenericProcedureRecommendation object itself.

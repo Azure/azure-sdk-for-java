@@ -38,7 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.health.insights.radiologyinsights.AzureHealthInsightsServiceVersion;
+import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -73,14 +73,14 @@ public final class RadiologyInsightsClientImpl {
     /**
      * Service version.
      */
-    private final AzureHealthInsightsServiceVersion serviceVersion;
+    private final RadiologyInsightsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AzureHealthInsightsServiceVersion getServiceVersion() {
+    public RadiologyInsightsServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -119,7 +119,7 @@ public final class RadiologyInsightsClientImpl {
      * https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public RadiologyInsightsClientImpl(String endpoint, AzureHealthInsightsServiceVersion serviceVersion) {
+    public RadiologyInsightsClientImpl(String endpoint, RadiologyInsightsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -133,7 +133,7 @@ public final class RadiologyInsightsClientImpl {
      * @param serviceVersion Service version.
      */
     public RadiologyInsightsClientImpl(HttpPipeline httpPipeline, String endpoint,
-        AzureHealthInsightsServiceVersion serviceVersion) {
+        RadiologyInsightsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -147,7 +147,7 @@ public final class RadiologyInsightsClientImpl {
      * @param serviceVersion Service version.
      */
     public RadiologyInsightsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        AzureHealthInsightsServiceVersion serviceVersion) {
+        RadiologyInsightsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -433,7 +433,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -712,7 +712,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -990,7 +990,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1259,7 +1259,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1528,7 +1528,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1798,7 +1798,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

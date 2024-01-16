@@ -14,28 +14,29 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Communication Inference.
+ * Follow-up communication involves the exchange of important information, recommendations, or updates between
+ * radiologists and other healthcare professionals involved in a patient's care.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupCommunication")
 @Fluent
 public final class FollowupCommunicationInference extends RadiologyInsightsInference {
     /*
-     * The communication date/time.
+     * Communication date and time.
      */
     @Generated
     @JsonProperty(value = "dateTime")
     private List<OffsetDateTime> dateTime;
 
     /*
-     * The recipient of the communication.
+     * Recipient of the communication.
      */
     @Generated
     @JsonProperty(value = "recipient")
     private List<MedicalProfessionalType> recipient;
 
     /*
-     * Communication was acknowledged
+     * Communication was acknowledged.
      */
     @Generated
     @JsonProperty(value = "wasAcknowledged")
@@ -53,7 +54,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the dateTime property: The communication date/time.
+     * Get the dateTime property: Communication date and time.
      * 
      * @return the dateTime value.
      */
@@ -63,7 +64,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Set the dateTime property: The communication date/time.
+     * Set the dateTime property: Communication date and time.
      * 
      * @param dateTime the dateTime value to set.
      * @return the FollowupCommunicationInference object itself.
@@ -75,7 +76,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the recipient property: The recipient of the communication.
+     * Get the recipient property: Recipient of the communication.
      * 
      * @return the recipient value.
      */
@@ -85,7 +86,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Set the recipient property: The recipient of the communication.
+     * Set the recipient property: Recipient of the communication.
      * 
      * @param recipient the recipient value to set.
      * @return the FollowupCommunicationInference object itself.

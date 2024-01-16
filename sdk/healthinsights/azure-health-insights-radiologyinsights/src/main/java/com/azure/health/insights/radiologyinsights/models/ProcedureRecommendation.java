@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Radiology Insights abstract procedure.
+ * The procedure recommendation can be a generic procedure or an imaging procedure.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

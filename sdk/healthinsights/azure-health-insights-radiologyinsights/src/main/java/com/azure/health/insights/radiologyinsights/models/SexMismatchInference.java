@@ -13,15 +13,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Sex mismatch returns when there is a conflict between the patient references (female/male, he/she/his/her),
- * documented clinical procedures, or documented body parts to the patient Sex that mentioned in the patient info.
+ * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or
+ * gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the
+ * gender specified in the patient information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("sexMismatch")
 @Fluent
 public final class SexMismatchInference extends RadiologyInsightsInference {
     /*
-     * sex indication
+     * Sex indication : SNOMED CT code for gender finding.
      */
     @Generated
     @JsonProperty(value = "sexIndication")
@@ -39,7 +40,7 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the sexIndication property: sex indication.
+     * Get the sexIndication property: Sex indication : SNOMED CT code for gender finding.
      * 
      * @return the sexIndication value.
      */

@@ -11,19 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Code with types.
+ * Radiology code with types : used in imaging procedure recommendation for contrast and view.
  */
 @Immutable
 public final class RadiologyCodeWithTypes {
     /*
-     * Code
+     * The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and
+     * in the case of views, it denotes the number of views.
      */
     @Generated
     @JsonProperty(value = "code")
     private CodeableConcept code;
 
     /*
-     * Collection of types
+     * The collection of types will indicate the contrast substance used in the case of contrast and, in the case of
+     * views, it will specify the types of views, such as lateral and frontal, etc.
      */
     @Generated
     @JsonProperty(value = "types")
@@ -44,7 +46,8 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the code property: Code.
+     * Get the code property: The SNOMED CT code indicates whether imaging was conducted with or without contrast in
+     * the case of contrast, and in the case of views, it denotes the number of views.
      * 
      * @return the code value.
      */
@@ -54,7 +57,8 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the types property: Collection of types.
+     * Get the types property: The collection of types will indicate the contrast substance used in the case of
+     * contrast and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
      * 
      * @return the types value.
      */

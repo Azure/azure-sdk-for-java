@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The body of the Radiology Insights request.
+ * Contains the list of patients, and configuration data.
  */
 @Fluent
 public final class RadiologyInsightsData {

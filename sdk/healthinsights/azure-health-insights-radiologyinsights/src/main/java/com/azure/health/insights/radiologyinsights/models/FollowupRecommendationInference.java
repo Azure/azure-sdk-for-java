@@ -13,74 +13,68 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Recommendation Inference.
+ * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
+ * findings of imaging studies.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupRecommendation")
 @Fluent
 public final class FollowupRecommendationInference extends RadiologyInsightsInference {
     /*
-     * Clinically relevant time/time-period for recommendation
+     * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      */
     @Generated
     @JsonProperty(value = "effectiveDateTime")
     private String effectiveDateTime;
 
     /*
-     * Clinically relevant time/time-period for recommendation
+     * The period is shown if a specific period is mentioned, with a start and end date-time.
      */
     @Generated
     @JsonProperty(value = "effectivePeriod")
     private PeriodModel effectivePeriod;
 
     /*
-     * Findings related to this recommendation.
+     * Findings related to the recommendation.
      */
     @Generated
     @JsonProperty(value = "findings")
     private List<RecommendationFinding> findings;
 
     /*
-     * Indicate that the sentence with the recommendation holds a conditional statement.
-     * Examples of conditional phrases: If the patient remains clinically symptomatic, Unless otherwise indicated
-     * clinically in the interim.
+     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
+     * statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      */
     @Generated
     @JsonProperty(value = "isConditional")
     private boolean isConditional;
 
     /*
-     * Indicate that the sentence with the recommendation holds an optional statement.
-     * Examples of Optional phrases: 'If there is suspicion for a fracture, recommend a dedicated x-ray of the right
-     * clavicle.
-     * Consider F/U exam in 6-12 months if patient has severe primary hyperparathyroidism, is being treated with high
-     * dose steroids or in any medical condition where rapid and severe loss of bone mass could occur.
-     * If the patient is high risk, follow-up CT thorax is recommended in 12 months to ensure stability.
+     * The option value indicates whether or not the sentence containing the recommendation includes an optional
+     * statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      */
     @Generated
     @JsonProperty(value = "isOption")
     private boolean isOption;
 
     /*
-     * Recommendation is a guideline section describing all the recommendations for the follow-up of a particular
-     * finding.
+     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all
+     * recommendations applicable to various findings.
      */
     @Generated
     @JsonProperty(value = "isGuideline")
     private boolean isGuideline;
 
     /*
-     * Ambiguous, vague, or imprecise language, that can be considered a Hedging Statement within the sentence of the
-     * recommendation.
-     * Examples of hedging: 'can be considered', 'may be further evaluated', 'correlate clinically', 'as clinically
-     * indicated'.
+     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for
+     * hedging are 'can be','may be',and so on.
      */
     @Generated
     @JsonProperty(value = "isHedging")
     private boolean isHedging;
 
     /*
-     * Recommended procedure.
+     * The procedure recommendation can be a generic procedure or an imaging procedure.
      */
     @Generated
     @JsonProperty(value = "recommendedProcedure")
@@ -109,7 +103,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the effectiveDateTime property: Clinically relevant time/time-period for recommendation.
+     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
+     * a specific point in time.
      * 
      * @return the effectiveDateTime value.
      */
@@ -119,7 +114,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Set the effectiveDateTime property: Clinically relevant time/time-period for recommendation.
+     * Set the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
+     * a specific point in time.
      * 
      * @param effectiveDateTime the effectiveDateTime value to set.
      * @return the FollowupRecommendationInference object itself.
@@ -131,7 +127,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the effectivePeriod property: Clinically relevant time/time-period for recommendation.
+     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
+     * date-time.
      * 
      * @return the effectivePeriod value.
      */
@@ -141,7 +138,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Set the effectivePeriod property: Clinically relevant time/time-period for recommendation.
+     * Set the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
+     * date-time.
      * 
      * @param effectivePeriod the effectivePeriod value to set.
      * @return the FollowupRecommendationInference object itself.
@@ -153,7 +151,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the findings property: Findings related to this recommendation.
+     * Get the findings property: Findings related to the recommendation.
      * 
      * @return the findings value.
      */
@@ -163,7 +161,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Set the findings property: Findings related to this recommendation.
+     * Set the findings property: Findings related to the recommendation.
      * 
      * @param findings the findings value to set.
      * @return the FollowupRecommendationInference object itself.
@@ -175,10 +173,9 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the isConditional property: Indicate that the sentence with the recommendation holds a conditional
-     * statement.
-     * Examples of conditional phrases: If the patient remains clinically symptomatic, Unless otherwise indicated
-     * clinically in the interim.
+     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the
+     * recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when',
+     * 'unless', and so on.
      * 
      * @return the isConditional value.
      */
@@ -188,12 +185,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the isOption property: Indicate that the sentence with the recommendation holds an optional statement.
-     * Examples of Optional phrases: 'If there is suspicion for a fracture, recommend a dedicated x-ray of the right
-     * clavicle.
-     * Consider F/U exam in 6-12 months if patient has severe primary hyperparathyroidism, is being treated with high
-     * dose steroids or in any medical condition where rapid and severe loss of bone mass could occur.
-     * If the patient is high risk, follow-up CT thorax is recommended in 12 months to ensure stability.
+     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation
+     * includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      * 
      * @return the isOption value.
      */
@@ -203,8 +196,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the isGuideline property: Recommendation is a guideline section describing all the recommendations for the
-     * follow-up of a particular finding.
+     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a
+     * guideline section that compiles all recommendations applicable to various findings.
      * 
      * @return the isGuideline value.
      */
@@ -214,10 +207,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the isHedging property: Ambiguous, vague, or imprecise language, that can be considered a Hedging Statement
-     * within the sentence of the recommendation.
-     * Examples of hedging: 'can be considered', 'may be further evaluated', 'correlate clinically', 'as clinically
-     * indicated'.
+     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the
+     * recommendation. Keywords for hedging are 'can be','may be',and so on.
      * 
      * @return the isHedging value.
      */
@@ -227,7 +218,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the recommendedProcedure property: Recommended procedure.
+     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging
+     * procedure.
      * 
      * @return the recommendedProcedure value.
      */

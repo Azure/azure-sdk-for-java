@@ -90,7 +90,7 @@ public class SampleCriticalResultInferenceAsync {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
 
         PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient

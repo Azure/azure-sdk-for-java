@@ -13,29 +13,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Procedures found in the document text or associated with the document administrative metadata.
+ * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
+ * document information and text.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("radiologyProcedure")
 @Fluent
 public final class RadiologyProcedureInference extends RadiologyInsightsInference {
     /*
-     * The LOINC codes for the procedure.
+     * LOINC codes for the procedure.
      */
     @Generated
     @JsonProperty(value = "procedureCodes")
     private List<CodeableConcept> procedureCodes;
 
     /*
-     * Imaging procedure.
+     * Imaging procedures.
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
     private List<ImagingProcedure> imagingProcedures;
 
     /*
-     * The related procedure information from the document administration information or as extracted from the
-     * document.
+     * Ordered procedure information from the document information or text.
      */
     @Generated
     @JsonProperty(value = "orderedProcedure")
@@ -57,7 +57,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     }
 
     /**
-     * Get the procedureCodes property: The LOINC codes for the procedure.
+     * Get the procedureCodes property: LOINC codes for the procedure.
      * 
      * @return the procedureCodes value.
      */
@@ -67,7 +67,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     }
 
     /**
-     * Set the procedureCodes property: The LOINC codes for the procedure.
+     * Set the procedureCodes property: LOINC codes for the procedure.
      * 
      * @param procedureCodes the procedureCodes value to set.
      * @return the RadiologyProcedureInference object itself.
@@ -79,7 +79,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     }
 
     /**
-     * Get the imagingProcedures property: Imaging procedure.
+     * Get the imagingProcedures property: Imaging procedures.
      * 
      * @return the imagingProcedures value.
      */
@@ -89,8 +89,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     }
 
     /**
-     * Get the orderedProcedure property: The related procedure information from the document administration
-     * information or as extracted from the document.
+     * Get the orderedProcedure property: Ordered procedure information from the document information or text.
      * 
      * @return the orderedProcedure value.
      */

@@ -13,21 +13,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Radiology procedure.
+ * Imaging procedures.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("imagingProcedureRecommendation")
 @Fluent
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
     /*
-     * The LOINC codes for the procedure.
+     * LOINC codes for the procedure.
      */
     @Generated
     @JsonProperty(value = "procedureCodes")
     private List<CodeableConcept> procedureCodes;
 
     /*
-     * Imaging procedure.
+     * Imaging procedures.
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
@@ -46,7 +46,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the procedureCodes property: The LOINC codes for the procedure.
+     * Get the procedureCodes property: LOINC codes for the procedure.
      * 
      * @return the procedureCodes value.
      */
@@ -56,7 +56,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Set the procedureCodes property: The LOINC codes for the procedure.
+     * Set the procedureCodes property: LOINC codes for the procedure.
      * 
      * @param procedureCodes the procedureCodes value to set.
      * @return the ImagingProcedureRecommendation object itself.
@@ -68,7 +68,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the imagingProcedures property: Imaging procedure.
+     * Get the imagingProcedures property: Imaging procedures.
      * 
      * @return the imagingProcedures value.
      */

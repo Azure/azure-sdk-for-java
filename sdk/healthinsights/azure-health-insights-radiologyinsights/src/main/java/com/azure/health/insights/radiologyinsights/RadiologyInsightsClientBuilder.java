@@ -215,7 +215,7 @@ public final class RadiologyInsightsClientBuilder
      * Service version
      */
     @Generated
-    private AzureHealthInsightsServiceVersion serviceVersion;
+    private RadiologyInsightsServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -224,7 +224,7 @@ public final class RadiologyInsightsClientBuilder
      * @return the RadiologyInsightsClientBuilder.
      */
     @Generated
-    public RadiologyInsightsClientBuilder serviceVersion(AzureHealthInsightsServiceVersion serviceVersion) {
+    public RadiologyInsightsClientBuilder serviceVersion(RadiologyInsightsServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -255,8 +255,8 @@ public final class RadiologyInsightsClientBuilder
     @Generated
     private RadiologyInsightsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureHealthInsightsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AzureHealthInsightsServiceVersion.getLatest();
+        RadiologyInsightsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : RadiologyInsightsServiceVersion.getLatest();
         RadiologyInsightsClientImpl client = new RadiologyInsightsClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;

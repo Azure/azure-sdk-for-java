@@ -13,33 +13,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Limited Order mismatch
- * A limited order requires that not all the body parts listed in the order will be document.
- * This inference is relevant only for ultrasound procedure/order of type US ABDOMEN, US RETROPERITONEAL, US PELVIS, or
- * US BREAST.
- * This inference returns when all body parts and measurement of a body part required by the order, mentioned in the
- * text.
+ * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are
+ * needed for a complete order are present in the document.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("limitedOrderDiscrepancy")
 @Fluent
 public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInference {
     /*
-     * Order Type.
+     * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
     @JsonProperty(value = "orderType")
     private CodeableConcept orderType;
 
     /*
-     * Complete list of body parts found in the document.
+     * List of body parts found in the document : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "presentBodyParts")
     private List<CodeableConcept> presentBodyParts;
 
     /*
-     * Complete list of body parts that require measurement by a complete order.
+     * List of body parts that are measured according to the document : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "presentBodyPartMeasurements")
@@ -57,7 +53,8 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Get the orderType property: Order Type.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
+     * breast.
      * 
      * @return the orderType value.
      */
@@ -67,7 +64,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Get the presentBodyParts property: Complete list of body parts found in the document.
+     * Get the presentBodyParts property: List of body parts found in the document : SNOMED CT codes.
      * 
      * @return the presentBodyParts value.
      */
@@ -77,7 +74,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Set the presentBodyParts property: Complete list of body parts found in the document.
+     * Set the presentBodyParts property: List of body parts found in the document : SNOMED CT codes.
      * 
      * @param presentBodyParts the presentBodyParts value to set.
      * @return the LimitedOrderDiscrepancyInference object itself.
@@ -89,8 +86,8 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Get the presentBodyPartMeasurements property: Complete list of body parts that require measurement by a complete
-     * order.
+     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
+     * SNOMED CT codes.
      * 
      * @return the presentBodyPartMeasurements value.
      */
@@ -100,8 +97,8 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Set the presentBodyPartMeasurements property: Complete list of body parts that require measurement by a complete
-     * order.
+     * Set the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
+     * SNOMED CT codes.
      * 
      * @param presentBodyPartMeasurements the presentBodyPartMeasurements value to set.
      * @return the LimitedOrderDiscrepancyInference object itself.

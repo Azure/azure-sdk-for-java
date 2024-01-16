@@ -11,11 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Age mismatch returns when there is a conflict between an age that mentioned in the clinical note and the age of the
- * patient.
- * The age of the patient is calculated by the date of birth that is set in the patient information along with the time
- * of the service that is being documented.
- * EvidenceExtension with DocumentReference evidence may be added to this inference as an extension.
+ * A notification for age mismatch is displayed when the age mentioned in a document for a specific patient does not
+ * match the age specified in the patient information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("ageMismatch")

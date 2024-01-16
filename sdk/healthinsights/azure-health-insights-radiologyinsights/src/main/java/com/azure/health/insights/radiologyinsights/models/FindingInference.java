@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Finding Inference
- * Clinical Finding can be an observation or condition that is mentioned in the clinical document.
+ * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
+ * the anatomy or pathology of the imaged area.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("finding")
 @Fluent
 public final class FindingInference extends RadiologyInsightsInference {
     /*
-     * The finding data
+     * Finding data : contains extensions, fields and components linked with the finding.
      */
     @Generated
     @JsonProperty(value = "finding")
@@ -39,7 +39,7 @@ public final class FindingInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the finding property: The finding data.
+     * Get the finding property: Finding data : contains extensions, fields and components linked with the finding.
      * 
      * @return the finding value.
      */

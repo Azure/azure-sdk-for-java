@@ -9,12 +9,14 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Finding Options.
+ * Finding options.
  */
 @Fluent
 public final class FindingOptions {
     /*
-     * Provide a single focused sentence as evidence for the finding, default is false.
+     * If this is true, provide the sentence that contains the first token of the finding's clinical indicator (i.e.
+     * the medical problem), if there is one. This sentence is provided as an extension with url 'ci_sentence', next to
+     * the token evidence. Default is false.
      */
     @Generated
     @JsonProperty(value = "provideFocusedSentenceEvidence")
@@ -28,8 +30,9 @@ public final class FindingOptions {
     }
 
     /**
-     * Get the provideFocusedSentenceEvidence property: Provide a single focused sentence as evidence for the finding,
-     * default is false.
+     * Get the provideFocusedSentenceEvidence property: If this is true, provide the sentence that contains the first
+     * token of the finding's clinical indicator (i.e. the medical problem), if there is one. This sentence is provided
+     * as an extension with url 'ci_sentence', next to the token evidence. Default is false.
      * 
      * @return the provideFocusedSentenceEvidence value.
      */
@@ -39,8 +42,9 @@ public final class FindingOptions {
     }
 
     /**
-     * Set the provideFocusedSentenceEvidence property: Provide a single focused sentence as evidence for the finding,
-     * default is false.
+     * Set the provideFocusedSentenceEvidence property: If this is true, provide the sentence that contains the first
+     * token of the finding's clinical indicator (i.e. the medical problem), if there is one. This sentence is provided
+     * as an extension with url 'ci_sentence', next to the token evidence. Default is false.
      * 
      * @param provideFocusedSentenceEvidence the provideFocusedSentenceEvidence value to set.
      * @return the FindingOptions object itself.

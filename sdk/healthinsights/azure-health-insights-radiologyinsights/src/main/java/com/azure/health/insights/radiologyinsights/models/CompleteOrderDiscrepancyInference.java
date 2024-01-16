@@ -13,34 +13,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Completed Order mismatch
- * A complete order requires that all the body parts listed in the order will be document (some body parts requires
- * measurements).
- * This inference is relevant only for ultrasound procedure/order of type US ABDOMEN, US RETROPERITONEAL, US PELVIS, or
- * US BREAST.
- * This inference returns when there is a missing body part or a missing measurement of a body part that is required by
- * the order.
+ * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document
+ * (because there is a complete order) are not present.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("completeOrderDiscrepancy")
 @Fluent
 public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsInference {
     /*
-     * Order Type.
+     * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
     @JsonProperty(value = "orderType")
     private CodeableConcept orderType;
 
     /*
-     * List of missing body parts required by a complete order.
+     * List of missing body parts required by a complete order : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "missingBodyParts")
     private List<CodeableConcept> missingBodyParts;
 
     /*
-     * List of missing body parts that require measurement by a complete order.
+     * List of missing body parts that require measurement by a complete order : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "missingBodyPartMeasurements")
@@ -58,7 +53,8 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     }
 
     /**
-     * Get the orderType property: Order Type.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
+     * breast.
      * 
      * @return the orderType value.
      */
@@ -68,7 +64,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     }
 
     /**
-     * Get the missingBodyParts property: List of missing body parts required by a complete order.
+     * Get the missingBodyParts property: List of missing body parts required by a complete order : SNOMED CT codes.
      * 
      * @return the missingBodyParts value.
      */
@@ -78,7 +74,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     }
 
     /**
-     * Set the missingBodyParts property: List of missing body parts required by a complete order.
+     * Set the missingBodyParts property: List of missing body parts required by a complete order : SNOMED CT codes.
      * 
      * @param missingBodyParts the missingBodyParts value to set.
      * @return the CompleteOrderDiscrepancyInference object itself.
@@ -91,7 +87,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
 
     /**
      * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete
-     * order.
+     * order : SNOMED CT codes.
      * 
      * @return the missingBodyPartMeasurements value.
      */
@@ -102,7 +98,7 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
 
     /**
      * Set the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete
-     * order.
+     * order : SNOMED CT codes.
      * 
      * @param missingBodyPartMeasurements the missingBodyPartMeasurements value to set.
      * @return the CompleteOrderDiscrepancyInference object itself.

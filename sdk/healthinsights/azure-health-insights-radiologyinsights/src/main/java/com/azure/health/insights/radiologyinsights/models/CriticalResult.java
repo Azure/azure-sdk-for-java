@@ -10,19 +10,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Critical Result.
+ * Critical Result consists of two properties.
  */
 @Fluent
 public final class CriticalResult {
     /*
-     * description of the critical result
+     * Description : medical problem.
      */
     @Generated
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * finding inference
+     * Finding linked to the critical result.
      */
     @Generated
     @JsonProperty(value = "finding")
@@ -40,7 +40,7 @@ public final class CriticalResult {
     }
 
     /**
-     * Get the description property: description of the critical result.
+     * Get the description property: Description : medical problem.
      * 
      * @return the description value.
      */
@@ -50,7 +50,7 @@ public final class CriticalResult {
     }
 
     /**
-     * Get the finding property: finding inference.
+     * Get the finding property: Finding linked to the critical result.
      * 
      * @return the finding value.
      */
@@ -60,7 +60,7 @@ public final class CriticalResult {
     }
 
     /**
-     * Set the finding property: finding inference.
+     * Set the finding property: Finding linked to the critical result.
      * 
      * @param finding the finding value to set.
      * @return the CriticalResult object itself.

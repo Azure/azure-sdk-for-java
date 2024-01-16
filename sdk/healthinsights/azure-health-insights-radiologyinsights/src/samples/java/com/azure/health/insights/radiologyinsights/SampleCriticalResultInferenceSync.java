@@ -83,7 +83,7 @@ public class SampleCriticalResultInferenceSync {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
         RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildClient();
 
         RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();

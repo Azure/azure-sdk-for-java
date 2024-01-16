@@ -11,12 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The results of the model's work for a single patient.
+ * Results of the model's work for a single patient.
  */
 @Immutable
 public final class RadiologyInsightsPatientResult {
     /*
-     * The identifier given for the patient in the request.
+     * Identifier given for the patient in the request.
      */
     @Generated
     @JsonProperty(value = "patientId")
@@ -44,7 +44,7 @@ public final class RadiologyInsightsPatientResult {
     }
 
     /**
-     * Get the patientId property: The identifier given for the patient in the request.
+     * Get the patientId property: Identifier given for the patient in the request.
      * 
      * @return the patientId value.
      */

@@ -7,9 +7,9 @@ package com.azure.health.insights.radiologyinsights;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of AzureHealthInsightsClient.
+ * Service version of RadiologyInsightsClient.
  */
-public enum AzureHealthInsightsServiceVersion implements ServiceVersion {
+public enum RadiologyInsightsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-09-01-preview.
      */
@@ -17,7 +17,7 @@ public enum AzureHealthInsightsServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    AzureHealthInsightsServiceVersion(String version) {
+    RadiologyInsightsServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,9 +32,9 @@ public enum AzureHealthInsightsServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link AzureHealthInsightsServiceVersion}.
+     * @return The latest {@link RadiologyInsightsServiceVersion}.
      */
-    public static AzureHealthInsightsServiceVersion getLatest() {
+    public static RadiologyInsightsServiceVersion getLatest() {
         return V2023_09_01_PREVIEW;
     }
 }

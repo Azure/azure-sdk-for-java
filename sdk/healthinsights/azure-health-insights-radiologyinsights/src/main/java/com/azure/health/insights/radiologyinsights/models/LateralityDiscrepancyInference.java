@@ -13,25 +13,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Laterality discrepancy, returns in 3 different cases:
- * OrderLateralityMismatch: there is a discrepancy between the text and the procedure/order related to the clinical
- * document.
- * TextLateralityContradiction: there is a contradiction within the text of the clinical document.
- * TextLateralityMissing: laterality is missing/not mentioned in the clinical document.
+ * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered
+ * procedure (orderLateralityMismatch), a contradiction within the clinical document (textLateralityContradiction), or
+ * when no laterality is mentioned (textLateralityMissing).
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("lateralityDiscrepancy")
 @Fluent
 public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
     /*
-     * laterality indication
+     * Laterality indication : SNOMED CT code for laterality qualifier value.
      */
     @Generated
     @JsonProperty(value = "lateralityIndication")
     private CodeableConcept lateralityIndication;
 
     /*
-     * mismatch type
+     * Mismatch type : orderLateralityMismatch, textLateralityContradiction, textLateralityMissing.
      */
     @Generated
     @JsonProperty(value = "discrepancyType")
@@ -50,7 +48,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the lateralityIndication property: laterality indication.
+     * Get the lateralityIndication property: Laterality indication : SNOMED CT code for laterality qualifier value.
      * 
      * @return the lateralityIndication value.
      */
@@ -60,7 +58,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Set the lateralityIndication property: laterality indication.
+     * Set the lateralityIndication property: Laterality indication : SNOMED CT code for laterality qualifier value.
      * 
      * @param lateralityIndication the lateralityIndication value to set.
      * @return the LateralityDiscrepancyInference object itself.
@@ -72,7 +70,8 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the discrepancyType property: mismatch type.
+     * Get the discrepancyType property: Mismatch type : orderLateralityMismatch, textLateralityContradiction,
+     * textLateralityMissing.
      * 
      * @return the discrepancyType value.
      */

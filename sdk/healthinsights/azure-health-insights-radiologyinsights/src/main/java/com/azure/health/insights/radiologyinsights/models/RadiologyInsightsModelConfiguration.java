@@ -29,23 +29,23 @@ public final class RadiologyInsightsModelConfiguration {
     private Boolean includeEvidence;
 
     /*
-     * A list of inference types to be inferred for the current request.
-     * This could be used if only part of the Radiology Insights inferences are required.
-     * If this list is omitted or empty, the model will return all the inference types.
+     * This is a list of inference types to be inferred for the current request. It could be used if only part of the
+     * Radiology Insights inferences are required. If this list is omitted or empty, the model will return all the
+     * inference types.
      */
     @Generated
     @JsonProperty(value = "inferenceTypes")
     private List<RadiologyInsightsInferenceType> inferenceTypes;
 
     /*
-     * The options for the Radiology Insights Inferences
+     * Options regarding follow up recommendation inferences and finding inferences.
      */
     @Generated
     @JsonProperty(value = "inferenceOptions")
     private RadiologyInsightsInferenceOptions inferenceOptions;
 
     /*
-     * Local for the model to use. If not specified, the model will use the default locale
+     * Local for the model to use. If not specified, the model will use the default locale.
      */
     @Generated
     @JsonProperty(value = "locale")
@@ -105,9 +105,9 @@ public final class RadiologyInsightsModelConfiguration {
     }
 
     /**
-     * Get the inferenceTypes property: A list of inference types to be inferred for the current request.
-     * This could be used if only part of the Radiology Insights inferences are required.
-     * If this list is omitted or empty, the model will return all the inference types.
+     * Get the inferenceTypes property: This is a list of inference types to be inferred for the current request. It
+     * could be used if only part of the Radiology Insights inferences are required. If this list is omitted or empty,
+     * the model will return all the inference types.
      * 
      * @return the inferenceTypes value.
      */
@@ -117,9 +117,9 @@ public final class RadiologyInsightsModelConfiguration {
     }
 
     /**
-     * Set the inferenceTypes property: A list of inference types to be inferred for the current request.
-     * This could be used if only part of the Radiology Insights inferences are required.
-     * If this list is omitted or empty, the model will return all the inference types.
+     * Set the inferenceTypes property: This is a list of inference types to be inferred for the current request. It
+     * could be used if only part of the Radiology Insights inferences are required. If this list is omitted or empty,
+     * the model will return all the inference types.
      * 
      * @param inferenceTypes the inferenceTypes value to set.
      * @return the RadiologyInsightsModelConfiguration object itself.
@@ -131,7 +131,7 @@ public final class RadiologyInsightsModelConfiguration {
     }
 
     /**
-     * Get the inferenceOptions property: The options for the Radiology Insights Inferences.
+     * Get the inferenceOptions property: Options regarding follow up recommendation inferences and finding inferences.
      * 
      * @return the inferenceOptions value.
      */
@@ -141,7 +141,7 @@ public final class RadiologyInsightsModelConfiguration {
     }
 
     /**
-     * Set the inferenceOptions property: The options for the Radiology Insights Inferences.
+     * Set the inferenceOptions property: Options regarding follow up recommendation inferences and finding inferences.
      * 
      * @param inferenceOptions the inferenceOptions value to set.
      * @return the RadiologyInsightsModelConfiguration object itself.

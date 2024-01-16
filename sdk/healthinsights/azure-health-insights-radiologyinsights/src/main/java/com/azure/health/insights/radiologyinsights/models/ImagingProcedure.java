@@ -10,40 +10,40 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Order Procedure - is this always a radiology procedure?.
+ * Imaging procedure.
  */
 @Fluent
 public final class ImagingProcedure {
     /*
-     * The procedure modality
+     * Modality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "modality")
     private CodeableConcept modality;
 
     /*
-     * The procedure anatomy
+     * Anatomy : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "anatomy")
     private CodeableConcept anatomy;
 
     /*
-     * The procedure laterality
+     * Laterality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "laterality")
     private CodeableConcept laterality;
 
     /*
-     * The procedure contrast
+     * Contrast : see RadiologyCodeWithTypes (below).
      */
     @Generated
     @JsonProperty(value = "contrast")
     private RadiologyCodeWithTypes contrast;
 
     /*
-     * The procedure view
+     * View : see RadiologyCodeWithTypes (below).
      */
     @Generated
     @JsonProperty(value = "view")
@@ -64,7 +64,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Get the modality property: The procedure modality.
+     * Get the modality property: Modality : SNOMED CT code.
      * 
      * @return the modality value.
      */
@@ -74,7 +74,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Get the anatomy property: The procedure anatomy.
+     * Get the anatomy property: Anatomy : SNOMED CT code.
      * 
      * @return the anatomy value.
      */
@@ -84,7 +84,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Get the laterality property: The procedure laterality.
+     * Get the laterality property: Laterality : SNOMED CT code.
      * 
      * @return the laterality value.
      */
@@ -94,7 +94,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Set the laterality property: The procedure laterality.
+     * Set the laterality property: Laterality : SNOMED CT code.
      * 
      * @param laterality the laterality value to set.
      * @return the ImagingProcedure object itself.
@@ -106,7 +106,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Get the contrast property: The procedure contrast.
+     * Get the contrast property: Contrast : see RadiologyCodeWithTypes (below).
      * 
      * @return the contrast value.
      */
@@ -116,7 +116,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Set the contrast property: The procedure contrast.
+     * Set the contrast property: Contrast : see RadiologyCodeWithTypes (below).
      * 
      * @param contrast the contrast value to set.
      * @return the ImagingProcedure object itself.
@@ -128,7 +128,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Get the view property: The procedure view.
+     * Get the view property: View : see RadiologyCodeWithTypes (below).
      * 
      * @return the view value.
      */
@@ -138,7 +138,7 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Set the view property: The procedure view.
+     * Set the view property: View : see RadiologyCodeWithTypes (below).
      * 
      * @param view the view value to set.
      * @return the ImagingProcedure object itself.

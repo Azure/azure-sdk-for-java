@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The inference results for the Radiology Insights request.
+ * The inference results for the Radiology Insights request. If field 'status' has value 'succeeded', then field
+ * 'result' will contain an instance of RadiologyInsightsInferenceResult.
  */
 @Immutable
 public final class RadiologyInsightsInferenceResult {

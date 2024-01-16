@@ -13,14 +13,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Identifies and highlights potential Critical Findings found in a clinical document.
+ * Critical results refer to findings of utmost importance that may require timely attention due to their potential
+ * impact on patient care.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("criticalResult")
 @Fluent
 public final class CriticalResultInference extends RadiologyInsightsInference {
     /*
-     * Critical Result
+     * The complete Critical Result, as outlined below, will be reused for the recommendation.
      */
     @Generated
     @JsonProperty(value = "result")
@@ -38,7 +39,7 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the result property: Critical Result.
+     * Get the result property: The complete Critical Result, as outlined below, will be reused for the recommendation.
      * 
      * @return the result value.
      */

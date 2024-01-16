@@ -285,7 +285,7 @@ public final class RadiologyInsightsAsyncClient {
      * }
      * }</pre>
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -305,7 +305,7 @@ public final class RadiologyInsightsAsyncClient {
      * 
      * Creates a Radiology Insights job with the given request body.
      * 
-     * @param radiologyInsightsData The body of the Radiology Insights request.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
