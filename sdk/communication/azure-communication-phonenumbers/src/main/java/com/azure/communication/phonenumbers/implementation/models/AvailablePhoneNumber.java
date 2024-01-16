@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCost;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AvailablePhoneNumber model. */
 @Fluent
+@Generated
 public final class AvailablePhoneNumber {
     /*
      * The id of the phone number.

@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperatorDetails model. */
 @Fluent
+@Generated
 public final class OperatorDetails {
     /*
      * Name of the phone operator

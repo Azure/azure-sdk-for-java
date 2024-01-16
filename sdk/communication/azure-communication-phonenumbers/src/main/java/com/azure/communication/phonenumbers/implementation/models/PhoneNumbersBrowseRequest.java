@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
@@ -12,6 +13,7 @@ import java.util.List;
 
 /** The PhoneNumbersBrowseRequest model. */
 @Fluent
+@Generated
 public final class PhoneNumbersBrowseRequest {
     /*
      * Represents the number type of the offering.

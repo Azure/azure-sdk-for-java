@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 /** The PhoneNumbersReservation model. */
 @Fluent
+@Generated
 public final class PhoneNumbersReservation {
     /*
      * The id of the reservation.

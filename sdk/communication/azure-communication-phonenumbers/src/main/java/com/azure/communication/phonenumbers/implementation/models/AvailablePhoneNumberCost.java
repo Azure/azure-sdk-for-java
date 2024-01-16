@@ -4,9 +4,11 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberCost;
 import com.azure.core.annotation.Immutable;
 
 /** The AvailablePhoneNumberCost model. */
 @Immutable
+@Generated
 public final class AvailablePhoneNumberCost extends PhoneNumberCost {}

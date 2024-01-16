@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for Error. */
+@Generated
 public final class Error extends ExpandableStringEnum<Error> {
     /** Static value NoError for Error. */
     public static final Error NO_ERROR = fromString("NoError");

@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the getOperation operation. */
+@Generated
 public final class PhoneNumbersGetOperationResponse
         extends ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation> {
     /**

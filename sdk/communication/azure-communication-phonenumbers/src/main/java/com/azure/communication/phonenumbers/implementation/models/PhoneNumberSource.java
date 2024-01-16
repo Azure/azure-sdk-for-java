@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PhoneNumberSource. */
+@Generated
 public final class PhoneNumberSource extends ExpandableStringEnum<PhoneNumberSource> {
     /** Static value cloud for PhoneNumberSource. */
     public static final PhoneNumberSource CLOUD = fromString("cloud");

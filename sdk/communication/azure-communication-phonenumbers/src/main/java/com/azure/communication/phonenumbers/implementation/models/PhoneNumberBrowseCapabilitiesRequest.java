@@ -4,12 +4,14 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberBrowseCapabilitiesRequest model. */
 @Fluent
+@Generated
 public final class PhoneNumberBrowseCapabilitiesRequest {
     /*
      * Capability value for calling.
