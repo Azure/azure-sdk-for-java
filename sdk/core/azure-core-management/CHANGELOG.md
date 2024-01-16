@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
