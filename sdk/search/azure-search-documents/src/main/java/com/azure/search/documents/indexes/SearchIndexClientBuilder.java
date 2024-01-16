@@ -111,7 +111,7 @@ import java.util.Objects;
  *
  *
  * <h4>
- *     Building and Authenticating a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using Azure Active Directory
+ *     Building and Authenticating a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using Microsoft Entra
  * </h4>
  *
  * <p>
