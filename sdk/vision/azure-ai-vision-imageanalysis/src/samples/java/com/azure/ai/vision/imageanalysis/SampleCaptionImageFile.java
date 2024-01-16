@@ -34,7 +34,7 @@ import com.azure.core.credential.KeyCredential;
 // END: imports-for-create-client-snippet
 
 // BEGIN: imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;

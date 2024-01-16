@@ -20,15 +20,17 @@ public class WorkerAdapter {
      * @return RouterWorker
      */
     public static RouterWorkerInternal convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
-        Map<String, Object> labels = createWorkerOptions.getLabels().entrySet()
+        Map<String, Object> labels = createWorkerOptions.getLabels() != null
+            ? createWorkerOptions.getLabels().entrySet()
             .stream()
             .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue())));
+                entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
 
-        Map<String, Object> tags = createWorkerOptions.getTags().entrySet()
+        Map<String, Object> tags = createWorkerOptions.getTags() != null
+            ? createWorkerOptions.getTags().entrySet()
             .stream()
             .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue())));
+                entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
 
         return new RouterWorkerInternal()
             .setLabels(labels)
