@@ -144,7 +144,7 @@ public class ReactorConnection implements AmqpConnection {
                             // this is temp patch to make v1 stack retry on timeout.
                             // V2 stack does connection management differently via ReactorConnectionCache
                             // and does not need to call into handler here
-                            this.handler.onError(exception);
+                            handler.onError(exception);
                         }
                         return exception;
                     }));
