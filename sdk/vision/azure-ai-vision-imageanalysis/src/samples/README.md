@@ -46,7 +46,7 @@ See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob
 
 * Clone or download the content of this repository.
 
-* Open a command-prompt / terminal window and navigate to the samples folder `sdk\vision\azure-ai-vision-imageanalysis\src\samples\java\com\azure\ai\vision\imageanalysis`.
+* Open a command-prompt / terminal window and navigate to the samples folder `sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis`.
 
 * Edit the [pom.xml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/pom.xml) file in this folder to ensure it uses the latest `azure-ai-vision-imageanalysis` package version shown in the [Maven repository](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis).
 
@@ -54,11 +54,11 @@ See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob
   ```
   mvn clean dependency:copy-dependencies
   ```
-  you should see a `target\dependency` folder created, containing all dependent `.jar` files.
+  you should see a `target/dependency` folder created, containing all dependent `.jar` files.
 
 * To compile a sample, for example, `SampleAnalyzeAllImageFile.java`, type:
   ```
-  javac SampleAnalyzeAllImageFile.java -cp target\dependency\*
+  javac SampleAnalyzeAllImageFile.java -cp target/dependency/*
   ```
   you should see the resulting `.class` file, for example `SampleAnalyzeAllImageFile.class`.
 
@@ -66,7 +66,7 @@ See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob
 
 To run the sample you just compiled (here `SampleAnalyzeAllImageFile`), type:
 ```
-java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
+java -cp ".;target/dependency/*" SampleAnalyzeAllImageFile
 ```
 
 ## Example console output

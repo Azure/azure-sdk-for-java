@@ -10,30 +10,30 @@ REM Copy dependencies
 call mvn clean dependency:copy-dependencies
 
 REM Compile all samples
-javac *.java -cp ".;target\dependency\*"
+javac *.java -cp ".;target/dependency/*"
 
 REM Run all samples, one after the other
 echo "===> SampleAnalyzeAllImageFile"
-java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
+java -cp ".;target/dependency/*" SampleAnalyzeAllImageFile
 echo "===> SampleCaptionImageFile"
-java -cp ".;target\dependency\*" SampleCaptionImageFile
+java -cp ".;target/dependency/*" SampleCaptionImageFile
 echo "===> SampleCaptionImageFileAsync"
-java -cp ".;target\dependency\*" SampleCaptionImageFileAsync
+java -cp ".;target/dependency/*" SampleCaptionImageFileAsync
 echo "===> SampleCaptionImageUrl"
-java -cp ".;target\dependency\*" SampleCaptionImageUrl
+java -cp ".;target/dependency/*" SampleCaptionImageUrl
 echo "===> SampleDenseCaptionsImageFile"
-java -cp ".;target\dependency\*" SampleDenseCaptionsImageFile
+java -cp ".;target/dependency/*" SampleDenseCaptionsImageFile
 echo "===> SampleObjectsImageFile"
-java -cp ".;target\dependency\*" SampleObjectsImageFile
+java -cp ".;target/dependency/*" SampleObjectsImageFile
 echo "===> SampleOcrImageFile"
-java -cp ".;target\dependency\*" SampleOcrImageFile
+java -cp ".;target/dependency/*" SampleOcrImageFile
 echo "===> SampleOcrImageUrl"
-java -cp ".;target\dependency\*" SampleOcrImageUrl
+java -cp ".;target/dependency/*" SampleOcrImageUrl
 echo "===> SampleOcrImageUrlAsync"
-java -cp ".;target\dependency\*" SampleOcrImageUrlAsync
+java -cp ".;target/dependency/*" SampleOcrImageUrlAsync
 echo "===> SamplePeopleImageFile"
-java -cp ".;target\dependency\*" SamplePeopleImageFile
+java -cp ".;target/dependency/*" SamplePeopleImageFile
 echo "===> SampleSmartCropsImageFile"
-java -cp ".;target\dependency\*" SampleSmartCropsImageFile
+java -cp ".;target/dependency/*" SampleSmartCropsImageFile
 echo "===> SampleTagsImageFile"
-java -cp ".;target\dependency\*" SampleTagsImageFile
+java -cp ".;target/dependency/*" SampleTagsImageFile

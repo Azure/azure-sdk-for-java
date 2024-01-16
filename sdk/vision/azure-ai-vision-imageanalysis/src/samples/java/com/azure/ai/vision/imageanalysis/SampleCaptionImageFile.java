@@ -18,9 +18,9 @@
 // USAGE:
 //     Compile the sample:
 //         mvn clean dependency:copy-dependencies
-//         javac SampleCaptionImageFile.java -cp target\dependency\*
+//         javac SampleCaptionImageFile.java -cp target/dependency/*
 //     Run the sample:
-//         java -cp ".;target\dependency\*" SampleCaptionImageFile
+//         java -cp ".;target/dependency/*" SampleCaptionImageFile
 //
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com

@@ -16,7 +16,7 @@ Remove-Item -ErrorAction SilentlyContinue -Force *.class
 mvn clean dependency:copy-dependencies
 
 # Compile sample
-javac "$file.java" -cp ".;target\dependency\*"
+javac "$file.java" -cp ".;target/dependency/*"
 
 # Run sample 
-java -cp ".;target\dependency\*" $file
+java -cp ".;target/dependency/*" $file

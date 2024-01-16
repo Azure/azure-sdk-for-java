@@ -22,9 +22,9 @@
 // USAGE:
 //     Compile the sample:
 //         mvn clean dependency:copy-dependencies
-//         javac SampleOcrImageUrl.java -cp target\dependency\*
+//         javac SampleOcrImageUrl.java -cp target/dependency/*
 //     Run the sample:
-//         java -cp ".;target\dependency\*" SampleOcrImageUrl
+//         java -cp ".;target/dependency/*" SampleOcrImageUrl
 //
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com

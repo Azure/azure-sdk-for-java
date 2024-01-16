@@ -12,7 +12,7 @@ REM Copy dependencies
 call mvn clean dependency:copy-dependencies
 
 REM Compile sample
-javac %1.java -cp ".;target\dependency\*"
+javac %1.java -cp ".;target/dependency/*"
 
 REM Run sample 
-java -cp ".;target\dependency\*" %1
+java -cp ".;target/dependency/*" %1
