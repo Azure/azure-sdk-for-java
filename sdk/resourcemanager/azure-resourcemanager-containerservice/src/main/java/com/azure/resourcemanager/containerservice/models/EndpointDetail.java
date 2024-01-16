@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** connect information from the AKS agent nodes to a single endpoint. */
+/**
+ * connect information from the AKS agent nodes to a single endpoint.
+ */
 @Fluent
 public final class EndpointDetail {
     /*
@@ -34,7 +36,9 @@ public final class EndpointDetail {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of EndpointDetail class. */
+    /**
+     * Creates an instance of EndpointDetail class.
+     */
     public EndpointDetail() {
     }
 

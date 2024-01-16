@@ -67,7 +67,7 @@ public class SampleOcrImageFile {
         // Extract text from an input image buffer. This is a synchronous (blocking) call.
         // BEGIN: ocr-file-snippet
         ImageAnalysisResult result = client.analyze(
-            BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+            BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
             Arrays.asList(VisualFeatures.READ), // visualFeatures
             null); // options: There are no options for READ visual feature
 

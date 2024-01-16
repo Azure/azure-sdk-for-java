@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The network protocol of the port. */
+/**
+ * The network protocol of the port.
+ */
 public final class Protocol extends ExpandableStringEnum<Protocol> {
-    /** Static value TCP for Protocol. */
+    /**
+     * Static value TCP for Protocol.
+     */
     public static final Protocol TCP = fromString("TCP");
 
-    /** Static value UDP for Protocol. */
+    /**
+     * Static value UDP for Protocol.
+     */
     public static final Protocol UDP = fromString("UDP");
 
     /**

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Settings for overrides when upgrading a cluster. */
+/**
+ * Settings for overrides when upgrading a cluster.
+ */
 @Fluent
 public final class UpgradeOverrideSettings {
     /*
@@ -26,7 +28,9 @@ public final class UpgradeOverrideSettings {
     @JsonProperty(value = "until")
     private OffsetDateTime until;
 
-    /** Creates an instance of UpgradeOverrideSettings class. */
+    /**
+     * Creates an instance of UpgradeOverrideSettings class.
+     */
     public UpgradeOverrideSettings() {
     }
 

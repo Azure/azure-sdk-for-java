@@ -5,45 +5,50 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser event.
+ */
 @Fluent
 public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*
      * The communication identifier of the user who created the thread
      */
-    @JsonProperty(value = "createdByCommunicationIdentifier")
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
     /*
      * The thread properties
      */
-    @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
     /*
      * The thread metadata
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /*
      * The list of properties of participants who are part of the thread
      */
-    @JsonProperty(value = "participants")
     private List<AcsChatThreadParticipantProperties> participants;
 
-    /** Creates an instance of AcsChatThreadCreatedWithUserEventData class. */
-    public AcsChatThreadCreatedWithUserEventData() {}
+    /**
+     * Creates an instance of AcsChatThreadCreatedWithUserEventData class.
+     */
+    public AcsChatThreadCreatedWithUserEventData() {
+    }
 
     /**
      * Get the createdByCommunicationIdentifier property: The communication identifier of the user who created the
      * thread.
-     *
+     * 
      * @return the createdByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getCreatedByCommunicationIdentifier() {
@@ -53,19 +58,19 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
     /**
      * Set the createdByCommunicationIdentifier property: The communication identifier of the user who created the
      * thread.
-     *
+     * 
      * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
-    public AcsChatThreadCreatedWithUserEventData setCreatedByCommunicationIdentifier(
-            CommunicationIdentifierModel createdByCommunicationIdentifier) {
+    public AcsChatThreadCreatedWithUserEventData
+        setCreatedByCommunicationIdentifier(CommunicationIdentifierModel createdByCommunicationIdentifier) {
         this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the properties property: The thread properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> getProperties() {
@@ -74,7 +79,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
 
     /**
      * Set the properties property: The thread properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
@@ -85,7 +90,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
 
     /**
      * Get the metadata property: The thread metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -94,7 +99,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
 
     /**
      * Set the metadata property: The thread metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
@@ -105,7 +110,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
 
     /**
      * Get the participants property: The list of properties of participants who are part of the thread.
-     *
+     * 
      * @return the participants value.
      */
     public List<AcsChatThreadParticipantProperties> getParticipants() {
@@ -114,49 +119,126 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
 
     /**
      * Set the participants property: The list of properties of participants who are part of the thread.
-     *
+     * 
      * @param participants the participants value to set.
      * @return the AcsChatThreadCreatedWithUserEventData object itself.
      */
-    public AcsChatThreadCreatedWithUserEventData setParticipants(
-            List<AcsChatThreadParticipantProperties> participants) {
+    public AcsChatThreadCreatedWithUserEventData
+        setParticipants(List<AcsChatThreadParticipantProperties> participants) {
         this.participants = participants;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadCreatedWithUserEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadCreatedWithUserEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatThreadCreatedWithUserEventData setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatThreadCreatedWithUserEventData
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadCreatedWithUserEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadCreatedWithUserEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadCreatedWithUserEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadCreatedWithUserEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadCreatedWithUserEventData.
+     */
+    public static AcsChatThreadCreatedWithUserEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadCreatedWithUserEventData deserializedAcsChatThreadCreatedWithUserEventData
+                = new AcsChatThreadCreatedWithUserEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData
+                        .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData.setCreateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData
+                        .setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("createdByCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadCreatedWithUserEventData.createdByCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAcsChatThreadCreatedWithUserEventData.properties = properties;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatThreadCreatedWithUserEventData.metadata = metadata;
+                } else if ("participants".equals(fieldName)) {
+                    List<AcsChatThreadParticipantProperties> participants
+                        = reader.readArray(reader1 -> AcsChatThreadParticipantProperties.fromJson(reader1));
+                    deserializedAcsChatThreadCreatedWithUserEventData.participants = participants;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadCreatedWithUserEventData;
+        });
     }
 }

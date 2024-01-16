@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProf
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of versions for supported orchestrators. */
+/**
+ * The list of versions for supported orchestrators.
+ */
 @Fluent
 public final class OrchestratorVersionProfileListResultInner {
     /*
@@ -37,7 +39,9 @@ public final class OrchestratorVersionProfileListResultInner {
     @JsonProperty(value = "properties", required = true)
     private OrchestratorVersionProfileProperties innerProperties = new OrchestratorVersionProfileProperties();
 
-    /** Creates an instance of OrchestratorVersionProfileListResultInner class. */
+    /**
+     * Creates an instance of OrchestratorVersionProfileListResultInner class.
+     */
     public OrchestratorVersionProfileListResultInner() {
     }
 
@@ -107,11 +111,8 @@ public final class OrchestratorVersionProfileListResultInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " OrchestratorVersionProfileListResultInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model OrchestratorVersionProfileListResultInner"));
         } else {
             innerProperties().validate();
         }

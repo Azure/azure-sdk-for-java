@@ -55,6 +55,7 @@ public final class RetryUtil {
     /**
      * Given a {@link Mono} will apply the retry policy to it when the operation times out or throws a transient error.
      *
+     * @param <T> Type of value in the {@link Mono}.
      * @param source The publisher to apply the retry policy to.
      * @param retryOptions A {@link AmqpRetryOptions}.
      * @param errorMessage Text added to error logs.
@@ -77,8 +78,10 @@ public final class RetryUtil {
     /**
      * Given a {@link Flux} will apply the retry policy to it when the operation times out.
      *
+     * @param <T> Type of value in the {@link Flux}.
      * @param source The publisher to apply the retry policy to.
-     *
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param timeoutMessage Text added to error logs.
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
@@ -91,8 +94,10 @@ public final class RetryUtil {
     /**
      * Given a {@link Mono} will apply the retry policy to it when the operation times out.
      *
+     * @param <T> Type of value in the {@link Mono}.
      * @param source The publisher to apply the retry policy to.
-     *
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param timeoutMessage Text added to error logs.
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */

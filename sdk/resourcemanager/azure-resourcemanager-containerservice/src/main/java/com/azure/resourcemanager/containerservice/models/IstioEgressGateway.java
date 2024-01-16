@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Istio egress gateway configuration. */
+/**
+ * Istio egress gateway configuration.
+ */
 @Fluent
 public final class IstioEgressGateway {
     /*
@@ -25,7 +27,9 @@ public final class IstioEgressGateway {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> nodeSelector;
 
-    /** Creates an instance of IstioEgressGateway class. */
+    /**
+     * Creates an instance of IstioEgressGateway class.
+     */
     public IstioEgressGateway() {
     }
 

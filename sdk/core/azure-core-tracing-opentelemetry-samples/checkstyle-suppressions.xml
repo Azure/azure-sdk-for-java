@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.CreateConfigurationSettingLoggingExporterSample.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.ListKeyVaultSecretsAutoConfigurationSample.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.TracingJavaDocCodeSnippets.java" />
+
+</suppressions>

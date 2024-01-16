@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'. */
+/**
+ * For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
+ */
 @Fluent
 public final class WeeklySchedule {
     /*
@@ -23,7 +25,9 @@ public final class WeeklySchedule {
     @JsonProperty(value = "dayOfWeek", required = true)
     private WeekDay dayOfWeek;
 
-    /** Creates an instance of WeeklySchedule class. */
+    /**
+     * Creates an instance of WeeklySchedule class.
+     */
     public WeeklySchedule() {
     }
 
@@ -74,9 +78,8 @@ public final class WeeklySchedule {
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
         }
     }
 

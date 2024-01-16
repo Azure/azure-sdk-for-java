@@ -11,13 +11,17 @@ import java.util.Collection;
 /**
  * PublicNetworkAccess of the managedCluster
  *
- * <p>Allow or deny public network access for AKS.
+ * Allow or deny public network access for AKS.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
-    /** Static value Enabled for PublicNetworkAccess. */
+    /**
+     * Static value Enabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccess. */
+    /**
+     * Static value Disabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
     /**

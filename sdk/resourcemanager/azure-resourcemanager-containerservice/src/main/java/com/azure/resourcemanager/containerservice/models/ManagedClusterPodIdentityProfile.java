@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The pod identity profile of the Managed Cluster.
  *
- * <p>See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod
+ * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod
  * identity integration.
  */
 @Fluent
@@ -27,7 +27,8 @@ public final class ManagedClusterPodIdentityProfile {
      *
      * Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks
      * of IP spoofing. See [using Kubenet network plugin with AAD Pod
-     * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
+     * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-
+     * active-directory-pod-managed-identities)
      * for more information.
      */
     @JsonProperty(value = "allowNetworkPluginKubenet")
@@ -45,7 +46,9 @@ public final class ManagedClusterPodIdentityProfile {
     @JsonProperty(value = "userAssignedIdentityExceptions")
     private List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions;
 
-    /** Creates an instance of ManagedClusterPodIdentityProfile class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentityProfile class.
+     */
     public ManagedClusterPodIdentityProfile() {
     }
 
@@ -73,7 +76,7 @@ public final class ManagedClusterPodIdentityProfile {
      * Get the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
      * networking.
      *
-     * <p>Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks
+     * Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks
      * of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
@@ -88,7 +91,7 @@ public final class ManagedClusterPodIdentityProfile {
      * Set the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
      * networking.
      *
-     * <p>Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks
+     * Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks
      * of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
@@ -116,8 +119,8 @@ public final class ManagedClusterPodIdentityProfile {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentities(
-        List<ManagedClusterPodIdentity> userAssignedIdentities) {
+    public ManagedClusterPodIdentityProfile
+        withUserAssignedIdentities(List<ManagedClusterPodIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -137,8 +140,8 @@ public final class ManagedClusterPodIdentityProfile {
      * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentityExceptions(
-        List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
+    public ManagedClusterPodIdentityProfile
+        withUserAssignedIdentityExceptions(List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
         this.userAssignedIdentityExceptions = userAssignedIdentityExceptions;
         return this;
     }

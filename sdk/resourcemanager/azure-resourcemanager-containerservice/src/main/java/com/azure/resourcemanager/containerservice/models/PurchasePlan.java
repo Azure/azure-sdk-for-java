@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
+/**
+ * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
+ */
 @Fluent
 public final class PurchasePlan {
     /*
@@ -35,7 +37,9 @@ public final class PurchasePlan {
     @JsonProperty(value = "publisher")
     private String publisher;
 
-    /** Creates an instance of PurchasePlan class. */
+    /**
+     * Creates an instance of PurchasePlan class.
+     */
     public PurchasePlan() {
     }
 

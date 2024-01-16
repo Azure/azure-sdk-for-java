@@ -48,16 +48,22 @@
     <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
-        --add-opens com.azure.core.http.vertx/com.azure.core.http.vertx=ALL-UNNAMED
-        --add-opens com.azure.core.http.vertx/com.azure.core.http.vertx.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.http.vertx/com.azure.core.http.vertx=ALL-UNNAMED
+      --add-opens com.azure.core.http.vertx/com.azure.core.http.vertx.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+    <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
-      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
+    </javadoc.excludePackageNames>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>
