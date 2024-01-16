@@ -117,8 +117,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-[inferences]: https://learn.microsoft.com/en-us/azure/cognitive-services/health-decision-support/radiology-insights/overview?branch=main
+[inferences]: <!--(https://learn.microsoft.com/azure/cognitive-services/health-decision-support/radiology-insights/overview?branch=main)-->
 [azure_portal]: https://portal.azure.com
-[sample_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleRadiologyInsightsAsync.java
+[sample_client]: <!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleRadiologyInsightsAsync.java)-->
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png)
