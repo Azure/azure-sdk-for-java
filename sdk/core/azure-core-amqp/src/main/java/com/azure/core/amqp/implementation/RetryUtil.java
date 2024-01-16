@@ -66,7 +66,6 @@ public final class RetryUtil {
      * @return A publisher that returns the results of the {@link Mono} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
-    @Deprecated
     public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String errorMessage,
                                         boolean allowsLongOperation) {
         if (!allowsLongOperation) {
