@@ -272,7 +272,6 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createIndexUseFieldBuilder
         List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
         List<SearchField> searchFieldList = new ArrayList<>();
-        List<SearchField> searchFieldList = new ArrayList<>();
         searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
 	                            .setKey(true)
 	                            .setFilterable(true)
