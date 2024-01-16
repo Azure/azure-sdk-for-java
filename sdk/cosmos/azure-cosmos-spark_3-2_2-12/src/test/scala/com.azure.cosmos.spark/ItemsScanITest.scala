@@ -18,20 +18,19 @@ class ItemsScanITest
       with Spark
       with CosmosClient
       with AutoCleanableCosmosContainer {
+  private val schema = StructType(Seq(
+    StructField("id", StringType)
+  ))
+
+  private val analyzedAggregatedFilters =
+    AnalyzedAggregatedFilters(
+      QueryFilterAnalyzer.rootParameterizedQuery,
+      false,
+      Array.empty[Filter],
+      Array.empty[Filter],
+      Option.empty[List[ReadManyFilter]])
 
   "ItemScan" should "only return readMany filter property when runtTimeFiltering is enabled and readMany filtering is enabled" in {
-    val schema = StructType(Seq(
-      StructField("id", StringType)
-    ))
-
-    val analyzedAggregatedFilters =
-      AnalyzedAggregatedFilters(
-        QueryFilterAnalyzer.rootParameterizedQuery,
-        false,
-        Array.empty[Filter],
-        Array.empty[Filter],
-        Option.empty[List[ReadManyFilter]])
-
     val clientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
 
     for (runTimeFilteringEnabled <- Array(true, false)) {
@@ -71,18 +70,6 @@ class ItemsScanITest
   }
 
   "ItemScan" should "only prune partitions when runtTimeFiltering is enabled and readMany filtering is enabled" in {
-    val schema = StructType(Seq(
-      StructField("id", StringType)
-    ))
-
-    val analyzedAggregatedFilters =
-      AnalyzedAggregatedFilters(
-        QueryFilterAnalyzer.rootParameterizedQuery,
-        false,
-        Array.empty[Filter],
-        Array.empty[Filter],
-        Option.empty[List[ReadManyFilter]])
-
     val clientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)

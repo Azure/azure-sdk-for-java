@@ -264,6 +264,7 @@ private abstract class ItemsScanBase(session: SparkSession,
         totalDocSizeInKB.addAndGet(partitionMetadata.totalDocumentSizeInKB)
       }
 
+      log.logInfo(s"totalDocSizeInKB ${totalDocSizeInKB.get()}, container ${containerConfig.container}")
       SparkCosmosStatistics(OptionalLong.of(totalDocSizeInKB.get() * 1024), OptionalLong.of(itemCount.get()))
     } else {
       // for other cases, fall back to spark statistics calculation
