@@ -2288,12 +2288,11 @@ class FileApiTests extends FileShareTestBase {
         options.setSupportRename(renameSupport);
 
         //call
-        if (renameSupport == null || !renameSupport){
+        if (renameSupport == null || !renameSupport) {
             ShareStorageException e = assertThrows(ShareStorageException.class,
                 () -> destFile.listRangesDiffWithResponse(options, null, null));
             assertEquals(ShareErrorCode.PREVIOUS_SNAPSHOT_NOT_FOUND, e.getErrorCode());
-        }
-        else {
+        } else {
             Response<ShareFileRangeList> response = destFile.listRangesDiffWithResponse(options, null, null);
             System.out.println(response);
             assertEquals(200, response.getStatusCode());
