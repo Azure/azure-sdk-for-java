@@ -136,9 +136,13 @@ public class ReactorConnection implements AmqpConnection {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, TIMEOUT_ERROR,
-                        String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
-                        handler.getErrorContext())));
+                    .timeout(operationTimeout, Mono.error(() -> {
+                        AmqpException exception = new AmqpException(true, TIMEOUT_ERROR,
+                            String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
+                            handler.getErrorContext());
+                        this.handler.onError(exception);
+                        return exception;
+                    }));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
             .doOnError(error -> {
@@ -153,7 +157,9 @@ public class ReactorConnection implements AmqpConnection {
         this.endpointStates = this.handler.getEndpointStates()
             .takeUntilOther(shutdownSignalSink.asMono())
             .map(state -> {
-                logger.verbose("State {}", state);
+                logger.atVerbose()
+                    .addKeyValue("state", state)
+                    .log("getConnectionState");
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .onErrorResume(error -> {

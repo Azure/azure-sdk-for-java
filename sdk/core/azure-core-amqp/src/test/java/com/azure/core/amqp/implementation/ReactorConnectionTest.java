@@ -529,6 +529,13 @@ class ReactorConnectionTest {
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
             })
             .verify(VERIFY_TIMEOUT);
+
+        StepVerifier.create(handler.getEndpointStates().collectList())
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertTrue(((AmqpException) error).isTransient());
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
