@@ -144,7 +144,7 @@ public class ReadmeSamples {
     }
 
     // BEGIN: readme-sample-hotelclass
-    public class Hotel {
+    public static class Hotel {
         private String id;
         private String name;
 
@@ -271,7 +271,13 @@ public class ReadmeSamples {
     public void createIndexUseFieldBuilder() {
         // BEGIN: readme-sample-createIndexUseFieldBuilder
         List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
-        SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
+        List<SearchField> searchFieldList = new ArrayList<>();
+        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+	                .setKey(true)
+	                .setFilterable(true)
+	                .setSortable(true));
+        SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index1", searchFields).setFields(searchFieldList));
+
         // END: readme-sample-createIndexUseFieldBuilder
     }
 
