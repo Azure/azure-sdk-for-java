@@ -48,48 +48,12 @@ import java.util.stream.Collectors;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
- * {@link KeyVaultSettingsAsyncClient settings async client} and {@link KeyVaultSettingsClient settings client}, by
- * calling {@link KeyVaultSettingsClientBuilder#buildAsyncClient() buildAsyncClient} and
- * {@link KeyVaultSettingsClientBuilder#buildClient() buildClient} respectively. It constructs an instance of the
- * desired client.
+ * {@link KeyVaultSettingsAsyncClient} and {@link KeyVaultSettingsClient}, by calling
+ * {@link KeyVaultSettingsClientBuilder#buildAsyncClient()} and {@link KeyVaultSettingsClientBuilder#buildImplClient()}
+ * respectively. It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link  KeyVaultSettingsClientBuilder} to build a
- * {@link  KeyVaultSettingsAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation -->
- * <pre>
- * KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient = new KeyVaultSettingsClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation -->
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link  KeyVaultSettingsClientBuilder}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation.withHttpClient -->
- * <pre>
- * KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient = new KeyVaultSettingsClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation.withHttpClient -->
- *
- * <p> The minimal configuration options required by {@link  KeyVaultSettingsClientBuilder} to build a
- * {@link  KeyVaultSettingsClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
- * <pre>
- * KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
+ * <p> The minimal configuration options required by {@link KeyVaultSettingsClientBuilder} to build a client are
+ * {@link String vaultUrl} and {@link TokenCredential credential}.</p>
  *
  * @see KeyVaultSettingsClient
  * @see KeyVaultSettingsAsyncClient

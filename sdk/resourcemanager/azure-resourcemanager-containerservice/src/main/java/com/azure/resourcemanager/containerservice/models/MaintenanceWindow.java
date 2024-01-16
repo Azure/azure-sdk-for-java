@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Maintenance window used to configure scheduled auto-upgrade for a Managed Cluster.
- */
+/** Maintenance window used to configure scheduled auto-upgrade for a Managed Cluster. */
 @Fluent
 public final class MaintenanceWindow {
     /*
@@ -56,9 +54,7 @@ public final class MaintenanceWindow {
     @JsonProperty(value = "notAllowedDates")
     private List<DateSpan> notAllowedDates;
 
-    /**
-     * Creates an instance of MaintenanceWindow class.
-     */
+    /** Creates an instance of MaintenanceWindow class. */
     public MaintenanceWindow() {
     }
 
@@ -150,8 +146,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
-     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
-     * '00:00'.
+     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
      *
      * @return the startTime value.
      */
@@ -161,8 +156,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
-     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
-     * '00:00'.
+     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
      *
      * @param startTime the startTime value to set.
      * @return the MaintenanceWindow object itself.
@@ -173,9 +167,9 @@ public final class MaintenanceWindow {
     }
 
     /**
-     * Get the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
-     * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
-     * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
+     * Get the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field.
+     * For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be
+     * blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
      *
      * @return the notAllowedDates value.
      */
@@ -184,9 +178,9 @@ public final class MaintenanceWindow {
     }
 
     /**
-     * Set the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
-     * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
-     * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
+     * Set the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field.
+     * For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be
+     * blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
      *
      * @param notAllowedDates the notAllowedDates value to set.
      * @return the MaintenanceWindow object itself.
@@ -203,14 +197,16 @@ public final class MaintenanceWindow {
      */
     public void validate() {
         if (schedule() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property schedule in model MaintenanceWindow"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property schedule in model MaintenanceWindow"));
         } else {
             schedule().validate();
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property startTime in model MaintenanceWindow"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property startTime in model MaintenanceWindow"));
         }
         if (notAllowedDates() != null) {
             notAllowedDates().forEach(e -> e.validate());

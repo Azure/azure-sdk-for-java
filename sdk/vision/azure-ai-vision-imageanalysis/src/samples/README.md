@@ -71,7 +71,7 @@ java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
 
 The sample `SampleAnalyzeAllImageFile.java` analyzes the image `sample.jpg` in this folder:
 
-![sample JPEG image](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg)
+![sample JPEG image](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg)
 
 And produces an output similar to the following:
 

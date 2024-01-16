@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Rule for trusted access role.
- */
+/** Rule for trusted access role. */
 @Immutable
 public final class TrustedAccessRoleRule {
     /*
@@ -43,9 +41,7 @@ public final class TrustedAccessRoleRule {
     @JsonProperty(value = "nonResourceURLs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nonResourceUrls;
 
-    /**
-     * Creates an instance of TrustedAccessRoleRule class.
-     */
+    /** Creates an instance of TrustedAccessRoleRule class. */
     public TrustedAccessRoleRule() {
     }
 

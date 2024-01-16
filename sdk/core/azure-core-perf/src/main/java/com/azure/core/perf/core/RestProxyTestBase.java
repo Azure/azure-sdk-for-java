@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -132,7 +134,14 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         if (options.getBackendType() == CorePerfStressOptions.BackendType.MOCK) {
             return new MockHttpClient(mockResponseSupplier);
         } else {
-            return super.httpClient;
+            switch (options.getHttpClient()) {
+                case NETTY:
+                    return new NettyAsyncHttpClientBuilder().build();
+                case OKHTTP:
+                    return new OkHttpAsyncHttpClientBuilder().build();
+                default:
+                    throw new IllegalArgumentException("Unsupported http client " + options.getHttpClient());
+            }
         }
     }
 

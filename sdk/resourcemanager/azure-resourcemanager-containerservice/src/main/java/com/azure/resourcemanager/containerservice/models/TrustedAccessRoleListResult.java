@@ -9,9 +9,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRol
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of trusted access roles.
- */
+/** List of trusted access roles. */
 @Immutable
 public final class TrustedAccessRoleListResult {
     /*
@@ -26,9 +24,7 @@ public final class TrustedAccessRoleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of TrustedAccessRoleListResult class.
-     */
+    /** Creates an instance of TrustedAccessRoleListResult class. */
     public TrustedAccessRoleListResult() {
     }
 

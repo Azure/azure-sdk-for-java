@@ -81,7 +81,7 @@ public final class ReflectionSerializable {
                 LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
                     + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
                     + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
-                    + "this informational message can be ignored.", e);
+                    + "this informational message can be ignored.");
             } else {
                 throw (Error) e;
             }
@@ -173,8 +173,6 @@ public final class ReflectionSerializable {
      * @param json The JSON being deserialized.
      * @return An instance of {@code jsonSerializable} based on the {@code json}.
      * @throws IOException If an error occurs during deserialization.
-     * @throws IllegalStateException If the {@code jsonSerializable} does not have a static {@code fromJson} method
-     * @throws Error If an error occurs during deserialization.
      */
     public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {
         if (FROM_JSON_CACHE.size() >= 10000) {
@@ -293,8 +291,6 @@ public final class ReflectionSerializable {
      * @param xml The XML being deserialized.
      * @return An instance of {@code xmlSerializable} based on the {@code xml}.
      * @throws IOException If the XmlReader fails to close properly.
-     * @throws IllegalStateException If the {@code xmlSerializable} does not have a static {@code fromXml} method
-     * @throws Error If an error occurs during deserialization.
      */
     public static Object deserializeAsXmlSerializable(Class<?> xmlSerializable, byte[] xml) throws IOException {
         if (!XML_SERIALIZABLE_SUPPORTED) {

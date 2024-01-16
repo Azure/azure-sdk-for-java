@@ -13,12 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The SelectiveKeyRestoreOperationParameters model.
- */
+/** The SelectiveKeyRestoreOperationParameters model. */
 @Immutable
 public final class SelectiveKeyRestoreOperationParameters
-    implements JsonSerializable<SelectiveKeyRestoreOperationParameters> {
+        implements JsonSerializable<SelectiveKeyRestoreOperationParameters> {
     /*
      * The sasTokenParameters property.
      */
@@ -31,7 +29,7 @@ public final class SelectiveKeyRestoreOperationParameters
 
     /**
      * Creates an instance of SelectiveKeyRestoreOperationParameters class.
-     * 
+     *
      * @param sasTokenParameters the sasTokenParameters value to set.
      * @param folder the folder value to set.
      */
@@ -42,7 +40,7 @@ public final class SelectiveKeyRestoreOperationParameters
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
-     * 
+     *
      * @return the sasTokenParameters value.
      */
     public SASTokenParameter getSasTokenParameters() {
@@ -51,7 +49,7 @@ public final class SelectiveKeyRestoreOperationParameters
 
     /**
      * Get the folder property: The Folder name of the blob where the previous successful full backup was stored.
-     * 
+     *
      * @return the folder value.
      */
     public String getFolder() {
@@ -68,49 +66,50 @@ public final class SelectiveKeyRestoreOperationParameters
 
     /**
      * Reads an instance of SelectiveKeyRestoreOperationParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SelectiveKeyRestoreOperationParameters if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     *     it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SelectiveKeyRestoreOperationParameters.
      */
     public static SelectiveKeyRestoreOperationParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean sasTokenParametersFound = false;
-            SASTokenParameter sasTokenParameters = null;
-            boolean folderFound = false;
-            String folder = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean sasTokenParametersFound = false;
+                    SASTokenParameter sasTokenParameters = null;
+                    boolean folderFound = false;
+                    String folder = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("sasTokenParameters".equals(fieldName)) {
-                    sasTokenParameters = SASTokenParameter.fromJson(reader);
-                    sasTokenParametersFound = true;
-                } else if ("folder".equals(fieldName)) {
-                    folder = reader.getString();
-                    folderFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (sasTokenParametersFound && folderFound) {
-                SelectiveKeyRestoreOperationParameters deserializedSelectiveKeyRestoreOperationParameters
-                    = new SelectiveKeyRestoreOperationParameters(sasTokenParameters, folder);
+                        if ("sasTokenParameters".equals(fieldName)) {
+                            sasTokenParameters = SASTokenParameter.fromJson(reader);
+                            sasTokenParametersFound = true;
+                        } else if ("folder".equals(fieldName)) {
+                            folder = reader.getString();
+                            folderFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (sasTokenParametersFound && folderFound) {
+                        SelectiveKeyRestoreOperationParameters deserializedSelectiveKeyRestoreOperationParameters =
+                                new SelectiveKeyRestoreOperationParameters(sasTokenParameters, folder);
 
-                return deserializedSelectiveKeyRestoreOperationParameters;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!sasTokenParametersFound) {
-                missingProperties.add("sasTokenParameters");
-            }
-            if (!folderFound) {
-                missingProperties.add("folder");
-            }
+                        return deserializedSelectiveKeyRestoreOperationParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!sasTokenParametersFound) {
+                        missingProperties.add("sasTokenParameters");
+                    }
+                    if (!folderFound) {
+                        missingProperties.add("folder");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

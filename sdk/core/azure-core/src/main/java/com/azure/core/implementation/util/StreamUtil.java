@@ -4,8 +4,6 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,11 +41,11 @@ public final class StreamUtil {
      * @param lengthHint Optional hint of the length of stream.
      * @param initialBufferSize The initial buffer size. Used if {@code length} is null.
      * @param maxBufferSize The maximum buffer size.
-     * @return A tuple where the long value is the number of bytes read from the stream and the list of byte buffers
-     * generated.
+     * @return List of byte buffers.
      * @throws IOException If IO operation fails.
      */
-    public static Tuple2<Long, List<ByteBuffer>> readStreamToListOfByteBuffers(InputStream inputStream, Long lengthHint,
+    public static List<ByteBuffer> readStreamToListOfByteBuffers(
+        InputStream inputStream, Long lengthHint,
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
@@ -119,6 +117,6 @@ public final class StreamUtil {
             }
         } while (read >= 0);
 
-        return Tuples.of(totalRead, Collections.unmodifiableList(buffers));
+        return Collections.unmodifiableList(buffers);
     }
 }

@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * A Kubernetes add-on profile for a managed cluster.
- */
+/** A Kubernetes add-on profile for a managed cluster. */
 @Fluent
 public final class ManagedClusterAddonProfile {
     /*
@@ -33,9 +31,7 @@ public final class ManagedClusterAddonProfile {
     @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterAddonProfileIdentity identity;
 
-    /**
-     * Creates an instance of ManagedClusterAddonProfile class.
-     */
+    /** Creates an instance of ManagedClusterAddonProfile class. */
     public ManagedClusterAddonProfile() {
     }
 

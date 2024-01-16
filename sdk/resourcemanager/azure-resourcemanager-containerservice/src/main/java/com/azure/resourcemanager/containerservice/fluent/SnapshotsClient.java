@@ -17,9 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in SnapshotsClient.
- */
+/** An instance of this class provides access to all the operations defined in SnapshotsClient. */
 public interface SnapshotsClient
     extends InnerSupportsGet<SnapshotInner>, InnerSupportsListing<SnapshotInner>, InnerSupportsDelete<Void> {
     /**
@@ -129,8 +127,8 @@ public interface SnapshotsClient
      * @return a snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
-        Context context);
+    Response<SnapshotInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets a snapshot.
@@ -157,8 +155,8 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
-        SnapshotInner parameters);
+    Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, SnapshotInner parameters);
 
     /**
      * Creates or updates a snapshot.
@@ -187,8 +185,8 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
-        SnapshotInner parameters, Context context);
+    Response<SnapshotInner> createOrUpdateWithResponse(
+        String resourceGroupName, String resourceName, SnapshotInner parameters, Context context);
 
     /**
      * Creates or updates a snapshot.
@@ -216,8 +214,8 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName,
-        TagsObject parameters);
+    Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
      * Updates tags on a snapshot.
@@ -246,8 +244,8 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> updateTagsWithResponse(String resourceGroupName, String resourceName, TagsObject parameters,
-        Context context);
+    Response<SnapshotInner> updateTagsWithResponse(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context);
 
     /**
      * Updates tags on a snapshot.

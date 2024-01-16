@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Istio components configuration.
- */
+/** Istio components configuration. */
 @Fluent
 public final class IstioComponents {
     /*
@@ -25,9 +23,7 @@ public final class IstioComponents {
     @JsonProperty(value = "egressGateways")
     private List<IstioEgressGateway> egressGateways;
 
-    /**
-     * Creates an instance of IstioComponents class.
-     */
+    /** Creates an instance of IstioComponents class. */
     public IstioComponents() {
     }
 

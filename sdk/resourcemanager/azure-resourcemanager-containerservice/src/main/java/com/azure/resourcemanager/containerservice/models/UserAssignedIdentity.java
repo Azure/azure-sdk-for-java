@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Details about a user assigned identity.
- */
+/** Details about a user assigned identity. */
 @Fluent
 public class UserAssignedIdentity {
     /*
@@ -30,9 +28,7 @@ public class UserAssignedIdentity {
     @JsonProperty(value = "objectId")
     private String objectId;
 
-    /**
-     * Creates an instance of UserAssignedIdentity class.
-     */
+    /** Creates an instance of UserAssignedIdentity class. */
     public UserAssignedIdentity() {
     }
 

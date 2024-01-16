@@ -19,9 +19,7 @@ public final class IstioCertificateAuthority {
     @JsonProperty(value = "plugin")
     private IstioPluginCertificateAuthority plugin;
 
-    /**
-     * Creates an instance of IstioCertificateAuthority class.
-     */
+    /** Creates an instance of IstioCertificateAuthority class. */
     public IstioCertificateAuthority() {
     }
 

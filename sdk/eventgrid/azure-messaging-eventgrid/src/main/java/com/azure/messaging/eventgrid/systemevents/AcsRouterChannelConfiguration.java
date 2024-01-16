@@ -5,41 +5,35 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Router Channel Configuration.
- */
+/** Router Channel Configuration. */
 @Fluent
-public final class AcsRouterChannelConfiguration implements JsonSerializable<AcsRouterChannelConfiguration> {
+public final class AcsRouterChannelConfiguration {
     /*
      * Channel ID for Router Job
      */
+    @JsonProperty(value = "channelId")
     private String channelId;
 
     /*
      * Capacity Cost Per Job for Router Job
      */
+    @JsonProperty(value = "capacityCostPerJob")
     private Integer capacityCostPerJob;
 
     /*
      * Max Number of Jobs for Router Job
      */
+    @JsonProperty(value = "maxNumberOfJobs")
     private Integer maxNumberOfJobs;
 
-    /**
-     * Creates an instance of AcsRouterChannelConfiguration class.
-     */
-    public AcsRouterChannelConfiguration() {
-    }
+    /** Creates an instance of AcsRouterChannelConfiguration class. */
+    public AcsRouterChannelConfiguration() {}
 
     /**
      * Get the channelId property: Channel ID for Router Job.
-     * 
+     *
      * @return the channelId value.
      */
     public String getChannelId() {
@@ -48,7 +42,7 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
 
     /**
      * Set the channelId property: Channel ID for Router Job.
-     * 
+     *
      * @param channelId the channelId value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
@@ -59,7 +53,7 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
 
     /**
      * Get the capacityCostPerJob property: Capacity Cost Per Job for Router Job.
-     * 
+     *
      * @return the capacityCostPerJob value.
      */
     public Integer getCapacityCostPerJob() {
@@ -68,7 +62,7 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
 
     /**
      * Set the capacityCostPerJob property: Capacity Cost Per Job for Router Job.
-     * 
+     *
      * @param capacityCostPerJob the capacityCostPerJob value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
@@ -79,7 +73,7 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
 
     /**
      * Get the maxNumberOfJobs property: Max Number of Jobs for Router Job.
-     * 
+     *
      * @return the maxNumberOfJobs value.
      */
     public Integer getMaxNumberOfJobs() {
@@ -88,53 +82,12 @@ public final class AcsRouterChannelConfiguration implements JsonSerializable<Acs
 
     /**
      * Set the maxNumberOfJobs property: Max Number of Jobs for Router Job.
-     * 
+     *
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
     public AcsRouterChannelConfiguration setMaxNumberOfJobs(Integer maxNumberOfJobs) {
         this.maxNumberOfJobs = maxNumberOfJobs;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelId", this.channelId);
-        jsonWriter.writeNumberField("capacityCostPerJob", this.capacityCostPerJob);
-        jsonWriter.writeNumberField("maxNumberOfJobs", this.maxNumberOfJobs);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AcsRouterChannelConfiguration from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRouterChannelConfiguration if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsRouterChannelConfiguration.
-     */
-    public static AcsRouterChannelConfiguration fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRouterChannelConfiguration deserializedAcsRouterChannelConfiguration
-                = new AcsRouterChannelConfiguration();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterChannelConfiguration.channelId = reader.getString();
-                } else if ("capacityCostPerJob".equals(fieldName)) {
-                    deserializedAcsRouterChannelConfiguration.capacityCostPerJob
-                        = reader.getNullable(JsonReader::getInt);
-                } else if ("maxNumberOfJobs".equals(fieldName)) {
-                    deserializedAcsRouterChannelConfiguration.maxNumberOfJobs = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAcsRouterChannelConfiguration;
-        });
     }
 }

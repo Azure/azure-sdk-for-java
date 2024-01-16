@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Role assignment create parameters.
- */
+/** Role assignment create parameters. */
 @Immutable
 public final class RoleAssignmentCreateParameters implements JsonSerializable<RoleAssignmentCreateParameters> {
     /*
@@ -25,7 +23,7 @@ public final class RoleAssignmentCreateParameters implements JsonSerializable<Ro
 
     /**
      * Creates an instance of RoleAssignmentCreateParameters class.
-     * 
+     *
      * @param properties the properties value to set.
      */
     public RoleAssignmentCreateParameters(RoleAssignmentProperties properties) {
@@ -34,7 +32,7 @@ public final class RoleAssignmentCreateParameters implements JsonSerializable<Ro
 
     /**
      * Get the properties property: Role assignment properties.
-     * 
+     *
      * @return the properties value.
      */
     public RoleAssignmentProperties getProperties() {
@@ -50,41 +48,42 @@ public final class RoleAssignmentCreateParameters implements JsonSerializable<Ro
 
     /**
      * Reads an instance of RoleAssignmentCreateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RoleAssignmentCreateParameters if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     *     null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RoleAssignmentCreateParameters.
      */
     public static RoleAssignmentCreateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean propertiesFound = false;
-            RoleAssignmentProperties properties = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean propertiesFound = false;
+                    RoleAssignmentProperties properties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("properties".equals(fieldName)) {
-                    properties = RoleAssignmentProperties.fromJson(reader);
-                    propertiesFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (propertiesFound) {
-                RoleAssignmentCreateParameters deserializedRoleAssignmentCreateParameters
-                    = new RoleAssignmentCreateParameters(properties);
+                        if ("properties".equals(fieldName)) {
+                            properties = RoleAssignmentProperties.fromJson(reader);
+                            propertiesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (propertiesFound) {
+                        RoleAssignmentCreateParameters deserializedRoleAssignmentCreateParameters =
+                                new RoleAssignmentCreateParameters(properties);
 
-                return deserializedRoleAssignmentCreateParameters;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!propertiesFound) {
-                missingProperties.add("properties");
-            }
+                        return deserializedRoleAssignmentCreateParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!propertiesFound) {
+                        missingProperties.add("properties");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

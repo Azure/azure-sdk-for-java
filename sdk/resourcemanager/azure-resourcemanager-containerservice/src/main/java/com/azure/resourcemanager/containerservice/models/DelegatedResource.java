@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * Delegated resource properties - internal use only.
- */
+/** Delegated resource properties - internal use only. */
 @Fluent
 public final class DelegatedResource {
     /*
@@ -37,9 +35,7 @@ public final class DelegatedResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /**
-     * Creates an instance of DelegatedResource class.
-     */
+    /** Creates an instance of DelegatedResource class. */
     public DelegatedResource() {
     }
 

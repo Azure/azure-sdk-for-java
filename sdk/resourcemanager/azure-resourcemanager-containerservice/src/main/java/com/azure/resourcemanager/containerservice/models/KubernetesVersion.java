@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Kubernetes version profile for given major.minor release.
- */
+/** Kubernetes version profile for given major.minor release. */
 @Fluent
 public final class KubernetesVersion {
     /*
@@ -39,9 +37,7 @@ public final class KubernetesVersion {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KubernetesPatchVersion> patchVersions;
 
-    /**
-     * Creates an instance of KubernetesVersion class.
-     */
+    /** Creates an instance of KubernetesVersion class. */
     public KubernetesVersion() {
     }
 
@@ -135,11 +131,14 @@ public final class KubernetesVersion {
             capabilities().validate();
         }
         if (patchVersions() != null) {
-            patchVersions().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
+            patchVersions()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

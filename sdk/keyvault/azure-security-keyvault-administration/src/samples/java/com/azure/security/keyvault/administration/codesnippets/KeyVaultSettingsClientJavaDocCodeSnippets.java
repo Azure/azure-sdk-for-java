@@ -23,12 +23,12 @@ public class KeyVaultSettingsClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyVaultSettingsClient}.
      */
     public KeyVaultSettingsClient createClient() {
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.instantiation
         KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.instantiation
 
         return keyVaultSettingsClient;
     }
@@ -41,21 +41,21 @@ public class KeyVaultSettingsClientJavaDocCodeSnippets {
         KeyVaultSettingsClient keyVaultSettingsClient = createClient();
         String settingName = "<setting-to-update>";
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSetting#KeyVaultSetting
         KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
         KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting(settingToUpdate);
 
         System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), updatedSetting.asBoolean());
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSetting#KeyVaultSetting
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context
         KeyVaultSetting mySettingToUpdate = new KeyVaultSetting(settingName, true);
         Response<KeyVaultSetting> response =
             keyVaultSettingsClient.updateSettingWithResponse(mySettingToUpdate, new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Updated setting '%s' to '%s'.%n",
             response.getStatusCode(), response.getValue().getName(), response.getValue().asBoolean());
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-Context
     }
 
     /**
@@ -66,19 +66,19 @@ public class KeyVaultSettingsClientJavaDocCodeSnippets {
         KeyVaultSettingsClient keyVaultSettingsClient = createClient();
         String settingName = "<setting-to-update>";
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSetting#String
         KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
 
         System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(), setting.asBoolean());
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSetting#String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingWithResponse#String-Context
         Response<KeyVaultSetting> response =
             keyVaultSettingsClient.getSettingWithResponse(settingName, new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Retrieved setting '%s' with value '%s'.%n",
             response.getStatusCode(), response.getValue().getName(), response.getValue().asBoolean());
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingWithResponse#String-Context
     }
 
     /**
@@ -88,16 +88,16 @@ public class KeyVaultSettingsClientJavaDocCodeSnippets {
     public void getSettings() {
         KeyVaultSettingsClient keyVaultSettingsClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettings
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettings
         KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
         List<KeyVaultSetting> settings = getSettingsResult.getSettings();
 
         settings.forEach(setting ->
             System.out.printf("Retrieved setting with name '%s' and value %s'.%n", setting.getName(),
                 setting.asBoolean()));
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettings
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettings
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettingsWithResponse#Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingsWithResponse#Context
         Response<KeyVaultGetSettingsResult> response =
             keyVaultSettingsClient.getSettingsWithResponse(new Context("key1", "value1"));
 
@@ -109,6 +109,6 @@ public class KeyVaultSettingsClientJavaDocCodeSnippets {
         mySettings.forEach(setting ->
             System.out.printf("Retrieved setting with name '%s' and value %s'.%n", setting.getName(),
                 setting.asBoolean()));
-        // END: com.azure.security.keyvault.administration.KeyVaultSettingsClient.getSettingsWithResponse#Context
+        // END: com.azure.security.keyvault.administration.keyVaultSettingsClient.getSettingsWithResponse#Context
     }
 }

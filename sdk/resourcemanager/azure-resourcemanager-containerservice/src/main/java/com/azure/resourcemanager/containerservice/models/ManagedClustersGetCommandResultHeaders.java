@@ -9,9 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClustersGetCommandResultHeaders model.
- */
+/** The ManagedClustersGetCommandResultHeaders model. */
 @Fluent
 public final class ManagedClustersGetCommandResultHeaders {
     /*

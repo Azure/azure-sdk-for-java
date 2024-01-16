@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Private endpoint which a connection belongs to.
- */
+/** Private endpoint which a connection belongs to. */
 @Fluent
 public final class PrivateEndpoint {
     /*
@@ -18,9 +16,7 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id")
     private String id;
 
-    /**
-     * Creates an instance of PrivateEndpoint class.
-     */
+    /** Creates an instance of PrivateEndpoint class. */
     public PrivateEndpoint() {
     }
 

@@ -7,28 +7,23 @@ package com.azure.security.keyvault.administration.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The role definition type.
- */
+/** The role definition type. */
 public final class KeyVaultRoleDefinitionType extends ExpandableStringEnum<KeyVaultRoleDefinitionType> {
-    /**
-     * Static value Microsoft.Authorization/roleDefinitions for KeyVaultRoleDefinitionType.
-     */
-    public static final KeyVaultRoleDefinitionType MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS
-        = fromString("Microsoft.Authorization/roleDefinitions");
+    /** Static value Microsoft.Authorization/roleDefinitions for KeyVaultRoleDefinitionType. */
+    public static final KeyVaultRoleDefinitionType MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS =
+            fromString("Microsoft.Authorization/roleDefinitions");
 
     /**
      * Creates a new instance of KeyVaultRoleDefinitionType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyVaultRoleDefinitionType() {
-    }
+    public KeyVaultRoleDefinitionType() {}
 
     /**
      * Creates or finds a KeyVaultRoleDefinitionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding KeyVaultRoleDefinitionType.
      */
@@ -38,7 +33,7 @@ public final class KeyVaultRoleDefinitionType extends ExpandableStringEnum<KeyVa
 
     /**
      * Gets known KeyVaultRoleDefinitionType values.
-     * 
+     *
      * @return known KeyVaultRoleDefinitionType values.
      */
     public static Collection<KeyVaultRoleDefinitionType> values() {

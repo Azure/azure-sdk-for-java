@@ -34,11 +34,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
-import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 
-/**
- * An asynchronous REST proxy implementation.
- */
 public class AsyncRestProxy extends RestProxyBase {
 
     private static final String TEXT_EVENT_STREAM = "text/event-stream";
@@ -265,8 +261,7 @@ public class AsyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    private Mono<HttpResponseDecoder.HttpDecodedResponse> endSpanWhenDone(
-        Mono<HttpResponseDecoder.HttpDecodedResponse> getResponse, Context span) {
+    private Mono<HttpResponseDecoder.HttpDecodedResponse> endSpanWhenDone(Mono<HttpResponseDecoder.HttpDecodedResponse> getResponse, Context span) {
         if (isTracingEnabled(span)) {
             return getResponse
                 .doOnEach(signal -> {
@@ -277,14 +272,13 @@ public class AsyncRestProxy extends RestProxyBase {
                         tracer.end(null, signal.getThrowable(), span);
                     }
                 })
-                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
+                .doOnCancel(() -> tracer.end("cancel", null, span))
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
         }
 
         return getResponse;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter)
         throws IOException {
@@ -322,7 +316,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 request.setBody(bodyContentString);
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
-            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
+            request.setBody(Flux.just((ByteBuffer) bodyContentObject));
         } else {
             request.setBody(serializerAdapter.serializeToBytes(bodyContentObject,
                 SerializerEncoding.fromHeaders(request.getHeaders())));

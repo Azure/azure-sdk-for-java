@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The RestoreOperationParameters model.
- */
+/** The RestoreOperationParameters model. */
 @Immutable
 public final class RestoreOperationParameters implements JsonSerializable<RestoreOperationParameters> {
     /*
@@ -30,7 +28,7 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
 
     /**
      * Creates an instance of RestoreOperationParameters class.
-     * 
+     *
      * @param sasTokenParameters the sasTokenParameters value to set.
      * @param folderToRestore the folderToRestore value to set.
      */
@@ -41,7 +39,7 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
-     * 
+     *
      * @return the sasTokenParameters value.
      */
     public SASTokenParameter getSasTokenParameters() {
@@ -51,7 +49,7 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
     /**
      * Get the folderToRestore property: The Folder name of the blob where the previous successful full backup was
      * stored.
-     * 
+     *
      * @return the folderToRestore value.
      */
     public String getFolderToRestore() {
@@ -68,49 +66,50 @@ public final class RestoreOperationParameters implements JsonSerializable<Restor
 
     /**
      * Reads an instance of RestoreOperationParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RestoreOperationParameters if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RestoreOperationParameters.
      */
     public static RestoreOperationParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean sasTokenParametersFound = false;
-            SASTokenParameter sasTokenParameters = null;
-            boolean folderToRestoreFound = false;
-            String folderToRestore = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean sasTokenParametersFound = false;
+                    SASTokenParameter sasTokenParameters = null;
+                    boolean folderToRestoreFound = false;
+                    String folderToRestore = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("sasTokenParameters".equals(fieldName)) {
-                    sasTokenParameters = SASTokenParameter.fromJson(reader);
-                    sasTokenParametersFound = true;
-                } else if ("folderToRestore".equals(fieldName)) {
-                    folderToRestore = reader.getString();
-                    folderToRestoreFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (sasTokenParametersFound && folderToRestoreFound) {
-                RestoreOperationParameters deserializedRestoreOperationParameters
-                    = new RestoreOperationParameters(sasTokenParameters, folderToRestore);
+                        if ("sasTokenParameters".equals(fieldName)) {
+                            sasTokenParameters = SASTokenParameter.fromJson(reader);
+                            sasTokenParametersFound = true;
+                        } else if ("folderToRestore".equals(fieldName)) {
+                            folderToRestore = reader.getString();
+                            folderToRestoreFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (sasTokenParametersFound && folderToRestoreFound) {
+                        RestoreOperationParameters deserializedRestoreOperationParameters =
+                                new RestoreOperationParameters(sasTokenParameters, folderToRestore);
 
-                return deserializedRestoreOperationParameters;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!sasTokenParametersFound) {
-                missingProperties.add("sasTokenParameters");
-            }
-            if (!folderToRestoreFound) {
-                missingProperties.add("folderToRestore");
-            }
+                        return deserializedRestoreOperationParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!sasTokenParametersFound) {
+                        missingProperties.add("sasTokenParameters");
+                    }
+                    if (!folderToRestoreFound) {
+                        missingProperties.add("folderToRestore");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

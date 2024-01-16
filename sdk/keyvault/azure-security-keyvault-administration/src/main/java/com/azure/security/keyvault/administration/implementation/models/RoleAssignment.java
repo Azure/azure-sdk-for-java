@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Role Assignments.
- */
+/** Role Assignments. */
 @Fluent
 public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
     /*
@@ -36,15 +34,12 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
      */
     private RoleAssignmentPropertiesWithScope properties;
 
-    /**
-     * Creates an instance of RoleAssignment class.
-     */
-    public RoleAssignment() {
-    }
+    /** Creates an instance of RoleAssignment class. */
+    public RoleAssignment() {}
 
     /**
      * Get the id property: The role assignment ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -53,7 +48,7 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
 
     /**
      * Get the name property: The role assignment name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -62,7 +57,7 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
 
     /**
      * Get the type property: The role assignment type.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -71,7 +66,7 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
 
     /**
      * Get the properties property: Role assignment properties.
-     * 
+     *
      * @return the properties value.
      */
     public RoleAssignmentPropertiesWithScope getProperties() {
@@ -80,7 +75,7 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
 
     /**
      * Set the properties property: Role assignment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the RoleAssignment object itself.
      */
@@ -98,33 +93,34 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
 
     /**
      * Reads an instance of RoleAssignment from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RoleAssignment if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the RoleAssignment.
      */
     public static RoleAssignment fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RoleAssignment deserializedRoleAssignment = new RoleAssignment();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    RoleAssignment deserializedRoleAssignment = new RoleAssignment();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedRoleAssignment.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedRoleAssignment.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedRoleAssignment.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedRoleAssignment.properties = RoleAssignmentPropertiesWithScope.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("id".equals(fieldName)) {
+                            deserializedRoleAssignment.id = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedRoleAssignment.name = reader.getString();
+                        } else if ("type".equals(fieldName)) {
+                            deserializedRoleAssignment.type = reader.getString();
+                        } else if ("properties".equals(fieldName)) {
+                            deserializedRoleAssignment.properties = RoleAssignmentPropertiesWithScope.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRoleAssignment;
-        });
+                    return deserializedRoleAssignment;
+                });
     }
 }

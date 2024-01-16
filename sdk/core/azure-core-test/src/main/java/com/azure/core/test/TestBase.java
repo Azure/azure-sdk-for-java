@@ -26,6 +26,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -119,6 +120,8 @@ public abstract class TestBase implements BeforeEachCallback {
 
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
+
+    private URL proxyUrl;
 
     private long testStartTimeMillis;
 
@@ -349,6 +352,10 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     protected static void setTestProxyEnabled() {
         enableTestProxy = true;
+    }
+
+    void setProxyUrl(URL proxyUrl) {
+        this.proxyUrl = proxyUrl;
     }
 
     /**

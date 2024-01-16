@@ -28,12 +28,12 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyVaultAccessControlClient}.
      */
     public KeyVaultAccessControlClient createClient() {
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation
         KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation
 
         return keyVaultAccessControlClient;
     }
@@ -45,21 +45,21 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void listRoleDefinitions() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope
         PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
             keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
 
         roleDefinitions.forEach(roleDefinition ->
             System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-Context
         PagedIterable<KeyVaultRoleDefinition> keyVaultRoleDefinitions =
             keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL, new Context("key1", "value1"));
 
         keyVaultRoleDefinitions.forEach(roleDefinition ->
             System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-Context
     }
 
     /**
@@ -70,23 +70,23 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void setRoleDefinition() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope
         KeyVaultRoleDefinition roleDefinition = keyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL);
 
         System.out.printf("Created role definition with randomly generated name '%s' and role name '%s'.%n",
             roleDefinition.getName(), roleDefinition.getRoleName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope-String
         String myRoleDefinitionName = "b67c3cf4-cbfd-451e-89ab-97c01906a2e0";
         KeyVaultRoleDefinition myRoleDefinition =
             keyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, myRoleDefinitionName);
 
         System.out.printf("Set role definition with name '%s' and role name '%s'.%n", myRoleDefinition.getName(),
             myRoleDefinition.getRoleName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-Context
         String roleDefinitionName = "a86990e4-2080-4666-bd36-6e1664d3706f";
 
         List<KeyVaultRoleScope> assignableScopes = new ArrayList<>();
@@ -117,7 +117,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Response successful with status code: %d. Role definition with name '%s' and role name '%s' "
             + "was set.%n", response.getStatusCode(), response.getValue().getName(), response.getValue().getRoleName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-Context
     }
 
     /**
@@ -127,16 +127,16 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void getRoleDefinition() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String
         String roleDefinitionName = "de8df120-987e-4477-b9cc-570fd219a62c";
         KeyVaultRoleDefinition roleDefinition =
             keyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
         System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%n", roleDefinition.getName(),
             roleDefinition.getRoleName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
         String myRoleDefinitionName = "cb15ef18-b32c-4224-b048-3a91cd68acc3";
         Response<KeyVaultRoleDefinition> response =
             keyVaultAccessControlClient.getRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, myRoleDefinitionName,
@@ -145,7 +145,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
         System.out.printf("Response successful with status code: %d. Role definition with name '%s' and role name '%s'"
             + " was retrieved.%n", response.getStatusCode(), response.getValue().getName(),
             response.getValue().getRoleName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
     }
 
     /**
@@ -156,15 +156,15 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void deleteRoleDefinition() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
         String roleDefinitionName = "6a709e6e-8964-4012-a99b-6b0131e8ce40";
 
         keyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
         System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionName);
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
         String myRoleDefinitionName = "6b2d0b58-4108-44d6-b7e0-4fd02f77fe7e";
         Response<Void> response =
             keyVaultAccessControlClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, myRoleDefinitionName,
@@ -172,7 +172,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Response successful with status code: %d. Role definition with name '%s' was deleted.%n",
             response.getStatusCode(), myRoleDefinitionName);
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-Context
     }
 
     /**
@@ -182,21 +182,21 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void listRoleAssignments() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope
         PagedIterable<KeyVaultRoleAssignment> roleAssignments =
             keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
 
         roleAssignments.forEach(roleAssignment ->
             System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-Context
         PagedIterable<KeyVaultRoleAssignment> keyVaultRoleAssignments =
             keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL, new Context("key1", "value1"));
 
         keyVaultRoleAssignments.forEach(roleAssignment ->
             System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-Context
     }
 
     /**
@@ -208,7 +208,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void createRoleAssignment() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
         String roleDefinitionId = "b0b43a39-920c-475b-b34c-32ecc2bbb0ea";
         String servicePrincipalId = "169d6a86-61b3-4615-ac7e-2da09edfeed4";
         KeyVaultRoleAssignment roleAssignment =
@@ -217,9 +217,9 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Created role assignment with randomly generated name '%s' for principal with id '%s'.%n",
             roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String-String
         String myRoleDefinitionId = "c7d4f70f-944d-494a-a73e-ff62fe7f04da";
         String myServicePrincipalId = "4196fc8f-7312-46b9-9a08-05bf44fdff37";
         String myRoleAssignmentName = "d80e9366-47a6-4f42-ba84-f2eefb084972";
@@ -229,9 +229,9 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Created role assignment with name '%s' for principal with id '%s'.%n",
             myRoleAssignment.getName(), myRoleAssignment.getProperties().getPrincipalId());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-Context
         String someRoleDefinitionId = "11385c39-5efa-4e5f-8748-055aa51d4d23";
         String someServicePrincipalId = "eab943f7-a204-4434-9681-ef2cc0c85b51";
         String someRoleAssignmentName = "4d95e0ea-4808-43a4-b7f9-d9e61dba7ea9";
@@ -244,7 +244,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
         System.out.printf("Response successful with status code: %d. Role assignment with name '%s' for principal with"
             + "id '%s' was created.%n", response.getStatusCode(), createdRoleAssignment.getName(),
             createdRoleAssignment.getProperties().getPrincipalId());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-Context
     }
 
     /**
@@ -254,15 +254,15 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void getRoleAssignment() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String
         String roleAssignmentName = "06d1ae8b-0791-4f02-b976-f631251f5a95";
         KeyVaultRoleAssignment roleAssignment =
             keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
 
         System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
         String myRoleAssignmentName = "b4a970d5-c581-4760-bba5-61d3d5aa24f9";
         Response<KeyVaultRoleAssignment> response =
             keyVaultAccessControlClient.getRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, myRoleAssignmentName,
@@ -270,7 +270,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Response successful with status code: %d. Role assignment with name '%s' was retrieved.%n",
             response.getStatusCode(), response.getValue().getName());
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
     }
 
     /**
@@ -281,15 +281,15 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public void deleteRoleAssignment() {
         KeyVaultAccessControlClient keyVaultAccessControlClient = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
         String roleAssignmentName = "c3ed874a-64a9-4a87-8581-2a1ad84b9ddb";
 
         keyVaultAccessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
 
         System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentName);
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
         String myRoleAssignmentName = "8ac293e1-1ac8-4a71-b254-7caf9f7c2646";
         Response<Void> response =
             keyVaultAccessControlClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, myRoleAssignmentName,
@@ -297,6 +297,6 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
 
         System.out.printf("Response successful with status code: %d. Role assignment with name '%s' was deleted.%n",
             response.getStatusCode(), myRoleAssignmentName);
-        // END: com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
+        // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-Context
     }
 }

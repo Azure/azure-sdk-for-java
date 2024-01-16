@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,6 +40,11 @@ class PollingUtil {
         long startTime = System.currentTimeMillis();
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
 
+        Runnable pollOpRunnable = () -> {
+            PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
+            pollingContext.setLatestResponse(pollResponse1);
+        };
+
         boolean firstPoll = true;
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         try {
@@ -57,19 +63,18 @@ class PollingUtil {
                     return intermediatePollResponse;
                 }
 
-                final Future<PollResponse<T>> pollOp;
+                final Future<?> pollOp;
                 if (firstPoll) {
                     firstPoll = false;
-                    pollOp = scheduler.submit(() -> pollOperation.apply(pollingContext));
+                    pollOp = scheduler.submit(pollOpRunnable);
                 } else {
-                    pollOp = scheduler.schedule(() -> pollOperation.apply(pollingContext),
+                    pollOp = scheduler.schedule(pollOpRunnable,
                         getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
                 }
 
                 try {
-                    long pollTimeout = timeBound ? timeoutInMillis - elapsedTime : -1;
-                    intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
-                    pollingContext.setLatestResponse(intermediatePollResponse);
+                    Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
+                    CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     // waitUntil should not throw when timeout is reached.
                     if (isWaitForStatus) {
@@ -77,6 +82,8 @@ class PollingUtil {
                     }
                     throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
+
+                intermediatePollResponse = pollingContext.getLatestResponse();
             }
 
             return intermediatePollResponse;

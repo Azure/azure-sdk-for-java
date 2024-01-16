@@ -24,12 +24,12 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyVaultBackupClient}.
      */
     public KeyVaultBackupClient createClient() {
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.instantiation
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.instantiation
+        // END: com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation
 
         return keyVaultBackupClient;
     }
@@ -40,7 +40,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
     public void beginBackup() {
         KeyVaultBackupClient client = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupClient.beginBackup#String-String
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
         String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
             + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -62,7 +62,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
             System.out.printf("Backup failed with error: %s.%n", operation.getError().getMessage());
         }
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String
+        // END: com.azure.security.keyvault.administration.keyVaultBackupClient.beginBackup#String-String
     }
 
     /**
@@ -71,7 +71,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
     public void beginRestore() {
         KeyVaultBackupClient client = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginRestore#String-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupClient.beginRestore#String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
             + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -92,7 +92,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
             System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
         }
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginRestore#String-String
+        // END: com.azure.security.keyvault.administration.keyVaultBackupClient.beginRestore#String-String
     }
 
     /**
@@ -101,7 +101,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
     public void beginSelectiveKeyRestore() {
         KeyVaultBackupClient client = createClient();
 
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginSelectiveKeyRestore#String-String-String
+        // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupClient.beginSelectiveKeyRestore#String-String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
             + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -123,6 +123,6 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
 
             System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
         }
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginSelectiveKeyRestore#String-String-String
+        // END: com.azure.security.keyvault.administration.keyVaultBackupClient.beginSelectiveKeyRestore#String-String-String
     }
 }

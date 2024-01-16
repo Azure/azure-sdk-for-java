@@ -142,7 +142,7 @@ class OpenTelemetryUtils {
     static Span setError(Span span, String statusMessage, Throwable throwable) {
         if (throwable != null) {
             span.recordException(throwable);
-            return span.setStatus(StatusCode.ERROR, statusMessage == null ? throwable.getMessage() : statusMessage);
+            return span.setStatus(StatusCode.ERROR, statusMessage);
         }
 
         // "success" is needed for back compat with older Event Hubs and Service Bus, don't use it.

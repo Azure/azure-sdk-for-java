@@ -6,8 +6,8 @@ package com.azure.core.test;
 import com.azure.core.http.ContentType;
 import com.azure.core.test.http.HttpClientTests;
 import com.azure.core.test.http.LocalTestServer;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson;
-import com.azure.core.test.implementation.entities.HttpBinJson;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -163,7 +163,7 @@ public class HttpClientTestsServer {
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
         String requestString) throws IOException {
-        HttpBinJson responseBody = new HttpBinJson();
+        HttpBinJSON responseBody = new HttpBinJSON();
         responseBody.url(cleanseUrl(req));
 
         responseBody.data(requestString);
@@ -187,8 +187,8 @@ public class HttpClientTestsServer {
 
     private static void sendFormResponse(HttpServletRequest req, HttpServletResponse resp, String requestString)
         throws IOException {
-        HttpBinFormDataJson formBody = new HttpBinFormDataJson();
-        HttpBinFormDataJson.Form form = new HttpBinFormDataJson.Form();
+        HttpBinFormDataJSON formBody = new HttpBinFormDataJSON();
+        HttpBinFormDataJSON.Form form = new HttpBinFormDataJSON.Form();
         List<String> toppings = new ArrayList<>();
 
         for (String formKvp : requestString.split("&")) {
@@ -205,7 +205,7 @@ public class HttpClientTestsServer {
                     form.customerEmail(kvpPieces[1]);
                     break;
                 case "size":
-                    form.pizzaSize(HttpBinFormDataJson.PizzaSize.valueOf(kvpPieces[1]));
+                    form.pizzaSize(HttpBinFormDataJSON.PizzaSize.valueOf(kvpPieces[1]));
                     break;
                 case "toppings":
                     toppings.add(kvpPieces[1]);

@@ -8,8 +8,6 @@
 
 ### Bugs Fixed
 
-- Removed timeout from blocking wait in `EventHubProducerClient` in `createBatch`, `getEventHubProperties`, and `getPartitionProperties`. ([#38229](https://github.com/Azure/azure-sdk-for-java/pull/38229))
-
 ### Other Changes
 
 ## 5.17.1 (2023-12-07)

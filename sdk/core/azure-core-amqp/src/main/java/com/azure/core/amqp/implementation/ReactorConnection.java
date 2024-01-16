@@ -481,12 +481,6 @@ public class ReactorConnection implements AmqpConnection {
         return closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."));
     }
 
-    /**
-     * Disposes of the connection.
-     *
-     * @param shutdownSignal Shutdown signal to emit.
-     * @return A mono that completes when the connection is disposed.
-     */
     public Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
@@ -649,9 +643,6 @@ public class ReactorConnection implements AmqpConnection {
         return connection;
     }
 
-    /**
-     * ReactorExceptionHandler handles exceptions that occur in the reactor.
-     */
     public final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super();

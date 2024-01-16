@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Sysctl settings for Linux agent nodes.
- */
+/** Sysctl settings for Linux agent nodes. */
 @Fluent
 public final class SysctlConfig {
     /*
@@ -180,9 +178,7 @@ public final class SysctlConfig {
     @JsonProperty(value = "vmVfsCachePressure")
     private Integer vmVfsCachePressure;
 
-    /**
-     * Creates an instance of SysctlConfig class.
-     */
+    /** Creates an instance of SysctlConfig class. */
     public SysctlConfig() {
     }
 

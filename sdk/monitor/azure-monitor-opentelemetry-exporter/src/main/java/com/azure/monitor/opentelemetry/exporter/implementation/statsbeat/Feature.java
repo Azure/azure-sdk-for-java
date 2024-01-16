@@ -67,8 +67,7 @@ public enum Feature {
     PREVIEW_DISK_PERSISTENCE_MAX_SIZE_MB(53), // track diskPersistenceMaxSizeMb
     PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
     PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
-    PREVIEW_ADDITIONAL_PROPAGATORS(56), // track additionalPropagators
-    GRAAL_VM_NATIVE(57);
+    PREVIEW_ADDITIONAL_PROPAGATORS(56); // track additionalPropagators
 
     private static final Map<String, Feature> javaVendorFeatureMap;
 

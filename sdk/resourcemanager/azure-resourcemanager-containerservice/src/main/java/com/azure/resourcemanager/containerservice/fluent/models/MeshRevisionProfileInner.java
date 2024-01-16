@@ -10,9 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.MeshRevisionProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Mesh revision profile for a mesh.
- */
+/** Mesh revision profile for a mesh. */
 @Fluent
 public final class MeshRevisionProfileInner extends ProxyResource {
     /*
@@ -27,9 +25,7 @@ public final class MeshRevisionProfileInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of MeshRevisionProfileInner class.
-     */
+    /** Creates an instance of MeshRevisionProfileInner class. */
     public MeshRevisionProfileInner() {
     }
 

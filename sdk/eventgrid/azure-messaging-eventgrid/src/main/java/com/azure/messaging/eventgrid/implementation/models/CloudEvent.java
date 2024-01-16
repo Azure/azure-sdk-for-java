@@ -6,87 +6,90 @@ package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema.
- */
+/** Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema. */
 @Fluent
-public final class CloudEvent implements JsonSerializable<CloudEvent> {
+public final class CloudEvent {
     /*
      * An identifier for the event. The combination of id and source must be unique for each distinct event.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Identifies the context in which an event happened. The combination of id and source must be unique for each
      * distinct event.
      */
+    @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
      * Event data specific to the event type.
      */
+    @JsonProperty(value = "data")
     private Object data;
 
     /*
      * Event data specific to the event type, encoded as a base64 string.
      */
+    @JsonProperty(value = "data_base64")
     private byte[] dataBase64;
 
     /*
      * Type of event related to the originating occurrence.
      */
+    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * The time (in UTC) the event was generated, in RFC3339 format.
      */
+    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /*
      * The version of the CloudEvents specification which the event uses.
      */
+    @JsonProperty(value = "specversion", required = true)
     private String specversion;
 
     /*
      * Identifies the schema that data adheres to.
      */
+    @JsonProperty(value = "dataschema")
     private String dataschema;
 
     /*
      * Content type of data value.
      */
+    @JsonProperty(value = "datacontenttype")
     private String datacontenttype;
 
     /*
      * This describes the subject of the event in the context of the event producer (identified by source).
      */
+    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
      */
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of CloudEvent class.
-     */
-    public CloudEvent() {
-    }
+    /** Creates an instance of CloudEvent class. */
+    public CloudEvent() {}
 
     /**
      * Get the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -96,7 +99,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * Set the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     * 
+     *
      * @param id the id value to set.
      * @return the CloudEvent object itself.
      */
@@ -106,9 +109,9 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     }
 
     /**
-     * Get the source property: Identifies the context in which an event happened. The combination of id and source
-     * must be unique for each distinct event.
-     * 
+     * Get the source property: Identifies the context in which an event happened. The combination of id and source must
+     * be unique for each distinct event.
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -116,9 +119,9 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     }
 
     /**
-     * Set the source property: Identifies the context in which an event happened. The combination of id and source
-     * must be unique for each distinct event.
-     * 
+     * Set the source property: Identifies the context in which an event happened. The combination of id and source must
+     * be unique for each distinct event.
+     *
      * @param source the source value to set.
      * @return the CloudEvent object itself.
      */
@@ -129,7 +132,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the data property: Event data specific to the event type.
-     * 
+     *
      * @return the data value.
      */
     public Object getData() {
@@ -138,7 +141,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the data property: Event data specific to the event type.
-     * 
+     *
      * @param data the data value to set.
      * @return the CloudEvent object itself.
      */
@@ -149,7 +152,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     * 
+     *
      * @return the dataBase64 value.
      */
     public byte[] getDataBase64() {
@@ -158,7 +161,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     * 
+     *
      * @param dataBase64 the dataBase64 value to set.
      * @return the CloudEvent object itself.
      */
@@ -169,7 +172,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the type property: Type of event related to the originating occurrence.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -178,7 +181,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the type property: Type of event related to the originating occurrence.
-     * 
+     *
      * @param type the type value to set.
      * @return the CloudEvent object itself.
      */
@@ -189,7 +192,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     * 
+     *
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -198,7 +201,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     * 
+     *
      * @param time the time value to set.
      * @return the CloudEvent object itself.
      */
@@ -209,7 +212,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the specversion property: The version of the CloudEvents specification which the event uses.
-     * 
+     *
      * @return the specversion value.
      */
     public String getSpecversion() {
@@ -218,7 +221,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the specversion property: The version of the CloudEvents specification which the event uses.
-     * 
+     *
      * @param specversion the specversion value to set.
      * @return the CloudEvent object itself.
      */
@@ -229,7 +232,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the dataschema property: Identifies the schema that data adheres to.
-     * 
+     *
      * @return the dataschema value.
      */
     public String getDataschema() {
@@ -238,7 +241,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the dataschema property: Identifies the schema that data adheres to.
-     * 
+     *
      * @param dataschema the dataschema value to set.
      * @return the CloudEvent object itself.
      */
@@ -249,7 +252,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Get the datacontenttype property: Content type of data value.
-     * 
+     *
      * @return the datacontenttype value.
      */
     public String getDatacontenttype() {
@@ -258,7 +261,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the datacontenttype property: Content type of data value.
-     * 
+     *
      * @param datacontenttype the datacontenttype value to set.
      * @return the CloudEvent object itself.
      */
@@ -270,7 +273,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * Get the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     * 
+     *
      * @return the subject value.
      */
     public String getSubject() {
@@ -280,7 +283,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * Set the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     * 
+     *
      * @param subject the subject value to set.
      * @return the CloudEvent object itself.
      */
@@ -292,9 +295,10 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * Get the additionalProperties property: Properties of an event published to an Event Grid topic using the
      * CloudEvent 1.0 Schema.
-     * 
+     *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -302,7 +306,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     /**
      * Set the additionalProperties property: Properties of an event published to an Event Grid topic using the
      * CloudEvent 1.0 Schema.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the CloudEvent object itself.
      */
@@ -311,77 +315,11 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         return this;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("source", this.source);
-        jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeStringField("specversion", this.specversion);
-        jsonWriter.writeUntypedField("data", this.data);
-        jsonWriter.writeBinaryField("data_base64", this.dataBase64);
-        jsonWriter.writeStringField("time",
-            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
-        jsonWriter.writeStringField("dataschema", this.dataschema);
-        jsonWriter.writeStringField("datacontenttype", this.datacontenttype);
-        jsonWriter.writeStringField("subject", this.subject);
-        if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
-            }
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
         }
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CloudEvent from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CloudEvent if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CloudEvent.
-     */
-    public static CloudEvent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CloudEvent deserializedCloudEvent = new CloudEvent();
-            Map<String, Object> additionalProperties = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedCloudEvent.id = reader.getString();
-                } else if ("source".equals(fieldName)) {
-                    deserializedCloudEvent.source = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedCloudEvent.type = reader.getString();
-                } else if ("specversion".equals(fieldName)) {
-                    deserializedCloudEvent.specversion = reader.getString();
-                } else if ("data".equals(fieldName)) {
-                    deserializedCloudEvent.data = reader.readUntyped();
-                } else if ("data_base64".equals(fieldName)) {
-                    deserializedCloudEvent.dataBase64 = reader.getBinary();
-                } else if ("time".equals(fieldName)) {
-                    deserializedCloudEvent.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("dataschema".equals(fieldName)) {
-                    deserializedCloudEvent.dataschema = reader.getString();
-                } else if ("datacontenttype".equals(fieldName)) {
-                    deserializedCloudEvent.datacontenttype = reader.getString();
-                } else if ("subject".equals(fieldName)) {
-                    deserializedCloudEvent.subject = reader.getString();
-                } else {
-                    if (additionalProperties == null) {
-                        additionalProperties = new LinkedHashMap<>();
-                    }
-
-                    additionalProperties.put(fieldName, reader.readUntyped());
-                }
-            }
-            deserializedCloudEvent.additionalProperties = additionalProperties;
-
-            return deserializedCloudEvent;
-        });
+        additionalProperties.put(key, value);
     }
 }

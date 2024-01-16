@@ -14,9 +14,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/**
- * Restore operation.
- */
+/** Restore operation. */
 @Fluent
 public final class RestoreOperation implements JsonSerializable<RestoreOperation> {
     /*
@@ -49,15 +47,12 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      */
     private Long endTime;
 
-    /**
-     * Creates an instance of RestoreOperation class.
-     */
-    public RestoreOperation() {
-    }
+    /** Creates an instance of RestoreOperation class. */
+    public RestoreOperation() {}
 
     /**
      * Get the status property: Status of the restore operation.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -66,7 +61,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the status property: Status of the restore operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the RestoreOperation object itself.
      */
@@ -77,7 +72,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Get the statusDetails property: The status details of restore operation.
-     * 
+     *
      * @return the statusDetails value.
      */
     public String getStatusDetails() {
@@ -86,7 +81,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the statusDetails property: The status details of restore operation.
-     * 
+     *
      * @param statusDetails the statusDetails value to set.
      * @return the RestoreOperation object itself.
      */
@@ -97,7 +92,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Get the error property: Error encountered, if any, during the restore operation.
-     * 
+     *
      * @return the error value.
      */
     public Error getError() {
@@ -106,7 +101,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the error property: Error encountered, if any, during the restore operation.
-     * 
+     *
      * @param error the error value to set.
      * @return the RestoreOperation object itself.
      */
@@ -117,7 +112,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Get the jobId property: Identifier for the restore operation.
-     * 
+     *
      * @return the jobId value.
      */
     public String getJobId() {
@@ -126,7 +121,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the jobId property: Identifier for the restore operation.
-     * 
+     *
      * @param jobId the jobId value to set.
      * @return the RestoreOperation object itself.
      */
@@ -137,7 +132,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Get the startTime property: The start time of the restore operation.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -149,7 +144,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the startTime property: The start time of the restore operation.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the RestoreOperation object itself.
      */
@@ -164,7 +159,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Get the endTime property: The end time of the restore operation.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -176,7 +171,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Set the endTime property: The end time of the restore operation.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the RestoreOperation object itself.
      */
@@ -203,37 +198,38 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
 
     /**
      * Reads an instance of RestoreOperation from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RestoreOperation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the RestoreOperation.
      */
     public static RestoreOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RestoreOperation deserializedRestoreOperation = new RestoreOperation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    RestoreOperation deserializedRestoreOperation = new RestoreOperation();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("status".equals(fieldName)) {
-                    deserializedRestoreOperation.status = reader.getString();
-                } else if ("statusDetails".equals(fieldName)) {
-                    deserializedRestoreOperation.statusDetails = reader.getString();
-                } else if ("error".equals(fieldName)) {
-                    deserializedRestoreOperation.error = Error.fromJson(reader);
-                } else if ("jobId".equals(fieldName)) {
-                    deserializedRestoreOperation.jobId = reader.getString();
-                } else if ("startTime".equals(fieldName)) {
-                    deserializedRestoreOperation.startTime = reader.getNullable(JsonReader::getLong);
-                } else if ("endTime".equals(fieldName)) {
-                    deserializedRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("status".equals(fieldName)) {
+                            deserializedRestoreOperation.status = reader.getString();
+                        } else if ("statusDetails".equals(fieldName)) {
+                            deserializedRestoreOperation.statusDetails = reader.getString();
+                        } else if ("error".equals(fieldName)) {
+                            deserializedRestoreOperation.error = Error.fromJson(reader);
+                        } else if ("jobId".equals(fieldName)) {
+                            deserializedRestoreOperation.jobId = reader.getString();
+                        } else if ("startTime".equals(fieldName)) {
+                            deserializedRestoreOperation.startTime = reader.getNullable(JsonReader::getLong);
+                        } else if ("endTime".equals(fieldName)) {
+                            deserializedRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRestoreOperation;
-        });
+                    return deserializedRestoreOperation;
+                });
     }
 }

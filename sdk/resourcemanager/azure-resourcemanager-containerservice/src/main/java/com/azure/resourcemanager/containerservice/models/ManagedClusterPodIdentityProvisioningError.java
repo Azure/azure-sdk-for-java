@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An error response from the pod identity provisioning.
- */
+/** An error response from the pod identity provisioning. */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningError {
     /*
@@ -18,9 +16,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
     @JsonProperty(value = "error")
     private ManagedClusterPodIdentityProvisioningErrorBody error;
 
-    /**
-     * Creates an instance of ManagedClusterPodIdentityProvisioningError class.
-     */
+    /** Creates an instance of ManagedClusterPodIdentityProvisioningError class. */
     public ManagedClusterPodIdentityProvisioningError() {
     }
 

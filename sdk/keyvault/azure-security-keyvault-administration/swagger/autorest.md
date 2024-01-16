@@ -40,7 +40,7 @@ autorest --tag=settings
 
 ## Configuration
 ```yaml
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
 namespace: com.azure.security.keyvault.administration
@@ -58,7 +58,6 @@ generic-response-type: true
 stream-style-serialization: true
 required-fields-as-ctor-args: true
 include-read-only-in-constructor-args: true
-partial-update: true
 ```
 
 ### Tag: rbac

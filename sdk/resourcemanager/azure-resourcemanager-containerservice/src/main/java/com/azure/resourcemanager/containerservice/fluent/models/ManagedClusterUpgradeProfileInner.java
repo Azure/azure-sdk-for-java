@@ -10,9 +10,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgra
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available upgrades for compute pools.
- */
+/** The list of available upgrades for compute pools. */
 @Fluent
 public final class ManagedClusterUpgradeProfileInner {
     /*
@@ -39,9 +37,7 @@ public final class ManagedClusterUpgradeProfileInner {
     @JsonProperty(value = "properties", required = true)
     private ManagedClusterUpgradeProfileProperties innerProperties = new ManagedClusterUpgradeProfileProperties();
 
-    /**
-     * Creates an instance of ManagedClusterUpgradeProfileInner class.
-     */
+    /** Creates an instance of ManagedClusterUpgradeProfileInner class. */
     public ManagedClusterUpgradeProfileInner() {
     }
 
@@ -96,8 +92,8 @@ public final class ManagedClusterUpgradeProfileInner {
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner
-        withControlPlaneProfile(ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
+    public ManagedClusterUpgradeProfileInner withControlPlaneProfile(
+        ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterUpgradeProfileProperties();
         }
@@ -120,8 +116,8 @@ public final class ManagedClusterUpgradeProfileInner {
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner
-        withAgentPoolProfiles(List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
+    public ManagedClusterUpgradeProfileInner withAgentPoolProfiles(
+        List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterUpgradeProfileProperties();
         }
@@ -136,8 +132,10 @@ public final class ManagedClusterUpgradeProfileInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ManagedClusterUpgradeProfileInner"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ManagedClusterUpgradeProfileInner"));
         } else {
             innerProperties().validate();
         }

@@ -5,21 +5,27 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Represents the EventGrid event conforming to the <a href="https://docs.microsoft.com/azure/event-grid/event-schema">
@@ -88,11 +94,27 @@ import java.util.Objects;
  * @see EventGridPublisherClient to send EventGridEvents sychronously.
  **/
 @Fluent
-public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
+public final class EventGridEvent {
 
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridEvent.class);
+    private static final JsonSerializer SERIALIZER;
+    static {
+        JsonSerializer tmp;
+        try {
+            tmp = JsonSerializerProviders.createInstance();
+        } catch (IllegalStateException e) {
+            tmp = new JacksonSerializer();
+        }
+        SERIALIZER = tmp;
+    }
+    private static final TypeReference<List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent>>
+        DESERIALIZER_TYPE_REFERENCE =
+        new TypeReference<List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent>>() {
+        };
+    // May get SERIALIZER's object mapper in the future.
+    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
 
     /*
      * Cache serialized data for getData()
@@ -150,20 +172,17 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
 
         this.event = new com.azure.messaging.eventgrid.implementation.models.EventGridEvent()
             .setEventTime(OffsetDateTime.now())
-            .setId(CoreUtils.randomUuid().toString())
+            .setId(UUID.randomUUID().toString())
             .setSubject(subject)
             .setEventType(eventType)
             .setDataVersion(dataVersion);
         this.binaryData = data;
-        this.event.setData(data.toObject(Object.class));
-    }
-
-    /**
-     * Private constructor for serialization.
-     */
-    private EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent event, BinaryData data) {
-        this.event = event;
-        this.binaryData = data;
+        try {
+            this.event.setData(BINARY_DATA_OBJECT_MAPPER.readTree(data.toBytes()));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
+                e));
+        }
     }
 
     /**
@@ -191,28 +210,22 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
      * @throws IllegalArgumentException if eventGridJsonString isn't a JSON string for a eventgrid event
      * or an array of it.
      * @throws NullPointerException if eventGridJsonString is {@code null}.
-     * @throws IllegalArgumentException if the eventGridJsonString isn't a Json string or can't be deserialized
+     * @throws IllegalArgumentException if the {eventGridJsonString isn't a Json string or can't be deserialized
      * into valid EventGridEvent instances.
      */
     public static List<EventGridEvent> fromString(String eventGridJsonString) {
-        try (JsonReader jsonReader = JsonProviders.createReader(eventGridJsonString)) {
-            List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> internalEvents;
-            JsonToken token = jsonReader.nextToken();
-            if (token == JsonToken.START_ARRAY) {
-                internalEvents = jsonReader.readArray(
-                    com.azure.messaging.eventgrid.implementation.models.EventGridEvent::fromJson);
-            } else {
-                internalEvents = Collections.singletonList(
-                    com.azure.messaging.eventgrid.implementation.models.EventGridEvent.fromJson(jsonReader));
-            }
+        try {
+            List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> internalEvents =
+                SERIALIZER.deserialize(new ByteArrayInputStream(eventGridJsonString.getBytes(StandardCharsets.UTF_8)),
+                DESERIALIZER_TYPE_REFERENCE);
 
-            List<EventGridEvent> events = new ArrayList<>();
+            List<EventGridEvent> events = new ArrayList<EventGridEvent>();
             for (int i = 0; i < internalEvents.size(); i++) {
                 com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent =
                     internalEvents.get(i);
                 if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
                     || internalEvent.getData() == null || internalEvent.getDataVersion() == null) {
-                    List<String> nullAttributes = new ArrayList<>();
+                    List<String> nullAttributes = new ArrayList<String>();
                     if (internalEvent.getSubject() == null) {
                         nullAttributes.add("'subject'");
                     }
@@ -228,16 +241,16 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "'subject', 'eventType', 'data' and 'dataVersion' are mandatory attributes for an "
                             + "EventGridEvent. This Json string doesn't have "
-                            + CoreUtils.stringJoin(",", nullAttributes)
+                            + String.join(",", nullAttributes)
                             + " for the object at index " + i
                             + ". Please make sure the input Json string has the required attributes"));
                 }
                 events.add(new EventGridEvent(internalEvent));
             }
             return events;
-        } catch (IOException ex) {
+        } catch (UncheckedIOException uncheckedIOException) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
-                ex.getCause()));
+                uncheckedIOException.getCause()));
         }
     }
 
@@ -297,13 +310,13 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
     /**
      * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data to
      * any objects by using {@link BinaryData#toObject(TypeReference)}.
-     * @return A {@link BinaryData} that wraps this event's data payload.
+     * @return A {@link BinaryData} that wraps the this event's data payload.
      */
     public BinaryData getData() {
         if (this.binaryData == null) {
             Object data = this.event.getData();
             if (data != null) {
-                this.binaryData = BinaryData.fromObject(data);
+                this.binaryData = BinaryData.fromObject(data, SERIALIZER);
             }
         }
         return this.binaryData;
@@ -353,37 +366,36 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
         return this.event;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("event", this.event);
-        jsonWriter.writeBinaryField("binaryData", this.binaryData.toBytes());
-        return jsonWriter.writeEndObject();
+    private static class JacksonSerializer implements JsonSerializer {
+        private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            try {
+                return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 
-    /**
-     * Reads a JSON stream into an {@link EventGridEvent}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link EventGridEvent} that the JSON stream represented, may return null.
-     * @throws IOException If an {@link EventGridEvent} fails to be read from the {@code jsonReader}.
-     */
-    public static EventGridEvent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = null;
-            BinaryData data = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("event".equals(fieldName)) {
-                    internalEvent = com.azure.messaging.eventgrid.implementation.models.EventGridEvent.fromJson(reader);
-                } else if ("binaryData".equals(fieldName)) {
-                    data = BinaryData.fromBytes(reader.getBinary());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new EventGridEvent(internalEvent, data);
-        });
-    }
 }

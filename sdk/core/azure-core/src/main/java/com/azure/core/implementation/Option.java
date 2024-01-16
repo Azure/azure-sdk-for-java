@@ -3,8 +3,6 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -48,7 +46,6 @@ import java.util.Objects;
  * @param <T> The value type.
  */
 public final class Option<T> {
-    private static final ClientLogger LOGGER = new ClientLogger(Option.class);
     private static final Option<?> UNINITIALIZED = new Option<>();
     private static final Option<?> EMPTY = new Option<>(null);
     private final boolean isInitialized;
@@ -110,7 +107,7 @@ public final class Option<T> {
      */
     public T getValue() {
         if (!this.isInitialized) {
-            throw LOGGER.logExceptionAsError(new NoSuchElementException("No value initialized"));
+            throw new NoSuchElementException("No value initialized");
         }
         return this.value;
     }

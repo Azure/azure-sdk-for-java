@@ -8,7 +8,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -207,9 +206,8 @@ public final class CoreUtils {
                         entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
         }
-
         return Collections.emptyMap();
     }
 
@@ -322,7 +320,7 @@ public final class CoreUtils {
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atInfo()
+            logger.atWarning()
                 .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);
@@ -564,11 +562,30 @@ public final class CoreUtils {
         throws InterruptedException, ExecutionException, TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
-        if (timeout == null) {
+        if (!hasTimeout(timeout)) {
             return future.get();
         }
 
-        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
+        try {
+            return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            throw e;
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof Error) {
+                throw (Error) cause;
+            } else if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else {
+                ImplUtils.sneakyThrows(cause);
+                throw e;
+            }
+        }
+    }
+
+    private static boolean hasTimeout(Duration timeout) {
+        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 
     /**

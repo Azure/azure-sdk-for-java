@@ -5,39 +5,34 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The registry node that generated the event. Put differently, while the actor initiates the event, the source
  * generates it.
  */
 @Fluent
-public final class ContainerRegistryEventSource implements JsonSerializable<ContainerRegistryEventSource> {
+public final class ContainerRegistryEventSource {
     /*
      * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
      * by os.Hostname() along with the running port.
      */
+    @JsonProperty(value = "addr")
     private String addr;
 
     /*
      * The running instance of an application. Changes after each restart.
      */
+    @JsonProperty(value = "instanceID")
     private String instanceID;
 
-    /**
-     * Creates an instance of ContainerRegistryEventSource class.
-     */
-    public ContainerRegistryEventSource() {
-    }
+    /** Creates an instance of ContainerRegistryEventSource class. */
+    public ContainerRegistryEventSource() {}
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     * 
+     *
      * @return the addr value.
      */
     public String getAddr() {
@@ -47,7 +42,7 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
     /**
      * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     * 
+     *
      * @param addr the addr value to set.
      * @return the ContainerRegistryEventSource object itself.
      */
@@ -58,7 +53,7 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
 
     /**
      * Get the instanceID property: The running instance of an application. Changes after each restart.
-     * 
+     *
      * @return the instanceID value.
      */
     public String getInstanceID() {
@@ -67,48 +62,12 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
 
     /**
      * Set the instanceID property: The running instance of an application. Changes after each restart.
-     * 
+     *
      * @param instanceID the instanceID value to set.
      * @return the ContainerRegistryEventSource object itself.
      */
     public ContainerRegistryEventSource setInstanceID(String instanceID) {
         this.instanceID = instanceID;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("addr", this.addr);
-        jsonWriter.writeStringField("instanceID", this.instanceID);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ContainerRegistryEventSource from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerRegistryEventSource if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerRegistryEventSource.
-     */
-    public static ContainerRegistryEventSource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ContainerRegistryEventSource deserializedContainerRegistryEventSource = new ContainerRegistryEventSource();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("addr".equals(fieldName)) {
-                    deserializedContainerRegistryEventSource.addr = reader.getString();
-                } else if ("instanceID".equals(fieldName)) {
-                    deserializedContainerRegistryEventSource.instanceID = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedContainerRegistryEventSource;
-        });
     }
 }

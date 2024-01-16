@@ -4,13 +4,11 @@
 
 ### Features Added
 
-- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
-
-#### Dependency Updates
-
-- Updated `api-version` to `2023-10-02`.
 
 ## 2.34.0 (2023-12-22)
 

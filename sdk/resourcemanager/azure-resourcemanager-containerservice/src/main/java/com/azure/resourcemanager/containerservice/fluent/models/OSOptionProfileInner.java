@@ -10,9 +10,7 @@ import com.azure.resourcemanager.containerservice.models.OSOptionProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OS option profile.
- */
+/** The OS option profile. */
 @Fluent
 public final class OSOptionProfileInner {
     /*
@@ -39,9 +37,7 @@ public final class OSOptionProfileInner {
     @JsonProperty(value = "properties", required = true)
     private OSOptionPropertyList innerProperties = new OSOptionPropertyList();
 
-    /**
-     * Creates an instance of OSOptionProfileInner class.
-     */
+    /** Creates an instance of OSOptionProfileInner class. */
     public OSOptionProfileInner() {
     }
 
@@ -111,8 +107,10 @@ public final class OSOptionProfileInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model OSOptionProfileInner"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model OSOptionProfileInner"));
         } else {
             innerProperties().validate();
         }

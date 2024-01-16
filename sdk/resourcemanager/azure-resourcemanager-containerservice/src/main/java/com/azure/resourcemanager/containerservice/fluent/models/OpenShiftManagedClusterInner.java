@@ -16,9 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * OpenShift Managed cluster.
- */
+/** OpenShift Managed cluster. */
 @Fluent
 public final class OpenShiftManagedClusterInner extends Resource {
     /*
@@ -33,9 +31,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private OpenShiftManagedClusterProperties innerProperties;
 
-    /**
-     * Creates an instance of OpenShiftManagedClusterInner class.
-     */
+    /** Creates an instance of OpenShiftManagedClusterInner class. */
     public OpenShiftManagedClusterInner() {
     }
 
@@ -68,18 +64,14 @@ public final class OpenShiftManagedClusterInner extends Resource {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OpenShiftManagedClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OpenShiftManagedClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -207,8 +199,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
      * @param masterPoolProfile the masterPoolProfile value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
-    public OpenShiftManagedClusterInner
-        withMasterPoolProfile(OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
+    public OpenShiftManagedClusterInner withMasterPoolProfile(
+        OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OpenShiftManagedClusterProperties();
         }
@@ -231,8 +223,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
-    public OpenShiftManagedClusterInner
-        withAgentPoolProfiles(List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
+    public OpenShiftManagedClusterInner withAgentPoolProfiles(
+        List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OpenShiftManagedClusterProperties();
         }

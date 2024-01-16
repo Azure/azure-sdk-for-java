@@ -8,9 +8,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.jdk.httpclient.implementation.BodyPublisherUtils;
-import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
-import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -22,9 +19,10 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
 import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
@@ -158,7 +156,7 @@ class JdkHttpClient implements HttpClient {
      *
      * @return the java major version
      */
-    private static int getJavaVersion() {
+    private int getJavaVersion() {
         // java.version format:
         // 8 and lower: 1.7, 1.8.0
         // 9 and above: 12, 14.1.1
@@ -187,5 +185,26 @@ class JdkHttpClient implements HttpClient {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
             }
         }
+    }
+
+    /**
+     * Converts the given JDK Http headers to azure-core Http header.
+     *
+     * @param headers the JDK Http headers
+     * @return the azure-core Http headers
+     */
+    @SuppressWarnings("deprecation")
+    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+
+        for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
+            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
+                continue;
+            }
+
+            httpHeaders.set(kvp.getKey(), kvp.getValue());
+        }
+
+        return httpHeaders;
     }
 }

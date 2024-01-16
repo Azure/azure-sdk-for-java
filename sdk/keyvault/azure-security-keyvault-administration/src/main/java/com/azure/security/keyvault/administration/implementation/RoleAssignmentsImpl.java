@@ -32,28 +32,22 @@ import com.azure.security.keyvault.administration.implementation.models.RoleAssi
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentListResult;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in RoleAssignments.
- */
+/** An instance of this class provides access to all the operations defined in RoleAssignments. */
 public final class RoleAssignmentsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final RoleAssignmentsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final KeyVaultAccessControlClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsImpl(KeyVaultAccessControlClientImpl client) {
-        this.service
-            = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,87 +59,117 @@ public final class RoleAssignmentsImpl {
     @ServiceInterface(name = "KeyVaultAccessContro")
     public interface RoleAssignmentsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> delete(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RoleAssignment>> delete(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<RoleAssignment> deleteSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<RoleAssignment> deleteSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 201 })
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> create(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RoleAssignment>> create(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 201 })
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<RoleAssignment> createSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<RoleAssignment> createSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignment>> get(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RoleAssignment>> get(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<RoleAssignment> getSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("roleAssignmentName") String roleAssignmentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<RoleAssignment> getSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleAssignmentName") String roleAssignmentName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<RoleAssignmentListResult>> listForScope(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RoleAssignmentListResult>> listForScope(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @QueryParam("$filter") String filter,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<RoleAssignmentListResult> listForScopeSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<RoleAssignmentListResult> listForScopeSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @QueryParam("$filter") String filter,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<RoleAssignmentListResult>> listForScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<RoleAssignmentListResult> listForScopeNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -155,16 +179,18 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> deleteWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName) {
+    public Mono<Response<RoleAssignment>> deleteWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -175,15 +201,15 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> deleteWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName, Context context) {
+    public Mono<Response<RoleAssignment>> deleteWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         final String accept = "application/json";
         return service.delete(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -195,12 +221,12 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignment> deleteAsync(String vaultBaseUrl, String scope, String roleAssignmentName) {
         return deleteWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -211,15 +237,15 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignment> deleteAsync(String vaultBaseUrl, String scope, String roleAssignmentName,
-        Context context) {
+    public Mono<RoleAssignment> deleteAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         return deleteWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -230,16 +256,16 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignment> deleteWithResponse(String vaultBaseUrl, String scope, String roleAssignmentName,
-        Context context) {
+    public Response<RoleAssignment> deleteWithResponse(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         final String accept = "application/json";
-        return service.deleteSync(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept,
-            context);
+        return service.deleteSync(
+                vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
@@ -255,7 +281,7 @@ public final class RoleAssignmentsImpl {
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -266,16 +292,24 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> createWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
+    public Mono<Response<RoleAssignment>> createWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.create(
+                                vaultBaseUrl,
+                                scope,
+                                roleAssignmentName,
+                                this.client.getApiVersion(),
+                                parameters,
+                                accept,
+                                context));
     }
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -287,16 +321,20 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> createWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName, RoleAssignmentCreateParameters parameters, Context context) {
+    public Mono<Response<RoleAssignment>> createWithResponseAsync(
+            String vaultBaseUrl,
+            String scope,
+            String roleAssignmentName,
+            RoleAssignmentCreateParameters parameters,
+            Context context) {
         final String accept = "application/json";
-        return service.create(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), parameters, accept,
-            context);
+        return service.create(
+                vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -307,15 +345,15 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignment> createAsync(String vaultBaseUrl, String scope, String roleAssignmentName,
-        RoleAssignmentCreateParameters parameters) {
+    public Mono<RoleAssignment> createAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
         return createWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -327,15 +365,19 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignment> createAsync(String vaultBaseUrl, String scope, String roleAssignmentName,
-        RoleAssignmentCreateParameters parameters, Context context) {
+    public Mono<RoleAssignment> createAsync(
+            String vaultBaseUrl,
+            String scope,
+            String roleAssignmentName,
+            RoleAssignmentCreateParameters parameters,
+            Context context) {
         return createWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, parameters, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -347,16 +389,20 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignment> createWithResponse(String vaultBaseUrl, String scope, String roleAssignmentName,
-        RoleAssignmentCreateParameters parameters, Context context) {
+    public Response<RoleAssignment> createWithResponse(
+            String vaultBaseUrl,
+            String scope,
+            String roleAssignmentName,
+            RoleAssignmentCreateParameters parameters,
+            Context context) {
         final String accept = "application/json";
-        return service.createSync(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), parameters,
-            accept, context);
+        return service.createSync(
+                vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates a role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
@@ -367,14 +413,14 @@ public final class RoleAssignmentsImpl {
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment create(String vaultBaseUrl, String scope, String roleAssignmentName,
-        RoleAssignmentCreateParameters parameters) {
+    public RoleAssignment create(
+            String vaultBaseUrl, String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
         return createWithResponse(vaultBaseUrl, scope, roleAssignmentName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -384,16 +430,18 @@ public final class RoleAssignmentsImpl {
      * @return the specified role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> getWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName) {
+    public Mono<Response<RoleAssignment>> getWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -404,15 +452,15 @@ public final class RoleAssignmentsImpl {
      * @return the specified role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignment>> getWithResponseAsync(String vaultBaseUrl, String scope,
-        String roleAssignmentName, Context context) {
+    public Mono<Response<RoleAssignment>> getWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         final String accept = "application/json";
         return service.get(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -424,12 +472,12 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignment> getAsync(String vaultBaseUrl, String scope, String roleAssignmentName) {
         return getWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -440,15 +488,15 @@ public final class RoleAssignmentsImpl {
      * @return the specified role assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignment> getAsync(String vaultBaseUrl, String scope, String roleAssignmentName,
-        Context context) {
+    public Mono<RoleAssignment> getAsync(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         return getWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -459,15 +507,15 @@ public final class RoleAssignmentsImpl {
      * @return the specified role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignment> getWithResponse(String vaultBaseUrl, String scope, String roleAssignmentName,
-        Context context) {
+    public Response<RoleAssignment> getWithResponse(
+            String vaultBaseUrl, String scope, String roleAssignmentName, Context context) {
         final String accept = "application/json";
         return service.getSync(vaultBaseUrl, scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the specified role assignment.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
@@ -483,35 +531,44 @@ public final class RoleAssignmentsImpl {
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignments for a scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RoleAssignment>> listForScopeSinglePageAsync(String vaultBaseUrl, String scope,
-        String filter) {
+    public Mono<PagedResponse<RoleAssignment>> listForScopeSinglePageAsync(
+            String vaultBaseUrl, String scope, String filter) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listForScope(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                        context ->
+                                service.listForScope(
+                                        vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -519,22 +576,29 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RoleAssignment>> listForScopeSinglePageAsync(String vaultBaseUrl, String scope,
-        String filter, Context context) {
+    public Mono<PagedResponse<RoleAssignment>> listForScopeSinglePageAsync(
+            String vaultBaseUrl, String scope, String filter, Context context) {
         final String accept = "application/json";
         return service.listForScope(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -542,18 +606,19 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignment> listForScopeAsync(String vaultBaseUrl, String scope, String filter) {
-        return new PagedFlux<>(() -> listForScopeSinglePageAsync(vaultBaseUrl, scope, filter),
-            nextLink -> listForScopeNextSinglePageAsync(nextLink, vaultBaseUrl));
+        return new PagedFlux<>(
+                () -> listForScopeSinglePageAsync(vaultBaseUrl, scope, filter),
+                nextLink -> listForScopeNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -561,20 +626,21 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RoleAssignment> listForScopeAsync(String vaultBaseUrl, String scope, String filter,
-        Context context) {
-        return new PagedFlux<>(() -> listForScopeSinglePageAsync(vaultBaseUrl, scope, filter, context),
-            nextLink -> listForScopeNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    public PagedFlux<RoleAssignment> listForScopeAsync(
+            String vaultBaseUrl, String scope, String filter, Context context) {
+        return new PagedFlux<>(
+                () -> listForScopeSinglePageAsync(vaultBaseUrl, scope, filter, context),
+                nextLink -> listForScopeNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -583,20 +649,26 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoleAssignment> listForScopeSinglePage(String vaultBaseUrl, String scope, String filter) {
         final String accept = "application/json";
-        Response<RoleAssignmentListResult> res
-            = service.listForScopeSync(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<RoleAssignmentListResult> res =
+                service.listForScopeSync(
+                        vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -604,23 +676,28 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeSinglePage(String vaultBaseUrl, String scope, String filter,
-        Context context) {
+    public PagedResponse<RoleAssignment> listForScopeSinglePage(
+            String vaultBaseUrl, String scope, String filter, Context context) {
         final String accept = "application/json";
-        Response<RoleAssignmentListResult> res
-            = service.listForScopeSync(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<RoleAssignmentListResult> res =
+                service.listForScopeSync(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -628,18 +705,19 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String vaultBaseUrl, String scope, String filter) {
-        return new PagedIterable<>(() -> listForScopeSinglePage(vaultBaseUrl, scope, filter, Context.NONE),
-            nextLink -> listForScopeNextSinglePage(nextLink, vaultBaseUrl));
+        return new PagedIterable<>(
+                () -> listForScopeSinglePage(vaultBaseUrl, scope, filter, Context.NONE),
+                nextLink -> listForScopeNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
      * Gets role assignments for a scope.
-     * 
+     *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
-     * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
-     * the specified principal.
+     *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
+     *     for the specified principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -647,62 +725,74 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignment> listForScope(String vaultBaseUrl, String scope, String filter,
-        Context context) {
-        return new PagedIterable<>(() -> listForScopeSinglePage(vaultBaseUrl, scope, filter, context),
-            nextLink -> listForScopeNextSinglePage(nextLink, vaultBaseUrl, context));
+    public PagedIterable<RoleAssignment> listForScope(
+            String vaultBaseUrl, String scope, String filter, Context context) {
+        return new PagedIterable<>(
+                () -> listForScopeSinglePage(vaultBaseUrl, scope, filter, context),
+                nextLink -> listForScopeNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignment>> listForScopeNextSinglePageAsync(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listForScopeNext(nextLink, vaultBaseUrl, accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RoleAssignment>> listForScopeNextSinglePageAsync(String nextLink, String vaultBaseUrl,
-        Context context) {
+    public Mono<PagedResponse<RoleAssignment>> listForScopeNextSinglePageAsync(
+            String nextLink, String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         return service.listForScopeNext(nextLink, vaultBaseUrl, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -712,18 +802,22 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<RoleAssignmentListResult> res
-            = service.listForScopeNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<RoleAssignmentListResult> res =
+                service.listForScopeNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -732,11 +826,16 @@ public final class RoleAssignmentsImpl {
      * @return role assignment list operation result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink, String vaultBaseUrl,
-        Context context) {
+    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(
+            String nextLink, String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res = service.listForScopeNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

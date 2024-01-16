@@ -5,41 +5,35 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Schema of common properties of all Router events.
- */
+/** Schema of common properties of all Router events. */
 @Fluent
-public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> {
+public class AcsRouterEventData {
     /*
      * Router Event Job ID
      */
+    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * Router Event Channel Reference
      */
+    @JsonProperty(value = "channelReference")
     private String channelReference;
 
     /*
      * Router Event Channel ID
      */
+    @JsonProperty(value = "channelId")
     private String channelId;
 
-    /**
-     * Creates an instance of AcsRouterEventData class.
-     */
-    public AcsRouterEventData() {
-    }
+    /** Creates an instance of AcsRouterEventData class. */
+    public AcsRouterEventData() {}
 
     /**
      * Get the jobId property: Router Event Job ID.
-     * 
+     *
      * @return the jobId value.
      */
     public String getJobId() {
@@ -48,7 +42,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Set the jobId property: Router Event Job ID.
-     * 
+     *
      * @param jobId the jobId value to set.
      * @return the AcsRouterEventData object itself.
      */
@@ -59,7 +53,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Get the channelReference property: Router Event Channel Reference.
-     * 
+     *
      * @return the channelReference value.
      */
     public String getChannelReference() {
@@ -68,7 +62,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Set the channelReference property: Router Event Channel Reference.
-     * 
+     *
      * @param channelReference the channelReference value to set.
      * @return the AcsRouterEventData object itself.
      */
@@ -79,7 +73,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Get the channelId property: Router Event Channel ID.
-     * 
+     *
      * @return the channelId value.
      */
     public String getChannelId() {
@@ -88,51 +82,12 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Set the channelId property: Router Event Channel ID.
-     * 
+     *
      * @param channelId the channelId value to set.
      * @return the AcsRouterEventData object itself.
      */
     public AcsRouterEventData setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("jobId", this.jobId);
-        jsonWriter.writeStringField("channelReference", this.channelReference);
-        jsonWriter.writeStringField("channelId", this.channelId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AcsRouterEventData from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRouterEventData if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsRouterEventData.
-     */
-    public static AcsRouterEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRouterEventData deserializedAcsRouterEventData = new AcsRouterEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterEventData.jobId = reader.getString();
-                } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterEventData.channelReference = reader.getString();
-                } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterEventData.channelId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAcsRouterEventData;
-        });
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -54,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
-    private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
@@ -119,7 +118,7 @@ public class HttpResponseBodyDecoderTests {
 
     @Test
     public void ioExceptionInErrorDeserializationReturnsException() {
-        SerializerAdapter ioExceptionThrower = new MockSerializerAdapter() {
+        JacksonAdapter ioExceptionThrower = new JacksonAdapter() {
             @Override
             public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
                 throw new IOException();
@@ -129,11 +128,10 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(
             new UnexpectedExceptionInformation(HttpResponseException.class));
 
-        HttpResponse response = new MockHttpResponse(GET_REQUEST, 300, new HttpHeaders(), new byte[1024]);
+        HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
 
         assertInstanceOf(IOException.class,
-            HttpResponseBodyDecoder.decodeByteArray(new byte[1024], response, ioExceptionThrower,
-                noExpectedStatusCodes));
+            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
     }
 
     @Test
@@ -306,9 +304,8 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void ioExceptionReturnsError() {
-        byte[] body = "valid JSON string".getBytes(StandardCharsets.UTF_8);
-        HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, new HttpHeaders(), body);
+    public void ioExceptionReturnsError() throws IOException {
+        HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, "valid JSON string");
 
         HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, String.class, String.class, true);
 
@@ -320,7 +317,7 @@ public class HttpResponseBodyDecoderTests {
         };
 
         assertThrows(HttpResponseException.class, () ->
-            HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData));
+            HttpResponseBodyDecoder.decodeByteArray(new byte[0], response, serializer, decodeData));
     }
 
     @ParameterizedTest

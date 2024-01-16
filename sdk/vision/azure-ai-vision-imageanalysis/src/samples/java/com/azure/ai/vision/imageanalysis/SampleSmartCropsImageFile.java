@@ -34,8 +34,8 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
@@ -65,7 +65,7 @@ public class SampleSmartCropsImageFile {
         try {
             // Smart cropping for an input image buffer. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.SMART_CROPS), // visualFeatures
                 new ImageAnalysisOptions().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))); // options: Set one or more aspect ratios, or null for default.
 

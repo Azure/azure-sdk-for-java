@@ -48,9 +48,6 @@ import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-/**
- * The base REST proxy implementation.
- */
 public abstract class RestProxyBase {
     static final String MUST_IMPLEMENT_PAGE_ERROR =
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
@@ -85,22 +82,9 @@ public abstract class RestProxyBase {
         this.tracer = httpPipeline.getTracer();
     }
 
-    /**
-     * Invoke the REST API operation described by the Swagger method using the provided arguments.
-     *
-     * @param proxy The proxy object.
-     * @param method The method to invoke.
-     * @param options The request options.
-     * @param errorOptions The error options.
-     * @param requestCallback The request callback.
-     * @param methodParser The Swagger method parser.
-     * @param isAsync Whether the method is async.
-     * @param args The arguments to the method.
-     * @return The result of the REST API operation.
-     * @throws RuntimeException If an error occurs while invoking the REST API operation.
-     */
-    public final Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-        Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
+    public final Object invoke(Object proxy, final Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
+        boolean isAsync, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         try {
@@ -111,8 +95,6 @@ public abstract class RestProxyBase {
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
 
-            // For the following Context options only set a value if it's true. This is to avoid adding a key to the
-            // context with a value of false, which will increase all subsequent lookups of the context.
             if (methodParser.isResponseEagerlyRead()) {
                 context = context.addData("azure-eagerly-read-response", true);
             }
@@ -136,43 +118,13 @@ public abstract class RestProxyBase {
         }
     }
 
-    /**
-     * Invoke the REST API operation described by the Swagger method using the provided arguments.
-     *
-     * @param proxy The proxy object.
-     * @param method The method to invoke.
-     * @param options The request options.
-     * @param errorOptions The error options.
-     * @param httpRequestConsumer The request callback.
-     * @param methodParser The Swagger method parser.
-     * @param request The HTTP request.
-     * @param context The context.
-     * @return The result of the REST API operation.
-     */
     protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
         HttpRequest request, Context context);
 
-    /**
-     * Update the request with the provided configuration.
-     *
-     * @param requestDataConfiguration the configuration to apply to the request
-     * @param serializerAdapter the serializer adapter to use when updating the request
-     * @throws IOException if an error occurs while updating the request
-     */
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException;
 
-    /**
-     * Creates a {@link Response} from the provided decoded response.
-     *
-     * @param response the decoded response
-     * @param entityType the type of the response entity
-     * @param bodyAsObject the response body as an object
-     * @return the {@link Response}
-     * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
-     * Page.
-     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
         Object bodyAsObject) {
@@ -235,12 +187,6 @@ public abstract class RestProxyBase {
         return context;
     }
 
-    /**
-     * Determines if tracing is enabled for the current service call.
-     *
-     * @param context Context information about the current service call.
-     * @return Whether tracing is enabled for the current service call.
-     */
     protected boolean isTracingEnabled(Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
         // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
@@ -251,8 +197,6 @@ public abstract class RestProxyBase {
      * Create a HttpRequest for the provided Swagger method using the provided arguments.
      *
      * @param methodParser the Swagger method parser to use
-     * @param serializerAdapter the serializer adapter to use when updating the request
-     * @param isAsync whether the request is async
      * @param args the arguments to use to populate the method's annotation values
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized

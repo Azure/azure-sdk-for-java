@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Role assignment list operation result.
- */
+/** Role assignment list operation result. */
 @Fluent
 public final class RoleAssignmentListResult implements JsonSerializable<RoleAssignmentListResult> {
     /*
@@ -27,15 +25,12 @@ public final class RoleAssignmentListResult implements JsonSerializable<RoleAssi
      */
     private String nextLink;
 
-    /**
-     * Creates an instance of RoleAssignmentListResult class.
-     */
-    public RoleAssignmentListResult() {
-    }
+    /** Creates an instance of RoleAssignmentListResult class. */
+    public RoleAssignmentListResult() {}
 
     /**
      * Get the value property: Role assignment list.
-     * 
+     *
      * @return the value value.
      */
     public List<RoleAssignment> getValue() {
@@ -44,7 +39,7 @@ public final class RoleAssignmentListResult implements JsonSerializable<RoleAssi
 
     /**
      * Set the value property: Role assignment list.
-     * 
+     *
      * @param value the value value to set.
      * @return the RoleAssignmentListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class RoleAssignmentListResult implements JsonSerializable<RoleAssi
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -64,7 +59,7 @@ public final class RoleAssignmentListResult implements JsonSerializable<RoleAssi
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the RoleAssignmentListResult object itself.
      */
@@ -83,30 +78,31 @@ public final class RoleAssignmentListResult implements JsonSerializable<RoleAssi
 
     /**
      * Reads an instance of RoleAssignmentListResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RoleAssignmentListResult if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RoleAssignmentListResult.
      */
     public static RoleAssignmentListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RoleAssignmentListResult deserializedRoleAssignmentListResult = new RoleAssignmentListResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    RoleAssignmentListResult deserializedRoleAssignmentListResult = new RoleAssignmentListResult();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    List<RoleAssignment> value = reader.readArray(reader1 -> RoleAssignment.fromJson(reader1));
-                    deserializedRoleAssignmentListResult.value = value;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedRoleAssignmentListResult.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("value".equals(fieldName)) {
+                            List<RoleAssignment> value = reader.readArray(reader1 -> RoleAssignment.fromJson(reader1));
+                            deserializedRoleAssignmentListResult.value = value;
+                        } else if ("nextLink".equals(fieldName)) {
+                            deserializedRoleAssignmentListResult.nextLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRoleAssignmentListResult;
-        });
+                    return deserializedRoleAssignmentListResult;
+                });
     }
 }

@@ -5,36 +5,29 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Schema of common properties of all thread-level chat events.
- */
+/** Schema of common properties of all thread-level chat events. */
 @Fluent
-public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsChatEventInThreadBaseProperties> {
+public class AcsChatEventInThreadBaseProperties {
     /*
      * The transaction id will be used as co-relation vector
      */
+    @JsonProperty(value = "transactionId")
     private String transactionId;
 
     /*
      * The chat thread id
      */
+    @JsonProperty(value = "threadId")
     private String threadId;
 
-    /**
-     * Creates an instance of AcsChatEventInThreadBaseProperties class.
-     */
-    public AcsChatEventInThreadBaseProperties() {
-    }
+    /** Creates an instance of AcsChatEventInThreadBaseProperties class. */
+    public AcsChatEventInThreadBaseProperties() {}
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @return the transactionId value.
      */
     public String getTransactionId() {
@@ -43,7 +36,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     * 
+     *
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
@@ -54,7 +47,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Get the threadId property: The chat thread id.
-     * 
+     *
      * @return the threadId value.
      */
     public String getThreadId() {
@@ -63,49 +56,12 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
 
     /**
      * Set the threadId property: The chat thread id.
-     * 
+     *
      * @param threadId the threadId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
     public AcsChatEventInThreadBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transactionId", this.transactionId);
-        jsonWriter.writeStringField("threadId", this.threadId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AcsChatEventInThreadBaseProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsChatEventInThreadBaseProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsChatEventInThreadBaseProperties.
-     */
-    public static AcsChatEventInThreadBaseProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsChatEventInThreadBaseProperties deserializedAcsChatEventInThreadBaseProperties
-                = new AcsChatEventInThreadBaseProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("transactionId".equals(fieldName)) {
-                    deserializedAcsChatEventInThreadBaseProperties.transactionId = reader.getString();
-                } else if ("threadId".equals(fieldName)) {
-                    deserializedAcsChatEventInThreadBaseProperties.threadId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAcsChatEventInThreadBaseProperties;
-        });
     }
 }

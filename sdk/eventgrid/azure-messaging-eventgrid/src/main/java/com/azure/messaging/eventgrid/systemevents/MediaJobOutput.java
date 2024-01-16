@@ -5,46 +5,53 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The event data for a Job output.
- */
+/** The event data for a Job output. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = MediaJobOutput.class)
+@JsonTypeName("MediaJobOutput")
+@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = MediaJobOutputAsset.class)})
+@JsonFlatten
 @Fluent
-public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
+public class MediaJobOutput {
     /*
      * Gets the Job output error.
      */
+    @JsonProperty(value = "error")
     private MediaJobError error;
 
     /*
      * Gets the Job output label.
      */
+    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Gets the Job output progress.
      */
+    @JsonProperty(value = "progress", required = true)
     private long progress;
 
     /*
      * Gets the Job output state.
      */
+    @JsonProperty(value = "state", required = true)
     private MediaJobState state;
 
-    /**
-     * Creates an instance of MediaJobOutput class.
-     */
-    public MediaJobOutput() {
-    }
+    /** Creates an instance of MediaJobOutput class. */
+    public MediaJobOutput() {}
 
     /**
      * Get the error property: Gets the Job output error.
-     * 
+     *
      * @return the error value.
      */
     public MediaJobError getError() {
@@ -53,7 +60,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Set the error property: Gets the Job output error.
-     * 
+     *
      * @param error the error value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -64,7 +71,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Get the label property: Gets the Job output label.
-     * 
+     *
      * @return the label value.
      */
     public String getLabel() {
@@ -73,7 +80,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Set the label property: Gets the Job output label.
-     * 
+     *
      * @param label the label value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -84,7 +91,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Get the progress property: Gets the Job output progress.
-     * 
+     *
      * @return the progress value.
      */
     public long getProgress() {
@@ -93,7 +100,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Set the progress property: Gets the Job output progress.
-     * 
+     *
      * @param progress the progress value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -104,7 +111,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Get the state property: Gets the Job output state.
-     * 
+     *
      * @return the state value.
      */
     public MediaJobState getState() {
@@ -113,81 +120,12 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
 
     /**
      * Set the state property: Gets the Job output state.
-     * 
+     *
      * @param state the state value to set.
      * @return the MediaJobOutput object itself.
      */
     public MediaJobOutput setState(MediaJobState state) {
         this.state = state;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("progress", this.progress);
-        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeJsonField("error", this.error);
-        jsonWriter.writeStringField("label", this.label);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MediaJobOutput from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaJobOutput if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the MediaJobOutput.
-     */
-    public static MediaJobOutput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Media.JobOutputAsset".equals(discriminatorValue)) {
-                return MediaJobOutputAsset.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
-
-    static MediaJobOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaJobOutput deserializedMediaJobOutput = new MediaJobOutput();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("progress".equals(fieldName)) {
-                    deserializedMediaJobOutput.progress = reader.getLong();
-                } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobOutput.state = MediaJobState.fromString(reader.getString());
-                } else if ("error".equals(fieldName)) {
-                    deserializedMediaJobOutput.error = MediaJobError.fromJson(reader);
-                } else if ("label".equals(fieldName)) {
-                    deserializedMediaJobOutput.label = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMediaJobOutput;
-        });
     }
 }

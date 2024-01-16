@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Plugin certificates information for Service Mesh.
- */
+/** Plugin certificates information for Service Mesh. */
 @Fluent
 public final class IstioPluginCertificateAuthority {
     /*
@@ -42,9 +40,7 @@ public final class IstioPluginCertificateAuthority {
     @JsonProperty(value = "certChainObjectName")
     private String certChainObjectName;
 
-    /**
-     * Creates an instance of IstioPluginCertificateAuthority class.
-     */
+    /** Creates an instance of IstioPluginCertificateAuthority class. */
     public IstioPluginCertificateAuthority() {
     }
 

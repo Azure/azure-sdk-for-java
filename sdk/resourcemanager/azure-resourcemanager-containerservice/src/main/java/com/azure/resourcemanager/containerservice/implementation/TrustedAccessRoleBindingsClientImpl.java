@@ -38,18 +38,12 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in TrustedAccessRoleBindingsClient.
- */
+/** An instance of this class provides access to all the operations defined in TrustedAccessRoleBindingsClient. */
 public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessRoleBindingsClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final TrustedAccessRoleBindingsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
@@ -58,8 +52,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @param client the instance of the service client containing this operation class.
      */
     TrustedAccessRoleBindingsClientImpl(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(TrustedAccessRoleBindingsService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    TrustedAccessRoleBindingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,53 +66,75 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     public interface TrustedAccessRoleBindingsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings")
-        @ExpectedResponses({ 200 })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrustedAccessRoleBindingListResult>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TrustedAccessRoleBindingListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
-        @ExpectedResponses({ 200 })
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrustedAccessRoleBindingInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+        Mono<Response<TrustedAccessRoleBindingInner>> get(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("trustedAccessRoleBindingName") String trustedAccessRoleBindingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
-        @ExpectedResponses({ 200, 201 })
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("trustedAccessRoleBindingName") String trustedAccessRoleBindingName,
             @BodyParam("application/json") TrustedAccessRoleBindingInner trustedAccessRoleBinding,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
-        @ExpectedResponses({ 202, 204 })
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings/{trustedAccessRoleBindingName}")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
             @PathParam("trustedAccessRoleBindingName") String trustedAccessRoleBindingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrustedAccessRoleBindingListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -127,19 +145,23 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listSinglePageAsync(String resourceGroupName,
-        String resourceName) {
+    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listSinglePageAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -151,10 +173,26 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, context))
-            .<PagedResponse<TrustedAccessRoleBindingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .<PagedResponse<TrustedAccessRoleBindingInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -167,19 +205,23 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listSinglePageAsync(String resourceGroupName,
-        String resourceName, Context context) {
+    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listSinglePageAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,10 +234,23 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                resourceName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+            .list(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -210,8 +265,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TrustedAccessRoleBindingInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -226,9 +281,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return list of trusted access role bindings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TrustedAccessRoleBindingInner> listAsync(String resourceGroupName, String resourceName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<TrustedAccessRoleBindingInner> listAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -259,8 +315,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return list of trusted access role bindings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TrustedAccessRoleBindingInner> list(String resourceGroupName, String resourceName,
-        Context context) {
+    public PagedIterable<TrustedAccessRoleBindingInner> list(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -276,15 +332,19 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return a trusted access role binding along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(String resourceGroupName,
-        String resourceName, String trustedAccessRoleBindingName) {
+    public Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -294,14 +354,26 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context))
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            trustedAccessRoleBindingName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -318,15 +390,19 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return a trusted access role binding along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(String resourceGroupName,
-        String resourceName, String trustedAccessRoleBindingName, Context context) {
+    private Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,14 +412,24 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, trustedAccessRoleBindingName, accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                trustedAccessRoleBindingName,
+                accept,
+                context);
     }
 
     /**
@@ -358,8 +444,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return a trusted access role binding on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrustedAccessRoleBindingInner> getAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName) {
+    public Mono<TrustedAccessRoleBindingInner> getAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
         return getWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -377,8 +463,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return a trusted access role binding along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrustedAccessRoleBindingInner> getWithResponse(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, Context context) {
+    public Response<TrustedAccessRoleBindingInner> getWithResponse(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context).block();
     }
 
@@ -394,8 +480,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return a trusted access role binding.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrustedAccessRoleBindingInner get(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName) {
+    public TrustedAccessRoleBindingInner get(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
         return getWithResponse(resourceGroupName, resourceName, trustedAccessRoleBindingName, Context.NONE).getValue();
     }
 
@@ -410,19 +496,25 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines binding between a resource and role along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String resourceName, String trustedAccessRoleBindingName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,21 +524,34 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         if (trustedAccessRoleBinding == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBinding is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter trustedAccessRoleBinding is required and cannot be null."));
         } else {
             trustedAccessRoleBinding.validate();
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, trustedAccessRoleBindingName,
-                trustedAccessRoleBinding, accept, context))
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            trustedAccessRoleBindingName,
+                            trustedAccessRoleBinding,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -462,19 +567,26 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines binding between a resource and role along with {@link Response} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String resourceName, String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -484,20 +596,32 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         if (trustedAccessRoleBinding == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBinding is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter trustedAccessRoleBinding is required and cannot be null."));
         } else {
             trustedAccessRoleBinding.validate();
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                trustedAccessRoleBindingName,
+                trustedAccessRoleBinding,
+                accept,
+                context);
     }
 
     /**
@@ -514,13 +638,22 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String resourceName,
+            String trustedAccessRoleBindingName,
             TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
-            trustedAccessRoleBindingName, trustedAccessRoleBinding);
-        return this.client.<TrustedAccessRoleBindingInner, TrustedAccessRoleBindingInner>getLroResult(mono,
-            this.client.getHttpPipeline(), TrustedAccessRoleBindingInner.class, TrustedAccessRoleBindingInner.class,
-            this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding);
+        return this
+            .client
+            .<TrustedAccessRoleBindingInner, TrustedAccessRoleBindingInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TrustedAccessRoleBindingInner.class,
+                TrustedAccessRoleBindingInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -538,14 +671,24 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
-            TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String resourceName,
+            String trustedAccessRoleBindingName,
+            TrustedAccessRoleBindingInner trustedAccessRoleBinding,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
-            trustedAccessRoleBindingName, trustedAccessRoleBinding, context);
-        return this.client.<TrustedAccessRoleBindingInner, TrustedAccessRoleBindingInner>getLroResult(mono,
-            this.client.getHttpPipeline(), TrustedAccessRoleBindingInner.class, TrustedAccessRoleBindingInner.class,
-            context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, context);
+        return this
+            .client
+            .<TrustedAccessRoleBindingInner, TrustedAccessRoleBindingInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TrustedAccessRoleBindingInner.class,
+                TrustedAccessRoleBindingInner.class,
+                context);
     }
 
     /**
@@ -562,10 +705,14 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding)
+            .getSyncPoller();
     }
 
     /**
@@ -583,10 +730,15 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding, context).getSyncPoller();
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
+        Context context) {
+        return this
+            .beginCreateOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, context)
+            .getSyncPoller();
     }
 
     /**
@@ -602,10 +754,15 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return defines binding between a resource and role on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding).last().flatMap(this.client::getLroFinalResultOrError);
+    public Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -622,10 +779,16 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return defines binding between a resource and role on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding, context).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -641,10 +804,14 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return defines binding between a resource and role.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrustedAccessRoleBindingInner createOrUpdate(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding).block();
+    public TrustedAccessRoleBindingInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
+        return createOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding)
+            .block();
     }
 
     /**
@@ -661,10 +828,15 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return defines binding between a resource and role.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrustedAccessRoleBindingInner createOrUpdate(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding, context).block();
+    public TrustedAccessRoleBindingInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
+        Context context) {
+        return createOrUpdateAsync(
+                resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, context)
+            .block();
     }
 
     /**
@@ -679,15 +851,19 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -697,15 +873,26 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context))
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            trustedAccessRoleBindingName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -722,15 +909,19 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -740,14 +931,24 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (trustedAccessRoleBindingName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, trustedAccessRoleBindingName, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                trustedAccessRoleBindingName,
+                accept,
+                context);
     }
 
     /**
@@ -762,12 +963,14 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -783,13 +986,14 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -804,8 +1008,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName).getSyncPoller();
     }
 
@@ -822,9 +1026,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
-        String trustedAccessRoleBindingName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context)
             .getSyncPoller();
     }
 
@@ -841,7 +1046,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String trustedAccessRoleBindingName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -858,9 +1064,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context).last()
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -891,8 +1098,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
-        Context context) {
+    public void delete(
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context) {
         deleteAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName, context).block();
     }
 
@@ -900,13 +1107,12 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listNextSinglePageAsync(String nextLink) {
@@ -914,13 +1120,23 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TrustedAccessRoleBindingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TrustedAccessRoleBindingInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -928,29 +1144,38 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of trusted access role bindings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<TrustedAccessRoleBindingInner>> listNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

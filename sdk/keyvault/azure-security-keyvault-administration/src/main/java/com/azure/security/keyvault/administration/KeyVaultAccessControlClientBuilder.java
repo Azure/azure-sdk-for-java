@@ -44,52 +44,35 @@ import java.util.Map;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
- * {@link KeyVaultAccessControlAsyncClient access control async client} and
- * {@link KeyVaultAccessControlClient access control sync client}, by calling
- * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient() buildAsyncClient} and
- * {@link KeyVaultAccessControlClientBuilder#buildClient() buildClient} respectively. It constructs an instance of the
- * desired client.
+ * {@link KeyVaultAccessControlAsyncClient} and {@link KeyVaultAccessControlClient}, by calling
+ * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient()} and
+ * {@link KeyVaultAccessControlClientBuilder#buildClient()} respectively. It constructs an instance of the desired
+ * client.
  *
- * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build a
- * {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build an
+ * an {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
  *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation -->
- * <pre>
- * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation -->
- *
- * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient http client} can be optionally configured in the {@link KeyVaultAccessControlClientBuilder}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation.withHttpClient -->
- * <pre>
- * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation.withHttpClient -->
- *
- * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build a
- * {@link KeyVaultAccessControlClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation -->
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation -->
  * <pre>
  * KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation -->
+ * <!-- end com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation -->
+ * <p><strong>Samples to construct an async client</strong></p>
+ * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation -->
+ * <pre>
+ * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation -->
  *
- * @see KeyVaultAccessControlAsyncClient
  * @see KeyVaultAccessControlClient
+ * @see KeyVaultAccessControlAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
 public final class KeyVaultAccessControlClientBuilder implements

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for Windows VMs in the managed cluster.
- */
+/** Profile for Windows VMs in the managed cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
     /*
@@ -54,9 +52,7 @@ public final class ManagedClusterWindowsProfile {
     @JsonProperty(value = "gmsaProfile")
     private WindowsGmsaProfile gmsaProfile;
 
-    /**
-     * Creates an instance of ManagedClusterWindowsProfile class.
-     */
+    /** Creates an instance of ManagedClusterWindowsProfile class. */
     public ManagedClusterWindowsProfile() {
     }
 
@@ -145,7 +141,7 @@ public final class ManagedClusterWindowsProfile {
     /**
      * Get the enableCsiProxy property: Whether to enable CSI proxy.
      *
-     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      *
      * @return the enableCsiProxy value.
      */
@@ -156,7 +152,7 @@ public final class ManagedClusterWindowsProfile {
     /**
      * Set the enableCsiProxy property: Whether to enable CSI proxy.
      *
-     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      *
      * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.
@@ -193,8 +189,10 @@ public final class ManagedClusterWindowsProfile {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
         }
         if (gmsaProfile() != null) {
             gmsaProfile().validate();

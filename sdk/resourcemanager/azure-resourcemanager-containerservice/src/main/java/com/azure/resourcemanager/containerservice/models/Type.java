@@ -11,32 +11,22 @@ import java.util.Collection;
 /**
  * The week index.
  *
- * Specifies on which week of the month the dayOfWeek applies.
+ * <p>Specifies on which week of the month the dayOfWeek applies.
  */
 public final class Type extends ExpandableStringEnum<Type> {
-    /**
-     * Static value First for Type.
-     */
+    /** Static value First for Type. */
     public static final Type FIRST = fromString("First");
 
-    /**
-     * Static value Second for Type.
-     */
+    /** Static value Second for Type. */
     public static final Type SECOND = fromString("Second");
 
-    /**
-     * Static value Third for Type.
-     */
+    /** Static value Third for Type. */
     public static final Type THIRD = fromString("Third");
 
-    /**
-     * Static value Fourth for Type.
-     */
+    /** Static value Fourth for Type. */
     public static final Type FOURTH = fromString("Fourth");
 
-    /**
-     * Static value Last for Type.
-     */
+    /** Static value Last for Type. */
     public static final Type LAST = fromString("Last");
 
     /**

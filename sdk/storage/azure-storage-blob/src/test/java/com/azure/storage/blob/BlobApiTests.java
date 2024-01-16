@@ -48,6 +48,7 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.SyncCopyStatusType;
@@ -58,7 +59,6 @@ import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
@@ -135,12 +135,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobApiTests extends BlobTestBase {
     private BlobClient bc;
+    private BlobAsyncClient bcAsync;
     private final List<File> createdFiles = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
         String blobName = generateBlobName();
         bc = cc.getBlobClient(blobName);
+        bcAsync = ccAsync.getBlobAsyncClient(blobName);
         bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
     }
 
@@ -366,7 +368,7 @@ public class BlobApiTests extends BlobTestBase {
     public void downloadAllNull() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bc.setTags(Collections.singletonMap("foo", "bar"));
-        BlobDownloadResponse response = bc.downloadWithResponse(stream, null, null,
+        BlobDownloadResponse response = bc.downloadStreamWithResponse(stream, null, null,
             null, false, null, null);
         ByteBuffer body = ByteBuffer.wrap(stream.toByteArray());
         BlobDownloadHeaders headers = response.getDeserializedHeaders();
@@ -521,7 +523,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void downloadMin() {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bc.download(outStream);
+        bc.downloadStream(outStream);
         byte[] result = outStream.toByteArray();
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result);
     }
@@ -844,6 +846,7 @@ public class BlobApiTests extends BlobTestBase {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
+
     @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {
@@ -1740,7 +1743,6 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @Test
     public void setTagsLeaseFail() {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
@@ -2105,6 +2107,8 @@ public class BlobApiTests extends BlobTestBase {
             .blobClient(bc)
             .buildBlockBlobClient()
             .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+        // So we don't have to create a SAS.
+        cc.setAccessPolicy(PublicAccessType.BLOB, null);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2114,10 +2118,8 @@ public class BlobApiTests extends BlobTestBase {
         String leaseId = setupBlobLeaseCondition(bu2, RECEIVED_LEASE_ID);
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
         SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
-            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobRequestConditions, null));
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
         BlobCopyInfo blobCopyInfo = response.getValue();
@@ -2137,17 +2139,16 @@ public class BlobApiTests extends BlobTestBase {
         new SpecializedBlobClientBuilder()
             .blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024,
-                true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+        // So we don't have to create a SAS.
+        cc.setAccessPolicy(PublicAccessType.BLOB, null);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
         BlobClient bu2 = cu2.getBlobClient(generateBlobName());
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
         SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
-            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, null, null));
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
@@ -2160,8 +2161,7 @@ public class BlobApiTests extends BlobTestBase {
         assertNotNull(headers.getValue(HttpHeaderName.DATE));
         // cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
-        assertResponseStatusCode(cu2.deleteWithResponse(null, null, null),
-            202);
+        assertResponseStatusCode(cu2.deleteWithResponse(null, null, null), 202);
     }
 
     @Test
@@ -2169,8 +2169,9 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024,
-                true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+        // So we don't have to create a SAS.
+        cc.setAccessPolicy(PublicAccessType.BLOB, null);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateContainerName());
         cu2.create();
@@ -2179,10 +2180,8 @@ public class BlobApiTests extends BlobTestBase {
         String leaseId = setupBlobLeaseCondition(bu2, RECEIVED_LEASE_ID);
         BlobRequestConditions blobAccess = new BlobRequestConditions().setLeaseId(leaseId);
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
         SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
-            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobAccess, null));
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
 
         assertNotNull(lastResponse);
@@ -2209,12 +2208,11 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void syncCopy() {
         // Sync copy is a deep copy, which requires either sas or public access.
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        HttpHeaders headers = bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            null, null, null, null, null).getHeaders();
+        HttpHeaders headers = bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null)
+            .getHeaders();
 
         assertEquals(SyncCopyStatusType.SUCCESS.toString(), headers.getValue(X_MS_COPY_STATUS));
         assertNotNull(headers.getValue(X_MS_COPY_ID));
@@ -2223,17 +2221,15 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void syncCopyMin() {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            null, null, null, null, null),
-            202);
+        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, null, null, null), 202);
     }
 
     @ParameterizedTest
     @MethodSource("snapshotMetadataSupplier")
     public void syncCopyMetadata(String key1, String value1, String key2, String value2) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -2243,10 +2239,7 @@ public class BlobApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, metadata, null,
-            null, null, null, null);
+        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), metadata, null, null, null, null, null);
         assertEquals(metadata, bu2.getProperties().getMetadata());
     }
 
@@ -2254,6 +2247,7 @@ public class BlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("copyTagsSupplier")
     public void syncCopyTags(String key1, String value1, String key2, String value2) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         Map<String, String> tags = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -2263,16 +2257,14 @@ public class BlobApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + sas).setTags(tags),
-            null, null);
+        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null, null);
         assertEquals(tags, bu2.getTags());
     }
 
     @ParameterizedTest
     @MethodSource("syncCopySourceACSupplier")
     public void syncCopySourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         match = setupBlobMatchCondition(bc, match);
         RequestConditions mac = new RequestConditions()
@@ -2281,10 +2273,7 @@ public class BlobApiTests extends BlobTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            null, mac, null, null, null), 202);
+        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null), 202);
     }
 
     private static Stream<Arguments> syncCopySourceACSupplier() {
@@ -2298,7 +2287,8 @@ public class BlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("syncCopySourceACFailSupplier")
     public void syncCopySourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-                                     String noneMatch) {
+        String noneMatch) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         RequestConditions mac = new RequestConditions()
@@ -2307,10 +2297,8 @@ public class BlobApiTests extends BlobTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas,
-            null, null, mac, null, null, null));
+        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac,
+            null, null, null));
     }
 
     private static Stream<Arguments> syncCopySourceACFailSupplier() {
@@ -2324,7 +2312,8 @@ public class BlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void syncCopyDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-                               String leaseID, String tags) {
+        String leaseID, String tags) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         Map<String, String> t = new HashMap<>();
@@ -2339,17 +2328,14 @@ public class BlobApiTests extends BlobTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
-
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            null, null, bac, null, null), 202);
+        assertResponseStatusCode(bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null), 202);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void syncCopyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-                                   String leaseID, String tags) {
+        String leaseID, String tags) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         noneMatch = setupBlobMatchCondition(bu2, noneMatch);
@@ -2361,17 +2347,15 @@ public class BlobApiTests extends BlobTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
-
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + sas,
-            null, null, null, bac, null, null));
+        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
+            bac, null, null));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("syncCopySourceTagsSupplier")
     public void syncCopySourceTags(BlobCopySourceTagsMode mode) {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         Map<String, String> sourceTags = new HashMap<>();
         sourceTags.put("foo", "bar");
         Map<String, String> destTags = new HashMap<>();
@@ -2407,12 +2391,9 @@ public class BlobApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void syncCopyFromUrlAccessTierCold() {
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        BlobCopyFromUrlOptions copyOptions = new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + sas)
-            .setTier(AccessTier.COLD);
+        BlobCopyFromUrlOptions copyOptions = new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTier(AccessTier.COLD);
 
         assertResponseStatusCode(bu2.copyFromUrlWithResponse(copyOptions, null, null), 202);
         assertEquals(bu2.getProperties().getAccessTier(), AccessTier.COLD);
@@ -2615,10 +2596,9 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(headers.getValue(X_MS_REQUEST_ID));
             assertEquals(tier, bc.getProperties().getAccessTier());
             assertEquals(tier, cc.listBlobs().iterator().next().getProperties().getAccessTier());
-
-            // cleanup:
-            cc.delete();
         }
+        // cleanup:
+        cc.delete();
     }
 
     @ParameterizedTest
@@ -3028,6 +3008,9 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(bc.getBlockBlobClient(), bc.getBlockBlobClient());
         assertEquals(bc.getAppendBlobClient(), bc.getAppendBlobClient());
         assertEquals(bc.getPageBlobClient(), bc.getPageBlobClient());
+        assertEquals(bcAsync.getBlockBlobAsyncClient(), bcAsync.getBlockBlobAsyncClient());
+        assertEquals(bcAsync.getAppendBlobAsyncClient(), bcAsync.getAppendBlobAsyncClient());
+        assertEquals(bcAsync.getPageBlobAsyncClient(), bcAsync.getPageBlobAsyncClient());
     }
 
     @Test

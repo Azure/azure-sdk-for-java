@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AgentPoolUpgradeProfilePropertiesUpgradesItem model.
- */
+/** The AgentPoolUpgradeProfilePropertiesUpgradesItem model. */
 @Fluent
 public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     /*
@@ -24,9 +22,7 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /**
-     * Creates an instance of AgentPoolUpgradeProfilePropertiesUpgradesItem class.
-     */
+    /** Creates an instance of AgentPoolUpgradeProfilePropertiesUpgradesItem class. */
     public AgentPoolUpgradeProfilePropertiesUpgradesItem() {
     }
 

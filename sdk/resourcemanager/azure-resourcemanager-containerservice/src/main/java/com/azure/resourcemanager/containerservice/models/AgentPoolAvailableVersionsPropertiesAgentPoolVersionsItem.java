@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model.
- */
+/** The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model. */
 @Fluent
 public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     /*
@@ -30,9 +28,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /**
-     * Creates an instance of AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem class.
-     */
+    /** Creates an instance of AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem class. */
     public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem() {
     }
 

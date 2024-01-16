@@ -25,14 +25,13 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
-import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -100,7 +99,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void createSequenceNumber() {
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null).block();
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
+            .assertNext(r -> assertEquals(r.getBlobSequenceNumber(), 2))
             .verifyComplete();
     }
 
@@ -149,7 +148,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(metadata, r.getValue().getMetadata());
+                assertEquals(r.getValue().getMetadata(), metadata);
             })
             .verifyComplete();
     }
@@ -178,7 +177,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(tags, r.getValue());
+                assertEquals(r.getValue(), tags);
             })
             .verifyComplete();
     }
@@ -276,7 +275,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L)).block();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
+            .assertNext(r -> assertEquals(r.getBlobSequenceNumber(), 2))
             .verifyComplete();
     }
 
@@ -333,7 +332,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(metadata, r.getValue().getMetadata());
+                assertEquals(r.getValue().getMetadata(), metadata);
             })
             .verifyComplete();
     }
@@ -364,7 +363,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(tags, r.getValue());
+                assertEquals(r.getValue(), tags);
             })
             .verifyComplete();
     }
@@ -384,7 +383,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 assertResponseStatusCode(r, 201);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
                 assertNotNull(r.getHeaders().getValue("x-ms-content-crc64"));
-                assertEquals(0, r.getValue().getBlobSequenceNumber());
+                assertEquals(r.getValue().getBlobSequenceNumber(), 0);
                 assertTrue(r.getValue().isServerEncrypted());
             })
             .verifyComplete();
@@ -531,15 +530,14 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLMin() {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         destURL.create(PageBlobClient.PAGE_BYTES).block();
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         destURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))).block();
 
-        String sas = destURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        StepVerifier.create(bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl() + "?" + sas,
-            null, null, null, null))
+        StepVerifier.create(bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl(), null, null,
+            null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -549,6 +547,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLRange() {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4);
 
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
@@ -559,14 +559,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         destURL.create(PageBlobClient.PAGE_BYTES * 2).block();
 
-        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
         destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            sourceURL.getBlobUrl() + "?" + sas, PageBlobClient.PAGE_BYTES * 2L).block();
+            sourceURL.getBlobUrl(), PageBlobClient.PAGE_BYTES * 2L).block();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()))
-            .assertNext(r -> TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, r,
-                0, PageBlobClient.PAGE_BYTES * 2))
+            .assertNext(r -> TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, r, 0,
+                PageBlobClient.PAGE_BYTES * 2))
             .verifyComplete();
     }
 
@@ -578,6 +576,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         destURL.create(PageBlobClient.PAGE_BYTES).block();
 
@@ -585,28 +585,23 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(data))).block();
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
-            null, MessageDigest.getInstance("MD5").digest(data), null,
-            null))
+        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest(data), null, null))
             .expectNextCount(1)
             .verifyComplete();
     }
 
     @Test
     public void uploadPageFromURLMD5Fail() throws NoSuchAlgorithmException {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         destURL.create(PageBlobClient.PAGE_BYTES).block();
 
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))).block();
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
-            null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
-            null, null))
+        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -619,6 +614,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t).block();
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES).block();
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -635,10 +631,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        assertAsyncResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange,
-            sourceURL.getBlobUrl() + "?" + sas, null, null, pac,
+        assertAsyncResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac,
             null), 201);
     }
 
@@ -647,6 +640,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void uploadPageFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                                    String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
                                                    String tags) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES).block();
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -664,11 +659,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
         StepVerifier.create(bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null, pac,
-            null))
+            pageRange, sourceURL.getBlobUrl(), null, null, pac, null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -676,6 +668,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("uploadPageFromURLSourceACSupplier")
     public void uploadPageFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
                                           String sourceIfMatch, String sourceIfNoneMatch) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES).block();
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -688,10 +681,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(sourceIfNoneMatch);
 
-        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        assertAsyncResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange,
-            sourceURL.getBlobUrl() + "?" + sas, null, null, null,
+        assertAsyncResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null,
             smac), 201);
     }
 
@@ -707,6 +697,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("uploadPageFromURLSourceACFailSupplier")
     public void uploadPageFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES).block();
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -718,11 +709,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
-        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
         StepVerifier.create(bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null,
-            null, smac))
+            pageRange, sourceURL.getBlobUrl(), null, null, null, smac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -737,8 +725,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void clearPage() {
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-            null).block();
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null).block();
 
         StepVerifier.create(bc.clearPagesWithResponse(
             new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null))
@@ -924,16 +911,16 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         // when: "max results on options"
         StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
             new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1)).byPage())
-            .assertNext(r -> assertEquals(1, r.getValue().size()))
-            .assertNext(r -> assertEquals(1, r.getValue().size()))
+            .assertNext(r -> assertEquals(r.getValue().size(), 1))
+            .assertNext(r -> assertEquals(r.getValue().size(), 1))
             .verifyComplete();
 
 
         // when: "max results on iterableByPage"
         StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
             new BlobRange(0, 4L * Constants.KB))).byPage(1))
-            .assertNext(r -> assertEquals(1, r.getValue().size()))
-            .assertNext(r -> assertEquals(1, r.getValue().size()))
+            .assertNext(r -> assertEquals(r.getValue().size(), 1))
+            .assertNext(r -> assertEquals(r.getValue().size(), 1))
             .verifyComplete();
     }
 
@@ -952,7 +939,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 return bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB))).byPage(r.getContinuationToken());
             }))
             .assertNext(r -> {
-                assertEquals(1, r.getValue().size());
+                assertEquals(r.getValue().size(), 1);
             })
             .verifyComplete();
     }
@@ -1051,7 +1038,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                     assertEquals(expectedRange.getEnd(), actualRange.getEnd());
                 }
 
-                assertEquals(4 * Constants.MB, Integer.parseInt(r.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)));
+                assertEquals(Integer.parseInt(r.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)), 4 * Constants.MB);
             })
             .verifyComplete();
     }
@@ -1203,14 +1190,14 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         // when: "max results on options"
         StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2)).byPage())
-            .assertNext(r -> assertEquals(2, r.getValue().size()))
-            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(r.getValue().size(), 2))
+            .assertNext(r -> assertEquals(r.getValue().size(), 2))
             .verifyComplete();
 
         // when: "max results on iterableByPage"
         StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(2))
-            .assertNext(r -> assertEquals(2, r.getValue().size()))
-            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(r.getValue().size(), 2))
+            .assertNext(r -> assertEquals(r.getValue().size(), 2))
             .verifyComplete();
     }
 
@@ -1232,7 +1219,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .flatMap(r -> {
                 return bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(r.getContinuationToken());
             }))
-            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(r.getValue().size(), 2))
             .verifyComplete();
     }
 
@@ -1388,7 +1375,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.updateSequenceNumberWithResponse(action, number, null))
             .assertNext(r -> {
                 assertTrue(validateBasicHeaders(r.getHeaders()));
-                assertEquals(result, r.getValue().getBlobSequenceNumber());
+                assertEquals(r.getValue().getBlobSequenceNumber(), result);
             })
             .verifyComplete();
 
@@ -1454,14 +1441,13 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    //todo isbr: is there a better way to do this
     public void startIncrementalCopy() {
+        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapId = bc.createSnapshot().block().getSnapshotId();
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas,
-            snapId, null).block();
+        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapId, null).block();
 
         CopyStatusType status = copyResponse.getValue();
         OffsetDateTime start = testResourceNamer.now();
@@ -1484,13 +1470,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void startIncrementalCopyMin() {
+        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        assertAsyncResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot,
-            null), 202);
+        assertAsyncResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null), 202);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1498,13 +1482,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                        String noneMatch, String tags) {
+        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
-
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas,
-            snapshot, null).block();
+        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null).block();
 
         CopyStatusType status = copyResponse.getValue();
         OffsetDateTime start = testResourceNamer.now();
@@ -1529,9 +1510,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(bu2.copyIncrementalWithResponse(
-            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, snapshot).setRequestConditions(mac)),
-            202);
+        assertAsyncResponseStatusCode(bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(),
+            snapshot).setRequestConditions(mac)),  202);
     }
 
     private static Stream<Arguments> startIncrementalCopyACSupplier() {
@@ -1548,11 +1528,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                            String noneMatch, String tags) {
+        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        bu2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapshot).block();
+        bu2.copyIncremental(bc.getBlobUrl(), snapshot).block();
         String finalSnapshot = bc.createSnapshot().block().getSnapshotId();
         noneMatch = setupBlobMatchCondition(bu2, noneMatch);
         PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
@@ -1563,8 +1542,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setTagsConditions(tags);
 
         StepVerifier.create(bu2.copyIncrementalWithResponse(
-            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, finalSnapshot)
-            .setRequestConditions(mac)))
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), finalSnapshot).setRequestConditions(mac)))
             .verifyError(BlobStorageException.class);
     }
 
@@ -1599,7 +1577,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void getBlobNameAndBuildClient(String originalBlobName, String finalBlobName) {
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(originalBlobName);
         PageBlobAsyncClient blockClient = ccAsync.getBlobAsyncClient(client.getBlobName()).getPageBlobAsyncClient();
-        assertEquals(finalBlobName, blockClient.getBlobName());
+        assertEquals(blockClient.getBlobName(), finalBlobName);
     }
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
@@ -1635,7 +1613,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .buildPageBlobAsyncClient();
 
         StepVerifier.create(specialBlob.getPropertiesWithResponse(null))
-            .assertNext(r ->  assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
+            .assertNext(r ->  assertEquals(r.getHeaders().getValue(X_MS_VERSION), "2017-11-09"))
             .verifyComplete();
     }
 

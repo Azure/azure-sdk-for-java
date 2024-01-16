@@ -5,56 +5,53 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Schema for all properties of Recording Chunk Information.
- */
+/** Schema for all properties of Recording Chunk Information. */
 @Fluent
-public final class AcsRecordingChunkInfoProperties implements JsonSerializable<AcsRecordingChunkInfoProperties> {
+public final class AcsRecordingChunkInfoProperties {
     /*
      * The documentId of the recording chunk
      */
+    @JsonProperty(value = "documentId")
     private String documentId;
 
     /*
      * The index of the recording chunk
      */
+    @JsonProperty(value = "index")
     private Long index;
 
     /*
      * The reason for ending the recording chunk
      */
+    @JsonProperty(value = "endReason")
     private String endReason;
 
     /*
      * The location of the metadata for this chunk
      */
+    @JsonProperty(value = "metadataLocation")
     private String metadataLocation;
 
     /*
      * The location of the content for this chunk
      */
+    @JsonProperty(value = "contentLocation")
     private String contentLocation;
 
     /*
      * The location to delete all chunk storage
      */
+    @JsonProperty(value = "deleteLocation")
     private String deleteLocation;
 
-    /**
-     * Creates an instance of AcsRecordingChunkInfoProperties class.
-     */
-    public AcsRecordingChunkInfoProperties() {
-    }
+    /** Creates an instance of AcsRecordingChunkInfoProperties class. */
+    public AcsRecordingChunkInfoProperties() {}
 
     /**
      * Get the documentId property: The documentId of the recording chunk.
-     * 
+     *
      * @return the documentId value.
      */
     public String getDocumentId() {
@@ -63,7 +60,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the documentId property: The documentId of the recording chunk.
-     * 
+     *
      * @param documentId the documentId value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -74,7 +71,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Get the index property: The index of the recording chunk.
-     * 
+     *
      * @return the index value.
      */
     public Long getIndex() {
@@ -83,7 +80,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the index property: The index of the recording chunk.
-     * 
+     *
      * @param index the index value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -94,7 +91,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Get the endReason property: The reason for ending the recording chunk.
-     * 
+     *
      * @return the endReason value.
      */
     public String getEndReason() {
@@ -103,7 +100,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the endReason property: The reason for ending the recording chunk.
-     * 
+     *
      * @param endReason the endReason value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -114,7 +111,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Get the metadataLocation property: The location of the metadata for this chunk.
-     * 
+     *
      * @return the metadataLocation value.
      */
     public String getMetadataLocation() {
@@ -123,7 +120,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the metadataLocation property: The location of the metadata for this chunk.
-     * 
+     *
      * @param metadataLocation the metadataLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -134,7 +131,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Get the contentLocation property: The location of the content for this chunk.
-     * 
+     *
      * @return the contentLocation value.
      */
     public String getContentLocation() {
@@ -143,7 +140,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the contentLocation property: The location of the content for this chunk.
-     * 
+     *
      * @param contentLocation the contentLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -154,7 +151,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Get the deleteLocation property: The location to delete all chunk storage.
-     * 
+     *
      * @return the deleteLocation value.
      */
     public String getDeleteLocation() {
@@ -163,61 +160,12 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
 
     /**
      * Set the deleteLocation property: The location to delete all chunk storage.
-     * 
+     *
      * @param deleteLocation the deleteLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
     public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
         this.deleteLocation = deleteLocation;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("documentId", this.documentId);
-        jsonWriter.writeNumberField("index", this.index);
-        jsonWriter.writeStringField("endReason", this.endReason);
-        jsonWriter.writeStringField("metadataLocation", this.metadataLocation);
-        jsonWriter.writeStringField("contentLocation", this.contentLocation);
-        jsonWriter.writeStringField("deleteLocation", this.deleteLocation);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AcsRecordingChunkInfoProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsRecordingChunkInfoProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsRecordingChunkInfoProperties.
-     */
-    public static AcsRecordingChunkInfoProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsRecordingChunkInfoProperties deserializedAcsRecordingChunkInfoProperties
-                = new AcsRecordingChunkInfoProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("documentId".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.documentId = reader.getString();
-                } else if ("index".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.index = reader.getNullable(JsonReader::getLong);
-                } else if ("endReason".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.endReason = reader.getString();
-                } else if ("metadataLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.metadataLocation = reader.getString();
-                } else if ("contentLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.contentLocation = reader.getString();
-                } else if ("deleteLocation".equals(fieldName)) {
-                    deserializedAcsRecordingChunkInfoProperties.deleteLocation = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAcsRecordingChunkInfoProperties;
-        });
     }
 }

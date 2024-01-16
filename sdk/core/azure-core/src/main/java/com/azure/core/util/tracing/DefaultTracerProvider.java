@@ -6,7 +6,6 @@ package com.azure.core.util.tracing;
 import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -33,8 +32,7 @@ final class DefaultTracerProvider implements TracerProvider {
         Iterator<Tracer> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
             Tracer tracer = iterator.next();
-            LOGGER.log(LogLevel.INFORMATIONAL,
-                () -> "Found Tracer implementation on the classpath: " + tracer.getClass().getName());
+            LOGGER.info("Found Tracer implementation on the classpath: {}", tracer.getClass().getName());
             return tracer;
         }
 

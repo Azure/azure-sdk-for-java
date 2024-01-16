@@ -20,9 +20,9 @@ com.fasterxml.jackson.module:jackson-module-parameter-names;2.15.3
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.3
 com.fasterxml.jackson.module:jackson-module-afterburner;2.15.3
 com.fasterxml.woodstox:woodstox-core;6.4.0
-com.github.spotbugs:spotbugs;4.8.3
-com.github.spotbugs:spotbugs-annotations;4.8.3
-com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
+com.github.spotbugs:spotbugs;4.8.0
+com.github.spotbugs:spotbugs-annotations;4.8.0
+com.github.spotbugs:spotbugs-maven-plugin;4.7.3.6
 com.google.code.gson:gson;2.10.1
 com.google.guava:guava;32.0.1-jre
 com.h2database:h2;2.2.224
@@ -286,7 +286,7 @@ org.apache.maven:maven-project;2.2.1
 org.apache.maven.plugin-tools:maven-plugin-annotations;3.6.4
 org.apache.maven.plugins:maven-antrun-plugin;3.1.0
 org.apache.maven.plugins:maven-assembly-plugin;3.6.0
-org.apache.maven.plugins:maven-checkstyle-plugin;3.3.1
+org.apache.maven.plugins:maven-checkstyle-plugin;3.1.2
 org.apache.maven.plugins:maven-clean-plugin;3.3.2
 org.apache.maven.plugins:maven-compiler-plugin;3.11.0
 org.apache.maven.plugins:maven-eclipse-plugin;2.8

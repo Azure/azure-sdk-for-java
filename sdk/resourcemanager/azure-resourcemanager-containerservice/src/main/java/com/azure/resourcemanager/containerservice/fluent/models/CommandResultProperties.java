@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The results of a run command.
- */
+/** The results of a run command. */
 @Immutable
 public final class CommandResultProperties {
     /*
@@ -49,9 +47,7 @@ public final class CommandResultProperties {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /**
-     * Creates an instance of CommandResultProperties class.
-     */
+    /** Creates an instance of CommandResultProperties class. */
     public CommandResultProperties() {
     }
 

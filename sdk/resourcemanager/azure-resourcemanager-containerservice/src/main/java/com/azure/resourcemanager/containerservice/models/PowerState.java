@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the Power State of the cluster.
- */
+/** Describes the Power State of the cluster. */
 @Fluent
 public final class PowerState {
     /*
@@ -18,9 +16,7 @@ public final class PowerState {
     @JsonProperty(value = "code")
     private Code code;
 
-    /**
-     * Creates an instance of PowerState class.
-     */
+    /** Creates an instance of PowerState class. */
     public PowerState() {
     }
 

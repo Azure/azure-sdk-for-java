@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the properties of a Operation value.
- */
+/** Describes the properties of a Operation value. */
 @Immutable
 public final class OperationValueInner {
     /*
@@ -30,9 +28,7 @@ public final class OperationValueInner {
     @JsonProperty(value = "display")
     private OperationValueDisplay innerDisplay;
 
-    /**
-     * Creates an instance of OperationValueInner class.
-     */
+    /** Creates an instance of OperationValueInner class. */
     public OperationValueInner() {
     }
 

@@ -10,9 +10,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-/**
- * Implementation of Jackson's {@link JsonSerializer} that is capable of handling {@link JsonSerializable} types.
- */
 @SuppressWarnings("rawtypes")
 public class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> {
     @Override

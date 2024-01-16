@@ -7,32 +7,25 @@ package com.azure.security.keyvault.administration.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The role type.
- */
+/** The role type. */
 public final class KeyVaultRoleType extends ExpandableStringEnum<KeyVaultRoleType> {
-    /**
-     * Built in role.
-     */
+    /** Built in role. */
     public static final KeyVaultRoleType BUILT_IN_ROLE = fromString("AKVBuiltInRole");
 
-    /**
-     * Custom role.
-     */
+    /** Custom role. */
     public static final KeyVaultRoleType CUSTOM_ROLE = fromString("CustomRole");
 
     /**
      * Creates a new instance of KeyVaultRoleType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyVaultRoleType() {
-    }
+    public KeyVaultRoleType() {}
 
     /**
      * Creates or finds a KeyVaultRoleType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding KeyVaultRoleType.
      */
@@ -42,7 +35,7 @@ public final class KeyVaultRoleType extends ExpandableStringEnum<KeyVaultRoleTyp
 
     /**
      * Gets known KeyVaultRoleType values.
-     * 
+     *
      * @return known KeyVaultRoleType values.
      */
     public static Collection<KeyVaultRoleType> values() {

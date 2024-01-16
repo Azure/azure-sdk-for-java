@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A domain name that AKS agent nodes are reaching at.
- */
+/** A domain name that AKS agent nodes are reaching at. */
 @Fluent
 public final class EndpointDependency {
     /*
@@ -25,9 +23,7 @@ public final class EndpointDependency {
     @JsonProperty(value = "endpointDetails")
     private List<EndpointDetail> endpointDetails;
 
-    /**
-     * Creates an instance of EndpointDependency class.
-     */
+    /** Creates an instance of EndpointDependency class. */
     public EndpointDependency() {
     }
 

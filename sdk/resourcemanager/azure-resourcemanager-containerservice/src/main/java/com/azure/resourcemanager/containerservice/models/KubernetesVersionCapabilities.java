@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Capabilities on this Kubernetes version.
- */
+/** Capabilities on this Kubernetes version. */
 @Fluent
 public final class KubernetesVersionCapabilities {
     /*
@@ -19,9 +17,7 @@ public final class KubernetesVersionCapabilities {
     @JsonProperty(value = "supportPlan")
     private List<KubernetesSupportPlan> supportPlan;
 
-    /**
-     * Creates an instance of KubernetesVersionCapabilities class.
-     */
+    /** Creates an instance of KubernetesVersionCapabilities class. */
     public KubernetesVersionCapabilities() {
     }
 

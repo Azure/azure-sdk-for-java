@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Mesh revision profile properties for a mesh.
- */
+/** Mesh revision profile properties for a mesh. */
 @Fluent
 public final class MeshRevisionProfileProperties {
     /*
@@ -19,9 +17,7 @@ public final class MeshRevisionProfileProperties {
     @JsonProperty(value = "meshRevisions")
     private List<MeshRevision> meshRevisions;
 
-    /**
-     * Creates an instance of MeshRevisionProfileProperties class.
-     */
+    /** Creates an instance of MeshRevisionProfileProperties class. */
     public MeshRevisionProfileProperties() {
     }
 

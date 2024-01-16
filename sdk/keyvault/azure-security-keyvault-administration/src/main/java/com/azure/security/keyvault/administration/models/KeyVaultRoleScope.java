@@ -8,19 +8,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 
-/**
- * The role scope.
- */
+/** The role scope. */
 public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleScope> {
 
-    /**
-     * Global scope.
-     */
+    /** Global scope. */
     public static final KeyVaultRoleScope GLOBAL = fromString("/");
 
-    /**
-     * Keys scope.
-     */
+    /** Keys scope. */
     public static final KeyVaultRoleScope KEYS = fromString("/keys");
 
     /**
@@ -29,8 +23,7 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyVaultRoleScope() {
-    }
+    public KeyVaultRoleScope() {}
 
     /**
      * Creates or finds a KeyVaultRoleScope from its string representation.
@@ -52,13 +45,11 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
     }
 
     /**
-     * /**
-     * Creates of finds a {@link KeyVaultRoleScope} from its string representation.
+     * /** Creates of finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param url A string representing a URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
-     * @throws IllegalArgumentException If the given {@code url} is malformed.
-     * /
+     * @throws IllegalArgumentException If the given {@code url} is malformed. /
      */
     public static KeyVaultRoleScope fromUrl(String url) {
         try {
@@ -69,12 +60,10 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
     }
 
     /**
-     * /**
-     * Creates of finds a {@link KeyVaultRoleScope} from its string representation.
+     * /** Creates of finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param url A URL containing the name of the scope to look for.
-     * @return The corresponding {@link KeyVaultRoleScope}.
-     * /
+     * @return The corresponding {@link KeyVaultRoleScope}. /
      */
     public static KeyVaultRoleScope fromUrl(URL url) {
         return fromString(url.getPath());

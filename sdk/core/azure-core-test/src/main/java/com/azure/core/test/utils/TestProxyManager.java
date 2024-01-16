@@ -118,7 +118,6 @@ public final class TestProxyManager {
                 TestProxyUtils.checkForTestProxyErrors(response);
             } catch (Exception ignored) {
             }
-
             Thread.sleep(waitTime.toMillis());
         }
         return false;

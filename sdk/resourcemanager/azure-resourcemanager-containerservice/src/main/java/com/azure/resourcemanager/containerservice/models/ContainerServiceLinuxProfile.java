@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for Linux VMs in the container service cluster.
- */
+/** Profile for Linux VMs in the container service cluster. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
     /*
@@ -25,9 +23,7 @@ public final class ContainerServiceLinuxProfile {
     @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
 
-    /**
-     * Creates an instance of ContainerServiceLinuxProfile class.
-     */
+    /** Creates an instance of ContainerServiceLinuxProfile class. */
     public ContainerServiceLinuxProfile() {
     }
 
@@ -78,12 +74,16 @@ public final class ContainerServiceLinuxProfile {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
         }
         if (ssh() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ssh in model ContainerServiceLinuxProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ssh in model ContainerServiceLinuxProfile"));
         } else {
             ssh().validate();
         }

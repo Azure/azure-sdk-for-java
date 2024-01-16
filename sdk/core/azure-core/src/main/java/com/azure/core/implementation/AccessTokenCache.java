@@ -41,16 +41,15 @@ public final class AccessTokenCache {
     private final TokenCredential tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
-    private final Supplier<Mono<AccessToken>> tokenSupplierAsync;
-    private final Supplier<AccessToken> tokenSupplierSync;
+    private Supplier<Mono<AccessToken>> tokenSupplierAsync;
+    private Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
     // Used for sync flow.
-    private final Lock lock;
+    private Lock lock;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
-     * @param tokenCredential the token credential to be used to acquire the token.
      */
     public AccessTokenCache(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
@@ -68,7 +67,6 @@ public final class AccessTokenCache {
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
-     * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
@@ -82,7 +80,6 @@ public final class AccessTokenCache {
      * Synchronously get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
-     * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {

@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Role definition permissions.
- */
+/** Role definition permissions. */
 @Fluent
 public final class Permission implements JsonSerializable<Permission> {
     /*
@@ -41,15 +39,12 @@ public final class Permission implements JsonSerializable<Permission> {
      */
     private List<KeyVaultDataAction> notDataActions;
 
-    /**
-     * Creates an instance of Permission class.
-     */
-    public Permission() {
-    }
+    /** Creates an instance of Permission class. */
+    public Permission() {}
 
     /**
      * Get the actions property: Action permissions that are granted.
-     * 
+     *
      * @return the actions value.
      */
     public List<String> getActions() {
@@ -58,7 +53,7 @@ public final class Permission implements JsonSerializable<Permission> {
 
     /**
      * Set the actions property: Action permissions that are granted.
-     * 
+     *
      * @param actions the actions value to set.
      * @return the Permission object itself.
      */
@@ -70,7 +65,7 @@ public final class Permission implements JsonSerializable<Permission> {
     /**
      * Get the notActions property: Action permissions that are excluded but not denied. They may be granted by other
      * role definitions assigned to a principal.
-     * 
+     *
      * @return the notActions value.
      */
     public List<String> getNotActions() {
@@ -80,7 +75,7 @@ public final class Permission implements JsonSerializable<Permission> {
     /**
      * Set the notActions property: Action permissions that are excluded but not denied. They may be granted by other
      * role definitions assigned to a principal.
-     * 
+     *
      * @param notActions the notActions value to set.
      * @return the Permission object itself.
      */
@@ -91,7 +86,7 @@ public final class Permission implements JsonSerializable<Permission> {
 
     /**
      * Get the dataActions property: Data action permissions that are granted.
-     * 
+     *
      * @return the dataActions value.
      */
     public List<KeyVaultDataAction> getDataActions() {
@@ -100,7 +95,7 @@ public final class Permission implements JsonSerializable<Permission> {
 
     /**
      * Set the dataActions property: Data action permissions that are granted.
-     * 
+     *
      * @param dataActions the dataActions value to set.
      * @return the Permission object itself.
      */
@@ -110,9 +105,9 @@ public final class Permission implements JsonSerializable<Permission> {
     }
 
     /**
-     * Get the notDataActions property: Data action permissions that are excluded but not denied. They may be granted
-     * by other role definitions assigned to a principal.
-     * 
+     * Get the notDataActions property: Data action permissions that are excluded but not denied. They may be granted by
+     * other role definitions assigned to a principal.
+     *
      * @return the notDataActions value.
      */
     public List<KeyVaultDataAction> getNotDataActions() {
@@ -120,9 +115,9 @@ public final class Permission implements JsonSerializable<Permission> {
     }
 
     /**
-     * Set the notDataActions property: Data action permissions that are excluded but not denied. They may be granted
-     * by other role definitions assigned to a principal.
-     * 
+     * Set the notDataActions property: Data action permissions that are excluded but not denied. They may be granted by
+     * other role definitions assigned to a principal.
+     *
      * @param notDataActions the notDataActions value to set.
      * @return the Permission object itself.
      */
@@ -136,48 +131,53 @@ public final class Permission implements JsonSerializable<Permission> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("notActions", this.notActions, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("dataActions", this.dataActions,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        jsonWriter.writeArrayField("notDataActions", this.notDataActions,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField(
+                "dataActions",
+                this.dataActions,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField(
+                "notDataActions",
+                this.notDataActions,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of Permission from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Permission if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the Permission.
      */
     public static Permission fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Permission deserializedPermission = new Permission();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    Permission deserializedPermission = new Permission();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("actions".equals(fieldName)) {
-                    List<String> actions = reader.readArray(reader1 -> reader1.getString());
-                    deserializedPermission.actions = actions;
-                } else if ("notActions".equals(fieldName)) {
-                    List<String> notActions = reader.readArray(reader1 -> reader1.getString());
-                    deserializedPermission.notActions = notActions;
-                } else if ("dataActions".equals(fieldName)) {
-                    List<KeyVaultDataAction> dataActions
-                        = reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
-                    deserializedPermission.dataActions = dataActions;
-                } else if ("notDataActions".equals(fieldName)) {
-                    List<KeyVaultDataAction> notDataActions
-                        = reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
-                    deserializedPermission.notDataActions = notDataActions;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("actions".equals(fieldName)) {
+                            List<String> actions = reader.readArray(reader1 -> reader1.getString());
+                            deserializedPermission.actions = actions;
+                        } else if ("notActions".equals(fieldName)) {
+                            List<String> notActions = reader.readArray(reader1 -> reader1.getString());
+                            deserializedPermission.notActions = notActions;
+                        } else if ("dataActions".equals(fieldName)) {
+                            List<KeyVaultDataAction> dataActions =
+                                    reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
+                            deserializedPermission.dataActions = dataActions;
+                        } else if ("notDataActions".equals(fieldName)) {
+                            List<KeyVaultDataAction> notDataActions =
+                                    reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
+                            deserializedPermission.notDataActions = notDataActions;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedPermission;
-        });
+                    return deserializedPermission;
+                });
     }
 }

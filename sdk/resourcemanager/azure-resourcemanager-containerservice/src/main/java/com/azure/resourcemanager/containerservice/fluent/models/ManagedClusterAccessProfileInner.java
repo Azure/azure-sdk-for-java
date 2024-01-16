@@ -10,9 +10,7 @@ import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Managed cluster Access Profile.
- */
+/** Managed cluster Access Profile. */
 @Fluent
 public final class ManagedClusterAccessProfileInner extends Resource {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -29,9 +27,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of ManagedClusterAccessProfileInner class.
-     */
+    /** Creates an instance of ManagedClusterAccessProfileInner class. */
     public ManagedClusterAccessProfileInner() {
     }
 
@@ -53,18 +49,14 @@ public final class ManagedClusterAccessProfileInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedClusterAccessProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedClusterAccessProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);

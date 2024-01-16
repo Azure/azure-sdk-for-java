@@ -3,7 +3,9 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
+import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -48,6 +50,10 @@ final class LocalFileWriter {
                 "Writing telemetry to disk (telemetry is discarded on failure)");
     }
 
+    @SuppressFBWarnings(
+        value = "SECPTI", // Potential Path Traversal
+        justification =
+            "The constructed file path cannot be controlled by an end user of the instrumented application")
     void writeToDisk(String connectionString, List<ByteBuffer> buffers, String originalErrorMessage) {
         long size = getTotalSizeOfPersistedFiles(telemetryFolder);
         if (size >= diskPersistenceMaxSizeBytes) {
@@ -116,6 +122,10 @@ final class LocalFileWriter {
         }
     }
 
+    @SuppressFBWarnings(
+        value = "SECPTI", // Potential Path Traversal
+        justification =
+            "The constructed file path cannot be controlled by an end user of the instrumented application")
     private static File createTempFile(File telemetryFolder) throws IOException {
         String prefix = System.currentTimeMillis() + "-";
         return File.createTempFile(prefix, null, telemetryFolder);

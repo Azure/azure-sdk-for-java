@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The FullBackupHeaders model.
- */
+/** The FullBackupHeaders model. */
 @Fluent
 public final class FullBackupHeaders {
     /*
@@ -28,7 +26,7 @@ public final class FullBackupHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FullBackupHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FullBackupHeaders(HttpHeaders rawHeaders) {
@@ -41,7 +39,7 @@ public final class FullBackupHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     * 
+     *
      * @return the retryAfter value.
      */
     public Integer getRetryAfter() {
@@ -50,7 +48,7 @@ public final class FullBackupHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     * 
+     *
      * @param retryAfter the retryAfter value to set.
      * @return the FullBackupHeaders object itself.
      */
@@ -61,7 +59,7 @@ public final class FullBackupHeaders {
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.
-     * 
+     *
      * @return the azureAsyncOperation value.
      */
     public String getAzureAsyncOperation() {
@@ -70,7 +68,7 @@ public final class FullBackupHeaders {
 
     /**
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
-     * 
+     *
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the FullBackupHeaders object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Microsoft Defender settings for the security profile threat detection.
- */
+/** Microsoft Defender settings for the security profile threat detection. */
 @Fluent
 public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
     /*
@@ -18,9 +16,7 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /**
-     * Creates an instance of ManagedClusterSecurityProfileDefenderSecurityMonitoring class.
-     */
+    /** Creates an instance of ManagedClusterSecurityProfileDefenderSecurityMonitoring class. */
     public ManagedClusterSecurityProfileDefenderSecurityMonitoring() {
     }
 

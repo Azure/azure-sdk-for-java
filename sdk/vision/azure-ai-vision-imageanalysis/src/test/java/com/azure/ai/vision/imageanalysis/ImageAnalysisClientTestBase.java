@@ -104,6 +104,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         Boolean fromUrl = imageSource.startsWith("http");
         URL imageUrl = null;
+        BinaryData imageBuffer = null;
         Boolean genderNeutralCaption = null;
         List<Double> aspectRatios = null;
 
@@ -170,6 +171,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         Boolean fromUrl = imageSource.startsWith("http");
         ImageAnalysisResult result = null;
         URL imageUrl = null;
+        BinaryData imageBuffer = null;
 
         if (sync) {
             try {

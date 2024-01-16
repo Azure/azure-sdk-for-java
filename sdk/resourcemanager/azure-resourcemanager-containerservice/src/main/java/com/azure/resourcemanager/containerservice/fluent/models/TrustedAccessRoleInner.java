@@ -9,9 +9,7 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Trusted access role definition.
- */
+/** Trusted access role definition. */
 @Immutable
 public final class TrustedAccessRoleInner {
     /*
@@ -33,9 +31,7 @@ public final class TrustedAccessRoleInner {
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrustedAccessRoleRule> rules;
 
-    /**
-     * Creates an instance of TrustedAccessRoleInner class.
-     */
+    /** Creates an instance of TrustedAccessRoleInner class. */
     public TrustedAccessRoleInner() {
     }
 

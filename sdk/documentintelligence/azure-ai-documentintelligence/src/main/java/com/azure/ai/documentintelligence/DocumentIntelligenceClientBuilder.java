@@ -4,7 +4,7 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
+import com.azure.ai.documentintelligence.implementation.DocumentAnalysisClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the DocumentIntelligenceClient type.
+ * A builder for creating a new instance of the DocumentAnalysisClient type.
  */
 @ServiceClientBuilder(serviceClients = { DocumentIntelligenceClient.class, DocumentIntelligenceAsyncClient.class })
 public final class DocumentIntelligenceClientBuilder implements HttpTrait<DocumentIntelligenceClientBuilder>,
@@ -68,7 +68,7 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the DocumentIntelligenceClientBuilder.
+     * Create an instance of the DocumentAnalysisClientBuilder.
      */
     @Generated
     public DocumentIntelligenceClientBuilder() {
@@ -241,9 +241,9 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
-     * @return the DocumentIntelligenceClientBuilder.
+     * @return the DocumentAnalysisClientBuilder.
      */
     @Generated
     public DocumentIntelligenceClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
@@ -259,9 +259,9 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
-     * @return the DocumentIntelligenceClientBuilder.
+     * @return the DocumentAnalysisClientBuilder.
      */
     @Generated
     public DocumentIntelligenceClientBuilder retryPolicy(RetryPolicy retryPolicy) {
@@ -270,16 +270,16 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
     }
 
     /**
-     * Builds an instance of DocumentIntelligenceClientImpl with the provided parameters.
-     * 
-     * @return an instance of DocumentIntelligenceClientImpl.
+     * Builds an instance of DocumentAnalysisClientImpl with the provided parameters.
+     *
+     * @return an instance of DocumentAnalysisClientImpl.
      */
     @Generated
-    private DocumentIntelligenceClientImpl buildInnerClient() {
+    private DocumentAnalysisClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DocumentIntelligenceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : DocumentIntelligenceServiceVersion.getLatest();
-        DocumentIntelligenceClientImpl client = new DocumentIntelligenceClientImpl(localPipeline,
+        DocumentAnalysisClientImpl client = new DocumentAnalysisClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -324,9 +324,9 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
     }
 
     /**
-     * Builds an instance of DocumentIntelligenceAsyncClient class.
-     * 
-     * @return an instance of DocumentIntelligenceAsyncClient.
+     * Builds an instance of DocumentAnalysisAsyncClient class.
+     *
+     * @return an instance of DocumentAnalysisAsyncClient.
      */
     @Generated
     public DocumentIntelligenceAsyncClient buildAsyncClient() {
@@ -334,9 +334,9 @@ public final class DocumentIntelligenceClientBuilder implements HttpTrait<Docume
     }
 
     /**
-     * Builds an instance of DocumentIntelligenceClient class.
-     * 
-     * @return an instance of DocumentIntelligenceClient.
+     * Builds an instance of DocumentAnalysisClient class.
+     *
+     * @return an instance of DocumentAnalysisClient.
      */
     @Generated
     public DocumentIntelligenceClient buildClient() {

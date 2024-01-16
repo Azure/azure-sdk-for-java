@@ -9,9 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * SSH configuration for Linux-based VMs running on Azure.
- */
+/** SSH configuration for Linux-based VMs running on Azure. */
 @Fluent
 public final class ContainerServiceSshConfiguration {
     /*
@@ -20,9 +18,7 @@ public final class ContainerServiceSshConfiguration {
     @JsonProperty(value = "publicKeys", required = true)
     private List<ContainerServiceSshPublicKey> publicKeys;
 
-    /**
-     * Creates an instance of ContainerServiceSshConfiguration class.
-     */
+    /** Creates an instance of ContainerServiceSshConfiguration class. */
     public ContainerServiceSshConfiguration() {
     }
 
@@ -55,8 +51,10 @@ public final class ContainerServiceSshConfiguration {
      */
     public void validate() {
         if (publicKeys() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
         } else {
             publicKeys().forEach(e -> e.validate());
         }

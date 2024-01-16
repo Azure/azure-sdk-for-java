@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'.
- */
+/** For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'. */
 @Fluent
 public final class AbsoluteMonthlySchedule {
     /*
@@ -24,9 +22,7 @@ public final class AbsoluteMonthlySchedule {
     @JsonProperty(value = "dayOfMonth", required = true)
     private int dayOfMonth;
 
-    /**
-     * Creates an instance of AbsoluteMonthlySchedule class.
-     */
+    /** Creates an instance of AbsoluteMonthlySchedule class. */
     public AbsoluteMonthlySchedule() {
     }
 

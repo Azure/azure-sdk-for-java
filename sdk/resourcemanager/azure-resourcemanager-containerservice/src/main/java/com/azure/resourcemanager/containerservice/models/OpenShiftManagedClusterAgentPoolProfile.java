@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Defines the configuration of the OpenShift cluster VMs.
- */
+/** Defines the configuration of the OpenShift cluster VMs. */
 @Fluent
 public final class OpenShiftManagedClusterAgentPoolProfile {
     /*
@@ -49,9 +47,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     @JsonProperty(value = "role")
     private OpenShiftAgentPoolProfileRole role;
 
-    /**
-     * Creates an instance of OpenShiftManagedClusterAgentPoolProfile class.
-     */
+    /** Creates an instance of OpenShiftManagedClusterAgentPoolProfile class. */
     public OpenShiftManagedClusterAgentPoolProfile() {
     }
 
@@ -182,12 +178,16 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
         }
         if (vmSize() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
         }
     }
 

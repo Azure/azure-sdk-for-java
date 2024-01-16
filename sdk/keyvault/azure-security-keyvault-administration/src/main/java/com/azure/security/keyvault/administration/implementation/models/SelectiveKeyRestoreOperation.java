@@ -14,9 +14,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-/**
- * Selective Key Restore operation.
- */
+/** Selective Key Restore operation. */
 @Fluent
 public final class SelectiveKeyRestoreOperation implements JsonSerializable<SelectiveKeyRestoreOperation> {
     /*
@@ -49,15 +47,12 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
      */
     private Long endTime;
 
-    /**
-     * Creates an instance of SelectiveKeyRestoreOperation class.
-     */
-    public SelectiveKeyRestoreOperation() {
-    }
+    /** Creates an instance of SelectiveKeyRestoreOperation class. */
+    public SelectiveKeyRestoreOperation() {}
 
     /**
      * Get the status property: Status of the restore operation.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -66,7 +61,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the status property: Status of the restore operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -77,7 +72,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Get the statusDetails property: The status details of restore operation.
-     * 
+     *
      * @return the statusDetails value.
      */
     public String getStatusDetails() {
@@ -86,7 +81,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the statusDetails property: The status details of restore operation.
-     * 
+     *
      * @param statusDetails the statusDetails value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -97,7 +92,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Get the error property: Error encountered, if any, during the selective key restore operation.
-     * 
+     *
      * @return the error value.
      */
     public Error getError() {
@@ -106,7 +101,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the error property: Error encountered, if any, during the selective key restore operation.
-     * 
+     *
      * @param error the error value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -117,7 +112,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Get the jobId property: Identifier for the selective key restore operation.
-     * 
+     *
      * @return the jobId value.
      */
     public String getJobId() {
@@ -126,7 +121,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the jobId property: Identifier for the selective key restore operation.
-     * 
+     *
      * @param jobId the jobId value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -137,7 +132,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Get the startTime property: The start time of the restore operation.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -149,7 +144,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the startTime property: The start time of the restore operation.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -164,7 +159,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Get the endTime property: The end time of the restore operation.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -176,7 +171,7 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Set the endTime property: The end time of the restore operation.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -203,37 +198,40 @@ public final class SelectiveKeyRestoreOperation implements JsonSerializable<Sele
 
     /**
      * Reads an instance of SelectiveKeyRestoreOperation from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SelectiveKeyRestoreOperation if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SelectiveKeyRestoreOperation.
      */
     public static SelectiveKeyRestoreOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SelectiveKeyRestoreOperation deserializedSelectiveKeyRestoreOperation = new SelectiveKeyRestoreOperation();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    SelectiveKeyRestoreOperation deserializedSelectiveKeyRestoreOperation =
+                            new SelectiveKeyRestoreOperation();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("status".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.status = reader.getString();
-                } else if ("statusDetails".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.statusDetails = reader.getString();
-                } else if ("error".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.error = Error.fromJson(reader);
-                } else if ("jobId".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.jobId = reader.getString();
-                } else if ("startTime".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.startTime = reader.getNullable(JsonReader::getLong);
-                } else if ("endTime".equals(fieldName)) {
-                    deserializedSelectiveKeyRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("status".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.status = reader.getString();
+                        } else if ("statusDetails".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.statusDetails = reader.getString();
+                        } else if ("error".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.error = Error.fromJson(reader);
+                        } else if ("jobId".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.jobId = reader.getString();
+                        } else if ("startTime".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.startTime =
+                                    reader.getNullable(JsonReader::getLong);
+                        } else if ("endTime".equals(fieldName)) {
+                            deserializedSelectiveKeyRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedSelectiveKeyRestoreOperation;
-        });
+                    return deserializedSelectiveKeyRestoreOperation;
+                });
     }
 }

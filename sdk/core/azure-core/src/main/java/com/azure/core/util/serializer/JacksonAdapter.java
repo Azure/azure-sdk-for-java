@@ -15,7 +15,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -251,7 +250,7 @@ public class JacksonAdapter implements SerializerAdapter {
                 try {
                     return removeLeadingAndTrailingQuotes(serialize(object, SerializerEncoding.JSON));
                 } catch (IOException ex) {
-                    LOGGER.log(LogLevel.WARNING, () -> "Failed to serialize " + object.getClass() + " to JSON.", ex);
+                    LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
                     return null;
                 }
             });

@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.Closeable;
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -187,14 +188,16 @@ import java.util.Objects;
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubProducerClient implements Closeable {
     private final EventHubProducerAsyncClient producer;
+    private final Duration tryTimeout;
 
     /**
      * Creates a new instance of {@link EventHubProducerClient} that sends messages to an Azure Event Hub.
      *
      * @throws NullPointerException if {@code producer} or {@code tryTimeout} is null.
      */
-    EventHubProducerClient(EventHubProducerAsyncClient producer) {
+    EventHubProducerClient(EventHubProducerAsyncClient producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer, "'producer' cannot be null.");
+        this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
     }
 
     /**
@@ -223,7 +226,7 @@ public class EventHubProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getEventHubProperties() {
-        return producer.getEventHubProperties().block();
+        return producer.getEventHubProperties().block(tryTimeout);
     }
 
     /**
@@ -246,7 +249,7 @@ public class EventHubProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return producer.getPartitionProperties(partitionId).block();
+        return producer.getPartitionProperties(partitionId).block(tryTimeout);
     }
 
     /**
@@ -256,7 +259,7 @@ public class EventHubProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch() {
-        return producer.createBatch().block();
+        return producer.createBatch().block(tryTimeout);
     }
 
     /**
@@ -270,7 +273,7 @@ public class EventHubProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch(CreateBatchOptions options) {
-        return producer.createBatch(options).block();
+        return producer.createBatch(options).block(tryTimeout);
     }
 
     /**

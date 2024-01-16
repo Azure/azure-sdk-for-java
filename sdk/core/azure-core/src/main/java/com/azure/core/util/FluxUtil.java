@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
 import com.azure.core.implementation.ByteBufferCollector;
-import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -672,10 +671,12 @@ public final class FluxUtil {
 
         return content.publishOn(Schedulers.boundedElastic())
             .map(buffer -> {
-                try {
-                    ImplUtils.fullyWriteBuffer(buffer, channel);
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
+                while (buffer.hasRemaining()) {
+                    try {
+                        channel.write(buffer);
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    }
                 }
                 return buffer;
             }).then();

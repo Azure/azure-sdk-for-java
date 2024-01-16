@@ -55,7 +55,7 @@ public class SamplePeopleImageFile {
         try {
             // Detect people in an input image buffer. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.PEOPLE), // visualFeatures
                 null); // options: There are no options for PEOPLE visual feature
 

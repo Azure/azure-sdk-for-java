@@ -581,7 +581,7 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        assertEquals("this is an exception", recordEventsSpan.toSpanData().getStatus().getDescription());
+        assertEquals("", recordEventsSpan.toSpanData().getStatus().getDescription());
 
         List<EventData> events = recordEventsSpan.toSpanData().getEvents();
         assertEquals(1, events.size());
@@ -1189,7 +1189,7 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
-        assertEquals("bar", spanData.getStatus().getDescription());
+        assertEquals("", spanData.getStatus().getDescription());
         assertEquals(1, spanData.getEvents().size());
 
         EventData exceptionEvent = spanData.getEvents().get(0);

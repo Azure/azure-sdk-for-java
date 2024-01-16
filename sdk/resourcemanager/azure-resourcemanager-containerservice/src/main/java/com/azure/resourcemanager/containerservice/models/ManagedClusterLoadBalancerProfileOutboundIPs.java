@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Desired outbound IP resources for the cluster load balancer.
- */
+/** Desired outbound IP resources for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     /*
@@ -19,9 +17,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     @JsonProperty(value = "publicIPs")
     private List<ResourceReference> publicIPs;
 
-    /**
-     * Creates an instance of ManagedClusterLoadBalancerProfileOutboundIPs class.
-     */
+    /** Creates an instance of ManagedClusterLoadBalancerProfileOutboundIPs class. */
     public ManagedClusterLoadBalancerProfileOutboundIPs() {
     }
 

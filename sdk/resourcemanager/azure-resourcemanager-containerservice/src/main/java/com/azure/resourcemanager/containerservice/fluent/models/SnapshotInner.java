@@ -14,9 +14,7 @@ import com.azure.resourcemanager.containerservice.models.SnapshotType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * A node pool snapshot resource.
- */
+/** A node pool snapshot resource. */
 @Fluent
 public final class SnapshotInner extends Resource {
     /*
@@ -31,9 +29,7 @@ public final class SnapshotInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Creates an instance of SnapshotInner class.
-     */
+    /** Creates an instance of SnapshotInner class. */
     public SnapshotInner() {
     }
 
@@ -55,18 +51,14 @@ public final class SnapshotInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SnapshotInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SnapshotInner withTags(Map<String, String> tags) {
         super.withTags(tags);

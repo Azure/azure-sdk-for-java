@@ -7,7 +7,6 @@ import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -38,8 +37,8 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.log(LogLevel.VERBOSE, () -> PROPERTY_AZURE_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
-                    + "number. Using 3 retries as the maximum.");
+                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                    PROPERTY_AZURE_REQUEST_RETRY_COUNT);
             }
         }
 

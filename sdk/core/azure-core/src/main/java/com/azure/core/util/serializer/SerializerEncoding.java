@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,7 +31,9 @@ public enum SerializerEncoding {
     TEXT;
 
     private static final ClientLogger LOGGER = new ClientLogger(SerializerEncoding.class);
+    private static final String CONTENT_TYPE = "Content-Type";
     private static final Map<String, SerializerEncoding> SUPPORTED_MIME_TYPES;
+    private static final SerializerEncoding DEFAULT_ENCODING = JSON;
 
 
     static {
@@ -58,8 +59,8 @@ public enum SerializerEncoding {
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
         final String mimeContentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         if (CoreUtils.isNullOrEmpty(mimeContentType)) {
-            LOGGER.verbose("'Content-Type' not found. Returning default encoding: JSON");
-            return JSON;
+            LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);
+            return DEFAULT_ENCODING;
         }
 
         int contentTypeEnd = mimeContentType.indexOf(';');
@@ -71,9 +72,9 @@ public enum SerializerEncoding {
 
         int contentTypeTypeSplit = contentType.indexOf('/');
         if (contentTypeTypeSplit == -1) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Content-Type '" + contentType + "' does not match mime-type formatting "
-                + "'type'/'subtype'. Returning default: JSON");
-            return JSON;
+            LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
+                + "Returning default: {}", contentType, DEFAULT_ENCODING);
+            return DEFAULT_ENCODING;
         }
 
         // Check the suffix if it does not match the full types.
@@ -82,7 +83,7 @@ public enum SerializerEncoding {
         final String subtype = contentType.substring(contentTypeTypeSplit + 1);
         final int lastIndex = subtype.lastIndexOf('+');
         if (lastIndex == -1) {
-            return JSON;
+            return DEFAULT_ENCODING;
         }
 
         // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
@@ -93,9 +94,9 @@ public enum SerializerEncoding {
             return JSON;
         }
 
-        LOGGER.log(LogLevel.VERBOSE,
-            () -> "Content-Type '" + mimeTypeSuffix + "' does not match any supported one. Returning default: JSON");
+        LOGGER.warning("Content-Type '{}' does not match any supported one. Returning default: {}",
+            mimeContentType, DEFAULT_ENCODING);
 
-        return JSON;
+        return DEFAULT_ENCODING;
     }
 }

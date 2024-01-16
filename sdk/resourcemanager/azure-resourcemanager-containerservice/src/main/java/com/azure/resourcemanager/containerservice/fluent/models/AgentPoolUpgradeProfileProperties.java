@@ -11,9 +11,7 @@ import com.azure.resourcemanager.containerservice.models.OSType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available upgrade versions.
- */
+/** The list of available upgrade versions. */
 @Fluent
 public final class AgentPoolUpgradeProfileProperties {
     /*
@@ -40,9 +38,7 @@ public final class AgentPoolUpgradeProfileProperties {
     @JsonProperty(value = "latestNodeImageVersion")
     private String latestNodeImageVersion;
 
-    /**
-     * Creates an instance of AgentPoolUpgradeProfileProperties class.
-     */
+    /** Creates an instance of AgentPoolUpgradeProfileProperties class. */
     public AgentPoolUpgradeProfileProperties() {
     }
 
@@ -101,8 +97,8 @@ public final class AgentPoolUpgradeProfileProperties {
      * @param upgrades the upgrades value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
      */
-    public AgentPoolUpgradeProfileProperties
-        withUpgrades(List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades) {
+    public AgentPoolUpgradeProfileProperties withUpgrades(
+        List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades) {
         this.upgrades = upgrades;
         return this;
     }
@@ -134,12 +130,16 @@ public final class AgentPoolUpgradeProfileProperties {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model AgentPoolUpgradeProfileProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kubernetesVersion in model AgentPoolUpgradeProfileProperties"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model AgentPoolUpgradeProfileProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property osType in model AgentPoolUpgradeProfileProperties"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

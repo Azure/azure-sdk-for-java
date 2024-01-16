@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
-import reactor.util.annotation.Nullable;
+import javax.annotation.Nullable;
 
 public final class IntervalMetricsKey {
 

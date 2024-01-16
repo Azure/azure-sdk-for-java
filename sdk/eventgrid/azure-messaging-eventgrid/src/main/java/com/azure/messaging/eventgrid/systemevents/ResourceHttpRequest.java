@@ -5,46 +5,41 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The details of the HTTP request.
- */
+/** The details of the HTTP request. */
 @Fluent
-public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpRequest> {
+public final class ResourceHttpRequest {
     /*
      * The client request ID.
      */
+    @JsonProperty(value = "clientRequestId")
     private String clientRequestId;
 
     /*
      * The client IP address.
      */
+    @JsonProperty(value = "clientIpAddress")
     private String clientIpAddress;
 
     /*
      * The request method.
      */
+    @JsonProperty(value = "method")
     private String method;
 
     /*
      * The url used in the request.
      */
+    @JsonProperty(value = "url")
     private String url;
 
-    /**
-     * Creates an instance of ResourceHttpRequest class.
-     */
-    public ResourceHttpRequest() {
-    }
+    /** Creates an instance of ResourceHttpRequest class. */
+    public ResourceHttpRequest() {}
 
     /**
      * Get the clientRequestId property: The client request ID.
-     * 
+     *
      * @return the clientRequestId value.
      */
     public String getClientRequestId() {
@@ -53,7 +48,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Set the clientRequestId property: The client request ID.
-     * 
+     *
      * @param clientRequestId the clientRequestId value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -64,7 +59,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Get the clientIpAddress property: The client IP address.
-     * 
+     *
      * @return the clientIpAddress value.
      */
     public String getClientIpAddress() {
@@ -73,7 +68,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Set the clientIpAddress property: The client IP address.
-     * 
+     *
      * @param clientIpAddress the clientIpAddress value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -84,7 +79,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Get the method property: The request method.
-     * 
+     *
      * @return the method value.
      */
     public String getMethod() {
@@ -93,7 +88,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Set the method property: The request method.
-     * 
+     *
      * @param method the method value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -104,7 +99,7 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Get the url property: The url used in the request.
-     * 
+     *
      * @return the url value.
      */
     public String getUrl() {
@@ -113,54 +108,12 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
 
     /**
      * Set the url property: The url used in the request.
-     * 
+     *
      * @param url the url value to set.
      * @return the ResourceHttpRequest object itself.
      */
     public ResourceHttpRequest setUrl(String url) {
         this.url = url;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
-        jsonWriter.writeStringField("clientIpAddress", this.clientIpAddress);
-        jsonWriter.writeStringField("method", this.method);
-        jsonWriter.writeStringField("url", this.url);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResourceHttpRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceHttpRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceHttpRequest.
-     */
-    public static ResourceHttpRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ResourceHttpRequest deserializedResourceHttpRequest = new ResourceHttpRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("clientRequestId".equals(fieldName)) {
-                    deserializedResourceHttpRequest.clientRequestId = reader.getString();
-                } else if ("clientIpAddress".equals(fieldName)) {
-                    deserializedResourceHttpRequest.clientIpAddress = reader.getString();
-                } else if ("method".equals(fieldName)) {
-                    deserializedResourceHttpRequest.method = reader.getString();
-                } else if ("url".equals(fieldName)) {
-                    deserializedResourceHttpRequest.url = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedResourceHttpRequest;
-        });
     }
 }

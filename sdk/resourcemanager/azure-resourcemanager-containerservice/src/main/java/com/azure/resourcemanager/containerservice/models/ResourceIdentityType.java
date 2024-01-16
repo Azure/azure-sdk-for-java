@@ -10,27 +10,20 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * The type of identity used for the managed cluster.
  *
- * For more information see [use managed identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+ * <p>For more information see [use managed identities in
+ * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
  */
 public enum ResourceIdentityType {
-    /**
-     * Enum value SystemAssigned.
-     */
+    /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /**
-     * Enum value UserAssigned.
-     */
+    /** Enum value UserAssigned. */
     USER_ASSIGNED("UserAssigned"),
 
-    /**
-     * Enum value None.
-     */
+    /** Enum value None. */
     NONE("None");
 
-    /**
-     * The actual serialized value for a ResourceIdentityType instance.
-     */
+    /** The actual serialized value for a ResourceIdentityType instance. */
     private final String value;
 
     ResourceIdentityType(String value) {
@@ -57,9 +50,7 @@ public enum ResourceIdentityType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

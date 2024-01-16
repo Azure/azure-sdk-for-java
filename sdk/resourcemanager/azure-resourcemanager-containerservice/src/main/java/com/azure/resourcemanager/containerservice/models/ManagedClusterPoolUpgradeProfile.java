@@ -9,9 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available upgrade versions.
- */
+/** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
     /*
@@ -38,9 +36,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     @JsonProperty(value = "upgrades")
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
-    /**
-     * Creates an instance of ManagedClusterPoolUpgradeProfile class.
-     */
+    /** Creates an instance of ManagedClusterPoolUpgradeProfile class. */
     public ManagedClusterPoolUpgradeProfile() {
     }
 
@@ -131,12 +127,16 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

@@ -9,9 +9,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response from the List Snapshots operation.
- */
+/** The response from the List Snapshots operation. */
 @Fluent
 public final class SnapshotListResult {
     /*
@@ -26,9 +24,7 @@ public final class SnapshotListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /**
-     * Creates an instance of SnapshotListResult class.
-     */
+    /** Creates an instance of SnapshotListResult class. */
     public SnapshotListResult() {
     }
 

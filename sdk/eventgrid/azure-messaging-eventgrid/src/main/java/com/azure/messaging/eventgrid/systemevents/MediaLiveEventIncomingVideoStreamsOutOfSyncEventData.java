@@ -5,53 +5,50 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
  */
 @Immutable
-public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
-    implements JsonSerializable<MediaLiveEventIncomingVideoStreamsOutOfSyncEventData> {
+public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
     /*
      * Gets the first timestamp received for one of the quality levels.
      */
+    @JsonProperty(value = "firstTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String firstTimestamp;
 
     /*
      * Gets the duration of the data chunk with first timestamp.
      */
+    @JsonProperty(value = "firstDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String firstDuration;
 
     /*
      * Gets the timestamp received for some other quality levels.
      */
+    @JsonProperty(value = "secondTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String secondTimestamp;
 
     /*
      * Gets the duration of the data chunk with second timestamp.
      */
+    @JsonProperty(value = "secondDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String secondDuration;
 
     /*
      * Gets the timescale in which both the timestamps and durations are represented.
      */
+    @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
-    /**
-     * Creates an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData class.
-     */
-    public MediaLiveEventIncomingVideoStreamsOutOfSyncEventData() {
-    }
+    /** Creates an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData class. */
+    public MediaLiveEventIncomingVideoStreamsOutOfSyncEventData() {}
 
     /**
      * Get the firstTimestamp property: Gets the first timestamp received for one of the quality levels.
-     * 
+     *
      * @return the firstTimestamp value.
      */
     public String getFirstTimestamp() {
@@ -60,7 +57,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
 
     /**
      * Get the firstDuration property: Gets the duration of the data chunk with first timestamp.
-     * 
+     *
      * @return the firstDuration value.
      */
     public String getFirstDuration() {
@@ -69,7 +66,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
 
     /**
      * Get the secondTimestamp property: Gets the timestamp received for some other quality levels.
-     * 
+     *
      * @return the secondTimestamp value.
      */
     public String getSecondTimestamp() {
@@ -78,7 +75,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
 
     /**
      * Get the secondDuration property: Gets the duration of the data chunk with second timestamp.
-     * 
+     *
      * @return the secondDuration value.
      */
     public String getSecondDuration() {
@@ -87,55 +84,10 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
 
     /**
      * Get the timescale property: Gets the timescale in which both the timestamps and durations are represented.
-     * 
+     *
      * @return the timescale value.
      */
     public String getTimescale() {
         return this.timescale;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.
-     */
-    public static MediaLiveEventIncomingVideoStreamsOutOfSyncEventData fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData
-                = new MediaLiveEventIncomingVideoStreamsOutOfSyncEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("firstTimestamp".equals(fieldName)) {
-                    deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData.firstTimestamp
-                        = reader.getString();
-                } else if ("firstDuration".equals(fieldName)) {
-                    deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData.firstDuration = reader.getString();
-                } else if ("secondTimestamp".equals(fieldName)) {
-                    deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData.secondTimestamp
-                        = reader.getString();
-                } else if ("secondDuration".equals(fieldName)) {
-                    deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData.secondDuration
-                        = reader.getString();
-                } else if ("timescale".equals(fieldName)) {
-                    deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData.timescale = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
-        });
     }
 }

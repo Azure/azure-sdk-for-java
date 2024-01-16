@@ -6,12 +6,10 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +55,6 @@ public final class ObjectMapperShim {
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
      * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
         BiConsumer<ObjectMapper, ObjectMapper> configure) {
@@ -74,7 +71,6 @@ public final class ObjectMapperShim {
      * Creates and configures XML {@code ObjectMapper} capable of serializing azure.core types.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected or XML isn't available.
      */
     public static ObjectMapperShim createXmlMapper() {
         try {
@@ -89,7 +85,6 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper}.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createSimpleMapper() {
         try {
@@ -104,7 +99,6 @@ public final class ObjectMapperShim {
      * Creates JSON {@code ObjectMapper} with default Jackson settings.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createDefaultMapper() {
         try {
@@ -119,7 +113,6 @@ public final class ObjectMapperShim {
      * Creates JSON {@code ObjectMapper} with default Jackson settings, but capable of pretty-printing.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createPrettyPrintMapper() {
         try {
@@ -134,7 +127,6 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper} for headers serialization.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createHeaderMapper() {
         try {
@@ -148,11 +140,7 @@ public final class ObjectMapperShim {
     private final ObjectMapper mapper;
     private MemberNameConverterImpl memberNameConverter;
 
-    /**
-     * Creates instance of {@link ObjectMapperShim}.
-     *
-     * @param mapper {@link ObjectMapper} to wrap.
-     */
+
     public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
     }
@@ -162,8 +150,7 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized string.
-     * @throws IOException if serialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public String writeValueAsString(Object value) throws IOException {
         try {
@@ -178,8 +165,7 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized byte array.
-     * @throws IOException if serialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public byte[] writeValueAsBytes(Object value) throws IOException {
         try {
@@ -194,8 +180,7 @@ public final class ObjectMapperShim {
      *
      * @param out stream to write serialized object to.
      * @param value object to serialize.
-     * @throws IOException if serialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public void writeValue(OutputStream out, Object value) throws IOException {
         try {
@@ -208,12 +193,10 @@ public final class ObjectMapperShim {
     /**
      * Deserializes Java object from a string.
      *
-     * @param <T> type of the value.
      * @param content serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException if deserialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public <T> T readValue(String content, final Type valueType) throws IOException {
         try {
@@ -227,12 +210,10 @@ public final class ObjectMapperShim {
     /**
      * Deserializes Java object from a byte array.
      *
-     * @param <T> type of the value.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException if deserialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public <T> T readValue(byte[] src, final Type valueType) throws IOException {
         try {
@@ -246,12 +227,10 @@ public final class ObjectMapperShim {
     /**
      * Reads and deserializes Java object from a stream.
      *
-     * @param <T> type of the value.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException if deserialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public <T> T readValue(InputStream src, final Type valueType) throws IOException {
         try {
@@ -267,8 +246,7 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
-     * @throws IOException if deserialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
+     * @throws IOException
      */
     public JsonNode readTree(String content) throws IOException {
         try {
@@ -283,8 +261,6 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
-     * @throws IOException if deserialization fails.
-     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public JsonNode readTree(byte[] content) throws IOException {
         try {
@@ -314,15 +290,6 @@ public final class ObjectMapperShim {
         }
     }
 
-    /**
-     * Deserializes the given {@link HttpHeaders} into an instance of the given {@code deserializedHeadersType}.
-     *
-     * @param <T> The type of the deserialized headers.
-     * @param headers The {@link HttpHeaders} to deserialize.
-     * @param deserializedHeadersType The {@link Type} of the deserialized headers.
-     * @return An instance of the given {@code deserializedHeadersType} with the values from {@code headers}.
-     * @throws IOException If an error occurs while deserializing the headers.
-     */
     @SuppressWarnings("unchecked")
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
@@ -338,10 +305,10 @@ public final class ObjectMapperShim {
         } catch (Exception exception) {
             // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.
             if (exception instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) exception);
+                throw (RuntimeException) exception;
             }
 
-            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to find or use invoker Constructor that accepts HttpHeaders for "
+            LOGGER.verbose("Failed to find or use invoker Constructor that accepts HttpHeaders for "
                 + deserializedHeadersType + ".");
         }
 
@@ -422,12 +389,6 @@ public final class ObjectMapperShim {
         return deserializedHeaders;
     }
 
-    /**
-     * Gets the name of the given {@link Member} using the configured {@link MemberNameConverter}.
-     *
-     * @param member The {@link Member} to get the name of.
-     * @return The name of the given {@link Member}.
-     */
     public String convertMemberName(Member member) {
         if (memberNameConverter == null) {
             // Defer creating the member name converter until it needs to be used.
@@ -438,6 +399,14 @@ public final class ObjectMapperShim {
 
         try {
             return memberNameConverter.convertMemberName(member);
+        } catch (LinkageError ex) {
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
+        }
+    }
+
+    public <T extends JsonNode> T valueToTree(Object fromValue) {
+        try {
+            return mapper.valueToTree(fromValue);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
@@ -466,7 +435,7 @@ public final class ObjectMapperShim {
                     headersClass.getDeclaredConstructor(HttpHeaders.class));
             } catch (Throwable throwable) {
                 if (throwable instanceof Error) {
-                    throw LOGGER.logThrowableAsError((Error) throwable);
+                    throw (Error) throwable;
                 }
 
                 // In a previous implementation compute returned null here in an attempt to indicate that there is no

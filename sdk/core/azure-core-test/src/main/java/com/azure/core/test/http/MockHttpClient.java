@@ -9,10 +9,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson.Form;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson.PizzaSize;
-import com.azure.core.test.implementation.entities.HttpBinJson;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
+import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -54,12 +53,12 @@ public class MockHttpClient extends NoOpHttpClient {
             final String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             if ("localhost".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
-                final String requestPathLower = requestPath.toLowerCase(Locale.ROOT);
+                final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.startsWith("/anything")) {
                     if ("HEAD".equals(request.getHttpMethod().name())) {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
-                        final HttpBinJson json = new HttpBinJson();
+                        final HttpBinJSON json = new HttpBinJSON();
                         json.url(cleanseUrl(requestUrl));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
@@ -139,24 +138,24 @@ public class MockHttpClient extends NoOpHttpClient {
                 } else if ("/unixtime".equals(requestPathLower)) {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if ("/delete".equals(requestPathLower)) {
-                    final HttpBinJson json = new HttpBinJson();
+                    final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if ("/get".equals(requestPathLower)) {
-                    final HttpBinJson json = new HttpBinJson();
+                    final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if ("/patch".equals(requestPathLower)) {
-                    final HttpBinJson json = new HttpBinJson();
+                    final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if ("/post".equals(requestPathLower)) {
                     if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
-                        final HttpBinFormDataJson json = new HttpBinFormDataJson();
+                        final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
                         Form form = new Form();
                         form.customerName(parsed.get("custname"));
                         form.customerEmail(parsed.get("custemail"));
@@ -166,14 +165,14 @@ public class MockHttpClient extends NoOpHttpClient {
                         json.form(form);
                         response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
-                        final HttpBinJson json = new HttpBinJson();
+                        final HttpBinJSON json = new HttpBinJSON();
                         json.url(cleanseUrl(requestUrl));
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if ("/put".equals(requestPathLower)) {
-                    final HttpBinJson json = new HttpBinJson();
+                    final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));

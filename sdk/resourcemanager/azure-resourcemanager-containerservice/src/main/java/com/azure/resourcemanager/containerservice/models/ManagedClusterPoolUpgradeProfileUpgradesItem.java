@@ -7,9 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterPoolUpgradeProfileUpgradesItem model.
- */
+/** The ManagedClusterPoolUpgradeProfileUpgradesItem model. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     /*
@@ -24,9 +22,7 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /**
-     * Creates an instance of ManagedClusterPoolUpgradeProfileUpgradesItem class.
-     */
+    /** Creates an instance of ManagedClusterPoolUpgradeProfileUpgradesItem class. */
     public ManagedClusterPoolUpgradeProfileUpgradesItem() {
     }
 

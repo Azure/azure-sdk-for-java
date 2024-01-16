@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Structure for any Identity provider.
- */
+/** Structure for any Identity provider. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,12 +17,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = OpenShiftManagedClusterBaseIdentityProvider.class)
 @JsonTypeName("OpenShiftManagedClusterBaseIdentityProvider")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAadIdentityProvider.class) })
+    @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAadIdentityProvider.class)
+})
 @Immutable
 public class OpenShiftManagedClusterBaseIdentityProvider {
-    /**
-     * Creates an instance of OpenShiftManagedClusterBaseIdentityProvider class.
-     */
+    /** Creates an instance of OpenShiftManagedClusterBaseIdentityProvider class. */
     public OpenShiftManagedClusterBaseIdentityProvider() {
     }
 

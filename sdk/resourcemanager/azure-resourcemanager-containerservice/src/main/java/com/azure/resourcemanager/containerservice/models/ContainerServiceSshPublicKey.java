@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Contains information about SSH certificate public key data.
- */
+/** Contains information about SSH certificate public key data. */
 @Fluent
 public final class ContainerServiceSshPublicKey {
     /*
@@ -20,9 +18,7 @@ public final class ContainerServiceSshPublicKey {
     @JsonProperty(value = "keyData", required = true)
     private String keyData;
 
-    /**
-     * Creates an instance of ContainerServiceSshPublicKey class.
-     */
+    /** Creates an instance of ContainerServiceSshPublicKey class. */
     public ContainerServiceSshPublicKey() {
     }
 
@@ -55,8 +51,10 @@ public final class ContainerServiceSshPublicKey {
      */
     public void validate() {
         if (keyData() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyData in model ContainerServiceSshPublicKey"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property keyData in model ContainerServiceSshPublicKey"));
         }
     }
 

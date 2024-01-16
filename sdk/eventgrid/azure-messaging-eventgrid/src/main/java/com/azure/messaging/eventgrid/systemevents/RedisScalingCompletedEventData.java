@@ -5,43 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
-/**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ScalingCompleted event.
- */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ScalingCompleted event. */
 @Fluent
-public final class RedisScalingCompletedEventData implements JsonSerializable<RedisScalingCompletedEventData> {
+public final class RedisScalingCompletedEventData {
     /*
      * The time at which the event occurred.
      */
+    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * The name of this event.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The status of this event. Failed or succeeded
+     * The status of this event. Failed or  succeeded
      */
+    @JsonProperty(value = "status")
     private String status;
 
-    /**
-     * Creates an instance of RedisScalingCompletedEventData class.
-     */
-    public RedisScalingCompletedEventData() {
-    }
+    /** Creates an instance of RedisScalingCompletedEventData class. */
+    public RedisScalingCompletedEventData() {}
 
     /**
      * Get the timestamp property: The time at which the event occurred.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -50,7 +43,7 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Set the timestamp property: The time at which the event occurred.
-     * 
+     *
      * @param timestamp the timestamp value to set.
      * @return the RedisScalingCompletedEventData object itself.
      */
@@ -61,7 +54,7 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Get the name property: The name of this event.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -70,7 +63,7 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Set the name property: The name of this event.
-     * 
+     *
      * @param name the name value to set.
      * @return the RedisScalingCompletedEventData object itself.
      */
@@ -81,7 +74,7 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Get the status property: The status of this event. Failed or succeeded.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -90,54 +83,12 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Set the status property: The status of this event. Failed or succeeded.
-     * 
+     *
      * @param status the status value to set.
      * @return the RedisScalingCompletedEventData object itself.
      */
     public RedisScalingCompletedEventData setStatus(String status) {
         this.status = status;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timestamp",
-            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("status", this.status);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RedisScalingCompletedEventData from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RedisScalingCompletedEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RedisScalingCompletedEventData.
-     */
-    public static RedisScalingCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RedisScalingCompletedEventData deserializedRedisScalingCompletedEventData
-                = new RedisScalingCompletedEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("timestamp".equals(fieldName)) {
-                    deserializedRedisScalingCompletedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("name".equals(fieldName)) {
-                    deserializedRedisScalingCompletedEventData.name = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedRedisScalingCompletedEventData.status = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRedisScalingCompletedEventData;
-        });
     }
 }

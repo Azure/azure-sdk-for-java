@@ -67,7 +67,6 @@ public final class PollingState {
      * @param lroResponseHeaders the response headers of LRO init api call
      * @param lroResponseBody the response body of LRO init api call
      * @return the PollingState
-     * @throws IllegalArgumentException if the http method is not PUT, PATCH, POST or DELETE
      */
     public static PollingState create(SerializerAdapter serializerAdapter,
                                       HttpRequest lroHttpRequest,
@@ -107,7 +106,7 @@ public final class PollingState {
      *
      * @param serializerAdapter the serializer for any encoding and decoding
      * @param context the context to look for the PollingState
-     * @param <T> the type of the poll response.
+     * @param <T>
      * @return the PollingState from the context
      * @throws IllegalArgumentException if the context does not contain a PollingState
      * @throws RuntimeException if there is an error while retrieving the PollingState from the context
@@ -120,7 +119,8 @@ public final class PollingState {
                 + " serialized PollingState."));
         }
         try {
-            PollingState pollingState = serializerAdapter.deserialize(value, PollingState.class,
+            PollingState pollingState = serializerAdapter.deserialize(value,
+                PollingState.class,
                 SerializerEncoding.JSON);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
@@ -149,7 +149,7 @@ public final class PollingState {
                 SerializerEncoding.JSON);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value, ioe));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value));
         }
     }
 

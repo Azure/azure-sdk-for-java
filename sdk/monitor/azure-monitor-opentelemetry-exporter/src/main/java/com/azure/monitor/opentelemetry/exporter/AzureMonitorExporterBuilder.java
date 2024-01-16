@@ -99,9 +99,6 @@ public final class AzureMonitorExporterBuilder {
     // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
-    // this is only populated after the builder is frozen
-    private StatsbeatModule statsbeatModule;
-
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
@@ -355,7 +352,7 @@ public final class AzureMonitorExporterBuilder {
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
-            statsbeatModule = initStatsbeatModule(configProperties);
+            StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
             File tempDir =
                 TempDirs.getApplicationInsightsTempDir(
                     LOGGER,
@@ -368,7 +365,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter, statsbeatModule);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
@@ -379,9 +376,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private Set<Feature> initStatsbeatFeatures() {
-        if (System.getProperty("org.graalvm.nativeimage.imagecode") != null) {
-            return Collections.singleton(Feature.GRAAL_VM_NATIVE);
-        }
+        // TODO (jean): start tracking native image usage based on a system property or env var to indicate it's from the native image path
         return Collections.emptySet();
     }
 
@@ -404,14 +399,13 @@ public final class AzureMonitorExporterBuilder {
 
     private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
         ConnectionString connectionString = getConnectionString(configProperties);
-        ResourceParser resourceParser = new ResourceParser();
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
             builder.setResource(resource);
             builder.addTag(
                 ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
             // TODO (trask) unify these
-            resourceParser.setRoleNameAndInstance(builder, resource);
+            ResourceParser.updateRoleNameAndInstance(builder, resource, configProperties);
         };
     }
 

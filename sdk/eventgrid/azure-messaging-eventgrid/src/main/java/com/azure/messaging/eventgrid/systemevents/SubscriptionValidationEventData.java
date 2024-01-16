@@ -5,22 +5,17 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event.
- */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event. */
 @Immutable
-public final class SubscriptionValidationEventData implements JsonSerializable<SubscriptionValidationEventData> {
+public final class SubscriptionValidationEventData {
     /*
      * The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation
      * handshake, the subscriber must either respond with this validation code as part of the validation response, or
      * perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
+    @JsonProperty(value = "validationCode", access = JsonProperty.Access.WRITE_ONLY)
     private String validationCode;
 
     /*
@@ -28,20 +23,18 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
      * validation handshake, the subscriber must either respond with the validationCode as part of the validation
      * response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
+    @JsonProperty(value = "validationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String validationUrl;
 
-    /**
-     * Creates an instance of SubscriptionValidationEventData class.
-     */
-    public SubscriptionValidationEventData() {
-    }
+    /** Creates an instance of SubscriptionValidationEventData class. */
+    public SubscriptionValidationEventData() {}
 
     /**
      * Get the validationCode property: The validation code sent by Azure Event Grid to validate an event subscription.
-     * To complete the validation handshake, the subscriber must either respond with this validation code as part of
-     * the validation response, or perform a GET request on the validationUrl (available starting version
+     * To complete the validation handshake, the subscriber must either respond with this validation code as part of the
+     * validation response, or perform a GET request on the validationUrl (available starting version
      * 2018-05-01-preview).
-     * 
+     *
      * @return the validationCode value.
      */
     public String getValidationCode() {
@@ -53,45 +46,10 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
      * 2018-05-01-preview). To complete the validation handshake, the subscriber must either respond with the
      * validationCode as part of the validation response, or perform a GET request on the validationUrl (available
      * starting version 2018-05-01-preview).
-     * 
+     *
      * @return the validationUrl value.
      */
     public String getValidationUrl() {
         return this.validationUrl;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SubscriptionValidationEventData from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionValidationEventData if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SubscriptionValidationEventData.
-     */
-    public static SubscriptionValidationEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SubscriptionValidationEventData deserializedSubscriptionValidationEventData
-                = new SubscriptionValidationEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("validationCode".equals(fieldName)) {
-                    deserializedSubscriptionValidationEventData.validationCode = reader.getString();
-                } else if ("validationUrl".equals(fieldName)) {
-                    deserializedSubscriptionValidationEventData.validationUrl = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSubscriptionValidationEventData;
-        });
     }
 }

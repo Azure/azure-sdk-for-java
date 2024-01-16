@@ -2,16 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.lang.invoke.MethodHandle;
 
 /**
  * {@link MethodHandle}-based implementation of {@link ReflectiveInvoker}.
  */
 final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
-    private static final ClientLogger LOGGER = new ClientLogger(MethodHandleReflectiveInvoker.class);
-
     private static final Object[] NO_ARGS = new Object[0];
 
     private final MethodHandle methodHandle;
@@ -26,9 +22,9 @@ final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
             return methodHandle.invokeWithArguments(args);
         } catch (Throwable throwable) {
             if (throwable instanceof Error) {
-                throw LOGGER.logThrowableAsError((Error) throwable);
+                throw (Error) throwable;
             } else {
-                throw LOGGER.logThrowableAsError((Exception) throwable);
+                throw (Exception) throwable;
             }
         }
     }
@@ -39,9 +35,9 @@ final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
             return methodHandle.invokeWithArguments(createFinalArgs(target, args));
         } catch (Throwable throwable) {
             if (throwable instanceof Error) {
-                throw LOGGER.logThrowableAsError((Error) throwable);
+                throw (Error) throwable;
             } else {
-                throw LOGGER.logThrowableAsError((Exception) throwable);
+                throw (Exception) throwable;
             }
         }
     }

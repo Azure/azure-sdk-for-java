@@ -26,9 +26,7 @@ public final class IstioIngressGateway {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /**
-     * Creates an instance of IstioIngressGateway class.
-     */
+    /** Creates an instance of IstioIngressGateway class. */
     public IstioIngressGateway() {
     }
 
@@ -79,8 +77,9 @@ public final class IstioIngressGateway {
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property mode in model IstioIngressGateway"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property mode in model IstioIngressGateway"));
         }
     }
 
