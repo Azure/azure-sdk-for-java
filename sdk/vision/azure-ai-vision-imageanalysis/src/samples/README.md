@@ -10,7 +10,20 @@ urlFragment: image-analysis-samples
 
 # Samples for Image Analysis client library for Java
 
-These are runnable console Java programs that show how to use the Image Analysis client library. They cover all the supported visual features. Most use the a synchronous client to analyze an image file or image URL. Two samples use the asynchronous client. The concepts are similar, you can easily modify any of the samples to your needs.
+These Java samples show how to use the Image Analysis client library. They cover all the supported visual features. Most use the a synchronous client to analyze an image file or image URL. Two samples use the asynchronous client. The concepts are similar, you can easily modify any of the samples to your needs.
+
+## Prerequisites
+
+See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#prerequisites).
+
+## Adding the package to your product
+
+See [Adding the package to your product](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#adding-the-package-to-your-product).
+
+## Set environment variables
+
+See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#set-environment-variables).
+
 
 ## Synchronous client samples
 
@@ -25,57 +38,20 @@ These are runnable console Java programs that show how to use the Image Analysis
 |[SampleSmartCropsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleSmartCropsImageFile.java) | Find a representative sub-region of the image for thumbnail generation, using a synchronous client .| 
 |[SamplePeopleImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SamplePeopleImageFile.java) | Locate people in the image and return their location, using a synchronous client.|
 
-## Asynchronous client sample
+## Asynchronous client samples
 
 |**File Name**|**Description**|
 |----------------|-------------|
 |[SampleCaptionImageFileAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileAsync.java) | Generate a human-readable sentence that describes the content of an image file, using an asynchronous client. |
 |[SampleOcrImageUrlAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlAsync.java) | Extract printed or handwritten text from an image URL, using an asynchronous client. |
 
-## Prerequisites
-
-See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#prerequisites) here.
-
-In addition, to compile and run these samples in a command-prompt / terminal window you will need [Maven](https://maven.apache.org/) installed. To verify your installation, type `mvn -version` in a command line window.
-
-## Set environment variables
-
-See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#set-environment-variables) here.
-
-## Compile the sample
-
-* Clone or download the content of this repository.
-
-* Open a command-prompt / terminal window and navigate to the samples folder `sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis`.
-
-* Edit the [pom.xml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/pom.xml) file in this folder to ensure it uses the latest `azure-ai-vision-imageanalysis` package version shown in the [Maven repository](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis).
-
-* Run the following to copy all dependencies locally:
-  ```
-  mvn clean dependency:copy-dependencies
-  ```
-  you should see a `target/dependency` folder created, containing all dependent `.jar` files.
-
-* To compile a sample, for example, `SampleAnalyzeAllImageFile.java`, type:
-  ```
-  javac SampleAnalyzeAllImageFile.java -cp target/dependency/*
-  ```
-  you should see the resulting `.class` file, for example `SampleAnalyzeAllImageFile.class`.
-
-## Run the sample
-
-To run the sample you just compiled (here `SampleAnalyzeAllImageFile`), type:
-```
-java -cp ".;target/dependency/*" SampleAnalyzeAllImageFile
-```
-
 ## Example console output
 
-The sample `SampleAnalyzeAllImageFile.java` analyzes the image `sample.jpg` in this folder:
+The sample `SampleAnalyzeAllImageFile.java` does analysis of the local image file `sample.jpg` using all seven visual features, and prints the result to the console. This is the image:
 
 ![sample JPEG image](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg)
 
-And produces an output similar to the following:
+When you run it, it will produce console output similar to the following:
 
 ```
 Image analysis results:
@@ -136,5 +112,5 @@ Image analysis results:
 
 ## Troubleshooting
 
-See [Troubleshooting](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#troubleshooting) here.
+See [Troubleshooting](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#troubleshooting).
 
