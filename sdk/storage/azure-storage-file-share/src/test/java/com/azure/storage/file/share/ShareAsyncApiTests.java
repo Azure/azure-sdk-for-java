@@ -15,7 +15,6 @@ import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
-import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareRootSquash;
@@ -814,7 +813,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryShareAsyncClient.getProperties())
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
-                if(enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess){
+                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
                     assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
                 } else {
                     assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());
@@ -849,7 +848,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryShareAsyncClient.getProperties())
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
-                if(enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess){
+                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
                     assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
                 } else {
                     assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());

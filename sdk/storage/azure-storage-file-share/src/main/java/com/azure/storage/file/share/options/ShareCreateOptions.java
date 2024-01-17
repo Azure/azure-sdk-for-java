@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRootSquash;
