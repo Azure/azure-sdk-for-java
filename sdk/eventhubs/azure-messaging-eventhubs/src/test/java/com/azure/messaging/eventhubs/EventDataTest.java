@@ -22,6 +22,7 @@ import java.util.Map;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
@@ -102,10 +103,12 @@ public class EventDataTest {
         // Act
         final long sequenceNumber = 5L;
         final HashMap<Symbol, Object> properties = new HashMap<>();
+        final long replicationSegment = 10;
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
         properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
         properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
         properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
+        properties.put(getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()), replicationSegment);
 
         final byte[] contents = "boo".getBytes(UTF_8);
         final Message message = Proton.message();
@@ -122,11 +125,13 @@ public class EventDataTest {
         Assertions.assertEquals(OFFSET, systemProperties.get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(sequenceNumber, systemProperties.get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME, systemProperties.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(replicationSegment, systemProperties.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()));
 
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(OFFSET, eventData.getOffset());
         Assertions.assertEquals(sequenceNumber, eventData.getSequenceNumber());
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getEnqueuedTime());
+        Assertions.assertEquals(replicationSegment, eventData.getReplicationSegment());
     }
 
     /**
