@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Retry connection on timeout.
+
 ### Other Changes
 
 ## 2.9.0-beta.7 (2023-11-22)
