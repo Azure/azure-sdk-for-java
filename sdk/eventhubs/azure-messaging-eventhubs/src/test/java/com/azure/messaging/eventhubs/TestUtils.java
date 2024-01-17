@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -46,6 +47,7 @@ public final class TestUtils {
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
+    static final Long REPLICATION_SEGMENT = 33L;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -88,8 +90,9 @@ public final class TestUtils {
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
 
-        message.getMessageAnnotations().getValue()
-            .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
+        Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
+        value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.name()), REPLICATION_SEGMENT);
 
         Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 
