@@ -27,7 +27,6 @@ public final class AudioTranscriptionOptions {
      * result.
      */
     @Generated
-    @JsonProperty(value = "response_format")
     private AudioTranscriptionFormat responseFormat;
 
     /*
@@ -37,7 +36,6 @@ public final class AudioTranscriptionOptions {
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
@@ -45,7 +43,6 @@ public final class AudioTranscriptionOptions {
      * prompt should match the primary spoken language of the audio data.
      */
     @Generated
-    @JsonProperty(value = "prompt")
     private String prompt;
 
     /*
@@ -56,14 +53,12 @@ public final class AudioTranscriptionOptions {
      * thresholds are hit.
      */
     @Generated
-    @JsonProperty(value = "temperature")
     private Double temperature;
 
     /*
      * The model to use for this transcription request.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /**
@@ -211,7 +206,6 @@ public final class AudioTranscriptionOptions {
      * The optional filename or descriptive identifier to associate with with the audio data.
      */
     @Generated
-    @JsonProperty(value = "filename")
     private String filename;
 
     /**
@@ -242,7 +236,6 @@ public final class AudioTranscriptionOptions {
      * The filename for file
      */
     @Generated
-    @JsonProperty(value = "file")
     private String fileFilename = "file";
 
     /**
