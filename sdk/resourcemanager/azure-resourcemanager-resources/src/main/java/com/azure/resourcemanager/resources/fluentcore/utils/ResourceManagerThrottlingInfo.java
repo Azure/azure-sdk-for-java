@@ -3,7 +3,9 @@
 
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.CoreUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,19 +22,21 @@ import java.util.regex.Pattern;
  */
 public class ResourceManagerThrottlingInfo {
     // refer https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
-    private static final List<String> COMMON_RATE_LIMIT_HEADERS = Arrays.asList(
-        "x-ms-ratelimit-remaining-subscription-reads",
-        "x-ms-ratelimit-remaining-subscription-writes",
-        "x-ms-ratelimit-remaining-tenant-reads",
-        "x-ms-ratelimit-remaining-tenant-writes",
-        "x-ms-ratelimit-remaining-subscription-resource-requests",
-        "x-ms-ratelimit-remaining-subscription-resource-entities-read",
-        "x-ms-ratelimit-remaining-tenant-resource-requests",
-        "x-ms-ratelimit-remaining-tenant-resource-entities-read"
+    private static final List<HttpHeaderName> COMMON_RATE_LIMIT_HEADERS = Arrays.asList(
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-subscription-reads"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-subscription-writes"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-tenant-reads"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-tenant-writes"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-subscription-resource-requests"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-subscription-resource-entities-read"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-tenant-resource-requests"),
+        HttpHeaderName.fromString("x-ms-ratelimit-remaining-tenant-resource-entities-read")
     );
 
     // refer https://docs.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
     private static final String RESOURCE_RATE_LIMIT_HEADER = "x-ms-ratelimit-remaining-resource";
+    private static final HttpHeaderName RESOURCE_RATE_LIMIT_HEADER_NAME
+        = HttpHeaderName.fromString(RESOURCE_RATE_LIMIT_HEADER);
     private static final Pattern RESOURCE_RATE_LIMIT_HEADER_PATTERN = Pattern.compile("\\w+\\.\\w+/([^;]+);(\\d+)");
 
     private final Map<String, String> commonRateLimits;
@@ -44,18 +48,18 @@ public class ResourceManagerThrottlingInfo {
      */
     public ResourceManagerThrottlingInfo(HttpHeaders headers) {
         commonRateLimits = new HashMap<>();
-        for (String header : COMMON_RATE_LIMIT_HEADERS) {
+        for (HttpHeaderName header : COMMON_RATE_LIMIT_HEADERS) {
             String value = headers.getValue(header);
-            if (value != null && !value.isEmpty()) {
-                commonRateLimits.put(header, value);
+            if (!CoreUtils.isNullOrEmpty(value)) {
+                commonRateLimits.put(header.getCaseInsensitiveName(), value);
             }
         }
-        resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADER);
+
+        resourceRateLimit = headers.getValue(RESOURCE_RATE_LIMIT_HEADER_NAME);
         if (resourceRateLimit != null) {
             Matcher matcher = RESOURCE_RATE_LIMIT_HEADER_PATTERN.matcher(resourceRateLimit);
             while (matcher.find()) {
-                commonRateLimits.put(
-                    String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)), matcher.group(2));
+                commonRateLimits.put(RESOURCE_RATE_LIMIT_HEADER + "-" + matcher.group(1), matcher.group(2));
             }
         }
     }
@@ -73,16 +77,18 @@ public class ResourceManagerThrottlingInfo {
      * @return the smallest rate limit or empty if none of the headers are valid
      */
     public Optional<Integer> getRateLimit() {
-        Optional<Integer> result = Optional.empty();
+        // TODO (alzimmermsft): Couldn't the be done once as 'commonRateLimits' is immutable?
+        int result = Integer.MAX_VALUE;
         for (Map.Entry<String, String> limits : commonRateLimits.entrySet()) {
             try {
                 int limit = Integer.parseInt(limits.getValue());
-                if (!result.isPresent() || result.get() > limit) {
-                    result = Optional.of(limit);
+                if (result > limit) {
+                    result = limit;
                 }
-            } catch (NumberFormatException e) { }
+            } catch (NumberFormatException ignored) { }
         }
-        return result;
+
+        return result == Integer.MAX_VALUE ? Optional.empty() : Optional.of(result);
     }
 
     /**

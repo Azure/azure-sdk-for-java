@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerThrottlingInfo;
@@ -35,5 +36,12 @@ public class ResourceManagerThrottlingPolicy implements HttpPipelinePolicy {
                     ResourceManagerThrottlingInfo.fromHeaders(bufferedResponse.getHeaders()));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        HttpResponse bufferedResponse = next.clone().processSync().buffer();
+        callback.accept(bufferedResponse, ResourceManagerThrottlingInfo.fromHeaders(bufferedResponse.getHeaders()));
+        return bufferedResponse;
     }
 }

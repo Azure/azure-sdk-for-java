@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.fluentcore.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.exception.ManagementError;
@@ -127,6 +128,60 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         });
     }
 
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        if (providers == null) {
+            return next.processSync();
+        }
+
+        HttpResponse response = next.clone().processSync();
+        if (isResponseSuccessful(response)) {
+            return response;
+        }
+
+        HttpResponse bufferedResponse = response.buffer();
+        byte[] body = bufferedResponse.getBodyAsBinaryData().toBytes();
+
+        SerializerAdapter jacksonAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        ManagementError managementError;
+        try {
+            managementError = jacksonAdapter.deserialize(body, ManagementError.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            return bufferedResponse;
+        }
+
+        if (managementError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
+            String resourceNamespace = null;
+            if (managementError.getDetails() != null) {
+                // find in details.target
+                resourceNamespace = managementError.getDetails().stream()
+                    .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode()) && d.getTarget() != null)
+                    .map(ManagementError::getTarget).findFirst()
+                    .orElse(null);
+            }
+
+            if (resourceNamespace == null) {
+                // find in message
+                Matcher providerMatcher = PROVIDER_PATTERN.matcher(managementError.getMessage());
+                if (!providerMatcher.find()) {
+                    return bufferedResponse;
+                }
+                resourceNamespace = providerMatcher.group(1);
+            }
+
+            // Retry after registration
+            try {
+                registerProviderUntilSuccessSync(resourceNamespace);
+            } catch (ProviderUnregisteredException e) {
+                // Ignored
+            }
+
+            return next.clone().processSync();
+        }
+
+        return bufferedResponse;
+    }
+
     private Mono<Void> registerProviderUntilSuccess(String namespace) {
         return providers.registerAsync(namespace).flatMap(provider -> {
             if (isProviderRegistered(provider)) {
@@ -139,11 +194,44 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         });
     }
 
-    private Mono<Void> checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {
+    private Mono<Void> checkProviderRegistered(Provider provider) {
+        return Mono.fromRunnable(() -> checkProviderRegisteredSync(provider));
+    }
+
+    private void registerProviderUntilSuccessSync(String namespace) {
+        Provider provider = providers.register(namespace);
         if (isProviderRegistered(provider)) {
-            return Mono.empty();
+            return;
         }
-        return Mono.error(new ProviderUnregisteredException());
+
+        // First 29 attempts will catch and retry the exception.
+        for (int i = 0; i < 29; i++) {
+            try {
+                provider = providers.getByName(namespace);
+                checkProviderRegisteredSync(provider);
+                return;
+            } catch (ProviderUnregisteredException e) {
+                // ignore
+                Duration delay = ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10));
+                try {
+                    Thread.sleep(delay.toMillis());
+                } catch (InterruptedException interruptedException) {
+                    // ignore
+                }
+            }
+        }
+
+        // The 30th attempt will throw the exception.
+        provider = providers.getByName(namespace);
+        checkProviderRegisteredSync(provider);
+    }
+
+    private void checkProviderRegisteredSync(Provider provider) {
+        if (isProviderRegistered(provider)) {
+            return;
+        }
+
+        throw new ProviderUnregisteredException();
     }
 
     private boolean isProviderRegistered(Provider provider) {
