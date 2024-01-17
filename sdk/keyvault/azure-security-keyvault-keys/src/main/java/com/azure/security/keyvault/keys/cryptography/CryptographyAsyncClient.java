@@ -936,7 +936,7 @@ public class CryptographyAsyncClient {
     private Mono<Boolean> isValidKeyLocallyAvailable() {
         if (localOperationNotSupported) {
             return Mono.defer(() -> Mono.just(false));
-        } else if (key == null && implClient.getKeyCollection() != null) {
+        } else if (this.key == null && implClient.getKeyCollection() != null) {
             // Get key from service and validate it. Then attempt to create a local cryptography client or default to
             // service.
             Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
@@ -951,6 +951,8 @@ public class CryptographyAsyncClient {
     }
 
     private boolean validateJsonWebKeyAndCreateLocalClient(JsonWebKey jsonWebKey) {
+        key = jsonWebKey;
+
         if (jsonWebKey.isValid()) {
             // Create a local key cryptography client if one has not been created yet.
             if (localKeyCryptographyClient == null) {
