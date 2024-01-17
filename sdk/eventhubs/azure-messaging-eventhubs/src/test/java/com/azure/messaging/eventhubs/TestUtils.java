@@ -177,7 +177,9 @@ public final class TestUtils {
 
         Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
-        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.name()), REPLICATION_SEGMENT);
+
+        // Add replication segment and see if it persists.
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()), REPLICATION_SEGMENT);
 
         Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 
