@@ -24,7 +24,8 @@ private abstract class ItemsScanBase(session: SparkSession,
                                      analyzedFilters: AnalyzedAggregatedFilters,
                                      cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
                                      diagnosticsConfig: DiagnosticsConfig,
-                                     sparkEnvironmentInfo: String)
+                                     sparkEnvironmentInfo: String,
+                                     partitionKeyDefinition: PartitionKeyDefinition)
   extends Scan
     with Batch
     with SupportsReportStatistics {
@@ -45,40 +46,18 @@ private abstract class ItemsScanBase(session: SparkSession,
   private val plannedInputPartitionsRef = new AtomicReference[Array[CosmosInputPartition]]()
   private val cosmosQuery = analyzedFilters.cosmosParametrizedQuery
 
-  private lazy val partitionKeyDefinition: PartitionKeyDefinition = {
-    TransientErrorsRetryPolicy.executeWithRetry(() => {
-      val calledFrom = s"ItemsScan($description()).getPartitionKeyDefinition"
-      Loan(
-        List[Option[CosmosClientCacheItem]](
-          Some(CosmosClientCache.apply(
-            clientConfiguration,
-            Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
-            calledFrom
-          )),
-          ThroughputControlHelper.getThroughputControlClientCacheItem(
-            config, calledFrom, Some(cosmosClientStateHandles), sparkEnvironmentInfo)
-        ))
-        .to(clientCacheItems => {
-          val container =
-            ThroughputControlHelper.getContainer(
-              config,
-              containerConfig,
-              clientCacheItems(0).get,
-              clientCacheItems(1))
-
-          container.read().block().getProperties.getPartitionKeyDefinition()
-        })
-    })
-  }
-
   private val readManyFiltersMapRef = {
     analyzedFilters.readManyFiltersOpt match {
       case Some(readManyFilters) => new AtomicReference[Map[NormalizedRange, String]](getReadManyFilterMap(readManyFilters))
       case None => new AtomicReference[Map[NormalizedRange, String]]()
     }
   }
-  private lazy val readManyFilterAnalyzer =
-    ReadManyFilterAnalyzer(readConfig)
+  private val readManyFilterAnalyzer =
+    ReadManyFilterAnalyzer(readConfig, partitionKeyDefinition)
+  private val effectiveReadManyFilteringConfig =
+    CosmosReadManyFilteringConfig.getEffectiveReadManyFilteringConfig(
+      readConfig.readManyFilteringConfig,
+      partitionKeyDefinition)
 
   override def description(): String = {
     s"""Cosmos ItemsScan: ${containerConfig.database}.${containerConfig.container}
@@ -204,9 +183,9 @@ private abstract class ItemsScanBase(session: SparkSession,
     // but more optimization can be achieved here, for example,
     //     if id is the partitionKey as well, then the readMany optimization can kick in automatically if there are filters based on id
     //     or if the filter is based on partition key, then we can change into use readAllItems by partition key value
-    if (readConfig.runtimeFilteringEnabled && readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
-      log.logInfo(s"filterAttribute is called and ${readConfig.readManyFilteringConfig.readManyFilterProperty} is returned")
-      Seq(Expressions.column(readConfig.readManyFilteringConfig.readManyFilterProperty)).toArray
+    if (readConfig.runtimeFilteringEnabled && effectiveReadManyFilteringConfig.readManyFilteringEnabled) {
+      log.logInfo(s"filterAttribute is called and ${effectiveReadManyFilteringConfig.readManyFilterProperty} is returned")
+      Seq(Expressions.column(effectiveReadManyFilteringConfig.readManyFilterProperty)).toArray
     } else {
       Array[NamedReference]()
     }
@@ -219,7 +198,7 @@ private abstract class ItemsScanBase(session: SparkSession,
     // but that being said, other optimizations can be done in future as well - for example filter by only pk value
     log.logDebug("Runtime filter is called")
 
-    if (shouldApplyRuntimeFilter() && readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
+    if (shouldApplyRuntimeFilter() && effectiveReadManyFilteringConfig.readManyFilteringEnabled) {
       val readManyFilters = readManyFilterAnalyzer.analyze(filters)
 
       readManyFilters.readManyFiltersOpt match {

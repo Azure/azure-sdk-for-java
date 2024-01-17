@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.MockTaskContext
@@ -21,80 +21,100 @@ class ItemsPartitionReaderWithReadManyITest
     with AutoCleanableCosmosContainer {
 
   "ItemsPartitionReaderWithReadMany" should "be able to get all items for the feedRange targeted to" in {
-    // first create few items
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val partitionKeyDefinition = container.read().block().getProperties.getPartitionKeyDefinition
-    val allItems = ListBuffer[String]()
-    for (_ <- 1 to 20) {
-      val id = UUID.randomUUID().toString
-      allItems += id
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("id", id)
-      container.createItem(objectNode).block()
-      logInfo(s"ID of test doc: $id")
-    }
+    val idNotPkContainerName = "idNotPkContainer-" + UUID.randomUUID().toString
+    val idNotPkContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(idNotPkContainerName)
 
-    val feedRanges = container.getFeedRanges().block()
-    val sparkPartitionNormalizedRange = SparkBridgeImplementationInternal.toNormalizedRange(feedRanges.get(0))
+    try {
+      cosmosClient.getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(idNotPkContainerName, "/pk", ThroughputProperties.createManualThroughput(400))
+        .block()
 
-    // then get all items overlap with sparkPartitionNormalizedRange
-    val itemsOnPlannedFeedRange =
-      allItems.filter(id => {
-        val feedRange =
-          SparkBridgeImplementationInternal.partitionKeyToNormalizedRange(
-            new PartitionKey(id),
-            partitionKeyDefinition)
+      // first create few items
+      val partitionKeyDefinition = idNotPkContainer.read().block().getProperties.getPartitionKeyDefinition
+      val allItems = ListBuffer[ObjectNode]()
+      for (_ <- 1 to 20) {
+        val id = UUID.randomUUID().toString
+        val pk = UUID.randomUUID().toString
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("id", id)
+        objectNode.put("pk", pk)
+        idNotPkContainer.createItem(objectNode).block()
+        allItems += objectNode
+        logInfo(s"ID of test doc: $id")
+      }
 
-        SparkBridgeImplementationInternal.doRangesOverlap(feedRange, sparkPartitionNormalizedRange)
-      }).toList
+      val feedRanges = idNotPkContainer.getFeedRanges().block()
+      val sparkPartitionNormalizedRange = SparkBridgeImplementationInternal.toNormalizedRange(feedRanges.get(0))
 
-    val config = Map(
-      "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.applicationName" -> "ItemsScan",
-      "spark.cosmos.read.runtimeFiltering.enabled" -> "true",
-      "spark.cosmos.read.readManyFiltering.enabled" -> "true"
-    )
+      // then get all items overlap with sparkPartitionNormalizedRange
+      val itemsOnPlannedFeedRange =
+        allItems.filter(objectNode => {
+          val feedRange =
+            SparkBridgeImplementationInternal.partitionKeyToNormalizedRange(
+              new PartitionKey(objectNode.get("pk").asText()),
+              partitionKeyDefinition)
 
-    val readSchema = StructType(Seq(
-      StructField("id", StringType, false),
-      StructField("_itemIdentity", StringType, true)
-    ))
+          SparkBridgeImplementationInternal.doRangesOverlap(feedRange, sparkPartitionNormalizedRange)
+        }).toList
 
-    val diagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "")
-    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
-    val cosmosClientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
-
-    val itemsPartitionReaderWithReadMany =
-      ItemsPartitionReaderWithReadMany(
-        config,
-        sparkPartitionNormalizedRange,
-        readSchema,
-        diagnosticsContext,
-        cosmosClientMetadataCachesSnapshots,
-        diagnosticsConfig,
-        "",
-        MockTaskContext.mockTaskContext(),
-        itemsOnPlannedFeedRange.map(id => CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, new PartitionKey(id)))
+      val config = Map(
+        "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+        "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> idNotPkContainerName,
+        "spark.cosmos.read.inferSchema.enabled" -> "true",
+        "spark.cosmos.applicationName" -> "ItemsScan",
+        "spark.cosmos.read.runtimeFiltering.enabled" -> "true",
+        "spark.cosmos.read.readManyFiltering.enabled" -> "true"
       )
 
-    val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
-    val itemsReadFromPartitionReader = ListBuffer[ObjectNode]()
-    while (itemsPartitionReaderWithReadMany.next()) {
-      itemsReadFromPartitionReader += cosmosRowConverter.fromInternalRowToObjectNode(itemsPartitionReaderWithReadMany.get(), readSchema)
+      val readSchema = StructType(Seq(
+        StructField("id", StringType, false),
+        StructField("pk", StringType, false),
+        StructField("_itemIdentity", StringType, true)
+      ))
+
+      val diagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "")
+      val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
+      val cosmosClientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
+
+      val itemsPartitionReaderWithReadMany =
+        ItemsPartitionReaderWithReadMany(
+          config,
+          sparkPartitionNormalizedRange,
+          readSchema,
+          diagnosticsContext,
+          cosmosClientMetadataCachesSnapshots,
+          diagnosticsConfig,
+          "",
+          MockTaskContext.mockTaskContext(),
+          itemsOnPlannedFeedRange
+            .map(objectNode =>
+              CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
+                objectNode.get("id").asText(),
+                new PartitionKey(objectNode.get("pk").asText())))
+        )
+
+      val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
+      val itemsReadFromPartitionReader = ListBuffer[ObjectNode]()
+      while (itemsPartitionReaderWithReadMany.next()) {
+        itemsReadFromPartitionReader += cosmosRowConverter.fromInternalRowToObjectNode(itemsPartitionReaderWithReadMany.get(), readSchema)
+      }
+
+      itemsReadFromPartitionReader.size shouldEqual itemsOnPlannedFeedRange.size
+      // check _itemIdentity column is added
+      itemsReadFromPartitionReader.foreach(item => {
+        item.get("_itemIdentity").asText() shouldEqual
+          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get("id").asText(), new PartitionKey(item.get("pk").asText()))
+      })
+
+      val idsOnPlannedFeedRange = itemsOnPlannedFeedRange
+        .map(objectNode => objectNode.get("id"))
+      itemsReadFromPartitionReader.map(item => item.get("id").asText()) should contain allElementsOf (idsOnPlannedFeedRange)
+    } finally {
+      idNotPkContainer.delete().block()
     }
 
-    itemsReadFromPartitionReader.size shouldEqual itemsOnPlannedFeedRange.size
-    // check _itemIdentity column is added
-    itemsReadFromPartitionReader.foreach(item => {
-      item.get("_itemIdentity").asText() shouldEqual
-        CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get("id").asText(), new PartitionKey(item.get("id").asText()))
-    })
-
-    itemsReadFromPartitionReader.map(item => item.get("id").asText()) should contain allElementsOf (itemsOnPlannedFeedRange)
   }
 
   private def getCosmosClientMetadataCachesSnapshots(): Broadcast[CosmosClientMetadataCachesSnapshots] = {

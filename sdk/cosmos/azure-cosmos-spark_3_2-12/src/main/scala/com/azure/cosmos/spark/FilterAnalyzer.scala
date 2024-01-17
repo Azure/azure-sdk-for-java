@@ -3,10 +3,13 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.PartitionKeyDefinition
 import org.apache.spark.sql.sources.Filter
 
-private case class FilterAnalyzer(cosmosReadConfig: CosmosReadConfig) {
-  private lazy val readManyFilterAnalyzer = ReadManyFilterAnalyzer(cosmosReadConfig)
+private case class FilterAnalyzer(
+                                   cosmosReadConfig: CosmosReadConfig,
+                                   partitionKeyDefinition: PartitionKeyDefinition) {
+  private lazy val readManyFilterAnalyzer = ReadManyFilterAnalyzer(cosmosReadConfig, partitionKeyDefinition)
   private lazy val queryFilterAnalyzer = QueryFilterAnalyzer(cosmosReadConfig)
 
   def analyze(filters: Array[Filter]): AnalyzedAggregatedFilters = {

@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
@@ -100,6 +101,7 @@ private object CosmosTableSchemaInferrer
       inferSchemaImpl(clientCacheItem, throughputControlClientCacheItemOpt, userConfig, defaultSchema))
   }
 
+  //scalastyle:off method.length
   private[this] def inferSchemaImpl(clientCacheItem: CosmosClientCacheItem,
                                     throughputControlClientCacheItemOpt: Option[CosmosClientCacheItem],
                                     userConfig: Map[String, String],
@@ -107,14 +109,15 @@ private object CosmosTableSchemaInferrer
     val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
     var schema = Option.empty[StructType]
+    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+    val sourceContainer =
+      ThroughputControlHelper.getContainer(
+        userConfig,
+        cosmosContainerConfig,
+        clientCacheItem,
+        throughputControlClientCacheItemOpt)
+
     if (cosmosInferenceConfig.inferSchemaEnabled) {
-      val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-      val sourceContainer =
-        ThroughputControlHelper.getContainer(
-          userConfig,
-          cosmosContainerConfig,
-          clientCacheItem,
-          throughputControlClientCacheItemOpt)
       SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
@@ -161,10 +164,32 @@ private object CosmosTableSchemaInferrer
     }
 
     if (cosmosReadConfig.readManyFilteringConfig.readManyFilteringEnabled) {
-      schema.get.add(cosmosReadConfig.readManyFilteringConfig.readManyFilterProperty, DataTypes.StringType, true)
+      val effectiveReadManyFilteringProperty =
+        getEffectiveReadManyFilteringProperty(sourceContainer, cosmosReadConfig.readManyFilteringConfig)
+
+      // only add if the schema does not contain the readMany filtering property
+      if (!schema.get.fieldNames.contains(effectiveReadManyFilteringProperty)) {
+        schema = Some(schema.get.add(effectiveReadManyFilteringProperty, DataTypes.StringType, true))
+      }
+
+      schema.get
     } else {
       schema.get
     }
+  }
+  //scalastyle:on method.length
+
+  private def getEffectiveReadManyFilteringProperty(
+                                                     cosmosContainer: CosmosAsyncContainer,
+                                                     readManyFilteringConfig: CosmosReadManyFilteringConfig): String = {
+    val partitionKeyDefinition =
+      TransientErrorsRetryPolicy.executeWithRetry[PartitionKeyDefinition](() => {
+        cosmosContainer.read().block().getProperties.getPartitionKeyDefinition
+      })
+
+    CosmosReadManyFilteringConfig
+      .getEffectiveReadManyFilteringConfig(readManyFilteringConfig, partitionKeyDefinition)
+      .readManyFilterProperty
   }
 
   private def inferDataTypeFromObjectNode

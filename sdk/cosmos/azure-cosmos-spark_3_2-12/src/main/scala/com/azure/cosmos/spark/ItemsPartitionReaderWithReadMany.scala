@@ -106,10 +106,19 @@ private case class ItemsPartitionReaderWithReadMany
       throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
-  private val partitionKeyDefinition: PartitionKeyDefinition = cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
+  private val partitionKeyDefinition: PartitionKeyDefinition = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => {
+      cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
+    })
+  }
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+  private val effectiveReadManyFilteringConfig =
+    CosmosReadManyFilteringConfig
+      .getEffectiveReadManyFilteringConfig(
+        readConfig.readManyFilteringConfig,
+        partitionKeyDefinition)
 
   private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[JsonNode](
     cosmosAsyncContainer,
@@ -128,20 +137,31 @@ private case class ItemsPartitionReaderWithReadMany
     val jsonNode = iterator.next()
     val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
-    val computedColumnsMap = Map(
-      readConfig.readManyFilteringConfig.readManyFilterProperty ->
-        ((objectNodeParam: ObjectNode) => {
-          val idValue = objectNodeParam.get(IdAttributeName).asText()
-          val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
-          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
-        })
-    )
+    this.effectiveReadManyFilteringConfig.readManyFilterProperty match {
+      case CosmosConstants.Properties.Id => {
+        // id is also the partition key, there is no need to dynamically populate it
+        val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+          objectNode,
+          readConfig.schemaConversionMode)
+        cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
+      }
+      case _ => {
+        val computedColumnsMap = Map(
+          readConfig.readManyFilteringConfig.readManyFilterProperty ->
+            ((objectNodeParam: ObjectNode) => {
+              val idValue = objectNodeParam.get(IdAttributeName).asText()
+              val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
+              CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
+            })
+        )
 
-    val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
-      objectNode,
-      readConfig.schemaConversionMode,
-      computedColumnsMap)
-    cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
+        val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
+          objectNode,
+          readConfig.schemaConversionMode,
+          computedColumnsMap)
+        cosmosRowConverter.fromRowToInternalRow(row, rowSerializer)
+      }
+    }
   }
 
   override def close(): Unit = {

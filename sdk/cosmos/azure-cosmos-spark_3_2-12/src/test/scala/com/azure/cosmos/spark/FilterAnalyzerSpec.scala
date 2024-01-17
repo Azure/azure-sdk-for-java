@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, PartitionKey}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, PartitionKey, SparkModelBridgeInternal}
 import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
 import reactor.util.concurrent.Queues
@@ -40,9 +40,12 @@ class FilterAnalyzerSpec extends UnitSpec {
     true,
     CosmosReadManyFilteringConfig(false, "_itemIdentity"))
 
-  private[this] lazy val filterProcessorWithoutCustomQuery = FilterAnalyzer(readConfigWithoutCustomQuery)
-  private[this] lazy val filterProcessorWithCustomQuery = FilterAnalyzer(readConfigWithCustomQuery)
+  private val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+  private val partitionKeyDefinition =
+    SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(pkDefinition)
 
+  private[this] lazy val filterProcessorWithoutCustomQuery = FilterAnalyzer(readConfigWithoutCustomQuery, partitionKeyDefinition)
+  private[this] lazy val filterProcessorWithCustomQuery = FilterAnalyzer(readConfigWithCustomQuery, partitionKeyDefinition)
 
   "many filters" should "be translated to cosmos predicates with AND" in {
     val filters = Array[Filter](
@@ -252,7 +255,7 @@ class FilterAnalyzerSpec extends UnitSpec {
         false,
         CosmosReadManyFilteringConfig(true, "_itemIdentity"))
 
-    val filterAnalyzer = FilterAnalyzer(readConfigWithReadManyFilterEnabled)
+    val filterAnalyzer = FilterAnalyzer(readConfigWithReadManyFilterEnabled, partitionKeyDefinition)
     val itemIdentityOne = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("1", new PartitionKey("1"))
     val itemIdentityTwo = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("2", new PartitionKey("2"))
 

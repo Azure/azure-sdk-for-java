@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.PartitionKeyDefinition
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -31,7 +32,43 @@ private case class ItemsScanBuilder(session: SparkSession,
   private val configMap = config.asScala.toMap
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
   private var processedPredicates : Option[AnalyzedAggregatedFilters] = Option.empty
-  private val filterAnalyzer = FilterAnalyzer(readConfig)
+  private val clientConfiguration = CosmosClientConfiguration.apply(
+    configMap,
+    readConfig.forceEventualConsistency,
+    CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
+  )
+  private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(configMap)
+  private val description = {
+    s"""Cosmos ItemsScanBuilder: ${containerConfig.database}.${containerConfig.container}""".stripMargin
+  }
+
+  private val partitionKeyDefinition: PartitionKeyDefinition = {
+    TransientErrorsRetryPolicy.executeWithRetry(() => {
+      val calledFrom = s"ItemsScan($description()).getPartitionKeyDefinition"
+      Loan(
+        List[Option[CosmosClientCacheItem]](
+          Some(CosmosClientCache.apply(
+            clientConfiguration,
+            Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+            calledFrom
+          )),
+          ThroughputControlHelper.getThroughputControlClientCacheItem(
+            configMap, calledFrom, Some(cosmosClientStateHandles), sparkEnvironmentInfo)
+        ))
+        .to(clientCacheItems => {
+          val container =
+            ThroughputControlHelper.getContainer(
+              configMap,
+              containerConfig,
+              clientCacheItems(0).get,
+              clientCacheItems(1))
+
+          container.read().block().getProperties.getPartitionKeyDefinition()
+        })
+    })
+  }
+
+  private val filterAnalyzer = FilterAnalyzer(readConfig, partitionKeyDefinition)
 
   /**
     * Pushes down filters, and returns filters that need to be evaluated after scanning.
@@ -72,7 +109,8 @@ private case class ItemsScanBuilder(session: SparkSession,
       effectiveAnalyzedFilters,
       cosmosClientStateHandles,
       diagnosticsConfig,
-      sparkEnvironmentInfo)
+      sparkEnvironmentInfo,
+      partitionKeyDefinition)
   }
 
   /**

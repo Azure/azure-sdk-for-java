@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.PartitionKeyDefinition
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.StructType
@@ -15,7 +16,8 @@ private class ItemsScan(
                          analyzedFilters: AnalyzedAggregatedFilters,
                          cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
                          diagnosticsConfig: DiagnosticsConfig,
-                         sparkEnvironmentInfo: String)
+                         sparkEnvironmentInfo: String,
+                         partitionKeyDefinition: PartitionKeyDefinition)
   extends ItemsScanBase(
     session,
     schema,
@@ -24,4 +26,5 @@ private class ItemsScan(
     analyzedFilters,
     cosmosClientStateHandles,
     diagnosticsConfig,
-    sparkEnvironmentInfo)
+    sparkEnvironmentInfo,
+    partitionKeyDefinition)

@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -1299,6 +1299,19 @@ private object CosmosReadManyFilteringConfig {
   def parseCosmosReadManyFilterConfig(cfg: Map[String, String]): CosmosReadManyFilteringConfig = {
     val cosmosReadManyFilteringEnabled = CosmosConfigEntry.parse(cfg, readManyFilteringEnabled)
     CosmosReadManyFilteringConfig(cosmosReadManyFilteringEnabled.get, defaultReadManyFilterProperty)
+  }
+
+  def getEffectiveReadManyFilteringConfig(
+                                           readManyFilteringConfig: CosmosReadManyFilteringConfig,
+                                           partitionKeyDefinition: PartitionKeyDefinition): CosmosReadManyFilteringConfig = {
+
+    if (partitionKeyDefinition.getPaths.size() == 1
+      && partitionKeyDefinition.getPaths.get(0).equals(s"/${CosmosConstants.Properties.Id}")) {
+      // id is the partition key as well, switch to use id as the readMany filtering property
+      CosmosReadManyFilteringConfig(readManyFilteringConfig.readManyFilteringEnabled, CosmosConstants.Properties.Id)
+    } else {
+      readManyFilteringConfig
+    }
   }
 }
 

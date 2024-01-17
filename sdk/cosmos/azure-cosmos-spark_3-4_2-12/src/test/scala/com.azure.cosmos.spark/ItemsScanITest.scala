@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.expressions.Expressions
 import org.apache.spark.sql.sources.{Filter, In}
@@ -30,8 +30,15 @@ class ItemsScanITest
       Array.empty[Filter],
       Option.empty[List[ReadManyFilter]])
 
-  "ItemScan" should "only return readMany filter property when runtTimeFiltering is enabled and readMany filtering is enabled" in {
+  it should "only return readMany filtering property when runtTimeFiltering is enabled and readMany filtering is enabled" in {
     val clientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
+    val partitionKeyDefinition =
+      cosmosClient
+        .getDatabase(cosmosDatabase)
+        .getContainer(cosmosContainer)
+        .read().block()
+        .getProperties
+        .getPartitionKeyDefinition
 
     for (runTimeFilteringEnabled <- Array(true, false)) {
       for (readManyFilteringEnabled <- Array(true, false)) {
@@ -55,13 +62,14 @@ class ItemsScanITest
           analyzedAggregatedFilters,
           clientMetadataCachesSnapshots,
           diagnosticsConfig,
-          "")
+          "",
+          partitionKeyDefinition)
         val arrayReferences = itemScan.filterAttributes()
 
         if (runTimeFilteringEnabled && readManyFilteringEnabled) {
           arrayReferences.size shouldBe 1
-          arrayReferences should contain theSameElementsAs Array(Expressions.column(readConfig.readManyFilteringConfig.readManyFilterProperty))
-
+          // since id is the partitionKey, so id will be returned as the readMany filtering property
+          arrayReferences should contain theSameElementsAs Array(Expressions.column(CosmosConstants.Properties.Id))
         } else {
           arrayReferences shouldBe empty
         }
@@ -69,15 +77,68 @@ class ItemsScanITest
     }
   }
 
-  "ItemScan" should "only prune partitions when runtTimeFiltering is enabled and readMany filtering is enabled" in {
+  it should "return _itemIdentity as readMany filtering property when id is not the partitionKey" in {
+    val clientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
+
+    val idNotPkContainerName = "idNotPkContainer-" + UUID.randomUUID().toString
+    val idNotPkContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(idNotPkContainerName)
+
+    try {
+      cosmosClient.getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(idNotPkContainerName, "/pk", ThroughputProperties.createManualThroughput(400))
+        .block()
+
+      val partitionKeyDefinition = idNotPkContainer.read().block().getProperties.getPartitionKeyDefinition
+
+      for (runTimeFilteringEnabled <- Array(true, false)) {
+        for (readManyFilteringEnabled <- Array(true, false)) {
+          val config = Map(
+            "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+            "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> idNotPkContainerName,
+            "spark.cosmos.read.inferSchema.enabled" -> "true",
+            "spark.cosmos.applicationName" -> "ItemsScan",
+            "spark.cosmos.read.runtimeFiltering.enabled" -> runTimeFilteringEnabled.toString,
+            "spark.cosmos.read.readManyFiltering.enabled" -> readManyFilteringEnabled.toString
+          )
+          val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
+          val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
+          val itemScan = new ItemsScan(
+            spark,
+            schema,
+            config,
+            readConfig,
+            analyzedAggregatedFilters,
+            clientMetadataCachesSnapshots,
+            diagnosticsConfig,
+            "",
+            partitionKeyDefinition)
+          val arrayReferences = itemScan.filterAttributes()
+
+          if (runTimeFilteringEnabled && readManyFilteringEnabled) {
+            arrayReferences.size shouldBe 1
+            // since id is the partitionKey, so id will be returned as the readMany filtering property
+            arrayReferences should contain theSameElementsAs Array(Expressions.column("_itemIdentity"))
+          } else {
+            arrayReferences shouldBe empty
+          }
+        }
+      }
+    } finally {
+      idNotPkContainer.delete().block()
+    }
+  }
+
+  it should "only prune partitions when runtTimeFiltering is enabled and readMany filtering is enabled" in {
     val clientMetadataCachesSnapshots = getCosmosClientMetadataCachesSnapshots()
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val partitionKeyDefinition = container.read().block().getProperties.getPartitionKeyDefinition
+
     // assert that there is more than one range
     val feedRanges = container.getFeedRanges.block()
     feedRanges.size()  should be > 1
-
-    val partitionKeyDefinition = container.read().block().getProperties.getPartitionKeyDefinition
 
     // first inject few items
     val idList = ListBuffer[String]()
@@ -91,9 +152,8 @@ class ItemsScanITest
     }
 
     // choose one of the items created above and filter by it
-    val itemIdentityValue = CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idList(0), new PartitionKey(idList(0)))
     val runtimeFilters = Array[Filter](
-      In("_itemIdentity", Array(itemIdentityValue))
+      In("id", Array(idList(0)))
     )
 
     for (runTimeFilteringEnabled <- Array(true, false)) {
@@ -119,7 +179,8 @@ class ItemsScanITest
           analyzedAggregatedFilters,
           clientMetadataCachesSnapshots,
           diagnosticsConfig,
-          "")
+          "",
+          partitionKeyDefinition)
 
         val plannedInputPartitions = itemScan.planInputPartitions()
         plannedInputPartitions.length shouldBe feedRanges.size() // using restrictive strategy
