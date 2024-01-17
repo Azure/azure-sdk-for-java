@@ -685,4 +685,31 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
     }
+
+    @Test
+    public void updateIdentityFromNoneToSystemUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        storageAccount.update()
+            .withSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+    }
 }

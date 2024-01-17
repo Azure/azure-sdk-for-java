@@ -263,9 +263,11 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                 || storageAccount.innerModel().identity().type().equals(IdentityType.NONE)
                 || storageAccount.innerModel().identity().type().equals(identityType)) {
                 Identity identity = Objects.isNull(storageAccount.innerModel().identity()) ? new Identity().withType(identityType) : storageAccount.innerModel().identity().withType(identityType);
+                storageAccount.innerModel().withIdentity(identity);
                 storageAccount.updateParameters.withIdentity(identity);
             } else {
-                storageAccount.updateParameters.withIdentity(storageAccount.innerModel().identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                storageAccount.innerModel().identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+                storageAccount.updateParameters.withIdentity(storageAccount.innerModel().identity());
             }
         }
     }
