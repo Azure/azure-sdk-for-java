@@ -336,14 +336,14 @@ jobs:
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
 
-      - ${{ if eq(parameters.EnableVerifyTypeSpecCodeGeneration, 'true') }}:
-        - task: PowerShell@2
-          displayName: Verify TypeSpec Code Generation
-          inputs:
-            pwsh: true
-            filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-            arguments: >
-              -Directory sdk/${{ parameters.ServiceDirectory }}
+      - task: PowerShell@2
+        displayName: Verify TypeSpec Code Generation
+        continueOnError: ${{ ne(parameters.EnableVerifyTypeSpecCodeGeneration, 'true') }}
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
