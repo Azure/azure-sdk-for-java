@@ -20,13 +20,6 @@
 //     - The aspect ratio of the region
 //     - A `BoundingBox` coordinates in pixels, defining the region in the image.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleSmartCropsImageFile.java -cp target/dependency/*
-//     Run the sample:
-//         java -cp ".;target/dependency/*" SampleSmartCropsImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.

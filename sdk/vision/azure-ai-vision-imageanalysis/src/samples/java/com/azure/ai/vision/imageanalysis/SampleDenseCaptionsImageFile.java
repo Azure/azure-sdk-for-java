@@ -19,13 +19,6 @@
 //     - A `BoundingBox` coordinates in pixels, for a rectangular marking the area in the image associated
 //       with this caption.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleDenseCaptionsImageFile.java -cp target/dependency/*
-//     Run the sample:
-//         java -cp ".;target/dependency/*" SampleDenseCaptionsImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.

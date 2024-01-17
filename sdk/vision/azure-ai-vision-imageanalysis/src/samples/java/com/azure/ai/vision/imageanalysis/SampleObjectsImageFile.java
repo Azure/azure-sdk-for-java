@@ -13,13 +13,6 @@
 //
 //     Object names are only supported in English at the moment.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleObjectsImageFile.java -cp target/dependency/*
-//     Run the sample:
-//         java -cp ".;target/dependency/*" SampleObjectsImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
