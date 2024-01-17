@@ -48,7 +48,6 @@ extends:
   parameters:
     ServiceDirectory: vision
     EnableBatchRelease: true
-    EnableVerifyTypeSpecCodeGeneration: false
     Artifacts:
       - name: azure-ai-vision-imageanalysis
         groupId: com.azure
