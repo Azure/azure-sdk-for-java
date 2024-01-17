@@ -35,11 +35,20 @@ parameters:
     type: boolean
     default: true
 
+# Note that EnableVerifyTypeSpecCodeGeneration is set to false here in order to skip
+# the task "Verify TypeSpec Code Generation" in the pipeline. This task is currenlty
+# failing because the tools do not account for the additional code snippet that were
+# inserted into Java source code comments (JavaDocs). This task will be enabled again
+# once the tools are updated. During development of the next release of the SDK, please
+# enable this check temporarly in your PRs and make sure the only difference you see
+# when the "Verify TypeSpec Code Generation" task fails, is because of code snippets
+# in source code comments (JavaDocs).
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: vision
     EnableBatchRelease: true
+    EnableVerifyTypeSpecCodeGeneration: false
     Artifacts:
       - name: azure-ai-vision-imageanalysis
         groupId: com.azure
