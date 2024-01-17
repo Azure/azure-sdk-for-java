@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.ManagedVirtualNetwork
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of managed Virtual Network resources. */
+/**
+ * A list of managed Virtual Network resources.
+ */
 @Fluent
 public final class ManagedVirtualNetworkListResponse {
     /*
@@ -25,13 +27,15 @@ public final class ManagedVirtualNetworkListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ManagedVirtualNetworkListResponse class. */
+    /**
+     * Creates an instance of ManagedVirtualNetworkListResponse class.
+     */
     public ManagedVirtualNetworkListResponse() {
     }
 
     /**
      * Get the value property: List of managed Virtual Networks.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedVirtualNetworkResourceInner> value() {
@@ -40,7 +44,7 @@ public final class ManagedVirtualNetworkListResponse {
 
     /**
      * Set the value property: List of managed Virtual Networks.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedVirtualNetworkListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class ManagedVirtualNetworkListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ManagedVirtualNetworkListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagedVirtualNetworkListResponse object itself.
      */
@@ -71,15 +75,13 @@ public final class ManagedVirtualNetworkListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ManagedVirtualNetworkListResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ManagedVirtualNetworkListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

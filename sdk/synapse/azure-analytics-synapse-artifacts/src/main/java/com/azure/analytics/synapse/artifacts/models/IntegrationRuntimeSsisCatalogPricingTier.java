@@ -13,30 +13,39 @@ import java.util.Collection;
  * https://azure.microsoft.com/en-us/pricing/details/sql-database/.
  */
 public final class IntegrationRuntimeSsisCatalogPricingTier
-        extends ExpandableStringEnum<IntegrationRuntimeSsisCatalogPricingTier> {
-    /** Static value Basic for IntegrationRuntimeSsisCatalogPricingTier. */
+    extends ExpandableStringEnum<IntegrationRuntimeSsisCatalogPricingTier> {
+    /**
+     * Static value Basic for IntegrationRuntimeSsisCatalogPricingTier.
+     */
     public static final IntegrationRuntimeSsisCatalogPricingTier BASIC = fromString("Basic");
 
-    /** Static value Standard for IntegrationRuntimeSsisCatalogPricingTier. */
+    /**
+     * Static value Standard for IntegrationRuntimeSsisCatalogPricingTier.
+     */
     public static final IntegrationRuntimeSsisCatalogPricingTier STANDARD = fromString("Standard");
 
-    /** Static value Premium for IntegrationRuntimeSsisCatalogPricingTier. */
+    /**
+     * Static value Premium for IntegrationRuntimeSsisCatalogPricingTier.
+     */
     public static final IntegrationRuntimeSsisCatalogPricingTier PREMIUM = fromString("Premium");
 
-    /** Static value PremiumRS for IntegrationRuntimeSsisCatalogPricingTier. */
+    /**
+     * Static value PremiumRS for IntegrationRuntimeSsisCatalogPricingTier.
+     */
     public static final IntegrationRuntimeSsisCatalogPricingTier PREMIUM_RS = fromString("PremiumRS");
 
     /**
      * Creates a new instance of IntegrationRuntimeSsisCatalogPricingTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IntegrationRuntimeSsisCatalogPricingTier() {}
+    public IntegrationRuntimeSsisCatalogPricingTier() {
+    }
 
     /**
      * Creates or finds a IntegrationRuntimeSsisCatalogPricingTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeSsisCatalogPricingTier.
      */
@@ -47,7 +56,7 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
 
     /**
      * Gets known IntegrationRuntimeSsisCatalogPricingTier values.
-     *
+     * 
      * @return known IntegrationRuntimeSsisCatalogPricingTier values.
      */
     public static Collection<IntegrationRuntimeSsisCatalogPricingTier> values() {

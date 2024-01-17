@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,61 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-11-17)
+
+- Azure Resource Manager Nginx client library for Java. This package contains Microsoft Azure SDK for Nginx Management SDK.  Package tag package-2023-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NginxCertificate$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.NginxCertificate` was modified
+
+* `tags()` was removed
+
+#### `models.NginxConfiguration$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.NginxCertificate$Update` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.NginxConfiguration` was modified
+
+* `tags()` was removed
+
+#### `models.NginxConfiguration$Update` was modified
+
+* `withTags(java.util.Map)` was removed
+
+### Features Added
+
+* `models.NginxDeploymentScalingProperties` was added
+
+* `models.NginxDeploymentUserProfile` was added
+
+#### `models.NginxConfigurationPackage` was modified
+
+* `protectedFiles()` was added
+* `withProtectedFiles(java.util.List)` was added
+
+#### `models.NginxDeploymentUpdateProperties` was modified
+
+* `withScalingProperties(models.NginxDeploymentScalingProperties)` was added
+* `withUserProfile(models.NginxDeploymentUserProfile)` was added
+* `scalingProperties()` was added
+* `userProfile()` was added
+
+#### `models.NginxDeploymentProperties` was modified
+
+* `withUserProfile(models.NginxDeploymentUserProfile)` was added
+* `scalingProperties()` was added
+* `withScalingProperties(models.NginxDeploymentScalingProperties)` was added
+* `userProfile()` was added
 
 ## 1.0.0-beta.2 (2022-10-13)
 

@@ -17,25 +17,24 @@ public final class OperationStatusJobsExtendedInfoTests {
         OperationStatusJobsExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"wbjijkgq\",\"nhmbkez\",\"jauj\",\"aan\"],\"failedJobsError\":{\"wxwfekaumrr\":\"iycwkdta\",\"atbnxwbj\":\"mbzmqk\",\"dgo\":\"idbirkfpkso\",\"zkye\":\"ewijymrhbguz\"}}")
+                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"ocyvhhulrtywikdm\",\"lakuflgbhgauacd\",\"xmxufrsryjqgdk\"],\"failedJobsError\":{\"bvjhvefgwbmqj\":\"zoeo\"}}")
                 .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("wbjijkgq", model.jobIds().get(0));
-        Assertions.assertEquals("iycwkdta", model.failedJobsError().get("wxwfekaumrr"));
+        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
+        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationStatusJobsExtendedInfo model =
             new OperationStatusJobsExtendedInfo()
-                .withJobIds(Arrays.asList("wbjijkgq", "nhmbkez", "jauj", "aan"))
-                .withFailedJobsError(
-                    mapOf(
-                        "wxwfekaumrr", "iycwkdta", "atbnxwbj", "mbzmqk", "dgo", "idbirkfpkso", "zkye", "ewijymrhbguz"));
+                .withJobIds(Arrays.asList("ocyvhhulrtywikdm", "lakuflgbhgauacd", "xmxufrsryjqgdk"))
+                .withFailedJobsError(mapOf("bvjhvefgwbmqj", "zoeo"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("wbjijkgq", model.jobIds().get(0));
-        Assertions.assertEquals("iycwkdta", model.failedJobsError().get("wxwfekaumrr"));
+        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
+        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

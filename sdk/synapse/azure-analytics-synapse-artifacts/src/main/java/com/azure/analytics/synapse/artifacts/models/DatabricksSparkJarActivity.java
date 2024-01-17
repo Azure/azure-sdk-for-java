@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksSparkJar activity. */
+/**
+ * DatabricksSparkJar activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DatabricksSparkJar")
 @JsonFlatten
@@ -37,13 +39,16 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkJarActivity class. */
-    public DatabricksSparkJarActivity() {}
+    /**
+     * Creates an instance of DatabricksSparkJarActivity class.
+     */
+    public DatabricksSparkJarActivity() {
+    }
 
     /**
      * Get the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the mainClassName value.
      */
     public Object getMainClassName() {
@@ -53,7 +58,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * Set the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param mainClassName the mainClassName value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -64,7 +69,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> getParameters() {
@@ -73,7 +78,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -84,7 +89,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> getLibraries() {
@@ -93,7 +98,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
@@ -102,56 +107,72 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkJarActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

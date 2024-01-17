@@ -20,6 +20,15 @@ public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehav
     public static final RuleCacheBehavior OVERRIDE_IF_ORIGIN_MISSING = fromString("OverrideIfOriginMissing");
 
     /**
+     * Creates a new instance of RuleCacheBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleCacheBehavior() {
+    }
+
+    /**
      * Creates or finds a RuleCacheBehavior from its string representation.
      *
      * @param name a name to look for.

@@ -12,7 +12,7 @@ public final class HardwareProfileTests {
     public void testDeserialize() throws Exception {
         HardwareProfile model =
             BinaryData
-                .fromString("{\"hardwareType\":\"HPE\",\"azureBareMetalInstanceSize\":\"S768xm\"}")
+                .fromString("{\"hardwareType\":\"SDFLEX\",\"azureBareMetalInstanceSize\":\"S672om\"}")
                 .toObject(HardwareProfile.class);
     }
 

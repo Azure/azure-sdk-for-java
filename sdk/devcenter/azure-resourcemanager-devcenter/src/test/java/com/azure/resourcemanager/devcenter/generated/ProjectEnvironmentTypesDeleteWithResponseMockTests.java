@@ -58,6 +58,6 @@ public final class ProjectEnvironmentTypesDeleteWithResponseMockTests {
 
         manager
             .projectEnvironmentTypes()
-            .deleteWithResponse("vgtrdcnifmzzs", "ymbrnysuxmpraf", "g", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("cfhmlrqryxyn", "nzrdpsovwxz", "ptgoeiybbabp", com.azure.core.util.Context.NONE);
     }
 }

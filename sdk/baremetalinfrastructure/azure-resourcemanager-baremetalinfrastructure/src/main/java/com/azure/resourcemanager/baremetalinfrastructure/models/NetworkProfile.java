@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies the network settings for the AzureBareMetal instance disks. */
+/** Specifies the network settings for the Azure Bare Metal Instance disks. */
 @Fluent
 public final class NetworkProfile {
     /*
-     * Specifies the network interfaces for the AzureBareMetal instance.
+     * Specifies the network interfaces for the Azure Bare Metal Instance.
      */
     @JsonProperty(value = "networkInterfaces")
-    private List<IpAddress> networkInterfaces;
+    private List<NetworkInterface> networkInterfaces;
 
     /*
      * Specifies the circuit id for connecting to express route.
@@ -28,21 +28,21 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkInterfaces property: Specifies the network interfaces for the AzureBareMetal instance.
+     * Get the networkInterfaces property: Specifies the network interfaces for the Azure Bare Metal Instance.
      *
      * @return the networkInterfaces value.
      */
-    public List<IpAddress> networkInterfaces() {
+    public List<NetworkInterface> networkInterfaces() {
         return this.networkInterfaces;
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the network interfaces for the AzureBareMetal instance.
+     * Set the networkInterfaces property: Specifies the network interfaces for the Azure Bare Metal Instance.
      *
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile withNetworkInterfaces(List<IpAddress> networkInterfaces) {
+    public NetworkProfile withNetworkInterfaces(List<NetworkInterface> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }

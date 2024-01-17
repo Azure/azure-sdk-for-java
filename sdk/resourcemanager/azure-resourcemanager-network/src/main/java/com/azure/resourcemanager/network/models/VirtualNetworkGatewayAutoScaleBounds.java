@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkGatewayAutoScaleBounds model. */
+/**
+ * The VirtualNetworkGatewayAutoScaleBounds model.
+ */
 @Fluent
 public final class VirtualNetworkGatewayAutoScaleBounds {
     /*
@@ -22,13 +24,15 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
     @JsonProperty(value = "max")
     private Integer max;
 
-    /** Creates an instance of VirtualNetworkGatewayAutoScaleBounds class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayAutoScaleBounds class.
+     */
     public VirtualNetworkGatewayAutoScaleBounds() {
     }
 
     /**
      * Get the min property: Minimum scale Units for Autoscale configuration.
-     *
+     * 
      * @return the min value.
      */
     public Integer min() {
@@ -37,7 +41,7 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
 
     /**
      * Set the min property: Minimum scale Units for Autoscale configuration.
-     *
+     * 
      * @param min the min value to set.
      * @return the VirtualNetworkGatewayAutoScaleBounds object itself.
      */
@@ -48,7 +52,7 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
 
     /**
      * Get the max property: Maximum Scale Units for Autoscale configuration.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -57,7 +61,7 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
 
     /**
      * Set the max property: Maximum Scale Units for Autoscale configuration.
-     *
+     * 
      * @param max the max value to set.
      * @return the VirtualNetworkGatewayAutoScaleBounds object itself.
      */
@@ -68,7 +72,7 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

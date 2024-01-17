@@ -26,6 +26,10 @@ public final class ManagedCertificateParameters extends SecretParameters {
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
+    /** Creates an instance of ManagedCertificateParameters class. */
+    public ManagedCertificateParameters() {
+    }
+
     /**
      * Get the subject property: Subject name in the certificate.
      *

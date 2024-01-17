@@ -26,6 +26,15 @@ public final class PrivateEndpointStatus extends ExpandableStringEnum<PrivateEnd
     public static final PrivateEndpointStatus TIMEOUT = fromString("Timeout");
 
     /**
+     * Creates a new instance of PrivateEndpointStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointStatus from its string representation.
      *
      * @param name a name to look for.

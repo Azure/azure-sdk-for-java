@@ -13,7 +13,7 @@ public final class ImagePropertiesTests {
         ImageProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"wgndrvynhzgpp\",\"publisher\":\"cgyncocpecf\",\"offer\":\"mcoo\",\"sku\":\"xlzevgbmqjqabcy\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1275704162,\"max\":699585009},\"vCPUs\":{\"min\":1120920412,\"max\":211064208}},\"provisioningState\":\"Deleting\",\"hibernateSupport\":\"Disabled\"}")
+                    "{\"description\":\"jybige\",\"publisher\":\"qfbow\",\"offer\":\"anyktzlcuiywg\",\"sku\":\"wgndrvynhzgpp\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1709134012,\"max\":2077356843},\"vCPUs\":{\"min\":791788300,\"max\":1827981696}},\"provisioningState\":\"Deleting\",\"hibernateSupport\":\"Disabled\"}")
                 .toObject(ImageProperties.class);
     }
 

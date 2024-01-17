@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** VPN authentication types enabled for the virtual network gateway. */
+/**
+ * VPN authentication types enabled for the virtual network gateway.
+ */
 public final class VpnAuthenticationType extends ExpandableStringEnum<VpnAuthenticationType> {
-    /** Static value Certificate for VpnAuthenticationType. */
+    /**
+     * Static value Certificate for VpnAuthenticationType.
+     */
     public static final VpnAuthenticationType CERTIFICATE = fromString("Certificate");
 
-    /** Static value Radius for VpnAuthenticationType. */
+    /**
+     * Static value Radius for VpnAuthenticationType.
+     */
     public static final VpnAuthenticationType RADIUS = fromString("Radius");
 
-    /** Static value AAD for VpnAuthenticationType. */
+    /**
+     * Static value AAD for VpnAuthenticationType.
+     */
     public static final VpnAuthenticationType AAD = fromString("AAD");
 
     /**
      * Creates a new instance of VpnAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class VpnAuthenticationType extends ExpandableStringEnum<VpnAuthent
 
     /**
      * Creates or finds a VpnAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VpnAuthenticationType.
      */
@@ -41,7 +49,7 @@ public final class VpnAuthenticationType extends ExpandableStringEnum<VpnAuthent
 
     /**
      * Gets known VpnAuthenticationType values.
-     *
+     * 
      * @return known VpnAuthenticationType values.
      */
     public static Collection<VpnAuthenticationType> values() {

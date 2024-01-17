@@ -41,6 +41,15 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
     public static final RequestBodyOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of RequestBodyOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestBodyOperator() {
+    }
+
+    /**
      * Creates or finds a RequestBodyOperator from its string representation.
      *
      * @param name a name to look for.

@@ -14,18 +14,18 @@ public final class SourceCreationDataTests {
     public void testDeserialize() throws Exception {
         SourceCreationData model =
             BinaryData
-                .fromString("{\"createSource\":\"None\",\"sourceUri\":\"jbkcnxdhbttkph\"}")
+                .fromString("{\"createSource\":\"None\",\"sourceId\":\"trcvpnazzmh\"}")
                 .toObject(SourceCreationData.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.createSource());
-        Assertions.assertEquals("jbkcnxdhbttkph", model.sourceUri());
+        Assertions.assertEquals("trcvpnazzmh", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceCreationData model =
-            new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("jbkcnxdhbttkph");
+            new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("trcvpnazzmh");
         model = BinaryData.fromObject(model).toObject(SourceCreationData.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.createSource());
-        Assertions.assertEquals("jbkcnxdhbttkph", model.sourceUri());
+        Assertions.assertEquals("trcvpnazzmh", model.sourceId());
     }
 }

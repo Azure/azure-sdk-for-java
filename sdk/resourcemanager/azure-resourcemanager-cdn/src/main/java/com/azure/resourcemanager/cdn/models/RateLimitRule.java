@@ -23,6 +23,10 @@ public final class RateLimitRule extends CustomRule {
     @JsonProperty(value = "rateLimitDurationInMinutes", required = true)
     private int rateLimitDurationInMinutes;
 
+    /** Creates an instance of RateLimitRule class. */
+    public RateLimitRule() {
+    }
+
     /**
      * Get the rateLimitThreshold property: Defines rate limit threshold.
      *

@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PreRulesResourceInner;
 
-/** Resource collection API of PreRules. */
+/**
+ * Resource collection API of PreRules.
+ */
 public interface PreRules {
     /**
      * List PreRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +26,7 @@ public interface PreRules {
 
     /**
      * List PreRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface PreRules {
 
     /**
      * Get a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface PreRules {
 
     /**
      * Get a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface PreRules {
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -74,7 +76,7 @@ public interface PreRules {
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -84,12 +86,12 @@ public interface PreRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return preRulestack rule list.
      */
-    PreRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource, Context context);
+    PreRulesResource createOrUpdate(String globalRulestackName, String priority, PreRulesResourceInner resource,
+        Context context);
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +102,7 @@ public interface PreRules {
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param context The context to associate with this operation.
@@ -112,7 +114,7 @@ public interface PreRules {
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -122,12 +124,12 @@ public interface PreRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return counters along with {@link Response}.
      */
-    Response<RuleCounter> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounter> getCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface PreRules {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -149,12 +151,12 @@ public interface PreRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +167,7 @@ public interface PreRules {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -175,12 +177,12 @@ public interface PreRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule counter reset along with {@link Response}.
      */
-    Response<RuleCounterReset> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterReset> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

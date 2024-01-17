@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** RouteTable resource in a virtual hub. */
+/**
+ * RouteTable resource in a virtual hub.
+ */
 @Fluent
 public final class HubRouteTableInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class HubRouteTableInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of HubRouteTableInner class. */
+    /**
+     * Creates an instance of HubRouteTableInner class.
+     */
     public HubRouteTableInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the RouteTable resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HubRouteTableProperties innerProperties() {
@@ -54,7 +58,7 @@ public final class HubRouteTableInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class HubRouteTableInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the HubRouteTableInner object itself.
      */
@@ -75,7 +79,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -84,14 +88,16 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubRouteTableInner withId(String id) {
         super.withId(id);
@@ -100,7 +106,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the routes property: List of all routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<HubRoute> routes() {
@@ -109,7 +115,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Set the routes property: List of all routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the HubRouteTableInner object itself.
      */
@@ -123,7 +129,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the labels property: List of labels associated with this route table.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -132,7 +138,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Set the labels property: List of labels associated with this route table.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the HubRouteTableInner object itself.
      */
@@ -146,7 +152,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the associatedConnections property: List of all connections associated with this route table.
-     *
+     * 
      * @return the associatedConnections value.
      */
     public List<String> associatedConnections() {
@@ -155,7 +161,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the propagatingConnections property: List of all connections that advertise to this route table.
-     *
+     * 
      * @return the propagatingConnections value.
      */
     public List<String> propagatingConnections() {
@@ -164,7 +170,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the RouteTable resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -173,7 +179,7 @@ public final class HubRouteTableInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

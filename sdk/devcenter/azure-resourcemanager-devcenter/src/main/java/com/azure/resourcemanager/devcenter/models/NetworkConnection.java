@@ -154,11 +154,13 @@ public interface NetworkConnection {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The NetworkConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetworkConnection definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetworkConnection definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -177,6 +179,7 @@ public interface NetworkConnection {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -187,6 +190,7 @@ public interface NetworkConnection {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the NetworkConnection definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -215,6 +219,7 @@ public interface NetworkConnection {
              */
             NetworkConnection create(Context context);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -225,6 +230,7 @@ public interface NetworkConnection {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify networkingResourceGroupName. */
         interface WithNetworkingResourceGroupName {
             /**
@@ -236,6 +242,7 @@ public interface NetworkConnection {
              */
             WithCreate withNetworkingResourceGroupName(String networkingResourceGroupName);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify domainJoinType. */
         interface WithDomainJoinType {
             /**
@@ -246,6 +253,7 @@ public interface NetworkConnection {
              */
             WithCreate withDomainJoinType(DomainJoinType domainJoinType);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify subnetId. */
         interface WithSubnetId {
             /**
@@ -256,6 +264,7 @@ public interface NetworkConnection {
              */
             WithCreate withSubnetId(String subnetId);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify domainName. */
         interface WithDomainName {
             /**
@@ -266,6 +275,7 @@ public interface NetworkConnection {
              */
             WithCreate withDomainName(String domainName);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify organizationUnit. */
         interface WithOrganizationUnit {
             /**
@@ -276,6 +286,7 @@ public interface NetworkConnection {
              */
             WithCreate withOrganizationUnit(String organizationUnit);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify domainUsername. */
         interface WithDomainUsername {
             /**
@@ -289,6 +300,7 @@ public interface NetworkConnection {
              */
             WithCreate withDomainUsername(String domainUsername);
         }
+
         /** The stage of the NetworkConnection definition allowing to specify domainPassword. */
         interface WithDomainPassword {
             /**
@@ -300,6 +312,7 @@ public interface NetworkConnection {
             WithCreate withDomainPassword(String domainPassword);
         }
     }
+
     /**
      * Begins update for the NetworkConnection resource.
      *
@@ -330,6 +343,7 @@ public interface NetworkConnection {
          */
         NetworkConnection apply(Context context);
     }
+
     /** The NetworkConnection update stages. */
     interface UpdateStages {
         /** The stage of the NetworkConnection update allowing to specify tags. */
@@ -342,6 +356,7 @@ public interface NetworkConnection {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the NetworkConnection update allowing to specify subnetId. */
         interface WithSubnetId {
             /**
@@ -352,6 +367,7 @@ public interface NetworkConnection {
              */
             Update withSubnetId(String subnetId);
         }
+
         /** The stage of the NetworkConnection update allowing to specify domainName. */
         interface WithDomainName {
             /**
@@ -362,6 +378,7 @@ public interface NetworkConnection {
              */
             Update withDomainName(String domainName);
         }
+
         /** The stage of the NetworkConnection update allowing to specify organizationUnit. */
         interface WithOrganizationUnit {
             /**
@@ -372,6 +389,7 @@ public interface NetworkConnection {
              */
             Update withOrganizationUnit(String organizationUnit);
         }
+
         /** The stage of the NetworkConnection update allowing to specify domainUsername. */
         interface WithDomainUsername {
             /**
@@ -385,6 +403,7 @@ public interface NetworkConnection {
              */
             Update withDomainUsername(String domainUsername);
         }
+
         /** The stage of the NetworkConnection update allowing to specify domainPassword. */
         interface WithDomainPassword {
             /**
@@ -396,6 +415,7 @@ public interface NetworkConnection {
             Update withDomainPassword(String domainPassword);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

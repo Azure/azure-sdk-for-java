@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for MaterializedViewsBuilderServiceResource. */
+/**
+ * Properties for MaterializedViewsBuilderServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("MaterializedViewsBuilder")
 @Fluent
@@ -21,27 +23,33 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaterializedViewsBuilderRegionalServiceResource> locations;
 
-    /** Creates an instance of MaterializedViewsBuilderServiceResourceProperties class. */
+    /**
+     * Creates an instance of MaterializedViewsBuilderServiceResourceProperties class.
+     */
     public MaterializedViewsBuilderServiceResourceProperties() {
     }
 
     /**
      * Get the locations property: An array that contains all of the locations for the service.
-     *
+     * 
      * @return the locations value.
      */
     public List<MaterializedViewsBuilderRegionalServiceResource> locations() {
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaterializedViewsBuilderServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaterializedViewsBuilderServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
@@ -50,7 +58,7 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

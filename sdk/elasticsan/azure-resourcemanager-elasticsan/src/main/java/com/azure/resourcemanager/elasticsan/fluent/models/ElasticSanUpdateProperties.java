@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Elastic San update properties. */
@@ -21,6 +22,13 @@ public final class ElasticSanUpdateProperties {
      */
     @JsonProperty(value = "extendedCapacitySizeTiB")
     private Long extendedCapacitySizeTiB;
+
+    /*
+     * Allow or disallow public network access to ElasticSan Account. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /** Creates an instance of ElasticSanUpdateProperties class. */
     public ElasticSanUpdateProperties() {
@@ -63,6 +71,28 @@ public final class ElasticSanUpdateProperties {
      */
     public ElasticSanUpdateProperties withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB) {
         this.extendedCapacitySizeTiB = extendedCapacitySizeTiB;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

@@ -109,6 +109,6 @@ public final class PollingContext<T> {
         Map<String, String> map) {
         this.activationResponse = Objects.requireNonNull(activationResponse, "'activationResponse' cannot be null.");
         this.latestResponse = Objects.requireNonNull(latestResponse, "'latestResponse' cannot be null.");
-        this.map = Objects.requireNonNull(map, "'map' cannot be null.");
+        this.map = map;
     }
 }

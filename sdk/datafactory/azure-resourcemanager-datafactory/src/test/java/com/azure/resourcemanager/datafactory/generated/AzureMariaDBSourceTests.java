@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureMariaDBSource;
 public final class AzureMariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMariaDBSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureMariaDBSource\",\"query\":\"dataybezmyjqpd\",\"queryTimeout\":\"datadsxvk\",\"additionalColumns\":\"datappxzgjysm\",\"sourceRetryCount\":\"dataktou\",\"sourceRetryWait\":\"databwddpjsokosugr\",\"maxConcurrentConnections\":\"datazfwdmae\",\"disableMetricsCollection\":\"datahq\",\"\":{\"mhfmognn\":\"datagzmonjqnienctwb\",\"byxygubvidpsk\":\"dataxrdllrqamfjyyrfp\",\"dctgsdxjx\":\"datazssxhvzgliu\",\"yvvlgsadpvmn\":\"dataddxoatlprsrkennn\"}}")
-                .toObject(AzureMariaDBSource.class);
+        AzureMariaDBSource model = BinaryData.fromString(
+            "{\"type\":\"AzureMariaDBSource\",\"query\":\"dataxoavlwwpvjrnjwvc\",\"queryTimeout\":\"datarqlceflgsndur\",\"additionalColumns\":\"dataozjwm\",\"sourceRetryCount\":\"datadehjloz\",\"sourceRetryWait\":\"datawokuxedpqwzzzi\",\"maxConcurrentConnections\":\"databxjgxrhajr\",\"disableMetricsCollection\":\"datacv\",\"\":{\"uclkbw\":\"dataebdfmdjnfeealp\"}}")
+            .toObject(AzureMariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMariaDBSource model =
-            new AzureMariaDBSource()
-                .withSourceRetryCount("dataktou")
-                .withSourceRetryWait("databwddpjsokosugr")
-                .withMaxConcurrentConnections("datazfwdmae")
-                .withDisableMetricsCollection("datahq")
-                .withQueryTimeout("datadsxvk")
-                .withAdditionalColumns("datappxzgjysm")
-                .withQuery("dataybezmyjqpd");
+        AzureMariaDBSource model = new AzureMariaDBSource().withSourceRetryCount("datadehjloz")
+            .withSourceRetryWait("datawokuxedpqwzzzi").withMaxConcurrentConnections("databxjgxrhajr")
+            .withDisableMetricsCollection("datacv").withQueryTimeout("datarqlceflgsndur")
+            .withAdditionalColumns("dataozjwm").withQuery("dataxoavlwwpvjrnjwvc");
         model = BinaryData.fromObject(model).toObject(AzureMariaDBSource.class);
     }
 }

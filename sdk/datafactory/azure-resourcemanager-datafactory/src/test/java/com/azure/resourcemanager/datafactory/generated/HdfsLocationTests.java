@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datafactory.models.HdfsLocation;
 public final class HdfsLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HdfsLocation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HdfsLocation\",\"folderPath\":\"dataoxdjxldnaryy\",\"fileName\":\"datazkdolrndwdbvxvza\",\"\":{\"hmcxqqxmyzkl\":\"dataoyqxlunkf\",\"rqra\":\"dataoanpohrvm\"}}")
-                .toObject(HdfsLocation.class);
+        HdfsLocation model = BinaryData.fromString(
+            "{\"type\":\"HdfsLocation\",\"folderPath\":\"dataoxdjxldnaryy\",\"fileName\":\"datazkdolrndwdbvxvza\",\"\":{\"hmcxqqxmyzkl\":\"dataoyqxlunkf\",\"rqra\":\"dataoanpohrvm\"}}")
+            .toObject(HdfsLocation.class);
     }
 
     @org.junit.jupiter.api.Test

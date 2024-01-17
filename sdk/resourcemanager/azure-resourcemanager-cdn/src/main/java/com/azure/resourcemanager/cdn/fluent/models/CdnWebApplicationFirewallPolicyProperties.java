@@ -12,8 +12,10 @@ import com.azure.resourcemanager.cdn.models.PolicyResourceState;
 import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Defines CDN web application firewall policy properties. */
 @Fluent
@@ -49,6 +51,13 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     private List<EndpointResource> endpointLinks;
 
     /*
+     * Key-Value pair representing additional properties for Web Application Firewall policy.
+     */
+    @JsonProperty(value = "extendedProperties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> extendedProperties;
+
+    /*
      * Provisioning state of the WebApplicationFirewallPolicy.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -59,6 +68,10 @@ public final class CdnWebApplicationFirewallPolicyProperties {
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyResourceState resourceState;
+
+    /** Creates an instance of CdnWebApplicationFirewallPolicyProperties class. */
+    public CdnWebApplicationFirewallPolicyProperties() {
+    }
 
     /**
      * Get the policySettings property: Describes policySettings for policy.
@@ -148,6 +161,28 @@ public final class CdnWebApplicationFirewallPolicyProperties {
      */
     public List<EndpointResource> endpointLinks() {
         return this.endpointLinks;
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for Web Application
+     * Firewall policy.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.extendedProperties;
+    }
+
+    /**
+     * Set the extendedProperties property: Key-Value pair representing additional properties for Web Application
+     * Firewall policy.
+     *
+     * @param extendedProperties the extendedProperties value to set.
+     * @return the CdnWebApplicationFirewallPolicyProperties object itself.
+     */
+    public CdnWebApplicationFirewallPolicyProperties withExtendedProperties(Map<String, String> extendedProperties) {
+        this.extendedProperties = extendedProperties;
+        return this;
     }
 
     /**

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request for a migrateToIpBased API. */
+/**
+ * The request for a migrateToIpBased API.
+ */
 @Fluent
 public final class MigrateLoadBalancerToIpBasedRequest {
     /*
@@ -17,13 +19,15 @@ public final class MigrateLoadBalancerToIpBasedRequest {
     @JsonProperty(value = "pools")
     private List<String> pools;
 
-    /** Creates an instance of MigrateLoadBalancerToIpBasedRequest class. */
+    /**
+     * Creates an instance of MigrateLoadBalancerToIpBasedRequest class.
+     */
     public MigrateLoadBalancerToIpBasedRequest() {
     }
 
     /**
      * Get the pools property: A list of pool names that should be migrated from Nic based to IP based pool.
-     *
+     * 
      * @return the pools value.
      */
     public List<String> pools() {
@@ -32,7 +36,7 @@ public final class MigrateLoadBalancerToIpBasedRequest {
 
     /**
      * Set the pools property: A list of pool names that should be migrated from Nic based to IP based pool.
-     *
+     * 
      * @param pools the pools value to set.
      * @return the MigrateLoadBalancerToIpBasedRequest object itself.
      */
@@ -43,7 +47,7 @@ public final class MigrateLoadBalancerToIpBasedRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

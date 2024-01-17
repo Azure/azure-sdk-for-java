@@ -12,15 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
+import com.azure.resourcemanager.netapp.models.EncryptionMigrationRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * Describe all NetApp Accounts in a subscription
-     *
-     * <p>List and describe all NetApp accounts in the subscription.
-     *
+     * 
+     * List and describe all NetApp accounts in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
@@ -30,9 +33,9 @@ public interface AccountsClient {
 
     /**
      * Describe all NetApp Accounts in a subscription
-     *
-     * <p>List and describe all NetApp accounts in the subscription.
-     *
+     * 
+     * List and describe all NetApp accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,9 +47,9 @@ public interface AccountsClient {
 
     /**
      * Describe all NetApp Accounts in a resource group
-     *
-     * <p>List and describe all NetApp accounts in the resource group.
-     *
+     * 
+     * List and describe all NetApp accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,9 +61,9 @@ public interface AccountsClient {
 
     /**
      * Describe all NetApp Accounts in a resource group
-     *
-     * <p>List and describe all NetApp accounts in the resource group.
-     *
+     * 
+     * List and describe all NetApp accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,9 +76,9 @@ public interface AccountsClient {
 
     /**
      * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
+     * 
+     * Get the NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -85,14 +88,14 @@ public interface AccountsClient {
      * @return the NetApp account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetAppAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<NetAppAccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
+     * 
+     * Get the NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,9 +108,9 @@ public interface AccountsClient {
 
     /**
      * Create or update a NetApp account
-     *
-     * <p>Create or update the specified NetApp account within the resource group.
-     *
+     * 
+     * Create or update the specified NetApp account within the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -117,14 +120,14 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of netApp account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, NetAppAccountInner body);
+    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, NetAppAccountInner body);
 
     /**
      * Create or update a NetApp account
-     *
-     * <p>Create or update the specified NetApp account within the resource group.
-     *
+     * 
+     * Create or update the specified NetApp account within the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -135,14 +138,14 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of netApp account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, NetAppAccountInner body, Context context);
+    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, NetAppAccountInner body, Context context);
 
     /**
      * Create or update a NetApp account
-     *
-     * <p>Create or update the specified NetApp account within the resource group.
-     *
+     * 
+     * Create or update the specified NetApp account within the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -156,9 +159,9 @@ public interface AccountsClient {
 
     /**
      * Create or update a NetApp account
-     *
-     * <p>Create or update the specified NetApp account within the resource group.
-     *
+     * 
+     * Create or update the specified NetApp account within the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -169,14 +172,14 @@ public interface AccountsClient {
      * @return netApp account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetAppAccountInner createOrUpdate(
-        String resourceGroupName, String accountName, NetAppAccountInner body, Context context);
+    NetAppAccountInner createOrUpdate(String resourceGroupName, String accountName, NetAppAccountInner body,
+        Context context);
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,9 +192,9 @@ public interface AccountsClient {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -205,9 +208,9 @@ public interface AccountsClient {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,9 +222,9 @@ public interface AccountsClient {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -234,9 +237,9 @@ public interface AccountsClient {
 
     /**
      * Update a NetApp account
-     *
-     * <p>Patch the specified NetApp account.
-     *
+     * 
+     * Patch the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -246,14 +249,14 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of netApp account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
-        String resourceGroupName, String accountName, NetAppAccountPatch body);
+    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(String resourceGroupName,
+        String accountName, NetAppAccountPatch body);
 
     /**
      * Update a NetApp account
-     *
-     * <p>Patch the specified NetApp account.
-     *
+     * 
+     * Patch the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -264,14 +267,14 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of netApp account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
-        String resourceGroupName, String accountName, NetAppAccountPatch body, Context context);
+    SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(String resourceGroupName,
+        String accountName, NetAppAccountPatch body, Context context);
 
     /**
      * Update a NetApp account
-     *
-     * <p>Patch the specified NetApp account.
-     *
+     * 
+     * Patch the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -285,9 +288,9 @@ public interface AccountsClient {
 
     /**
      * Update a NetApp account
-     *
-     * <p>Patch the specified NetApp account.
-     *
+     * 
+     * Patch the specified NetApp account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
@@ -302,10 +305,10 @@ public interface AccountsClient {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,10 +321,10 @@ public interface AccountsClient {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -331,15 +334,15 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRenewCredentials(
-        String resourceGroupName, String accountName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,10 +354,10 @@ public interface AccountsClient {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -364,4 +367,72 @@ public interface AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void renewCredentials(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName);
+
+    /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName,
+        EncryptionMigrationRequest body, Context context);
+
+    /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateEncryptionKey(String resourceGroupName, String accountName);
+
+    /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
+        Context context);
 }

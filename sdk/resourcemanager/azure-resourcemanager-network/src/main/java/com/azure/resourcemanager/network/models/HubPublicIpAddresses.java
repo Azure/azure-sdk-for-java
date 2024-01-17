@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Public IP addresses associated with azure firewall. */
+/**
+ * Public IP addresses associated with azure firewall.
+ */
 @Fluent
 public final class HubPublicIpAddresses {
     /*
@@ -23,14 +25,16 @@ public final class HubPublicIpAddresses {
     @JsonProperty(value = "count")
     private Integer count;
 
-    /** Creates an instance of HubPublicIpAddresses class. */
+    /**
+     * Creates an instance of HubPublicIpAddresses class.
+     */
     public HubPublicIpAddresses() {
     }
 
     /**
      * Get the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be
      * retained.
-     *
+     * 
      * @return the addresses value.
      */
     public List<AzureFirewallPublicIpAddress> addresses() {
@@ -40,7 +44,7 @@ public final class HubPublicIpAddresses {
     /**
      * Set the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be
      * retained.
-     *
+     * 
      * @param addresses the addresses value to set.
      * @return the HubPublicIpAddresses object itself.
      */
@@ -51,7 +55,7 @@ public final class HubPublicIpAddresses {
 
     /**
      * Get the count property: The number of Public IP addresses associated with azure firewall.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -60,7 +64,7 @@ public final class HubPublicIpAddresses {
 
     /**
      * Set the count property: The number of Public IP addresses associated with azure firewall.
-     *
+     * 
      * @param count the count value to set.
      * @return the HubPublicIpAddresses object itself.
      */
@@ -71,7 +75,7 @@ public final class HubPublicIpAddresses {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

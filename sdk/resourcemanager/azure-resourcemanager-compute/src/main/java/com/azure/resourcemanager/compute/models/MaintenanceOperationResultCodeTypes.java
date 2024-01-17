@@ -7,21 +7,33 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The Last Maintenance Operation Result Code. */
+/**
+ * The Last Maintenance Operation Result Code.
+ */
 public enum MaintenanceOperationResultCodeTypes {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value RetryLater. */
+    /**
+     * Enum value RetryLater.
+     */
     RETRY_LATER("RetryLater"),
 
-    /** Enum value MaintenanceAborted. */
+    /**
+     * Enum value MaintenanceAborted.
+     */
     MAINTENANCE_ABORTED("MaintenanceAborted"),
 
-    /** Enum value MaintenanceCompleted. */
+    /**
+     * Enum value MaintenanceCompleted.
+     */
     MAINTENANCE_COMPLETED("MaintenanceCompleted");
 
-    /** The actual serialized value for a MaintenanceOperationResultCodeTypes instance. */
+    /**
+     * The actual serialized value for a MaintenanceOperationResultCodeTypes instance.
+     */
     private final String value;
 
     MaintenanceOperationResultCodeTypes(String value) {
@@ -30,7 +42,7 @@ public enum MaintenanceOperationResultCodeTypes {
 
     /**
      * Parses a serialized value to a MaintenanceOperationResultCodeTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MaintenanceOperationResultCodeTypes object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum MaintenanceOperationResultCodeTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

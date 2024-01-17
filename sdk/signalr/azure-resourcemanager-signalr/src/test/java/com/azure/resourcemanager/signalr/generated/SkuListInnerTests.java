@@ -13,7 +13,7 @@ public final class SkuListInnerTests {
         SkuListInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"hp\",\"sku\":{\"name\":\"oqcaaewdaomdj\",\"tier\":\"Basic\",\"size\":\"x\",\"family\":\"zb\",\"capacity\":2006830876},\"capacity\":{\"minimum\":1225406633,\"maximum\":1985792970,\"default\":542957889,\"allowedValues\":[1299849927,941654553],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"dxonbzoggculap\",\"sku\":{\"name\":\"y\",\"tier\":\"Premium\",\"size\":\"gtqxep\",\"family\":\"lbfu\",\"capacity\":998565327},\"capacity\":{\"minimum\":1430433647,\"maximum\":21548435,\"default\":1326013393,\"allowedValues\":[746925062,811442311,1407902982,541182731],\"scaleType\":\"Automatic\"}}],\"nextLink\":\"fmo\"}")
+                    "{\"value\":[{\"resourceType\":\"klxubyja\",\"sku\":{\"name\":\"mmfblcqcuubgqib\",\"tier\":\"Free\",\"size\":\"metttwgd\",\"family\":\"qxihhrmooi\",\"capacity\":1309261520},\"capacity\":{\"minimum\":1524776028,\"maximum\":783149271,\"default\":1964101220,\"allowedValues\":[814674558,1341869205,2081194366],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"petogebjox\",\"sku\":{\"name\":\"hvnh\",\"tier\":\"Standard\",\"size\":\"q\",\"family\":\"kzjcjbtrgae\",\"capacity\":1032283606},\"capacity\":{\"minimum\":1534669686,\"maximum\":279366719,\"default\":105700990,\"allowedValues\":[1344524900,1668662925,480275151],\"scaleType\":\"Automatic\"}}],\"nextLink\":\"kxzt\"}")
                 .toObject(SkuListInner.class);
     }
 

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.OriginInner;
 
 /** Samples for Origins Create. */
 public final class OriginsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Origins_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Origins_Create.json
      */
     /**
      * Sample code: Origins_Create.
@@ -40,6 +39,6 @@ public final class OriginsCreateSamples {
                         "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1")
                     .withPrivateLinkLocation("eastus")
                     .withPrivateLinkApprovalMessage("Please approve the connection request for this Private Link"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

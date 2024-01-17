@@ -23,6 +23,15 @@ public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphOnenoteUserRole READER = fromString("Reader");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenoteUserRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenoteUserRole() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenoteUserRole from its string representation.
      *
      * @param name a name to look for.

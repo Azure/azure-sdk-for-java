@@ -5,16 +5,19 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** The HealthcareRelationEntity model. */
 @Fluent
-public final class HealthcareRelationEntity {
+public final class HealthcareRelationEntity implements JsonSerializable<HealthcareRelationEntity> {
     /*
      * Reference link object, using a JSON pointer RFC 6901 (URI Fragment Identifier Representation), pointing to the
      * entity .
      */
-    @JsonProperty(value = "ref", required = true)
     private String ref;
 
     /*
@@ -22,7 +25,6 @@ public final class HealthcareRelationEntity {
      * entities with their roles in parenthesis:  CD20 (GeneOrProtein), Positive (Expression), diffuse large B-cell
      * lymphoma (Diagnosis).
      */
-    @JsonProperty(value = "role", required = true)
     private String role;
 
     /** Creates an instance of HealthcareRelationEntity class. */
@@ -72,5 +74,43 @@ public final class HealthcareRelationEntity {
     public HealthcareRelationEntity setRole(String role) {
         this.role = role;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ref", this.ref);
+        jsonWriter.writeStringField("role", this.role);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthcareRelationEntity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthcareRelationEntity if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HealthcareRelationEntity.
+     */
+    public static HealthcareRelationEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    HealthcareRelationEntity deserializedHealthcareRelationEntity = new HealthcareRelationEntity();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("ref".equals(fieldName)) {
+                            deserializedHealthcareRelationEntity.ref = reader.getString();
+                        } else if ("role".equals(fieldName)) {
+                            deserializedHealthcareRelationEntity.role = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedHealthcareRelationEntity;
+                });
     }
 }

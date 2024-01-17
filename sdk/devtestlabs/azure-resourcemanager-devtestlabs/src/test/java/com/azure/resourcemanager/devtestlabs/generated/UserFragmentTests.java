@@ -15,18 +15,20 @@ public final class UserFragmentTests {
     public void testDeserialize() throws Exception {
         UserFragment model =
             BinaryData
-                .fromString("{\"tags\":{\"kqqfk\":\"atnwxyiopi\",\"dmligovibrxk\":\"vscx\"}}")
+                .fromString("{\"tags\":{\"cxfhbcporxv\":\"djhlimm\",\"xfpxtgqscja\":\"cjzhqi\",\"qaz\":\"ftjuh\"}}")
                 .toObject(UserFragment.class);
-        Assertions.assertEquals("atnwxyiopi", model.tags().get("kqqfk"));
+        Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserFragment model = new UserFragment().withTags(mapOf("kqqfk", "atnwxyiopi", "dmligovibrxk", "vscx"));
+        UserFragment model =
+            new UserFragment().withTags(mapOf("cxfhbcporxv", "djhlimm", "xfpxtgqscja", "cjzhqi", "qaz", "ftjuh"));
         model = BinaryData.fromObject(model).toObject(UserFragment.class);
-        Assertions.assertEquals("atnwxyiopi", model.tags().get("kqqfk"));
+        Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** StringContains Advanced Filter. */
+/**
+ * StringContains Advanced Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("StringContains")
 @Fluent
@@ -21,13 +23,15 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<String> values;
 
-    /** Creates an instance of StringContainsAdvancedFilter class. */
+    /**
+     * Creates an instance of StringContainsAdvancedFilter class.
+     */
     public StringContainsAdvancedFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -36,7 +40,7 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the values property: The set of filter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the StringContainsAdvancedFilter object itself.
      */
@@ -45,7 +49,9 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringContainsAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -54,7 +60,7 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

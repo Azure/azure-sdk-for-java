@@ -1,14 +1,44 @@
 # Release History
 
-## 2.32.0-beta.1 (Unreleased)
+## 2.35.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
+
+### Features Added
+
+- Supported `userData` for `VirtualMachine` in create and update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.31.0 (2023-09-28)
 

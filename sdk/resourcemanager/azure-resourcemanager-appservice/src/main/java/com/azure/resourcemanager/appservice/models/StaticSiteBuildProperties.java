@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Build properties for the static site. */
+/**
+ * Build properties for the static site.
+ */
 @Fluent
 public final class StaticSiteBuildProperties {
     /*
@@ -58,13 +60,15 @@ public final class StaticSiteBuildProperties {
     @JsonProperty(value = "githubActionSecretNameOverride")
     private String githubActionSecretNameOverride;
 
-    /** Creates an instance of StaticSiteBuildProperties class. */
+    /**
+     * Creates an instance of StaticSiteBuildProperties class.
+     */
     public StaticSiteBuildProperties() {
     }
 
     /**
      * Get the appLocation property: The path to the app code within the repository.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -73,7 +77,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the appLocation property: The path to the app code within the repository.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the apiLocation property: The path to the api code within the repository.
-     *
+     * 
      * @return the apiLocation value.
      */
     public String apiLocation() {
@@ -93,7 +97,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the apiLocation property: The path to the api code within the repository.
-     *
+     * 
      * @param apiLocation the apiLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Get the appArtifactLocation property: Deprecated: The path of the app artifacts after building (deprecated in
      * favor of OutputLocation).
-     *
+     * 
      * @return the appArtifactLocation value.
      */
     public String appArtifactLocation() {
@@ -115,7 +119,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Set the appArtifactLocation property: Deprecated: The path of the app artifacts after building (deprecated in
      * favor of OutputLocation).
-     *
+     * 
      * @param appArtifactLocation the appArtifactLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the outputLocation property: The output path of the app after building.
-     *
+     * 
      * @return the outputLocation value.
      */
     public String outputLocation() {
@@ -135,7 +139,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the outputLocation property: The output path of the app after building.
-     *
+     * 
      * @param outputLocation the outputLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the appBuildCommand property: A custom command to run during deployment of the static content application.
-     *
+     * 
      * @return the appBuildCommand value.
      */
     public String appBuildCommand() {
@@ -155,7 +159,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the appBuildCommand property: A custom command to run during deployment of the static content application.
-     *
+     * 
      * @param appBuildCommand the appBuildCommand value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Get the apiBuildCommand property: A custom command to run during deployment of the Azure Functions API
      * application.
-     *
+     * 
      * @return the apiBuildCommand value.
      */
     public String apiBuildCommand() {
@@ -177,7 +181,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Set the apiBuildCommand property: A custom command to run during deployment of the Azure Functions API
      * application.
-     *
+     * 
      * @param apiBuildCommand the apiBuildCommand value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -188,7 +192,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the skipGithubActionWorkflowGeneration property: Skip Github Action workflow generation.
-     *
+     * 
      * @return the skipGithubActionWorkflowGeneration value.
      */
     public Boolean skipGithubActionWorkflowGeneration() {
@@ -197,19 +201,19 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the skipGithubActionWorkflowGeneration property: Skip Github Action workflow generation.
-     *
+     * 
      * @param skipGithubActionWorkflowGeneration the skipGithubActionWorkflowGeneration value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
-    public StaticSiteBuildProperties withSkipGithubActionWorkflowGeneration(
-        Boolean skipGithubActionWorkflowGeneration) {
+    public StaticSiteBuildProperties
+        withSkipGithubActionWorkflowGeneration(Boolean skipGithubActionWorkflowGeneration) {
         this.skipGithubActionWorkflowGeneration = skipGithubActionWorkflowGeneration;
         return this;
     }
 
     /**
      * Get the githubActionSecretNameOverride property: Github Action secret name override.
-     *
+     * 
      * @return the githubActionSecretNameOverride value.
      */
     public String githubActionSecretNameOverride() {
@@ -218,7 +222,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the githubActionSecretNameOverride property: Github Action secret name override.
-     *
+     * 
      * @param githubActionSecretNameOverride the githubActionSecretNameOverride value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -229,7 +233,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -27,6 +27,10 @@ public final class EndpointUpdateParameters {
     @JsonProperty(value = "properties")
     private EndpointPropertiesUpdateParameters innerProperties;
 
+    /** Creates an instance of EndpointUpdateParameters class. */
+    public EndpointUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Endpoint tags.
      *

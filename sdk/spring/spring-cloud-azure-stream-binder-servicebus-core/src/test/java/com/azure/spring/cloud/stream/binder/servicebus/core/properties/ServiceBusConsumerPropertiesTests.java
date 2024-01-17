@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 import static com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerPropertiesTests.CONNECTION_STRING_PATTERN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -163,5 +164,15 @@ class ServiceBusConsumerPropertiesTests {
     @Test
     void amqpTransportTypeDefaultIsNull() {
         assertNull(consumerProperties.getClient().getTransportType());
+    }
+
+    @Test
+    void defaultMaxSizeInMegabytes() {
+        assertEquals(consumerProperties.getMaxSizeInMegabytes(), 1024L);
+    }
+
+    @Test
+    void defaultMessageTimeToLive() {
+        assertEquals(consumerProperties.getDefaultMessageTimeToLive(), MAX_DURATION);
     }
 }

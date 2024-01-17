@@ -231,7 +231,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                             CosmosChangeFeedRequestOptions options = this.createRequestOptionsForProcessingFromNow(lease.getFeedRange());
 
                             return this.feedContextClient
-                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)
+                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class, false)
                                     .take(1)
                                     .map(feedResponse -> {
                                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
@@ -413,6 +413,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.sleepTime);
         }
 
+        FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
+
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,
@@ -422,7 +424,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                         leaseStoreManager,
                         this.feedContextClient.getContainerClient(),
                         this.collectionResourceId,
-                        this.changeFeedMode),
+                        this.changeFeedMode,
+                        feedRangeThroughputControlConfigManager),
                 this.changeFeedProcessorOptions,
                 this.scheduler,
                 this.getPartitionProcessorItemType()
@@ -449,12 +452,23 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 leaseStoreManager,
                 this.loadBalancingStrategy,
                 this.changeFeedProcessorOptions.getLeaseAcquireInterval(),
-                this.scheduler
+                this.scheduler,
+                feedRangeThroughputControlConfigManager
         );
 
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);
 
         return Mono.just(partitionManager);
+    }
+
+    private FeedRangeThroughputControlConfigManager getFeedRangeThroughputControlConfigManager() {
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig() != null) {
+            return new FeedRangeThroughputControlConfigManager(
+                this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig(),
+                this.feedContextClient);
+        }
+
+        return null;
     }
 
     @Override

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListPublicIpAddresses API service call. */
+/**
+ * Response for ListPublicIpAddresses API service call.
+ */
 @Fluent
 public final class PublicIpAddressListResult {
     /*
@@ -24,13 +26,15 @@ public final class PublicIpAddressListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PublicIpAddressListResult class. */
+    /**
+     * Creates an instance of PublicIpAddressListResult class.
+     */
     public PublicIpAddressListResult() {
     }
 
     /**
      * Get the value property: A list of public IP addresses that exists in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<PublicIpAddressInner> value() {
@@ -39,7 +43,7 @@ public final class PublicIpAddressListResult {
 
     /**
      * Set the value property: A list of public IP addresses that exists in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the PublicIpAddressListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PublicIpAddressListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PublicIpAddressListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PublicIpAddressListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PublicIpAddressListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

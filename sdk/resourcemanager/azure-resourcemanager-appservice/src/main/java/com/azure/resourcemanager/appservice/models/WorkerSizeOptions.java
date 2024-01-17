@@ -7,45 +7,73 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Size of the machines. */
+/**
+ * Size of the machines.
+ */
 public enum WorkerSizeOptions {
-    /** Enum value Small. */
+    /**
+     * Enum value Small.
+     */
     SMALL("Small"),
 
-    /** Enum value Medium. */
+    /**
+     * Enum value Medium.
+     */
     MEDIUM("Medium"),
 
-    /** Enum value Large. */
+    /**
+     * Enum value Large.
+     */
     LARGE("Large"),
 
-    /** Enum value D1. */
+    /**
+     * Enum value D1.
+     */
     D1("D1"),
 
-    /** Enum value D2. */
+    /**
+     * Enum value D2.
+     */
     D2("D2"),
 
-    /** Enum value D3. */
+    /**
+     * Enum value D3.
+     */
     D3("D3"),
 
-    /** Enum value SmallV3. */
+    /**
+     * Enum value SmallV3.
+     */
     SMALL_V3("SmallV3"),
 
-    /** Enum value MediumV3. */
+    /**
+     * Enum value MediumV3.
+     */
     MEDIUM_V3("MediumV3"),
 
-    /** Enum value LargeV3. */
+    /**
+     * Enum value LargeV3.
+     */
     LARGE_V3("LargeV3"),
 
-    /** Enum value NestedSmall. */
+    /**
+     * Enum value NestedSmall.
+     */
     NESTED_SMALL("NestedSmall"),
 
-    /** Enum value NestedSmallLinux. */
+    /**
+     * Enum value NestedSmallLinux.
+     */
     NESTED_SMALL_LINUX("NestedSmallLinux"),
 
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default");
 
-    /** The actual serialized value for a WorkerSizeOptions instance. */
+    /**
+     * The actual serialized value for a WorkerSizeOptions instance.
+     */
     private final String value;
 
     WorkerSizeOptions(String value) {
@@ -54,7 +82,7 @@ public enum WorkerSizeOptions {
 
     /**
      * Parses a serialized value to a WorkerSizeOptions instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WorkerSizeOptions object, or null if unable to parse.
      */
@@ -72,7 +100,9 @@ public enum WorkerSizeOptions {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of IPConfigurationBgpPeeringAddress. */
+/**
+ * Properties of IPConfigurationBgpPeeringAddress.
+ */
 @Fluent
 public final class IpConfigurationBgpPeeringAddress {
     /*
@@ -35,13 +37,15 @@ public final class IpConfigurationBgpPeeringAddress {
     @JsonProperty(value = "tunnelIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tunnelIpAddresses;
 
-    /** Creates an instance of IpConfigurationBgpPeeringAddress class. */
+    /**
+     * Creates an instance of IpConfigurationBgpPeeringAddress class.
+     */
     public IpConfigurationBgpPeeringAddress() {
     }
 
     /**
      * Get the ipconfigurationId property: The ID of IP configuration which belongs to gateway.
-     *
+     * 
      * @return the ipconfigurationId value.
      */
     public String ipconfigurationId() {
@@ -50,7 +54,7 @@ public final class IpConfigurationBgpPeeringAddress {
 
     /**
      * Set the ipconfigurationId property: The ID of IP configuration which belongs to gateway.
-     *
+     * 
      * @param ipconfigurationId the ipconfigurationId value to set.
      * @return the IpConfigurationBgpPeeringAddress object itself.
      */
@@ -62,7 +66,7 @@ public final class IpConfigurationBgpPeeringAddress {
     /**
      * Get the defaultBgpIpAddresses property: The list of default BGP peering addresses which belong to IP
      * configuration.
-     *
+     * 
      * @return the defaultBgpIpAddresses value.
      */
     public List<String> defaultBgpIpAddresses() {
@@ -70,8 +74,9 @@ public final class IpConfigurationBgpPeeringAddress {
     }
 
     /**
-     * Get the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP configuration.
-     *
+     * Get the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP
+     * configuration.
+     * 
      * @return the customBgpIpAddresses value.
      */
     public List<String> customBgpIpAddresses() {
@@ -79,8 +84,9 @@ public final class IpConfigurationBgpPeeringAddress {
     }
 
     /**
-     * Set the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP configuration.
-     *
+     * Set the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP
+     * configuration.
+     * 
      * @param customBgpIpAddresses the customBgpIpAddresses value to set.
      * @return the IpConfigurationBgpPeeringAddress object itself.
      */
@@ -91,7 +97,7 @@ public final class IpConfigurationBgpPeeringAddress {
 
     /**
      * Get the tunnelIpAddresses property: The list of tunnel public IP addresses which belong to IP configuration.
-     *
+     * 
      * @return the tunnelIpAddresses value.
      */
     public List<String> tunnelIpAddresses() {
@@ -100,7 +106,7 @@ public final class IpConfigurationBgpPeeringAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

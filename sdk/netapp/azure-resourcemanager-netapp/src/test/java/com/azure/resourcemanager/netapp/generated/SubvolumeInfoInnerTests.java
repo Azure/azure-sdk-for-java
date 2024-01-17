@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SubvolumeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubvolumeInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"path\":\"ithtywu\",\"size\":7718798958168735300,\"parentPath\":\"h\",\"provisioningState\":\"knfd\"},\"id\":\"twjchrdg\",\"name\":\"ihxumwctondzj\",\"type\":\"uu\"}")
-                .toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("ithtywu", model.path());
-        Assertions.assertEquals(7718798958168735300L, model.size());
-        Assertions.assertEquals("h", model.parentPath());
+        SubvolumeInfoInner model = BinaryData.fromString(
+            "{\"properties\":{\"path\":\"rk\",\"size\":6236103366056271991,\"parentPath\":\"jhhgdnhxmsi\",\"provisioningState\":\"omi\"},\"id\":\"xggdufi\",\"name\":\"ndieuzaofj\",\"type\":\"hvcyyysfg\"}")
+            .toObject(SubvolumeInfoInner.class);
+        Assertions.assertEquals("rk", model.path());
+        Assertions.assertEquals(6236103366056271991L, model.size());
+        Assertions.assertEquals("jhhgdnhxmsi", model.parentPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumeInfoInner model =
-            new SubvolumeInfoInner().withPath("ithtywu").withSize(7718798958168735300L).withParentPath("h");
+        SubvolumeInfoInner model
+            = new SubvolumeInfoInner().withPath("rk").withSize(6236103366056271991L).withParentPath("jhhgdnhxmsi");
         model = BinaryData.fromObject(model).toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("ithtywu", model.path());
-        Assertions.assertEquals(7718798958168735300L, model.size());
-        Assertions.assertEquals("h", model.parentPath());
+        Assertions.assertEquals("rk", model.path());
+        Assertions.assertEquals(6236103366056271991L, model.size());
+        Assertions.assertEquals("jhhgdnhxmsi", model.parentPath());
     }
 }

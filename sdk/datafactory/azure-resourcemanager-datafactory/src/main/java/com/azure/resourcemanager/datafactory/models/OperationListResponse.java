@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of operations that can be performed by the Data Factory service. */
+/**
+ * A list of operations that can be performed by the Data Factory service.
+ */
 @Fluent
 public final class OperationListResponse {
     /*
@@ -24,13 +26,15 @@ public final class OperationListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationListResponse class. */
+    /**
+     * Creates an instance of OperationListResponse class.
+     */
     public OperationListResponse() {
     }
 
     /**
      * Get the value property: List of Data Factory operations supported by the Data Factory resource provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -39,7 +43,7 @@ public final class OperationListResponse {
 
     /**
      * Set the value property: List of Data Factory operations supported by the Data Factory resource provider.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResponse object itself.
      */
@@ -50,7 +54,7 @@ public final class OperationListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class OperationListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationListResponse object itself.
      */
@@ -70,7 +74,7 @@ public final class OperationListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

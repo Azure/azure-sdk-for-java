@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Identity type. */
+/** Specifies the identity type of the Datadog Monitor. At this time the only allowed value is 'SystemAssigned'. */
 public final class ManagedIdentityTypes extends ExpandableStringEnum<ManagedIdentityTypes> {
     /** Static value SystemAssigned for ManagedIdentityTypes. */
     public static final ManagedIdentityTypes SYSTEM_ASSIGNED = fromString("SystemAssigned");

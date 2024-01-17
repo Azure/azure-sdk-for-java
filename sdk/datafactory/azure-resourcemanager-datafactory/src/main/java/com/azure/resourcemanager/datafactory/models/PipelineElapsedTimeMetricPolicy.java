@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pipeline ElapsedTime Metric Policy. */
+/**
+ * Pipeline ElapsedTime Metric Policy.
+ */
 @Fluent
 public final class PipelineElapsedTimeMetricPolicy {
     /*
@@ -16,13 +18,15 @@ public final class PipelineElapsedTimeMetricPolicy {
     @JsonProperty(value = "duration")
     private Object duration;
 
-    /** Creates an instance of PipelineElapsedTimeMetricPolicy class. */
+    /**
+     * Creates an instance of PipelineElapsedTimeMetricPolicy class.
+     */
     public PipelineElapsedTimeMetricPolicy() {
     }
 
     /**
      * Get the duration property: TimeSpan value, after which an Azure Monitoring Metric is fired.
-     *
+     * 
      * @return the duration value.
      */
     public Object duration() {
@@ -31,7 +35,7 @@ public final class PipelineElapsedTimeMetricPolicy {
 
     /**
      * Set the duration property: TimeSpan value, after which an Azure Monitoring Metric is fired.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the PipelineElapsedTimeMetricPolicy object itself.
      */
@@ -42,7 +46,7 @@ public final class PipelineElapsedTimeMetricPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

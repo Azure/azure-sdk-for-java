@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The common properties of tracked resources in the service. */
+/**
+ * The common properties of tracked resources in the service.
+ */
 @Fluent
 public class TaggedResource extends LocationBasedResource {
     /*
@@ -20,8 +22,14 @@ public class TaggedResource extends LocationBasedResource {
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of TaggedResource class.
+     */
+    public TaggedResource() {
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +38,7 @@ public class TaggedResource extends LocationBasedResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TaggedResource object itself.
      */
@@ -39,14 +47,18 @@ public class TaggedResource extends LocationBasedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaggedResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaggedResource withEtag(String etag) {
         super.withEtag(etag);
@@ -55,7 +67,7 @@ public class TaggedResource extends LocationBasedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

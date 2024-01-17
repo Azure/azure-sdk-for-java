@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for PostgreSqlManagementClient class. */
 public interface PostgreSqlManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -66,6 +66,13 @@ public interface PostgreSqlManagementClient {
     LocationBasedCapabilitiesClient getLocationBasedCapabilities();
 
     /**
+     * Gets the ServerCapabilitiesClient object to access its operations.
+     *
+     * @return the ServerCapabilitiesClient object.
+     */
+    ServerCapabilitiesClient getServerCapabilities();
+
+    /**
      * Gets the CheckNameAvailabilitiesClient object to access its operations.
      *
      * @return the CheckNameAvailabilitiesClient object.
@@ -108,6 +115,34 @@ public interface PostgreSqlManagementClient {
     ServersClient getServers();
 
     /**
+     * Gets the FlexibleServersClient object to access its operations.
+     *
+     * @return the FlexibleServersClient object.
+     */
+    FlexibleServersClient getFlexibleServers();
+
+    /**
+     * Gets the LtrBackupOperationsClient object to access its operations.
+     *
+     * @return the LtrBackupOperationsClient object.
+     */
+    LtrBackupOperationsClient getLtrBackupOperations();
+
+    /**
+     * Gets the MigrationsClient object to access its operations.
+     *
+     * @return the MigrationsClient object.
+     */
+    MigrationsClient getMigrations();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -122,11 +157,60 @@ public interface PostgreSqlManagementClient {
     GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionOperationsClient object.
+     */
+    PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the QuotaUsagesClient object to access its operations.
+     *
+     * @return the QuotaUsagesClient object.
+     */
+    QuotaUsagesClient getQuotaUsages();
+
+    /**
      * Gets the ReplicasClient object to access its operations.
      *
      * @return the ReplicasClient object.
      */
     ReplicasClient getReplicas();
+
+    /**
+     * Gets the LogFilesClient object to access its operations.
+     *
+     * @return the LogFilesClient object.
+     */
+    LogFilesClient getLogFiles();
+
+    /**
+     * Gets the ServerThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ServerThreatProtectionSettingsClient object.
+     */
+    ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
+
+    /**
+     * Gets the VirtualEndpointsClient object to access its operations.
+     *
+     * @return the VirtualEndpointsClient object.
+     */
+    VirtualEndpointsClient getVirtualEndpoints();
 
     /**
      * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.

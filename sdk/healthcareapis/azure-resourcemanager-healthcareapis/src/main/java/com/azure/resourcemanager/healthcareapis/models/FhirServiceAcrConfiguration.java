@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure container registry configuration information. */
+/**
+ * Azure container registry configuration information.
+ */
 @Fluent
 public final class FhirServiceAcrConfiguration {
     /*
@@ -24,8 +26,14 @@ public final class FhirServiceAcrConfiguration {
     private List<ServiceOciArtifactEntry> ociArtifacts;
 
     /**
+     * Creates an instance of FhirServiceAcrConfiguration class.
+     */
+    public FhirServiceAcrConfiguration() {
+    }
+
+    /**
      * Get the loginServers property: The list of the Azure container registry login servers.
-     *
+     * 
      * @return the loginServers value.
      */
     public List<String> loginServers() {
@@ -34,7 +42,7 @@ public final class FhirServiceAcrConfiguration {
 
     /**
      * Set the loginServers property: The list of the Azure container registry login servers.
-     *
+     * 
      * @param loginServers the loginServers value to set.
      * @return the FhirServiceAcrConfiguration object itself.
      */
@@ -45,7 +53,7 @@ public final class FhirServiceAcrConfiguration {
 
     /**
      * Get the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
-     *
+     * 
      * @return the ociArtifacts value.
      */
     public List<ServiceOciArtifactEntry> ociArtifacts() {
@@ -54,7 +62,7 @@ public final class FhirServiceAcrConfiguration {
 
     /**
      * Set the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
-     *
+     * 
      * @param ociArtifacts the ociArtifacts value to set.
      * @return the FhirServiceAcrConfiguration object itself.
      */
@@ -65,7 +73,7 @@ public final class FhirServiceAcrConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

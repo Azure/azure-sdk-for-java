@@ -19,6 +19,8 @@ import java.util.Map;
 /** message. */
 @Fluent
 public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * The Bcc: recipients for the message.
      */
@@ -326,7 +328,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      */
     public byte[] conversationIndex() {
         if (this.conversationIndex == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.conversationIndex.decodedBytes();
     }

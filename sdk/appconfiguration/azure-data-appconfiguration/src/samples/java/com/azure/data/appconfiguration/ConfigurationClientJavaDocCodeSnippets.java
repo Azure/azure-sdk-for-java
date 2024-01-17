@@ -3,13 +3,13 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
@@ -427,7 +427,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
 
-        SyncPoller<PollResult, ConfigurationSnapshot> poller =
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
             client.beginCreateSnapshot(snapshotName,
                 new ConfigurationSnapshot(filters).setRetentionPeriod(Duration.ofHours(1)), ctx);
         poller.setPollInterval(Duration.ofSeconds(10));

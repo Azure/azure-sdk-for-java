@@ -22,6 +22,10 @@ public final class CoreSummary {
     @JsonProperty(value = "numberOfDocuments", required = true)
     private long numberOfDocuments;
 
+    /** Creates an instance of CoreSummary class. */
+    public CoreSummary() {
+    }
+
     /**
      * Get the status property: The status of a core summary.
      *

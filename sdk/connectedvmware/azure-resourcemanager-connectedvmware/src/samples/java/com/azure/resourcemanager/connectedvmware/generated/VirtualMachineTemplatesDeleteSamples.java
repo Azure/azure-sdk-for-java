@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineTemplates Delete. */
 public final class VirtualMachineTemplatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/DeleteVirtualMachineTemplate.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVirtualMachineTemplate.json
      */
     /**
      * Sample code: DeleteVirtualMachineTemplate.
@@ -18,6 +16,8 @@ public final class VirtualMachineTemplatesDeleteSamples {
      */
     public static void deleteVirtualMachineTemplate(
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.virtualMachineTemplates().delete("testrg", "WebFrontEndTemplate", null, Context.NONE);
+        manager
+            .virtualMachineTemplates()
+            .delete("testrg", "WebFrontEndTemplate", null, com.azure.core.util.Context.NONE);
     }
 }

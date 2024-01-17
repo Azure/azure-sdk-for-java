@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The results and errors from an execution of a pool autoscale formula. */
+/**
+ * The results and errors from an execution of a pool autoscale formula.
+ */
 @Fluent
 public final class AutoScaleRun {
     /*
@@ -20,7 +22,7 @@ public final class AutoScaleRun {
 
     /*
      * The final values of all variables used in the evaluation of the autoscale formula.
-     *
+     * 
      * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
      */
     @JsonProperty(value = "results")
@@ -32,13 +34,15 @@ public final class AutoScaleRun {
     @JsonProperty(value = "error")
     private AutoScaleRunError error;
 
-    /** Creates an instance of AutoScaleRun class. */
+    /**
+     * Creates an instance of AutoScaleRun class.
+     */
     public AutoScaleRun() {
     }
 
     /**
      * Get the evaluationTime property: The time at which the autoscale formula was last evaluated.
-     *
+     * 
      * @return the evaluationTime value.
      */
     public OffsetDateTime evaluationTime() {
@@ -47,7 +51,7 @@ public final class AutoScaleRun {
 
     /**
      * Set the evaluationTime property: The time at which the autoscale formula was last evaluated.
-     *
+     * 
      * @param evaluationTime the evaluationTime value to set.
      * @return the AutoScaleRun object itself.
      */
@@ -58,9 +62,9 @@ public final class AutoScaleRun {
 
     /**
      * Get the results property: The final values of all variables used in the evaluation of the autoscale formula.
-     *
-     * <p>Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
-     *
+     * 
+     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * 
      * @return the results value.
      */
     public String results() {
@@ -69,9 +73,9 @@ public final class AutoScaleRun {
 
     /**
      * Set the results property: The final values of all variables used in the evaluation of the autoscale formula.
-     *
-     * <p>Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
-     *
+     * 
+     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * 
      * @param results the results value to set.
      * @return the AutoScaleRun object itself.
      */
@@ -82,7 +86,7 @@ public final class AutoScaleRun {
 
     /**
      * Get the error property: An error that occurred when autoscaling a pool.
-     *
+     * 
      * @return the error value.
      */
     public AutoScaleRunError error() {
@@ -91,7 +95,7 @@ public final class AutoScaleRun {
 
     /**
      * Set the error property: An error that occurred when autoscaling a pool.
-     *
+     * 
      * @param error the error value to set.
      * @return the AutoScaleRun object itself.
      */
@@ -102,14 +106,13 @@ public final class AutoScaleRun {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (evaluationTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property evaluationTime in model AutoScaleRun"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property evaluationTime in model AutoScaleRun"));
         }
         if (error() != null) {
             error().validate();

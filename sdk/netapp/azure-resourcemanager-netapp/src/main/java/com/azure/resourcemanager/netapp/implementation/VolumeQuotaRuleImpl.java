@@ -97,8 +97,8 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
 
     private VolumeQuotaRulePatch updateBody;
 
-    public VolumeQuotaRuleImpl withExistingVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public VolumeQuotaRuleImpl withExistingVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.poolName = poolName;
@@ -107,34 +107,14 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .create(
-                    resourceGroupName,
-                    accountName,
-                    poolName,
-                    volumeName,
-                    volumeQuotaRuleName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().create(resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VolumeQuotaRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .create(
-                    resourceGroupName,
-                    accountName,
-                    poolName,
-                    volumeName,
-                    volumeQuotaRuleName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().create(resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -150,32 +130,19 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .update(
-                    resourceGroupName,
-                    accountName,
-                    poolName,
-                    volumeName,
-                    volumeQuotaRuleName,
-                    updateBody,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().update(resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, updateBody, Context.NONE);
         return this;
     }
 
     public VolumeQuotaRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().update(resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, updateBody, context);
         return this;
     }
 
-    VolumeQuotaRuleImpl(
-        VolumeQuotaRuleInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    VolumeQuotaRuleImpl(VolumeQuotaRuleInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -186,23 +153,16 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .getWithResponse(
-                    resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VolumeQuotaRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeQuotaRules()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
+            .getValue();
         return this;
     }
 

@@ -63,7 +63,8 @@ public final class TestProxyManager {
                 }
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", repoRoot.toString())
-                    .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile());
+                    .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile())
+                    .redirectError(repoRootTarget.resolve("test-proxy-error.log").toFile());
                 Map<String, String> environment = builder.environment();
                 environment.put("LOGGING__LOGLEVEL", "Debug");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Debug");
@@ -117,6 +118,7 @@ public final class TestProxyManager {
                 TestProxyUtils.checkForTestProxyErrors(response);
             } catch (Exception ignored) {
             }
+
             Thread.sleep(waitTime.toMillis());
         }
         return false;

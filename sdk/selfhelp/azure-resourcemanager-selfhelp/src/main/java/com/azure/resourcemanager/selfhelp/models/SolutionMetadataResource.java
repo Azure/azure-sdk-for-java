@@ -8,67 +8,48 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner;
 import java.util.List;
 
-/** An immutable client-side representation of SolutionMetadataResource. */
+/**
+ * An immutable client-side representation of SolutionMetadataResource.
+ */
 public interface SolutionMetadataResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the solutionId property: Solution Id.
-     *
-     * @return the solutionId value.
+     * Gets the solutions property: List of metadata.
+     * 
+     * @return the solutions value.
      */
-    String solutionId();
-
-    /**
-     * Gets the solutionType property: Solution Type.
-     *
-     * @return the solutionType value.
-     */
-    String solutionType();
-
-    /**
-     * Gets the description property: A detailed description of solution.
-     *
-     * @return the description value.
-     */
-    String description();
-
-    /**
-     * Gets the requiredParameterSets property: Required parameters for invoking this particular solution.
-     *
-     * @return the requiredParameterSets value.
-     */
-    List<List<String>> requiredParameterSets();
+    List<SolutionMetadataProperties> solutions();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SolutionMetadataResourceInner innerModel();

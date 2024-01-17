@@ -10,6 +10,8 @@ import com.azure.resourcemanager.resourcemover.models.LBFrontendIpConfigurationR
 import com.azure.resourcemanager.resourcemover.models.LoadBalancerResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.SubnetReference;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class LoadBalancerResourceSettingsTests {
@@ -18,73 +20,80 @@ public final class LoadBalancerResourceSettingsTests {
         LoadBalancerResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/loadBalancers\",\"sku\":\"crnwbmeh\",\"frontendIPConfigurations\":[{\"name\":\"v\",\"privateIpAddress\":\"srtslhspkdeem\",\"privateIpAllocationMethod\":\"fm\",\"subnet\":{\"name\":\"kv\",\"sourceArmResourceId\":\"melmqkrha\"},\"zones\":\"ljuahaquhcdh\"},{\"name\":\"ualaexqpvfadmw\",\"privateIpAddress\":\"crgvxpvgom\",\"privateIpAllocationMethod\":\"fmisg\",\"subnet\":{\"name\":\"b\",\"sourceArmResourceId\":\"e\"},\"zones\":\"awkz\"},{\"name\":\"liourqhak\",\"privateIpAddress\":\"hashsfwxosow\",\"privateIpAllocationMethod\":\"cugicjoox\",\"subnet\":{\"name\":\"bwpucwwfvovbv\",\"sourceArmResourceId\":\"euecivyhzceuoj\"},\"zones\":\"rw\"},{\"name\":\"eiotwmcdytdx\",\"privateIpAddress\":\"txnrjaw\",\"privateIpAllocationMethod\":\"wgxhn\",\"subnet\":{\"name\":\"x\",\"sourceArmResourceId\":\"bkpyc\"},\"zones\":\"lwn\"}],\"backendAddressPools\":[{\"name\":\"dauwhvylwzbtd\"},{\"name\":\"ujznb\"},{\"name\":\"ow\"}],\"zones\":\"przqlveu\",\"targetResourceName\":\"lupj\"}")
+                    "{\"resourceType\":\"Microsoft.Network/loadBalancers\",\"tags\":{\"mcqibycnojv\":\"qbex\",\"zhpvgqzcjrvxd\":\"nmefqsgzvahapj\",\"vawjvzunlu\":\"zlmwlxkvugfhz\",\"xipeilpjzuaejx\":\"hnnpr\"},\"sku\":\"ltskzbbtd\",\"frontendIPConfigurations\":[{\"name\":\"e\",\"privateIpAddress\":\"gpw\",\"privateIpAllocationMethod\":\"uh\",\"subnet\":{\"name\":\"bsjyofdx\",\"sourceArmResourceId\":\"uusdttouwa\"},\"zones\":\"ekqvkeln\"}],\"backendAddressPools\":[{\"name\":\"xwyjsflhhc\"},{\"name\":\"lnjixisxya\"},{\"name\":\"oyaqcslyjpkiid\"}],\"zones\":\"exznelixhnr\",\"targetResourceName\":\"folhbnxknal\",\"targetResourceGroupName\":\"lp\"}")
                 .toObject(LoadBalancerResourceSettings.class);
-        Assertions.assertEquals("lupj", model.targetResourceName());
-        Assertions.assertEquals("crnwbmeh", model.sku());
-        Assertions.assertEquals("v", model.frontendIpConfigurations().get(0).name());
-        Assertions.assertEquals("srtslhspkdeem", model.frontendIpConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals("fm", model.frontendIpConfigurations().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("melmqkrha", model.frontendIpConfigurations().get(0).subnet().sourceArmResourceId());
-        Assertions.assertEquals("kv", model.frontendIpConfigurations().get(0).subnet().name());
-        Assertions.assertEquals("ljuahaquhcdh", model.frontendIpConfigurations().get(0).zones());
-        Assertions.assertEquals("dauwhvylwzbtd", model.backendAddressPools().get(0).name());
-        Assertions.assertEquals("przqlveu", model.zones());
+        Assertions.assertEquals("folhbnxknal", model.targetResourceName());
+        Assertions.assertEquals("lp", model.targetResourceGroupName());
+        Assertions.assertEquals("qbex", model.tags().get("mcqibycnojv"));
+        Assertions.assertEquals("ltskzbbtd", model.sku());
+        Assertions.assertEquals("e", model.frontendIpConfigurations().get(0).name());
+        Assertions.assertEquals("gpw", model.frontendIpConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("uh", model.frontendIpConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("uusdttouwa", model.frontendIpConfigurations().get(0).subnet().sourceArmResourceId());
+        Assertions.assertEquals("bsjyofdx", model.frontendIpConfigurations().get(0).subnet().name());
+        Assertions.assertEquals("ekqvkeln", model.frontendIpConfigurations().get(0).zones());
+        Assertions.assertEquals("xwyjsflhhc", model.backendAddressPools().get(0).name());
+        Assertions.assertEquals("exznelixhnr", model.zones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoadBalancerResourceSettings model =
             new LoadBalancerResourceSettings()
-                .withTargetResourceName("lupj")
-                .withSku("crnwbmeh")
+                .withTargetResourceName("folhbnxknal")
+                .withTargetResourceGroupName("lp")
+                .withTags(
+                    mapOf(
+                        "mcqibycnojv",
+                        "qbex",
+                        "zhpvgqzcjrvxd",
+                        "nmefqsgzvahapj",
+                        "vawjvzunlu",
+                        "zlmwlxkvugfhz",
+                        "xipeilpjzuaejx",
+                        "hnnpr"))
+                .withSku("ltskzbbtd")
                 .withFrontendIpConfigurations(
                     Arrays
                         .asList(
                             new LBFrontendIpConfigurationResourceSettings()
-                                .withName("v")
-                                .withPrivateIpAddress("srtslhspkdeem")
-                                .withPrivateIpAllocationMethod("fm")
-                                .withSubnet(new SubnetReference().withSourceArmResourceId("melmqkrha").withName("kv"))
-                                .withZones("ljuahaquhcdh"),
-                            new LBFrontendIpConfigurationResourceSettings()
-                                .withName("ualaexqpvfadmw")
-                                .withPrivateIpAddress("crgvxpvgom")
-                                .withPrivateIpAllocationMethod("fmisg")
-                                .withSubnet(new SubnetReference().withSourceArmResourceId("e").withName("b"))
-                                .withZones("awkz"),
-                            new LBFrontendIpConfigurationResourceSettings()
-                                .withName("liourqhak")
-                                .withPrivateIpAddress("hashsfwxosow")
-                                .withPrivateIpAllocationMethod("cugicjoox")
+                                .withName("e")
+                                .withPrivateIpAddress("gpw")
+                                .withPrivateIpAllocationMethod("uh")
                                 .withSubnet(
-                                    new SubnetReference()
-                                        .withSourceArmResourceId("euecivyhzceuoj")
-                                        .withName("bwpucwwfvovbv"))
-                                .withZones("rw"),
-                            new LBFrontendIpConfigurationResourceSettings()
-                                .withName("eiotwmcdytdx")
-                                .withPrivateIpAddress("txnrjaw")
-                                .withPrivateIpAllocationMethod("wgxhn")
-                                .withSubnet(new SubnetReference().withSourceArmResourceId("bkpyc").withName("x"))
-                                .withZones("lwn")))
+                                    new SubnetReference().withSourceArmResourceId("uusdttouwa").withName("bsjyofdx"))
+                                .withZones("ekqvkeln")))
                 .withBackendAddressPools(
                     Arrays
                         .asList(
-                            new LBBackendAddressPoolResourceSettings().withName("dauwhvylwzbtd"),
-                            new LBBackendAddressPoolResourceSettings().withName("ujznb"),
-                            new LBBackendAddressPoolResourceSettings().withName("ow")))
-                .withZones("przqlveu");
+                            new LBBackendAddressPoolResourceSettings().withName("xwyjsflhhc"),
+                            new LBBackendAddressPoolResourceSettings().withName("lnjixisxya"),
+                            new LBBackendAddressPoolResourceSettings().withName("oyaqcslyjpkiid")))
+                .withZones("exznelixhnr");
         model = BinaryData.fromObject(model).toObject(LoadBalancerResourceSettings.class);
-        Assertions.assertEquals("lupj", model.targetResourceName());
-        Assertions.assertEquals("crnwbmeh", model.sku());
-        Assertions.assertEquals("v", model.frontendIpConfigurations().get(0).name());
-        Assertions.assertEquals("srtslhspkdeem", model.frontendIpConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals("fm", model.frontendIpConfigurations().get(0).privateIpAllocationMethod());
-        Assertions.assertEquals("melmqkrha", model.frontendIpConfigurations().get(0).subnet().sourceArmResourceId());
-        Assertions.assertEquals("kv", model.frontendIpConfigurations().get(0).subnet().name());
-        Assertions.assertEquals("ljuahaquhcdh", model.frontendIpConfigurations().get(0).zones());
-        Assertions.assertEquals("dauwhvylwzbtd", model.backendAddressPools().get(0).name());
-        Assertions.assertEquals("przqlveu", model.zones());
+        Assertions.assertEquals("folhbnxknal", model.targetResourceName());
+        Assertions.assertEquals("lp", model.targetResourceGroupName());
+        Assertions.assertEquals("qbex", model.tags().get("mcqibycnojv"));
+        Assertions.assertEquals("ltskzbbtd", model.sku());
+        Assertions.assertEquals("e", model.frontendIpConfigurations().get(0).name());
+        Assertions.assertEquals("gpw", model.frontendIpConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("uh", model.frontendIpConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("uusdttouwa", model.frontendIpConfigurations().get(0).subnet().sourceArmResourceId());
+        Assertions.assertEquals("bsjyofdx", model.frontendIpConfigurations().get(0).subnet().name());
+        Assertions.assertEquals("ekqvkeln", model.frontendIpConfigurations().get(0).zones());
+        Assertions.assertEquals("xwyjsflhhc", model.backendAddressPools().get(0).name());
+        Assertions.assertEquals("exznelixhnr", model.zones());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

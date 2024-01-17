@@ -9,7 +9,9 @@ import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NginxDeploymentListResponse model. */
+/**
+ * The NginxDeploymentListResponse model.
+ */
 @Fluent
 public final class NginxDeploymentListResponse {
     /*
@@ -24,13 +26,15 @@ public final class NginxDeploymentListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NginxDeploymentListResponse class. */
+    /**
+     * Creates an instance of NginxDeploymentListResponse class.
+     */
     public NginxDeploymentListResponse() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<NginxDeploymentInner> value() {
@@ -39,7 +43,7 @@ public final class NginxDeploymentListResponse {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the NginxDeploymentListResponse object itself.
      */
@@ -50,7 +54,7 @@ public final class NginxDeploymentListResponse {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NginxDeploymentListResponse {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NginxDeploymentListResponse object itself.
      */
@@ -70,7 +74,7 @@ public final class NginxDeploymentListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

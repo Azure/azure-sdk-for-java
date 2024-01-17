@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Synapse spark job reference type. */
+/**
+ * Synapse spark job reference type.
+ */
 @Fluent
 public final class SynapseSparkJobReference {
     /*
@@ -23,13 +25,15 @@ public final class SynapseSparkJobReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of SynapseSparkJobReference class. */
+    /**
+     * Creates an instance of SynapseSparkJobReference class.
+     */
     public SynapseSparkJobReference() {
     }
 
     /**
      * Get the type property: Synapse spark job reference type.
-     *
+     * 
      * @return the type value.
      */
     public SparkJobReferenceType type() {
@@ -38,7 +42,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the type property: Synapse spark job reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SynapseSparkJobReference object itself.
      */
@@ -49,7 +53,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Get the referenceName property: Reference spark job name. Expression with resultType string.
-     *
+     * 
      * @return the referenceName value.
      */
     public Object referenceName() {
@@ -58,7 +62,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the referenceName property: Reference spark job name. Expression with resultType string.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SynapseSparkJobReference object itself.
      */
@@ -69,20 +73,17 @@ public final class SynapseSparkJobReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model SynapseSparkJobReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model SynapseSparkJobReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model SynapseSparkJobReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property referenceName in model SynapseSparkJobReference"));
         }
     }
 

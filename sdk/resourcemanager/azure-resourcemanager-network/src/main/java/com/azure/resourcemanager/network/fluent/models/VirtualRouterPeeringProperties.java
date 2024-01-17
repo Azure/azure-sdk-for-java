@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the rule group. */
+/**
+ * Properties of the rule group.
+ */
 @Fluent
 public final class VirtualRouterPeeringProperties {
     /*
@@ -29,13 +31,15 @@ public final class VirtualRouterPeeringProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualRouterPeeringProperties class. */
+    /**
+     * Creates an instance of VirtualRouterPeeringProperties class.
+     */
     public VirtualRouterPeeringProperties() {
     }
 
     /**
      * Get the peerAsn property: Peer ASN.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -44,7 +48,7 @@ public final class VirtualRouterPeeringProperties {
 
     /**
      * Set the peerAsn property: Peer ASN.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the VirtualRouterPeeringProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class VirtualRouterPeeringProperties {
 
     /**
      * Get the peerIp property: Peer IP.
-     *
+     * 
      * @return the peerIp value.
      */
     public String peerIp() {
@@ -64,7 +68,7 @@ public final class VirtualRouterPeeringProperties {
 
     /**
      * Set the peerIp property: Peer IP.
-     *
+     * 
      * @param peerIp the peerIp value to set.
      * @return the VirtualRouterPeeringProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class VirtualRouterPeeringProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +88,7 @@ public final class VirtualRouterPeeringProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

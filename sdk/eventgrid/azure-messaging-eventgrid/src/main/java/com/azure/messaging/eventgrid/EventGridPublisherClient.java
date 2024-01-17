@@ -131,6 +131,8 @@ import java.util.stream.StreamSupport;
  *
  * @see EventGridEvent
  * @see CloudEvent
+ *
+ * @param <T> The type of the event to publish. One of {@link EventGridEvent} or {@link com.azure.core.models.CloudEvent}.
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public final class EventGridPublisherClient<T> {

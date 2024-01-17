@@ -12,17 +12,15 @@ import java.util.Map;
 public final class CompressionReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CompressionReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CompressionReadSettings\",\"\":{\"bc\":\"dataouxpdnlbp\",\"zekg\":\"dataohnroa\"}}")
+        CompressionReadSettings model
+            = BinaryData.fromString("{\"type\":\"CompressionReadSettings\",\"\":{\"qlyputawdmd\":\"datanjkcolo\"}}")
                 .toObject(CompressionReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CompressionReadSettings model =
-            new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"));
+        CompressionReadSettings model
+            = new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"));
         model = BinaryData.fromObject(model).toObject(CompressionReadSettings.class);
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -53,6 +52,12 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     private InventoryItemDetails resourcePool;
 
     /*
+     * Cluster inventory resource details.
+     */
+    @JsonProperty(value = "cluster")
+    private InventoryItemDetails cluster;
+
+    /*
      * Gets or sets the instance uuid of the vm.
      */
     @JsonProperty(value = "instanceUuid")
@@ -87,6 +92,10 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
      */
     @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersion;
+
+    /** Creates an instance of VirtualMachineInventoryItem class. */
+    public VirtualMachineInventoryItem() {
+    }
 
     /**
      * Get the osType property: Gets or sets the type of the os.
@@ -209,6 +218,26 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     }
 
     /**
+     * Get the cluster property: Cluster inventory resource details.
+     *
+     * @return the cluster value.
+     */
+    public InventoryItemDetails cluster() {
+        return this.cluster;
+    }
+
+    /**
+     * Set the cluster property: Cluster inventory resource details.
+     *
+     * @param cluster the cluster value to set.
+     * @return the VirtualMachineInventoryItem object itself.
+     */
+    public VirtualMachineInventoryItem withCluster(InventoryItemDetails cluster) {
+        this.cluster = cluster;
+        return this;
+    }
+
+    /**
      * Get the instanceUuid property: Gets or sets the instance uuid of the vm.
      *
      * @return the instanceUuid value.
@@ -320,6 +349,9 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
         }
         if (resourcePool() != null) {
             resourcePool().validate();
+        }
+        if (cluster() != null) {
+            cluster().validate();
         }
     }
 }

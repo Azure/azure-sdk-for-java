@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RunNotebooksCreateRunHeaders model. */
+/**
+ * The RunNotebooksCreateRunHeaders model.
+ */
 @Fluent
 public final class RunNotebooksCreateRunHeaders {
     /*
@@ -21,7 +23,7 @@ public final class RunNotebooksCreateRunHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of RunNotebooksCreateRunHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public RunNotebooksCreateRunHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class RunNotebooksCreateRunHeaders {
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -39,7 +41,7 @@ public final class RunNotebooksCreateRunHeaders {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the RunNotebooksCreateRunHeaders object itself.
      */

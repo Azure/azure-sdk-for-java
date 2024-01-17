@@ -6,7 +6,9 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Deployment properties. */
 @Fluent
@@ -32,7 +34,8 @@ public class DeploymentProperties {
      * formed JSON string.
      */
     @JsonProperty(value = "parameters")
-    private Object parameters;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, DeploymentParameter> parameters;
 
     /*
      * The URI of parameters file. You use this element to link to an existing parameters file. Use either the
@@ -127,7 +130,7 @@ public class DeploymentProperties {
      *
      * @return the parameters value.
      */
-    public Object parameters() {
+    public Map<String, DeploymentParameter> parameters() {
         return this.parameters;
     }
 
@@ -140,7 +143,7 @@ public class DeploymentProperties {
      * @param parameters the parameters value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties withParameters(Object parameters) {
+    public DeploymentProperties withParameters(Map<String, DeploymentParameter> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -268,6 +271,16 @@ public class DeploymentProperties {
     public void validate() {
         if (templateLink() != null) {
             templateLink().validate();
+        }
+        if (parameters() != null) {
+            parameters()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
         if (parametersLink() != null) {
             parametersLink().validate();

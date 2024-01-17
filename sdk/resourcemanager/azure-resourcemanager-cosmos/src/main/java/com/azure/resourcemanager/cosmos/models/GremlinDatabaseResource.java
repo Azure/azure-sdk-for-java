@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Gremlin database resource object. */
+/**
+ * Cosmos DB Gremlin database resource object.
+ */
 @Fluent
 public class GremlinDatabaseResource {
     /*
@@ -17,13 +19,27 @@ public class GremlinDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of GremlinDatabaseResource class. */
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
+    /**
+     * Creates an instance of GremlinDatabaseResource class.
+     */
     public GremlinDatabaseResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin database.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +48,7 @@ public class GremlinDatabaseResource {
 
     /**
      * Set the id property: Name of the Cosmos DB Gremlin database.
-     *
+     * 
      * @param id the id value to set.
      * @return the GremlinDatabaseResource object itself.
      */
@@ -42,15 +58,57 @@ public class GremlinDatabaseResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the GremlinDatabaseResource object itself.
+     */
+    public GremlinDatabaseResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the GremlinDatabaseResource object itself.
+     */
+    public GremlinDatabaseResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model GremlinDatabaseResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model GremlinDatabaseResource"));
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 

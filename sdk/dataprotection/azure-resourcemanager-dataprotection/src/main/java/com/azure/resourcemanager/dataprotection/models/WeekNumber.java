@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WeekNumber. */
+/**
+ * Defines values for WeekNumber.
+ */
 public final class WeekNumber extends ExpandableStringEnum<WeekNumber> {
-    /** Static value First for WeekNumber. */
+    /**
+     * Static value First for WeekNumber.
+     */
     public static final WeekNumber FIRST = fromString("First");
 
-    /** Static value Fourth for WeekNumber. */
+    /**
+     * Static value Fourth for WeekNumber.
+     */
     public static final WeekNumber FOURTH = fromString("Fourth");
 
-    /** Static value Last for WeekNumber. */
+    /**
+     * Static value Last for WeekNumber.
+     */
     public static final WeekNumber LAST = fromString("Last");
 
-    /** Static value Second for WeekNumber. */
+    /**
+     * Static value Second for WeekNumber.
+     */
     public static final WeekNumber SECOND = fromString("Second");
 
-    /** Static value Third for WeekNumber. */
+    /**
+     * Static value Third for WeekNumber.
+     */
     public static final WeekNumber THIRD = fromString("Third");
 
     /**
      * Creates a new instance of WeekNumber value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class WeekNumber extends ExpandableStringEnum<WeekNumber> {
 
     /**
      * Creates or finds a WeekNumber from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WeekNumber.
      */
@@ -47,7 +59,7 @@ public final class WeekNumber extends ExpandableStringEnum<WeekNumber> {
 
     /**
      * Gets known WeekNumber values.
-     *
+     * 
      * @return known WeekNumber values.
      */
     public static Collection<WeekNumber> values() {

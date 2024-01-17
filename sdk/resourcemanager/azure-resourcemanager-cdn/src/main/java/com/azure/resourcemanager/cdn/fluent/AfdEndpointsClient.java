@@ -111,23 +111,6 @@ public interface AfdEndpointsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdEndpointInner get(String resourceGroupName, String profileName, String endpointName);
-
-    /**
-     * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     * resource group and profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,6 +121,23 @@ public interface AfdEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AfdEndpointInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, Context context);
+
+    /**
+     * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
+     * resource group and profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
+     *     resource group and profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AfdEndpointInner get(String resourceGroupName, String profileName, String endpointName);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
@@ -151,9 +151,9 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -171,8 +171,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreateAsync(
@@ -190,8 +190,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
@@ -210,8 +210,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
@@ -233,8 +233,9 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdEndpointInner> createAsync(
@@ -252,8 +253,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AfdEndpointInner create(
@@ -272,8 +273,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AfdEndpointInner create(
@@ -297,9 +298,9 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -322,8 +323,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdateAsync(
@@ -346,8 +347,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
@@ -371,8 +372,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
-     *     configuration information such as origin, protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
+     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
@@ -396,8 +397,9 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdEndpointInner> updateAsync(
@@ -420,8 +422,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AfdEndpointInner update(
@@ -445,8 +447,8 @@ public interface AfdEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
+     *     information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AfdEndpointInner update(
@@ -712,7 +714,7 @@ public interface AfdEndpointsClient {
         Context context);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -727,7 +729,7 @@ public interface AfdEndpointsClient {
     PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName, String endpointName);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -742,7 +744,7 @@ public interface AfdEndpointsClient {
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, String endpointName);
 
     /**
-     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -759,8 +761,7 @@ public interface AfdEndpointsClient {
         String resourceGroupName, String profileName, String endpointName, Context context);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
-     * apex domain.
+     * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -780,8 +781,7 @@ public interface AfdEndpointsClient {
         ValidateCustomDomainInput customDomainProperties);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
-     * apex domain.
+     * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -801,29 +801,7 @@ public interface AfdEndpointsClient {
         ValidateCustomDomainInput customDomainProperties);
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
-     * apex domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainProperties Custom domain to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateCustomDomainOutputInner validateCustomDomain(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties);
-
-    /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
-     * apex domain.
+     * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -843,4 +821,24 @@ public interface AfdEndpointsClient {
         String endpointName,
         ValidateCustomDomainInput customDomainProperties,
         Context context);
+
+    /**
+     * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainProperties Custom domain to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of custom domain validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateCustomDomainOutputInner validateCustomDomain(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties);
 }

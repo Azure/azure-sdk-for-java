@@ -33,7 +33,7 @@ public final class AttachedDatabaseConfigurationsListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"e\",\"properties\":{\"provisioningState\":\"Running\",\"databaseName\":\"tag\",\"clusterResourceId\":\"tsxoatftgz\",\"attachedDatabaseNames\":[\"bs\",\"vefloccsrmozihmi\",\"g\",\"wtxxpkyjcx\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ytfmpc\",\"cil\",\"mcayk\"],\"tablesToExclude\":[\"oxuztrksx\",\"pndfcpfnznt\",\"jtwkjaos\"],\"externalTablesToInclude\":[\"zvoamktc\",\"iosmgbzahgxqdly\",\"tlt\",\"ap\"],\"externalTablesToExclude\":[\"zkatb\"],\"materializedViewsToInclude\":[\"znnbsoqeqalarvl\",\"gunbtgfebwlnbm\",\"yreeudz\",\"av\"],\"materializedViewsToExclude\":[\"qmjxlyyzglgouwtl\",\"jjyuojqtobax\"],\"functionsToInclude\":[\"ytunlbfjkwr\"],\"functionsToExclude\":[\"kqbh\",\"y\",\"qunjqh\"]},\"databaseNameOverride\":\"nxaulk\",\"databaseNamePrefix\":\"kdk\"},\"id\":\"fmjnnawtqa\",\"name\":\"pxuckpggq\",\"type\":\"wey\"}]}";
+            "{\"value\":[{\"location\":\"bjb\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"gtdysnaqu\",\"clusterResourceId\":\"lqbctqhamzjrw\",\"attachedDatabaseNames\":[\"zeqyjleziun\",\"xdfzantkw\",\"eg\",\"amlbnseqacjjvpil\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jagmdi\",\"gueiookjbsahrtdt\",\"delqacslmoto\",\"bnfxofvc\"],\"tablesToExclude\":[\"dirazf\",\"xejw\"],\"externalTablesToInclude\":[\"dujtmvcope\",\"c\",\"jurbuhhlkyqltqsr\",\"gtuwkff\"],\"externalTablesToExclude\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"],\"materializedViewsToInclude\":[\"qxfzyjqttvwk\"],\"materializedViewsToExclude\":[\"j\",\"enuygbq\",\"qqekewvnqvcdlgu\"],\"functionsToInclude\":[\"mfdjwn\",\"axpunjqikczvv\",\"tacgxmfc\"],\"functionsToExclude\":[\"rxhtvso\"]},\"databaseNameOverride\":\"lwntsjgqrs\",\"databaseNamePrefix\":\"p\"},\"id\":\"uuuybnchrsziz\",\"name\":\"yuel\",\"type\":\"etndnbfqyggagf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,40 +64,39 @@ public final class AttachedDatabaseConfigurationsListByClusterMockTests {
         PagedIterable<AttachedDatabaseConfiguration> response =
             manager
                 .attachedDatabaseConfigurations()
-                .listByCluster("aohdjh", "flzokxco", com.azure.core.util.Context.NONE);
+                .listByCluster("ncnwfepbnwgf", "xjg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("e", response.iterator().next().location());
-        Assertions.assertEquals("tag", response.iterator().next().databaseName());
-        Assertions.assertEquals("tsxoatftgz", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals("bjb", response.iterator().next().location());
+        Assertions.assertEquals("gtdysnaqu", response.iterator().next().databaseName());
+        Assertions.assertEquals("lqbctqhamzjrw", response.iterator().next().clusterResourceId());
         Assertions
             .assertEquals(
-                DefaultPrincipalsModificationKind.UNION,
-                response.iterator().next().defaultPrincipalsModificationKind());
+                DefaultPrincipalsModificationKind.NONE, response.iterator().next().defaultPrincipalsModificationKind());
         Assertions
-            .assertEquals("ytfmpc", response.iterator().next().tableLevelSharingProperties().tablesToInclude().get(0));
+            .assertEquals("jagmdi", response.iterator().next().tableLevelSharingProperties().tablesToInclude().get(0));
         Assertions
-            .assertEquals(
-                "oxuztrksx", response.iterator().next().tableLevelSharingProperties().tablesToExclude().get(0));
+            .assertEquals("dirazf", response.iterator().next().tableLevelSharingProperties().tablesToExclude().get(0));
         Assertions
             .assertEquals(
-                "zvoamktc", response.iterator().next().tableLevelSharingProperties().externalTablesToInclude().get(0));
+                "dujtmvcope",
+                response.iterator().next().tableLevelSharingProperties().externalTablesToInclude().get(0));
         Assertions
             .assertEquals(
-                "zkatb", response.iterator().next().tableLevelSharingProperties().externalTablesToExclude().get(0));
+                "tsysi", response.iterator().next().tableLevelSharingProperties().externalTablesToExclude().get(0));
         Assertions
             .assertEquals(
-                "znnbsoqeqalarvl",
+                "qxfzyjqttvwk",
                 response.iterator().next().tableLevelSharingProperties().materializedViewsToInclude().get(0));
         Assertions
             .assertEquals(
-                "qmjxlyyzglgouwtl",
-                response.iterator().next().tableLevelSharingProperties().materializedViewsToExclude().get(0));
+                "j", response.iterator().next().tableLevelSharingProperties().materializedViewsToExclude().get(0));
         Assertions
             .assertEquals(
-                "ytunlbfjkwr", response.iterator().next().tableLevelSharingProperties().functionsToInclude().get(0));
+                "mfdjwn", response.iterator().next().tableLevelSharingProperties().functionsToInclude().get(0));
         Assertions
-            .assertEquals("kqbh", response.iterator().next().tableLevelSharingProperties().functionsToExclude().get(0));
-        Assertions.assertEquals("nxaulk", response.iterator().next().databaseNameOverride());
-        Assertions.assertEquals("kdk", response.iterator().next().databaseNamePrefix());
+            .assertEquals(
+                "rxhtvso", response.iterator().next().tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("lwntsjgqrs", response.iterator().next().databaseNameOverride());
+        Assertions.assertEquals("p", response.iterator().next().databaseNamePrefix());
     }
 }

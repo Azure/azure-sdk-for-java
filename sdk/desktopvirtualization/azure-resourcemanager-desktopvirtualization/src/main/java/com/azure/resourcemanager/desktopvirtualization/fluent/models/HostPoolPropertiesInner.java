@@ -8,9 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
+import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -139,10 +141,23 @@ public final class HostPoolPropertiesInner {
     private Boolean cloudPcResource;
 
     /*
+     * Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource
+     * to only be accessed via private endpoints
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private HostpoolPublicNetworkAccess publicNetworkAccess;
+
+    /*
      * The session host configuration for updating agent, monitoring agent, and stack component.
      */
     @JsonProperty(value = "agentUpdate")
     private AgentUpdateProperties agentUpdate;
+
+    /*
+     * List of private endpoint connection associated with the specified resource
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /** Creates an instance of HostPoolPropertiesInner class. */
     public HostPoolPropertiesInner() {
@@ -521,6 +536,28 @@ public final class HostPoolPropertiesInner {
     }
 
     /**
+     * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public HostpoolPublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the HostPoolPropertiesInner object itself.
+     */
+    public HostPoolPropertiesInner withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
      *
@@ -540,6 +577,16 @@ public final class HostPoolPropertiesInner {
     public HostPoolPropertiesInner withAgentUpdate(AgentUpdateProperties agentUpdate) {
         this.agentUpdate = agentUpdate;
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -571,6 +618,9 @@ public final class HostPoolPropertiesInner {
         }
         if (agentUpdate() != null) {
             agentUpdate().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 

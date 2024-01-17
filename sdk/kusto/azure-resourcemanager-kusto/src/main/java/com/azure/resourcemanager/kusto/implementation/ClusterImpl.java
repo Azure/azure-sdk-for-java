@@ -448,8 +448,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withZones(List<String> zones) {
-        this.innerModel().withZones(zones);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withZones(zones);
+            return this;
+        } else {
+            this.updateParameters.withZones(zones);
+            return this;
+        }
     }
 
     public ClusterImpl withIdentity(Identity identity) {

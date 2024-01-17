@@ -66,7 +66,8 @@ public class RoomsClientTest extends RoomsTestBase {
                 .setValidUntil(VALID_FROM.plusMonths(4));
 
         CommunicationRoom updateCommunicationRoom = roomsClient.updateRoom(roomId, updateRoomOptions);
-        assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
+        assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond()
+            > updateCommunicationRoom.getValidFrom().toEpochSecond());
         assertHappyPath(updateCommunicationRoom);
         assertTrue(updateCommunicationRoom.isPstnDialOutEnabled());
 

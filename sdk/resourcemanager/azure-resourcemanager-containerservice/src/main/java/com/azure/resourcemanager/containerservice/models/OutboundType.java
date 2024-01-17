@@ -11,20 +11,28 @@ import java.util.Collection;
 /**
  * The outbound (egress) routing method.
  *
- * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
- * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+ * This can only be set at cluster creation time and cannot be changed later. For more information see [egress outbound
+ * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
  */
 public final class OutboundType extends ExpandableStringEnum<OutboundType> {
-    /** Static value loadBalancer for OutboundType. */
+    /**
+     * Static value loadBalancer for OutboundType.
+     */
     public static final OutboundType LOAD_BALANCER = fromString("loadBalancer");
 
-    /** Static value userDefinedRouting for OutboundType. */
+    /**
+     * Static value userDefinedRouting for OutboundType.
+     */
     public static final OutboundType USER_DEFINED_ROUTING = fromString("userDefinedRouting");
 
-    /** Static value managedNATGateway for OutboundType. */
+    /**
+     * Static value managedNATGateway for OutboundType.
+     */
     public static final OutboundType MANAGED_NATGATEWAY = fromString("managedNATGateway");
 
-    /** Static value userAssignedNATGateway for OutboundType. */
+    /**
+     * Static value userAssignedNATGateway for OutboundType.
+     */
     public static final OutboundType USER_ASSIGNED_NATGATEWAY = fromString("userAssignedNATGateway");
 
     /**

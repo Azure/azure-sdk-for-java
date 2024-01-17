@@ -12,20 +12,15 @@ import java.util.Map;
 public final class DatasetStorageFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetStorageFormat model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datamgsdaluyckhefrbh\",\"deserializer\":\"datauerbgpxebjl\",\"\":{\"tnsewou\":\"dataaytujraxdtpryjm\",\"s\":\"dataly\",\"lmpctwj\":\"datavyljurkeposehqq\",\"erxxxoteehkhowgo\":\"datadsdlzmk\"}}")
-                .toObject(DatasetStorageFormat.class);
+        DatasetStorageFormat model = BinaryData.fromString(
+            "{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datavhxowpcbapnpxra\",\"deserializer\":\"datawbmpspfeylqloc\",\"\":{\"slavxjfiuof\":\"datajexayglxrkgjnmzp\",\"sqywjopacky\":\"dataieidzlv\",\"kmfngpmillxgjs\":\"dataydv\"}}")
+            .toObject(DatasetStorageFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetStorageFormat model =
-            new DatasetStorageFormat()
-                .withSerializer("datamgsdaluyckhefrbh")
-                .withDeserializer("datauerbgpxebjl")
-                .withAdditionalProperties(mapOf("type", "DatasetStorageFormat"));
+        DatasetStorageFormat model = new DatasetStorageFormat().withSerializer("datavhxowpcbapnpxra")
+            .withDeserializer("datawbmpspfeylqloc").withAdditionalProperties(mapOf("type", "DatasetStorageFormat"));
         model = BinaryData.fromObject(model).toObject(DatasetStorageFormat.class);
     }
 

@@ -7,12 +7,14 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an upgrade policy - automatic, manual, or rolling. */
+/**
+ * Describes an upgrade policy - automatic, manual, or rolling.
+ */
 @Fluent
 public final class UpgradePolicy {
     /*
      * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br
-     * /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by
+     * /> **Manual** - You control the application of updates to virtual machines in the scale set. You do this by
      * using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are
      * automatically updated at the same time.
      */
@@ -31,16 +33,18 @@ public final class UpgradePolicy {
     @JsonProperty(value = "automaticOSUpgradePolicy")
     private AutomaticOSUpgradePolicy automaticOSUpgradePolicy;
 
-    /** Creates an instance of UpgradePolicy class. */
+    /**
+     * Creates an instance of UpgradePolicy class.
+     */
     public UpgradePolicy() {
     }
 
     /**
      * Get the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
-     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual
-     * machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt; **Automatic** -
-     * All virtual machines in the scale set are automatically updated at the same time.
-     *
+     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to
+     * virtual machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt;
+     * **Automatic** - All virtual machines in the scale set are automatically updated at the same time.
+     * 
      * @return the mode value.
      */
     public UpgradeMode mode() {
@@ -49,10 +53,10 @@ public final class UpgradePolicy {
 
     /**
      * Set the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
-     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual
-     * machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt; **Automatic** -
-     * All virtual machines in the scale set are automatically updated at the same time.
-     *
+     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to
+     * virtual machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt;
+     * **Automatic** - All virtual machines in the scale set are automatically updated at the same time.
+     * 
      * @param mode the mode value to set.
      * @return the UpgradePolicy object itself.
      */
@@ -63,7 +67,7 @@ public final class UpgradePolicy {
 
     /**
      * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
-     *
+     * 
      * @return the rollingUpgradePolicy value.
      */
     public RollingUpgradePolicy rollingUpgradePolicy() {
@@ -72,7 +76,7 @@ public final class UpgradePolicy {
 
     /**
      * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
-     *
+     * 
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
      */
@@ -83,7 +87,7 @@ public final class UpgradePolicy {
 
     /**
      * Get the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade.
-     *
+     * 
      * @return the automaticOSUpgradePolicy value.
      */
     public AutomaticOSUpgradePolicy automaticOSUpgradePolicy() {
@@ -92,7 +96,7 @@ public final class UpgradePolicy {
 
     /**
      * Set the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade.
-     *
+     * 
      * @param automaticOSUpgradePolicy the automaticOSUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
      */
@@ -103,7 +107,7 @@ public final class UpgradePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Post request for all the Bastion Shareable Link endpoints. */
+/**
+ * Post request for Create/Delete/Get Bastion Shareable Link endpoints.
+ */
 @Fluent
 public final class BastionShareableLinkListRequest {
     /*
@@ -18,13 +20,15 @@ public final class BastionShareableLinkListRequest {
     @JsonProperty(value = "vms")
     private List<BastionShareableLinkInner> vms;
 
-    /** Creates an instance of BastionShareableLinkListRequest class. */
+    /**
+     * Creates an instance of BastionShareableLinkListRequest class.
+     */
     public BastionShareableLinkListRequest() {
     }
 
     /**
      * Get the vms property: List of VM references.
-     *
+     * 
      * @return the vms value.
      */
     public List<BastionShareableLinkInner> vms() {
@@ -33,7 +37,7 @@ public final class BastionShareableLinkListRequest {
 
     /**
      * Set the vms property: List of VM references.
-     *
+     * 
      * @param vms the vms value to set.
      * @return the BastionShareableLinkListRequest object itself.
      */
@@ -44,7 +48,7 @@ public final class BastionShareableLinkListRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

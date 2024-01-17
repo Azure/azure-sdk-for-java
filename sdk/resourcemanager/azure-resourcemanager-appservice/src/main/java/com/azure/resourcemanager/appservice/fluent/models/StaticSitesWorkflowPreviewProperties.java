@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticSitesWorkflowPreview resource specific properties. */
+/**
+ * StaticSitesWorkflowPreview resource specific properties.
+ */
 @Immutable
 public final class StaticSitesWorkflowPreviewProperties {
     /*
@@ -22,13 +24,15 @@ public final class StaticSitesWorkflowPreviewProperties {
     @JsonProperty(value = "contents", access = JsonProperty.Access.WRITE_ONLY)
     private String contents;
 
-    /** Creates an instance of StaticSitesWorkflowPreviewProperties class. */
+    /**
+     * Creates an instance of StaticSitesWorkflowPreviewProperties class.
+     */
     public StaticSitesWorkflowPreviewProperties() {
     }
 
     /**
      * Get the path property: The path for the workflow file to be generated.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -37,7 +41,7 @@ public final class StaticSitesWorkflowPreviewProperties {
 
     /**
      * Get the contents property: The contents for the workflow file to be generated.
-     *
+     * 
      * @return the contents value.
      */
     public String contents() {
@@ -46,7 +50,7 @@ public final class StaticSitesWorkflowPreviewProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

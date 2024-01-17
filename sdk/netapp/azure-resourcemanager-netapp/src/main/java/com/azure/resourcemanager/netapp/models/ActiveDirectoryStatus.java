@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the Active Directory. */
+/**
+ * Status of the Active Directory.
+ */
 public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDirectoryStatus> {
-    /** Static value Created for ActiveDirectoryStatus. */
+    /**
+     * Static value Created for ActiveDirectoryStatus.
+     */
     public static final ActiveDirectoryStatus CREATED = fromString("Created");
 
-    /** Static value InUse for ActiveDirectoryStatus. */
+    /**
+     * Static value InUse for ActiveDirectoryStatus.
+     */
     public static final ActiveDirectoryStatus IN_USE = fromString("InUse");
 
-    /** Static value Deleted for ActiveDirectoryStatus. */
+    /**
+     * Static value Deleted for ActiveDirectoryStatus.
+     */
     public static final ActiveDirectoryStatus DELETED = fromString("Deleted");
 
-    /** Static value Error for ActiveDirectoryStatus. */
+    /**
+     * Static value Error for ActiveDirectoryStatus.
+     */
     public static final ActiveDirectoryStatus ERROR = fromString("Error");
 
-    /** Static value Updating for ActiveDirectoryStatus. */
+    /**
+     * Static value Updating for ActiveDirectoryStatus.
+     */
     public static final ActiveDirectoryStatus UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of ActiveDirectoryStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDire
 
     /**
      * Creates or finds a ActiveDirectoryStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActiveDirectoryStatus.
      */
@@ -47,7 +59,7 @@ public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDire
 
     /**
      * Gets known ActiveDirectoryStatus values.
-     *
+     * 
      * @return known ActiveDirectoryStatus values.
      */
     public static Collection<ActiveDirectoryStatus> values() {

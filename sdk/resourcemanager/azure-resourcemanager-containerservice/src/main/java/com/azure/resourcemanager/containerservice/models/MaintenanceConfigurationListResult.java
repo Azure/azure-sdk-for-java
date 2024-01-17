@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List maintenance configurations operation. */
+/**
+ * The response from the List maintenance configurations operation.
+ */
 @Fluent
 public final class MaintenanceConfigurationListResult {
     /*
@@ -24,7 +26,9 @@ public final class MaintenanceConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MaintenanceConfigurationListResult class. */
+    /**
+     * Creates an instance of MaintenanceConfigurationListResult class.
+     */
     public MaintenanceConfigurationListResult() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Egress endpoints which AKS agent nodes connect to for common purpose. */
+/**
+ * Egress endpoints which AKS agent nodes connect to for common purpose.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
     /*
@@ -24,7 +26,9 @@ public final class OutboundEnvironmentEndpointInner {
     @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointInner class.
+     */
     public OutboundEnvironmentEndpointInner() {
     }
 

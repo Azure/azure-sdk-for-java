@@ -9,7 +9,9 @@ import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Values returned by the List operation. */
+/**
+ * Values returned by the List operation.
+ */
 @Fluent
 public final class DetectorListResult {
     /*
@@ -24,13 +26,15 @@ public final class DetectorListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DetectorListResult class. */
+    /**
+     * Creates an instance of DetectorListResult class.
+     */
     public DetectorListResult() {
     }
 
     /**
      * Get the value property: The collection of Batch account detectors returned by the listing operation.
-     *
+     * 
      * @return the value value.
      */
     public List<DetectorResponseInner> value() {
@@ -39,7 +43,7 @@ public final class DetectorListResult {
 
     /**
      * Set the value property: The collection of Batch account detectors returned by the listing operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the DetectorListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class DetectorListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DetectorListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DetectorListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class DetectorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

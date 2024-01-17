@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The object representing the state of the migration between the backup policies. */
+/**
+ * The object representing the state of the migration between the backup policies.
+ */
 @Fluent
 public final class BackupPolicyMigrationState {
     /*
@@ -29,13 +31,15 @@ public final class BackupPolicyMigrationState {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
-    /** Creates an instance of BackupPolicyMigrationState class. */
+    /**
+     * Creates an instance of BackupPolicyMigrationState class.
+     */
     public BackupPolicyMigrationState() {
     }
 
     /**
      * Get the status property: Describes the status of migration between backup policy types.
-     *
+     * 
      * @return the status value.
      */
     public BackupPolicyMigrationStatus status() {
@@ -44,7 +48,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Set the status property: Describes the status of migration between backup policy types.
-     *
+     * 
      * @param status the status value to set.
      * @return the BackupPolicyMigrationState object itself.
      */
@@ -55,7 +59,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Get the targetType property: Describes the target backup policy type of the backup policy migration.
-     *
+     * 
      * @return the targetType value.
      */
     public BackupPolicyType targetType() {
@@ -64,7 +68,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Set the targetType property: Describes the target backup policy type of the backup policy migration.
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the BackupPolicyMigrationState object itself.
      */
@@ -75,7 +79,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Get the startTime property: Time at which the backup policy migration started (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -84,7 +88,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Set the startTime property: Time at which the backup policy migration started (ISO-8601 format).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the BackupPolicyMigrationState object itself.
      */
@@ -95,7 +99,7 @@ public final class BackupPolicyMigrationState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

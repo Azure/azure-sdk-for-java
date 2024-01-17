@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.WafMetric;
 import com.azure.resourcemanager.cdn.models.WafRankingType;
 import java.time.OffsetDateTime;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for LogAnalytics GetWafLogAnalyticsRankings. */
 public final class LogAnalyticsGetWafLogAnalyticsRankingsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
      */
     /**
      * Sample code: LogAnalytics_GetWafLogAnalyticsRankings.
@@ -36,6 +35,6 @@ public final class LogAnalyticsGetWafLogAnalyticsRankingsSamples {
                 Arrays.asList(WafRankingType.RULE_ID),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -21,51 +21,41 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public ManagedVirtualNetworksImpl(
-        ManagedVirtualNetworksClient innerClient,
+    public ManagedVirtualNetworksImpl(ManagedVirtualNetworksClient innerClient,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ManagedVirtualNetworkResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<ManagedVirtualNetworkResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName);
+        PagedIterable<ManagedVirtualNetworkResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
         return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ManagedVirtualNetworkResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<ManagedVirtualNetworkResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
-    }
-
-    public Response<ManagedVirtualNetworkResource> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String ifNoneMatch,
+    public PagedIterable<ManagedVirtualNetworkResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        Response<ManagedVirtualNetworkResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, context);
+        PagedIterable<ManagedVirtualNetworkResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+        return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<ManagedVirtualNetworkResource> getWithResponse(String resourceGroupName, String factoryName,
+        String managedVirtualNetworkName, String ifNoneMatch, Context context) {
+        Response<ManagedVirtualNetworkResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            factoryName, managedVirtualNetworkName, ifNoneMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedVirtualNetworkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ManagedVirtualNetworkResource get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
-        ManagedVirtualNetworkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, managedVirtualNetworkName);
+    public ManagedVirtualNetworkResource get(String resourceGroupName, String factoryName,
+        String managedVirtualNetworkName) {
+        ManagedVirtualNetworkResourceInner inner
+            = this.serviceClient().get(resourceGroupName, factoryName, managedVirtualNetworkName);
         if (inner != null) {
             return new ManagedVirtualNetworkResourceImpl(inner, this.manager());
         } else {
@@ -76,28 +66,18 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
     public ManagedVirtualNetworkResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
         String localIfNoneMatch = null;
         return this
@@ -108,28 +88,18 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
     public Response<ManagedVirtualNetworkResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, context);
     }

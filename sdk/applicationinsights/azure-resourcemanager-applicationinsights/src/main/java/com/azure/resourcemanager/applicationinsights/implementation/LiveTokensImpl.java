@@ -27,15 +27,6 @@ public final class LiveTokensImpl implements LiveTokens {
         this.serviceManager = serviceManager;
     }
 
-    public LiveTokenResponse get(String resourceUri) {
-        LiveTokenResponseInner inner = this.serviceClient().get(resourceUri);
-        if (inner != null) {
-            return new LiveTokenResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LiveTokenResponse> getWithResponse(String resourceUri, Context context) {
         Response<LiveTokenResponseInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
         if (inner != null) {
@@ -44,6 +35,15 @@ public final class LiveTokensImpl implements LiveTokens {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LiveTokenResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LiveTokenResponse get(String resourceUri) {
+        LiveTokenResponseInner inner = this.serviceClient().get(resourceUri);
+        if (inner != null) {
+            return new LiveTokenResponseImpl(inner, this.manager());
         } else {
             return null;
         }

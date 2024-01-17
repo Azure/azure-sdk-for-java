@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Execution policy for an activity that supports secure input and output. */
+/**
+ * Execution policy for an activity that supports secure input and output.
+ */
 @Fluent
 public final class SecureInputOutputPolicy {
     /*
@@ -22,14 +24,16 @@ public final class SecureInputOutputPolicy {
     @JsonProperty(value = "secureOutput")
     private Boolean secureOutput;
 
-    /** Creates an instance of SecureInputOutputPolicy class. */
+    /**
+     * Creates an instance of SecureInputOutputPolicy class.
+     */
     public SecureInputOutputPolicy() {
     }
 
     /**
      * Get the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @return the secureInput value.
      */
     public Boolean secureInput() {
@@ -39,7 +43,7 @@ public final class SecureInputOutputPolicy {
     /**
      * Set the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @param secureInput the secureInput value to set.
      * @return the SecureInputOutputPolicy object itself.
      */
@@ -51,7 +55,7 @@ public final class SecureInputOutputPolicy {
     /**
      * Get the secureOutput property: When set to true, Output from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @return the secureOutput value.
      */
     public Boolean secureOutput() {
@@ -61,7 +65,7 @@ public final class SecureInputOutputPolicy {
     /**
      * Set the secureOutput property: When set to true, Output from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @param secureOutput the secureOutput value to set.
      * @return the SecureInputOutputPolicy object itself.
      */
@@ -72,7 +76,7 @@ public final class SecureInputOutputPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

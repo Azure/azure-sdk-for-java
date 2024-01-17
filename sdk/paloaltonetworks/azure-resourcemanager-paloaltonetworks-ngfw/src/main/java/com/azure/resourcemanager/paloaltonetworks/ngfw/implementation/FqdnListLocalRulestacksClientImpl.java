@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FqdnListLocalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FqdnListLocalRulestacksClient.
+ */
 public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRulestacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FqdnListLocalRulestacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of FqdnListLocalRulestacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FqdnListLocalRulestacksClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy
-                .create(FqdnListLocalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FqdnListLocalRulestacksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,102 +70,78 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface FqdnListLocalRulestacksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FqdnListLocalRulestackResourceListResult>> listByLocalRulestacks(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FqdnListLocalRulestackResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FqdnListLocalRulestackResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
             @BodyParam("application/json") FqdnListLocalRulestackResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/fqdnlists/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FqdnListLocalRulestackResourceListResult>> listByLocalRulestacksNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListLocalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>>
+        listByLocalRulestacksSinglePageAsync(String resourceGroupName, String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,31 +154,16 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByLocalRulestacks(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
-            .<PagedResponse<FqdnListLocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
+            .<PagedResponse<FqdnListLocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -205,22 +171,18 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListLocalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>>
+        listByLocalRulestacksSinglePageAsync(String resourceGroupName, String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,59 +195,45 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocalRulestacks(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FqdnListLocalRulestackResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName) {
-        return new PagedFlux<>(
-            () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
+    private PagedFlux<FqdnListLocalRulestackResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName) {
+        return new PagedFlux<>(() -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink));
     }
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FqdnListLocalRulestackResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private PagedFlux<FqdnListLocalRulestackResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedFlux<>(
             () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName, context),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink, context));
@@ -293,42 +241,42 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
+    public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName));
     }
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public PagedIterable<FqdnListLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName, context));
     }
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -338,19 +286,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return a FqdnListLocalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FqdnListLocalRulestackResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<Response<FqdnListLocalRulestackResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -365,24 +309,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -393,19 +327,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return a FqdnListLocalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FqdnListLocalRulestackResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private Mono<Response<FqdnListLocalRulestackResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -420,21 +350,13 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, name, accept, context);
     }
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -444,15 +366,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return a FqdnListLocalRulestackResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FqdnListLocalRulestackResourceInner> getAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<FqdnListLocalRulestackResourceInner> getAsync(String resourceGroupName, String localRulestackName,
+        String name) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -463,14 +385,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return a FqdnListLocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FqdnListLocalRulestackResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    public Response<FqdnListLocalRulestackResourceInner> getWithResponse(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, name, context).block();
     }
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -486,7 +408,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -497,22 +419,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, FqdnListLocalRulestackResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -532,25 +447,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, resource, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -562,23 +467,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, FqdnListLocalRulestackResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -598,22 +495,13 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, resource, accept, context);
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -625,26 +513,18 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+        beginCreateOrUpdateAsync(String resourceGroupName, String localRulestackName, String name,
             FqdnListLocalRulestackResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource);
-        return this
-            .client
-            .<FqdnListLocalRulestackResourceInner, FqdnListLocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FqdnListLocalRulestackResourceInner.class,
-                FqdnListLocalRulestackResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource);
+        return this.client.<FqdnListLocalRulestackResourceInner, FqdnListLocalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FqdnListLocalRulestackResourceInner.class,
+            FqdnListLocalRulestackResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -657,28 +537,19 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            FqdnListLocalRulestackResourceInner resource,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String localRulestackName, String name,
+            FqdnListLocalRulestackResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource, context);
-        return this
-            .client
-            .<FqdnListLocalRulestackResourceInner, FqdnListLocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FqdnListLocalRulestackResourceInner.class,
-                FqdnListLocalRulestackResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource, context);
+        return this.client.<FqdnListLocalRulestackResourceInner, FqdnListLocalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FqdnListLocalRulestackResourceInner.class,
+            FqdnListLocalRulestackResourceInner.class, context);
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -690,17 +561,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
             FqdnListLocalRulestackResourceInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).getSyncPoller();
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -713,20 +581,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FqdnListLocalRulestackResourceInner>, FqdnListLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            FqdnListLocalRulestackResourceInner resource,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
+            FqdnListLocalRulestackResourceInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
             .getSyncPoller();
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -737,19 +600,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FqdnListLocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource)
-            .last()
+    private Mono<FqdnListLocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String localRulestackName, String name, FqdnListLocalRulestackResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -761,20 +620,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FqdnListLocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
-            .last()
+    private Mono<FqdnListLocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String localRulestackName, String name, FqdnListLocalRulestackResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -785,17 +639,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FqdnListLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource) {
+    public FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        String name, FqdnListLocalRulestackResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).block();
     }
 
     /**
      * Create a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -807,18 +658,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return localRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FqdnListLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        FqdnListLocalRulestackResourceInner resource,
-        Context context) {
+    public FqdnListLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        String name, FqdnListLocalRulestackResourceInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context).block();
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -828,19 +675,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,24 +698,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -883,19 +716,15 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -910,21 +739,13 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, name, accept, context);
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -934,18 +755,16 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localRulestackName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -956,19 +775,18 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, localRulestackName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, localRulestackName, name, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -978,14 +796,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String name) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, name).getSyncPoller();
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -996,14 +814,14 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, name, context).getSyncPoller();
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -1014,14 +832,13 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String name) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, name)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, name).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -1033,14 +850,13 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, name, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, name, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -1055,7 +871,7 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -1071,79 +887,62 @@ public final class FqdnListLocalRulestacksClientImpl implements FqdnListLocalRul
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListLocalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>> listByLocalRulestacksNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>>
+        listByLocalRulestacksNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FqdnListLocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FqdnListLocalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListLocalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>> listByLocalRulestacksNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FqdnListLocalRulestackResourceInner>>
+        listByLocalRulestacksNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

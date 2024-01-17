@@ -7,12 +7,15 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -27,7 +30,6 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -209,7 +212,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(serviceProperties), 202);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
@@ -378,7 +381,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @ResourceLock("ServiceProperties")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
     @Test
     public void listSystemFileSystems() {
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
@@ -501,7 +504,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystem() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -526,7 +529,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystemWithResponse() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -559,7 +562,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -624,6 +627,55 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             : Retry.fixedDelay(30, Duration.ofMillis(1000)).filter(retryPredicate);
 
         return waitUntilOperation.retryWhen(retry);
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(primaryDataLakeServiceAsyncClient.getAccountName()))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(audience)
+            .buildAsyncClient();
+
+        StepVerifier.create(aadServiceClient.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
 }

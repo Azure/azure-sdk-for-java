@@ -27,15 +27,6 @@ public final class DatastoresImpl implements Datastores {
         this.serviceManager = serviceManager;
     }
 
-    public Datastore getByResourceGroup(String resourceGroupName, String datastoreName) {
-        DatastoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, datastoreName);
-        if (inner != null) {
-            return new DatastoreImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Datastore> getByResourceGroupWithResponse(
         String resourceGroupName, String datastoreName, Context context) {
         Response<DatastoreInner> inner =
@@ -51,8 +42,13 @@ public final class DatastoresImpl implements Datastores {
         }
     }
 
-    public void delete(String resourceGroupName, String datastoreName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, datastoreName, force);
+    public Datastore getByResourceGroup(String resourceGroupName, String datastoreName) {
+        DatastoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, datastoreName);
+        if (inner != null) {
+            return new DatastoreImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String datastoreName) {

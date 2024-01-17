@@ -68,6 +68,10 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this.innerModel().maxDevBoxesPerUser();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -216,6 +220,16 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
             return this;
         } else {
             this.updateBody.withMaxDevBoxesPerUser(maxDevBoxesPerUser);
+            return this;
+        }
+    }
+
+    public ProjectImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateBody.withDisplayName(displayName);
             return this;
         }
     }

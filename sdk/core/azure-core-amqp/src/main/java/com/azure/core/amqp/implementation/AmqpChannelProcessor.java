@@ -32,6 +32,12 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 
+/**
+ * Represents a processor that manages a single AMQP channel. This processor will track the state of the channel and
+ * will request a new channel when the current channel is closed.
+ *
+ * @param <T> The type of AMQP channel.
+ */
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
     @SuppressWarnings("rawtypes")
     private static final AtomicReferenceFieldUpdater<AmqpChannelProcessor, Subscription> UPSTREAM =
@@ -59,6 +65,13 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private volatile Disposable retrySubscription;
 
     /**
+     * Creates an instance of {@link AmqpChannelProcessor}.
+     *
+     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
+     * @param entityPath The entity path for the AMQP connection.
+     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
+     * @param retryPolicy The retry policy for the AMQP connection.
+     * @param logger The logger to use for this processor.
      * @deprecated Use constructor overload that does not take {@link ClientLogger}
      */
     @Deprecated
@@ -73,7 +86,17 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 
-    public AmqpChannelProcessor(String fullyQualifiedNamespace, Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, Map<String, Object> loggingContext) {
+    /**
+     * Creates an instance of {@link AmqpChannelProcessor}.
+     *
+     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
+     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
+     * @param retryPolicy The retry policy for the AMQP connection.
+     * @param loggingContext Additional context to add to the logging scope.
+     */
+    public AmqpChannelProcessor(String fullyQualifiedNamespace,
+        Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
+        Map<String, Object> loggingContext) {
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");

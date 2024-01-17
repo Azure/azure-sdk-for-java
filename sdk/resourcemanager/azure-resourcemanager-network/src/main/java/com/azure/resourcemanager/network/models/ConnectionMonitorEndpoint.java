@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the connection monitor endpoint. */
+/**
+ * Describes the connection monitor endpoint.
+ */
 @Fluent
 public final class ConnectionMonitorEndpoint {
     /*
@@ -53,13 +55,15 @@ public final class ConnectionMonitorEndpoint {
     @JsonProperty(value = "coverageLevel")
     private CoverageLevel coverageLevel;
 
-    /** Creates an instance of ConnectionMonitorEndpoint class. */
+    /**
+     * Creates an instance of ConnectionMonitorEndpoint class.
+     */
     public ConnectionMonitorEndpoint() {
     }
 
     /**
      * Get the name property: The name of the connection monitor endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the name property: The name of the connection monitor endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -79,7 +83,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the type property: The endpoint type.
-     *
+     * 
      * @return the type value.
      */
     public EndpointType type() {
@@ -88,7 +92,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the type property: The endpoint type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -99,7 +103,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the resourceId property: Resource ID of the connection monitor endpoint.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -108,7 +112,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the resourceId property: Resource ID of the connection monitor endpoint.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -119,7 +123,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the address property: Address of the connection monitor endpoint (IP or domain name).
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -128,7 +132,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the address property: Address of the connection monitor endpoint (IP or domain name).
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -139,7 +143,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the filter property: Filter for sub-items within the endpoint.
-     *
+     * 
      * @return the filter value.
      */
     public ConnectionMonitorEndpointFilter filter() {
@@ -148,7 +152,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the filter property: Filter for sub-items within the endpoint.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -159,7 +163,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the scope property: Endpoint scope.
-     *
+     * 
      * @return the scope value.
      */
     public ConnectionMonitorEndpointScope scope() {
@@ -168,7 +172,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the scope property: Endpoint scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -179,7 +183,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Get the coverageLevel property: Test coverage for the endpoint.
-     *
+     * 
      * @return the coverageLevel value.
      */
     public CoverageLevel coverageLevel() {
@@ -188,7 +192,7 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Set the coverageLevel property: Test coverage for the endpoint.
-     *
+     * 
      * @param coverageLevel the coverageLevel value to set.
      * @return the ConnectionMonitorEndpoint object itself.
      */
@@ -199,14 +203,13 @@ public final class ConnectionMonitorEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ConnectionMonitorEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ConnectionMonitorEndpoint"));
         }
         if (filter() != null) {
             filter().validate();

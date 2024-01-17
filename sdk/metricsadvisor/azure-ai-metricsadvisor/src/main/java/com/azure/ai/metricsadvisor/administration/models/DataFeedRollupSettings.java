@@ -18,6 +18,12 @@ public final class DataFeedRollupSettings {
     private DataFeedAutoRollUpMethod dataFeedAutoRollUpMethod;
 
     /**
+     * Create a new instance of DataFeedRollupSettings.
+     */
+    public DataFeedRollupSettings() {
+    }
+
+    /**
      * Get the rollup type that should be used for the data feed.
      *
      * @return the dataFeedRollupType value.

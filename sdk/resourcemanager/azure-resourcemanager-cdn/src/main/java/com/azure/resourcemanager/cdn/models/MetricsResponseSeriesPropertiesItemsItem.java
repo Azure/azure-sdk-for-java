@@ -22,6 +22,10 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of MetricsResponseSeriesPropertiesItemsItem class. */
+    public MetricsResponseSeriesPropertiesItemsItem() {
+    }
+
     /**
      * Get the name property: The name property.
      *

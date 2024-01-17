@@ -47,23 +47,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunicationServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationServicesClient.
+ */
 public final class CommunicationServicesClientImpl implements CommunicationServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CommunicationServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CommunicationServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of CommunicationServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CommunicationServicesClientImpl(CommunicationServiceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(CommunicationServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CommunicationServicesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,170 +79,128 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     @Host("{$host}")
     @ServiceInterface(name = "CommunicationService")
     public interface CommunicationServicesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Communication/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameAvailabilityParameters nameAvailabilityParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/linkNotificationHub")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/linkNotificationHub")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LinkedNotificationHubInner>> linkNotificationHub(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<LinkedNotificationHubInner>> linkNotificationHub(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
             @BodyParam("application/json") LinkNotificationHubParameters linkNotificationHubParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Communication/communicationServices")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CommunicationServiceResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CommunicationServiceResourceList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceResourceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CommunicationServiceResourceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
             @BodyParam("application/json") CommunicationServiceResourceUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CommunicationServiceResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
             @BodyParam("application/json") CommunicationServiceResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/listKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CommunicationServiceKeysInner>> listKeys(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/regenerateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/regenerateKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationServiceKeysInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CommunicationServiceKeysInner>> regenerateKey(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("communicationServiceName") String communicationServiceName,
-            @BodyParam("application/json") RegenerateKeyParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RegenerateKeyParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationServiceResourceList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationServiceResourceList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,48 +208,35 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        NameAvailabilityParameters nameAvailabilityParameters) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(NameAvailabilityParameters nameAvailabilityParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameAvailabilityParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter nameAvailabilityParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityParameters is required and cannot be null."));
         } else {
             nameAvailabilityParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            nameAvailabilityParameters,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), nameAvailabilityParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,45 +245,33 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameAvailabilityParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter nameAvailabilityParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityParameters is required and cannot be null."));
         } else {
             nameAvailabilityParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                nameAvailabilityParameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), nameAvailabilityParameters, accept, context);
     }
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -341,17 +279,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the check availability result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(
-        NameAvailabilityParameters nameAvailabilityParameters) {
+    private Mono<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityAsync(NameAvailabilityParameters nameAvailabilityParameters) {
         return checkNameAvailabilityWithResponseAsync(nameAvailabilityParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,16 +298,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+    public Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(nameAvailabilityParameters, context).block();
     }
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
+     * 
+     * Checks that the CommunicationService name is valid and is not already in use.
+     * 
      * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,16 +315,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(
-        NameAvailabilityParameters nameAvailabilityParameters) {
+    public CheckNameAvailabilityResponseInner
+        checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters) {
         return checkNameAvailabilityWithResponse(nameAvailabilityParameters, Context.NONE).getValue();
     }
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param linkNotificationHubParameters Parameters supplied to the operation.
@@ -394,59 +332,43 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notification hub that has been linked to the communication service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedNotificationHubInner>> linkNotificationHubWithResponseAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters) {
+    private Mono<Response<LinkedNotificationHubInner>> linkNotificationHubWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (linkNotificationHubParameters != null) {
             linkNotificationHubParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .linkNotificationHub(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            linkNotificationHubParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.linkNotificationHub(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName,
+                linkNotificationHubParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param linkNotificationHubParameters Parameters supplied to the operation.
@@ -455,79 +377,63 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notification hub that has been linked to the communication service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedNotificationHubInner>> linkNotificationHubWithResponseAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters,
-        Context context) {
+    private Mono<Response<LinkedNotificationHubInner>> linkNotificationHubWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (linkNotificationHubParameters != null) {
             linkNotificationHubParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .linkNotificationHub(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                linkNotificationHubParameters,
-                accept,
-                context);
+        return service.linkNotificationHub(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, linkNotificationHubParameters,
+            accept, context);
     }
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service on successful completion of {@link
-     *     Mono}.
+     * @return a notification hub that has been linked to the communication service on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LinkedNotificationHubInner> linkNotificationHubAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<LinkedNotificationHubInner> linkNotificationHubAsync(String resourceGroupName,
+        String communicationServiceName) {
         final LinkNotificationHubParameters linkNotificationHubParameters = null;
-        return linkNotificationHubWithResponseAsync(
-                resourceGroupName, communicationServiceName, linkNotificationHubParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return linkNotificationHubWithResponseAsync(resourceGroupName, communicationServiceName,
+            linkNotificationHubParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param linkNotificationHubParameters Parameters supplied to the operation.
@@ -538,21 +444,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a notification hub that has been linked to the communication service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkedNotificationHubInner> linkNotificationHubWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters,
-        Context context) {
-        return linkNotificationHubWithResponseAsync(
-                resourceGroupName, communicationServiceName, linkNotificationHubParameters, context)
-            .block();
+    public Response<LinkedNotificationHubInner> linkNotificationHubWithResponse(String resourceGroupName,
+        String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
+        return linkNotificationHubWithResponseAsync(resourceGroupName, communicationServiceName,
+            linkNotificationHubParameters, context).block();
     }
 
     /**
      * Link Notification Hub
-     *
-     * <p>Links an Azure Notification Hub to this communication service.
-     *
+     * 
+     * Links an Azure Notification Hub to this communication service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -563,147 +465,113 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName) {
         final LinkNotificationHubParameters linkNotificationHubParameters = null;
-        return linkNotificationHubWithResponse(
-                resourceGroupName, communicationServiceName, linkNotificationHubParameters, Context.NONE)
-            .getValue();
+        return linkNotificationHubWithResponse(resourceGroupName, communicationServiceName,
+            linkNotificationHubParameters, Context.NONE).getValue();
     }
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationServiceResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<CommunicationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<CommunicationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationServiceResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationServiceResourceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationServiceResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunicationServiceResourceInner> list() {
@@ -712,15 +580,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * List By Subscription
-     *
-     * <p>Handles requests to list all resources in a subscription.
-     *
+     * 
+     * Handles requests to list all resources in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunicationServiceResourceInner> list(Context context) {
@@ -729,30 +597,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -760,55 +624,36 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<CommunicationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<CommunicationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -817,75 +662,61 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationServiceResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommunicationServiceResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<CommunicationServiceResourceInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -894,28 +725,28 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * List By Resource Group
-     *
-     * <p>Handles requests to list all resources in a resource group.
-     *
+     * 
+     * Handles requests to list all resources in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<CommunicationServiceResourceInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -923,31 +754,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
+    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -955,27 +781,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
             parameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -984,34 +799,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context) {
+    private Mono<Response<CommunicationServiceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1020,23 +827,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationServiceName, parameters, accept, context);
     }
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -1046,17 +845,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceResourceInner> updateAsync(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
+    private Mono<CommunicationServiceResourceInner> updateAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -1067,19 +866,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationServiceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context) {
+    public Response<CommunicationServiceResourceInner> updateWithResponse(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context).block();
     }
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
+     * 
+     * Operation to update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
@@ -1089,69 +885,55 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner update(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters) {
+    public CommunicationServiceResourceInner update(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceUpdate parameters) {
         return updateWithResponse(resourceGroupName, communicationServiceName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CommunicationService and its properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<Response<CommunicationServiceResourceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String communicationServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1159,50 +941,38 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CommunicationService and its properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommunicationServiceResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String communicationServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, accept, context);
     }
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1211,17 +981,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the CommunicationService and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceResourceInner> getByResourceGroupAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<CommunicationServiceResourceInner> getByResourceGroupAsync(String resourceGroupName,
+        String communicationServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, communicationServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1231,16 +1001,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the CommunicationService and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    public Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, communicationServiceName, context).block();
     }
 
     /**
      * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
+     * 
+     * Get the CommunicationService and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1249,16 +1019,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the CommunicationService and its properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner getByResourceGroup(
-        String resourceGroupName, String communicationServiceName) {
+    public CommunicationServiceResourceInner getByResourceGroup(String resourceGroupName,
+        String communicationServiceName) {
         return getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE).getValue();
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1266,31 +1036,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1299,26 +1064,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1327,34 +1083,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1363,23 +1111,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, parameters, accept, context);
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1390,25 +1130,20 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, communicationServiceName, parameters);
-        return this
-            .client
-            .<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceResourceInner.class,
-                CommunicationServiceResourceInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String communicationServiceName,
+            CommunicationServiceResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, communicationServiceName, parameters);
+        return this.client.<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CommunicationServiceResourceInner.class,
+            CommunicationServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1420,29 +1155,21 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String communicationServiceName,
-            CommunicationServiceResourceInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String communicationServiceName,
+            CommunicationServiceResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context);
-        return this
-            .client
-            .<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationServiceResourceInner.class,
-                CommunicationServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context);
+        return this.client.<CommunicationServiceResourceInner, CommunicationServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CommunicationServiceResourceInner.class,
+            CommunicationServiceResourceInner.class, context);
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1453,16 +1180,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
+        beginCreateOrUpdate(String resourceGroupName, String communicationServiceName,
+            CommunicationServiceResourceInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters).getSyncPoller();
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1474,21 +1201,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String communicationServiceName,
-            CommunicationServiceResourceInner parameters,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String communicationServiceName,
+            CommunicationServiceResourceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1498,18 +1221,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters)
-            .last()
+    private Mono<CommunicationServiceResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1520,21 +1242,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context)
-            .last()
+    private Mono<CommunicationServiceResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String communicationServiceName, CommunicationServiceResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1544,16 +1262,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner createOrUpdate(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters) {
+    public CommunicationServiceResourceInner createOrUpdate(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, communicationServiceName, parameters).block();
     }
 
     /**
      * Create Or Update
-     *
-     * <p>Create a new CommunicationService or update an existing CommunicationService.
-     *
+     * 
+     * Create a new CommunicationService or update an existing CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the create or update operation.
@@ -1564,19 +1282,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing a CommunicationService resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context) {
+    public CommunicationServiceResourceInner createOrUpdate(String resourceGroupName, String communicationServiceName,
+        CommunicationServiceResourceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, communicationServiceName, parameters, context).block();
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1585,50 +1300,36 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String communicationServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1638,47 +1339,35 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationServiceName, accept, context);
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1687,20 +1376,18 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String communicationServiceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, communicationServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1710,21 +1397,20 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String communicationServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, communicationServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, communicationServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1739,9 +1425,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1751,16 +1437,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, communicationServiceName, context).getSyncPoller();
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1770,16 +1456,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String communicationServiceName) {
-        return beginDeleteAsync(resourceGroupName, communicationServiceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, communicationServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1790,16 +1475,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String communicationServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, communicationServiceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, communicationServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1813,9 +1497,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a CommunicationService.
-     *
+     * 
+     * Operation to delete a CommunicationService.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1830,62 +1514,48 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<Response<CommunicationServiceKeysInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String communicationServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1893,50 +1563,38 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the CommunicationService resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    private Mono<Response<CommunicationServiceKeysInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, communicationServiceName, accept, context);
     }
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1945,17 +1603,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the access keys of the CommunicationService resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceKeysInner> listKeysAsync(
-        String resourceGroupName, String communicationServiceName) {
+    private Mono<CommunicationServiceKeysInner> listKeysAsync(String resourceGroupName,
+        String communicationServiceName) {
         return listKeysWithResponseAsync(resourceGroupName, communicationServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
@@ -1965,16 +1623,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return the access keys of the CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationServiceKeysInner> listKeysWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context) {
+    public Response<CommunicationServiceKeysInner> listKeysWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, communicationServiceName, context).block();
     }
 
     /**
      * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
+     * 
+     * Get the access keys of the CommunicationService resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1989,10 +1647,9 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -2000,31 +1657,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing the access keys of a CommunicationService along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
+    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2033,27 +1685,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            communicationServiceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -2062,34 +1704,26 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing the access keys of a CommunicationService along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName,
-        String communicationServiceName,
-        RegenerateKeyParameters parameters,
-        Context context) {
+    private Mono<Response<CommunicationServiceKeysInner>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (communicationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter communicationServiceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2098,24 +1732,15 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                communicationServiceName,
-                parameters,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, communicationServiceName, parameters, accept, context);
     }
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -2125,18 +1750,17 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing the access keys of a CommunicationService on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationServiceKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
+    private Mono<CommunicationServiceKeysInner> regenerateKeyAsync(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -2147,20 +1771,16 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing the access keys of a CommunicationService along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        RegenerateKeyParameters parameters,
-        Context context) {
+    public Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, communicationServiceName, parameters, context).block();
     }
 
     /**
      * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
+     * 
+     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -2170,165 +1790,131 @@ public final class CommunicationServicesClientImpl implements CommunicationServi
      * @return a class representing the access keys of a CommunicationService.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationServiceKeysInner regenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
+    public CommunicationServiceKeysInner regenerateKey(String resourceGroupName, String communicationServiceName,
+        RegenerateKeyParameters parameters) {
         return regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CommunicationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CommunicationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CommunicationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CommunicationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of CommunicationServices and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationServiceResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CommunicationServiceResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

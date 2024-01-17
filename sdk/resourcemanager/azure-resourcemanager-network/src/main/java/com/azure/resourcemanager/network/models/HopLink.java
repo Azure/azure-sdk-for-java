@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Hop link. */
+/**
+ * Hop link.
+ */
 @Immutable
 public final class HopLink {
     /*
@@ -51,13 +53,15 @@ public final class HopLink {
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
-    /** Creates an instance of HopLink class. */
+    /**
+     * Creates an instance of HopLink class.
+     */
     public HopLink() {
     }
 
     /**
      * Get the nextHopId property: The ID of the next hop.
-     *
+     * 
      * @return the nextHopId value.
      */
     public String nextHopId() {
@@ -66,7 +70,7 @@ public final class HopLink {
 
     /**
      * Get the linkType property: Link type.
-     *
+     * 
      * @return the linkType value.
      */
     public String linkType() {
@@ -75,7 +79,7 @@ public final class HopLink {
 
     /**
      * Get the innerProperties property: Hop link properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HopLinkProperties innerProperties() {
@@ -84,7 +88,7 @@ public final class HopLink {
 
     /**
      * Get the issues property: List of issues.
-     *
+     * 
      * @return the issues value.
      */
     public List<ConnectivityIssue> issues() {
@@ -93,7 +97,7 @@ public final class HopLink {
 
     /**
      * Get the context property: Provides additional context on links.
-     *
+     * 
      * @return the context value.
      */
     public Map<String, String> context() {
@@ -102,7 +106,7 @@ public final class HopLink {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -111,7 +115,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeMin property: Minimum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMin value.
      */
     public Long roundTripTimeMin() {
@@ -120,7 +124,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeAvg property: Average roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeAvg value.
      */
     public Long roundTripTimeAvg() {
@@ -129,7 +133,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeMax property: Maximum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMax value.
      */
     public Long roundTripTimeMax() {
@@ -138,7 +142,7 @@ public final class HopLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

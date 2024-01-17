@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload of get SSIS object metadata. */
+/**
+ * The request payload of get SSIS object metadata.
+ */
 @Fluent
 public final class GetSsisObjectMetadataRequest {
     /*
@@ -16,12 +18,15 @@ public final class GetSsisObjectMetadataRequest {
     @JsonProperty(value = "metadataPath")
     private String metadataPath;
 
-    /** Creates an instance of GetSsisObjectMetadataRequest class. */
-    public GetSsisObjectMetadataRequest() {}
+    /**
+     * Creates an instance of GetSsisObjectMetadataRequest class.
+     */
+    public GetSsisObjectMetadataRequest() {
+    }
 
     /**
      * Get the metadataPath property: Metadata path.
-     *
+     * 
      * @return the metadataPath value.
      */
     public String getMetadataPath() {
@@ -30,7 +35,7 @@ public final class GetSsisObjectMetadataRequest {
 
     /**
      * Set the metadataPath property: Metadata path.
-     *
+     * 
      * @param metadataPath the metadataPath value to set.
      * @return the GetSsisObjectMetadataRequest object itself.
      */

@@ -235,6 +235,15 @@ public final class ServicePrincipalsServicePrincipalOrderby
         fromString("tokenEncryptionKeyId desc");
 
     /**
+     * Creates a new instance of ServicePrincipalsServicePrincipalOrderby value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServicePrincipalsServicePrincipalOrderby() {
+    }
+
+    /**
      * Creates or finds a ServicePrincipalsServicePrincipalOrderby from its string representation.
      *
      * @param name a name to look for.

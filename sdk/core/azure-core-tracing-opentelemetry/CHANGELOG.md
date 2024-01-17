@@ -1,14 +1,42 @@
 # Release History
 
-## 1.0.0-beta.41 (Unreleased)
+## 1.0.0-beta.43 (Unreleased)
 
 ### Features Added
 
+- Updated HTTP and messaging instrumentation to OpenTelemetry Semantic Conventions version 1.23.1.
+
 ### Breaking Changes
 
+- Renamed attributes according to OpenTelemetry semantic conventions changes:
+    - `net.peer.name` -> `server.address`
+    - `http.method` -> `http.request.method`
+    - `http.status_code` -> `http.response.status_code`
+    - `http.url` -> `url.full`
+- Removed `http.user_agent` optional attribute since the same information is reported in the instrumentation scope via library name and version.  
+- Removed `OpenTelemetrySchemaVersion` and it's setter method on `OpenTelemetryTracingOptions` since we're not allowing to change the schema version for now.
+- Removed exception event reporting - exceptions are reported as logs already.
+- 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.42 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded OpenTelemetry from `1.28.0` to `1.31.0`.
+
+## 1.0.0-beta.41 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
 
 ## 1.0.0-beta.40 (2023-10-06)
 

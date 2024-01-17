@@ -5,11 +5,14 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
+import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
+import com.azure.core.amqp.implementation.ReceiversPumpingScheduler;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -50,6 +53,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private static final Message EMPTY_MESSAGE = Proton.message();
 
     private final ClientLogger logger;
+    private final boolean isV2;
     private final ReceiverUnsettledDeliveries receiverUnsettledDeliveries;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Receiver receiver;
@@ -59,25 +63,33 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
      * ServiceBusReceiveMode#RECEIVE_AND_DELETE} is used.
      */
     private final boolean isSettled;
-    private final ReceiveLinkHandler handler;
     private final Mono<String> sessionIdMono;
     private final Mono<OffsetDateTime> sessionLockedUntil;
+    private final Mono<SessionProperties> sessionProperties;
 
+    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
+    // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
+    // "ReceiveLinkHandler".
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, AmqpRetryPolicy retryPolicy) {
-        super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
-            retryPolicy.getRetryOptions());
+        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+        super(connection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+            new AmqpMetricsProvider(null, connection.getFullyQualifiedNamespace(), entityPath));
         this.receiver = receiver;
-        this.handler = handler;
         this.isSettled = receiver.getSenderSettleMode() == SenderSettleMode.SETTLED;
 
         Map<String, Object> loggingContext = new HashMap<>(2);
-        loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
+        loggingContext.put(LINK_NAME_KEY, handler.getLinkName());
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
         this.logger = new ClientLogger(ServiceBusReactorReceiver.class, loggingContext);
+        handler.setLogger(this.logger);
 
-        this.receiverUnsettledDeliveries = new ReceiverUnsettledDeliveries(handler.getHostname(), entityPath, handler.getLinkName(),
-            provider.getReactorDispatcher(), retryPolicy.getRetryOptions(), MessageUtils.ZERO_LOCK_TOKEN, logger);
+        this.isV2 = handler.isV2();
+        if (this.isV2) {
+            this.receiverUnsettledDeliveries = null;
+        } else {
+            this.receiverUnsettledDeliveries = new ReceiverUnsettledDeliveries(handler.getHostname(), entityPath, handler.getLinkName(),
+                dispatcher, retryOptions, MessageUtils.ZERO_LOCK_TOKEN, logger);
+        }
 
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
@@ -109,18 +121,54 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 }
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+
+        this.sessionProperties = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
+            .next()
+            // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
+            // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+            // such publisher completion to transient AmqpException.
+            //
+            // A detach without an error-condition can happen when Service upgrades. Also, while the service often
+            // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
+            // when a free or new session is unavailable, detach can happen without the error-condition.
+            .switchIfEmpty(Mono.error(() -> new AmqpException(true, "Unable to read session properties. Receive Link completed without being Active.", null)))
+            .map(__ -> {
+                @SuppressWarnings("unchecked")
+                final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+                final Object sessionIdObject = remoteSource.get(SESSION_FILTER);
+                if (sessionIdObject == null) {
+                    throw logger.atInfo().log(new AmqpException(false, "Unable to read session properties. There is no session id.", null));
+                }
+                final OffsetDateTime sessionLockedUntil;
+                if (receiver.getRemoteProperties() != null && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
+                    final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
+                    sessionLockedUntil = MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
+                } else {
+                    logger.info("Locked until not set.");
+                    sessionLockedUntil = Instant.EPOCH.atOffset(ZoneOffset.UTC);
+                }
+                return new SessionProperties(String.valueOf(sessionIdObject), sessionLockedUntil);
+            })
+            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
     }
 
     @Override
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+        if (isV2) {
+            return super.updateDisposition(lockToken, deliveryState);
+        }
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
-        return this.receiverUnsettledDeliveries.sendDisposition(lockToken, deliveryState);
+        return receiverUnsettledDeliveries.sendDisposition(lockToken, deliveryState);
     }
 
     @Override
     public Flux<Message> receive() {
+        if (isV2) {
+            return super.receive()
+                .publishOn(ReceiversPumpingScheduler.instance());
+        }
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
         return super.receive()
             .filter(message -> message != EMPTY_MESSAGE)
@@ -138,12 +186,20 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
+    public Mono<SessionProperties> getSessionProperties() {
+        return sessionProperties;
+    }
+
+    @Override
     public Mono<Void> closeAsync() {
         return closeAsync("User invoked close operation.", null);
     }
 
     @Override
     protected Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
+        if (isV2) {
+            return super.closeAsync(message, errorCondition);
+        }
         if (isDisposed.getAndSet(true)) {
             return super.getIsClosedMono();
         }
@@ -153,6 +209,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     protected Message decodeDelivery(Delivery delivery) {
+        if (isV2) {
+            throw logger.logExceptionAsError(new IllegalStateException("decodeDelivery should not be called in V2 route."));
+        }
         final byte[] deliveryTag = delivery.getTag();
         final UUID lockToken;
         if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
@@ -188,6 +247,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     protected void onHandlerClose() {
+        if (isV2) {
+            throw logger.logExceptionAsError(new IllegalStateException("onHandlerClose should not be called in V2 route."));
+        }
         // See the code comment in ReactorReceiver.onHandlerClose(), [temporary method, tobe removed.]
         receiverUnsettledDeliveries.close();
     }

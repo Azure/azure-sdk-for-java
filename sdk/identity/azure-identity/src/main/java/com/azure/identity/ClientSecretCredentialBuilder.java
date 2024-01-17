@@ -11,17 +11,17 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <p>The {@link ClientSecretCredential} acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>, allowing an application or service to authenticate itself with Azure resources.
- * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing an
+ * application or service to authenticate itself with Azure resources.
+ * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
- * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users to
+ * register service principals which can be used as an identity for authentication.
  * A client secret associated with the registered service principal is used as the password when authenticating the
  * service principal.
  * The {@link ClientSecretCredential} acquires an access token with a client secret for a service principal/registered
- * AAD application. The tenantId, clientId and clientSecret of the service principal are required for this credential
+ * Microsoft Entra application. The tenantId, clientId and clientSecret of the service principal are required for this credential
  * to acquire an access token. It can be used both in Azure hosted and local development environments for
  * authentication. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/clientsecretcredential/docs">conceptual knowledge and configuration
@@ -75,7 +75,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
 
     /**
      * Sets the client secret for the authentication.
-     * @param clientSecret the secret value of the AAD application.
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.
      */
     public ClientSecretCredentialBuilder clientSecret(String clientSecret) {

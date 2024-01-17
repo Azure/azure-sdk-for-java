@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the Frontend. */
+/**
+ * The type used for update operations of the Frontend.
+ */
 @Fluent
 public final class FrontendUpdate {
     /*
@@ -19,13 +21,15 @@ public final class FrontendUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of FrontendUpdate class. */
+    /**
+     * Creates an instance of FrontendUpdate class.
+     */
     public FrontendUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class FrontendUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FrontendUpdate object itself.
      */
@@ -45,7 +49,7 @@ public final class FrontendUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

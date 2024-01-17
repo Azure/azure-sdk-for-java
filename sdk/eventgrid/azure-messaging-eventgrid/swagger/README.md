@@ -22,7 +22,7 @@ its `eventType` string is added as a constant and a mapping to the event data mo
 `SystemEventMappings` file.
 
 ```yaml
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.25'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -36,6 +36,8 @@ customization-class: src/main/java/EventGridCustomization.java
 service-interface-as-public: true
 url-as-string: true
 enable-sync-stack: true
+stream-style-serialization: true
+require-x-ms-flattened-to-flatten: true
 directive:
     - rename-model:
         from: ResourceActionCancelData
@@ -72,32 +74,35 @@ directive:
         to: RedisExportRdbCompletedEventData
 
 custom-types-subpackage: implementation.models
-custom-types: CloudEvent,EventGridEvent
+custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError
 model-override-setter-from-superclass: true
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/SystemEvents.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/20312e2b31df58f0ea7560e87062d62aa92f0a14/specification/eventgrid/data-plane/Microsoft.DataBox/stable/2018-01-01/DataBox.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/SystemEvents.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.DataBox/stable/2018-01-01/DataBox.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/common.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/HealthResources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/Resources.json
 ```
 
 ### KeyVault updates

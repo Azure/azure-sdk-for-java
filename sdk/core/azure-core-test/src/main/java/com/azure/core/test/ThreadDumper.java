@@ -11,10 +11,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -124,27 +122,37 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
 
     @Override
     public void beforeEach(ExtensionContext context) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
+            return;
+        }
+
         RUNNING_TEST_TIMES.put(getFullTestName(context), System.currentTimeMillis());
+    }
+
+    static void addRunningTest(String testName) {
+        RUNNING_TEST_TIMES.put(testName, System.currentTimeMillis());
     }
 
     @Override
     public void afterEach(ExtensionContext context) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
+            return;
+        }
+
         RUNNING_TEST_TIMES.remove(getFullTestName(context));
     }
 
+    static void removeRunningTest(String testName) {
+        RUNNING_TEST_TIMES.remove(testName);
+    }
+
     private static String getFullTestName(ExtensionContext context) {
-        String displayName = context.getDisplayName();
-
-        String testName = "";
-        String fullyQualifiedTestName = "";
-        if (context.getTestMethod().isPresent()) {
-            Method method = context.getTestMethod().get();
-            testName = method.getName();
-            fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
-        }
-
-        return !Objects.equals(displayName, testName)
-            ? fullyQualifiedTestName + "(" + displayName + ")"
-            : fullyQualifiedTestName;
+        return TestBase.getTestName(context.getTestMethod(), context.getDisplayName(), context.getTestClass());
     }
 }

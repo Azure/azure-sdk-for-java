@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SqlExecutor {
 
-  private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-  public SqlExecutor(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
+    public SqlExecutor(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-  @EventListener(ApplicationReadyEvent.class)
-  public void createDatabaseTable() {
-    jdbcTemplate.execute("create table test_table (id bigint not null, primary key (id))");
-  }
+    @EventListener(ApplicationReadyEvent.class)
+    public void createDatabaseTable() {
+        jdbcTemplate.execute("create table test_table (id bigint not null, primary key (id))");
+    }
 }

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the OpenShift managed cluster. */
+/**
+ * Properties of the OpenShift managed cluster.
+ */
 @Fluent
 public final class OpenShiftManagedClusterProperties {
     /*
@@ -77,7 +79,9 @@ public final class OpenShiftManagedClusterProperties {
     @JsonProperty(value = "authProfile")
     private OpenShiftManagedClusterAuthProfile authProfile;
 
-    /** Creates an instance of OpenShiftManagedClusterProperties class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterProperties class.
+     */
     public OpenShiftManagedClusterProperties() {
     }
 
@@ -193,8 +197,8 @@ public final class OpenShiftManagedClusterProperties {
      * @param masterPoolProfile the masterPoolProfile value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
-    public OpenShiftManagedClusterProperties withMasterPoolProfile(
-        OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
+    public OpenShiftManagedClusterProperties
+        withMasterPoolProfile(OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
         this.masterPoolProfile = masterPoolProfile;
         return this;
     }
@@ -214,8 +218,8 @@ public final class OpenShiftManagedClusterProperties {
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the OpenShiftManagedClusterProperties object itself.
      */
-    public OpenShiftManagedClusterProperties withAgentPoolProfiles(
-        List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
+    public OpenShiftManagedClusterProperties
+        withAgentPoolProfiles(List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
         this.agentPoolProfiles = agentPoolProfiles;
         return this;
     }
@@ -247,10 +251,8 @@ public final class OpenShiftManagedClusterProperties {
      */
     public void validate() {
         if (openShiftVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property openShiftVersion in model OpenShiftManagedClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property openShiftVersion in model OpenShiftManagedClusterProperties"));
         }
         if (networkProfile() != null) {
             networkProfile().validate();

@@ -51,11 +51,10 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface SharedKeysOperationsService {
+    public interface SharedKeysOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/sharedKeys")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/sharedKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedKeysInner>> getSharedKeys(
@@ -69,8 +68,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/regenerateSharedKey")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/regenerateSharedKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedKeysInner>> regenerate(
@@ -200,21 +198,6 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedKeysInner getSharedKeys(String resourceGroupName, String workspaceName) {
-        return getSharedKeysAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Gets the shared keys for a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,6 +208,21 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     public Response<SharedKeysInner> getSharedKeysWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         return getSharedKeysWithResponseAsync(resourceGroupName, workspaceName, context).block();
+    }
+
+    /**
+     * Gets the shared keys for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared keys for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SharedKeysInner getSharedKeys(String resourceGroupName, String workspaceName) {
+        return getSharedKeysWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 
     /**
@@ -348,22 +346,6 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedKeysInner regenerate(String resourceGroupName, String workspaceName) {
-        return regenerateAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
-     * Insights agents to the workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,5 +356,21 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
     public Response<SharedKeysInner> regenerateWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         return regenerateWithResponseAsync(resourceGroupName, workspaceName, context).block();
+    }
+
+    /**
+     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
+     * Insights agents to the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared keys for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SharedKeysInner regenerate(String resourceGroupName, String workspaceName) {
+        return regenerateWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 }

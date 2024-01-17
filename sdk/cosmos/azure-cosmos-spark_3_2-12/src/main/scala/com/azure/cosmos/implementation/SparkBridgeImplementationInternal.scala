@@ -8,11 +8,11 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientB
 import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import scala.::
 import scala.collection.mutable
 
 // scalastyle:off underscore.import
@@ -189,7 +189,37 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .asInstanceOf[FeedRangePartitionKeyImpl]
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+    val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
+    rangeToNormalizedRange(effectiveRange)
+  }
+
+  private[cosmos] def hierarchicalPartitionKeyValuesToNormalizedRange
+  (
+      partitionKeyValueJsonArray: Object,
+      partitionKeyDefinitionJson: String
+  ): NormalizedRange = {
+
+      val partitionKey = new PartitionKeyBuilder()
+      val objectMapper = new ObjectMapper()
+      val json = partitionKeyValueJsonArray.toString
+      try {
+          val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
+          for (value <- partitionKeyValues) {
+              partitionKey.add(value.trim)
+          }
+          partitionKey.build()
+      } catch {
+          case e: Exception =>
+              logInfo("Invalid partition key paths: " + json, e)
+      }
+
+      val feedRange = FeedRange
+          .forLogicalPartition(partitionKey.build())
+          .asInstanceOf[FeedRangePartitionKeyImpl]
+
+      val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
+      val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
+      rangeToNormalizedRange(effectiveRange)
   }
 
   def setIoThreadCountPerCoreFactor
@@ -326,5 +356,27 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
   def configureSimpleObjectMapper(allowDuplicateProperties: Boolean) : Unit = {
     Utils.configureSimpleObjectMapper(allowDuplicateProperties)
+  }
+
+  def overrideDefaultTcpOptionsForSparkUsage(): Unit = {
+    val overrideJson = "{\"timeoutDetectionEnabled\": true, \"timeoutDetectionDisableCPUThreshold\": 70.0," +
+      "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
+      "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
+      "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
+      "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
+
+    if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
+      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "45000");
+    }
+
+    if (System.getProperty(Configs.HTTP_MAX_REQUEST_TIMEOUT) == null) {
+      System.setProperty(
+        Configs.HTTP_MAX_REQUEST_TIMEOUT,
+        "70");
+    }
+
+    if (System.getProperty("azure.cosmos.directTcp.defaultOptions") == null) {
+      System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    }
   }
 }

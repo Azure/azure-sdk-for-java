@@ -33,7 +33,7 @@ public final class DatabasesUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"kind\":\"Database\",\"location\":\"zid\",\"id\":\"xwaabzmifrygznmm\",\"name\":\"xrizkzobgop\",\"type\":\"lhslnelxieixyn\"}";
+            "{\"kind\":\"Database\",\"location\":\"w\",\"id\":\"xqszdtmaajquh\",\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,13 +65,13 @@ public final class DatabasesUpdateMockTests {
             manager
                 .databases()
                 .update(
-                    "zsvtuikzhajqgl",
-                    "fh",
-                    "l",
-                    new DatabaseInner().withLocation("ryxynqnzrd"),
+                    "mrnjh",
+                    "sujz",
+                    "czytqjtwhauunfpr",
+                    new DatabaseInner().withLocation("letlx"),
                     CallerRole.ADMIN,
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zid", response.location());
+        Assertions.assertEquals("w", response.location());
     }
 }

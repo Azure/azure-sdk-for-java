@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The restore point properties. */
+/**
+ * The restore point properties.
+ */
 @Fluent
 public final class RestorePointProperties {
     /*
@@ -60,14 +62,16 @@ public final class RestorePointProperties {
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointInstanceView instanceView;
 
-    /** Creates an instance of RestorePointProperties class. */
+    /**
+     * Creates an instance of RestorePointProperties class.
+     */
     public RestorePointProperties() {
     }
 
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
      * point. If no disks are specified, all disks will be included.
-     *
+     * 
      * @return the excludeDisks value.
      */
     public List<ApiEntityReference> excludeDisks() {
@@ -77,7 +81,7 @@ public final class RestorePointProperties {
     /**
      * Set the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
      * point. If no disks are specified, all disks will be included.
-     *
+     * 
      * @param excludeDisks the excludeDisks value to set.
      * @return the RestorePointProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @return the sourceMetadata value.
      */
     public RestorePointSourceMetadata sourceMetadata() {
@@ -97,7 +101,7 @@ public final class RestorePointProperties {
 
     /**
      * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @param sourceMetadata the sourceMetadata value to set.
      * @return the RestorePointProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state of the restore point.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -119,7 +123,7 @@ public final class RestorePointProperties {
      * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
      * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
-     *
+     * 
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
@@ -130,7 +134,7 @@ public final class RestorePointProperties {
      * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
      * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
-     *
+     * 
      * @param consistencyMode the consistencyMode value to set.
      * @return the RestorePointProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the timeCreated property: Gets the creation time of the restore point.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -150,7 +154,7 @@ public final class RestorePointProperties {
 
     /**
      * Set the timeCreated property: Gets the creation time of the restore point.
-     *
+     * 
      * @param timeCreated the timeCreated value to set.
      * @return the RestorePointProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class RestorePointProperties {
     /**
      * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
      * created.
-     *
+     * 
      * @return the sourceRestorePoint value.
      */
     public ApiEntityReference sourceRestorePoint() {
@@ -172,7 +176,7 @@ public final class RestorePointProperties {
     /**
      * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
      * created.
-     *
+     * 
      * @param sourceRestorePoint the sourceRestorePoint value to set.
      * @return the RestorePointProperties object itself.
      */
@@ -183,7 +187,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the instanceView property: The restore point instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public RestorePointInstanceView instanceView() {
@@ -192,7 +196,7 @@ public final class RestorePointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

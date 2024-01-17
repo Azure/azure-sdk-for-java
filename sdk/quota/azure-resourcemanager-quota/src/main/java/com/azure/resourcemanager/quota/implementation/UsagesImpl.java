@@ -30,10 +30,7 @@ public final class UsagesImpl implements Usages {
     public Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context) {
         UsagesGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CurrentUsagesBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

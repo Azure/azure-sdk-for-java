@@ -3,21 +3,24 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.stress.util.RateLimiter;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.time.Instant;
 
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getSenderBuilder;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.createMessagePayload;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.getSenderBuilder;
 
 /**
  * Test ServiceBusSenderClient and send session messages
@@ -26,40 +29,33 @@ import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getSende
 public class MessageSessionSenderAsync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderAsync.class);
 
-    @Value("${DURATION_IN_MINUTES:15}")
-    private int durationInMinutes;
-
     @Value("${SEND_SESSIONS:8}")
     private int sessionsToSend;
 
     @Value("${SEND_MESSAGE_RATE:10}")
     private int sendMessageRatePerSecond;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
-    private int payloadSize;
-
     @Value("${SEND_CONCURRENCY:5}")
     private int sendConcurrency;
 
     @Override
     public void run() {
-        ServiceBusSenderAsyncClient client = getSenderBuilder(options, true).buildAsyncClient();
+        ServiceBusSenderAsyncClient client = toClose(getSenderBuilder(options, true).buildAsyncClient());
 
-        final byte[] messagePayload = createMessagePayload(payloadSize);
-        Duration testDuration = Duration.ofMinutes(durationInMinutes);
+        final BinaryData messagePayload = createMessagePayload(options.getMessageSize());
 
-        RateLimiter rateLimiter = new RateLimiter(sendMessageRatePerSecond, sendConcurrency);
+        RateLimiter rateLimiter = toClose(new RateLimiter(sendMessageRatePerSecond, sendConcurrency));
 
         Flux<ServiceBusMessage> messages = Mono.fromSupplier(() -> new ServiceBusMessage(messagePayload).setSessionId(randomSessionId()))
             .repeat();
 
         messages
-            .take(testDuration)
+            .take(options.getTestDuration())
             .flatMap(msg ->
                 rateLimiter.acquire()
                     .then(client.sendMessage(msg)
                         .onErrorResume(t -> true, t -> {
-                            LOGGER.error("error when sending", t);
+                            recordError("send error", t, "send");
                             return Mono.empty();
                         })
                         .doFinally(i -> rateLimiter.release()))
@@ -68,10 +64,15 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
             .runOn(Schedulers.boundedElastic())
             .subscribe();
 
-        blockingWait(testDuration);
-        LOGGER.info("done");
-        client.close();
-        rateLimiter.close();
+        blockingWait(options.getTestDuration());
+    }
+
+    @Override
+    public void recordRunOptions(Span span) {
+        super.recordRunOptions(span);
+        span.setAttribute(AttributeKey.longKey("sendMessageRatePerSecond"), sendMessageRatePerSecond);
+        span.setAttribute(AttributeKey.longKey("sendConcurrency"), sendConcurrency);
+        span.setAttribute(AttributeKey.longKey("sessionsToSend"), sessionsToSend);
     }
 
     private String randomSessionId() {

@@ -22,6 +22,10 @@ public final class ActivatedResourceReference {
     @JsonProperty(value = "isActive", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isActive;
 
+    /** Creates an instance of ActivatedResourceReference class. */
+    public ActivatedResourceReference() {
+    }
+
     /**
      * Get the id property: Resource ID.
      *

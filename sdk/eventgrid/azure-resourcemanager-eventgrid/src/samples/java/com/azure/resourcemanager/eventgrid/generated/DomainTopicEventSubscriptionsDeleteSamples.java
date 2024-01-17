@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for DomainTopicEventSubscriptions Delete. */
+/**
+ * Samples for DomainTopicEventSubscriptions Delete.
+ */
 public final class DomainTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopicEventSubscriptions_Delete.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * DomainTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_Delete.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void domainTopicEventSubscriptionsDelete(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .domainTopicEventSubscriptions()
-            .delete(
-                "examplerg",
-                "exampleDomain1",
-                "exampleDomainTopic1",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+    public static void
+        domainTopicEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.domainTopicEventSubscriptions().delete("examplerg", "exampleDomain1", "exampleDomainTopic1",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

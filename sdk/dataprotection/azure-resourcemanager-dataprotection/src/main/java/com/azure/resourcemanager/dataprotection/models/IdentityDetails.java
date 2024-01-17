@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IdentityDetails model. */
+/**
+ * The IdentityDetails model.
+ */
 @Fluent
 public final class IdentityDetails {
     /*
@@ -22,13 +24,15 @@ public final class IdentityDetails {
     @JsonProperty(value = "userAssignedIdentityArmUrl")
     private String userAssignedIdentityArmUrl;
 
-    /** Creates an instance of IdentityDetails class. */
+    /**
+     * Creates an instance of IdentityDetails class.
+     */
     public IdentityDetails() {
     }
 
     /**
      * Get the useSystemAssignedIdentity property: Specifies if the BI is protected by System Identity.
-     *
+     * 
      * @return the useSystemAssignedIdentity value.
      */
     public Boolean useSystemAssignedIdentity() {
@@ -37,7 +41,7 @@ public final class IdentityDetails {
 
     /**
      * Set the useSystemAssignedIdentity property: Specifies if the BI is protected by System Identity.
-     *
+     * 
      * @param useSystemAssignedIdentity the useSystemAssignedIdentity value to set.
      * @return the IdentityDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class IdentityDetails {
 
     /**
      * Get the userAssignedIdentityArmUrl property: ARM URL for User Assigned Identity.
-     *
+     * 
      * @return the userAssignedIdentityArmUrl value.
      */
     public String userAssignedIdentityArmUrl() {
@@ -57,7 +61,7 @@ public final class IdentityDetails {
 
     /**
      * Set the userAssignedIdentityArmUrl property: ARM URL for User Assigned Identity.
-     *
+     * 
      * @param userAssignedIdentityArmUrl the userAssignedIdentityArmUrl value to set.
      * @return the IdentityDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class IdentityDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

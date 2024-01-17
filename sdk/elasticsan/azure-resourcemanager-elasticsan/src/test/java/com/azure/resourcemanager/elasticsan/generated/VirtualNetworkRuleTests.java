@@ -13,19 +13,17 @@ public final class VirtualNetworkRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkRule model =
-            BinaryData
-                .fromString("{\"id\":\"eaxib\",\"action\":\"Allow\",\"state\":\"provisioning\"}")
-                .toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("eaxib", model.virtualNetworkResourceId());
+            BinaryData.fromString("{\"id\":\"unmmq\",\"action\":\"Allow\"}").toObject(VirtualNetworkRule.class);
+        Assertions.assertEquals("unmmq", model.virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkRule model =
-            new VirtualNetworkRule().withVirtualNetworkResourceId("eaxib").withAction(Action.ALLOW);
+            new VirtualNetworkRule().withVirtualNetworkResourceId("unmmq").withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("eaxib", model.virtualNetworkResourceId());
+        Assertions.assertEquals("unmmq", model.virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

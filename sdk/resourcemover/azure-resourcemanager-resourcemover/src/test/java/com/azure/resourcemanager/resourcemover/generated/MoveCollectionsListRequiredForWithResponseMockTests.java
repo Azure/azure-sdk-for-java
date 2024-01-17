@@ -30,7 +30,7 @@ public final class MoveCollectionsListRequiredForWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"sourceIds\":[\"cjwvn\",\"dldwmgxc\"]}";
+        String responseStr = "{\"sourceIds\":[\"piccjzkzivgv\",\"c\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class MoveCollectionsListRequiredForWithResponseMockTests {
         RequiredForResourcesCollection response =
             manager
                 .moveCollections()
-                .listRequiredForWithResponse("cvkcvqvpkeqdcv", "rhvoods", "tbobz", com.azure.core.util.Context.NONE)
+                .listRequiredForWithResponse("qqu", "zikywgg", "kallatmel", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("cjwvn", response.sourceIds().get(0));
+        Assertions.assertEquals("piccjzkzivgv", response.sourceIds().get(0));
     }
 }

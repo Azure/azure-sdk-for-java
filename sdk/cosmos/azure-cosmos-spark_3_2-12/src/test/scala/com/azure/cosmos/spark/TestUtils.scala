@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -20,6 +20,7 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 
 import java.net.URI
 import java.time.Duration
+import java.util.ArrayList
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 import javax.annotation.concurrent.NotThreadSafe
@@ -362,6 +363,76 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
       super.afterEach() // To be stackable, must call super.afterEach
     }
   }
+}
+
+trait AutoCleanableCosmosContainerWithSubpartitions extends CosmosContainerWithSubpartitions with BeforeAndAfterEach {
+    this: Suite =>
+
+    override def afterEach(): Unit = {
+
+        try {
+            // wait for data to get replicated
+            Thread.sleep(1000)
+            System.out.println(s"cleaning the items in container $cosmosContainer")
+            val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+            try {
+                val emitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+
+                val bulkDeleteFlux = container.executeBulkOperations(emitter.asFlux())
+
+                val cnt = new AtomicInteger(0)
+                container.queryItems("SELECT * FROM r", classOf[ObjectNode])
+                    .asScala
+                    .doOnNext(item => {
+                        val partitionKey = new PartitionKeyBuilder()
+                            .add(item.get("tenantId").textValue())
+                            .add(item.get("userId").textValue())
+                            .add(item.get("sessionId").textValue())
+                            .build()
+                        val operation = CosmosBulkOperations.getDeleteItemOperation(getId(item), partitionKey)
+                        cnt.incrementAndGet()
+                        emitter.tryEmitNext(operation)
+
+                    }).doOnComplete(
+                    () => {
+                        emitter.tryEmitComplete()
+                    }).subscribe()
+
+                bulkDeleteFlux.blockLast()
+
+                System.out.println(s"Deleted ${cnt.get()} in container $cosmosContainer")
+            } catch {
+                case e: Exception =>
+                    System.err.println(s"${this.getClass.getName}#afterEach: failed:" + e.getMessage)
+                    throw e
+            }
+        } finally {
+            super.afterEach() // To be stackable, must call super.afterEach
+        }
+    }
+}
+
+trait CosmosContainerWithSubpartitions extends CosmosContainer {
+    this: Suite =>
+    //scalastyle:off
+
+    override def createContainerCore(): Unit = {
+        val partitionKeyPaths = new ArrayList[String]
+        partitionKeyPaths.add("/tenantId")
+        partitionKeyPaths.add("/userId")
+        partitionKeyPaths.add("/sessionId")
+        val subpartitionKeyDefinition = new PartitionKeyDefinition
+        subpartitionKeyDefinition.setPaths(partitionKeyPaths)
+        subpartitionKeyDefinition.setKind(PartitionKind.MULTI_HASH)
+        subpartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2)
+        var containerProperties = new CosmosContainerProperties(cosmosContainer, subpartitionKeyDefinition)
+        val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+
+        cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainerIfNotExists(containerProperties, throughputProperties).block()
+    }
 }
 
 private object Defaults {

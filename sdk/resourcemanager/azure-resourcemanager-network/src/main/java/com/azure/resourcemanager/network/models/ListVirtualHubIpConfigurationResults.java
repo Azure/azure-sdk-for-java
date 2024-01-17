@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.HubIpConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHubIpConfigurations list. */
+/**
+ * VirtualHubIpConfigurations list.
+ */
 @Fluent
 public final class ListVirtualHubIpConfigurationResults {
     /*
@@ -24,13 +26,15 @@ public final class ListVirtualHubIpConfigurationResults {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVirtualHubIpConfigurationResults class. */
+    /**
+     * Creates an instance of ListVirtualHubIpConfigurationResults class.
+     */
     public ListVirtualHubIpConfigurationResults() {
     }
 
     /**
      * Get the value property: The list of VirtualHubIpConfigurations.
-     *
+     * 
      * @return the value value.
      */
     public List<HubIpConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class ListVirtualHubIpConfigurationResults {
 
     /**
      * Set the value property: The list of VirtualHubIpConfigurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualHubIpConfigurationResults object itself.
      */
@@ -50,7 +54,7 @@ public final class ListVirtualHubIpConfigurationResults {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListVirtualHubIpConfigurationResults {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualHubIpConfigurationResults object itself.
      */
@@ -70,7 +74,7 @@ public final class ListVirtualHubIpConfigurationResults {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

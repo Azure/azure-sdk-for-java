@@ -75,6 +75,13 @@ public final class AzureVmWorkloadSapHanaDBInstance extends AzureVmWorkloadProte
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapHanaDBInstance withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapHanaDBInstance withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
