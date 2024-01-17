@@ -65,7 +65,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         String key = Configuration.getGlobalConfiguration().get(keyEnvVar); // Read real key from environment variable 
         if (key == null || keyEnvVar == "VISION_KEY_FAKE") {
-            key = "10000000000000000000000000000000"; // Temp change, just to trigger SDK build/test... will be reverted in another commit to this PR
+            key = "00000000000000000000000000000000";
         }
 
         ImageAnalysisClientBuilder imageAnalysisClientBuilder =
