@@ -121,6 +121,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets the protocol.
+     * <p>
+     * Default value is {@link WebPubSubProtocolType#JSON_RELIABLE_PROTOCOL}.
      *
      * @param webPubSubProtocol the protocol.
      * @return itself.
@@ -132,6 +134,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets the retry options when sending messages.
+     * <p>
+     * By default, the retry uses exponential backoff.
      *
      * @param retryOptions the retry options.
      * @return itself.
@@ -164,6 +168,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets whether automatically reconnect after disconnect.
+     * <p>
+     * Default value is {@code true}.
      *
      * @param autoReconnect whether automatically reconnect after disconnect.
      * @return itself.
@@ -175,6 +181,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets whether automatically restore joined groups after reconnect.
+     * <p>
+     * Default value is {@code true}.
      *
      * @param autoRestoreGroup whether automatically restore joined groups after reconnect.
      * @return itself.
