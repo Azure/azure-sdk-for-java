@@ -7,13 +7,17 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
+
+import java.util.List;
 
 /**
  * Sample demonstrates how to crate a Math Tutor assistant and interact with it.
@@ -52,30 +56,29 @@ public class MathTutorAssistant {
         waitOnRun(threadAndRun2, threadId2);
         waitOnRun(threadAndRun3, threadId3);
 
-        // TODO: need to fix non-public listMessage method
-//        getResponse(threadId1);
-//        getResponse(threadId2);
-//        getResponse(threadId3);
+        getResponse(threadId1);
+        getResponse(threadId2);
+        getResponse(threadId3);
 
         // Clean up
         client.deleteAssistant(assistantId);
     }
 
-//    private static void getResponse(String threadId) {
-//        // Now that the Run has completed, we can list the Messages in the Thread to see what got added by the Assistant.
-//        // Messages are ordered in reverse-chronological order – this was done so the most recent results are always on
-//        // the first page (since results can be paginated).
-//        OpenAIPageableListOfThreadMessage messages = client.listMessages(threadId);
-//        List<ThreadMessage> data = messages.getData();
-//        for (int i = 0; i < data.size(); i++) {
-//            ThreadMessage dataMessage = data.get(i);
-//            MessageRole role = dataMessage.getRole();
-//            for (MessageContent messageContent : dataMessage.getContent()) {
-//                MessageTextContent messageTextContent = (MessageTextContent) messageContent;
-//                System.out.println(i + ": Role = " + role + ", content = " + messageTextContent.getText().getValue());
-//            }
-//        }
-//    }
+    private static void getResponse(String threadId) {
+        // Now that the Run has completed, we can list the Messages in the Thread to see what got added by the Assistant.
+        // Messages are ordered in reverse-chronological order – this was done so the most recent results are always on
+        // the first page (since results can be paginated).
+        OpenAIPageableListOfThreadMessage messages = client.listMessages(threadId);
+        List<ThreadMessage> data = messages.getData();
+        for (int i = 0; i < data.size(); i++) {
+            ThreadMessage dataMessage = data.get(i);
+            MessageRole role = dataMessage.getRole();
+            for (MessageContent messageContent : dataMessage.getContent()) {
+                MessageTextContent messageTextContent = (MessageTextContent) messageContent;
+                System.out.println(i + ": Role = " + role + ", content = " + messageTextContent.getText().getValue());
+            }
+        }
+    }
 
     /*
      * Create a new thread and run. This is same as OpenAI API:

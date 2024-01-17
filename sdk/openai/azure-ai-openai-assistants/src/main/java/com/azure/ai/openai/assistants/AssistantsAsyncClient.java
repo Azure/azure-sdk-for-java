@@ -4,30 +4,30 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
-import com.azure.ai.openai.assistants.implementation.models.AssistantDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.AssistantFileDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.FileDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
-import com.azure.ai.openai.assistants.implementation.models.ListSortOrder;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfMessageFile;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
-import com.azure.ai.openai.assistants.implementation.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
+import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
+import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantModificationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.FileDeletionStatus;
+import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
@@ -210,7 +210,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listAssistantsWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listAssistantsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listAssistantsWithResponseAsync(requestOptions);
     }
 
@@ -303,7 +303,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         return this.serviceClient.deleteAssistantWithResponseAsync(assistantId, requestOptions);
     }
 
@@ -422,7 +422,8 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listAssistantFilesWithResponse(String assistantId,
+        RequestOptions requestOptions) {
         return this.serviceClient.listAssistantFilesWithResponseAsync(assistantId, requestOptions);
     }
 
@@ -452,7 +453,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteAssistantFileWithResponse(String assistantId, String fileId,
+    public Mono<Response<BinaryData>> deleteAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAssistantFileWithResponseAsync(assistantId, fileId, requestOptions);
     }
@@ -501,7 +502,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfAssistant> listAssistants(Integer limit, ListSortOrder order, String after,
+    public Mono<OpenAIPageableListOfAssistant> listAssistants(Integer limit, ListSortOrder order, String after,
         String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -533,7 +534,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfAssistant> listAssistants() {
+    public Mono<OpenAIPageableListOfAssistant> listAssistants() {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
@@ -576,7 +577,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AssistantDeletionStatus> deleteAssistant(String assistantId) {
+    public Mono<AssistantDeletionStatus> deleteAssistant(String assistantId) {
         // Generated convenience method for deleteAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteAssistantWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
@@ -631,8 +632,8 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId, Integer limit,
+        ListSortOrder order, String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -666,7 +667,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId) {
+    public Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
@@ -689,7 +690,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AssistantFileDeletionStatus> deleteAssistantFile(String assistantId, String fileId) {
+    public Mono<AssistantFileDeletionStatus> deleteAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for deleteAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteAssistantFileWithResponse(assistantId, fileId, requestOptions).flatMap(FluxUtil::toMono)
@@ -931,7 +932,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.deleteThreadWithResponseAsync(threadId, requestOptions);
     }
 
@@ -1083,7 +1084,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.listMessagesWithResponseAsync(threadId, requestOptions);
     }
 
@@ -1263,7 +1264,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listMessageFilesWithResponse(String threadId, String messageId,
+    public Mono<Response<BinaryData>> listMessageFilesWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         return this.serviceClient.listMessageFilesWithResponseAsync(threadId, messageId, requestOptions);
     }
@@ -1474,7 +1475,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.listRunsWithResponseAsync(threadId, requestOptions);
     }
 
@@ -1958,7 +1959,8 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listRunStepsWithResponse(String threadId, String runId,
+        RequestOptions requestOptions) {
         return this.serviceClient.listRunStepsWithResponseAsync(threadId, runId, requestOptions);
     }
 
@@ -2012,7 +2014,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> listFilesWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listFilesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listFilesWithResponseAsync(requestOptions);
     }
 
@@ -2084,7 +2086,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions);
     }
 
@@ -2269,7 +2271,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThreadDeletionStatus> deleteThread(String threadId) {
+    public Mono<ThreadDeletionStatus> deleteThread(String threadId) {
         // Generated convenience method for deleteThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteThreadWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
@@ -2362,7 +2364,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order,
+    public Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2396,7 +2398,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId) {
+    public Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
@@ -2503,7 +2505,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
+    public Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
         ListSortOrder order, String after, String before) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2539,7 +2541,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId) {
+    public Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
@@ -2657,8 +2659,8 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
-        String before) {
+    public Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order,
+        String after, String before) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2691,7 +2693,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId) {
+    public Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
@@ -2895,8 +2897,8 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
-        String after, String before) {
+    public Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId, Integer limit,
+        ListSortOrder order, String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2930,7 +2932,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId) {
+    public Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
@@ -2951,7 +2953,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FileListResponse> listFiles(FilePurpose purpose) {
+    public Mono<FileListResponse> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
@@ -2973,7 +2975,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FileListResponse> listFiles() {
+    public Mono<FileListResponse> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
@@ -3048,7 +3050,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FileDeletionStatus> deleteFile(String fileId) {
+    public Mono<FileDeletionStatus> deleteFile(String fileId) {
         // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
