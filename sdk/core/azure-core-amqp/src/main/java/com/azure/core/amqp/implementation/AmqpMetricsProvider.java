@@ -52,35 +52,35 @@ public class AmqpMetricsProvider {
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
     private final boolean isEnabled;
     private final Meter meter;
-    private Map<String, Object> commonAttributesMap;
-    private DoubleHistogram sendDuration = null;
-    private DoubleHistogram requestResponseDuration = null;
-    private LongCounter closedConnections = null;
-    private LongCounter sessionErrors = null;
-    private LongCounter linkErrors = null;
-    private LongCounter transportErrors = null;
-    private LongGauge prefetchedSequenceNumber = null;
-    private LongCounter addCredits = null;
+    private final Map<String, Object> commonAttributesMap;
+    private final DoubleHistogram sendDuration;
+    private final DoubleHistogram requestResponseDuration;
+    private final LongCounter closedConnections;
+    private final LongCounter sessionErrors;
+    private final LongCounter linkErrors;
+    private final LongCounter transportErrors;
+    private final LongGauge prefetchedSequenceNumber;
+    private final LongCounter addCredits;
 
     /**
      * Cache of sendDuration attributes. Each element has
      * namespace, entity name and path, and also a delivery state.
      * Element index is ordinal number of state in the enum definition.
-     *
+     * <p>
      * The last element in the array represents no delivery (e.g. timeout or network issues)
      * case and w ill be stored as last element in the array.
       */
-    private TelemetryAttributes[] sendAttributeCache = null;
+    private final TelemetryAttributes[] sendAttributeCache;
 
     /**
      * Stores attribute caches with Management operation and response code.
      * AmqpResponseCode ordinal number serves as index in this array,
      * (the last element represents no response).
-     *
+     * <p>
      * Each element is a cache on its own that holds attribute sets for
      * namespace, entity name and path, and management operation.
      */
-    private AttributeCache[] requestResponseAttributeCache = null;
+    private final AttributeCache[] requestResponseAttributeCache;
 
     /**
      * There is no enum for AMQP condition, so we just use a cache
@@ -88,20 +88,43 @@ public class AmqpMetricsProvider {
      * and error condition.
      * Error condition serves as a key, and other attributes are shared across all attribute sets.
      */
-    private AttributeCache amqpErrorAttributeCache = null;
-    private TelemetryAttributes commonAttributes = null;
+    private final AttributeCache amqpErrorAttributeCache;
+    private final TelemetryAttributes commonAttributes;
 
     private AmqpMetricsProvider() {
         this.isEnabled = false;
         this.meter = DEFAULT_METER;
+        this.commonAttributesMap = null;
+        this.sendDuration = null;
+        this.requestResponseDuration = null;
+        this.closedConnections = null;
+        this.sessionErrors = null;
+        this.linkErrors = null;
+        this.transportErrors = null;
+        this.prefetchedSequenceNumber = null;
+        this.addCredits = null;
+        this.sendAttributeCache = null;
+        this.requestResponseAttributeCache = null;
+        this.amqpErrorAttributeCache = null;
+        this.commonAttributes = null;
     }
 
+    /**
+     * The source of the error.
+     */
     public enum ErrorSource {
         LINK,
         SESSION,
         TRANSPORT
     }
 
+    /**
+     * Creates an instance of {@link AmqpMetricsProvider}.
+     *
+     * @param meter The meter to use for metrics.
+     * @param namespace The namespace to use for metrics.
+     * @param entityPath The entity path to use for metrics.
+     */
     public AmqpMetricsProvider(Meter meter, String namespace, String entityPath) {
         this.meter = meter != null ? meter : DEFAULT_METER;
         this.isEnabled = this.meter.isEnabled();
@@ -132,15 +155,36 @@ public class AmqpMetricsProvider {
             this.transportErrors = this.meter.createLongCounter("messaging.az.amqp.client.transport.errors", "AMQP session errors", "errors");
             this.addCredits = this.meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
             this.prefetchedSequenceNumber = this.meter.createLongGauge("messaging.az.amqp.prefetch.sequence_number", "Last prefetched sequence number", "seqNo");
+        } else {
+            this.commonAttributesMap = null;
+            this.sendDuration = null;
+            this.requestResponseDuration = null;
+            this.closedConnections = null;
+            this.sessionErrors = null;
+            this.linkErrors = null;
+            this.transportErrors = null;
+            this.prefetchedSequenceNumber = null;
+            this.addCredits = null;
+            this.sendAttributeCache = null;
+            this.requestResponseAttributeCache = null;
+            this.amqpErrorAttributeCache = null;
+            this.commonAttributes = null;
         }
     }
 
+    /**
+     * Returns noop metrics provider.
+     *
+     * @return noop metrics provider.
+     */
     public static AmqpMetricsProvider noop() {
         return NOOP;
     }
 
     /**
      * Checks if send delivery metric is enabled (for micro-optimizations).
+     *
+     * @return true if send delivery metric is enabled, false otherwise.
      */
     public boolean isSendDeliveryEnabled() {
         return isEnabled && sendDuration.isEnabled();
@@ -148,6 +192,8 @@ public class AmqpMetricsProvider {
 
     /**
      * Checks if request-response duration metric is enabled (for micro-optimizations).
+     *
+     * @return true if request-response duration metric is enabled, false otherwise.
      */
     public boolean isRequestResponseDurationEnabled() {
         return isEnabled && sendDuration.isEnabled();
@@ -156,6 +202,8 @@ public class AmqpMetricsProvider {
 
     /**
      * Checks if prefetched sequence number is enabled (for micro-optimizations).
+     *
+     * @return true if prefetched sequence number is enabled, false otherwise.
      */
     public boolean isPrefetchedSequenceNumberEnabled() {
         return isEnabled && prefetchedSequenceNumber.isEnabled();
@@ -164,6 +212,9 @@ public class AmqpMetricsProvider {
 
     /**
      * Records duration of AMQP send call.
+     *
+     * @param start start time of the call.
+     * @param deliveryState delivery state.
      */
     public void recordSend(long start, DeliveryState.DeliveryStateType deliveryState) {
         if (isEnabled && sendDuration.isEnabled()) {
@@ -173,6 +224,10 @@ public class AmqpMetricsProvider {
 
     /**
      * Records duration of AMQP management call.
+     *
+     * @param start start time of the call.
+     * @param operationName operation name.
+     * @param responseCode response code.
      */
     public void recordRequestResponseDuration(long start, String operationName, AmqpResponseCode responseCode) {
         if (isEnabled && requestResponseDuration.isEnabled()) {
@@ -184,6 +239,8 @@ public class AmqpMetricsProvider {
 
     /**
      * Records connection close.
+     *
+     * @param condition error condition.
      */
     public void recordConnectionClosed(ErrorCondition condition) {
         if (isEnabled && closedConnections.isEnabled()) {
@@ -195,6 +252,9 @@ public class AmqpMetricsProvider {
 
     /**
      * Creates gauge subscription to report latest sequence number value.
+     *
+     * @param valueSupplier supplier of the sequence number value.
+     * @return An instance of {@link AutoCloseable}.
      */
     public AutoCloseable trackPrefetchSequenceNumber(Supplier<Long> valueSupplier) {
         if (!isEnabled || !prefetchedSequenceNumber.isEnabled()) {
@@ -206,6 +266,8 @@ public class AmqpMetricsProvider {
 
     /**
      * Records that credits were added to link
+     *
+     * @param credits number of credits added.
      */
     public void recordAddCredits(int credits) {
         if (isEnabled && addCredits.isEnabled()) {
@@ -215,6 +277,9 @@ public class AmqpMetricsProvider {
 
     /**
      * Records link error. Noop if condition is null (no error).
+     *
+     * @param source error source.
+     * @param condition error condition.
      */
     public void recordHandlerError(ErrorSource source, ErrorCondition condition) {
         if (isEnabled && condition != null && condition.getCondition() != null) {

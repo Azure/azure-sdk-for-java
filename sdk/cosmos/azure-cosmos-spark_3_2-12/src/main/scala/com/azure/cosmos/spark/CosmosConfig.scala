@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -59,6 +59,7 @@ private[spark] object CosmosConfigNames {
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -148,6 +149,7 @@ private[spark] object CosmosConfigNames {
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
+    GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
@@ -322,6 +324,7 @@ private case class CosmosAccountConfig(endpoint: String,
                                        accountName: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
+                                       httpConnectionPoolSize: Int,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]],
                                        subscriptionId: Option[String],
@@ -399,6 +402,12 @@ private object CosmosAccountConfig {
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
+  private val HttpConnectionPoolSize = CosmosConfigEntry[Integer](key = CosmosConfigNames.GatewayConnectionPoolSize,
+    mandatory = false,
+    defaultValue = Some(Configs.getDefaultHttpPoolSize),
+    parseFromStringFunction = httpPoolSizeValue => httpPoolSizeValue.toInt,
+    helpMessage = "Gateway HTTP connection pool size")
+
   private val DisableTcpConnectionEndpointRediscovery =
     CosmosConfigEntry[Boolean](
       key = CosmosConfigNames.DisableTcpConnectionEndpointRediscovery,
@@ -448,6 +457,7 @@ private object CosmosAccountConfig {
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val httpConnectionPoolSize = CosmosConfigEntry.parse(cfg, HttpConnectionPoolSize)
     val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
@@ -501,6 +511,7 @@ private object CosmosAccountConfig {
       accountName.get,
       applicationName,
       useGatewayMode.get,
+      httpConnectionPoolSize.get,
       disableTcpConnectionEndpointRediscovery.get,
       preferredRegionsListOpt,
       subscriptionIdOpt,

@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +36,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -410,6 +416,22 @@ public final class ImplUtils {
     }
 
     /**
+     * Fully writes a {@link ByteBuffer} to a {@link WritableByteChannel}.
+     * <p>
+     * This handles scenarios where write operations don't write the entirety of the {@link ByteBuffer} in a single
+     * call.
+     *
+     * @param buffer The {@link ByteBuffer} to write.
+     * @param channel The {@link WritableByteChannel} to write the {@code buffer} to.
+     * @throws IOException If an I/O error occurs while writing to the {@code channel}.
+     */
+    public static void fullyWriteBuffer(ByteBuffer buffer, WritableByteChannel channel) throws IOException {
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
+    }
+
+    /**
      * Sneakily throws a checked exception in a way where it doesn't need to be declared in the method signature.
      *
      * @param <E> The type of checked exception.
@@ -419,6 +441,52 @@ public final class ImplUtils {
     @SuppressWarnings("unchecked")
     public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
         throw (E) e;
+    }
+
+    /**
+     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
+     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
+     * interrupting the execution of the task that the {@link Future} represented.
+     * <p>
+     * If the timeout is zero or is negative then the timeout will be ignored and an infinite timeout will be used.
+     *
+     * @param <T> The type of value returned by the {@code future}.
+     * @param future The {@link Future} to get the value from.
+     * @param timeoutInMillis The timeout value. If the timeout is zero or is negative then the timeout will be ignored
+     * and an infinite timeout will be used.
+     * @return The value from the {@code future}.
+     * @throws NullPointerException If {@code future} is null.
+     * @throws CancellationException If the computation was cancelled.
+     * @throws ExecutionException If the computation threw an exception.
+     * @throws InterruptedException If the current thread was interrupted while waiting.
+     * @throws TimeoutException If the wait timed out.
+     * @throws RuntimeException If the {@code future} threw an exception during processing.
+     * @throws Error If the {@code future} threw an {@link Error} during processing.
+     */
+    public static <T> T getResultWithTimeout(Future<T> future, long timeoutInMillis)
+        throws InterruptedException, ExecutionException, TimeoutException {
+        Objects.requireNonNull(future, "'future' cannot be null.");
+
+        if (timeoutInMillis <= 0) {
+            return future.get();
+        }
+
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            throw e;
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof Error) {
+                throw (Error) cause;
+            } else if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else {
+                ImplUtils.sneakyThrows(cause);
+                throw e;
+            }
+        }
     }
 
     private ImplUtils() {

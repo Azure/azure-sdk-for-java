@@ -18,8 +18,16 @@ class ItemsScanITest
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer {
+
+  //scalastyle:off multiple.string.literals
+  //scalastyle:off magic.number
+
+  private val idProperty = "id"
+  private val pkProperty = "pk"
+  private val itemIdentityProperty = "_itemIdentity"
+
   private val schema = StructType(Seq(
-    StructField("id", StringType)
+    StructField(idProperty, StringType)
   ))
 
   private val analyzedAggregatedFilters =
@@ -85,7 +93,7 @@ class ItemsScanITest
 
     try {
       cosmosClient.getDatabase(cosmosDatabase)
-        .createContainerIfNotExists(idNotPkContainerName, "/pk", ThroughputProperties.createManualThroughput(400))
+        .createContainerIfNotExists(idNotPkContainerName, s"/$pkProperty", ThroughputProperties.createManualThroughput(400))
         .block()
 
       val partitionKeyDefinition = idNotPkContainer.read().block().getProperties.getPartitionKeyDefinition
@@ -119,7 +127,7 @@ class ItemsScanITest
           if (runTimeFilteringEnabled && readManyFilteringEnabled) {
             arrayReferences.size shouldBe 1
             // since id is the partitionKey, so id will be returned as the readMany filtering property
-            arrayReferences should contain theSameElementsAs Array(Expressions.column("_itemIdentity"))
+            arrayReferences should contain theSameElementsAs Array(Expressions.column(itemIdentityProperty))
           } else {
             arrayReferences shouldBe empty
           }
@@ -146,14 +154,14 @@ class ItemsScanITest
       val id = UUID.randomUUID().toString
       idList += id
       val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("id", id)
+      objectNode.put(idProperty, id)
       container.createItem(objectNode).block()
       logInfo(s"ID of test doc: $id")
     }
 
     // choose one of the items created above and filter by it
     val runtimeFilters = Array[Filter](
-      In("id", Array(idList(0)))
+      In(idProperty, Array(idList(0)))
     )
 
     for (runTimeFilteringEnabled <- Array(true, false)) {
@@ -220,4 +228,7 @@ class ItemsScanITest
         cosmosClientMetadataCachesSnapshot,
         Option.empty[CosmosClientMetadataCachesSnapshot]))
   }
+
+  //scalastyle:on multiple.string.literals
+  //scalastyle:on magic.number
 }

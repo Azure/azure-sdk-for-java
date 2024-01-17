@@ -25,7 +25,7 @@ public final class TagsResult {
 
     /**
      * Creates an instance of TagsResult class.
-     * 
+     *
      * @param values the values value to set.
      */
     @Generated
@@ -36,7 +36,7 @@ public final class TagsResult {
 
     /**
      * Get the values property: A list of tags.
-     * 
+     *
      * @return the values value.
      */
     @Generated

@@ -59,6 +59,11 @@
 
     <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>

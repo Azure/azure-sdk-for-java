@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslContextOption;
 import io.netty.handler.ssl.SslProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,15 @@ public class Configs {
     private static final String MAX_HTTP_HEADER_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_HEADER_SIZE_IN_BYTES";
     private static final String MAX_DIRECT_HTTPS_POOL_SIZE = "COSMOS.MAX_DIRECT_HTTP_CONNECTION_LIMIT";
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
+
+    public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
+    public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+    public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final int DEFAULT_HTTP_MAX_REQUEST_TIMEOUT = 60;
+    public static final String HTTP_MAX_REQUEST_TIMEOUT = "COSMOS.HTTP_MAX_REQUEST_TIMEOUT";
+    public static final String HTTP_MAX_REQUEST_TIMEOUT_VARIABLE = "COSMOS_HTTP_MAX_REQUEST_TIMEOUT";
+
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
@@ -93,7 +103,6 @@ public class Configs {
     //  Reactor Netty Constants
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
-    private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -267,10 +276,6 @@ public class Configs {
         return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
-    public int getReactorNettyMaxConnectionPoolSize() {
-        return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
-    }
-
     public static int getHttpResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(HTTP_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS);
     }
@@ -294,6 +299,34 @@ public class Configs {
         }
 
         return System.getenv(NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE);
+    }
+
+    public static int getDefaultHttpPoolSize() {
+        String valueFromSystemProperty = System.getProperty(HTTP_DEFAULT_CONNECTION_POOL_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static int getMaxHttpRequestTimeout() {
+        String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_MAX_REQUEST_TIMEOUT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_HTTP_MAX_REQUEST_TIMEOUT;
     }
 
     public static String getEnvironmentName() {
