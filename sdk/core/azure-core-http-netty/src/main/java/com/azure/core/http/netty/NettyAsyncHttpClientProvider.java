@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.netty.resources.ConnectionProvider;
 
 /**
- * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
+ * <p>The NettyAsyncHttpClientProvider class is an implementation of the HttpClientProvider interface that provides
+ * an instance of HttpClient based on Netty. This class is designed to create instances of HttpClient that are backed
+ * by Reactor Netty, either as a shared instance or a new instance based on the configuration.</p>
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =

@@ -56,11 +56,13 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
- * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
- * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
+ * <p>The NettyAsyncHttpClient class is an implementation of the {@link HttpClient} interface using the
+ * Reactor Netty library. This class is designed to handle HTTP requests and responses asynchronously, leveraging
+ * the non-blocking and backpressure-ready nature of Reactor Netty.</p>
+ *
+ * <p>This class is typically instantiated using the {@link NettyAsyncHttpClientBuilder} class, which provides a
+ * fluent API for configuring various aspects of the HTTP client, such as the port, whether to enable wiretapping, and
+ * proxy configuration.</p>
  *
  * <p><strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong></p>
  *
