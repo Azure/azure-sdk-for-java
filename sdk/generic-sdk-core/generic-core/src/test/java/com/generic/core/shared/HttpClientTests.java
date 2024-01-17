@@ -14,10 +14,12 @@ import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.EventStreamListener;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
@@ -33,6 +35,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -68,6 +71,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -1714,6 +1718,42 @@ public abstract class HttpClientTests {
 
         assertTrue(exception.getMessage().contains("void exception body thrown"));
     }
+
+    @Test
+    public void canReceiveServerSentEvents() {
+        final int[] i = {0};
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(ECHO_RESPONSE))
+            .setListener(new EventStreamListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) {
+                    String expected = i[0] == 0 ? "This is the first message."
+                        : "This is the second message, it\nhas two lines.";
+                    Assertions.assertEquals(expected, sse.getData());
+                    if (++i[0] > 1) {
+                        assertFalse(true, "Should not have received more than two messages.");
+                    }
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+
+                }
+
+                @Override
+                public boolean shouldRetry(Throwable throwable, long milliseconds, long lastEventID) {
+                    return false;
+                }
+
+                @Override
+                public void onClose(ServerSentEvent sse) {
+
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(2, i[0]);
+    }
+
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
         return Stream.of(

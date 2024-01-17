@@ -23,6 +23,11 @@ public final class ContentType {
     public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
 
     /**
+     * The default form data Content-Type header.
+     */
+    public static final String TEXT_EVENT_STREAM = "text/event-stream";
+
+    /**
      * Private ctr.
      */
     private ContentType() {

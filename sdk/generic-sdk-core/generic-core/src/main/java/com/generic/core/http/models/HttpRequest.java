@@ -30,6 +30,7 @@ public class HttpRequest {
     private BinaryData body;
 
     private HttpRequestMetadata metadata;
+    private EventStreamListener listener;
 
     /**
      * Create a new HttpRequest instance.
@@ -259,5 +260,23 @@ public class HttpRequest {
             .setHeaders(bufferedHeaders)
             .setBody(body)
             .setMetadata(metadata.copy());
+    }
+
+    /**
+     * Get the specified event stream listener for this request.
+     * @return the listener for this request.
+     */
+    public EventStreamListener getListener() {
+        return listener;
+    }
+
+    /**
+     * Set an event stream listener for this request.
+     * @param listener the listener to set for this request.
+     * @return This HttpRequest.
+     */
+    public HttpRequest setListener(EventStreamListener listener) {
+        this.listener = listener;
+        return this;
     }
 }

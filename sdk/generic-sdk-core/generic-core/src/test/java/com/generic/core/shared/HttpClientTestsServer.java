@@ -115,7 +115,9 @@ public class HttpClientTestsServer {
                 handleRequest(resp, "charset=UTF-16", addBom(UTF_8_BOM));
             } else if (put && ECHO_RESPONSE.equals(path)) {
                 handleRequest(resp, "application/octet-stream", requestBody);
-            } else {
+            } else if (get && ECHO_RESPONSE.equals(path)) {
+                sendSSEResponse(resp);
+            }else {
                 throw new ServletException("Unexpected method: " + req.getMethod());
             }
         }, 100);
@@ -128,6 +130,21 @@ public class HttpClientTestsServer {
         System.arraycopy(RETURN_BYTES, 0, mergedArray, arr1.length, RETURN_BYTES.length);
 
         return mergedArray;
+    }
+
+    private static String addServerSentEvent() {
+        return "data: This is the first message.\n\n" +
+            "data: This is the second message, it\n" +
+            "data: has two lines.\n\n" +
+            "data: This is the third message.\n";
+    }
+
+    private static void sendSSEResponse(Response resp)
+        throws IOException {
+        setBaseHttpHeaders(resp);
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEvent().getBytes());
+        resp.flushBuffer();
     }
 
     private static void handleRequest(HttpServletResponse response, String contentType, byte[] responseBody)
