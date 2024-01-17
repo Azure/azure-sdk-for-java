@@ -122,7 +122,7 @@ stages:
                 parameters:
                   PackageName: ${{artifact.name}}
                   ServiceDirectory: ${{parameters.ServiceDirectory}}
-                  ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}
 
               # Only check compilation if this isn't an uber JAR release.
               # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.
