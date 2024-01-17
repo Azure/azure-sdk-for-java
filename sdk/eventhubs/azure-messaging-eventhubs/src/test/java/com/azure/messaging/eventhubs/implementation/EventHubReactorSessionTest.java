@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
@@ -16,6 +19,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,6 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -79,7 +85,7 @@ public class EventHubReactorSessionTest {
      * Tests that sequence number is preferred over offset and default replication segment is used.
      */
     @Test
-    public void getSequenceNumberExpression() {
+    public void getSequenceNumberExpressionPreferred() {
         // Arrange
         final EventPosition eventPosition = mock(EventPosition.class);
         final Long sequenceNumber = 10L;
@@ -135,6 +141,9 @@ public class EventHubReactorSessionTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Tests that the correct offet expression is created.
+     */
     @Test
     public void getOffsetExpression() {
         // Arrange
@@ -146,6 +155,41 @@ public class EventHubReactorSessionTest {
 
         // Act
         final String actual = EventHubReactorSession.getExpression(eventPosition);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    public static Stream<Arguments> getExpression() {
+        final long position = 2501;
+        final long replicationSegment = 19;
+        final Instant enqueuedTime = Instant.ofEpochMilli(1705519331970L);
+
+        return Stream.of(
+            Arguments.of(EventPosition.fromOffset(position), "amqp.annotation.x-opt-offset > '2501'"),
+            
+            Arguments.of(EventPosition.fromEnqueuedTime(enqueuedTime), 
+                "amqp.annotation.x-opt-enqueued-time > '1705519331970'"),
+
+            // -1 because replication segment is null.
+            Arguments.of(EventPosition.fromSequenceNumber(position), 
+                "amqp.annotation.x-opt-sequence-number > '-1:2501'"),
+            Arguments.of(EventPosition.fromSequenceNumber(position, true), 
+                "amqp.annotation.x-opt-sequence-number >= '-1:2501'"),
+
+            // Passing in a replication segment.
+            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment), 
+                "amqp.annotation.x-opt-sequence-number > '19:2501'"),
+            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment, true), 
+                "amqp.annotation.x-opt-sequence-number >= '19:2501'")
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    public void getExpression(EventPosition position, String expected) {
+        // Act
+        final String actual = EventHubReactorSession.getExpression(position);
 
         // Assert
         assertEquals(expected, actual);
