@@ -45,7 +45,7 @@ extends:
   parameters:
     ServiceDirectory: vision
     EnableBatchRelease: true
-    # IgnoreVerifyTypeSpecCodeGenerationError: true
+    IgnoreVerifyTypeSpecCodeGenerationError: true
     Artifacts:
       - name: azure-ai-vision-imageanalysis
         groupId: com.azure
