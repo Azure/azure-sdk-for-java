@@ -1239,4 +1239,56 @@ public class ShareApiTests extends FileShareTestBase {
         String infoPermission = aadShareClient.createPermission(permission);
         assertNotNull(infoPermission);
     }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void createEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+        options.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+
+        primaryShareClient.createWithResponse(options, null, null);
+
+        ShareProperties response = primaryShareClient.getProperties();
+        assertEquals(protocols.toString(), response.getProtocols().toString());
+        if(enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess){
+            assertTrue(response.isEnableSnapshotVirtualDirectoryAccess());
+        } else {
+            assertFalse(response.isEnableSnapshotVirtualDirectoryAccess());
+        }
+    }
+
+    private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void setPropertiesEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+
+        primaryShareClient.createWithResponse(options, null, null);
+
+        ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
+        setPropertiesOptions.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+        setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
+
+        primaryShareClient.setProperties(setPropertiesOptions);
+
+        ShareProperties response = primaryShareClient.getProperties();
+        assertEquals(protocols.toString(), response.getProtocols().toString());
+        if(enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess){
+            assertTrue(response.isEnableSnapshotVirtualDirectoryAccess());
+        } else {
+            assertFalse(response.isEnableSnapshotVirtualDirectoryAccess());
+        }
+    }
 }
