@@ -12,6 +12,11 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+
+import com.example.SomeClass;
+import com.azure.search.documents.indexes.IndexAction;
+// 其他可能需要导入的类
 
 public class CreateIndexWithFieldBuilderExample {
     /**
