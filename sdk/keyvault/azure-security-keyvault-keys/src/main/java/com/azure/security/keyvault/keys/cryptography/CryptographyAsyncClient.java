@@ -264,14 +264,6 @@ public class CryptographyAsyncClient {
         }
     }
 
-    Mono<JsonWebKey> getSecretKey() {
-        try {
-            return implClient.getSecretKeyAsync();
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
     /**
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
      * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be
@@ -943,36 +935,49 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> isValidKeyLocallyAvailable() {
         if (localOperationNotSupported) {
-            return Mono.just(false);
-        }
-
-        if (key == null && implClient.getKeyCollection() != null) {
+            return Mono.defer(() -> Mono.just(false));
+        } else if (key == null && implClient.getKeyCollection() != null) {
+            // Get key from service and validate it. Then attempt to create a local cryptography client or default to
+            // service.
             Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? getSecretKey()
-                : getKey().map(KeyVaultKey::getKey);
+                ? implClient.getSecretKeyAsync() : getKey().map(KeyVaultKey::getKey);
 
-            return jsonWebKeyMono.map(jsonWebKey -> {
-                key = jsonWebKey;
+            return jsonWebKeyMono
+                .map(this::validateJsonWebKeyAndCreateLocalClient)
+                .onErrorResume(RuntimeException.class, this::handleKeyRetrievalError);
+        } else {
+            return Mono.defer(() -> Mono.just(true));
+        }
+    }
 
-                if (jsonWebKey.isValid()) {
-                    if (localKeyCryptographyClient == null) {
-                        try {
-                            localKeyCryptographyClient = initializeCryptoClient(jsonWebKey, implClient, LOGGER);
-                        } catch (RuntimeException e) {
-                            localOperationNotSupported = true;
-                            LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
+    private boolean validateJsonWebKeyAndCreateLocalClient(JsonWebKey jsonWebKey) {
+        if (jsonWebKey.isValid()) {
+            // Create a local key cryptography client if one has not been created yet.
+            if (localKeyCryptographyClient == null) {
+                try {
+                    localKeyCryptographyClient = initializeCryptoClient(jsonWebKey, implClient, LOGGER);
+                } catch (RuntimeException e) {
+                    localOperationNotSupported = true;
 
-                            return false;
-                        }
-                    }
+                    LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
 
-                    return true;
-                } else {
                     return false;
                 }
-            });
+            }
+
+            // Valid key is locally available and local client was created.
+            return true;
         } else {
-            return Mono.just(true);
+            return false;
         }
+    }
+
+    private Mono<Boolean> handleKeyRetrievalError(Throwable e) {
+        localOperationNotSupported = true;
+
+        LOGGER.warning("Could not retrieve key from service to perform cryptographic operations locally. "
+            + "Will use service-side cryptography instead.", e);
+
+        return Mono.defer(() -> Mono.just(false));
     }
 }

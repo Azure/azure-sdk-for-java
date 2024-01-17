@@ -245,14 +245,6 @@ public class CryptographyClient {
         }
     }
 
-    JsonWebKey getSecretKey() {
-        try {
-            return implClient.getSecretKey();
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
-    }
-
     /**
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
      * a
@@ -1249,25 +1241,39 @@ public class CryptographyClient {
         }
 
         if (key == null && implClient.getKeyCollection() != null) {
-            key = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? getSecretKey() : getKey().getKey();
+            try {
+                // Get key from service and validate it. Then attempt to create a local cryptography client or default
+                // to service.
+                key = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                    ? implClient.getSecretKey() : getKey().getKey();
+            } catch (RuntimeException e) {
+                localOperationNotSupported = true;
+                
+                LOGGER.warning("Could not retrieve key from service to perform cryptographic operations locally. "
+                    + "Will use service-side cryptography insetad.", e);
+
+                return false;
+            }
         }
 
         if (key == null || !key.isValid()) {
             return false;
         }
 
+        // Create a local key cryptography client if one has not been created yet.
         if (localKeyCryptographyClient == null) {
             try {
                 localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
             } catch (RuntimeException e) {
                 localOperationNotSupported = true;
+
                 LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
 
                 return false;
             }
         }
 
+        // Valid key is locally available and local client was created.
         return true;
     }
 
