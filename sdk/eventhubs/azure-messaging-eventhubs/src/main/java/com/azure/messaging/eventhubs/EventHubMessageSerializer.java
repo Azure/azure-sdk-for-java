@@ -50,12 +50,6 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
 class EventHubMessageSerializer implements MessageSerializer {
     private static final Encoder ENCODER = new EncoderImpl(new DecoderImpl());
     private static final ClientLogger LOGGER = new ClientLogger(EventHubMessageSerializer.class);
-    private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER
-        = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
-    private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
-    private static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
-    private static final Symbol RETRIEVAL_TIME_UTC
-        = Symbol.getSymbol(MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC);
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -300,15 +294,6 @@ class EventHubMessageSerializer implements MessageSerializer {
         if (isRequired && !amqpBody.containsKey(key)) {
             throw LOGGER.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
-        }
-
-        return getValue(amqpBody.get(key), key, clazz, isRequired);
-    }
-
-    private static <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz, boolean isRequired) {
-        if (!amqpBody.containsKey(key)) {
-            throw LOGGER.logExceptionAsError(
-                new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
         return getValue(amqpBody.get(key), key, clazz, isRequired);
