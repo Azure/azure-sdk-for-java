@@ -27,7 +27,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Constructs an instance of AadCredentialBuilderBase.
      */
-    AadCredentialBuilderBase() {
+    public AadCredentialBuilderBase() {
         super();
     }
 
