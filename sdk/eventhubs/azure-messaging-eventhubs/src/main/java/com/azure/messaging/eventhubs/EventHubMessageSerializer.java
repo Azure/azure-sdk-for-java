@@ -187,11 +187,16 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
-        final Long lastSequenceNumber = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
-        final String lastEnqueuedOffset = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class);
-        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
-        final Instant retrievalTime = getValue(deliveryAnnotations, MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC, Date.class).toInstant();
-        final Long lastEnqueuedReplicationSegment = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false);
+        final Long lastSequenceNumber = getValue(deliveryAnnotations, 
+            MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
+        final String lastEnqueuedOffset = getValue(deliveryAnnotations, 
+            MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class);
+        final Instant lastEnqueuedTime = getValue(deliveryAnnotations,
+            MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
+        final Instant retrievalTime = getValue(deliveryAnnotations, 
+            MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC, Date.class).toInstant();
+        final Long lastEnqueuedReplicationSegment = getValue(deliveryAnnotations,
+            MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false);
 
         return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
             retrievalTime, lastEnqueuedReplicationSegment);
@@ -214,19 +219,26 @@ class EventHubMessageSerializer implements MessageSerializer {
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
-        final Instant enqueuedTime
-            = MessageUtils.getEnqueuedTime(messageAnnotations, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+        final Instant enqueuedTime = MessageUtils.getEnqueuedTime(messageAnnotations, 
+            ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
         final String partitionKey = (String) messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
         final long offset = getAsLong(messageAnnotations, OFFSET_ANNOTATION_NAME.getValue());
         final long sequenceNumber = getAsLong(messageAnnotations, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
+        // It is an optional value. Possible that there is no replication segment.
         final Long replicationSegment = (Long) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
 
         // Put the properly converted time back into the dictionary.
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        
+        messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
+
+        LOGGER.atInfo()
+            .addKeyValue("replicationSegment", replicationSegment)
+            .log("Adding to messageAnnotations: " + REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
 
         final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime,
             sequenceNumber, partitionKey, replicationSegment);
@@ -251,7 +263,7 @@ class EventHubMessageSerializer implements MessageSerializer {
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Long.class, false),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false));
+            getValue(amqpBody, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false));
     }
 
     /**
