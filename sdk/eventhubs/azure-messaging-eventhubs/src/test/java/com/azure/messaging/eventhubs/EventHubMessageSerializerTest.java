@@ -20,12 +20,14 @@ import java.util.Map;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.OTHER_SYSTEM_PROPERTY;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
+import static com.azure.messaging.eventhubs.TestUtils.REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -75,10 +77,12 @@ public class EventHubMessageSerializerTest {
     @Test
     public void deserializeEventData() {
         // Arrange
+        // Expected system properties.
         final Map<String, Object> systemPropertiesMap = new HashMap<>();
         systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
+        systemPropertiesMap.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), REPLICATION_SEGMENT);
 
         final Message message = getMessage("hello-world".getBytes(UTF_8));
 
@@ -91,25 +95,26 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(OFFSET, eventData.getOffset());
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
+        Assertions.assertEquals(REPLICATION_SEGMENT, eventData.getReplicationSegment());
 
         final Map<String, Object> actualSystemProperties = eventData.getSystemProperties();
         systemPropertiesMap.forEach((key, value) -> {
             final boolean containsKey = actualSystemProperties.containsKey(key);
             final Object actualValue = actualSystemProperties.get(key);
-            Assertions.assertTrue(containsKey);
+            Assertions.assertTrue(containsKey, "Key not found. " + key);
             Assertions.assertEquals(value, actualValue);
         });
 
         // Verify that the message annotations in the raw AMQP message also match the ones in getSystemProperties()
         Assertions.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
         final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
-        Assertions.assertTrue(otherPropertyValue instanceof Boolean);
+        Assertions.assertInstanceOf(Boolean.class, otherPropertyValue);
         Assertions.assertTrue((Boolean) otherPropertyValue);
 
         final AmqpAnnotatedMessage amqpMessage = eventData.getRawAmqpMessage();
         Assertions.assertTrue(amqpMessage.getMessageAnnotations().containsKey(OTHER_SYSTEM_PROPERTY));
         final Object otherPropertyValue2 = amqpMessage.getMessageAnnotations().get(OTHER_SYSTEM_PROPERTY);
-        Assertions.assertTrue(otherPropertyValue2 instanceof Boolean);
+        Assertions.assertInstanceOf(Boolean.class, otherPropertyValue2);
         Assertions.assertTrue((Boolean) otherPropertyValue2);
 
         // Verifying our application properties are the same.
@@ -134,7 +139,7 @@ public class EventHubMessageSerializerTest {
         final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
-        final Long beginningReplicationSegment = null;
+        final Long beginningReplicationSegment = 8L;
         final Long lastEnqueuedReplicationSegment = 10L;
 
         final Map<String, Object> values = new HashMap<>();
