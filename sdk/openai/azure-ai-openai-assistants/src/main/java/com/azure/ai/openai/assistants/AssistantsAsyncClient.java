@@ -788,21 +788,12 @@ public final class AssistantsAsyncClient {
      * {
      *     messages (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             thread_id: String (Required)
      *             role: String(user/assistant) (Required)
-     *             content (Required): [
-     *                  (Required){
-     *                 }
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -993,8 +984,8 @@ public final class AssistantsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1185,8 +1176,8 @@ public final class AssistantsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1747,21 +1738,12 @@ public final class AssistantsAsyncClient {
      *     thread (Optional): {
      *         messages (Optional): [
      *              (Optional){
-     *                 id: String (Required)
-     *                 object: String (Required)
-     *                 created_at: long (Required)
-     *                 thread_id: String (Required)
      *                 role: String(user/assistant) (Required)
-     *                 content (Required): [
-     *                      (Required){
-     *                     }
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 assistant_id: String (Optional)
-     *                 run_id: String (Optional)
-     *                 file_ids (Required): [
-     *                     String (Required)
-     *                 ]
-     *                 metadata (Required): {
+     *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }
@@ -2311,7 +2293,7 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread on successful completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2341,7 +2323,7 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread on successful completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2457,7 +2439,7 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread on successful completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2482,7 +2464,7 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread on successful completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

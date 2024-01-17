@@ -1742,21 +1742,12 @@ public final class AssistantsClientImpl {
      * {
      *     messages (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             thread_id: String (Required)
      *             role: String(user/assistant) (Required)
-     *             content (Required): [
-     *                  (Required){
-     *                 }
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -1806,21 +1797,12 @@ public final class AssistantsClientImpl {
      * {
      *     messages (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             thread_id: String (Required)
      *             role: String(user/assistant) (Required)
-     *             content (Required): [
-     *                  (Required){
-     *                 }
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -2113,8 +2095,8 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createMessageWithResponseAsync(String threadId, BinaryData request,
@@ -2173,7 +2155,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response}.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
@@ -2501,8 +2483,8 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> modifyMessageWithResponseAsync(String threadId, String messageId,
@@ -2557,7 +2539,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response}.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> modifyMessageWithResponse(String threadId, String messageId, BinaryData request,
@@ -3664,21 +3646,12 @@ public final class AssistantsClientImpl {
      *     thread (Optional): {
      *         messages (Optional): [
      *              (Optional){
-     *                 id: String (Required)
-     *                 object: String (Required)
-     *                 created_at: long (Required)
-     *                 thread_id: String (Required)
      *                 role: String(user/assistant) (Required)
-     *                 content (Required): [
-     *                      (Required){
-     *                     }
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 assistant_id: String (Optional)
-     *                 run_id: String (Optional)
-     *                 file_ids (Required): [
-     *                     String (Required)
-     *                 ]
-     *                 metadata (Required): {
+     *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }
@@ -3763,21 +3736,12 @@ public final class AssistantsClientImpl {
      *     thread (Optional): {
      *         messages (Optional): [
      *              (Optional){
-     *                 id: String (Required)
-     *                 object: String (Required)
-     *                 created_at: long (Required)
-     *                 thread_id: String (Required)
      *                 role: String(user/assistant) (Required)
-     *                 content (Required): [
-     *                      (Required){
-     *                     }
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 assistant_id: String (Optional)
-     *                 run_id: String (Optional)
-     *                 file_ids (Required): [
-     *                     String (Required)
-     *                 ]
-     *                 metadata (Required): {
+     *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }

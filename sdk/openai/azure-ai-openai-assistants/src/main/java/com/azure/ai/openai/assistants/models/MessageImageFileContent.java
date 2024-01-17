@@ -32,7 +32,7 @@ public final class MessageImageFileContent extends MessageContent {
      */
     @Generated
     @JsonCreator
-    public MessageImageFileContent(@JsonProperty(value = "image_file") MessageImageFileDetails imageFile) {
+    private MessageImageFileContent(@JsonProperty(value = "image_file") MessageImageFileDetails imageFile) {
         this.imageFile = imageFile;
     }
 

@@ -35,7 +35,7 @@ public final class MessageFilePathTextAnnotation extends MessageTextAnnotation {
      */
     @Generated
     @JsonCreator
-    public MessageFilePathTextAnnotation(@JsonProperty(value = "text") String text,
+    private MessageFilePathTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
         @JsonProperty(value = "file_path") MessageFilePathDetails filePath) {
         super(text, startIndex, endIndex);
