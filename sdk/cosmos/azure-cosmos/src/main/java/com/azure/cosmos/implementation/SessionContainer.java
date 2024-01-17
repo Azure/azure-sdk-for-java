@@ -378,8 +378,7 @@ public final class SessionContainer implements ISessionContainer {
 
             this.recordRegionScopedSessionToken(
                 partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
-                sessionTokenToRegionMapping
-            );
+                sessionTokenToRegionMapping);
 
         } else {
             // populate partitionKeyRangeBasedRegionScopedSessionTokenRegistry
@@ -403,8 +402,7 @@ public final class SessionContainer implements ISessionContainer {
             if (partitionKeyRangeBasedRegionScopedSessionTokenRegistry != null) {
                 this.recordRegionScopedSessionToken(
                     partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
-                    sessionTokenToRegionMapping
-                );
+                    sessionTokenToRegionMapping);
             }
 
             if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal, partitionKeyDefinition)) {
