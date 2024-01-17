@@ -72,7 +72,7 @@ public class ShareFileListRangesDiffOptions {
      * @return Whether the changed ranges for a file that has been renamed or moved between the target snapshot
      * (or the live file) and the previous snapshot should be listed.
      */
-    public Boolean getSupportRename() {
+    public Boolean isSupportRename() {
         return supportRename;
     }
 

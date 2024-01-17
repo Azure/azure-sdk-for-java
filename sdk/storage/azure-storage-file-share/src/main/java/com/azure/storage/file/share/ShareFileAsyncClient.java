@@ -2722,7 +2722,7 @@ public class ShareFileAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.getSupportRename(), Context.NONE);
+                options.getPreviousSnapshot(), options.isSupportRename(), Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
