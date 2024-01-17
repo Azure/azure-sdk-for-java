@@ -1085,7 +1085,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
           returnValue = writeConfig.itemWriteStrategy match {
               case ItemWriteStrategy.ItemBulkUpdate =>
                   this.shouldRetryForItemPatchBulkUpdate(statusCode, subStatusCode)
-              case _ => Exceptions.canBeTransientFailure(statusCode, subStatusCode)
+              case _ => Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+                statusCode == 0 // Gateway mode reports inability to connect due to
+                                // PoolAcquirePendingLimitException as status code 0
           }
       }
 
@@ -1097,6 +1099,8 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   private def shouldRetryForItemPatchBulkUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
       Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+          statusCode == 0 // Gateway mode reports inability to connect due to
+                          // PoolAcquirePendingLimitException as status code 0
           Exceptions.isResourceExistsException(statusCode) ||
           Exceptions.isPreconditionFailedException(statusCode)
   }

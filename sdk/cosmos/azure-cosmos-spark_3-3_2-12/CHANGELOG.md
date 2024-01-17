@@ -7,8 +7,14 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed warning related to custom metrics in Spark 3.2 / 3.3 and 3.4. - See [PR 38315](https://github.com/Azure/azure-sdk-for-java/pull/38315)
 
 #### Other Changes
+
+### 4.25.1 (2024-01-14)
+
+#### Features Added
+* Added config option `spark.cosmos.http.connectionPoolSize` to override the Http Connection Pool size in Gateway mode. Increasing the connection pool size beyond 1000 can be useful when the number of concurrent requests in Gateway mode is very high and you see a `reactor.netty.internal.shaded.reactor.pool.PoolAcquirePendingLimitException: Pending acquire queue has reached its maximum size of 2000` error. - See [PR 38305](https://github.com/Azure/azure-sdk-for-java/pull/38305)
 
 ### 4.25.0 (2024-01-03)
 
