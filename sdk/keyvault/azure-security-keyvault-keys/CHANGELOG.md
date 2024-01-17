@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Added fallback logic to use service-side cryptography if a key cannot be retrieved for local operations.([#38334](https://github.com/Azure/azure-sdk-for-java/pull/38334))
+- Added fallback logic to use service-side cryptography if a key cannot be retrieved for local operations. ([#38334](https://github.com/Azure/azure-sdk-for-java/pull/38334))
 
 ### Other Changes
 
