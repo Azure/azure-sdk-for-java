@@ -65,9 +65,9 @@ parameters:
 - name: ReleaseDependsOnLiveTests
   type: string
   default: not-specified
-- name: EnableVerifyTypeSpecCodeGeneration
+- name: IgnoreVerifyTypeSpecCodeGenerationError
   type: boolean
-  default: true
+  default: false
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -81,7 +81,7 @@ stages:
         TestPipeline: ${{ parameters.TestPipeline }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
-        EnableVerifyTypeSpecCodeGeneration: ${{ parameters.EnableVerifyTypeSpecCodeGeneration }}
+        IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
         ReleaseArtifacts:
         - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
           - ${{ each artifact in parameters.Artifacts }}:
