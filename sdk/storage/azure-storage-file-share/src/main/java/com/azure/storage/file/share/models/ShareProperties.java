@@ -576,7 +576,10 @@ public final class ShareProperties {
     }
 
     /**
-     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * Get the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
      *
      * @return the enableSnapshotVirtualDirectoryAccess value.
      */
@@ -585,7 +588,10 @@ public final class ShareProperties {
     }
 
     /**
-     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * Set the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
      *
      * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareProperties object itself.
