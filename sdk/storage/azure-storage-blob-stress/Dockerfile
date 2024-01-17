@@ -13,16 +13,18 @@ ADD ./common /stress/common
 ADD ./sdk/parents /stress/sdk/parents
 
 # Build storage and stress tests
+ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dmaven.javadoc.skip"
 RUN --mount=type=cache,target=/root/.m2 \
- mvn -f /stress/eng/code-quality-reports/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/common/perf-test-core/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/tools/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/storage/azure-storage-common/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/storage/azure-storage-internal-avro/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/storage/azure-storage-blob/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/storage/azure-storage-stress/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests && \
- mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests
+ mvn -f /stress/eng/code-quality-reports/pom.xml clean install  && \
+ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/common/perf-test-core/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/storage/azure-storage-common/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/storage/azure-storage-internal-avro/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/storage/azure-storage-blob/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/storage/azure-storage-stress/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install ${SKIP_CHECKS}
 
 FROM mcr.microsoft.com/openjdk/jdk:11-mariner
 
