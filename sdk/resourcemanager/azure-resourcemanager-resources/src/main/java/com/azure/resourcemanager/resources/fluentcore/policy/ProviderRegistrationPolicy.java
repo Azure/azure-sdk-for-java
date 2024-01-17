@@ -170,11 +170,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
             }
 
             // Retry after registration
-            try {
-                registerProviderUntilSuccessSync(resourceNamespace);
-            } catch (ProviderUnregisteredException e) {
-                // Ignored
-            }
+            registerProviderUntilSuccessSync(resourceNamespace);
 
             return next.clone().processSync();
         }
@@ -195,7 +191,11 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> checkProviderRegistered(Provider provider) {
-        return Mono.fromRunnable(() -> checkProviderRegisteredSync(provider));
+        if (isProviderRegistered(provider)) {
+            return Mono.empty();
+        }
+
+        return Mono.error(new ProviderUnregisteredException());
     }
 
     private void registerProviderUntilSuccessSync(String namespace) {
@@ -206,32 +206,22 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
         // First 29 attempts will catch and retry the exception.
         for (int i = 0; i < 29; i++) {
-            try {
-                provider = providers.getByName(namespace);
-                checkProviderRegisteredSync(provider);
+            provider = providers.getByName(namespace);
+            if (isProviderRegistered(provider)) {
                 return;
-            } catch (ProviderUnregisteredException e) {
+            }
+
+            Duration delay = ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10));
+            try {
+                Thread.sleep(delay.toMillis());
+            } catch (InterruptedException interruptedException) {
                 // ignore
-                Duration delay = ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10));
-                try {
-                    Thread.sleep(delay.toMillis());
-                } catch (InterruptedException interruptedException) {
-                    // ignore
-                }
             }
         }
 
         // The 30th attempt will throw the exception.
         provider = providers.getByName(namespace);
-        checkProviderRegisteredSync(provider);
-    }
-
-    private void checkProviderRegisteredSync(Provider provider) {
-        if (isProviderRegistered(provider)) {
-            return;
-        }
-
-        throw new ProviderUnregisteredException();
+        isProviderRegistered(provider);
     }
 
     private boolean isProviderRegistered(Provider provider) {
