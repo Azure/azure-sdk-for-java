@@ -93,37 +93,6 @@ public final class ThreadMessage {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of ThreadMessage class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param threadId the threadId value to set.
-     * @param role the role value to set.
-     * @param content the content value to set.
-     * @param fileIds the fileIds value to set.
-     */
-    @Generated
-    public ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageRole role,
-        List<MessageContent> content, List<String> fileIds) {
-        this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
-        this.threadId = threadId;
-        this.role = role;
-        this.content = content;
-        this.fileIds = fileIds;
-    }
-
-    @Generated
-    @JsonCreator
-    private ThreadMessage(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "thread_id") String threadId, @JsonProperty(value = "role") MessageRole role,
-        @JsonProperty(value = "content") List<MessageContent> content,
-        @JsonProperty(value = "file_ids") List<String> fileIds) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), threadId, role, content,
-            fileIds);
-    }
-
-    /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
      * @return the id value.
@@ -252,16 +221,36 @@ public final class ThreadMessage {
     }
 
     /**
-     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
-     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
-     * values may be up to 512 characters in length.
+     * Creates an instance of ThreadMessage class.
      *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param threadId the threadId value to set.
+     * @param role the role value to set.
+     * @param content the content value to set.
+     * @param fileIds the fileIds value to set.
      * @param metadata the metadata value to set.
-     * @return the ThreadMessage object itself.
      */
     @Generated
-    public ThreadMessage setMetadata(Map<String, String> metadata) {
+    public ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageRole role,
+        List<MessageContent> content, List<String> fileIds, Map<String, String> metadata) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.threadId = threadId;
+        this.role = role;
+        this.content = content;
+        this.fileIds = fileIds;
         this.metadata = metadata;
-        return this;
+    }
+
+    @Generated
+    @JsonCreator
+    private ThreadMessage(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "thread_id") String threadId, @JsonProperty(value = "role") MessageRole role,
+        @JsonProperty(value = "content") List<MessageContent> content,
+        @JsonProperty(value = "file_ids") List<String> fileIds,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), threadId, role, content,
+            fileIds, metadata);
     }
 }

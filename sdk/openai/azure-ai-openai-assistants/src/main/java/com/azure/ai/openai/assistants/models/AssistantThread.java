@@ -49,24 +49,6 @@ public final class AssistantThread {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of AssistantThread class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     */
-    @Generated
-    private AssistantThread(String id, OffsetDateTime createdAt) {
-        this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
-    }
-
-    @Generated
-    @JsonCreator
-    private AssistantThread(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC));
-    }
-
-    /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
      * @return the id value.
@@ -106,5 +88,26 @@ public final class AssistantThread {
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Creates an instance of AssistantThread class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private AssistantThread(String id, OffsetDateTime createdAt, Map<String, String> metadata) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.metadata = metadata;
+    }
+
+    @Generated
+    @JsonCreator
+    private AssistantThread(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), metadata);
     }
 }

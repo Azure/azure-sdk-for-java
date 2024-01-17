@@ -3,11 +3,8 @@
 
 package com.azure.ai.openai.assistants.auth;
 
-import com.azure.ai.openai.assistants.AssistantThreadsClient;
 import com.azure.ai.openai.assistants.AssistantsClient;
 import com.azure.ai.openai.assistants.AssistantsClientBuilder;
-import com.azure.ai.openai.assistants.ThreadMessagesClient;
-import com.azure.ai.openai.assistants.ThreadRunsClient;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -36,7 +33,7 @@ public class ClientCreationWithNonAzureOpenAIKeyCredential {
 
         String deploymentOrModelId = "gpt-4-1106-preview";
 
-        AssistantsClient client = builder.buildAssistantsClient();
+        AssistantsClient client = builder.buildClient();
 //        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
 //                .setFileIds(Arrays.asList("file-cQJ0ncMcsY7B8g6mio0RE102"))
 //                .setName("Shawn's Assistant")
@@ -46,24 +43,22 @@ public class ClientCreationWithNonAzureOpenAIKeyCredential {
 //        Assistant assistant = client.createAssistant(assistantCreationOptions);
 //        System.out.printf("Assistant ID=%s is created at %s.%n", assistant.getId(), assistant.getCreatedAt());
 
-        Assistant assistant = client.retrieveAssistant("asst_zS3eRcCrpOvbLltWEs6esGv1");
+        Assistant assistant = client.getAssistant("asst_zS3eRcCrpOvbLltWEs6esGv1");
         String name = assistant.getName();
         System.out.println(name);
 
-        AssistantThreadsClient assistantThreadsClient = builder.buildAssistantThreadsClient();
-        AssistantThread assistantThread = assistantThreadsClient.retrieveThread("thread_Q9nzrJBH0lRs0gDqjV13npRJ");
+
+        AssistantThread assistantThread = client.getThread("thread_Q9nzrJBH0lRs0gDqjV13npRJ");
         System.out.println(assistantThread.getId());
 
 
-        ThreadMessagesClient threadMessagesClient = builder.buildThreadMessagesClient();
-        ThreadMessage message = threadMessagesClient.createMessage(assistantThread.getId(), MessageRole.USER, "Show me top 3 most profitable month.");
+        ThreadMessage message = client.createMessage(assistantThread.getId(), MessageRole.USER, "Show me top 3 most profitable month.");
         System.out.println(message.getContent().get(0));
-        ThreadMessage threadMessage = threadMessagesClient.retrieveMessage(assistantThread.getId(), message.getId());
+        ThreadMessage threadMessage = client.getMessage(assistantThread.getId(), message.getId());
         System.out.println(threadMessage.getContent().get(0));
 
 
-        ThreadRunsClient threadRunsClient = builder.buildThreadRunsClient();
-        ThreadRun threadRun = threadRunsClient.createRun(assistantThread.getId(), "asst_zS3eRcCrpOvbLltWEs6esGv1");
+        ThreadRun threadRun = client.createRun(assistantThread.getId(), "asst_zS3eRcCrpOvbLltWEs6esGv1");
 
         String assistantId = threadRun.getAssistantId();
         String threadId = threadRun.getThreadId();
@@ -71,22 +66,19 @@ public class ClientCreationWithNonAzureOpenAIKeyCredential {
         System.out.println("assistant id = " + assistantId + ", thread id = " + threadId + ", run id = " + runId);
 
 
-        ThreadRun threadRun1 = threadRunsClient.retrieveRun(threadId, runId);
+        ThreadRun threadRun1 = client.getRun(threadId, runId);
         System.out.println(threadRun1.getAssistantId());
         while (threadRun1.getStatus() != RunStatus.COMPLETED) {
             System.out.println(threadRun1.getStatus());
-            threadRun1 = threadRunsClient.retrieveRun(threadId, runId);
+            threadRun1 = client.getRun(threadId, runId);
         }
 
 
-//        RunStepsClient runStepsClient = builder.buildRunStepsClient();
-//        OpenAIPageableListOfRunStep openAIPageableListOfRunStep = runStepsClient.listRunSteps(threadId, runId);
+//        OpenAIPageableListOfRunStep openAIPageableListOfRunStep = client.listRunSteps(threadId, runId);
 //        openAIPageableListOfRunStep.getFirstId();
 //        openAIPageableListOfRunStep.getLastId();
+//        OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = client.listMessages(threadId);
 
-
-//        OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = threadMessagesClient.listMessages(threadId);
-//
 //        List<ThreadMessage> data = openAIPageableListOfThreadMessage.getData();
 //        for (int i = 0; i < data.size(); i++) {
 //            ThreadMessage dataMessage = data.get(i);

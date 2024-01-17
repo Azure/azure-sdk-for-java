@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A status response from a file deletion operation.
  */
 @Immutable
-public final class FileDeletionStatus extends DeletionStatus {
+public final class FileDeletionStatus {
 
     /*
      * The object type, which is always 'file'.
@@ -22,25 +22,11 @@ public final class FileDeletionStatus extends DeletionStatus {
     private String object = "file";
 
     /*
-     * The ID of the deleted file.
+     * The ID of the resource specified for deletion.
      */
     @Generated
     @JsonProperty(value = "id")
     private String id;
-
-    /**
-     * Creates an instance of FileDeletionStatus class.
-     *
-     * @param deleted the deleted value to set.
-     * @param id the id value to set.
-     */
-    @Generated
-    @JsonCreator
-    private FileDeletionStatus(@JsonProperty(value = "deleted") boolean deleted,
-        @JsonProperty(value = "id") String id) {
-        super(deleted);
-        this.id = id;
-    }
 
     /**
      * Get the object property: The object type, which is always 'file'.
@@ -53,12 +39,43 @@ public final class FileDeletionStatus extends DeletionStatus {
     }
 
     /**
-     * Get the id property: The ID of the deleted file.
+     * Get the id property: The ID of the resource specified for deletion.
      *
      * @return the id value.
      */
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /*
+     * A value indicating whether deletion was successful.
+     */
+    @Generated
+    @JsonProperty(value = "deleted")
+    private boolean deleted;
+
+    /**
+     * Creates an instance of FileDeletionStatus class.
+     *
+     * @param id the id value to set.
+     * @param deleted the deleted value to set.
+     */
+    @Generated
+    @JsonCreator
+    private FileDeletionStatus(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "deleted") boolean deleted) {
+        this.id = id;
+        this.deleted = deleted;
+    }
+
+    /**
+     * Get the deleted property: A value indicating whether deletion was successful.
+     *
+     * @return the deleted value.
+     */
+    @Generated
+    public boolean isDeleted() {
+        return this.deleted;
     }
 }

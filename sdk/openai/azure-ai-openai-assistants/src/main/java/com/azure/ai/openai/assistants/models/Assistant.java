@@ -92,42 +92,6 @@ public final class Assistant {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of Assistant class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param model the model value to set.
-     * @param instructions the instructions value to set.
-     * @param tools the tools value to set.
-     * @param fileIds the fileIds value to set.
-     */
-    @Generated
-    private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
-        String instructions, List<ToolDefinition> tools, List<String> fileIds) {
-        this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
-        this.name = name;
-        this.description = description;
-        this.model = model;
-        this.instructions = instructions;
-        this.tools = tools;
-        this.fileIds = fileIds;
-    }
-
-    @Generated
-    @JsonCreator
-    private Assistant(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "name") String name, @JsonProperty(value = "description") String description,
-        @JsonProperty(value = "model") String model, @JsonProperty(value = "instructions") String instructions,
-        @JsonProperty(value = "tools") List<ToolDefinition> tools,
-        @JsonProperty(value = "file_ids") List<String> fileIds) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), name, description, model,
-            instructions, tools, fileIds);
-    }
-
-    /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
      * @return the id value.
@@ -227,5 +191,44 @@ public final class Assistant {
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Creates an instance of Assistant class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param model the model value to set.
+     * @param instructions the instructions value to set.
+     * @param tools the tools value to set.
+     * @param fileIds the fileIds value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
+        String instructions, List<ToolDefinition> tools, List<String> fileIds, Map<String, String> metadata) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.name = name;
+        this.description = description;
+        this.model = model;
+        this.instructions = instructions;
+        this.tools = tools;
+        this.fileIds = fileIds;
+        this.metadata = metadata;
+    }
+
+    @Generated
+    @JsonCreator
+    private Assistant(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "name") String name, @JsonProperty(value = "description") String description,
+        @JsonProperty(value = "model") String model, @JsonProperty(value = "instructions") String instructions,
+        @JsonProperty(value = "tools") List<ToolDefinition> tools,
+        @JsonProperty(value = "file_ids") List<String> fileIds,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), name, description, model,
+            instructions, tools, fileIds, metadata);
     }
 }

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The status of a thread deletion operation.
  */
 @Immutable
-public final class ThreadDeletionStatus extends DeletionStatus {
+public final class ThreadDeletionStatus {
 
     /*
      * The object type, which is always 'thread.deleted'.
@@ -22,17 +22,6 @@ public final class ThreadDeletionStatus extends DeletionStatus {
     private String object = "thread.deleted";
 
     /**
-     * Creates an instance of ThreadDeletionStatus class.
-     *
-     * @param deleted the deleted value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ThreadDeletionStatus(@JsonProperty(value = "deleted") boolean deleted) {
-        super(deleted);
-    }
-
-    /**
      * Get the object property: The object type, which is always 'thread.deleted'.
      *
      * @return the object value.
@@ -40,5 +29,53 @@ public final class ThreadDeletionStatus extends DeletionStatus {
     @Generated
     public String getObject() {
         return this.object;
+    }
+
+    /*
+     * The ID of the resource specified for deletion.
+     */
+    @Generated
+    @JsonProperty(value = "id")
+    private String id;
+
+    /*
+     * A value indicating whether deletion was successful.
+     */
+    @Generated
+    @JsonProperty(value = "deleted")
+    private boolean deleted;
+
+    /**
+     * Creates an instance of ThreadDeletionStatus class.
+     *
+     * @param id the id value to set.
+     * @param deleted the deleted value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ThreadDeletionStatus(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "deleted") boolean deleted) {
+        this.id = id;
+        this.deleted = deleted;
+    }
+
+    /**
+     * Get the id property: The ID of the resource specified for deletion.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Get the deleted property: A value indicating whether deletion was successful.
+     *
+     * @return the deleted value.
+     */
+    @Generated
+    public boolean isDeleted() {
+        return this.deleted;
     }
 }
