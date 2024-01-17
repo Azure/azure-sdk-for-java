@@ -1293,8 +1293,8 @@ private object CosmosReadManyFilteringConfig {
     mandatory = false,
     defaultValue = Some(false),
     parseFromStringFunction = readManyFilteringEnabled => readManyFilteringEnabled.toBoolean,
-    helpMessage = "When enabled, will try to optimize the read using readMany vs query" +
-      " when filter based on '_itemIdentity' exists either during filter pushdown or through dynamic partition pruning stage.")
+    helpMessage = "When enabled, will try to optimize the read using readMany vs query. " +
+      " When the container has the id as the partitionKey, when filter based on id exists. Else, readMany when filter based on '_itemIdentity' exists either during filter pushdown or through dynamic partition pruning stage.")
 
   def parseCosmosReadManyFilterConfig(cfg: Map[String, String]): CosmosReadManyFilteringConfig = {
     val cosmosReadManyFilteringEnabled = CosmosConfigEntry.parse(cfg, readManyFilteringEnabled)
