@@ -338,7 +338,7 @@ jobs:
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
-        continueOnError: ${{ if eq(parameters.EnableVerifyTypeSpecCodeGeneration, 'false') }}
+        continueOnError: ${{ eq(parameters.EnableVerifyTypeSpecCodeGeneration, 'false') }}
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
