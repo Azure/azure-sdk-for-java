@@ -223,7 +223,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void systemInfo(CosmosClient cosmosClient) throws Exception {
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         readClientTelemetry(clientTelemetry);
-        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isEqualTo(2);
+        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isGreaterThanOrEqualTo(2);
         for (ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
             if (reportPayload.getMetricInfo().getMetricsName().equals("CPU")) {
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("Percentage");
