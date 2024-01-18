@@ -12,6 +12,7 @@ import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -136,8 +137,7 @@ public class HttpClientTestsServer {
         return mergedArray;
     }
 
-    private static void handleRequest(HttpServletResponse response, String contentType, byte[] responseBody)
-        throws IOException {
+    private static void handleRequest(Response response, String contentType, byte[] responseBody) throws IOException {
         response.setStatus(200);
         response.setContentType(contentType);
         response.setContentLength(responseBody.length);
@@ -161,8 +161,7 @@ public class HttpClientTestsServer {
         resp.flushBuffer();
     }
 
-    private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
-        String requestString) throws IOException {
+    private static void sendSimpleHttpBinResponse(Request req, Response resp, String requestString) throws IOException {
         HttpBinJson responseBody = new HttpBinJson();
         responseBody.url(cleanseUrl(req));
 
@@ -185,7 +184,7 @@ public class HttpClientTestsServer {
         handleRequest(resp, "application/json", ADAPTER.serializeToBytes(responseBody, SerializerEncoding.JSON));
     }
 
-    private static void sendFormResponse(HttpServletRequest req, HttpServletResponse resp, String requestString)
+    private static void sendFormResponse(Request req, Response resp, String requestString)
         throws IOException {
         HttpBinFormDataJson formBody = new HttpBinFormDataJson();
         HttpBinFormDataJson.Form form = new HttpBinFormDataJson.Form();
