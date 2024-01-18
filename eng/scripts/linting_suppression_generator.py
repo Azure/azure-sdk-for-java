@@ -8,6 +8,10 @@
 #
 # python linting_suppression_generator.py --project-folder <project folder>
 #
+# For example:
+#
+# python linting_suppression_generator.py --project-folder sdk/identity/azure-identity
+#
 # This will generate, or update, the suppression files in the project root directory.
 #
 # This script only supports running against a single project. It won't walk any subdirectories looking for
@@ -27,14 +31,14 @@ def generate_suppression_files(project_folder: str):
     if not os.path.exists(project_folder):
         print('The project folder does not exist: ' + project_folder)
         return
-    
+
     # Check if the project folder is a Java project.
     if not os.path.exists(os.path.join(project_folder, 'pom.xml')):
         print('The project folder does not contain a pom.xml file: ' + project_folder)
         return
-    
+
     generate_linting_violations(project_folder)
-    
+
     generate_checkstyle_suppression_file(project_folder)
     generate_spotbugs_suppression_file(project_folder)
 
@@ -51,7 +55,7 @@ def generate_checkstyle_suppression_file(project_folder: str):
     if not os.path.exists(checkstyle_violations_file):
         print('No Checkstyle violations file was found at: ' + checkstyle_violations_file)
         return
-    
+
     # Checkstyle violations are stored in the following format:
     # <checkstyle>
     #   <file name="...">
@@ -67,7 +71,7 @@ def generate_checkstyle_suppression_file(project_folder: str):
     # Dict(source, Set(classname))
     #
     # Where the file_name will be turned into the Java file path (ex: /src/main/java/com/azure/.../MyClass.java -> com.azure...MyClass.java),
-    # the message will be left as is, and the source will clean the built-in checks to just their name 
+    # the message will be left as is, and the source will clean the built-in checks to just their name
     # (ex: com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck -> MissingJavadocMethodCheck).
     violations: Dict[str, Set[str]] = dict()
 
@@ -102,7 +106,7 @@ def generate_checkstyle_suppression_file(project_folder: str):
                 violations[source] = set()
 
             violations[source].add(file_name)
-    
+
     # Now that we have the violations, we can generate the suppression file.
     # The format of the suppression file is as follows:
     #
@@ -131,7 +135,7 @@ def generate_spotbugs_suppression_file(project_folder: str):
     if not os.path.exists(spotbugs_violations_file):
         print('No Spotbugs violations file was found at: ' + spotbugs_violations_file)
         return
-    
+
     # Spotbugs violations are stored in the following format:
     # <BugCollection>
     #   <file classname="...">
@@ -141,7 +145,7 @@ def generate_spotbugs_suppression_file(project_folder: str):
     # </BugCollection>
     #
     # # Parsing the violations will be stored in the following structure:
-    # 
+    #
     # Dict(type, Set(classname))
     violations: Dict[str, Set[str]] = dict()
 
@@ -160,7 +164,7 @@ def generate_spotbugs_suppression_file(project_folder: str):
                 violations[type] = set()
 
             violations[type].add(classname)
-    
+
     # Now that we have the violations, we can generate the suppression file.
     # The format of the suppression file is as follows:
     #
@@ -190,7 +194,7 @@ def generate_spotbugs_suppression_file(project_folder: str):
         spotbugs_suppressions.write('<?xml version="1.0" encoding="UTF-8"?>\n\n')
         spotbugs_suppressions.write('<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n')
         spotbugs_suppressions.write('                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">\n')
-    
+
         for violation in sorted(violations.items(), key=lambda x: x[0]):
             spotbugs_suppressions.write('  <Match>\n')
             spotbugs_suppressions.write(f'    <Bug pattern="{violation[0]}" />\n')
