@@ -732,6 +732,7 @@ class StorageAccountImpl
         createParameters.withTags(this.innerModel().tags());
         this.storageAccountMsiHandler.processCreatedExternalIdentities();
         this.storageAccountMsiHandler.handleExternalIdentities();
+        this.storageAccountMsiHandler.clear();
         final StorageAccountsClient client = this.manager().serviceClient().getStorageAccounts();
         return this
             .manager()
@@ -752,6 +753,7 @@ class StorageAccountImpl
         updateParameters.withTags(this.innerModel().tags());
         this.storageAccountMsiHandler.processCreatedExternalIdentities();
         this.storageAccountMsiHandler.handleExternalIdentities();
+        this.storageAccountMsiHandler.clear();
         return this
             .manager()
             .serviceClient()
