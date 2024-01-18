@@ -212,7 +212,7 @@ public class ClientTelemetry {
         return this.clientMetricsEnabled;
     }
 
-    public Mono init() {
+    public Mono<?> init() {
         return loadAzureVmMetaData()
             .doOnTerminate(() -> {
 
@@ -357,7 +357,7 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private Mono loadAzureVmMetaData() {
+    private Mono<?> loadAzureVmMetaData() {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null) {
@@ -378,7 +378,7 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
-        Mono mono = httpResponseMono
+        Mono<?> mono = httpResponseMono
             .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
                 AzureVMMetadata.class)).doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
