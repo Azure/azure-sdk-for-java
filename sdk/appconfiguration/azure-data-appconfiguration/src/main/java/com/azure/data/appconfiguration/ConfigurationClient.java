@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -1056,16 +1057,32 @@ public final class ConfigurationClient {
 
         return new PagedIterable<>(
             () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    selector == null ? null : selector.getKeyFilter(),
-                    selector == null ? null : selector.getLabelFilter(),
-                    null,
-                    acceptDateTime,
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    null,
-                    null,
-                    null,
-                    enableSyncRestProxy(addTracingNamespace(context)));
+                MatchConditions matchConditions = selector == null ? null : selector.getMatchConditions();
+                String eTagInFirstPage = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+
+                final PagedResponse<KeyValue> pagedResponse;
+
+                try {
+                    pagedResponse = serviceClient.getKeyValuesSinglePage(
+                            selector == null ? null : selector.getKeyFilter(),
+                            selector == null ? null : selector.getLabelFilter(),
+                            null,
+                            acceptDateTime,
+                            selector == null ? null : toSettingFieldsList(selector.getFields()),
+                            null,
+                            null,
+                            eTagInFirstPage,
+                            enableSyncRestProxy(addTracingNamespace(context)));
+                } catch (HttpResponseException ex) {
+                    final HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+//                        String continuesToken = httpResponse.getHeaders().getValue("link");
+//                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
+                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                                httpResponse.getHeaders(), null, null, null);
+                    }
+                    throw LOGGER.logExceptionAsError(ex);
+                }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
@@ -1117,16 +1134,31 @@ public final class ConfigurationClient {
                     eTagInFirstPage = null;
                 }
 
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    selector == null ? null : selector.getKeyFilter(),
-                    selector == null ? null : selector.getLabelFilter(),
-                    null,
-                    acceptDateTime,
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    null,
-                    null,
-                    eTagInFirstPage,
-                    enableSyncRestProxy(addTracingNamespace(context)));
+                final PagedResponse<KeyValue> pagedResponse;
+
+                try {
+                    pagedResponse = serviceClient.getKeyValuesSinglePage(
+                            selector == null ? null : selector.getKeyFilter(),
+                            selector == null ? null : selector.getLabelFilter(),
+                            null,
+                            acceptDateTime,
+                            selector == null ? null : toSettingFieldsList(selector.getFields()),
+                            null,
+                            null,
+                            eTagInFirstPage,
+                            enableSyncRestProxy(addTracingNamespace(context)));
+                } catch (HttpResponseException ex) {
+                    final HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+                        String continuesToken = httpResponse.getHeaders().getValue("link");
+                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
+
+                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                                httpResponse.getHeaders(), null, continuesToken, null);
+                    }
+                    throw LOGGER.logExceptionAsError(ex);
+                }
+
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
@@ -1137,9 +1169,21 @@ public final class ConfigurationClient {
                     eTagInNextPage = null;
                 }
 
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    acceptDateTime,
-                    null, eTagInNextPage, enableSyncRestProxy(addTracingNamespace(context)));
+                final PagedResponse<KeyValue> pagedResponse;
+                try {
+                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
+                            acceptDateTime,
+                            null, eTagInNextPage, enableSyncRestProxy(addTracingNamespace(context)));
+                } catch (HttpResponseException ex) {
+                    final HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+                        String continuesToken = httpResponse.getHeaders().getValue("link");
+                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
+                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                                httpResponse.getHeaders(), null, continuesToken, null);
+                    }
+                    throw LOGGER.logExceptionAsError(ex);
+                }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
