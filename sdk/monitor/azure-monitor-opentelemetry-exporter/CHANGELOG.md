@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- [Update OpenTelemetry to 2.0.0](https://github.com/Azure/azure-sdk-for-java/pull/38360)
 - [Support for stable HTTP semconv](https://github.com/Azure/azure-sdk-for-java/pull/37899)
 - [Update otel schema to 1.22.0](https://github.com/Azure/azure-sdk-for-java/pull/38246)
 
