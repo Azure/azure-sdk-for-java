@@ -55,6 +55,9 @@ parameters:
   - name: JavadocSafeJavaBuildVersion
     type: string
     default: $(JavadocSafeJavaBuildVersion)
+  - name: IgnoreVerifyTypeSpecCodeGenerationError
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Build'
@@ -338,6 +341,7 @@ jobs:
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
+        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1

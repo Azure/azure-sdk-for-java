@@ -1,27 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to analyze all supported visual features from the image file sample.jpg,
-//     using a synchronous client.
-//
-//     The synchronous (blocking) `analyze` method makes a single REST call to the Azure AI Vision
-//     service, where all visual features are analyzed in parallel. When the service responds, the method returns
-//     an `ImageAnalysisResult` object, which contains separate result properties for each one of the visual features.
-//     This sample prints all the results to the console.
-//
-//     The sample also shows how to turn on console SDK logs by calling httpLogOptions, which may be needed
-//     for troubleshooting purposes. You will also need to set environment variable `AZURE_LOG_LEVEL` to `debug`
-//     to see the logs.
-//
-//     For more information on a particular visual feature, and optional setting associated with it,
-//     have a look at the sample in this folder dedicated to that visual feature.
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
-
+// Source code snippets from this file are embedded in Image Analysis SDK JavaDoc (API documentations).
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
@@ -35,19 +14,21 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 
-public class SampleAnalyzeAllImageFile {
+public class ImageAnalysisSyncJavaDocCodeSnippets {
 
-    public static void main(String[] args) {
+    private static String endpoint;
+    private static String key;
 
-        String endpoint = System.getenv("VISION_ENDPOINT");
-        String key = System.getenv("VISION_KEY");
+    public static void main(String[] args) throws MalformedURLException {
+
+        endpoint = System.getenv("VISION_ENDPOINT");
+        key = System.getenv("VISION_KEY");
 
         if (endpoint == null || key == null) {
             System.out.println("Missing environment variable 'VISION_ENDPOINT' or 'VISION_KEY'.");
@@ -55,45 +36,83 @@ public class SampleAnalyzeAllImageFile {
             System.exit(1);
         }
 
-        // Create a synchronous Image Analysis client, with logging enabled.
-        // For log levels, see: https://learn.microsoft.com/java/api/com.azure.core.http.policy.httplogdetaillevel?view=azure-java-stable
+        analysisFromFile();
+
+        analysisFromUrl();
+    }
+
+    private static void analysisFromFile() {
+        // BEGIN: com.azure.ai.vision.imageanalysis.sync-client
+        //
+        // Create a synchronous Image Analysis client.
+        //
         ImageAnalysisClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: com.azure.ai.vision.imageanalysis.sync-client
+
+        // BEGIN: com.azure.ai.vision.imageanalysis.sync-analysis-from-file
+        //
+        // Synchronous analysis of an image file (sample.jpg), using all visual features,
+        // with all options set. You will likely need fewer visual features and only
+        // some (or no) options set.
+        //
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
+            .setLanguage("en")
+            .setGenderNeutralCaption(true)
+            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
+            .setModelVersion("latest");
+
+        ImageAnalysisResult result = client.analyze(
+            BinaryData.fromFile(new File("sample.jpg").toPath()),
+            Arrays.asList(
+                VisualFeatures.SMART_CROPS,
+                VisualFeatures.CAPTION,
+                VisualFeatures.DENSE_CAPTIONS,
+                VisualFeatures.OBJECTS,
+                VisualFeatures.PEOPLE,
+                VisualFeatures.READ,
+                VisualFeatures.TAGS),
+            options);
+        // END: com.azure.ai.vision.imageanalysis.sync-analysis-from-file
+
+        printAnalysisResults(result);
+    }
+
+    private static void analysisFromUrl() throws MalformedURLException {
+
+        ImageAnalysisClient client = new ImageAnalysisClientBuilder()
+            .endpoint(endpoint)
+            .credential(new KeyCredential(key))
             .buildClient();
 
-        // Specify analysis options (or set `options` to null for defaults)
+        // BEGIN: com.azure.ai.vision.imageanalysis.sync-analysis-from-url
+        //
+        // Synchronous analysis of an image file (https://aka.ms/azsdk/image-analysis/sample.jpg),
+        // using all visual features, with all options set. You will likely need fewer visual features
+        // and only some (or no) options set.
+        //
         ImageAnalysisOptions options = new ImageAnalysisOptions()
-            .setLanguage("en") // language (optional): Relevant only for TAGS. See https://aka.ms/cv-languages for supported languages.
-            .setGenderNeutralCaption(true) // genderNeutralCaption (optional): Relevant only if CAPTION or DENSE_CAPTIONS were specified above.
-            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33)) // smartCropsAspectRatios (optional). Relevant only if SMART_CROPS was specified above.
-            .setModelVersion("latest"); // modelVersion (optional): The model version to use. When not specified, the default value of "latest" is used.
+            .setLanguage("en")
+            .setGenderNeutralCaption(true)
+            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
+            .setModelVersion("latest");
 
-        try {
+        ImageAnalysisResult result = client.analyze(
+            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"),
+            Arrays.asList(
+                VisualFeatures.SMART_CROPS,
+                VisualFeatures.CAPTION,
+                VisualFeatures.DENSE_CAPTIONS,
+                VisualFeatures.OBJECTS,
+                VisualFeatures.PEOPLE,
+                VisualFeatures.READ,
+                VisualFeatures.TAGS),
+            options);
+        // END: com.azure.ai.vision.imageanalysis.sync-analysis-from-url
 
-            // Analyze all visual features from an image stream. This is a synchronous (blocking) call.
-            ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: the image file loaded into memory as BinaryData
-                Arrays.asList(
-                    VisualFeatures.SMART_CROPS,
-                    VisualFeatures.CAPTION,
-                    VisualFeatures.DENSE_CAPTIONS,
-                    VisualFeatures.OBJECTS,
-                    VisualFeatures.PEOPLE,
-                    VisualFeatures.READ,
-                    VisualFeatures.TAGS), // visualFeatures: Select one or more visual features to analyze.
-                options);
-
-            printAnalysisResults(result);
-
-        } catch (HttpResponseException e) {
-            System.out.println("Exception: " + e.getClass().getSimpleName());
-            System.out.println("Status code: " + e.getResponse().getStatusCode());
-            System.out.println("Message: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Message: " + e.getMessage());
-        }
+        printAnalysisResults(result);
     }
 
     // Print all analysis results to the console
