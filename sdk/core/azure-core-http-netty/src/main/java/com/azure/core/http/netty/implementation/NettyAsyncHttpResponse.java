@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -110,6 +111,16 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public void close() {
         closeConnection(reactorNettyConnection);
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return super.buffer();
+    }
+
+    @Override
+    public Mono<HttpResponse> bufferAsync() {
+        return super.bufferAsync();
     }
 
     private ByteBufFlux bodyIntern() {

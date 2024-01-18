@@ -354,6 +354,10 @@
         <Class name="com.azure.core.models.MessageContent" />
         <Method name="getBodyAsBinaryData" />
       </And>
+      <And>
+        <Class name="com.azure.core.implementation.http.BufferedHttpResponse" />
+        <Method name="getBodyAsBinaryData" />
+      </And>
     </Or>
   </Match>
 

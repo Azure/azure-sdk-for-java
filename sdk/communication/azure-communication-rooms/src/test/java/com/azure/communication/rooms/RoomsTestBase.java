@@ -149,13 +149,11 @@ public class RoomsTestBase extends TestProxyTestBase {
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process().flatMap(httpResponse -> {
-            final HttpResponse bufferedResponse = httpResponse.buffer();
-
+        return next.process().map(httpResponse -> {
             // Should sanitize printed reponse url
-            System.out.println("MS-CV header for " + testName + " request " + bufferedResponse.getRequest().getUrl()
-                    + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-            return Mono.just(bufferedResponse);
+            System.out.println("MS-CV header for " + testName + " request " + httpResponse.getRequest().getUrl()
+                    + ": " + httpResponse.getHeaderValue("MS-CV"));
+            return httpResponse;
         });
     }
 

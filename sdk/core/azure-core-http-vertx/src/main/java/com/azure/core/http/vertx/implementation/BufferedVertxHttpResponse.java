@@ -11,6 +11,8 @@ import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -48,7 +50,27 @@ public final class BufferedVertxHttpResponse extends VertxHttpResponseBase {
     }
 
     @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return Mono.fromCallable(() -> new ByteArrayInputStream(body));
+    }
+
+    @Override
     public HttpResponse buffer() {
         return this;
+    }
+
+    @Override
+    public Mono<HttpResponse> bufferAsync() {
+        return Mono.just(this);
+    }
+
+    @Override
+    public boolean isBuffered() {
+        return true;
+    }
+
+    @Override
+    public void close() {
+        super.close();
     }
 }

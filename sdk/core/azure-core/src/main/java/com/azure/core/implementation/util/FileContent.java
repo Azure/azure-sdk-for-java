@@ -275,6 +275,10 @@ public class FileContent extends BinaryDataContent {
         return BinaryDataContentType.BINARY;
     }
 
+    @Override
+    public void close() {
+    }
+
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));

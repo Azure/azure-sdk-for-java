@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -161,10 +162,10 @@ import static com.azure.core.util.FluxUtil.monoError;
  * @see JsonSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
-public final class BinaryData {
+public final class BinaryData implements Closeable {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
@@ -1595,5 +1596,10 @@ public final class BinaryData {
         } else {
             return content.toReplayableContentAsync().map(BinaryData::new);
         }
+    }
+
+    @Override
+    public void close() {
+        content.close();
     }
 }

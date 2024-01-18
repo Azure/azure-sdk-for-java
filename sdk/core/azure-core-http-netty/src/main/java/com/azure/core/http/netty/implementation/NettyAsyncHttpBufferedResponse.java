@@ -71,4 +71,14 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     public HttpResponse buffer() {
         return this; // This response is already buffered.
     }
+
+    @Override
+    public Mono<HttpResponse> bufferAsync() {
+        return Mono.just(this); // This response is already buffered.
+    }
+
+    @Override
+    public boolean isBuffered() {
+        return true;
+    }
 }

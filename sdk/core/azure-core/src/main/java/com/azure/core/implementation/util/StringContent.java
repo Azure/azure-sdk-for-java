@@ -123,6 +123,10 @@ public final class StringContent extends BinaryDataContent {
         return BinaryDataContentType.TEXT;
     }
 
+    @Override
+    public void close() {
+    }
+
     private byte[] getBytes() {
         return this.content.getBytes(StandardCharsets.UTF_8);
     }
