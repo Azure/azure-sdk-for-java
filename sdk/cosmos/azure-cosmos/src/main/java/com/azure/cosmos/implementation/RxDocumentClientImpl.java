@@ -636,8 +636,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ClientTelemetry.getMachineId(diagnosticsClientConfig),
                     serviceEndpoint,
                     connectionPolicy,
-                    consistencyLevel,
-                    configs.getProtocol());
+                    consistencyLevel);
             }).subscribe();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
