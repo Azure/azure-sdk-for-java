@@ -40,9 +40,11 @@ import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
@@ -1083,107 +1085,20 @@ public final class ConfigurationClient {
                     }
                     throw LOGGER.logExceptionAsError(ex);
                 }
+
+                if (eTagInFirstPage != null) {
+                    List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
+                    pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
+
+                    return new PagedResponseBase<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
+                            pagedResponse.getHeaders(), settings, null, null);
+                }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
                     acceptDateTime,
                     null, null, enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
-    }
-
-    /**
-     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
-     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
-     *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
-     * <pre>
-     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
-     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
-     *
-     * @param selector Optional. Selector to filter configuration setting results from the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-     * provided, the {@link PagedIterable} contains all the current settings in the service.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector,
-        List<MatchConditions> matchConditions, Context context) {
-        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-
-        AtomicInteger count = new AtomicInteger();
-        return new PagedIterable<>(
-            () -> {
-                String eTagInFirstPage;
-
-                if (matchConditions != null && !matchConditions.isEmpty()) {
-                    eTagInFirstPage = matchConditions.get(0).getIfNoneMatch();
-                } else {
-                    eTagInFirstPage = null;
-                }
-
-                final PagedResponse<KeyValue> pagedResponse;
-
-                try {
-                    pagedResponse = serviceClient.getKeyValuesSinglePage(
-                            selector == null ? null : selector.getKeyFilter(),
-                            selector == null ? null : selector.getLabelFilter(),
-                            null,
-                            acceptDateTime,
-                            selector == null ? null : toSettingFieldsList(selector.getFields()),
-                            null,
-                            null,
-                            eTagInFirstPage,
-                            enableSyncRestProxy(addTracingNamespace(context)));
-                } catch (HttpResponseException ex) {
-                    final HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        String continuesToken = httpResponse.getHeaders().getValue("link");
-                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
-
-                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                                httpResponse.getHeaders(), null, continuesToken, null);
-                    }
-                    throw LOGGER.logExceptionAsError(ex);
-                }
-
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                String eTagInNextPage;
-                if (matchConditions != null && !matchConditions.isEmpty()) {
-                    eTagInNextPage = matchConditions.get(count.incrementAndGet()).getIfNoneMatch();
-                } else {
-                    eTagInNextPage = null;
-                }
-
-                final PagedResponse<KeyValue> pagedResponse;
-                try {
-                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                            acceptDateTime,
-                            null, eTagInNextPage, enableSyncRestProxy(addTracingNamespace(context)));
-                } catch (HttpResponseException ex) {
-                    final HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        String continuesToken = httpResponse.getHeaders().getValue("link");
-                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
-                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                                httpResponse.getHeaders(), null, continuesToken, null);
-                    }
-                    throw LOGGER.logExceptionAsError(ex);
-                }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
