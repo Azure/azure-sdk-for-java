@@ -45,10 +45,10 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
+ * <p>Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  * Please be aware that client built from this builder can support synchronously and asynchronously call of sending
  * request. Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
- * synchronously with contextual information.
+ * synchronously with contextual information.</p>
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
