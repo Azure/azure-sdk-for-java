@@ -213,7 +213,7 @@ public class ClientTelemetry {
     }
 
     public Mono<?> init() {
-        Mono startSendingClientTelemetryToServiceMono = this.isClientTelemetryEnabled()
+        Mono<?> startSendingClientTelemetryToServiceMono = this.isClientTelemetryEnabled()
             ? sendClientTelemetry()
             : Mono.empty();
 
