@@ -14,6 +14,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
@@ -73,10 +74,10 @@ public class HttpClientTestsServer {
             } else if (get && path.startsWith("/status")) {
                 // Stub that will return a response with the passed status code.
                 resp.setStatus(Integer.parseInt(path.split("/", 3)[2]));
-                resp.flushBuffer();
+                resp.completeOutput(Callback.NOOP);
             } else if (post && path.startsWith("/post")) {
                 if ("application/x-www-form-urlencoded".equalsIgnoreCase(req.getHeader("Content-Type"))) {
-                    sendFormResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));
+                    sendFormResponse(resp, new String(requestBody, StandardCharsets.UTF_8));
                 } else {
                     sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));
                 }
@@ -98,8 +99,9 @@ public class HttpClientTestsServer {
                 resp.setHeader("Content-Length", "10737418240"); // 10 GB
             } else if (put && path.startsWith("/voiderrorreturned")) {
                 resp.setStatus(400);
-                resp.getOutputStream().write("void exception body thrown".getBytes(StandardCharsets.UTF_8));
-                resp.flushBuffer();
+                resp.getHttpOutput().write("void exception body thrown".getBytes(StandardCharsets.UTF_8));
+                resp.getHttpOutput().flush();
+                resp.getHttpOutput().complete(Callback.NOOP);
             } else if (get && PLAIN_RESPONSE.equals(path)) {
                 handleRequest(resp, "application/octet-stream", RETURN_BYTES);
             } else if (get && HEADER_RESPONSE.equals(path)) {
@@ -141,8 +143,9 @@ public class HttpClientTestsServer {
         response.setStatus(200);
         response.setContentType(contentType);
         response.setContentLength(responseBody.length);
-        response.getOutputStream().write(responseBody);
-        response.flushBuffer();
+        response.getHttpOutput().write(responseBody);
+        response.getHttpOutput().flush();
+        response.getHttpOutput().complete(Callback.NOOP);
     }
 
     private static void sendBytesResponse(String urlPath, Response resp)
@@ -157,8 +160,9 @@ public class HttpClientTestsServer {
 
         resp.addHeader("ETag", MessageDigestUtils.md5(body));
 
-        resp.getOutputStream().write(body);
-        resp.flushBuffer();
+        resp.getHttpOutput().write(body);
+        resp.getHttpOutput().flush();
+        resp.getHttpOutput().complete(Callback.NOOP);
     }
 
     private static void sendSimpleHttpBinResponse(Request req, Response resp, String requestString) throws IOException {
@@ -184,11 +188,11 @@ public class HttpClientTestsServer {
         handleRequest(resp, "application/json", ADAPTER.serializeToBytes(responseBody, SerializerEncoding.JSON));
     }
 
-    private static void sendFormResponse(Request req, Response resp, String requestString)
+    private static void sendFormResponse(Response resp, String requestString)
         throws IOException {
         HttpBinFormDataJson formBody = new HttpBinFormDataJson();
         HttpBinFormDataJson.Form form = new HttpBinFormDataJson.Form();
-        List<String> toppings = new ArrayList<>();
+        List<String> toppings = null;
 
         for (String formKvp : requestString.split("&")) {
             String[] kvpPieces = formKvp.split("=");
@@ -207,6 +211,10 @@ public class HttpClientTestsServer {
                     form.pizzaSize(HttpBinFormDataJson.PizzaSize.valueOf(kvpPieces[1]));
                     break;
                 case "toppings":
+                    if (toppings == null) {
+                        toppings = new ArrayList<>();
+                    }
+
                     toppings.add(kvpPieces[1]);
                     break;
                 default:
@@ -221,23 +229,16 @@ public class HttpClientTestsServer {
     }
 
     private static String cleanseUrl(HttpServletRequest req) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(req.getScheme())
-            .append("://")
-            .append(req.getServerName())
-            .append(req.getServletPath().replace("%20", " "));
-
-        if (req.getQueryString() != null) {
-            builder.append("?").append(req.getQueryString().replace("%20", " "));
-        }
-
-        return builder.toString();
+        return (req.getQueryString() == null)
+            ? req.getScheme() + "://" + req.getServerName() + req.getServletPath().replace("%20", " ")
+            : req.getScheme() + "://" + req.getServerName() + req.getServletPath().replace("%20", " ") + "?"
+                + req.getQueryString().replace("%20", " ");
     }
 
     private static void setBaseHttpHeaders(HttpServletResponse resp) {
         resp.addHeader("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString());
         resp.addHeader("Connection", "keep-alive");
-        resp.addHeader("X-Processed-Time", String.valueOf(Math.random() * 10));
+        resp.addHeader("X-Processed-Time", String.valueOf(ThreadLocalRandom.current().nextDouble(0.0D, 10.0D)));
         resp.addHeader("Access-Control-Allow-Credentials", "true");
         resp.addHeader("Content-Type", "application/json");
     }
