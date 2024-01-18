@@ -3,735 +3,271 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
-      <!-- Line: 124, Message: GeographyPointTests.searchAsyncClient not initialized in constructor and dereferenced in com.azure.search.documents.GeographyPointTests.lambda$canRoundTripGeographyPointsAsync$1(String) -->
-      <Class name="com.azure.search.documents.GeographyPointTests" />
-      <!-- Line: 68, Message: FieldBuilderServiceTests.asyncClient not initialized in constructor and dereferenced in com.azure.search.documents.indexes.FieldBuilderServiceTests.createIndexWithFieldBuilderAsync() -->
-      <Class name="com.azure.search.documents.indexes.FieldBuilderServiceTests" />
-      <!-- Line: 79, Message: FieldBuilderServiceTests.asyncClient not initialized in constructor and dereferenced in com.azure.search.documents.indexes.FieldBuilderServiceTests.lambda$createIndexWithFieldBuilderAsync$0(SearchIndex) -->
-      <Class name="com.azure.search.documents.indexes.FieldBuilderServiceTests" />
-      <!-- Line: 63, Message: SuggestResult.jsonSerializer not initialized in constructor and dereferenced in com.azure.search.documents.models.SuggestResult.getDocument(Class) -->
-      <Class name="com.azure.search.documents.models.SuggestResult" />
-      <!-- Line: 52, Message: FieldBuilderServiceTests.client not initialized in constructor and dereferenced in com.azure.search.documents.indexes.FieldBuilderServiceTests.createIndexWithFieldBuilderSync() -->
-      <Class name="com.azure.search.documents.indexes.FieldBuilderServiceTests" />
-      <!-- Line: 105, Message: GeographyPointTests.searchClient not initialized in constructor and dereferenced in com.azure.search.documents.GeographyPointTests.canRoundTripGeographyPointsSync() -->
-      <Class name="com.azure.search.documents.GeographyPointTests" />
-      <!-- Line: 132, Message: GeographyPointTests.searchAsyncClient not initialized in constructor and dereferenced in com.azure.search.documents.GeographyPointTests.canRoundTripGeographyPointsAsync() -->
-      <Class name="com.azure.search.documents.GeographyPointTests" />
+      <Class name="com.azure.search.documents.ReadmeSamples" />
+      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
     </Or>
   </Match>
   <Match>
+    <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
     <Or>
-      <!-- Line: 65, Message: Dead store to searchAsyncClient in com.azure.search.documents.ReadmeSamples.createAsyncSearchClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 288, Message: Dead store to searchClient in com.azure.search.documents.ReadmeSamples.nationalCloud() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 814, Message: Dead store to searchIndexClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchIndexClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 101, Message: Dead store to searchIndexerAsyncClient in com.azure.search.documents.ReadmeSamples.createIndexerAsyncClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 74, Message: Dead store to searchIndexClient in com.azure.search.documents.ReadmeSamples.createIndexClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 83, Message: Dead store to searchIndexAsyncClient in com.azure.search.documents.ReadmeSamples.createIndexAsyncClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 77, Message: Dead store to searchClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 124, Message: Dead store to $L1 in com.azure.search.documents.ReadmeSamples.handleErrorsWithSyncClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 1564, Message: Dead store to searchIndexerClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchIndexerClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 305, Message: Dead store to client in com.azure.search.documents.ReadmeSamples.searchClientWithTokenCredential() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 188, Message: Dead store to searchResultsIterable in com.azure.search.documents.ReadmeSamples.searchWithSearchOptions() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 55, Message: Dead store to searchClient in com.azure.search.documents.ReadmeSamples.createSearchClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-      <!-- Line: 2277, Message: Dead store to searchIndexerAsyncClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchIndexerAsyncClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 1225, Message: Dead store to searchIndexAsyncClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchIndexAsyncClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 798, Message: Dead store to searchAsyncClient in com.azure.search.documents.SearchJavaDocCodeSnippets.createSearchAsyncClientFromBuilder() -->
-      <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
-      <!-- Line: 92, Message: Dead store to searchIndexerClient in com.azure.search.documents.ReadmeSamples.createIndexerClient() -->
-      <Class name="com.azure.search.documents.ReadmeSamples" />
-    </Or>
-  </Match>
-  <Match>
-    <!-- Line: 147, Message: Should com.azure.search.documents.ReadmeSamples$Hotel be a _static_ inner class? -->
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC" />
-    <Class name="com.azure.search.documents.ReadmeSamples$Hotel" />
-  </Match>
-  <Match>
-    <Or>
-      <!-- Line: 68, Message: com.azure.search.documents.models.VectorSearchOptions.setQueries(List) may expose internal representation by storing an externally mutable object into VectorSearchOptions.queries -->
-      <Class name="com.azure.search.documents.models.VectorSearchOptions" />
-      <!-- Line: 68, Message: com.azure.search.documents.indexes.models.FieldMappingFunction.setParameters(Map) may expose internal representation by storing an externally mutable object into FieldMappingFunction.parameters -->
-      <Class name="com.azure.search.documents.indexes.models.FieldMappingFunction" />
-      <!-- Line: 853, Message: com.azure.search.documents.implementation.models.SearchOptions.setSemanticFields(List) may expose internal representation by storing an externally mutable object into SearchOptions.semanticFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 55, Message: new com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter(String, List) may expose internal representation by storing an externally mutable object into DictionaryDecompounderTokenFilter.wordList -->
-      <Class name="com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter" />
-      <!-- Line: 295, Message: com.azure.search.documents.implementation.models.SearchOptions.setHighlightFields(List) may expose internal representation by storing an externally mutable object into SearchOptions.highlightFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 549, Message: com.azure.search.documents.indexes.models.SearchField.setFields(List) may expose internal representation by storing an externally mutable object into SearchField.fields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchField" />
-      <!-- Line: 30, Message: new com.azure.search.documents.options.OnActionErrorOptions(IndexAction) may expose internal representation by storing an externally mutable object into OnActionErrorOptions.action -->
-      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
-      <!-- Line: 391, Message: com.azure.search.documents.implementation.models.SearchOptions.setOrderBy(List) may expose internal representation by storing an externally mutable object into SearchOptions.orderBy -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 79, Message: com.azure.search.documents.indexes.models.LuceneStandardAnalyzer.setStopwords(List) may expose internal representation by storing an externally mutable object into LuceneStandardAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.LuceneStandardAnalyzer" />
-      <!-- Line: 49, Message: com.azure.search.documents.indexes.implementation.models.SkillNames.setSkillNames(List) may expose internal representation by storing an externally mutable object into SkillNames.skillNames -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.SkillNames" />
-      <!-- Line: 518, Message: com.azure.search.documents.indexes.models.IndexingParametersConfiguration.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into IndexingParametersConfiguration.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.IndexingParametersConfiguration" />
-      <!-- Line: 52, Message: com.azure.search.documents.indexes.models.ElisionTokenFilter.setArticles(List) may expose internal representation by storing an externally mutable object into ElisionTokenFilter.articles -->
-      <Class name="com.azure.search.documents.indexes.models.ElisionTokenFilter" />
-      <!-- Line: 253, Message: com.azure.search.documents.implementation.models.SearchOptions.setFacets(List) may expose internal representation by storing an externally mutable object into SearchOptions.facets -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 362, Message: com.azure.search.documents.indexes.models.CustomEntity.setAliases(List) may expose internal representation by storing an externally mutable object into CustomEntity.aliases -->
-      <Class name="com.azure.search.documents.indexes.models.CustomEntity" />
-      <!-- Line: 328, Message: com.azure.search.documents.indexes.models.SearchIndex.setNormalizers(List) may expose internal representation by storing an externally mutable object into SearchIndex.normalizers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 164, Message: com.azure.search.documents.indexes.models.SearchIndex.setScoringProfiles(List) may expose internal representation by storing an externally mutable object into SearchIndex.scoringProfiles -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 33, Message: new com.azure.search.documents.models.IndexDocumentsResult(List) may expose internal representation by storing an externally mutable object into IndexDocumentsResult.results -->
-      <Class name="com.azure.search.documents.models.IndexDocumentsResult" />
-      <!-- Line: 63, Message: new com.azure.search.documents.indexes.models.SearchIndexerSkill(List, List) may expose internal representation by storing an externally mutable object into SearchIndexerSkill.outputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
-      <!-- Line: 58, Message: com.azure.search.documents.indexes.models.CjkBigramTokenFilter.setIgnoreScripts(List) may expose internal representation by storing an externally mutable object into CjkBigramTokenFilter.ignoreScripts -->
-      <Class name="com.azure.search.documents.indexes.models.CjkBigramTokenFilter" />
-      <!-- Line: 570, Message: new com.azure.search.documents.indexes.models.SearchIndex(String, List) may expose internal representation by storing an externally mutable object into SearchIndex.fields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 81, Message: com.azure.search.documents.indexes.models.VectorSearch.setAlgorithms(List) may expose internal representation by storing an externally mutable object into VectorSearch.algorithms -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 47, Message: new com.azure.search.documents.indexes.models.SearchAlias(String, List) may expose internal representation by storing an externally mutable object into SearchAlias.indexes -->
-      <Class name="com.azure.search.documents.indexes.models.SearchAlias" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListIndexersResult(List) may expose internal representation by storing an externally mutable object into ListIndexersResult.indexers -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexersResult" />
-      <!-- Line: 106, Message: new com.azure.search.documents.util.SearchPagedResponse(Response, String, Map, Long, Double, List, SemanticErrorReason, SemanticSearchResultsType) may expose internal representation by storing an externally mutable object into SearchPagedResponse.facets -->
-      <Class name="com.azure.search.documents.util.SearchPagedResponse" />
-      <!-- Line: 77, Message: com.azure.search.documents.indexes.models.SemanticSearch.setConfigurations(List) may expose internal representation by storing an externally mutable object into SemanticSearch.configurations -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticSearch" />
-      <!-- Line: 267, Message: com.azure.search.documents.models.SuggestOptions.setSelect(List) may expose internal representation by storing an externally mutable object into SuggestOptions.select -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 82, Message: com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into SearchIndexerIndexProjectionsParameters.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
-      <!-- Line: 308, Message: com.azure.search.documents.indexes.models.SearchIndex.setCharFilters(List) may expose internal representation by storing an externally mutable object into SearchIndex.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 288, Message: com.azure.search.documents.indexes.models.SearchIndex.setTokenFilters(List) may expose internal representation by storing an externally mutable object into SearchIndex.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 759, Message: com.azure.search.documents.implementation.models.SearchOptions.setSelect(List) may expose internal representation by storing an externally mutable object into SearchOptions.select -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 135, Message: com.azure.search.documents.implementation.models.SearchResult.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into SearchResult.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
-      <!-- Line: 61, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.setTables(List) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStoreProjection.tables -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.models.TextWeights(Map) may expose internal representation by storing an externally mutable object into TextWeights.weights -->
-      <Class name="com.azure.search.documents.indexes.models.TextWeights" />
-      <!-- Line: 127, Message: com.azure.search.documents.indexes.models.CustomEntityLookupSkill.setInlineEntitiesDefinition(List) may expose internal representation by storing an externally mutable object into CustomEntityLookupSkill.inlineEntitiesDefinition -->
-      <Class name="com.azure.search.documents.indexes.models.CustomEntityLookupSkill" />
-      <!-- Line: 46, Message: new com.azure.search.documents.indexes.models.SearchSuggester(String, List) may expose internal representation by storing an externally mutable object into SearchSuggester.sourceFields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchSuggester" />
-      <!-- Line: 68, Message: com.azure.search.documents.models.FacetResult.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into FacetResult.additionalProperties -->
-      <Class name="com.azure.search.documents.models.FacetResult" />
-      <!-- Line: 323, Message: new com.azure.search.documents.indexes.models.SearchIndexerSkillset(String, List) may expose internal representation by storing an externally mutable object into SearchIndexerSkillset.skills -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkillset" />
-      <!-- Line: 101, Message: com.azure.search.documents.indexes.models.VectorSearch.setVectorizers(List) may expose internal representation by storing an externally mutable object into VectorSearch.vectorizers -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 76, Message: com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1.setCategories(List) may expose internal representation by storing an externally mutable object into EntityRecognitionSkillV1.categories -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1" />
-      <!-- Line: 52, Message: com.azure.search.documents.indexes.models.StopAnalyzer.setStopwords(List) may expose internal representation by storing an externally mutable object into StopAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.StopAnalyzer" />
-      <!-- Line: 922, Message: com.azure.search.documents.implementation.models.SearchRequest.setVectorQueries(List) may expose internal representation by storing an externally mutable object into SearchRequest.vectorQueries -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 595, Message: com.azure.search.documents.implementation.models.SearchOptions.setSearchFields(List) may expose internal representation by storing an externally mutable object into SearchOptions.searchFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 102, Message: com.azure.search.documents.indexes.models.CustomWebApiParameters.setHttpHeaders(Map) may expose internal representation by storing an externally mutable object into CustomWebApiParameters.httpHeaders -->
-      <Class name="com.azure.search.documents.indexes.models.CustomWebApiParameters" />
-      <!-- Line: 122, Message: com.azure.search.documents.indexes.models.SearchIndexerSkillset.setSkills(List) may expose internal representation by storing an externally mutable object into SearchIndexerSkillset.skills -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkillset" />
-      <!-- Line: 202, Message: com.azure.search.documents.indexes.models.IndexingParameters.setConfiguration(Map) may expose internal representation by storing an externally mutable object into IndexingParameters.configurationMap -->
-      <Class name="com.azure.search.documents.indexes.models.IndexingParameters" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult(List) may expose internal representation by storing an externally mutable object into ListDataSourcesResult.dataSources -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult" />
-      <!-- Line: 268, Message: com.azure.search.documents.indexes.models.SearchIndex.setTokenizers(List) may expose internal representation by storing an externally mutable object into SearchIndex.tokenizers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 59, Message: new com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector(String, String, String, List) may expose internal representation by storing an externally mutable object into SearchIndexerIndexProjectionSelector.mappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
-      <!-- Line: 47, Message: new com.azure.search.documents.indexes.models.CommonGramTokenFilter(String, List) may expose internal representation by storing an externally mutable object into CommonGramTokenFilter.commonWords -->
-      <Class name="com.azure.search.documents.indexes.models.CommonGramTokenFilter" />
-      <!-- Line: 25, Message: new com.azure.search.documents.options.OnActionSentOptions(IndexAction) may expose internal representation by storing an externally mutable object into OnActionSentOptions.indexAction -->
-      <Class name="com.azure.search.documents.options.OnActionSentOptions" />
-      <!-- Line: 74, Message: com.azure.search.documents.models.IndexAction.setDocument(Object) may expose internal representation by storing an externally mutable object into IndexAction.properties -->
-      <Class name="com.azure.search.documents.models.IndexAction" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult(List) may expose internal representation by storing an externally mutable object into ListSkillsetsResult.skillsets -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult" />
-      <!-- Line: 368, Message: com.azure.search.documents.indexes.SearchIndexerClientBuilder.configuration(Configuration) may expose internal representation by storing an externally mutable object into SearchIndexerClientBuilder.configuration -->
-      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilder" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult(List) may expose internal representation by storing an externally mutable object into ListSynonymMapsResult.synonymMaps -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult" />
-      <!-- Line: 212, Message: com.azure.search.documents.test.environment.models.VectorHotel.rooms(List) may expose internal representation by storing an externally mutable object into VectorHotel.rooms -->
-      <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
-      <!-- Line: 97, Message: com.azure.search.documents.indexes.models.ScoringProfile.setFunctions(List) may expose internal representation by storing an externally mutable object into ScoringProfile.functions -->
-      <Class name="com.azure.search.documents.indexes.models.ScoringProfile" />
-      <!-- Line: 83, Message: com.azure.search.documents.indexes.models.ImageAnalysisSkill.setVisualFeatures(List) may expose internal representation by storing an externally mutable object into ImageAnalysisSkill.visualFeatures -->
-      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
-      <!-- Line: 119, Message: com.azure.search.documents.indexes.models.SemanticPrioritizedFields.setKeywordsFields(List) may expose internal representation by storing an externally mutable object into SemanticPrioritizedFields.keywordsFields -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
-      <!-- Line: 103, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.setFiles(List) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStoreProjection.files -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 33, Message: new com.azure.search.documents.implementation.models.IndexBatch(List) may expose internal representation by storing an externally mutable object into IndexBatch.actions -->
-      <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
-      <!-- Line: 151, Message: com.azure.search.documents.indexes.implementation.models.AnalyzeRequest.setTokenFilters(List) may expose internal representation by storing an externally mutable object into AnalyzeRequest.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
-      <!-- Line: 200, Message: com.azure.search.documents.indexes.models.PiiDetectionSkill.setPiiCategories(List) may expose internal representation by storing an externally mutable object into PiiDetectionSkill.piiCategories -->
-      <Class name="com.azure.search.documents.indexes.models.PiiDetectionSkill" />
-      <!-- Line: 33, Message: new com.azure.search.documents.models.VectorizedQuery(List) may expose internal representation by storing an externally mutable object into VectorizedQuery.vector -->
-      <Class name="com.azure.search.documents.models.VectorizedQuery" />
-      <!-- Line: 197, Message: com.azure.search.documents.test.environment.models.Hotel.rooms(List) may expose internal representation by storing an externally mutable object into Hotel.rooms -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 380, Message: com.azure.search.documents.indexes.SearchIndexClientBuilder.configuration(Configuration) may expose internal representation by storing an externally mutable object into SearchIndexClientBuilder.configuration -->
-      <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilder" />
-      <!-- Line: 141, Message: com.azure.search.documents.indexes.models.PatternAnalyzer.setStopwords(List) may expose internal representation by storing an externally mutable object into PatternAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.PatternAnalyzer" />
-      <!-- Line: 527, Message: com.azure.search.documents.indexes.models.SearchField.setSynonymMapNames(List) may expose internal representation by storing an externally mutable object into SearchField.synonymMapNames -->
-      <Class name="com.azure.search.documents.indexes.models.SearchField" />
-      <!-- Line: 233, Message: com.azure.search.documents.models.AutocompleteOptions.setSearchFields(List) may expose internal representation by storing an externally mutable object into AutocompleteOptions.searchFields -->
-      <Class name="com.azure.search.documents.models.AutocompleteOptions" />
-      <!-- Line: 274, Message: com.azure.search.documents.implementation.models.SearchRequest.setFacets(List) may expose internal representation by storing an externally mutable object into SearchRequest.facets -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 88, Message: com.azure.search.documents.indexes.models.CustomNormalizer.setCharFilters(List) may expose internal representation by storing an externally mutable object into CustomNormalizer.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
-      <!-- Line: 103, Message: com.azure.search.documents.indexes.models.NGramTokenizer.setTokenChars(List) may expose internal representation by storing an externally mutable object into NGramTokenizer.tokenChars -->
-      <Class name="com.azure.search.documents.indexes.models.NGramTokenizer" />
-      <!-- Line: 74, Message: com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds.setDatasourceDocumentIds(List) may expose internal representation by storing an externally mutable object into DocumentKeysOrIds.datasourceDocumentIds -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
-      <!-- Line: 248, Message: com.azure.search.documents.indexes.models.SearchIndex.setAnalyzers(List) may expose internal representation by storing an externally mutable object into SearchIndex.analyzers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 59, Message: com.azure.search.documents.indexes.models.VectorSearch.setProfiles(List) may expose internal representation by storing an externally mutable object into VectorSearch.profiles -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 26, Message: new com.azure.search.documents.options.OnActionSucceededOptions(IndexAction) may expose internal representation by storing an externally mutable object into OnActionSucceededOptions.indexAction -->
-      <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
-      <!-- Line: 223, Message: com.azure.search.documents.models.SuggestOptions.setOrderBy(List) may expose internal representation by storing an externally mutable object into SuggestOptions.orderBy -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 238, Message: com.azure.search.documents.models.SemanticSearchOptions.setSemanticFields(List) may expose internal representation by storing an externally mutable object into SemanticSearchOptions.semanticFields -->
-      <Class name="com.azure.search.documents.models.SemanticSearchOptions" />
-      <!-- Line: 40, Message: new com.azure.search.documents.indexes.models.CorsOptions(List) may expose internal representation by storing an externally mutable object into CorsOptions.allowedOrigins -->
-      <Class name="com.azure.search.documents.indexes.models.CorsOptions" />
-      <!-- Line: 49, Message: com.azure.search.documents.options.OnActionErrorOptions.setThrowable(Throwable) may expose internal representation by storing an externally mutable object into OnActionErrorOptions.throwable -->
-      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
-      <!-- Line: 39, Message: new com.azure.search.documents.implementation.models.SuggestDocumentsResult(List) may expose internal representation by storing an externally mutable object into SuggestDocumentsResult.results -->
-      <Class name="com.azure.search.documents.implementation.models.SuggestDocumentsResult" />
-      <!-- Line: 171, Message: com.azure.search.documents.indexes.implementation.models.AnalyzeRequest.setCharFilters(List) may expose internal representation by storing an externally mutable object into AnalyzeRequest.charFilters -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
-      <!-- Line: 84, Message: com.azure.search.documents.indexes.models.CustomAnalyzer.setTokenFilters(List) may expose internal representation by storing an externally mutable object into CustomAnalyzer.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
-      <!-- Line: 54, Message: com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds.setDocumentKeys(List) may expose internal representation by storing an externally mutable object into DocumentKeysOrIds.documentKeys -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
-      <!-- Line: 41, Message: new com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter(String, List) may expose internal representation by storing an externally mutable object into KeywordMarkerTokenFilter.keywords -->
-      <Class name="com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter" />
-      <!-- Line: 245, Message: com.azure.search.documents.models.SuggestOptions.setSearchFields(List) may expose internal representation by storing an externally mutable object into SuggestOptions.searchFields -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 26, Message: new com.azure.search.documents.options.OnActionAddedOptions(IndexAction) may expose internal representation by storing an externally mutable object into OnActionAddedOptions.action -->
-      <Class name="com.azure.search.documents.options.OnActionAddedOptions" />
-      <!-- Line: 250, Message: com.azure.search.documents.indexes.models.SearchIndexer.setFieldMappings(List) may expose internal representation by storing an externally mutable object into SearchIndexer.fieldMappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
-      <!-- Line: 56, Message: new com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore(String, List) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStore.projections -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
-      <!-- Line: 39, Message: new com.azure.search.documents.models.AutocompleteResult(List) may expose internal representation by storing an externally mutable object into AutocompleteResult.results -->
-      <Class name="com.azure.search.documents.models.AutocompleteResult" />
-      <!-- Line: 64, Message: com.azure.search.documents.indexes.models.CustomNormalizer.setTokenFilters(List) may expose internal representation by storing an externally mutable object into CustomNormalizer.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
-      <!-- Line: 70, Message: com.azure.search.documents.indexes.models.StopwordsTokenFilter.setStopwords(List) may expose internal representation by storing an externally mutable object into StopwordsTokenFilter.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.StopwordsTokenFilter" />
-      <!-- Line: 108, Message: com.azure.search.documents.indexes.models.WebApiSkill.setHttpHeaders(Map) may expose internal representation by storing an externally mutable object into WebApiSkill.httpHeaders -->
-      <Class name="com.azure.search.documents.indexes.models.WebApiSkill" />
-      <!-- Line: 53, Message: new com.azure.search.documents.indexes.models.SearchIndexerStatus(IndexerStatus, List, SearchIndexerLimits) may expose internal representation by storing an externally mutable object into SearchIndexerStatus.executionHistory -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerStatus" />
-      <!-- Line: 272, Message: com.azure.search.documents.indexes.models.SearchIndexer.setOutputFieldMappings(List) may expose internal representation by storing an externally mutable object into SearchIndexer.outputFieldMappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
-      <!-- Line: 116, Message: com.azure.search.documents.indexes.models.InputFieldMappingEntry.setInputs(List) may expose internal representation by storing an externally mutable object into InputFieldMappingEntry.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.InputFieldMappingEntry" />
-      <!-- Line: 39, Message: new com.azure.search.documents.indexes.models.SearchIndexerIndexProjections(List) may expose internal representation by storing an externally mutable object into SearchIndexerIndexProjections.selectors -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
-      <!-- Line: 148, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector.setInputs(List) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStoreProjectionSelector.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector" />
-      <!-- Line: 73, Message: com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3.setCategories(List) may expose internal representation by storing an externally mutable object into EntityRecognitionSkillV3.categories -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListAliasesResult(List) may expose internal representation by storing an externally mutable object into ListAliasesResult.aliases -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListAliasesResult" />
-      <!-- Line: 104, Message: com.azure.search.documents.indexes.models.EdgeNGramTokenizer.setTokenChars(List) may expose internal representation by storing an externally mutable object into EdgeNGramTokenizer.tokenChars -->
-      <Class name="com.azure.search.documents.indexes.models.EdgeNGramTokenizer" />
-      <!-- Line: 62, Message: new com.azure.search.documents.indexes.models.SearchIndexerSkill(List, List) may expose internal representation by storing an externally mutable object into SearchIndexerSkill.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
-      <!-- Line: 514, Message: com.azure.search.documents.implementation.models.SearchRequest.setScoringParameters(List) may expose internal representation by storing an externally mutable object into SearchRequest.scoringParameters -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.AnalyzeResult(List) may expose internal representation by storing an externally mutable object into AnalyzeResult.tokens -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeResult" />
-      <!-- Line: 299, Message: com.azure.search.documents.indexes.models.WordDelimiterTokenFilter.setProtectedWords(List) may expose internal representation by storing an externally mutable object into WordDelimiterTokenFilter.protectedWords -->
-      <Class name="com.azure.search.documents.indexes.models.WordDelimiterTokenFilter" />
-      <!-- Line: 69, Message: com.azure.search.documents.implementation.models.SuggestResult.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into SuggestResult.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.SuggestResult" />
-      <!-- Line: 37, Message: new com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter(String, List) may expose internal representation by storing an externally mutable object into StemmerOverrideTokenFilter.rules -->
-      <Class name="com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter" />
-      <!-- Line: 76, Message: com.azure.search.documents.implementation.models.IndexAction.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into IndexAction.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.IndexAction" />
-      <!-- Line: 228, Message: com.azure.search.documents.indexes.models.SearchIndex.setSuggesters(List) may expose internal representation by storing an externally mutable object into SearchIndex.suggesters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 39, Message: com.azure.search.documents.models.Hotel.setTags(List) may expose internal representation by storing an externally mutable object into Hotel.tags -->
-      <Class name="com.azure.search.documents.models.Hotel" />
-      <!-- Line: 108, Message: com.azure.search.documents.indexes.models.CustomAnalyzer.setCharFilters(List) may expose internal representation by storing an externally mutable object into CustomAnalyzer.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
-      <!-- Line: 82, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters.setAdditionalProperties(Map) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStoreParameters.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
-      <!-- Line: 109, Message: new com.azure.search.documents.util.SearchPagedResponse(Response, String, Map, Long, Double, List, SemanticErrorReason, SemanticSearchResultsType) may expose internal representation by storing an externally mutable object into SearchPagedResponse.queryAnswers -->
-      <Class name="com.azure.search.documents.util.SearchPagedResponse" />
-      <!-- Line: 103, Message: com.azure.search.documents.indexes.models.ImageAnalysisSkill.setDetails(List) may expose internal representation by storing an externally mutable object into ImageAnalysisSkill.details -->
-      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
-      <!-- Line: 27, Message: new com.azure.search.documents.models.IndexBatchBase(List) may expose internal representation by storing an externally mutable object into IndexBatchBase.actions -->
-      <Class name="com.azure.search.documents.models.IndexBatchBase" />
-      <!-- Line: 439, Message: com.azure.search.documents.implementation.models.SearchOptions.setScoringParameters(List) may expose internal representation by storing an externally mutable object into SearchOptions.scoringParameters -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 93, Message: com.azure.search.documents.indexes.models.SemanticPrioritizedFields.setContentFields(List) may expose internal representation by storing an externally mutable object into SemanticPrioritizedFields.contentFields -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
-      <!-- Line: 87, Message: new com.azure.search.documents.implementation.models.SearchDocumentsResult(List) may expose internal representation by storing an externally mutable object into SearchDocumentsResult.results -->
-      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
-      <!-- Line: 97, Message: new com.azure.search.documents.indexes.models.IndexerExecutionResult(IndexerExecutionStatus, List, List, int, int) may expose internal representation by storing an externally mutable object into IndexerExecutionResult.errors -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
-      <!-- Line: 144, Message: com.azure.search.documents.indexes.models.SearchIndex.setFields(List) may expose internal representation by storing an externally mutable object into SearchIndex.fields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 41, Message: new com.azure.search.documents.indexes.models.PatternCaptureTokenFilter(String, List) may expose internal representation by storing an externally mutable object into PatternCaptureTokenFilter.patterns -->
-      <Class name="com.azure.search.documents.indexes.models.PatternCaptureTokenFilter" />
-      <!-- Line: 34, Message: new com.azure.search.documents.indexes.implementation.models.ListIndexesResult(List) may expose internal representation by storing an externally mutable object into ListIndexesResult.indexes -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexesResult" />
-      <!-- Line: 53, Message: new com.azure.search.documents.indexes.models.SynonymTokenFilter(String, List) may expose internal representation by storing an externally mutable object into SynonymTokenFilter.synonyms -->
-      <Class name="com.azure.search.documents.indexes.models.SynonymTokenFilter" />
-      <!-- Line: 41, Message: new com.azure.search.documents.indexes.models.KeepTokenFilter(String, List) may expose internal representation by storing an externally mutable object into KeepTokenFilter.keepWords -->
-      <Class name="com.azure.search.documents.indexes.models.KeepTokenFilter" />
-      <!-- Line: 447, Message: com.azure.search.documents.SearchClientBuilder.configuration(Configuration) may expose internal representation by storing an externally mutable object into SearchClientBuilder.configuration -->
-      <Class name="com.azure.search.documents.SearchClientBuilder" />
-      <!-- Line: 98, Message: new com.azure.search.documents.indexes.models.IndexerExecutionResult(IndexerExecutionStatus, List, List, int, int) may expose internal representation by storing an externally mutable object into IndexerExecutionResult.warnings -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
-      <!-- Line: 106, Message: com.azure.search.documents.indexes.models.DocumentExtractionSkill.setConfiguration(Map) may expose internal representation by storing an externally mutable object into DocumentExtractionSkill.configuration -->
-      <Class name="com.azure.search.documents.indexes.models.DocumentExtractionSkill" />
-      <!-- Line: 82, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.setObjects(List) may expose internal representation by storing an externally mutable object into SearchIndexerKnowledgeStoreProjection.objects -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 38, Message: new com.azure.search.documents.indexes.models.MappingCharFilter(String, List) may expose internal representation by storing an externally mutable object into MappingCharFilter.mappings -->
-      <Class name="com.azure.search.documents.indexes.models.MappingCharFilter" />
-    </Or>
-  </Match>
-  <Match>
-    <Or>
-      <!-- Line: 127, Message: Random object created and used only once in com.azure.search.documents.indexes.SearchIndexClientBuilderTests.serviceClientFreshDateOnRetry() -->
-      <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
-      <!-- Line: 137, Message: Random object created and used only once in com.azure.search.documents.SearchClientBuilderTests.indexClientFreshDateOnRetry() -->
       <Class name="com.azure.search.documents.SearchClientBuilderTests" />
-      <!-- Line: 127, Message: Random object created and used only once in com.azure.search.documents.indexes.SearchIndexerClientBuilderTests.serviceClientFreshDateOnRetry() -->
-      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
-    </Or>
-  </Match>
-  <Match>
-    <Or>
-      <!-- Line: 40, Message: com.azure.search.documents.implementation.converters.SearchResultHelper.setAccessor(SearchResultHelper$SearchResultAccessor) may expose internal static state by storing a mutable object into a static field com.azure.search.documents.implementation.converters.SearchResultHelper.accessor -->
-      <Class name="com.azure.search.documents.implementation.converters.SearchResultHelper" />
-      <!-- Line: 32, Message: com.azure.search.documents.implementation.converters.SuggestResultHelper.setAccessor(SuggestResultHelper$SuggestResultAccessor) may expose internal static state by storing a mutable object into a static field com.azure.search.documents.implementation.converters.SuggestResultHelper.accessor -->
-      <Class name="com.azure.search.documents.implementation.converters.SuggestResultHelper" />
-      <!-- Line: 32, Message: com.azure.search.documents.implementation.converters.IndexActionHelper.setAccessor(IndexActionHelper$IndexActionAccessor) may expose internal static state by storing a mutable object into a static field com.azure.search.documents.implementation.converters.IndexActionHelper.accessor -->
-      <Class name="com.azure.search.documents.implementation.converters.IndexActionHelper" />
-    </Or>
-  </Match>
-  <Match>
-    <Or>
-      <!-- Line: 351, Message: com.azure.search.documents.indexes.models.CustomEntity.getAliases() may expose internal representation by returning CustomEntity.aliases -->
-      <Class name="com.azure.search.documents.indexes.models.CustomEntity" />
-      <!-- Line: 34, Message: com.azure.search.documents.options.OnActionSentOptions.getIndexAction() may expose internal representation by returning OnActionSentOptions.indexAction -->
-      <Class name="com.azure.search.documents.options.OnActionSentOptions" />
-      <!-- Line: 149, Message: com.azure.search.documents.indexes.models.AnalyzeTextOptions.getCharFilters() may expose internal representation by returning AnalyzeTextOptions.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.AnalyzeTextOptions" />
-      <!-- Line: 52, Message: com.azure.search.documents.indexes.models.CustomNormalizer.getTokenFilters() may expose internal representation by returning CustomNormalizer.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
-      <!-- Line: 106, Message: com.azure.search.documents.indexes.models.InputFieldMappingEntry.getInputs() may expose internal representation by returning InputFieldMappingEntry.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.InputFieldMappingEntry" />
-      <!-- Line: 117, Message: com.azure.search.documents.indexes.models.CustomEntityLookupSkill.getInlineEntitiesDefinition() may expose internal representation by returning CustomEntityLookupSkill.inlineEntitiesDefinition -->
-      <Class name="com.azure.search.documents.indexes.models.CustomEntityLookupSkill" />
-      <!-- Line: 71, Message: com.azure.search.documents.models.IndexBatchException.getIndexingResults() may expose internal representation by returning IndexBatchException.results -->
-      <Class name="com.azure.search.documents.models.IndexBatchException" />
-      <!-- Line: 318, Message: com.azure.search.documents.indexes.models.SearchIndex.getNormalizers() may expose internal representation by returning SearchIndex.normalizers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 122, Message: com.azure.search.documents.indexes.models.IndexerCurrentState.getResetDocumentKeys() may expose internal representation by returning IndexerCurrentState.resetDocumentKeys -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerCurrentState" />
-      <!-- Line: 56, Message: com.azure.search.documents.indexes.models.CommonGramTokenFilter.getCommonWords() may expose internal representation by returning CommonGramTokenFilter.commonWords -->
-      <Class name="com.azure.search.documents.indexes.models.CommonGramTokenFilter" />
-      <!-- Line: 129, Message: com.azure.search.documents.implementation.models.SearchDocumentsResult.getAnswers() may expose internal representation by returning SearchDocumentsResult.answers -->
-      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
-      <!-- Line: 70, Message: com.azure.search.documents.indexes.models.VectorSearch.getAlgorithms() may expose internal representation by returning VectorSearch.algorithms -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 74, Message: com.azure.search.documents.models.QueryCaptionResult.getAdditionalProperties() may expose internal representation by returning QueryCaptionResult.additionalProperties -->
-      <Class name="com.azure.search.documents.models.QueryCaptionResult" />
-      <!-- Line: 125, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getIndexers() may expose internal representation by returning SearchServiceClientImpl.indexers -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 153, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getSynonymMaps() may expose internal representation by returning SearchServiceClientImpl.synonymMaps -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 65, Message: com.azure.search.documents.models.SemanticDebugInfo.getContentFields() may expose internal representation by returning SemanticDebugInfo.contentFields -->
-      <Class name="com.azure.search.documents.models.SemanticDebugInfo" />
-      <!-- Line: 70, Message: com.azure.search.documents.implementation.models.SearchError.getDetails() may expose internal representation by returning SearchError.details -->
-      <Class name="com.azure.search.documents.implementation.models.SearchError" />
-      <!-- Line: 116, Message: com.azure.search.documents.implementation.models.SearchResult.getDocumentDebugInfo() may expose internal representation by returning SearchResult.documentDebugInfo -->
-      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
-      <!-- Line: 111, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getDataSources() may expose internal representation by returning SearchServiceClientImpl.dataSources -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 67, Message: com.azure.search.documents.indexes.models.SemanticSearch.getConfigurations() may expose internal representation by returning SemanticSearch.configurations -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticSearch" />
-      <!-- Line: 191, Message: com.azure.search.documents.indexes.models.IndexingParameters.getConfiguration() may expose internal representation by returning IndexingParameters.configurationMap -->
-      <Class name="com.azure.search.documents.indexes.models.IndexingParameters" />
-      <!-- Line: 167, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getIndexes() may expose internal representation by returning SearchServiceClientImpl.indexes -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 47, Message: com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter.getRules() may expose internal representation by returning StemmerOverrideTokenFilter.rules -->
-      <Class name="com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter" />
-      <!-- Line: 36, Message: com.azure.search.documents.models.IndexBatchBase.getActions() may expose internal representation by returning IndexBatchBase.actions -->
-      <Class name="com.azure.search.documents.models.IndexBatchBase" />
-      <!-- Line: 42, Message: com.azure.search.documents.indexes.models.ElisionTokenFilter.getArticles() may expose internal representation by returning ElisionTokenFilter.articles -->
-      <Class name="com.azure.search.documents.indexes.models.ElisionTokenFilter" />
-      <!-- Line: 163, Message: com.azure.search.documents.indexes.models.IndexerExecutionResult.getErrors() may expose internal representation by returning IndexerExecutionResult.errors -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
-      <!-- Line: 48, Message: com.azure.search.documents.indexes.models.MappingCharFilter.getMappings() may expose internal representation by returning MappingCharFilter.mappings -->
-      <Class name="com.azure.search.documents.indexes.models.MappingCharFilter" />
-      <!-- Line: 58, Message: com.azure.search.documents.models.AutocompleteResult.getResults() may expose internal representation by returning AutocompleteResult.results -->
-      <Class name="com.azure.search.documents.models.AutocompleteResult" />
-      <!-- Line: 284, Message: com.azure.search.documents.implementation.models.SearchOptions.getHighlightFields() may expose internal representation by returning SearchOptions.highlightFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult.getSynonymMaps() may expose internal representation by returning ListSynonymMapsResult.synonymMaps -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult" />
-      <!-- Line: 71, Message: com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters.getAdditionalProperties() may expose internal representation by returning SearchIndexerIndexProjectionsParameters.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
-      <!-- Line: 75, Message: com.azure.search.documents.models.SemanticDebugInfo.getKeywordFields() may expose internal representation by returning SemanticDebugInfo.keywordFields -->
-      <Class name="com.azure.search.documents.models.SemanticDebugInfo" />
-      <!-- Line: 501, Message: com.azure.search.documents.implementation.models.SearchRequest.getScoringParameters() may expose internal representation by returning SearchRequest.scoringParameters -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 256, Message: com.azure.search.documents.models.SuggestOptions.getSelect() may expose internal representation by returning SuggestOptions.select -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 49, Message: com.azure.search.documents.indexes.models.VectorSearch.getProfiles() may expose internal representation by returning VectorSearch.profiles -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 263, Message: com.azure.search.documents.implementation.models.SearchRequest.getFacets() may expose internal representation by returning SearchRequest.facets -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 75, Message: com.azure.search.documents.indexes.models.SearchSuggester.getSourceFields() may expose internal representation by returning SearchSuggester.sourceFields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchSuggester" />
-      <!-- Line: 151, Message: com.azure.search.documents.indexes.models.SearchIndexerSkill.getOutputs() may expose internal representation by returning SearchIndexerSkill.outputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
-      <!-- Line: 243, Message: com.azure.search.documents.models.SearchOptions.getHighlightFields() may expose internal representation by returning SearchOptions.highlightFields -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 208, Message: com.azure.search.documents.test.environment.models.VectorHotel.rooms() may expose internal representation by returning VectorHotel.rooms -->
-      <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
-      <!-- Line: 377, Message: com.azure.search.documents.implementation.models.SearchOptions.getOrderBy() may expose internal representation by returning SearchOptions.orderBy -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 141, Message: com.azure.search.documents.indexes.implementation.models.AnalyzeRequest.getTokenFilters() may expose internal representation by returning AnalyzeRequest.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
-      <!-- Line: 513, Message: com.azure.search.documents.indexes.models.SearchField.getSynonymMapNames() may expose internal representation by returning SearchField.synonymMapNames -->
-      <Class name="com.azure.search.documents.indexes.models.SearchField" />
-      <!-- Line: 42, Message: com.azure.search.documents.implementation.models.IndexBatch.getActions() may expose internal representation by returning IndexBatch.actions -->
-      <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
-      <!-- Line: 42, Message: com.azure.search.documents.models.VectorizedQuery.getVector() may expose internal representation by returning VectorizedQuery.vector -->
-      <Class name="com.azure.search.documents.models.VectorizedQuery" />
-      <!-- Line: 66, Message: com.azure.search.documents.implementation.models.IndexAction.getAdditionalProperties() may expose internal representation by returning IndexAction.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.IndexAction" />
-      <!-- Line: 73, Message: com.azure.search.documents.indexes.models.ImageAnalysisSkill.getVisualFeatures() may expose internal representation by returning ImageAnalysisSkill.visualFeatures -->
-      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
-      <!-- Line: 161, Message: com.azure.search.documents.indexes.implementation.models.AnalyzeRequest.getCharFilters() may expose internal representation by returning AnalyzeRequest.charFilters -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
-      <!-- Line: 50, Message: com.azure.search.documents.indexes.models.KeepTokenFilter.getKeepWords() may expose internal representation by returning KeepTokenFilter.keepWords -->
-      <Class name="com.azure.search.documents.indexes.models.KeepTokenFilter" />
-      <!-- Line: 64, Message: com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter.getWordList() may expose internal representation by returning DictionaryDecompounderTokenFilter.wordList -->
-      <Class name="com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter" />
-      <!-- Line: 112, Message: com.azure.search.documents.indexes.models.SearchIndexerSkillset.getSkills() may expose internal representation by returning SearchIndexerSkillset.skills -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkillset" />
-      <!-- Line: 507, Message: com.azure.search.documents.indexes.models.IndexingParametersConfiguration.getAdditionalProperties() may expose internal representation by returning IndexingParametersConfiguration.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.IndexingParametersConfiguration" />
-      <!-- Line: 57, Message: com.azure.search.documents.models.FacetResult.getAdditionalProperties() may expose internal representation by returning FacetResult.additionalProperties -->
-      <Class name="com.azure.search.documents.models.FacetResult" />
-      <!-- Line: 201, Message: com.azure.search.documents.models.SearchOptions.getFacets() may expose internal representation by returning SearchOptions.facets -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 48, Message: com.azure.search.documents.indexes.models.SearchIndexerIndexProjections.getSelectors() may expose internal representation by returning SearchIndexerIndexProjections.selectors -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
-      <!-- Line: 66, Message: com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1.getCategories() may expose internal representation by returning EntityRecognitionSkillV1.categories -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1" />
-      <!-- Line: 59, Message: com.azure.search.documents.models.IndexAction.getDocument() may expose internal representation by returning IndexAction.properties -->
-      <Class name="com.azure.search.documents.models.IndexAction" />
-      <!-- Line: 172, Message: com.azure.search.documents.indexes.models.IndexerExecutionResult.getWarnings() may expose internal representation by returning IndexerExecutionResult.warnings -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
-      <!-- Line: 289, Message: com.azure.search.documents.indexes.models.WordDelimiterTokenFilter.getProtectedWords() may expose internal representation by returning WordDelimiterTokenFilter.protectedWords -->
-      <Class name="com.azure.search.documents.indexes.models.WordDelimiterTokenFilter" />
-      <!-- Line: 98, Message: com.azure.search.documents.indexes.models.WebApiSkill.getHttpHeaders() may expose internal representation by returning WebApiSkill.httpHeaders -->
-      <Class name="com.azure.search.documents.indexes.models.WebApiSkill" />
-      <!-- Line: 92, Message: com.azure.search.documents.indexes.models.CustomWebApiParameters.getHttpHeaders() may expose internal representation by returning CustomWebApiParameters.httpHeaders -->
-      <Class name="com.azure.search.documents.indexes.models.CustomWebApiParameters" />
-      <!-- Line: 71, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.getObjects() may expose internal representation by returning SearchIndexerKnowledgeStoreProjection.objects -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 843, Message: com.azure.search.documents.implementation.models.SearchOptions.getSemanticFields() may expose internal representation by returning SearchOptions.semanticFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 209, Message: com.azure.search.documents.models.SuggestOptions.getOrderBy() may expose internal representation by returning SuggestOptions.orderBy -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 50, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.getTables() may expose internal representation by returning SearchIndexerKnowledgeStoreProjection.tables -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 35, Message: com.azure.search.documents.options.OnActionSucceededOptions.getIndexAction() may expose internal representation by returning OnActionSucceededOptions.indexAction -->
-      <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
-      <!-- Line: 139, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getSkillsets() may expose internal representation by returning SearchServiceClientImpl.skillsets -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 51, Message: com.azure.search.documents.indexes.models.CorsOptions.getAllowedOrigins() may expose internal representation by returning CorsOptions.allowedOrigins -->
-      <Class name="com.azure.search.documents.indexes.models.CorsOptions" />
-      <!-- Line: 39, Message: com.azure.search.documents.indexes.implementation.models.SkillNames.getSkillNames() may expose internal representation by returning SkillNames.skillNames -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.SkillNames" />
-      <!-- Line: 37, Message: com.azure.search.documents.models.SemanticSearchResults.getQueryAnswers() may expose internal representation by returning SemanticSearchResults.queryAnswers -->
-      <Class name="com.azure.search.documents.models.SemanticSearchResults" />
-      <!-- Line: 119, Message: com.azure.search.documents.implementation.models.SearchDocumentsResult.getFacets() may expose internal representation by returning SearchDocumentsResult.facets -->
-      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
-      <!-- Line: 432, Message: com.azure.search.documents.models.SearchOptions.getSearchFields() may expose internal representation by returning SearchOptions.searchFields -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 80, Message: com.azure.search.documents.indexes.models.SemanticPrioritizedFields.getContentFields() may expose internal representation by returning SemanticPrioritizedFields.contentFields -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
-      <!-- Line: 64, Message: com.azure.search.documents.models.SemanticSearchResult.getDocumentDebugInfo() may expose internal representation by returning SemanticSearchResult.documentDebugInfo -->
-      <Class name="com.azure.search.documents.models.SemanticSearchResult" />
-      <!-- Line: 278, Message: com.azure.search.documents.indexes.models.SearchIndex.getTokenFilters() may expose internal representation by returning SearchIndex.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 71, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters.getAdditionalProperties() may expose internal representation by returning SearchIndexerKnowledgeStoreParameters.additionalProperties -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
-      <!-- Line: 298, Message: com.azure.search.documents.indexes.models.SearchIndex.getCharFilters() may expose internal representation by returning SearchIndex.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 35, Message: com.azure.search.documents.models.Hotel.getTags() may expose internal representation by returning Hotel.tags -->
-      <Class name="com.azure.search.documents.models.Hotel" />
-      <!-- Line: 238, Message: com.azure.search.documents.indexes.models.SearchIndex.getAnalyzers() may expose internal representation by returning SearchIndex.analyzers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 48, Message: com.azure.search.documents.implementation.models.SuggestDocumentsResult.getResults() may expose internal representation by returning SuggestDocumentsResult.results -->
-      <Class name="com.azure.search.documents.implementation.models.SuggestDocumentsResult" />
-      <!-- Line: 258, Message: com.azure.search.documents.indexes.models.SearchIndex.getTokenizers() may expose internal representation by returning SearchIndex.tokenizers -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 63, Message: com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3.getCategories() may expose internal representation by returning EntityRecognitionSkillV3.categories -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3" />
-      <!-- Line: 154, Message: com.azure.search.documents.indexes.models.SearchIndex.getScoringProfiles() may expose internal representation by returning SearchIndex.scoringProfiles -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 65, Message: com.azure.search.documents.indexes.models.SynonymTokenFilter.getSynonyms() may expose internal representation by returning SynonymTokenFilter.synonyms -->
-      <Class name="com.azure.search.documents.indexes.models.SynonymTokenFilter" />
-      <!-- Line: 193, Message: com.azure.search.documents.test.environment.models.Hotel.rooms() may expose internal representation by returning Hotel.rooms -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 58, Message: com.azure.search.documents.implementation.models.SuggestResult.getAdditionalProperties() may expose internal representation by returning SuggestResult.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.SuggestResult" />
-      <!-- Line: 106, Message: com.azure.search.documents.implementation.models.SearchResult.getCaptions() may expose internal representation by returning SearchResult.captions -->
-      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
-      <!-- Line: 129, Message: com.azure.search.documents.indexes.models.AnalyzeTextOptions.getTokenFilters() may expose internal representation by returning AnalyzeTextOptions.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.AnalyzeTextOptions" />
-      <!-- Line: 222, Message: com.azure.search.documents.models.AutocompleteOptions.getSearchFields() may expose internal representation by returning AutocompleteOptions.searchFields -->
-      <Class name="com.azure.search.documents.models.AutocompleteOptions" />
-      <!-- Line: 48, Message: com.azure.search.documents.indexes.models.CjkBigramTokenFilter.getIgnoreScripts() may expose internal representation by returning CjkBigramTokenFilter.ignoreScripts -->
-      <Class name="com.azure.search.documents.indexes.models.CjkBigramTokenFilter" />
-      <!-- Line: 82, Message: com.azure.search.documents.indexes.models.SearchIndexerStatus.getExecutionHistory() may expose internal representation by returning SearchIndexerStatus.executionHistory -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerStatus" />
-      <!-- Line: 239, Message: com.azure.search.documents.indexes.models.SearchIndexer.getFieldMappings() may expose internal representation by returning SearchIndexer.fieldMappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
-      <!-- Line: 57, Message: com.azure.search.documents.indexes.models.FieldMappingFunction.getParameters() may expose internal representation by returning FieldMappingFunction.parameters -->
-      <Class name="com.azure.search.documents.indexes.models.FieldMappingFunction" />
-      <!-- Line: 95, Message: com.azure.search.documents.implementation.models.SearchResult.getHighlights() may expose internal representation by returning SearchResult.highlights -->
-      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
-      <!-- Line: 228, Message: com.azure.search.documents.models.SemanticSearchOptions.getSemanticFields() may expose internal representation by returning SemanticSearchOptions.semanticFields -->
-      <Class name="com.azure.search.documents.models.SemanticSearchOptions" />
-      <!-- Line: 180, Message: com.azure.search.documents.util.SearchPagedResponse.getValue() may expose internal representation by returning SearchPagedResponse.value -->
-      <Class name="com.azure.search.documents.util.SearchPagedResponse" />
-      <!-- Line: 218, Message: com.azure.search.documents.indexes.models.SearchIndex.getSuggesters() may expose internal representation by returning SearchIndex.suggesters -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 134, Message: com.azure.search.documents.indexes.models.SearchIndex.getFields() may expose internal representation by returning SearchIndex.fields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
-      <!-- Line: 748, Message: com.azure.search.documents.implementation.models.SearchOptions.getSelect() may expose internal representation by returning SearchOptions.select -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 138, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector.getInputs() may expose internal representation by returning SearchIndexerKnowledgeStoreProjectionSelector.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector" />
-      <!-- Line: 385, Message: com.azure.search.documents.models.SearchOptions.getScoringParameters() may expose internal representation by returning SearchOptions.scoringParameters -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 72, Message: com.azure.search.documents.indexes.models.CustomAnalyzer.getTokenFilters() may expose internal representation by returning CustomAnalyzer.tokenFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
-      <!-- Line: 104, Message: com.azure.search.documents.models.QueryAnswerResult.getAdditionalProperties() may expose internal representation by returning QueryAnswerResult.additionalProperties -->
-      <Class name="com.azure.search.documents.models.QueryAnswerResult" />
-      <!-- Line: 70, Message: com.azure.search.documents.indexes.implementation.models.SearchError.getDetails() may expose internal representation by returning SearchError.details -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.SearchError" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult.getSkillsets() may expose internal representation by returning ListSkillsetsResult.skillsets -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult" />
-      <!-- Line: 527, Message: com.azure.search.documents.models.SearchOptions.getSelect() may expose internal representation by returning SearchOptions.select -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 261, Message: com.azure.search.documents.indexes.models.SearchIndexer.getOutputFieldMappings() may expose internal representation by returning SearchIndexer.outputFieldMappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListIndexesResult.getIndexes() may expose internal representation by returning ListIndexesResult.indexes -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexesResult" />
-      <!-- Line: 912, Message: com.azure.search.documents.implementation.models.SearchRequest.getVectorQueries() may expose internal representation by returning SearchRequest.vectorQueries -->
-      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
-      <!-- Line: 39, Message: com.azure.search.documents.options.OnActionErrorOptions.getAction() may expose internal representation by returning OnActionErrorOptions.action -->
-      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListAliasesResult.getAliases() may expose internal representation by returning ListAliasesResult.aliases -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListAliasesResult" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListIndexersResult.getIndexers() may expose internal representation by returning ListIndexersResult.indexers -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexersResult" />
-      <!-- Line: 87, Message: com.azure.search.documents.indexes.models.ScoringProfile.getFunctions() may expose internal representation by returning ScoringProfile.functions -->
-      <Class name="com.azure.search.documents.indexes.models.ScoringProfile" />
-      <!-- Line: 99, Message: com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector.getMappings() may expose internal representation by returning SearchIndexerIndexProjectionSelector.mappings -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
-      <!-- Line: 93, Message: com.azure.search.documents.indexes.models.ImageAnalysisSkill.getDetails() may expose internal representation by returning ImageAnalysisSkill.details -->
-      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
-      <!-- Line: 44, Message: com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds.getDocumentKeys() may expose internal representation by returning DocumentKeysOrIds.documentKeys -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
-      <!-- Line: 50, Message: com.azure.search.documents.indexes.models.PatternCaptureTokenFilter.getPatterns() may expose internal representation by returning PatternCaptureTokenFilter.patterns -->
-      <Class name="com.azure.search.documents.indexes.models.PatternCaptureTokenFilter" />
-      <!-- Line: 76, Message: com.azure.search.documents.indexes.models.CustomNormalizer.getCharFilters() may expose internal representation by returning CustomNormalizer.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
-      <!-- Line: 42, Message: com.azure.search.documents.indexes.models.StopAnalyzer.getStopwords() may expose internal representation by returning StopAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.StopAnalyzer" />
-      <!-- Line: 234, Message: com.azure.search.documents.models.SuggestOptions.getSearchFields() may expose internal representation by returning SuggestOptions.searchFields -->
-      <Class name="com.azure.search.documents.models.SuggestOptions" />
-      <!-- Line: 169, Message: com.azure.search.documents.implementation.models.SearchDocumentsResult.getResults() may expose internal representation by returning SearchDocumentsResult.results -->
-      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
-      <!-- Line: 65, Message: com.azure.search.documents.indexes.models.SearchAlias.getIndexes() may expose internal representation by returning SearchAlias.indexes -->
-      <Class name="com.azure.search.documents.indexes.models.SearchAlias" />
-      <!-- Line: 47, Message: com.azure.search.documents.models.VectorSearchOptions.getQueries() may expose internal representation by returning VectorSearchOptions.queries -->
-      <Class name="com.azure.search.documents.models.VectorSearchOptions" />
-      <!-- Line: 94, Message: com.azure.search.documents.indexes.models.EdgeNGramTokenizer.getTokenChars() may expose internal representation by returning EdgeNGramTokenizer.tokenChars -->
-      <Class name="com.azure.search.documents.indexes.models.EdgeNGramTokenizer" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult.getDataSources() may expose internal representation by returning ListDataSourcesResult.dataSources -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult" />
-      <!-- Line: 92, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection.getFiles() may expose internal representation by returning SearchIndexerKnowledgeStoreProjection.files -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
-      <!-- Line: 133, Message: com.azure.search.documents.indexes.models.IndexerCurrentState.getResetDatasourceDocumentIds() may expose internal representation by returning IndexerCurrentState.resetDatasourceDocumentIds -->
-      <Class name="com.azure.search.documents.indexes.models.IndexerCurrentState" />
-      <!-- Line: 141, Message: com.azure.search.documents.indexes.models.SearchIndexerSkill.getInputs() may expose internal representation by returning SearchIndexerSkill.inputs -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
-      <!-- Line: 336, Message: com.azure.search.documents.models.SearchOptions.getOrderBy() may expose internal representation by returning SearchOptions.orderBy -->
-      <Class name="com.azure.search.documents.models.SearchOptions" />
-      <!-- Line: 59, Message: com.azure.search.documents.indexes.models.StopwordsTokenFilter.getStopwords() may expose internal representation by returning StopwordsTokenFilter.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.StopwordsTokenFilter" />
-      <!-- Line: 583, Message: com.azure.search.documents.implementation.models.SearchOptions.getSearchFields() may expose internal representation by returning SearchOptions.searchFields -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 59, Message: com.azure.search.documents.options.OnActionErrorOptions.getThrowable() may expose internal representation by returning OnActionErrorOptions.throwable -->
-      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
-      <!-- Line: 181, Message: com.azure.search.documents.indexes.implementation.SearchServiceClientImpl.getAliases() may expose internal representation by returning SearchServiceClientImpl.aliases -->
-      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
-      <!-- Line: 100, Message: com.azure.search.documents.models.SearchResult.getHighlights() may expose internal representation by returning SearchResult.highlights -->
-      <Class name="com.azure.search.documents.models.SearchResult" />
-      <!-- Line: 125, Message: com.azure.search.documents.implementation.models.SearchResult.getAdditionalProperties() may expose internal representation by returning SearchResult.additionalProperties -->
-      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
-      <!-- Line: 131, Message: com.azure.search.documents.indexes.models.PatternAnalyzer.getStopwords() may expose internal representation by returning PatternAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.PatternAnalyzer" />
-      <!-- Line: 64, Message: com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds.getDatasourceDocumentIds() may expose internal representation by returning DocumentKeysOrIds.datasourceDocumentIds -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
-      <!-- Line: 43, Message: com.azure.search.documents.indexes.implementation.models.AnalyzeResult.getTokens() may expose internal representation by returning AnalyzeResult.tokens -->
-      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeResult" />
-      <!-- Line: 54, Message: com.azure.search.documents.models.SemanticSearchResult.getQueryCaptions() may expose internal representation by returning SemanticSearchResult.queryCaptions -->
-      <Class name="com.azure.search.documents.models.SemanticSearchResult" />
-      <!-- Line: 96, Message: com.azure.search.documents.indexes.models.DocumentExtractionSkill.getConfiguration() may expose internal representation by returning DocumentExtractionSkill.configuration -->
-      <Class name="com.azure.search.documents.indexes.models.DocumentExtractionSkill" />
-      <!-- Line: 106, Message: com.azure.search.documents.indexes.models.SemanticPrioritizedFields.getKeywordsFields() may expose internal representation by returning SemanticPrioritizedFields.keywordsFields -->
-      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
-      <!-- Line: 96, Message: com.azure.search.documents.indexes.models.CustomAnalyzer.getCharFilters() may expose internal representation by returning CustomAnalyzer.charFilters -->
-      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
-      <!-- Line: 93, Message: com.azure.search.documents.indexes.models.NGramTokenizer.getTokenChars() may expose internal representation by returning NGramTokenizer.tokenChars -->
-      <Class name="com.azure.search.documents.indexes.models.NGramTokenizer" />
-      <!-- Line: 190, Message: com.azure.search.documents.indexes.models.PiiDetectionSkill.getPiiCategories() may expose internal representation by returning PiiDetectionSkill.piiCategories -->
-      <Class name="com.azure.search.documents.indexes.models.PiiDetectionSkill" />
-      <!-- Line: 426, Message: com.azure.search.documents.implementation.models.SearchOptions.getScoringParameters() may expose internal representation by returning SearchOptions.scoringParameters -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-      <!-- Line: 75, Message: com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore.getProjections() may expose internal representation by returning SearchIndexerKnowledgeStore.projections -->
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
-      <!-- Line: 69, Message: com.azure.search.documents.indexes.models.LuceneStandardAnalyzer.getStopwords() may expose internal representation by returning LuceneStandardAnalyzer.stopwords -->
-      <Class name="com.azure.search.documents.indexes.models.LuceneStandardAnalyzer" />
-      <!-- Line: 50, Message: com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter.getKeywords() may expose internal representation by returning KeywordMarkerTokenFilter.keywords -->
-      <Class name="com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter" />
-      <!-- Line: 91, Message: com.azure.search.documents.indexes.models.VectorSearch.getVectorizers() may expose internal representation by returning VectorSearch.vectorizers -->
-      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
-      <!-- Line: 538, Message: com.azure.search.documents.indexes.models.SearchField.getFields() may expose internal representation by returning SearchField.fields -->
-      <Class name="com.azure.search.documents.indexes.models.SearchField" />
-      <!-- Line: 42, Message: com.azure.search.documents.models.IndexDocumentsResult.getResults() may expose internal representation by returning IndexDocumentsResult.results -->
-      <Class name="com.azure.search.documents.models.IndexDocumentsResult" />
-      <!-- Line: 35, Message: com.azure.search.documents.options.OnActionAddedOptions.getAction() may expose internal representation by returning OnActionAddedOptions.action -->
-      <Class name="com.azure.search.documents.options.OnActionAddedOptions" />
-      <!-- Line: 44, Message: com.azure.search.documents.indexes.models.TextWeights.getWeights() may expose internal representation by returning TextWeights.weights -->
-      <Class name="com.azure.search.documents.indexes.models.TextWeights" />
-      <!-- Line: 242, Message: com.azure.search.documents.implementation.models.SearchOptions.getFacets() may expose internal representation by returning SearchOptions.facets -->
-      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Or>
-      <!-- Line: 46, Message: Unread field: com.azure.search.documents.indexes.SearchIndexerClientBuilderTests.searchEndpoint; should this field be static? -->
-      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
-      <!-- Line: 46, Message: Unread field: com.azure.search.documents.indexes.SearchIndexClientBuilderTests.searchEndpoint; should this field be static? -->
       <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
+      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
     </Or>
   </Match>
   <Match>
-    <!-- Line: 167, Message: com.azure.search.documents.indexes.models.EntityRecognitionSkill.areTypelessEntitiesIncluded() has Boolean return type and returns explicit null -->
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.search.documents.implementation.models.IndexAction" />
+      <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
+      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
+      <Class name="com.azure.search.documents.implementation.models.SearchError" />
+      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
+      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
+      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
+      <Class name="com.azure.search.documents.implementation.models.SuggestDocumentsResult" />
+      <Class name="com.azure.search.documents.implementation.models.SuggestResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.SearchServiceClientImpl" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListAliasesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexersResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.SearchError" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.SkillNames" />
+      <Class name="com.azure.search.documents.indexes.models.AnalyzeTextOptions" />
+      <Class name="com.azure.search.documents.indexes.models.CjkBigramTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.CommonGramTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.CorsOptions" />
+      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.CustomEntity" />
+      <Class name="com.azure.search.documents.indexes.models.CustomEntityLookupSkill" />
+      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
+      <Class name="com.azure.search.documents.indexes.models.CustomWebApiParameters" />
+      <Class name="com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.DocumentExtractionSkill" />
+      <Class name="com.azure.search.documents.indexes.models.EdgeNGramTokenizer" />
+      <Class name="com.azure.search.documents.indexes.models.ElisionTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.FieldMappingFunction" />
+      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
+      <Class name="com.azure.search.documents.indexes.models.IndexerCurrentState" />
+      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
+      <Class name="com.azure.search.documents.indexes.models.IndexingParameters" />
+      <Class name="com.azure.search.documents.indexes.models.IndexingParametersConfiguration" />
+      <Class name="com.azure.search.documents.indexes.models.InputFieldMappingEntry" />
+      <Class name="com.azure.search.documents.indexes.models.KeepTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.LuceneStandardAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.MappingCharFilter" />
+      <Class name="com.azure.search.documents.indexes.models.NGramTokenizer" />
+      <Class name="com.azure.search.documents.indexes.models.PatternAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.PatternCaptureTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.PiiDetectionSkill" />
+      <Class name="com.azure.search.documents.indexes.models.ScoringProfile" />
+      <Class name="com.azure.search.documents.indexes.models.SearchAlias" />
+      <Class name="com.azure.search.documents.indexes.models.SearchField" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkillset" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerStatus" />
+      <Class name="com.azure.search.documents.indexes.models.SearchSuggester" />
+      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
+      <Class name="com.azure.search.documents.indexes.models.SemanticSearch" />
+      <Class name="com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.StopAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.StopwordsTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.SynonymTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.TextWeights" />
+      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
+      <Class name="com.azure.search.documents.indexes.models.WebApiSkill" />
+      <Class name="com.azure.search.documents.indexes.models.WordDelimiterTokenFilter" />
+      <Class name="com.azure.search.documents.models.AutocompleteOptions" />
+      <Class name="com.azure.search.documents.models.AutocompleteResult" />
+      <Class name="com.azure.search.documents.models.FacetResult" />
+      <Class name="com.azure.search.documents.models.Hotel" />
+      <Class name="com.azure.search.documents.models.IndexAction" />
+      <Class name="com.azure.search.documents.models.IndexBatchBase" />
+      <Class name="com.azure.search.documents.models.IndexBatchException" />
+      <Class name="com.azure.search.documents.models.IndexDocumentsResult" />
+      <Class name="com.azure.search.documents.models.QueryAnswerResult" />
+      <Class name="com.azure.search.documents.models.QueryCaptionResult" />
+      <Class name="com.azure.search.documents.models.SearchOptions" />
+      <Class name="com.azure.search.documents.models.SearchResult" />
+      <Class name="com.azure.search.documents.models.SemanticDebugInfo" />
+      <Class name="com.azure.search.documents.models.SemanticSearchOptions" />
+      <Class name="com.azure.search.documents.models.SemanticSearchResult" />
+      <Class name="com.azure.search.documents.models.SemanticSearchResults" />
+      <Class name="com.azure.search.documents.models.SuggestOptions" />
+      <Class name="com.azure.search.documents.models.VectorSearchOptions" />
+      <Class name="com.azure.search.documents.models.VectorizedQuery" />
+      <Class name="com.azure.search.documents.options.OnActionAddedOptions" />
+      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
+      <Class name="com.azure.search.documents.options.OnActionSentOptions" />
+      <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
+      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+      <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
+      <Class name="com.azure.search.documents.util.SearchPagedResponse" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.search.documents.SearchClientBuilder" />
+      <Class name="com.azure.search.documents.implementation.models.IndexAction" />
+      <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
+      <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
+      <Class name="com.azure.search.documents.implementation.models.SearchOptions" />
+      <Class name="com.azure.search.documents.implementation.models.SearchRequest" />
+      <Class name="com.azure.search.documents.implementation.models.SearchResult" />
+      <Class name="com.azure.search.documents.implementation.models.SuggestDocumentsResult" />
+      <Class name="com.azure.search.documents.implementation.models.SuggestResult" />
+      <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilder" />
+      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilder" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeRequest" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.AnalyzeResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListAliasesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexersResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListIndexesResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult" />
+      <Class name="com.azure.search.documents.indexes.implementation.models.SkillNames" />
+      <Class name="com.azure.search.documents.indexes.models.CjkBigramTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.CommonGramTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.CorsOptions" />
+      <Class name="com.azure.search.documents.indexes.models.CustomAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.CustomEntity" />
+      <Class name="com.azure.search.documents.indexes.models.CustomEntityLookupSkill" />
+      <Class name="com.azure.search.documents.indexes.models.CustomNormalizer" />
+      <Class name="com.azure.search.documents.indexes.models.CustomWebApiParameters" />
+      <Class name="com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.DocumentExtractionSkill" />
+      <Class name="com.azure.search.documents.indexes.models.EdgeNGramTokenizer" />
+      <Class name="com.azure.search.documents.indexes.models.ElisionTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.FieldMappingFunction" />
+      <Class name="com.azure.search.documents.indexes.models.ImageAnalysisSkill" />
+      <Class name="com.azure.search.documents.indexes.models.IndexerExecutionResult" />
+      <Class name="com.azure.search.documents.indexes.models.IndexingParameters" />
+      <Class name="com.azure.search.documents.indexes.models.IndexingParametersConfiguration" />
+      <Class name="com.azure.search.documents.indexes.models.InputFieldMappingEntry" />
+      <Class name="com.azure.search.documents.indexes.models.KeepTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.LuceneStandardAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.MappingCharFilter" />
+      <Class name="com.azure.search.documents.indexes.models.NGramTokenizer" />
+      <Class name="com.azure.search.documents.indexes.models.PatternAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.PatternCaptureTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.PiiDetectionSkill" />
+      <Class name="com.azure.search.documents.indexes.models.ScoringProfile" />
+      <Class name="com.azure.search.documents.indexes.models.SearchAlias" />
+      <Class name="com.azure.search.documents.indexes.models.SearchField" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjection" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkill" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerSkillset" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerStatus" />
+      <Class name="com.azure.search.documents.indexes.models.SearchSuggester" />
+      <Class name="com.azure.search.documents.indexes.models.SemanticPrioritizedFields" />
+      <Class name="com.azure.search.documents.indexes.models.SemanticSearch" />
+      <Class name="com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.StopAnalyzer" />
+      <Class name="com.azure.search.documents.indexes.models.StopwordsTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.SynonymTokenFilter" />
+      <Class name="com.azure.search.documents.indexes.models.TextWeights" />
+      <Class name="com.azure.search.documents.indexes.models.VectorSearch" />
+      <Class name="com.azure.search.documents.indexes.models.WebApiSkill" />
+      <Class name="com.azure.search.documents.indexes.models.WordDelimiterTokenFilter" />
+      <Class name="com.azure.search.documents.models.AutocompleteOptions" />
+      <Class name="com.azure.search.documents.models.AutocompleteResult" />
+      <Class name="com.azure.search.documents.models.FacetResult" />
+      <Class name="com.azure.search.documents.models.Hotel" />
+      <Class name="com.azure.search.documents.models.IndexAction" />
+      <Class name="com.azure.search.documents.models.IndexBatchBase" />
+      <Class name="com.azure.search.documents.models.IndexDocumentsResult" />
+      <Class name="com.azure.search.documents.models.SemanticSearchOptions" />
+      <Class name="com.azure.search.documents.models.SuggestOptions" />
+      <Class name="com.azure.search.documents.models.VectorSearchOptions" />
+      <Class name="com.azure.search.documents.models.VectorizedQuery" />
+      <Class name="com.azure.search.documents.options.OnActionAddedOptions" />
+      <Class name="com.azure.search.documents.options.OnActionErrorOptions" />
+      <Class name="com.azure.search.documents.options.OnActionSentOptions" />
+      <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
+      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+      <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
+      <Class name="com.azure.search.documents.util.SearchPagedResponse" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.search.documents.implementation.converters.IndexActionHelper" />
+      <Class name="com.azure.search.documents.implementation.converters.SearchResultHelper" />
+      <Class name="com.azure.search.documents.implementation.converters.SuggestResultHelper" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NM_CONFUSING" />
+    <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+  </Match>
+  <Match>
     <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
     <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill" />
   </Match>
   <Match>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC" />
+    <Class name="com.azure.search.documents.ReadmeSamples$Hotel" />
+  </Match>
+  <Match>
+    <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
-      <!-- Line: 166, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.location() and com.azure.search.documents.test.environment.models.LoudHotel.LOCATION() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 93, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.hotelName() and com.azure.search.documents.test.environment.models.LoudHotel.HOTELNAME() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 148, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.smokingAllowed() and com.azure.search.documents.test.environment.models.LoudHotel.SMOKINGALLOWED() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 84, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.hotelId() and com.azure.search.documents.test.environment.models.LoudHotel.HOTELID() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 139, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.parkingIncluded() and com.azure.search.documents.test.environment.models.LoudHotel.PARKINGINCLUDED() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 175, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.rating() and com.azure.search.documents.test.environment.models.LoudHotel.RATING() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 129, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.tags() and com.azure.search.documents.test.environment.models.LoudHotel.TAGS() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 120, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.category() and com.azure.search.documents.test.environment.models.LoudHotel.CATEGORY() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 193, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.rooms() and com.azure.search.documents.test.environment.models.LoudHotel.ROOMS() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 102, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.description() and com.azure.search.documents.test.environment.models.LoudHotel.DESCRIPTION() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 157, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.lastRenovationDate() and com.azure.search.documents.test.environment.models.LoudHotel.LASTRENOVATIONDATE() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
-      <!-- Line: 184, Message: Confusing to have methods com.azure.search.documents.test.environment.models.Hotel.address() and com.azure.search.documents.test.environment.models.LoudHotel.ADDRESS() -->
-      <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+      <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
+      <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
     </Or>
   </Match>
   <Match>
+    <Bug pattern="URF_UNREAD_FIELD" />
+    <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
     <Or>
-      <!-- Line: 17, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithUnsupportedField.hotelId -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithUnsupportedField" />
-      <!-- Line: 25, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithUnsupportedField.someListBytes -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithUnsupportedField" />
-      <!-- Line: 16, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithArray.hotelId -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithArray" />
-      <!-- Line: 21, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithIgnoredFields.hotelName -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithIgnoredFields" />
-      <!-- Line: 21, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithArray.tags -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithArray" />
-      <!-- Line: 16, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithIgnoredFields.hotelId -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithIgnoredFields" />
-      <!-- Line: 21, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithUnsupportedField.someByte -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithUnsupportedField" />
-      <!-- Line: 25, Message: Unwritten field: com.azure.search.documents.test.environment.models.HotelWithIgnoredFields.notIgnoredName -->
-      <Class name="com.azure.search.documents.test.environment.models.HotelWithIgnoredFields" />
+      <Class name="com.azure.search.documents.GeographyPointTests" />
+      <Class name="com.azure.search.documents.indexes.FieldBuilderServiceTests" />
+      <Class name="com.azure.search.documents.models.SuggestResult" />
     </Or>
   </Match>
   <Match>
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
     <Or>
-      <!-- Line: 65, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.ratio -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 70, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.startDate -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 50, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.rating -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 75, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.endDate -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 55, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.count -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 85, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.buckets -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 60, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.isEnabled -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
-      <!-- Line: 80, Message: Unread field: com.azure.search.documents.test.environment.models.NonNullableModel.topLevelBucket -->
-      <Class name="com.azure.search.documents.test.environment.models.NonNullableModel" />
+      <Class name="com.azure.search.documents.test.environment.models.HotelWithArray" />
+      <Class name="com.azure.search.documents.test.environment.models.HotelWithIgnoredFields" />
+      <Class name="com.azure.search.documents.test.environment.models.HotelWithUnsupportedField" />
     </Or>
   </Match>
 </FindBugsFilter>

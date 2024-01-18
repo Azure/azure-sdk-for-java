@@ -1,38 +1,21 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Use case: Generates, or updates, Checkstyle (checkstyle-suppressions.xml) and Spotbugs (spotbugs-exclude.xml)
-# suppression files for the Java SDK.
+# Use case: Generates Checkstyle (checkstyle-suppressions.xml) and Spotbugs (spotbugs-exclude.xml) suppression files
+# for the Java SDK.
 #
-# To use this tool, first run build with the following command:
-#
-# mvn clean checkstyle:check spotbugs:check -f <project> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false"
-#
-# This will run the build, but will not fail on any Checkstyle or Spotbugs violations. This is necessary because
-# the build will fail if there are any violations, and we need to have the Checkstyle and Spotbugs plugins complete
-# as they generate files in /target which indicate the violations.
-#
-# Or, if you're looking to update the existing suppression files, run the following command:
-#
-# mvn clean checkstyle:check spotbugs:check -f <project> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="
-#
-# This will run the build without any existing suppression files being used. And again, this will not fail on any
-# Checkstyle or Spotbugs violations.
-#
-# Next, run this script with the following command:
+# To use this tool, run the following command:
 #
 # python linting_suppression_generator.py --project-folder <project folder>
 #
-# This will generate, or update, the suppression files in the project root directory. You can then run the build
-# again without the flags to fail on errors and violations.
+# This will generate, or update, the suppression files in the project root directory.
 #
-# Note: This script will not remove any existing suppression files. If you want to remove them, you will need to
-# do so manually.
-#
-# At this time, this script only supports running 
+# This script only supports running against a single project. It won't walk any subdirectories looking for
+# multiple projects.
 
 import argparse
 import os
+import subprocess
 from typing import Dict, List, Set, Tuple
 import xml.etree.ElementTree as ET
 
@@ -45,8 +28,22 @@ def generate_suppression_files(project_folder: str):
         print('The project folder does not exist: ' + project_folder)
         return
     
+    # Check if the project folder is a Java project.
+    if not os.path.exists(os.path.join(project_folder, 'pom.xml')):
+        print('The project folder does not contain a pom.xml file: ' + project_folder)
+        return
+    
+    generate_linting_violations(project_folder)
+    
     generate_checkstyle_suppression_file(project_folder)
     generate_spotbugs_suppression_file(project_folder)
+
+def generate_linting_violations(project_folder: str):
+    # Run mvn checkstyle:check spotbugs:check spotbugs:spotbugs -f <project_folder> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="
+    # This will generate the following files:
+    #   target/checkstyle-result.xml
+    #   target/spotbugs.xml
+    subprocess.run(f'mvn checkstyle:check spotbugs:check spotbugs:spotbugs -f {project_folder} "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="', shell = True)
 
 def generate_checkstyle_suppression_file(project_folder: str):
     # Get the path to the checkstyle violations file.
@@ -67,16 +64,12 @@ def generate_checkstyle_suppression_file(project_folder: str):
     #
     # Parsing the violations will be stored in the following structure:
     #
-    # Dict(Tuple[source, file_name], Set[Tuple[line, message]])
+    # Dict(source, Set(classname))
     #
     # Where the file_name will be turned into the Java file path (ex: /src/main/java/com/azure/.../MyClass.java -> com.azure...MyClass.java),
     # the message will be left as is, and the source will clean the built-in checks to just their name 
-    # (ex: com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck -> MissingJavadocMethod).
-    #
-    # Normally, handwritten suppressions will omit the message, as writing them requires a manual review of the
-    # violation. However, since we're generating these files, we'll include the message so that it's easier to
-    # understand what the violation is for, and how to remedy it.
-    violations: Dict[Tuple[str, str], Set[str]] = dict()
+    # (ex: com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck -> MissingJavadocMethodCheck).
+    violations: Dict[str, Set[str]] = dict()
 
     tree: ET.ElementTree = ET.parse(checkstyle_violations_file)
     # root will be the <checkstyle> element.
@@ -101,22 +94,14 @@ def generate_checkstyle_suppression_file(project_folder: str):
 
         errors: List[ET.Element] = file_element.findall('error')
         for error in errors:
-            message = error.attrib['message']
             source = error.attrib['source']
-            line = error.attrib['line']
             if source.startswith('com.puppycrawl'):
                 source = source[source.rfind('.') + 1:]
 
-            if (file_name, source) not in violations:
-                violations[(file_name, source)] = set()
+            if source not in violations:
+                violations[source] = set()
 
-            violations[(file_name, source)].add((line, message))
-
-    if len(violations) == 0:
-        # Don't update the suppression file if there are no violations.
-        # This could indicate that the build failed or was ran incorrectly.
-        print('No Checkstyle violations were found.')
-        return
+            violations[source].add(file_name)
     
     # Now that we have the violations, we can generate the suppression file.
     # The format of the suppression file is as follows:
@@ -126,8 +111,6 @@ def generate_checkstyle_suppression_file(project_folder: str):
     # <suppressions>
     #   <suppress files="..." checks="..."/>
     # </suppressions>
-    #
-    # Before each <suppress> element an XML comment will be added for each message of the violation of the file-check.
     with open(file=os.path.join(project_folder, 'checkstyle-suppressions.xml'), mode='w') as checkstyle_suppressions:
         checkstyle_suppressions.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         checkstyle_suppressions.write('<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">\n')
@@ -135,10 +118,10 @@ def generate_checkstyle_suppression_file(project_folder: str):
 
         checkstyle_suppressions.write('<suppressions>\n')
 
-        for file_and_check in violations.keys():
-            for line_and_message in sorted(violations[file_and_check], key=lambda x: int(x[0])):
-                checkstyle_suppressions.write(f'  <!-- Line: {line_and_message[0]}, Message: {line_and_message[1]} -->\n')
-            checkstyle_suppressions.write(f'  <suppress files="{file_and_check[0]}" checks="{file_and_check[1]}" />\n')
+        for violation in sorted(violations.items(), key=lambda x: x[0]):
+            files = sorted(violation[1])
+            for file in files:
+                checkstyle_suppressions.write(f'  <suppress files="{file}" checks="{violation[0]}" />\n')
 
         checkstyle_suppressions.write('</suppressions>\n')
 
@@ -159,36 +142,24 @@ def generate_spotbugs_suppression_file(project_folder: str):
     #
     # # Parsing the violations will be stored in the following structure:
     # 
-    # Dict(type, Set[Tuple[classname, message, lineNumber]]
-    #
-    # Normally, handwritten suppressions will omit the message, as writing them requires a manual review of the
-    # violation. However, since we're generating these files, we'll include the message so that it's easier to
-    # understand what the violation is for, and how to remedy it.
-    violations: Dict[str, Set[Tuple[str, str, str]]] = dict()
+    # Dict(type, Set(classname))
+    violations: Dict[str, Set[str]] = dict()
 
     tree: ET.ElementTree = ET.parse(spotbugs_violations_file)
     # root will be the <checkstyle> element.
     file_elements: List[ET.Element] = tree.getroot().findall('file')
 
     for file_element in file_elements:
-        file_name = file_element.attrib['classname']
+        classname = file_element.attrib['classname']
 
         errors: List[ET.Element] = file_element.findall('BugInstance')
         for error in errors:
             type = error.attrib['type']
-            message = error.attrib['message'].replace('"', '\'').replace('<', '&lt;').replace('>', '&gt;')
-            line_number = error.attrib['lineNumber']
 
             if type not in violations:
                 violations[type] = set()
-            
-            violations[type].add((file_name, message, line_number))
 
-    if len(violations) == 0:
-        # Don't update the suppression file if there are no violations.
-        # This could indicate that the build failed or was ran incorrectly.
-        print('No Spotbugs violations were found.')
-        return
+            violations[type].add(classname)
     
     # Now that we have the violations, we can generate the suppression file.
     # The format of the suppression file is as follows:
@@ -220,22 +191,20 @@ def generate_spotbugs_suppression_file(project_folder: str):
         spotbugs_suppressions.write('<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n')
         spotbugs_suppressions.write('                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">\n')
     
-        for type in violations.keys():
+        for violation in sorted(violations.items(), key=lambda x: x[0]):
             spotbugs_suppressions.write('  <Match>\n')
-            bugs = sorted(violations[type], key=lambda x: int(x[2]))
+            spotbugs_suppressions.write(f'    <Bug pattern="{violation[0]}" />\n')
 
-            # If there is only one bug, then we can just write it out.
-            if len(bugs) == 1:
-                bug = bugs.pop()
-                spotbugs_suppressions.write(f'    <!-- Line: {bug[2]}, Message: {bug[1]} -->\n')
-                spotbugs_suppressions.write(f'    <Bug pattern="{type}" />\n')
-                spotbugs_suppressions.write(f'    <Class name="{bug[0]}" />\n')
+            classnames = sorted(violation[1])
+
+            if len(classnames) == 1:
+                # If there is only one class, then we can just write it out.
+                spotbugs_suppressions.write(f'    <Class name="{classnames.pop()}" />\n')
             else:
-                # If there are multiple bugs, then we need to use the <Or> element.
+                # If there are multiple classes, then we need to use the <Or> element.
                 spotbugs_suppressions.write(f'    <Or>\n')
-                for bug in bugs:
-                    spotbugs_suppressions.write(f'      <!-- Line: {bug[2]}, Message: {bug[1]} -->\n')
-                    spotbugs_suppressions.write(f'      <Class name="{bug[0]}" />\n')
+                for classname in classnames:
+                    spotbugs_suppressions.write(f'      <Class name="{classname}" />\n')
                 spotbugs_suppressions.write(f'    </Or>\n')
 
             spotbugs_suppressions.write('  </Match>\n')
@@ -246,7 +215,6 @@ def main():
     parser = argparse.ArgumentParser(description='Generate Checkstyle and Spotbugs suppression files for a project.')
     parser.add_argument('--project-folder', '-pf', help='The project to generate suppression files for.')
     args = parser.parse_args()
-    #args.project_folder = '.\\sdk\\search\\azure-search-documents'
     if args.project_folder:
         generate_suppression_files(args.project_folder)
     else:
