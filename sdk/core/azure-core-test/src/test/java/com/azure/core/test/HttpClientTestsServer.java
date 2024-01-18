@@ -74,7 +74,7 @@ public class HttpClientTestsServer {
             } else if (get && path.startsWith("/status")) {
                 // Stub that will return a response with the passed status code.
                 resp.setStatus(Integer.parseInt(path.split("/", 3)[2]));
-                resp.completeOutput(Callback.NOOP);
+                resp.getHttpOutput().flush();
             } else if (post && path.startsWith("/post")) {
                 if ("application/x-www-form-urlencoded".equalsIgnoreCase(req.getHeader("Content-Type"))) {
                     sendFormResponse(resp, new String(requestBody, StandardCharsets.UTF_8));
