@@ -227,6 +227,8 @@ public class ClientTelemetryTest extends TestSuiteBase {
         for (ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
             if (reportPayload.getMetricInfo().getMetricsName().equals("CPU")) {
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("Percentage");
+            } else if (reportPayload.getMetricInfo().getMetricsName().equals(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME)) {
+                assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
             } else {
                 assertThat(reportPayload.getMetricInfo().getMetricsName()).isEqualTo("MemoryRemaining");
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("MB");
