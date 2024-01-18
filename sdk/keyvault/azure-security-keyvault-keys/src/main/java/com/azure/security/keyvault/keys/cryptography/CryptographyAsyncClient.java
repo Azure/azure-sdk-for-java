@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -944,7 +945,7 @@ public class CryptographyAsyncClient {
 
             return jsonWebKeyMono
                 .map(this::validateJsonWebKeyAndCreateLocalClient)
-                .onErrorResume(RuntimeException.class, this::handleKeyRetrievalError);
+                .onErrorResume(HttpResponseException.class, this::handleKeyRetrievalError);
         } else {
             return Mono.defer(() -> Mono.just(true));
         }
@@ -974,12 +975,18 @@ public class CryptographyAsyncClient {
         }
     }
 
-    private Mono<Boolean> handleKeyRetrievalError(Throwable e) {
-        localOperationNotSupported = true;
+    private Mono<Boolean> handleKeyRetrievalError(HttpResponseException e) {
+        if (e.getResponse().getStatusCode() == 403) {
+            localOperationNotSupported = true;
 
-        LOGGER.warning("Could not retrieve key from service to perform cryptographic operations locally. "
-            + "Will use service-side cryptography instead.", e);
+            LOGGER.warning("Could not retrieve key from service to perform cryptographic operations locally. "
+                + "Will use service-side cryptography instead.", e);
 
-        return Mono.defer(() -> Mono.just(false));
+            return Mono.defer(() -> Mono.just(false));
+        } else {
+            LOGGER.error("Could not retrieve key from service.");
+
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 }
