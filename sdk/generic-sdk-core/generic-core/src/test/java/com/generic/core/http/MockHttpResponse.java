@@ -12,6 +12,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static com.generic.core.CoreTestUtils.cloneByteArray;
 
@@ -19,9 +20,7 @@ public class MockHttpResponse extends HttpResponse {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     private final int statusCode;
-
     private final Headers headers;
-    private final byte[] bodyBytes;
 
     /**
      * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
@@ -67,11 +66,10 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
-        super(request, cloneByteArray(bodyBytes));
+        super(request, BinaryData.fromBytes(cloneByteArray(bodyBytes)));
 
         this.statusCode = statusCode;
         this.headers = headers;
-        this.bodyBytes = bodyBytes;
     }
 
     /**
@@ -121,9 +119,18 @@ public class MockHttpResponse extends HttpResponse {
     public Headers getHeaders() {
         return this.headers;
     }
+    
+    @Override
+    public HttpResponse buffer() {
+        return this;
+    }
 
     @Override
-    public BinaryData getBody() {
-        return BinaryData.fromBytes(bodyBytes);
+    public boolean isBuffered() {
+        return true;
+    }
+
+    @Override
+    public void close() throws IOException {
     }
 }

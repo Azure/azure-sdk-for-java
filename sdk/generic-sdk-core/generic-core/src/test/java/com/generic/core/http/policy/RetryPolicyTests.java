@@ -48,7 +48,7 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @ValueSource(ints = {408, 500, 502, 503})
-    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) {
+    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -76,7 +76,7 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @ValueSource(ints = {400, 401, 402, 403, 404, 409, 412, 501, 505})
-    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) {
+    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -101,7 +101,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void defaultRetryPolicyRetriesIOException() {
+    public void defaultRetryPolicyRetriesIOException() throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -131,7 +131,7 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
     public void customRetryPolicyCanDetermineRetryStatusCodes(RetryStrategy retryStrategy, int[] statusCodes,
-        int expectedStatusCode) {
+        int expectedStatusCode) throws IOException {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(retryStrategy))
@@ -249,7 +249,7 @@ public class RetryPolicyTests {
         AtomicInteger closeCalls = new AtomicInteger();
         HttpResponse closeTrackingHttpResponse = new MockHttpResponse(null, 503, new Headers()) {
             @Override
-            public void close() {
+            public void close() throws IOException {
                 closeCalls.incrementAndGet();
                 super.close();
             }

@@ -6,13 +6,13 @@ package com.generic.core.models;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.serializer.ObjectSerializer;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
-import java.nio.channels.Channel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -83,7 +83,7 @@ import java.util.Objects;
  * @see ObjectSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
-public abstract class BinaryData {
+public abstract class BinaryData implements Closeable {
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;

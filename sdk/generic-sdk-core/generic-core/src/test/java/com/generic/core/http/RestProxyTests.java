@@ -29,6 +29,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -258,7 +259,7 @@ public class RestProxyTests {
 
             return new MockHttpResponse(request, success ? 200 : 400) {
                 @Override
-                public void close() {
+                public void close() throws IOException {
                     closeCalledOnResponse = true;
 
                     super.close();

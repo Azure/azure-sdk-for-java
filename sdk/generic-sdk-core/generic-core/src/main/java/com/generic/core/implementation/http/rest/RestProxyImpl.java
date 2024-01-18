@@ -18,6 +18,7 @@ import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -72,7 +73,12 @@ public class RestProxyImpl extends RestProxyBase {
 
         int statusCode = decodedResponse.getSourceResponse().getStatusCode();
 
-        return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), options, errorOptions);
+        try {
+            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), options,
+                errorOptions);
+        } catch (IOException ex) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
+        }
     }
 
     /**
@@ -118,7 +124,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-                                                SwaggerMethodParser methodParser, Type entityType) {
+        SwaggerMethodParser methodParser, Type entityType) throws IOException {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
@@ -190,8 +196,8 @@ public class RestProxyImpl extends RestProxyBase {
      * @return The deserialized result.
      */
     private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-                                        SwaggerMethodParser methodParser, Type returnType,
-                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+        SwaggerMethodParser methodParser, Type returnType, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions) throws IOException {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;

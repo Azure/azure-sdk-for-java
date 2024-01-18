@@ -3,7 +3,6 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -13,6 +12,7 @@ import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
@@ -231,12 +231,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 long contentLength = getContentLength(logger, response.getHeaders());
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    return new LoggingHttpResponse(response, logBuilder, logger,
-                        (int) contentLength, contentTypeHeader);
-                }
-            }
+                    if (!response.isBuffered()) {
+                        response = response.buffer();
+                    }
 
-            logBuilder.log(RESPONSE_LOG_MESSAGE);
+                    logBuilder.addKeyValue("body", response.getBody().toString())
+                        .log(RESPONSE_LOG_MESSAGE);
+                }
+            } else {
+                logBuilder.log(RESPONSE_LOG_MESSAGE);
+            }
 
             return response;
         }
@@ -360,58 +364,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             case VERBOSE:
             default:
                 return logger.atVerbose();
-        }
-    }
-
-    private static final class LoggingHttpResponse extends HttpResponse {
-        private final HttpResponse actualResponse;
-        private final ClientLogger.LoggingEventBuilder logBuilder;
-        private final int contentLength;
-        private final ClientLogger logger;
-        private final String contentTypeHeader;
-
-        private LoggingHttpResponse(HttpResponse actualResponse, ClientLogger.LoggingEventBuilder logBuilder,
-                                    ClientLogger logger, int contentLength, String contentTypeHeader) {
-            super(actualResponse.getRequest());
-
-            this.actualResponse = actualResponse;
-            this.logBuilder = logBuilder;
-            this.logger = logger;
-            this.contentLength = contentLength;
-            this.contentTypeHeader = contentTypeHeader;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return actualResponse.getStatusCode();
-        }
-
-        @Override
-        public String getHeaderValue(HeaderName headerName) {
-            return actualResponse.getHeaderValue(headerName);
-        }
-
-        @Override
-        public Headers getHeaders() {
-            return actualResponse.getHeaders();
-        }
-
-        @Override
-        public BinaryData getBody() {
-            BinaryData content = actualResponse.getBody();
-            doLog(content.toString());
-
-            return content;
-        }
-
-        @Override
-        public void close() {
-            actualResponse.close();
-        }
-
-        private void doLog(String body) {
-            logBuilder.addKeyValue("body", body)
-                .log(RESPONSE_LOG_MESSAGE);
         }
     }
 

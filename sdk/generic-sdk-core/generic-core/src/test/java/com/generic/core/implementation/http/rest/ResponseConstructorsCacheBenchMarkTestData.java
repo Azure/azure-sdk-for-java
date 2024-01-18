@@ -17,6 +17,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -75,14 +76,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
     static final class MockResponse extends HttpResponse {
         private final int statusCode;
         private final Headers headers;
-        private final byte[] bodyBytes;
 
         MockResponse(HttpRequest request, int statusCode, Headers headers, byte[] body) {
-            super(request, body);
+            super(request, BinaryData.fromBytes(body));
 
             this.statusCode = statusCode;
             this.headers = headers;
-            this.bodyBytes = body;
         }
 
         @Override
@@ -96,8 +95,17 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public BinaryData getBody() {
-            return BinaryData.fromBytes(bodyBytes);
+        public HttpResponse buffer() {
+            return this;
+        }
+
+        @Override
+        public boolean isBuffered() {
+            return true;
+        }
+
+        @Override
+        public void close() throws IOException {
         }
     }
 

@@ -103,6 +103,10 @@ public final class ListByteBufferBinaryData extends BinaryData {
         return this;
     }
 
+    @Override
+    public void close() throws IOException {
+    }
+
     private byte[] getBytes() {
         long length = getLength();
         if (length > MAX_ARRAY_SIZE) {

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -170,7 +171,7 @@ public class DefaultHttpClientBuilderTests {
     }
 
     @Test
-    public void buildWithNullProxyType() {
+    public void buildWithNullProxyType() throws IOException {
         SimpleBasicAuthHttpProxyServer proxyServer =
             new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 
@@ -195,7 +196,7 @@ public class DefaultHttpClientBuilderTests {
     }
 
     @Test
-    public void buildWithoutProxyAuthentication() {
+    public void buildWithoutProxyAuthentication() throws IOException {
         SimpleBasicAuthHttpProxyServer proxyServer =
             new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, SERVICE_ENDPOINT);
 

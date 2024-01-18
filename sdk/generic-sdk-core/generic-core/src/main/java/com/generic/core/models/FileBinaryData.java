@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
@@ -151,10 +152,7 @@ public class FileBinaryData extends BinaryData {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        try (FileInputStream inputStream = new FileInputStream(file.toFile())) {
-            inputStream.skip(position); // Set the FileInputStream reader to the offset represented by position.
-            inputStream.transferTo(outputStream);
-        }
+        writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
@@ -197,6 +195,10 @@ public class FileBinaryData extends BinaryData {
     @Override
     public BinaryData toReplayableBinaryData() {
         return this;
+    }
+
+    @Override
+    public void close() throws IOException {
     }
 
     private byte[] getBytes() {

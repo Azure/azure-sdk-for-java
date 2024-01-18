@@ -3,6 +3,7 @@ package com.generic.core.models;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -67,6 +68,10 @@ public final class StringBinaryData extends BinaryData {
     @Override
     public BinaryData toReplayableBinaryData() {
         return this;
+    }
+
+    @Override
+    public void close() throws IOException {
     }
 
     private byte[] getBytes() {

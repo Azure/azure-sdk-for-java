@@ -4,24 +4,25 @@
 package com.generic.core.http.okhttp.implementation;
 
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.Headers;
 import okhttp3.Response;
 
 /**
  * An OkHttp response where the response body has been buffered into memory.
  */
 public final class OkHttpBufferedResponse extends OkHttpResponseBase {
-    private final byte[] body;
+    public OkHttpBufferedResponse(Response response, HttpRequest request, byte[] body, boolean eagerlyConvertHeaders) {
+        super(response, request, eagerlyConvertHeaders, BinaryData.fromBytes(body));
+    }
 
-    public OkHttpBufferedResponse(Response response, HttpRequest request, byte[] body,
-                                  boolean eagerlyConvertHeaders) {
-        super(response, request, eagerlyConvertHeaders);
-
-        this.body = body;
+    OkHttpBufferedResponse(HttpRequest request, Headers headers, int statusCode, BinaryData body) {
+        super(request, headers, statusCode, body);
     }
 
     @Override
-    public BinaryData getBody() {
-        return BinaryData.fromBytes(body);
+    public HttpResponse buffer() {
+        return this;
     }
 }
