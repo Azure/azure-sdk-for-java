@@ -628,7 +628,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.clientTelemetryConfig,
                     this,
                     this.connectionPolicy.getPreferredRegions());
-            clientTelemetry.init();
+            clientTelemetry.init().doOnTerminate(() -> {
+                logger.info(
+                    "Initialized DocumentClient [{}] with machineId[{}]"
+                        + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
+                    clientId,
+                    ClientTelemetry.getMachineId(diagnosticsClientConfig),
+                    serviceEndpoint,
+                    connectionPolicy,
+                    consistencyLevel,
+                    configs.getProtocol());
+            }).subscribe();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {
