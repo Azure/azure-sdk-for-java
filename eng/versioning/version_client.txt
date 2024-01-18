@@ -150,7 +150,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.2;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.14.7;7.15.0-beta.6
+com.azure:azure-messaging-servicebus;7.14.7;7.15.0
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -452,7 +452,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
 unreleased_com.azure:azure-core;1.46.0-beta.1
-unreleased_com.azure:azure-core-amqp;2.9.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
