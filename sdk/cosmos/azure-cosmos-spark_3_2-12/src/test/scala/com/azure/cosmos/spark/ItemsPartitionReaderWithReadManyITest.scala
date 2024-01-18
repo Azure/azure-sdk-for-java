@@ -19,6 +19,12 @@ class ItemsPartitionReaderWithReadManyITest
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer {
+  private val idProperty = "id"
+  private val pkProperty = "pk"
+  private val itemIdentityProperty = "_itemIdentity"
+
+  //scalastyle:off multiple.string.literals
+  //scalastyle:off magic.number
 
   "ItemsPartitionReaderWithReadMany" should "be able to get all items for the feedRange targeted to" in {
     val idNotPkContainerName = "idNotPkContainer-" + UUID.randomUUID().toString
@@ -26,7 +32,7 @@ class ItemsPartitionReaderWithReadManyITest
 
     try {
       cosmosClient.getDatabase(cosmosDatabase)
-        .createContainerIfNotExists(idNotPkContainerName, "/pk", ThroughputProperties.createManualThroughput(400))
+        .createContainerIfNotExists(idNotPkContainerName, s"/$pkProperty", ThroughputProperties.createManualThroughput(400))
         .block()
 
       // first create few items
@@ -36,8 +42,8 @@ class ItemsPartitionReaderWithReadManyITest
         val id = UUID.randomUUID().toString
         val pk = UUID.randomUUID().toString
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-        objectNode.put("id", id)
-        objectNode.put("pk", pk)
+        objectNode.put(idProperty, id)
+        objectNode.put(pkProperty, pk)
         idNotPkContainer.createItem(objectNode).block()
         allItems += objectNode
         logInfo(s"ID of test doc: $id")
@@ -51,7 +57,7 @@ class ItemsPartitionReaderWithReadManyITest
         allItems.filter(objectNode => {
           val feedRange =
             SparkBridgeImplementationInternal.partitionKeyToNormalizedRange(
-              new PartitionKey(objectNode.get("pk").asText()),
+              new PartitionKey(objectNode.get(pkProperty).asText()),
               partitionKeyDefinition)
 
           SparkBridgeImplementationInternal.doRangesOverlap(feedRange, sparkPartitionNormalizedRange)
@@ -69,8 +75,8 @@ class ItemsPartitionReaderWithReadManyITest
       )
 
       val readSchema = StructType(Seq(
-        StructField("id", StringType, false),
-        StructField("pk", StringType, false),
+        StructField(idProperty, StringType, false),
+        StructField(pkProperty, StringType, false),
         StructField("_itemIdentity", StringType, true)
       ))
 
@@ -91,8 +97,8 @@ class ItemsPartitionReaderWithReadManyITest
           itemsOnPlannedFeedRange
             .map(objectNode =>
               CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
-                objectNode.get("id").asText(),
-                new PartitionKey(objectNode.get("pk").asText())))
+                objectNode.get(idProperty).asText(),
+                objectNode.get(pkProperty).asText()))
         )
 
       val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
@@ -104,17 +110,16 @@ class ItemsPartitionReaderWithReadManyITest
       itemsReadFromPartitionReader.size shouldEqual itemsOnPlannedFeedRange.size
       // check _itemIdentity column is added
       itemsReadFromPartitionReader.foreach(item => {
-        item.get("_itemIdentity").asText() shouldEqual
-          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get("id").asText(), new PartitionKey(item.get("pk").asText()))
+        item.get(itemIdentityProperty).asText() shouldEqual
+          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get(idProperty).asText(), item.get(pkProperty).asText())
       })
 
       val idsOnPlannedFeedRange = itemsOnPlannedFeedRange
-        .map(objectNode => objectNode.get("id"))
-      itemsReadFromPartitionReader.map(item => item.get("id").asText()) should contain allElementsOf (idsOnPlannedFeedRange)
+        .map(objectNode => objectNode.get(idProperty))
+      itemsReadFromPartitionReader.map(item => item.get(idProperty).asText()).toList should contain allElementsOf (idsOnPlannedFeedRange)
     } finally {
       idNotPkContainer.delete().block()
     }
-
   }
 
   private def getCosmosClientMetadataCachesSnapshots(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
@@ -126,4 +131,6 @@ class ItemsPartitionReaderWithReadManyITest
         cosmosClientMetadataCachesSnapshot,
         Option.empty[CosmosClientMetadataCachesSnapshot]))
   }
+  //scalastyle:on multiple.string.literals
+  //scalastyle:on magic.number
 }

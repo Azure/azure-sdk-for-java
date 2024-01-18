@@ -52,7 +52,7 @@ private case class ReadManyFilterAnalyzer(
 
   private[this] def getReadManyFilterFromId(value: String): ReadManyFilter = {
     val partitionKey = new PartitionKey(value)
-    ReadManyFilter(partitionKey, CosmosItemIdentityHelper.getCosmosItemIdentityValueString(value, partitionKey))
+    ReadManyFilter(partitionKey, CosmosItemIdentityHelper.getCosmosItemIdentityValueString(value, value))
   }
 
   private[this] def getReadManyFilterFromNonId(value: String): ReadManyFilter = {

@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -150,8 +150,8 @@ private case class ItemsPartitionReaderWithReadMany
           readConfig.readManyFilteringConfig.readManyFilterProperty ->
             ((objectNodeParam: ObjectNode) => {
               val idValue = objectNodeParam.get(IdAttributeName).asText()
-              val pkValue = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
-              CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, pkValue)
+              val partitionKey = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
+              CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, ModelBridgeInternal.getPartitionKeyObject(partitionKey))
             })
         )
 

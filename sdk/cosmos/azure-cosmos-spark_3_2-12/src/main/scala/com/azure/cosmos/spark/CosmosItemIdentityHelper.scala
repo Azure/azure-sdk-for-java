@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
+import com.azure.cosmos.implementation.Utils
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
-import com.azure.cosmos.models.{CosmosItemIdentity, ModelBridgeInternal, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
+
+import java.util
 
 private object CosmosItemIdentityHelper {
   // pattern will be recognized
@@ -17,24 +19,31 @@ private object CosmosItemIdentityHelper {
   private val cosmosItemIdentityStringRegx = """(?i)id[(](.*?)[)][.]pk[(](.*)[)]""".r
   private val objectMapper = Utils.getSimpleObjectMapper
 
-  def getCosmosItemIdentityValueString(id: String, partitionKey: PartitionKey): String = {
-    val internalPartitionKey = ModelBridgeInternal.getPartitionKeyInternal(partitionKey)
-    s"id($id).pk(${objectMapper.writeValueAsString(internalPartitionKey)})"
+  def getCosmosItemIdentityValueString(id: String, partitionKeyValue: Object): String = {
+    s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue)})"
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {
     cosmosItemIdentityString match {
       case cosmosItemIdentityStringRegx(idValue, pkValue) =>
-        val internalPartitionKey = Utils.parse(pkValue, classOf[PartitionKeyInternal])
-        Some(
-          new CosmosItemIdentity(
-            ImplementationBridgeHelpers
-              .PartitionKeyHelper
-              .getPartitionKeyAccessor
-              .toPartitionKey(internalPartitionKey),
-            idValue)
-        )
+        val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
+        partitionKeyValue match {
+          case list: List[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, list.toArray))
+          case arrayList: util.ArrayList[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, arrayList.toArray))
+          case array: Array[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, array))
+          case _ => Some(new CosmosItemIdentity(new PartitionKey(partitionKeyValue), idValue))
+        }
       case _ => None
     }
+  }
+
+  private[this] def createCosmosItemIdentityWithMultiHashPartitionKey(idValue: String, pkValuesArray: Array[Object])  = {
+    val partitionKey =
+      new PartitionKey(
+        com.azure.cosmos.implementation.PartitionKeyHelper.getPartitionKeyObjectKey(pkValuesArray),
+        PartitionKeyInternal.fromObjectArray(pkValuesArray, false)
+      )
+
+    new CosmosItemIdentity(partitionKey, idValue)
   }
 }

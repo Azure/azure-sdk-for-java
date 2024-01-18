@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark.udf
 
-import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosItemIdentityHelper
 import com.azure.cosmos.spark.CosmosPredicates.{requireNotNull, requireNotNullOrEmpty}
 import org.apache.spark.sql.api.java.UDF2
@@ -17,6 +16,7 @@ class GetCosmosItemIdentityValue extends UDF2[String, Object, String] {
   ): String = {
     requireNotNullOrEmpty(id, "id")
     requireNotNull(partitionKeyValue, "partitionKeyValue")
-    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, new PartitionKey(partitionKeyValue))
+
+    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, partitionKeyValue)
   }
 }

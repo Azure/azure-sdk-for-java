@@ -34,7 +34,7 @@ private class ItemsScan(session: SparkSession,
   override def filterAttributes(): Array[NamedReference] = {
     runtimeFilterAttributesCore()
   }
-  
+
   override def filter(filters: Array[Filter]): Unit = {
     runtimeFilterCore(filters)
   }
