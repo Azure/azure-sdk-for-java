@@ -213,12 +213,12 @@ public class ClientTelemetry {
     }
 
     public Mono<?> init() {
-        Mono<?> startSendingClientTelemetryToServiceMono = this.isClientTelemetryEnabled()
-            ? sendClientTelemetry()
-            : Mono.empty();
-
         return loadAzureVmMetaData()
-            .then(startSendingClientTelemetryToServiceMono);
+            .doOnTerminate(() -> {
+                if (this.isClientTelemetryEnabled()) {
+                    sendClientTelemetry().subscribe();
+                }
+            });
     }
 
     public void close() {
