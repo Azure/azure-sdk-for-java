@@ -95,9 +95,8 @@ public class HierarchicalPartitionKeyRepositoryIT {
                 .add(HIERARCHICAL_ENTITY_2.getLastName())
                 .build();
         Optional<HierarchicalPartitionKeyEntity> results = repository.findById(HIERARCHICAL_ENTITY_2.getId(), pk);
-        List<HierarchicalPartitionKeyEntity> listResults = results.stream().toList();
-        assertThat(listResults.size()).isEqualTo(1);
-        assertThat(listResults.get(0).getId()).isEqualTo(HIERARCHICAL_ENTITY_2.getId());
+        HierarchicalPartitionKeyEntity result = results.get();
+        assertThat(result.getId()).isEqualTo(HIERARCHICAL_ENTITY_2.getId());
     }
 
     @Test

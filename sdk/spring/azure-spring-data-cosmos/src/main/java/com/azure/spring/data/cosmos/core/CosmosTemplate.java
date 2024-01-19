@@ -67,6 +67,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -1278,7 +1279,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
         PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
         PartitionKey partitionKey;
-        if (pkFieldValue.getClass().isArray()) {
+        if (pkFieldValue.getClass().isArray() || pkFieldValue instanceof Collection<?>) {
             for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
                 if (pkValue instanceof String || pkValue instanceof UUID) {
                     partitionKeyBuilder.add(pkValue.toString());

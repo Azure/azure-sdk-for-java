@@ -58,6 +58,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -1094,7 +1095,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
         PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
         PartitionKey partitionKey;
-        if (pkFieldValue.getClass().isArray()) {
+        if (pkFieldValue.getClass().isArray() || pkFieldValue instanceof Collection<?>) {
             for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
                 if (pkValue instanceof String || pkValue instanceof UUID) {
                     partitionKeyBuilder.add(pkValue.toString());
