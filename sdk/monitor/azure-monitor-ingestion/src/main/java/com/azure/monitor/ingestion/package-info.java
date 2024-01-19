@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * The Azure Monitor Ingestion client library is used to send custom logs to an [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview)
+ * The Azure Monitor Ingestion client library is used to send custom logs to an <a href="https://learn.microsoft.com/azure/azure-monitor/overview">Azure Monitor</a>
  * Log Analytics workspace.
  *
  * <h2>Getting Started</h2>
@@ -36,6 +36,8 @@
  *     for more information. See {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder} for more example on authenticating a client.
  * </p>
  *
+ * <hr/>
+ *
  * <h2>Overview</h2>
  *
  * <p>
@@ -49,6 +51,7 @@
  *     providing you the capability to send custom logs to an Azure Monitor Log Analytics workspace.
  * </p>
  *
+ * <hr/>
  *
  * <h3>Key Concepts</h3>
  *
