@@ -20,6 +20,7 @@
   <Match>
     <Bug pattern="EI_EXPOSE_REP" />
     <Or>
+      <Class name="com.azure.search.documents.GeographyPointTests$SimpleDocument" />
       <Class name="com.azure.search.documents.implementation.models.IndexAction" />
       <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
       <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
@@ -121,6 +122,7 @@
       <Class name="com.azure.search.documents.options.OnActionSentOptions" />
       <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
       <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+      <Class name="com.azure.search.documents.test.environment.models.LoudHotel" />
       <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
       <Class name="com.azure.search.documents.util.SearchPagedResponse" />
     </Or>
@@ -129,6 +131,7 @@
     <Bug pattern="EI_EXPOSE_REP2" />
     <Or>
       <Class name="com.azure.search.documents.SearchClientBuilder" />
+      <Class name="com.azure.search.documents.GeographyPointTests$SimpleDocument" />
       <Class name="com.azure.search.documents.implementation.models.IndexAction" />
       <Class name="com.azure.search.documents.implementation.models.IndexBatch" />
       <Class name="com.azure.search.documents.implementation.models.SearchDocumentsResult" />
@@ -219,6 +222,7 @@
       <Class name="com.azure.search.documents.options.OnActionSentOptions" />
       <Class name="com.azure.search.documents.options.OnActionSucceededOptions" />
       <Class name="com.azure.search.documents.test.environment.models.Hotel" />
+      <Class name="com.azure.search.documents.test.environment.models.LoudHotel" />
       <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
       <Class name="com.azure.search.documents.util.SearchPagedResponse" />
     </Or>
