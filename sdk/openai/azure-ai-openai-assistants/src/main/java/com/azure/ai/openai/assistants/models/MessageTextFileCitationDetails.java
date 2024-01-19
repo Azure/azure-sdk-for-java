@@ -36,7 +36,7 @@ public final class MessageTextFileCitationDetails {
      */
     @Generated
     @JsonCreator
-    public MessageTextFileCitationDetails(@JsonProperty(value = "file_id") String fileId,
+    private MessageTextFileCitationDetails(@JsonProperty(value = "file_id") String fileId,
         @JsonProperty(value = "quote") String quote) {
         this.fileId = fileId;
         this.quote = quote;

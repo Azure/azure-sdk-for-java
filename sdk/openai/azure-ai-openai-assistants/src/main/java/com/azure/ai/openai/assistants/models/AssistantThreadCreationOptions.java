@@ -16,11 +16,11 @@ import java.util.Map;
 public final class AssistantThreadCreationOptions {
 
     /*
-     * The messages to associate with the new thread.
+     * The initial messages to associate with the new thread.
      */
     @Generated
     @JsonProperty(value = "messages")
-    private List<ThreadMessage> messages;
+    private List<ThreadInitializationMessage> messages;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -39,23 +39,23 @@ public final class AssistantThreadCreationOptions {
     }
 
     /**
-     * Get the messages property: The messages to associate with the new thread.
+     * Get the messages property: The initial messages to associate with the new thread.
      *
      * @return the messages value.
      */
     @Generated
-    public List<ThreadMessage> getMessages() {
+    public List<ThreadInitializationMessage> getMessages() {
         return this.messages;
     }
 
     /**
-     * Set the messages property: The messages to associate with the new thread.
+     * Set the messages property: The initial messages to associate with the new thread.
      *
      * @param messages the messages value to set.
      * @return the AssistantThreadCreationOptions object itself.
      */
     @Generated
-    public AssistantThreadCreationOptions setMessages(List<ThreadMessage> messages) {
+    public AssistantThreadCreationOptions setMessages(List<ThreadInitializationMessage> messages) {
         this.messages = messages;
         return this;
     }

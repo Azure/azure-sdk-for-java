@@ -28,6 +28,6 @@ public class MessageContent {
      * Creates an instance of MessageContent class.
      */
     @Generated
-    public MessageContent() {
+    protected MessageContent() {
     }
 }

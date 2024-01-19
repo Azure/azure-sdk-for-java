@@ -32,7 +32,7 @@ public final class MessageTextContent extends MessageContent {
      */
     @Generated
     @JsonCreator
-    public MessageTextContent(@JsonProperty(value = "text") MessageTextDetails text) {
+    private MessageTextContent(@JsonProperty(value = "text") MessageTextDetails text) {
         this.text = text;
     }
 

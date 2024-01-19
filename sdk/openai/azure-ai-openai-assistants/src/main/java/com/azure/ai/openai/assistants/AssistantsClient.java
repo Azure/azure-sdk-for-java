@@ -4,30 +4,30 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
-import com.azure.ai.openai.assistants.implementation.models.AssistantDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.AssistantFileDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.FileDeletionStatus;
-import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
-import com.azure.ai.openai.assistants.implementation.models.ListSortOrder;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfMessageFile;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
-import com.azure.ai.openai.assistants.implementation.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
+import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
+import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantModificationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.FileDeletionStatus;
+import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
@@ -206,7 +206,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listAssistantsWithResponse(requestOptions);
     }
 
@@ -297,7 +297,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         return this.serviceClient.deleteAssistantWithResponse(assistantId, requestOptions);
     }
 
@@ -416,7 +416,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
+    public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         return this.serviceClient.listAssistantFilesWithResponse(assistantId, requestOptions);
     }
 
@@ -445,7 +445,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
+    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAssistantFileWithResponse(assistantId, fileId, requestOptions);
     }
@@ -494,7 +494,8 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfAssistant listAssistants(Integer limit, ListSortOrder order, String after, String before) {
+    public OpenAIPageableListOfAssistant listAssistants(Integer limit, ListSortOrder order, String after,
+        String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -524,7 +525,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfAssistant listAssistants() {
+    public OpenAIPageableListOfAssistant listAssistants() {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
@@ -566,7 +567,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssistantDeletionStatus deleteAssistant(String assistantId) {
+    public AssistantDeletionStatus deleteAssistant(String assistantId) {
         // Generated convenience method for deleteAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteAssistantWithResponse(assistantId, requestOptions).getValue()
@@ -619,7 +620,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
+    public OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -653,7 +654,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId) {
+    public OpenAIPageableListOfAssistantFile listAssistantFiles(String assistantId) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
@@ -676,7 +677,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssistantFileDeletionStatus deleteAssistantFile(String assistantId, String fileId) {
+    public AssistantFileDeletionStatus deleteAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for deleteAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteAssistantFileWithResponse(assistantId, fileId, requestOptions).getValue()
@@ -774,21 +775,12 @@ public final class AssistantsClient {
      * {
      *     messages (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             thread_id: String (Required)
      *             role: String(user/assistant) (Required)
-     *             content (Required): [
-     *                  (Required){
-     *                 }
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
-     *             metadata (Required): {
+     *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
@@ -922,7 +914,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.deleteThreadWithResponse(threadId, requestOptions);
     }
 
@@ -975,7 +967,7 @@ public final class AssistantsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response}.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1072,7 +1064,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.listMessagesWithResponse(threadId, requestOptions);
     }
 
@@ -1164,7 +1156,7 @@ public final class AssistantsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single message within an assistant thread along with {@link Response}.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1249,7 +1241,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
+    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         return this.serviceClient.listMessageFilesWithResponse(threadId, messageId, requestOptions);
     }
@@ -1457,7 +1449,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
+    public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         return this.serviceClient.listRunsWithResponse(threadId, requestOptions);
     }
 
@@ -1716,21 +1708,12 @@ public final class AssistantsClient {
      *     thread (Optional): {
      *         messages (Optional): [
      *              (Optional){
-     *                 id: String (Required)
-     *                 object: String (Required)
-     *                 created_at: long (Required)
-     *                 thread_id: String (Required)
      *                 role: String(user/assistant) (Required)
-     *                 content (Required): [
-     *                      (Required){
-     *                     }
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 assistant_id: String (Optional)
-     *                 run_id: String (Optional)
-     *                 file_ids (Required): [
-     *                     String (Required)
-     *                 ]
-     *                 metadata (Required): {
+     *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }
@@ -1943,7 +1926,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         return this.serviceClient.listRunStepsWithResponse(threadId, runId, requestOptions);
     }
 
@@ -1997,7 +1980,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listFilesWithResponse(requestOptions);
     }
 
@@ -2067,7 +2050,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
     }
 
@@ -2246,7 +2229,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThreadDeletionStatus deleteThread(String threadId) {
+    public ThreadDeletionStatus deleteThread(String threadId) {
         // Generated convenience method for deleteThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteThreadWithResponse(threadId, requestOptions).getValue().toObject(ThreadDeletionStatus.class);
@@ -2269,7 +2252,7 @@ public final class AssistantsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread.
+     * @return a single, existing message within an assistant thread.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2298,7 +2281,7 @@ public final class AssistantsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread.
+     * @return a single, existing message within an assistant thread.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2336,8 +2319,8 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadMessage listMessages(String threadId, Integer limit, ListSortOrder order, String after,
-        String before) {
+    public OpenAIPageableListOfThreadMessage listMessages(String threadId, Integer limit, ListSortOrder order,
+        String after, String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2370,7 +2353,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadMessage listMessages(String threadId) {
+    public OpenAIPageableListOfThreadMessage listMessages(String threadId) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).getValue()
@@ -2412,7 +2395,7 @@ public final class AssistantsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread.
+     * @return a single, existing message within an assistant thread.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2437,7 +2420,7 @@ public final class AssistantsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single message within an assistant thread.
+     * @return a single, existing message within an assistant thread.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2475,7 +2458,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfMessageFile listMessageFiles(String threadId, String messageId, Integer limit,
+    public OpenAIPageableListOfMessageFile listMessageFiles(String threadId, String messageId, Integer limit,
         ListSortOrder order, String after, String before) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2510,7 +2493,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfMessageFile listMessageFiles(String threadId, String messageId) {
+    public OpenAIPageableListOfMessageFile listMessageFiles(String threadId, String messageId) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
@@ -2623,7 +2606,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadRun listRuns(String threadId, Integer limit, ListSortOrder order, String after,
+    public OpenAIPageableListOfThreadRun listRuns(String threadId, Integer limit, ListSortOrder order, String after,
         String before) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2656,7 +2639,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfThreadRun listRuns(String threadId) {
+    public OpenAIPageableListOfThreadRun listRuns(String threadId) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
@@ -2849,7 +2832,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
+    public OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2884,7 +2867,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId) {
+    public OpenAIPageableListOfRunStep listRunSteps(String threadId, String runId) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
@@ -2905,7 +2888,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileListResponse listFiles(FilePurpose purpose) {
+    public FileListResponse listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
@@ -2926,7 +2909,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileListResponse listFiles() {
+    public FileListResponse listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class);
@@ -2998,7 +2981,7 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileDeletionStatus deleteFile(String fileId) {
+    public FileDeletionStatus deleteFile(String fileId) {
         // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteFileWithResponse(fileId, requestOptions).getValue().toObject(FileDeletionStatus.class);

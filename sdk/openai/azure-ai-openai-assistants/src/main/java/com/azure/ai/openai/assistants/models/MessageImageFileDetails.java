@@ -28,7 +28,7 @@ public final class MessageImageFileDetails {
      */
     @Generated
     @JsonCreator
-    public MessageImageFileDetails(@JsonProperty(value = "file_id") MessageImageFileIdDetails fileId) {
+    private MessageImageFileDetails(@JsonProperty(value = "file_id") MessageImageFileIdDetails fileId) {
         this.fileId = fileId;
     }
 
