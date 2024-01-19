@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Time in a week. */
+/**
+ * Time in a week.
+ */
 @Fluent
 public final class TimeInWeek {
     /*
@@ -27,7 +29,9 @@ public final class TimeInWeek {
     @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
 
-    /** Creates an instance of TimeInWeek class. */
+    /**
+     * Creates an instance of TimeInWeek class.
+     */
     public TimeInWeek() {
     }
 
@@ -54,7 +58,7 @@ public final class TimeInWeek {
     /**
      * Get the hourSlots property: A list of hours in the day used to identify a time range.
      *
-     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
      * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
      * 02:00 UTC time range.
      *
@@ -67,7 +71,7 @@ public final class TimeInWeek {
     /**
      * Set the hourSlots property: A list of hours in the day used to identify a time range.
      *
-     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
      * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
      * 02:00 UTC time range.
      *

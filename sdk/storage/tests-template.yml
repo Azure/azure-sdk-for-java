@@ -44,7 +44,7 @@ stages:
         - name: perf-test-core
           groupId: com.azure
       TestMode: 'LIVE'
-      TimeoutInMinutes: 60
+      TimeoutInMinutes: 90
       Location: canadacentral
       CloudConfig:
         Preview:

@@ -111,12 +111,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy</artifactId>
-      <version>1.12.23</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
       <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
@@ -126,6 +120,20 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
+    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -153,7 +161,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <includeTests>true</includeTests>
         </configuration>

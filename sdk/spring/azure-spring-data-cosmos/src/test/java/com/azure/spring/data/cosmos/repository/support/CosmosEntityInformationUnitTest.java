@@ -66,7 +66,7 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
-    public void testGetPartitionKeyName() {
+    public void testGetPartitionKeyPath() {
         final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
                 new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
 
@@ -75,7 +75,7 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
-    public void testNullPartitionKeyName() {
+    public void testNullPartitionKeyPath() {
         final CosmosEntityInformation<Volunteer, String> entityInformation =
                 new CosmosEntityInformation<>(Volunteer.class);
 
@@ -84,7 +84,7 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
-    public void testCustomPartitionKeyName() {
+    public void testCustomPartitionKeyPath() {
         final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation =
                 new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
 
@@ -98,7 +98,7 @@ public class CosmosEntityInformationUnitTest {
             new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyPath();
-        assertThat(partitionKeyPath).isEqualTo("/partitionKeyPath");
+        assertThat(partitionKeyPath).isEqualTo("/volunteerWithPartitionKey/name");
     }
 
     @Test
@@ -108,6 +108,92 @@ public class CosmosEntityInformationUnitTest {
 
         final String partitionKeyPath = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyPath).isEqualTo("/name");
+    }
+
+    @Test
+    public void testGetPartitionKeyName() {
+        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
+
+        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyName).isEqualTo("name");
+    }
+
+    @Test
+    public void testNullPartitionKeyName() {
+        final CosmosEntityInformation<Volunteer, String> entityInformation =
+            new CosmosEntityInformation<>(Volunteer.class);
+
+        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyName).isEqualTo(null);
+    }
+
+    @Test
+    public void testCustomPartitionKeyName() {
+        final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
+
+        final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyName).isEqualTo("name");
+    }
+
+    @Test
+    public void testPartitionKeyPathAnnotationGetFieldName() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyPath).isEqualTo("volunteerWithPartitionKey.name");
+    }
+
+    @Test
+    public void testPartitionKeyPathAndPartitionKeyAnnotationGetFieldName() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyPath).isEqualTo("name");
+    }
+
+    @Test
+    public void testGetPartitionKeyValue() {
+        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
+
+        VolunteerWithPartitionKey entity = new VolunteerWithPartitionKey();
+        entity.setName("MyName");
+
+        final String partitionKeyName = String.valueOf(entityInformation.getPartitionKeyFieldValue(entity));
+        assertThat(partitionKeyName).isEqualTo("MyName");
+    }
+
+    @Test
+    public void testPartitionKeyPathAnnotationGetFieldValue() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+
+        VolunteerWithPartitionKeyPath entity = new VolunteerWithPartitionKeyPath();
+        VolunteerWithPartitionKey nestedEntity = new VolunteerWithPartitionKey();
+        nestedEntity.setName("NestedMyName");
+        entity.setVolunteerWithPartitionKey(nestedEntity);
+
+        final String partitionKeyPath = String.valueOf(entityInformation.getPartitionKeyFieldValue(entity));
+        assertThat(partitionKeyPath).isEqualTo("NestedMyName");
+    }
+
+    @Test
+    public void testPartitionKeyPathAndPartitionKeyAnnotationGetFieldValue() {
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+
+        VolunteerWithPartitionKeyPathAndPartitionKey entity = new VolunteerWithPartitionKeyPathAndPartitionKey();
+        entity.setName("ActualName");
+        VolunteerWithPartitionKey nestedEntity = new VolunteerWithPartitionKey();
+        nestedEntity.setName("NestedMyName");
+        entity.setVolunteerWithPartitionKey(nestedEntity);
+
+        final String partitionKeyPath = String.valueOf(entityInformation.getPartitionKeyFieldValue(entity));
+        assertThat(partitionKeyPath).isEqualTo("ActualName");
     }
 
     @Test
@@ -197,17 +283,31 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Container(partitionKeyPath = "/partitionKeyPath")
+    @Container(partitionKeyPath = "/volunteerWithPartitionKey/name")
     private static class VolunteerWithPartitionKeyPath {
         private String id;
         private String name;
+        private VolunteerWithPartitionKey volunteerWithPartitionKey;
+
+        public void setVolunteerWithPartitionKey(VolunteerWithPartitionKey volunteerWithPartitionKey) {
+            this.volunteerWithPartitionKey = volunteerWithPartitionKey;
+        }
     }
 
-    @Container(partitionKeyPath = "/partitionKeyPath")
+    @Container(partitionKeyPath = "/volunteerWithPartitionKey/name")
     private static class VolunteerWithPartitionKeyPathAndPartitionKey {
         private String id;
         @PartitionKey
         private String name;
+        private VolunteerWithPartitionKey volunteerWithPartitionKey;
+
+        public void setVolunteerWithPartitionKey(VolunteerWithPartitionKey volunteerWithPartitionKey) {
+            this.volunteerWithPartitionKey = volunteerWithPartitionKey;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 
     @Container(containerName = "testContainer")

@@ -3,24 +3,33 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}.
@@ -33,6 +42,7 @@ public final class InputStreamContent extends BinaryDataContent {
     private final Supplier<InputStream> content;
     private final Long length;
     private final boolean isReplayable;
+    private final List<ByteBuffer> bufferedContent;
 
     private volatile byte[] bytes;
     private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
@@ -43,6 +53,7 @@ public final class InputStreamContent extends BinaryDataContent {
      * Creates an instance of {@link InputStreamContent}.
      *
      * @param inputStream The inputStream that is used as the content for this instance.
+     * @param length The length of the content.
      * @throws NullPointerException if {@code content} is null.
      */
     public InputStreamContent(InputStream inputStream, Long length) {
@@ -55,12 +66,15 @@ public final class InputStreamContent extends BinaryDataContent {
         } else {
             this.content = () -> inputStream;
         }
+        this.bufferedContent = null;
     }
 
-    private InputStreamContent(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {
+    private InputStreamContent(Supplier<InputStream> inputStreamSupplier, Long length,
+        List<ByteBuffer> bufferedContent) {
         this.content = Objects.requireNonNull(inputStreamSupplier, "'inputStreamSupplier' cannot be null.");
         this.length = length;
-        this.isReplayable = isReplayable;
+        this.isReplayable = true;
+        this.bufferedContent = bufferedContent;
     }
 
     @Override
@@ -99,7 +113,39 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return FluxUtil.toFluxByteBuffer(this.content.get(), STREAM_READ_SIZE);
+        if (bufferedContent != null) {
+            return Flux.fromIterable(bufferedContent).map(ByteBuffer::asReadOnlyBuffer);
+        } else {
+            return FluxUtil.toFluxByteBuffer(this.content.get(), STREAM_READ_SIZE);
+        }
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        writeTo(Channels.newChannel(outputStream));
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        InputStream inputStream = content.get();
+        if (bufferedContent != null) {
+            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
+            for (ByteBuffer bb : bufferedContent) {
+                ImplUtils.fullyWriteBuffer(bb.duplicate(), channel);
+            }
+        } else {
+            // Otherwise use a generic write to.
+            IOUtils.transfer(Channels.newChannel(inputStream), channel, length);
+        }
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
     }
 
     @Override
@@ -148,12 +194,20 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(
                 inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            long readLength = streamRead.getT1();
+            List<ByteBuffer> byteBuffers = streamRead.getT2();
 
-            return new InputStreamContent(
-                () -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, true);
+            // If the length was unknown or didn't match what was actually read use the length calculated during reading
+            // of the stream.
+            if (length == null || length != readLength) {
+                return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), readLength,
+                    byteBuffers);
+            } else {
+                return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
+                    byteBuffers);
+            }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -161,7 +215,8 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         try {
-            ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
+            AccessibleByteArrayOutputStream dataOutputBuffer = (length == null || length < MAX_ARRAY_LENGTH)
+                ? new AccessibleByteArrayOutputStream() : new AccessibleByteArrayOutputStream(length.intValue());
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();

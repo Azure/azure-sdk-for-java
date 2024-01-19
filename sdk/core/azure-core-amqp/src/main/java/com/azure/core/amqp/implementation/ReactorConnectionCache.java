@@ -23,6 +23,13 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
+/**
+ * A cache that is responsible for creating and maintaining a single connection to a message broker. This class
+ * is responsible for creating a new connection if the current connection is closed or if there is no current
+ * connection.
+ *
+ * @param <T> The type of connection to cache.
+ */
 public final class ReactorConnectionCache<T extends ReactorConnection> implements Disposable {
     private static final AmqpException TERMINATED_ERROR = new AmqpException(false, "Connection recovery support is terminated.", null);
     private static final String TRY_COUNT_KEY = "tryCount";

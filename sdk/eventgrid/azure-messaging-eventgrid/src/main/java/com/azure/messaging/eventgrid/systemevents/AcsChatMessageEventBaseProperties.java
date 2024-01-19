@@ -5,54 +5,57 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of common properties of all chat message events. */
+/**
+ * Schema of common properties of all chat message events.
+ */
 @Fluent
 public class AcsChatMessageEventBaseProperties extends AcsChatEventBaseProperties {
     /*
      * The chat message id
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * The communication identifier of the sender
      */
-    @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifierModel senderCommunicationIdentifier;
 
     /*
      * The display name of the sender
      */
-    @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
     /*
      * The original compose time of the message
      */
-    @JsonProperty(value = "composeTime")
     private OffsetDateTime composeTime;
 
     /*
      * The type of the message
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The version of the message
      */
-    @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatMessageEventBaseProperties class. */
-    public AcsChatMessageEventBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatMessageEventBaseProperties class.
+     */
+    public AcsChatMessageEventBaseProperties() {
+    }
 
     /**
      * Get the messageId property: The chat message id.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -61,7 +64,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the messageId property: The chat message id.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -72,7 +75,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the senderCommunicationIdentifier property: The communication identifier of the sender.
-     *
+     * 
      * @return the senderCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getSenderCommunicationIdentifier() {
@@ -81,19 +84,19 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the senderCommunicationIdentifier property: The communication identifier of the sender.
-     *
+     * 
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
-    public AcsChatMessageEventBaseProperties setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageEventBaseProperties
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         this.senderCommunicationIdentifier = senderCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the senderDisplayName property: The display name of the sender.
-     *
+     * 
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -102,7 +105,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the senderDisplayName property: The display name of the sender.
-     *
+     * 
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -113,7 +116,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the composeTime property: The original compose time of the message.
-     *
+     * 
      * @return the composeTime value.
      */
     public OffsetDateTime getComposeTime() {
@@ -122,7 +125,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the composeTime property: The original compose time of the message.
-     *
+     * 
      * @param composeTime the composeTime value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -133,7 +136,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the type property: The type of the message.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -142,7 +145,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the type property: The type of the message.
-     *
+     * 
      * @param type the type value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -153,7 +156,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Get the version property: The version of the message.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -162,7 +165,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
 
     /**
      * Set the version property: The version of the message.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatMessageEventBaseProperties object itself.
      */
@@ -171,25 +174,93 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageEventBaseProperties setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatMessageEventBaseProperties
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEventBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEventBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeJsonField("senderCommunicationIdentifier", this.senderCommunicationIdentifier);
+        jsonWriter.writeStringField("senderDisplayName", this.senderDisplayName);
+        jsonWriter.writeStringField("composeTime",
+            this.composeTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.composeTime));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatMessageEventBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatMessageEventBaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatMessageEventBaseProperties.
+     */
+    public static AcsChatMessageEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatMessageEventBaseProperties deserializedAcsChatMessageEventBaseProperties
+                = new AcsChatMessageEventBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties
+                        .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.setThreadId(reader.getString());
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.messageId = reader.getString();
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.senderCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("senderDisplayName".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.senderDisplayName = reader.getString();
+                } else if ("composeTime".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.composeTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.version = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatMessageEventBaseProperties;
+        });
     }
 }

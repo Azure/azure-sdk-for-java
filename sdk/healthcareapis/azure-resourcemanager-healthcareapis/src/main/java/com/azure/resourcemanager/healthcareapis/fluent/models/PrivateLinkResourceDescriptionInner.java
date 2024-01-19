@@ -10,7 +10,9 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Private Endpoint Connection resource. */
+/**
+ * The Private Endpoint Connection resource.
+ */
 @Fluent
 public final class PrivateLinkResourceDescriptionInner extends PrivateLinkResource {
     /*
@@ -20,15 +22,23 @@ public final class PrivateLinkResourceDescriptionInner extends PrivateLinkResour
     private SystemData systemData;
 
     /**
+     * Creates an instance of PrivateLinkResourceDescriptionInner class.
+     */
+    public PrivateLinkResourceDescriptionInner() {
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkResourceDescriptionInner withRequiredZoneNames(List<String> requiredZoneNames) {
         super.withRequiredZoneNames(requiredZoneNames);
@@ -37,7 +47,7 @@ public final class PrivateLinkResourceDescriptionInner extends PrivateLinkResour
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

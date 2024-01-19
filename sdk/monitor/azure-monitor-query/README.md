@@ -539,12 +539,12 @@ MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBui
     .endpoint("{endpoint}")
     .buildClient();
 
-MetricsBatchResult metricsBatchResult = metricsBatchQueryClient.queryBatch(
+MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
     Arrays.asList("{resourceId1}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}");
 
-for (MetricsQueryResult metricsQueryResult : metricsBatchResult.getMetricsQueryResults()) {
+for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
     // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
     List<MetricResult> metrics = metricsQueryResult.getMetrics();
     metrics.forEach(metric -> {

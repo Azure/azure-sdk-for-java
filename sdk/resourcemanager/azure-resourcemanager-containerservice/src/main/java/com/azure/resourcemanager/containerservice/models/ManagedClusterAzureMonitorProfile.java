@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Monitor addon profiles for monitoring the managed cluster. */
+/**
+ * Azure Monitor addon profiles for monitoring the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterAzureMonitorProfile {
     /*
@@ -18,7 +20,9 @@ public final class ManagedClusterAzureMonitorProfile {
     @JsonProperty(value = "metrics")
     private ManagedClusterAzureMonitorProfileMetrics metrics;
 
-    /** Creates an instance of ManagedClusterAzureMonitorProfile class. */
+    /**
+     * Creates an instance of ManagedClusterAzureMonitorProfile class.
+     */
     public ManagedClusterAzureMonitorProfile() {
     }
 

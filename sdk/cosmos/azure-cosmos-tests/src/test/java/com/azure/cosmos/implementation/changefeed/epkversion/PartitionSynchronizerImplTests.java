@@ -69,7 +69,7 @@ public class PartitionSynchronizerImplTests {
                         .withFeedRange(new FeedRangeEpkImpl(new Range<>("BB", "CC", true, false)));
         childLease1.setId("TestLease-" + UUID.randomUUID());
 
-        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
+        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
                 .thenReturn(Mono.just(overlappingRanges));
         when(leaseContainerMock.getAllLeases()).thenReturn(Flux.empty());
         when(leaseManagerMock.createLeaseIfNotExist((FeedRangeEpkImpl) any(), any()))
@@ -128,7 +128,7 @@ public class PartitionSynchronizerImplTests {
                         .withFeedRange(new FeedRangeEpkImpl(new Range<>("DD", "EE", true, false)));
         childLease1.setId("TestLease-" + UUID.randomUUID());
 
-        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
+        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
                 .thenReturn(Mono.just(overlappingRanges));
         when(leaseContainerMock.getAllLeases()).thenReturn(Flux.fromIterable(Arrays.asList(childLease1, childLease2)));
 
@@ -181,7 +181,7 @@ public class PartitionSynchronizerImplTests {
             pkRangeIdVersionLeases.add(pkRangeIdVersionLease);
         }
 
-        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
+        when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
             .thenReturn(Mono.just(overlappingRanges));
 
         when(leaseContainerMock.getAllLeases()).thenReturn(Flux.empty());

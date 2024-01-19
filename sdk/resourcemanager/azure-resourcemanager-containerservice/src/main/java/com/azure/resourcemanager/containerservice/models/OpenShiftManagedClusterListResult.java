@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.OpenShiftManaged
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List OpenShift Managed Clusters operation. */
+/**
+ * The response from the List OpenShift Managed Clusters operation.
+ */
 @Fluent
 public final class OpenShiftManagedClusterListResult {
     /*
@@ -24,7 +26,9 @@ public final class OpenShiftManagedClusterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OpenShiftManagedClusterListResult class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterListResult class.
+     */
     public OpenShiftManagedClusterListResult() {
     }
 

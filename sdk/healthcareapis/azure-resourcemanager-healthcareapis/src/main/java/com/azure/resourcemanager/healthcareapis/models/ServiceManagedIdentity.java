@@ -7,19 +7,26 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed service identity (system assigned and/or user assigned identities). */
+/**
+ * Managed service identity (system assigned and/or user assigned identities).
+ */
 @Fluent
 public class ServiceManagedIdentity {
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
     @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
 
     /**
+     * Creates an instance of ServiceManagedIdentity class.
+     */
+    public ServiceManagedIdentity() {
+    }
+
+    /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -28,7 +35,7 @@ public class ServiceManagedIdentity {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServiceManagedIdentity object itself.
      */
@@ -39,7 +46,7 @@ public class ServiceManagedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

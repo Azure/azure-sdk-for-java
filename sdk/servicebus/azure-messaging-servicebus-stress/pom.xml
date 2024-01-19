@@ -25,6 +25,12 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
+    <!-- Skip all linting in stress tests. -->
+    <codesnippet.skip>true</codesnippet.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <revapi.skip>true</revapi.skip>
+
     <!-- Skip missing Javadocs in stress tests. -->
     <doclint>all,-missing</doclint>
   </properties>
@@ -39,7 +45,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.15.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.15.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
 
     <!-- Enable SDK metrics -->

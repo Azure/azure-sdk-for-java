@@ -13,20 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoUserSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoUserSpecification model =
-            BinaryData
-                .fromString("{\"scope\":\"Task\",\"elevationLevel\":\"Admin\"}")
-                .toObject(AutoUserSpecification.class);
-        Assertions.assertEquals(AutoUserScope.TASK, model.scope());
-        Assertions.assertEquals(ElevationLevel.ADMIN, model.elevationLevel());
+        AutoUserSpecification model = BinaryData.fromString("{\"scope\":\"Pool\",\"elevationLevel\":\"NonAdmin\"}")
+            .toObject(AutoUserSpecification.class);
+        Assertions.assertEquals(AutoUserScope.POOL, model.scope());
+        Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.elevationLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoUserSpecification model =
-            new AutoUserSpecification().withScope(AutoUserScope.TASK).withElevationLevel(ElevationLevel.ADMIN);
+        AutoUserSpecification model
+            = new AutoUserSpecification().withScope(AutoUserScope.POOL).withElevationLevel(ElevationLevel.NON_ADMIN);
         model = BinaryData.fromObject(model).toObject(AutoUserSpecification.class);
-        Assertions.assertEquals(AutoUserScope.TASK, model.scope());
-        Assertions.assertEquals(ElevationLevel.ADMIN, model.elevationLevel());
+        Assertions.assertEquals(AutoUserScope.POOL, model.scope());
+        Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.elevationLevel());
     }
 }

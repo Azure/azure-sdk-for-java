@@ -8,60 +8,62 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceDescriptionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkResourceDescription. */
+/**
+ * An immutable client-side representation of PrivateLinkResourceDescription.
+ */
 public interface PrivateLinkResourceDescription {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     String groupId();
 
     /**
      * Gets the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     List<String> requiredMembers();
 
     /**
      * Gets the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     List<String> requiredZoneNames();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourceDescriptionInner innerModel();

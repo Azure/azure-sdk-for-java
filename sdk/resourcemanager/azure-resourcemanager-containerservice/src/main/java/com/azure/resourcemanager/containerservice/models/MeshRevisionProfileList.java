@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.MeshRevisionProf
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Holds an array of MeshRevisionsProfiles. */
+/**
+ * Holds an array of MeshRevisionsProfiles.
+ */
 @Fluent
 public final class MeshRevisionProfileList {
     /*
@@ -24,7 +26,9 @@ public final class MeshRevisionProfileList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MeshRevisionProfileList class. */
+    /**
+     * Creates an instance of MeshRevisionProfileList class.
+     */
     public MeshRevisionProfileList() {
     }
 

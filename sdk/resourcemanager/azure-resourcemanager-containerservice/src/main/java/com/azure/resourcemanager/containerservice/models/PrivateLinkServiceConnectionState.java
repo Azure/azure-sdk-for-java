@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The state of a private link service connection. */
+/**
+ * The state of a private link service connection.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     /*
@@ -22,7 +24,9 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
     public PrivateLinkServiceConnectionState() {
     }
 

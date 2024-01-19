@@ -11,12 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourcesListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -26,13 +28,13 @@ public interface PrivateLinkResourcesClient {
      * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -47,7 +49,7 @@ public interface PrivateLinkResourcesClient {
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -58,13 +60,13 @@ public interface PrivateLinkResourcesClient {
      * @return a list of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourcesListResultInner> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<PrivateLinkResourcesListResultInner> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
