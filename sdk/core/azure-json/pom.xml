@@ -197,7 +197,6 @@
             </executions>
 
             <configuration>
-              <skip>${shade.skip}</skip>
               <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
 

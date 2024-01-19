@@ -401,7 +401,6 @@
                   <goal>shade</goal>
                 </goals>
                 <configuration>
-                  <skip>${shade.skip}</skip>
                   <relocations>
                     <relocation>
                       <pattern>com.azure</pattern>
