@@ -183,6 +183,7 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
      * Sets whether automatically restore joined groups after reconnect.
      * <p>
      * Default value is {@code true}.
+     * This feature depends on the enabling of {@link #autoReconnect} feature.
      *
      * @param autoRestoreGroup whether automatically restore joined groups after reconnect.
      * @return itself.
