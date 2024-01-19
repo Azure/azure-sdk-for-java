@@ -1275,7 +1275,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @SuppressWarnings("unchecked")
-    private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T,?> information, S entity) {
+    private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T, ?> information, S entity) {
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
         PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
         PartitionKey partitionKey;
@@ -1300,7 +1300,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return partitionKey;
     }
 
-    private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T,?> information) {
+    private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T, ?> information) {
         String pkPath = information.getPartitionKeyPath();
         if(pkPath.contains(",")) {
             PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
