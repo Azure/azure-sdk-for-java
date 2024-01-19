@@ -99,6 +99,12 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePassword;
 
     /**
+     * Constructs an instance of ClientCertificateCredentialBuilder.
+     */
+    public ClientCertificateCredentialBuilder() {
+        super();
+    }
+    /**
      * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
      *
      * @param certificatePath the PEM file containing the certificate

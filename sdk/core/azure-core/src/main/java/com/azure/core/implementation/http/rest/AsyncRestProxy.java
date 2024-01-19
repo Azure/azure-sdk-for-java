@@ -272,7 +272,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 .doOnEach(signal -> {
                     if (signal.hasValue()) {
                         int statusCode = signal.get().getSourceResponse().getStatusCode();
-                        tracer.end(statusCode >= 400 ? "" : null, null, span);
+                        tracer.end(statusCode >= 400 ? String.valueOf(statusCode) : null, null, span);
                     } else if (signal.isOnError()) {
                         tracer.end(null, signal.getThrowable(), span);
                     }
