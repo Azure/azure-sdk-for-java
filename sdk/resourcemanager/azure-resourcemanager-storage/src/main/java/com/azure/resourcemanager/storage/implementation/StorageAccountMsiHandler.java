@@ -52,7 +52,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withLocalManagedServiceIdentity() {
-        this.initStorageAccountIdentity(IdentityType.SYSTEM_ASSIGNED);
+        this.initStorageAccountIdentity(IdentityType.SYSTEM_ASSIGNED, false);
         return this;
     }
 
@@ -62,19 +62,13 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withoutLocalManagedServiceIdentity() {
-        Identity currentIdentity = this.storageAccount.innerModel().identity();
-        if (currentIdentity == null
-            || currentIdentity.type() == null
-            || IdentityType.NONE.equals(currentIdentity.type())
-            || IdentityType.USER_ASSIGNED.equals(currentIdentity.type())) {
+        if (this.storageAccount.innerModel().identity() == null
+            || this.storageAccount.innerModel().identity().type() == null
+            || IdentityType.NONE.equals(this.storageAccount.innerModel().identity().type())
+            || IdentityType.USER_ASSIGNED.equals(this.storageAccount.innerModel().identity().type())) {
             return this;
-        } else if (IdentityType.SYSTEM_ASSIGNED.equals(currentIdentity.type())) {
-            currentIdentity.withType(IdentityType.NONE);
-        } else {
-            currentIdentity.withType(IdentityType.USER_ASSIGNED);
         }
-        this.storageAccount.innerModel().withIdentity(currentIdentity);
-        this.storageAccount.updateParameters.withIdentity(currentIdentity);
+        this.initStorageAccountIdentity(IdentityType.SYSTEM_ASSIGNED, true);
         return this;
     }
 
@@ -86,7 +80,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withNewExternalManagedServiceIdentity(Creatable<com.azure.resourcemanager.msi.models.Identity> creatableIdentity) {
-        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED);
+        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, false);
 
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
         Objects.requireNonNull(dependency);
@@ -105,7 +99,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      * @return StorageAccountMsiHandler
      */
     StorageAccountMsiHandler withExistingExternalManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
-        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED);
+        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, false);
         this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
         return this;
     }
@@ -119,6 +113,13 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      */
     StorageAccountMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
         // mark as to be removed
+        if (this.storageAccount.innerModel().identity() == null
+            || this.storageAccount.innerModel().identity().type() == null
+            || IdentityType.NONE.equals(this.storageAccount.innerModel().identity().type())
+            || IdentityType.SYSTEM_ASSIGNED.equals(this.storageAccount.innerModel().identity().type())) {
+            return this;
+        }
+        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, true);
         this.userAssignedIdentities.put(identityId, null);
         return this;
     }
@@ -135,7 +136,6 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     void handleExternalIdentities() {
         if (storageAccount.isInCreateMode()) {
             if (!this.userAssignedIdentities.isEmpty()) {
-                this.storageAccount.innerModel().identity().withUserAssignedIdentities(this.userAssignedIdentities);
                 this.storageAccount.createParameters.identity().withUserAssignedIdentities(this.userAssignedIdentities);
             }
         } else {
@@ -153,20 +153,17 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                 // 4. User want to add and remove (all or subset) some identities in 'storageAccount.Identity.userAssignedIdentities'
                 //      [this.userAssignedIdentities.empty() == false and this.storageAccount.identity() != null]
                 //
-                Identity currentIdentity = this.storageAccount.innerModel().identity();
                 if (!this.userAssignedIdentities.isEmpty()) {
                     // At this point its guaranteed that updateParameters.identity() is not null.
-                    currentIdentity.withUserAssignedIdentities(this.userAssignedIdentities);
+                    this.storageAccount.updateParameters.identity().withUserAssignedIdentities(this.userAssignedIdentities);
                 } else {
                     // User don't want to touch 'StorageAccount.Identity.userAssignedIdentities' property
-                    if (currentIdentity != null) {
+                    if (this.storageAccount.updateParameters.identity() != null) {
                         // and currently there is identity exists or user want to manipulate some other properties of
                         // identity, set identities to null so that it won't send over wire.
-                        currentIdentity.withUserAssignedIdentities(null);
+                        this.storageAccount.updateParameters.identity().withUserAssignedIdentities(null);
                     }
                 }
-                this.storageAccount.innerModel().withIdentity(currentIdentity);
-                this.storageAccount.updateParameters.withIdentity(currentIdentity);
             }
         }
     }
@@ -196,7 +193,7 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
             // Check if user request contains only request for removal of identities.
             if (containsRemoveOnly) {
                 Set<String> currentIds = new HashSet<>();
-                Identity currentIdentity = this.storageAccount.innerModel().identity();
+                Identity currentIdentity = this.storageAccount.updateParameters.identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
                         currentIds.add(id.toLowerCase(Locale.ROOT));
@@ -216,15 +213,12 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
                     // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
-                        currentIdentity = new Identity().withType(IdentityType.NONE);
+                        this.storageAccount.updateParameters.withIdentity(new Identity().withType(IdentityType.NONE));
                     } else if (currentIdentity.type().equals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
-                        currentIdentity.withType(IdentityType.SYSTEM_ASSIGNED);
+                        this.storageAccount.updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(IdentityType.USER_ASSIGNED)) {
-                        currentIdentity.withType(IdentityType.NONE);
+                        this.storageAccount.updateParameters.identity().withType(IdentityType.NONE);
                     }
-                    this.storageAccount.innerModel().withIdentity(currentIdentity);
-                    this.storageAccount.innerModel().identity().withUserAssignedIdentities(null);
-                    this.storageAccount.updateParameters.withIdentity(currentIdentity);
                     // and set identities property in the payload model to null so that it won't be sent
                     this.storageAccount.updateParameters.identity().withUserAssignedIdentities(null);
                     return true;
@@ -233,9 +227,8 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
                     if (currentIds.isEmpty() && !removeIds.isEmpty() && currentIdentity == null) {
                         // If so we are in a invalid state but we want to send user input to service and let service
                         // handle it (ignore or error).
-                        currentIdentity = new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(null);
-                        this.storageAccount.innerModel().withIdentity(currentIdentity);
-                        this.storageAccount.updateParameters.withIdentity(currentIdentity);
+                        this.storageAccount.updateParameters.withIdentity(
+                            new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(null));
                         return true;
                     }
                 }
@@ -249,34 +242,46 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
      *
      * @param identityType the identity type to set
      */
-    private void initStorageAccountIdentity(IdentityType identityType) {
+    private void initStorageAccountIdentity(IdentityType identityType, Boolean isWithout) {
         if (!identityType.equals(IdentityType.USER_ASSIGNED)
             && !identityType.equals(IdentityType.SYSTEM_ASSIGNED)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
-        Identity currentIdentity = this.storageAccount.innerModel().identity();
         if (this.storageAccount.isInCreateMode()) {
-            if (currentIdentity == null
-                || currentIdentity.type() == null
-                || currentIdentity.type().equals(IdentityType.NONE)
-                || currentIdentity.type().equals(identityType)) {
-                currentIdentity = new Identity().withType(identityType);
-            } else {
-                currentIdentity.withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            if (Objects.isNull(this.storageAccount.createParameters.identity())) {
+                this.storageAccount.createParameters.withIdentity(new Identity());
             }
-            this.storageAccount.innerModel().withIdentity(currentIdentity);
-            this.storageAccount.createParameters.withIdentity(currentIdentity);
+            if (Objects.isNull(this.storageAccount.createParameters.identity().type())
+                || this.storageAccount.createParameters.identity().type().equals(IdentityType.NONE)
+                || this.storageAccount.createParameters.identity().type().equals(identityType)) {
+                this.storageAccount.createParameters.identity().withType(identityType);
+            } else {
+                this.storageAccount.createParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            }
         } else {
-            if (currentIdentity == null
-                || currentIdentity.type() == null
-                || currentIdentity.type().equals(IdentityType.NONE)
-                || currentIdentity.type().equals(identityType)) {
-                currentIdentity = Objects.isNull(currentIdentity) ? new Identity().withType(identityType) : currentIdentity.withType(identityType);
-            } else {
-                currentIdentity.withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            if (Objects.isNull(this.storageAccount.updateParameters.identity())) {
+                this.storageAccount.updateParameters.withIdentity(this.storageAccount.innerModel().identity());
             }
-            this.storageAccount.innerModel().withIdentity(currentIdentity);
-            this.storageAccount.updateParameters.withIdentity(currentIdentity);
+            if (isWithout) {
+                if (IdentityType.SYSTEM_ASSIGNED.equals(identityType)) {
+                    if (IdentityType.SYSTEM_ASSIGNED.equals(this.storageAccount.updateParameters.identity().type())) {
+                        this.storageAccount.updateParameters.identity().withType(IdentityType.NONE);
+                    } else {
+                        this.storageAccount.updateParameters.identity().withType(IdentityType.USER_ASSIGNED);
+                    }
+                }
+            } else {
+                if (Objects.isNull(this.storageAccount.updateParameters.identity())) {
+                    this.storageAccount.updateParameters.withIdentity(new Identity());
+                }
+                if (Objects.isNull(this.storageAccount.updateParameters.identity().type())
+                    || this.storageAccount.updateParameters.identity().type().equals(IdentityType.NONE)
+                    || this.storageAccount.updateParameters.identity().type().equals(identityType)) {
+                    this.storageAccount.updateParameters.identity().withType(identityType);
+                } else {
+                    this.storageAccount.updateParameters.identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+                }
+            }
         }
     }
 }
