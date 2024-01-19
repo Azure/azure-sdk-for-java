@@ -1273,6 +1273,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T,?> information, S entity) {
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
         PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
