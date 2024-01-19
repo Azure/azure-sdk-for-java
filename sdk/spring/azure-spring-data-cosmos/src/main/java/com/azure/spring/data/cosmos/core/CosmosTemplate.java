@@ -20,6 +20,10 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -62,6 +66,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -262,7 +267,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         entities.forEach(entity -> {
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            PartitionKey partitionKey = getPartitionKeyFromValue(information, entity);
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
@@ -629,8 +634,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
 
-                final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), information.getPartitionKeyPath());
+                final CosmosContainerProperties cosmosContainerProperties = getCosmosContainerPropertiesWithPartitionKeyPath(information);
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -754,7 +758,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),
-                new PartitionKey(information.getPartitionKeyFieldValue(entity)), options));
+                getPartitionKeyFromValue(information, entity), options));
         });
 
         // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -881,7 +885,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
                 return CosmosBulkOperations.getDeleteItemOperation(idString,
-                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
+                    getPartitionKeyFromValue(entityInfo, object), options);
             });
 
             // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -1266,6 +1270,49 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T,?> information, S entity) {
+        Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
+        PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
+        PartitionKey partitionKey = null;
+        if (pkFieldValue instanceof ArrayList<?>) {
+            for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
+                if (pkValue instanceof String || pkValue instanceof UUID) {
+                    partitionKeyBuilder.add(pkValue.toString());
+                } else if (pkValue instanceof Integer) {
+                    partitionKeyBuilder.add((Integer) pkValue);
+                } else if (pkValue instanceof Long) {
+                    partitionKeyBuilder.add((Long) pkValue);
+                } else if (pkValue instanceof Double) {
+                    partitionKeyBuilder.add((Double) pkValue);
+                } else if (pkValue instanceof Boolean) {
+                    partitionKeyBuilder.add((Boolean) pkValue);
+                }
+            }
+            partitionKey = partitionKeyBuilder.build();
+        } else {
+            partitionKey = new PartitionKey(pkFieldValue);
+        }
+        return partitionKey;
+    }
+
+    private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T,?> information) {
+        String pkPath = information.getPartitionKeyPath();
+        if(pkPath.contains(",")) {
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+            ArrayList<String> pkDefPaths = new ArrayList();
+            List<String> paths = Arrays.stream(pkPath.split(",")).collect(Collectors.toList());
+            paths.forEach(path -> {
+                pkDefPaths.add(path.trim());
+            });
+            partitionKeyDef.setPaths(pkDefPaths);
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), partitionKeyDef);
+        } else {
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), pkPath);
         }
     }
 
