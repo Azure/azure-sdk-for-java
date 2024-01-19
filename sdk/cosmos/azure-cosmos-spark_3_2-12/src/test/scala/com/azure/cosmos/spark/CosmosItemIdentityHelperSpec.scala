@@ -31,8 +31,10 @@ class CosmosItemIdentityHelperSpec extends UnitSpec {
     val cosmosItemIdentityWithSubPartitionKey = CosmosItemIdentityHelper.tryParseCosmosItemIdentity("id(1).pk([\"1\",\"2\"])")
     cosmosItemIdentityWithSubPartitionKey.isDefined shouldBe true
     cosmosItemIdentityWithSubPartitionKey.get.getId shouldEqual "1"
-    val expectedSubPartitionKey = new PartitionKey("1=2")
-    cosmosItemIdentityWithSubPartitionKey.get.getPartitionKey shouldEqual expectedSubPartitionKey
+    val subPartitionKeyBuilder = new PartitionKeyBuilder()
+    subPartitionKeyBuilder.add("1")
+    subPartitionKeyBuilder.add("2")
+    cosmosItemIdentityWithSubPartitionKey.get.getPartitionKey shouldEqual subPartitionKeyBuilder.build()
   }
 
   it should "not throw exceptions if the cosmos item identity string value is in wrong format" in {

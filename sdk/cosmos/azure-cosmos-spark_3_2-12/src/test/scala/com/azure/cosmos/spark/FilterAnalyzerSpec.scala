@@ -40,7 +40,7 @@ class FilterAnalyzerSpec extends UnitSpec {
     true,
     CosmosReadManyFilteringConfig(false, "_itemIdentity"))
 
-  private val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+  private val pkDefinition = "{\"paths\":[\"/pk\"],\"kind\":\"Hash\"}"
   private val partitionKeyDefinition =
     SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(pkDefinition)
 

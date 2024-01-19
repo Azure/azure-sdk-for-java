@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.Utils
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 
 import java.util
@@ -39,10 +39,12 @@ private object CosmosItemIdentityHelper {
 
   private[this] def createCosmosItemIdentityWithMultiHashPartitionKey(idValue: String, pkValuesArray: Array[Object])  = {
     val partitionKey =
-      new PartitionKey(
-        com.azure.cosmos.implementation.PartitionKeyHelper.getPartitionKeyObjectKey(pkValuesArray),
-        PartitionKeyInternal.fromObjectArray(pkValuesArray, false)
-      )
+      ImplementationBridgeHelpers
+        .PartitionKeyHelper
+        .getPartitionKeyAccessor
+        .toPartitionKey(
+          com.azure.cosmos.implementation.PartitionKeyHelper.getPartitionKeyObjectKey(pkValuesArray),
+          PartitionKeyInternal.fromObjectArray(pkValuesArray, false))
 
     new CosmosItemIdentity(partitionKey, idValue)
   }

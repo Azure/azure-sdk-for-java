@@ -16,6 +16,7 @@ import org.apache.spark.sql.types.StructType
 
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import java.util.{OptionalLong, UUID}
+import scala.collection.mutable.ListBuffer
 
 private abstract class ItemsScanBase(session: SparkSession,
                                      schema: StructType,
@@ -136,10 +137,11 @@ private abstract class ItemsScanBase(session: SparkSession,
 
     if (readManyFiltersMapRef.get() == null) {
       // there is nothing to prune, return the original planned input partition
+      log.logInfo(s"Planned input partition ${plannedInputPartitionsRef.get.size}")
       plannedInputPartitionsRef.get().map(_.asInstanceOf[InputPartition])
     } else {
       // only return partitions has matching filter criteria
-      val afterPrunePlannedPartitions = prunePartitions()
+      val afterPrunePlannedPartitions = prunePartitions(plannedInputPartitionsRef.get())
       if (afterPrunePlannedPartitions.size < plannedInputPartitionsRef.get().size) {
         log.logInfo(s"There are ${plannedInputPartitionsRef.get().size - afterPrunePlannedPartitions.size} partitions got pruned")
       }
@@ -148,15 +150,43 @@ private abstract class ItemsScanBase(session: SparkSession,
     }
   }
 
-  private[this] def prunePartitions(): Array[CosmosInputPartition] = {
-    plannedInputPartitionsRef.get().filter(
-      inputPartition => {
-        readManyFiltersMapRef
-          .get()
-          .keys
-          .exists(readManyFilterFeedRange =>
-            SparkBridgeImplementationInternal.doRangesOverlap(readManyFilterFeedRange, inputPartition.feedRange))
+  private[this] def prunePartitions(plannedInputPartitions: Array[CosmosInputPartition]): Array[CosmosInputPartition] = {
+    // NOTE: If in the future we need to support SupportsReportPartitioning
+    // then even is no matching readMany filtering, we will still need to return the partition back
+    // the logic here will need to change
+    val readManyFilterMap = scala.collection.mutable.Map[CosmosInputPartition, ListBuffer[String]]()
+    readManyFiltersMapRef.get().foreach(entry => {
+      val overlappedPartitions =
+        plannedInputPartitions.filter(inputPartition => {
+          SparkBridgeImplementationInternal.doRangesOverlap(
+            entry._1,
+            inputPartition.feedRange
+          )
+        })
+
+      // the readManyItem feedRange should only overlap with one planned input partitions
+      // in case there are multiple partitions overlapped, pick the first one should be enough
+      // (have multiple overlapped partitions should never happen though)
+      readManyFilterMap.get(overlappedPartitions(0)) match {
+        case Some(readManyFiltersList) => readManyFiltersList += entry._2
+        case None => {
+          val readManyFilterList = new ListBuffer[String]
+          readManyFilterList += entry._2
+          readManyFilterMap.put(overlappedPartitions(0), readManyFilterList)
+        }
+      }
+    })
+
+    readManyFilterMap
+      .keys
+      .map(inputPartition => {
+          CosmosInputPartition(
+            inputPartition.feedRange,
+            inputPartition.endLsn,
+            inputPartition.continuationState,
+            Some(readManyFilterMap.get(inputPartition).get.toList))
       })
+      .toArray
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
@@ -170,8 +200,7 @@ private abstract class ItemsScanBase(session: SparkSession,
       DiagnosticsContext(correlationActivityId, cosmosQuery.queryText),
       cosmosClientStateHandles,
       DiagnosticsConfig.parseDiagnosticsConfig(config),
-      sparkEnvironmentInfo,
-      readManyFiltersMapRef)
+      sparkEnvironmentInfo)
   }
 
   override def toBatch: Batch = {
@@ -196,7 +225,7 @@ private abstract class ItemsScanBase(session: SparkSession,
     // for now, we will only care about partition dynamic pruning filters which is a IN filter
     // and the filter property matches the read runtime filter property '_itemIdentity'
     // but that being said, other optimizations can be done in future as well - for example filter by only pk value
-    log.logDebug("Runtime filter is called")
+    log.logInfo(s"Runtime filter is called for container ${containerConfig.container}")
 
     if (shouldApplyRuntimeFilter() && effectiveReadManyFilteringConfig.readManyFilteringEnabled) {
       val readManyFilters = readManyFilterAnalyzer.analyze(filters)
@@ -223,7 +252,7 @@ private abstract class ItemsScanBase(session: SparkSession,
 
   override def estimateStatistics(): Statistics = {
 
-    // if there is no filters being pushed down, then we can safely use the collection statistics
+    // if there are no filters being pushed down, then we can safely use the collection statistics
     // else we will fallback to let spark do the calculation
     if (canUseCollectionStatistics()) {
       val plannedInputPartitions = this.planInputPartitions()
@@ -246,13 +275,18 @@ private abstract class ItemsScanBase(session: SparkSession,
       log.logInfo(s"totalDocSizeInKB ${totalDocSizeInKB.get()}, container ${containerConfig.container}")
       SparkCosmosStatistics(OptionalLong.of(totalDocSizeInKB.get() * 1024), OptionalLong.of(itemCount.get()))
     } else {
+      log.logInfo(s"Can not calculate statistics for container ${description()} " +
+        s", fallback to let spark do the calculation")
       // for other cases, fall back to spark statistics calculation
       SparkCosmosStatistics(OptionalLong.empty(), OptionalLong.empty())
     }
   }
 
   private[this] def canUseCollectionStatistics(): Boolean = {
-    val canUseCollectionStatistics = analyzedFilters.filtersToBePushedDownToCosmos.isEmpty
+    val canUseCollectionStatistics = {
+      analyzedFilters.filtersToBePushedDownToCosmos.isEmpty &&
+        this.readManyFiltersMapRef.get() == null
+    }
 
     log.logInfo(s"canUseCollectionStatistics $canUseCollectionStatistics ${containerConfig.container}")
     canUseCollectionStatistics

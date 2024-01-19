@@ -115,7 +115,7 @@ class ItemsPartitionReaderWithReadManyITest
       })
 
       val idsOnPlannedFeedRange = itemsOnPlannedFeedRange
-        .map(objectNode => objectNode.get(idProperty))
+        .map(objectNode => objectNode.get(idProperty).asText())
       itemsReadFromPartitionReader.map(item => item.get(idProperty).asText()).toList should contain allElementsOf (idsOnPlannedFeedRange)
     } finally {
       idNotPkContainer.delete().block()
