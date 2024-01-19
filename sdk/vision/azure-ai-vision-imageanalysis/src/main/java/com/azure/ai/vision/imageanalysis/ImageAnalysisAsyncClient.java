@@ -674,8 +674,8 @@ public final class ImageAnalysisAsyncClient {
         if (options == null) {
             return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
-                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(), options.isGenderNeutralCaption(),
+                options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 }
