@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-
 public class CreateIndexWithFieldBuilderExample {
     /**
      * From the Azure portal, get your Azure Cognitive Search service name and API key and populate ADMIN_KEY and
