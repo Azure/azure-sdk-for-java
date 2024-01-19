@@ -1,6 +1,6 @@
 # Release History
 
-## 5.17.0-beta.1 (Unreleased)
+## 5.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
 
 ## 5.17.1 (2023-12-07)
 

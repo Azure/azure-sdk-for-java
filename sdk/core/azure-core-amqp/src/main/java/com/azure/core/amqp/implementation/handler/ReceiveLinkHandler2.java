@@ -195,7 +195,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     }
 
     @Override
-    void onError(Throwable e) {
+    public void onError(Throwable e) {
         deliveryHandler.onLinkError();
         super.onError(e);
     }

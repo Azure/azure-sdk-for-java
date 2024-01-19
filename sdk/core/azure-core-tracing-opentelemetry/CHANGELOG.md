@@ -4,8 +4,19 @@
 
 ### Features Added
 
+- Updated HTTP and messaging instrumentation to OpenTelemetry Semantic Conventions version 1.23.1.
+
 ### Breaking Changes
 
+- Renamed attributes according to OpenTelemetry semantic conventions changes:
+    - `net.peer.name` -> `server.address`
+    - `http.method` -> `http.request.method`
+    - `http.status_code` -> `http.response.status_code`
+    - `http.url` -> `url.full`
+- Removed `http.user_agent` optional attribute since the same information is reported in the instrumentation scope via library name and version.  
+- Removed `OpenTelemetrySchemaVersion` and it's setter method on `OpenTelemetryTracingOptions` since we're not allowing to change the schema version for now.
+- Removed exception event reporting - exceptions are reported as logs already.
+- 
 ### Bugs Fixed
 
 ### Other Changes

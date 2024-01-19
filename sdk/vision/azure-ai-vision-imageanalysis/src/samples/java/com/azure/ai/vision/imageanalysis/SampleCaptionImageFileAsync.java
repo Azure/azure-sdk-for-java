@@ -15,13 +15,6 @@
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
 //       the caption.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleCaptionImageFileAsync.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleCaptionImageFileAsync
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
@@ -29,17 +22,18 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class SampleCaptionImageFileAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");
@@ -58,18 +52,19 @@ public class SampleCaptionImageFileAsync {
             .buildAsyncClient();
         // END: create-async-client-snippet
 
-        try {
-            // Generate a caption for an input image buffer. This is an synchronous (non-blocking) call, but here we block until the service responds.
-            ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
-                Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-                new ImageAnalysisOptions().setGenderNeutralCaption(true)) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
-                .block(); 
+        // Generate a caption for an input image buffer. This is an asynchronous (non-blocking) call.
+        client.analyze(
+            BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
+            Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
+            new ImageAnalysisOptions().setGenderNeutralCaption(true)) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+            .subscribe(
+                result -> printAnalysisResults(result),
+                error -> System.err.println("Image analysis terminated with error message: " + error));
 
-            printAnalysisResults(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // The .subscribe() is not a blocking call. For the purpose of this sample, we sleep
+        // the thread so the program does not end before the analyze operation is complete.
+        // Using .block() instead of .subscribe() will turn this into a synchronous call.
+        TimeUnit.SECONDS.sleep(5);
     }
 
     // Print analysis results to the console
