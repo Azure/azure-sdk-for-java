@@ -326,8 +326,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             String hierarchicalPartitionKeyFiledName = "";
             for (final String path : hierarchicalPartitionKeyPaths) {
-                hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == "" ? path.substring(1) :
-                    hierarchicalPartitionKeyFiledName + ", " + path.substring(1);
+                hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == "" ? path.substring(1)
+                    : hierarchicalPartitionKeyFiledName + ", " + path.substring(1);
             }
             return hierarchicalPartitionKeyFiledName;
         } else {
