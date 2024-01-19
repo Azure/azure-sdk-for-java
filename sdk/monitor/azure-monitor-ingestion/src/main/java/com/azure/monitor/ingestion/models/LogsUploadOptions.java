@@ -17,6 +17,14 @@ public final class LogsUploadOptions {
     private Integer maxConcurrency;
     private Consumer<LogsUploadError> logsUploadErrorConsumer;
 
+    // empty constructor to suppress javadoc warning
+    /**
+     * Creates an instance of {@link LogsUploadOptions}.
+     */
+    public LogsUploadOptions() {
+
+    }
+
     /**
      * Returns the serializer to use to convert the log objects to JSON.
      * @return the serializer to use to convert the log objects to JSON.
