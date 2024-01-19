@@ -248,11 +248,11 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
         } else if (partitionKeyPath != null) {
             return partitionKeyPath;
-        } else if ( hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             String hierarchicalPartitionKeyPath = "";
             for (final String path : hierarchicalPartitionKeyPaths) {
-                hierarchicalPartitionKeyPath = hierarchicalPartitionKeyPath == "" ? path :
-                    hierarchicalPartitionKeyPath + ", " + path;
+                hierarchicalPartitionKeyPath = hierarchicalPartitionKeyPath == "" ? path
+                    : hierarchicalPartitionKeyPath + ", " + path;
             }
             return hierarchicalPartitionKeyPath;
         } else {
@@ -297,7 +297,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                 }
             });
             return currentObject[0];
-        } else if ( hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             ArrayList<Object> pkValues = new ArrayList<>();
             for (final String path : hierarchicalPartitionKeyPaths) {
                 Field f = null;
@@ -323,7 +323,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             return partitionKeyField.getName();
         } else if (partitionKeyPath != null) {
             return partitionKeyPath.substring(1).replace("/", ".");
-        } else if ( hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             String hierarchicalPartitionKeyFiledName = "";
             for (final String path : hierarchicalPartitionKeyPaths) {
                 hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == "" ? path.substring(1) :

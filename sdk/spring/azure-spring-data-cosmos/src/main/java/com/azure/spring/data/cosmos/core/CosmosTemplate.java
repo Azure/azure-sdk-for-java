@@ -1302,7 +1302,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T, ?> information) {
         String pkPath = information.getPartitionKeyPath();
-        if(pkPath.contains(",")) {
+        if (pkPath.contains(",")) {
             PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
             partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
             partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
