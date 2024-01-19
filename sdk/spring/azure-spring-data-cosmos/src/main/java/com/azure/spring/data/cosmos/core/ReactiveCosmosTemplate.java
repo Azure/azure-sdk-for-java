@@ -1120,7 +1120,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
             partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
             partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
-            ArrayList<String> pkDefPaths = new ArrayList();
+            ArrayList<String> pkDefPaths = new ArrayList<>();
             List<String> paths = Arrays.stream(pkPath.split(",")).collect(Collectors.toList());
             paths.forEach(path -> {
                 pkDefPaths.add(path.trim());
