@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,17 +134,17 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
         propertySourceOverride.initProperties(null);
 
-        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        List<FeatureFlagFilter> filters = new ArrayList<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
-        filters.put(0, ffec);
+        filters.add(ffec);
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
-        filters = new HashMap<>();
+        filters = new ArrayList<>();
         ffec = new FeatureFlagFilter("TestFilter");
         Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
         ffec.setParameters(parameters);
-        filters.put(0, ffec);
+        filters.add(ffec);
         gamma.setEnabledFor(filters);
 
         assertEquals(gamma.getKey(),
@@ -162,17 +161,17 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
         propertySource.initProperties(null);
 
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        List<FeatureFlagFilter> filters = new ArrayList<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
-        filters.put(0, ffec);
+        filters.add(ffec);
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
-        filters = new HashMap<>();
+        filters = new ArrayList<>();
         ffec = new FeatureFlagFilter("TestFilter");
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
         ffec.setParameters(parameters);
-        filters.put(0, ffec);
+        filters.add(ffec);
         gamma.setEnabledFor(filters);
 
         assertEquals(gamma.getKey(),
@@ -221,7 +220,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("target");
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        List<FeatureFlagFilter> filters = new ArrayList<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("targetingFilter");
 
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
@@ -248,13 +247,13 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 50);
 
         ffec.setParameters(parameters);
-        filters.put(0, ffec);
+        filters.add(ffec);
         feature.setEnabledFor(filters);
 
         featureSetExpected.addFeature("target", feature);
         Feature targeting = (Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "target");
 
-        FeatureFlagFilter filter = targeting.getEnabledFor().get(0);
+        FeatureFlagFilter filter = targeting.getEnabledFor().get("0");
 
         assertNotNull(filter);
         assertEquals("targetingFilter", filter.getName());

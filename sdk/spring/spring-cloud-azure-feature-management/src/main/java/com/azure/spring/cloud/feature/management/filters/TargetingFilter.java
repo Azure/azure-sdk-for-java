@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.feature.management.implementation.TargetingUtils;
 import com.azure.spring.cloud.feature.management.implementation.targeting.Audience;
 import com.azure.spring.cloud.feature.management.implementation.targeting.Exclusion;
 import com.azure.spring.cloud.feature.management.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
+import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
@@ -33,7 +31,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 /**
  * `Microsoft.TargetingFilter` enables evaluating a user/group/overall rollout of a feature.
  */
-public class TargetingFilter implements FeatureFilter {
+public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
@@ -78,6 +76,11 @@ public class TargetingFilter implements FeatureFilter {
     protected final TargetingContextAccessor contextAccessor;
 
     /**
+     * Accessor for identifying the current user/group when evaluating when providing context 
+     */
+    protected final ContextualTargetingContextAccessor contextualAccessor;
+
+    /**
      * Options for evaluating the filter
      */
     protected final TargetingEvaluationOptions options;
@@ -89,6 +92,7 @@ public class TargetingFilter implements FeatureFilter {
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor) {
         this.contextAccessor = contextAccessor;
+        this.contextualAccessor = null;
         this.options = new TargetingEvaluationOptions();
     }
 
@@ -100,19 +104,56 @@ public class TargetingFilter implements FeatureFilter {
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
         this.contextAccessor = contextAccessor;
+        this.contextualAccessor = null;
         this.options = options;
     }
 
+    /**
+     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
+     * 
+     * @param contextualAccessor Context for evaluating the users/groups.
+     * @param options enables customization of the filter.
+     */
+    public TargetingFilter(ContextualTargetingContextAccessor contextualAccessor, TargetingEvaluationOptions options) {
+        this.contextAccessor = null;
+        this.contextualAccessor = contextualAccessor;
+        this.options = options;
+    }
+
+    /**
+     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
+     * 
+     * @param contextualAccessor Context for evaluating the users/groups.
+     */
+    public TargetingFilter(ContextualTargetingContextAccessor contextualAccessor) {
+        this.contextAccessor = null;
+        this.contextualAccessor = contextualAccessor;
+        this.options = new TargetingEvaluationOptions();
+    }
+
     @Override
-    @SuppressWarnings("unchecked")
     public boolean evaluate(FeatureFilterEvaluationContext context) {
+        return evaluate(context, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean evaluate(FeatureFilterEvaluationContext context, Object appContext) {
+
         if (context == null) {
             throw new IllegalArgumentException("Targeting Context not configured.");
         }
 
         TargetingFilterContext targetingContext = new TargetingFilterContext();
-
-        contextAccessor.configureTargetingContext(targetingContext);
+        
+        if (contextualAccessor != null && (appContext != null || contextAccessor == null)) {
+            // Use this if, there is an appContext + the contextualAccessor, or there is no contextAccessor.
+            contextualAccessor.configureTargetingContext(targetingContext, appContext);
+        }
+        if (contextAccessor != null) {
+            // If this is the only one provided just use it.
+            contextAccessor.configureTargetingContext(targetingContext);
+        }
 
         if (validateTargetingContext(targetingContext)) {
             LOGGER.warn("No targeting context available for targeting evaluation.");
@@ -240,26 +281,13 @@ public class TargetingFilter implements FeatureFilter {
      * @throws TargetingException Unable to create hash of target context
      */
     protected double isTargetedPercentage(String contextId) {
-        byte[] hash = null;
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            hash = digest.digest(contextId.getBytes(Charset.defaultCharset()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new TargetingException("Unable to find SHA-256 for targeting.", e);
-        }
-
-        if (hash == null) {
-            throw new TargetingException("Unable to create Targeting Hash for " + contextId);
-        }
-
-        ByteBuffer wrapped = ByteBuffer.wrap(hash);
-        int contextMarker = Math.abs(wrapped.getInt());
-
-        return (contextMarker / (double) Integer.MAX_VALUE) * 100;
+        return TargetingUtils.isTargetedPercentage(contextId);
     }
 
     private boolean isTargeted(String contextId, double percentage) {
+        if (percentage == 100) {
+            return true;
+        }
         return isTargetedPercentage(contextId) < percentage;
     }
 
