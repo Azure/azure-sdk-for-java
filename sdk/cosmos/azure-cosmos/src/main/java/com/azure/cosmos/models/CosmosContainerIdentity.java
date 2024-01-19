@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 /**
  * Encapsulates the container link associated with the container.
  * */
-public final class CosmosContainerIdentity {
+public class CosmosContainerIdentity {
 
     private final String databaseName;
     private final String containerName;

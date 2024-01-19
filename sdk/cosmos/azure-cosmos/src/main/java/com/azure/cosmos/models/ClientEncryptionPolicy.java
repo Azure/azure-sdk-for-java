@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Client encryption policy.
  */
-public final class ClientEncryptionPolicy {
+public class ClientEncryptionPolicy {
 
     private JsonSerializable jsonSerializable;
 

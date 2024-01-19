@@ -20,7 +20,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
  */
-public final class CosmosBulkExecutionOptions {
+public class CosmosBulkExecutionOptions {
     private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
 
@@ -45,7 +45,7 @@ public final class CosmosBulkExecutionOptions {
      * Constructor
      * @param thresholdsState thresholds
      */
-    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
+    protected CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
         this.legacyBatchScopedContext = legacyBatchScopedContext;
         if (thresholdsState == null) {
             this.thresholds = new CosmosBulkExecutionThresholdsState();
@@ -110,7 +110,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return maximum micro batch payload size in bytes
      */
-    int getMaxMicroBatchPayloadSizeInBytes() {
+    protected int getMaxMicroBatchPayloadSizeInBytes() {
         return maxMicroBatchPayloadSizeInBytes;
     }
 
@@ -122,25 +122,25 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
+    protected CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
         this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
         return this;
     }
 
-    int getMaxMicroBatchSize() {
+    protected int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+    protected CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
-    Integer getMaxConcurrentCosmosPartitions() {
+    protected Integer getMaxConcurrentCosmosPartitions() {
         return this.maxConcurrentCosmosPartitions;
     }
 
-    CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(int maxConcurrentCosmosPartitions) {
+    protected CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(int maxConcurrentCosmosPartitions) {
         this.maxConcurrentCosmosPartitions = maxConcurrentCosmosPartitions;
         return this;
     }
@@ -181,7 +181,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return max micro batch interval
      */
-    Duration getMaxMicroBatchInterval() {
+    protected Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
 
@@ -192,7 +192,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return max targeted micro batch retry rate
      */
-    double getMaxTargetedMicroBatchRetryRate() {
+    protected double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
 
@@ -208,7 +208,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
+    protected CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
         }
@@ -237,7 +237,7 @@ public final class CosmosBulkExecutionOptions {
      * Returns batch context
      * @return batch context
      */
-    Object getLegacyBatchScopedContext() {
+    protected Object getLegacyBatchScopedContext() {
         return this.legacyBatchScopedContext;
     }
 
@@ -249,11 +249,12 @@ public final class CosmosBulkExecutionOptions {
         return this.thresholds;
     }
 
-    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    protected OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
-    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    protected void setOperationContextAndListenerTuple(
+        OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
@@ -264,7 +265,7 @@ public final class CosmosBulkExecutionOptions {
      * @param value a string representing the custom option's value
      * @return the CosmosBulkExecutionOptions.
      */
-    CosmosBulkExecutionOptions setHeader(String name, String value) {
+    protected CosmosBulkExecutionOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -277,7 +278,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    protected Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
@@ -327,18 +328,18 @@ public final class CosmosBulkExecutionOptions {
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
-    void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {
+    protected void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {
         this.diagnosticsTracker = tracker;
     }
 
-    BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
+    protected BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
         return this.diagnosticsTracker;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
 

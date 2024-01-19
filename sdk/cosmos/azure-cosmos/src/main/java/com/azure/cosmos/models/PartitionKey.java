@@ -16,11 +16,11 @@ public class PartitionKey {
     private final PartitionKeyInternal internalPartitionKey;
     private Object keyObject;
 
-    PartitionKey(PartitionKeyInternal partitionKeyInternal) {
+    public PartitionKey(PartitionKeyInternal partitionKeyInternal) {
         this.internalPartitionKey = partitionKeyInternal;
     }
 
-    PartitionKey(final Object key, PartitionKeyInternal partitionKeyInternal) {
+    public PartitionKey(final Object key, PartitionKeyInternal partitionKeyInternal) {
         this.keyObject = key;
         this.internalPartitionKey = partitionKeyInternal;
     }
@@ -40,7 +40,7 @@ public class PartitionKey {
      * Gets the object used to create partition key
      * @return the partition key object
      */
-    Object getKeyObject() {
+    protected Object getKeyObject() {
         return keyObject;
     }
 
@@ -51,7 +51,7 @@ public class PartitionKey {
      * @param jsonString the JSON string representation of this PartitionKey object.
      * @return the PartitionKey instance.
      */
-    static PartitionKey fromJsonString(String jsonString) {
+    protected static PartitionKey fromJsonString(String jsonString) {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
@@ -70,7 +70,7 @@ public class PartitionKey {
     }
 
     // TODO: make private
-    PartitionKeyInternal getInternalPartitionKey() {
+    protected PartitionKeyInternal getInternalPartitionKey() {
         return internalPartitionKey;
     }
 
@@ -103,7 +103,7 @@ public class PartitionKey {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
             new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
                 @Override

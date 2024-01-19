@@ -65,7 +65,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * }
  * </pre>
  */
-public final class ConflictResolutionPolicy {
+public class ConflictResolutionPolicy {
 
     private JsonSerializable jsonSerializable;
 
@@ -170,7 +170,7 @@ public final class ConflictResolutionPolicy {
     /**
      * Initializes a new instance of the {@link ConflictResolutionPolicy} class for the Azure Cosmos DB service.
      */
-    ConflictResolutionPolicy() {
+    protected ConflictResolutionPolicy() {
         this.jsonSerializable = new JsonSerializable();
     }
 
@@ -179,7 +179,7 @@ public final class ConflictResolutionPolicy {
      *
      * @param jsonString the json string
      */
-    ConflictResolutionPolicy(String jsonString) {
+    protected ConflictResolutionPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
@@ -188,7 +188,7 @@ public final class ConflictResolutionPolicy {
      *
      * @param objectNode the object node.
      */
-    ConflictResolutionPolicy(ObjectNode objectNode) {
+    protected ConflictResolutionPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
@@ -222,7 +222,7 @@ public final class ConflictResolutionPolicy {
      *
      * @param mode One of the values of the {@link ConflictResolutionMode} enum.
      */
-    ConflictResolutionPolicy setMode(ConflictResolutionMode mode) {
+    protected ConflictResolutionPolicy setMode(ConflictResolutionMode mode) {
         this.jsonSerializable.set(Constants.Properties.MODE, mode.toString());
         return this;
     }
@@ -257,7 +257,7 @@ public final class ConflictResolutionPolicy {
      * @param value The path to check values for last-writer wins conflict resolution.
      * That path is a rooted path of the property in the item, such as "/name/first".
      */
-    ConflictResolutionPolicy setConflictResolutionPath(String value) {
+    protected ConflictResolutionPolicy setConflictResolutionPath(String value) {
         this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
         return this;
     }
@@ -281,7 +281,7 @@ public final class ConflictResolutionPolicy {
         return this.jsonSerializable.getString(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE);
     }
 
-    ConflictResolutionPolicy setConflictResolutionProcedure(String value) {
+    protected ConflictResolutionPolicy setConflictResolutionProcedure(String value) {
         this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
         return this;
     }
@@ -290,7 +290,7 @@ public final class ConflictResolutionPolicy {
         this.jsonSerializable.populatePropertyBag();
     }
 
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+    protected JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 
     private static String getFullPath(String dbName, String containerName, String sprocName) {
         if (dbName == null) {

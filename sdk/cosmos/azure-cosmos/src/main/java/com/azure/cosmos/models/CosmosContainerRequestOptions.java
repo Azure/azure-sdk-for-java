@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to Cosmos container.
  */
-public final class CosmosContainerRequestOptions {
+public class CosmosContainerRequestOptions {
     private boolean quotaInfoEnabled;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
@@ -45,7 +45,7 @@ public final class CosmosContainerRequestOptions {
      *
      * @return the consistency level.
      */
-    ConsistencyLevel getConsistencyLevel() {
+    protected ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -55,7 +55,7 @@ public final class CosmosContainerRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the current request options
      */
-    CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    protected CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -120,12 +120,12 @@ public final class CosmosContainerRequestOptions {
         return this;
     }
 
-    CosmosContainerRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
+    protected CosmosContainerRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
         this.throughputProperties = throughputProperties;
         return this;
     }
 
-    RequestOptions toRequestOptions() {
+    protected RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
         options.setIfMatchETag(getIfMatchETag());
         options.setIfNoneMatchETag(getIfNoneMatchETag());

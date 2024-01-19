@@ -45,7 +45,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Class with config options for Cosmos Client telemetry
  */
-public final class CosmosClientTelemetryConfig {
+public class CosmosClientTelemetryConfig {
     private static final Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);

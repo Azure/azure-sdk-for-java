@@ -20,7 +20,7 @@ import java.time.ZonedDateTime;
 @SuppressWarnings("enforcefinalfields")
 public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
-    CosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+    protected CosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
         super(response);
         ObjectNode bodyAsJson = (ObjectNode)response.getBody();
         if (bodyAsJson == null) {
@@ -54,7 +54,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      *
      * @return the progress of lazy indexing.
      */
-    long getLazyIndexingProgress() {
+    protected long getLazyIndexingProgress() {
         return resourceResponseWrapper.getLazyIndexingProgress();
     }
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public final class IndexUtilizationInfo {
+public class IndexUtilizationInfo {
     private final static Logger logger = LoggerFactory.getLogger(IndexUtilizationInfo.class.getSimpleName());
 
     static final IndexUtilizationInfo ZERO = new IndexUtilizationInfo(

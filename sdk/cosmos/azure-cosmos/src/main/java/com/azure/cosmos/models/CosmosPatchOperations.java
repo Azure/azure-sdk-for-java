@@ -44,7 +44,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  *  </code>
  *
  */
-public final class CosmosPatchOperations {
+public class CosmosPatchOperations {
 
     private final List<PatchOperation> patchOperations;
 
@@ -295,14 +295,14 @@ public final class CosmosPatchOperations {
     // modifications - like adding new entries is still
     // thread-safe - but enumerating over the collection is not
     // unless synchronized
-    List<PatchOperation> getPatchOperations() {
+    protected List<PatchOperation> getPatchOperations() {
         return this.patchOperations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
             cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );

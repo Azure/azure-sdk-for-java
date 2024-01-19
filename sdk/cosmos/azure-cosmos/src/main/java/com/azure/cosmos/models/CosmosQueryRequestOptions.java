@@ -76,7 +76,7 @@ public class CosmosQueryRequestOptions {
      *
      * @param options the options
      */
-    CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
+    public CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
         this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
@@ -107,11 +107,12 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
     }
 
-    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    protected void setOperationContextAndListenerTuple(
+        OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    protected OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
@@ -120,7 +121,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the partitionKeyRangeId.
      */
-    String getPartitionKeyRangeIdInternal() {
+    protected String getPartitionKeyRangeIdInternal() {
         return this.partitionKeyRangeId;
     }
 
@@ -130,7 +131,7 @@ public class CosmosQueryRequestOptions {
      * @param partitionKeyRangeId the partitionKeyRangeId.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
+    protected CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }
@@ -209,7 +210,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the correlation activityId
      */
-    UUID getCorrelationActivityId() {
+    protected UUID getCorrelationActivityId() {
         return this.correlationActivityId;
     }
 
@@ -220,7 +221,7 @@ public class CosmosQueryRequestOptions {
      * @param correlationActivityId the correlation activityId.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setCorrelationActivityId(UUID correlationActivityId) {
+    protected CosmosQueryRequestOptions setCorrelationActivityId(UUID correlationActivityId) {
         this.correlationActivityId = correlationActivityId;
         return this;
     }
@@ -231,7 +232,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the emit verbose traces in query.
      */
-    Boolean isEmitVerboseTracesInQuery() {
+    protected Boolean isEmitVerboseTracesInQuery() {
         return this.emitVerboseTracesInQuery;
     }
 
@@ -242,7 +243,7 @@ public class CosmosQueryRequestOptions {
      * @param emitVerboseTracesInQuery the emit verbose traces in query.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
+    protected CosmosQueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
         this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
         return this;
     }
@@ -374,7 +375,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the max number of items.
      */
-    Integer getMaxItemCount() {
+    protected Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -385,7 +386,7 @@ public class CosmosQueryRequestOptions {
      * @param maxItemCount the max number of items.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setMaxItemCount(Integer maxItemCount) {
+    protected CosmosQueryRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -395,7 +396,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the request continuation.
      */
-    String getRequestContinuation() {
+    protected String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -405,7 +406,7 @@ public class CosmosQueryRequestOptions {
      * @param requestContinuation the request continuation.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setRequestContinuation(String requestContinuation) {
+    protected CosmosQueryRequestOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -458,7 +459,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return Map of request options properties
      */
-    Map<String, Object> getProperties() {
+    protected Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -468,7 +469,7 @@ public class CosmosQueryRequestOptions {
      * @param properties the properties.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setProperties(Map<String, Object> properties) {
+    protected CosmosQueryRequestOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -478,7 +479,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return whether to enable allow empty pages or not
      */
-    boolean isEmptyPagesAllowed() {
+    protected boolean isEmptyPagesAllowed() {
         return emptyPagesAllowed;
     }
 
@@ -487,7 +488,7 @@ public class CosmosQueryRequestOptions {
      * @param emptyPagesAllowed whether to allow empty pages in feed response
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+    protected CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
     }
@@ -632,7 +633,7 @@ public class CosmosQueryRequestOptions {
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
-    String getQueryNameOrDefault(String defaultQueryName) {
+    protected String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }
 
@@ -658,7 +659,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setHeader(String name, String value) {
+    protected CosmosQueryRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -671,42 +672,42 @@ public class CosmosQueryRequestOptions {
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    protected Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
-    CosmosQueryRequestOptions disallowQueryPlanRetrieval() {
+    protected CosmosQueryRequestOptions disallowQueryPlanRetrieval() {
         this.queryPlanRetrievalDisallowed = true;
 
         return this;
     }
 
-    boolean isQueryPlanRetrievalDisallowed() {
+    protected boolean isQueryPlanRetrievalDisallowed() {
         return this.queryPlanRetrievalDisallowed;
     }
 
-    boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
+    protected boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
 
-    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+    protected Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
-    CosmosQueryRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
+    protected CosmosQueryRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
         this.itemFactoryMethod = factoryMethod;
 
         return this;
     }
 
-    List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker() {
+    protected List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker() {
         return this.cancelledRequestDiagnosticsTracker;
     }
 
-    void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+    protected void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
 

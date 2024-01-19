@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Represents a SQL query in the Azure Cosmos DB database service.
  */
-public final class SqlQuerySpec {
+public class SqlQuerySpec {
 
     private List<SqlParameter> parameters;
 
@@ -33,7 +33,7 @@ public final class SqlQuerySpec {
      *
      * @param objectNode the object node that represents the included path.
      */
-    SqlQuerySpec(ObjectNode objectNode) {
+    public SqlQuerySpec(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
@@ -123,7 +123,7 @@ public final class SqlQuerySpec {
         return this;
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);
 
@@ -134,5 +134,5 @@ public final class SqlQuerySpec {
         }
     }
 
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+    protected JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

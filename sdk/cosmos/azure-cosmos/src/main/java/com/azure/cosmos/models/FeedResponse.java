@@ -53,12 +53,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
-    FeedResponse(List<T> results, Map<String, String> headers) {
+    protected FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
 
     // TODO: probably have to add two booleans
-    FeedResponse(List<T> results, RxDocumentServiceResponse response) {
+    protected FeedResponse(List<T> results, RxDocumentServiceResponse response) {
         this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
         this.cosmosDiagnostics = response.getCosmosDiagnostics();
         if (this.cosmosDiagnostics != null) {
@@ -66,7 +66,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
     }
 
-    FeedResponse(
+    protected FeedResponse(
         List<T> results,
         Map<String, String> headers,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
@@ -76,11 +76,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap);
     }
 
-    FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
+    protected FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
         this(results, header, true, nochanges, new ConcurrentHashMap<>());
     }
 
-    FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
+    protected FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
         this(results, headers);
 
         if (diagnostics != null) {
@@ -402,7 +402,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      *
      * @param continuationToken updates the continuation token header of the response
      */
-    void setContinuationToken(String continuationToken) {
+    protected void setContinuationToken(String continuationToken) {
         String headerName = useEtagAsContinuation
             ? HttpConstants.HttpHeaders.E_TAG
             : HttpConstants.HttpHeaders.CONTINUATION;
@@ -414,7 +414,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
     }
 
-    boolean getNoChanges() {
+    protected boolean getNoChanges() {
         return this.nochanges;
     }
 
@@ -450,7 +450,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return this.cosmosDiagnostics;
     }
 
-    ConcurrentMap<String, QueryMetrics> queryMetrics() {
+    protected ConcurrentMap<String, QueryMetrics> queryMetrics() {
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
             return queryMetricsMap;
         }
@@ -464,7 +464,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return queryMetricsMap;
     }
 
-    ConcurrentMap<String, QueryMetrics> queryMetricsMap() {
+    protected ConcurrentMap<String, QueryMetrics> queryMetricsMap() {
         return queryMetricsMap;
     }
 
@@ -496,7 +496,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return 0;
     }
 
-    <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
+    protected <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
         List<TNew> newResults = new ArrayList<>(this.results.size());
 
         for (T result: this.results) {
@@ -554,15 +554,15 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return null;
     }
 
-    void setQueryInfo(QueryInfo queryInfo) {
+    protected void setQueryInfo(QueryInfo queryInfo) {
         this.queryInfo = queryInfo;
     }
 
-    QueryInfo getQueryInfo() {
+    protected QueryInfo getQueryInfo() {
         return this.queryInfo;
     }
 
-    QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+    protected QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
         return queryPlanDiagnosticsContext;
     }
 
@@ -574,7 +574,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
             new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
                 @Override

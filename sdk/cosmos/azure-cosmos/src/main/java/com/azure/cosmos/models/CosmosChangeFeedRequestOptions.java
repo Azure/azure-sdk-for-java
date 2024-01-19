@@ -30,7 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Encapsulates options that can be specified for an operation within a change feed request.
  */
-public final class CosmosChangeFeedRequestOptions {
+public class CosmosChangeFeedRequestOptions {
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
@@ -49,7 +49,7 @@ public final class CosmosChangeFeedRequestOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
 
-    private CosmosChangeFeedRequestOptions(
+    public CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
         ChangeFeedStartFromInternal startFromInternal,
         ChangeFeedMode mode,
@@ -86,7 +86,7 @@ public final class CosmosChangeFeedRequestOptions {
         this.isSplitHandlingDisabled = false;
     }
 
-    ChangeFeedState getContinuation() {
+    protected ChangeFeedState getContinuation() {
         return this.continuationState;
     }
 
@@ -192,16 +192,16 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
-    boolean isSplitHandlingDisabled() {
+    protected boolean isSplitHandlingDisabled() {
         return this.isSplitHandlingDisabled;
     }
 
-    CosmosChangeFeedRequestOptions disableSplitHandling() {
+    protected CosmosChangeFeedRequestOptions disableSplitHandling() {
         this.isSplitHandlingDisabled = true;
         return this;
     }
 
-    ChangeFeedMode getMode() {
+    protected ChangeFeedMode getMode() {
         return this.mode;
     }
 
@@ -210,11 +210,11 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return Map of request options properties
      */
-    Map<String, Object> getProperties() {
+    protected Map<String, Object> getProperties() {
         return properties;
     }
 
-    ChangeFeedStartFromInternal getStartFromSettings() {
+    protected ChangeFeedStartFromInternal getStartFromSettings() {
         return this.startFromInternal;
     }
 
@@ -252,7 +252,7 @@ public final class CosmosChangeFeedRequestOptions {
         return createForProcessingFromContinuation(changeFeedState);
     }
 
-    static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+    protected static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         ChangeFeedState changeFeedState) {
 
         FeedRangeInternal feedRange = changeFeedState.getFeedRange();
@@ -334,13 +334,13 @@ public final class CosmosChangeFeedRequestOptions {
             null);
     }
 
-    void setRequestContinuation(String etag) {
+    protected void setRequestContinuation(String etag) {
         this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
             etag,
             this.feedRangeInternal);
     }
 
-    CosmosChangeFeedRequestOptions withCosmosPagedFluxOptions(
+    protected CosmosChangeFeedRequestOptions withCosmosPagedFluxOptions(
         CosmosPagedFluxOptions pagedFluxOptions) {
 
         if (pagedFluxOptions == null) {
@@ -500,7 +500,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the CosmosChangeFeedRequestOptions.
      */
-    CosmosChangeFeedRequestOptions setHeader(String name, String value) {
+    protected CosmosChangeFeedRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -513,7 +513,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    protected Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
@@ -521,13 +521,13 @@ public final class CosmosChangeFeedRequestOptions {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    protected OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
-    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+    protected Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
-    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
+    protected CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
         this.itemFactoryMethod = factoryMethod;
         return this;
     }
@@ -541,7 +541,7 @@ public final class CosmosChangeFeedRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.setCosmosChangeFeedRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor() {
 

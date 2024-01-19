@@ -26,7 +26,7 @@ public class Offer extends Resource {
         this.setContent(content);
     }
 
-    Offer(OfferAutoscaleSettings offerAutoscaleSettings) {
+    protected Offer(OfferAutoscaleSettings offerAutoscaleSettings) {
         super();
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
@@ -152,7 +152,7 @@ public class Offer extends Resource {
      *
      * @param resourceId the resource id.
      */
-    void setOfferResourceId(String resourceId) {
+    protected void setOfferResourceId(String resourceId) {
         BridgeInternal.setProperty(this, Constants.Properties.OFFER_RESOURCE_ID, resourceId);
     }
 

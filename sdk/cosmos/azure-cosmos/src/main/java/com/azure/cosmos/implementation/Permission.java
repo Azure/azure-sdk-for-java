@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Represents a per-User Permission to access a specific resource e.g. item or container in the Azure Cosmos DB
  * database service.
  */
-public final class Permission extends Resource {
+public class Permission extends Resource {
     /**
      * Initialize a permission object.
      */

@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
-public final class BatchExecutor {
+public class BatchExecutor {
 
     private final CosmosAsyncContainer container;
     private final CosmosBatchRequestOptions options;

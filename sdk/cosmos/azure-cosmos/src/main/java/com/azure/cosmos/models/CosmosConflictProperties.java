@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos conflict properties.
  */
-public final class CosmosConflictProperties {
+public class CosmosConflictProperties {
 
     private Conflict conflict;
 
@@ -30,7 +30,7 @@ public final class CosmosConflictProperties {
      *
      * @param jsonNode the json node that represents the conflict.
      */
-    CosmosConflictProperties(ObjectNode jsonNode) {
+    protected CosmosConflictProperties(ObjectNode jsonNode) {
         this.conflict = new Conflict(jsonNode);
     }
 
@@ -48,11 +48,11 @@ public final class CosmosConflictProperties {
      *
      * @return the resource type.
      */
-    String getResourceType() {
+    protected String getResourceType() {
         return this.conflict.getResourceType();
     }
 
-    Resource getResource() {
+    protected Resource getResource() {
         return this.conflict;
     }
 
@@ -92,7 +92,7 @@ public final class CosmosConflictProperties {
      *
      * @return the ID associated with the resource.
      */
-    String getResourceId() {
+    protected String getResourceId() {
         return this.conflict.getResourceId();
     }
 

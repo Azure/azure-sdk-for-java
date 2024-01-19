@@ -40,7 +40,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * JSON serialization:
  * <pre>{@code [{"name":"foo","startTimeUTC":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","startTimeUTC":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
  */
-public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
+public class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
     private static final RequestTimeline EMPTY = new RequestTimeline();
     private final ImmutableList<Event> events;

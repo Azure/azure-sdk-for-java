@@ -13,7 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This class represents a snapshot of the system usage when processing the operation. It can be useful to investigate
  * whether client resource exhaustion caused high latency etc.
  */
-public final class CosmosDiagnosticsSystemUsageSnapshot {
+public class CosmosDiagnosticsSystemUsageSnapshot {
     private final String usedMemory;
     private final String availableMemory;
     private final String systemCpuLoad;

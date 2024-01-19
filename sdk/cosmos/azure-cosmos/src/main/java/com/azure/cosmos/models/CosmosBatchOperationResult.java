@@ -14,7 +14,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Represents a result for a specific operation that was part of a {@link CosmosBatch} request.
  */
-public final class CosmosBatchOperationResult {
+public class CosmosBatchOperationResult {
 
     private final String eTag;
     private final double requestCharge;
@@ -27,7 +27,7 @@ public final class CosmosBatchOperationResult {
     /**
      * Initializes a new instance of the {@link CosmosBatchOperationResult} class.
      */
-    CosmosBatchOperationResult(String eTag,
+    protected CosmosBatchOperationResult(String eTag,
                                double requestCharge,
                                ObjectNode resourceObject,
                                int statusCode,
@@ -124,7 +124,7 @@ public final class CosmosBatchOperationResult {
         return this.statusCode;
     }
 
-    ObjectNode getResourceObject() {
+    protected ObjectNode getResourceObject() {
         return resourceObject;
     }
 
@@ -140,7 +140,7 @@ public final class CosmosBatchOperationResult {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.setCosmosBatchOperationResultAccessor(
             new ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.CosmosBatchOperationResultAccessor() {
                 @Override

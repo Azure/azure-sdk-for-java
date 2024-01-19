@@ -31,7 +31,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
-public final class CosmosDiagnostics {
+public class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
@@ -46,19 +46,19 @@ public final class CosmosDiagnostics {
     static final String USER_AGENT_KEY = "userAgent";
     static final String SAMPLING_RATE_SNAPSHOT_KEY = "samplingRateSnapshot";
 
-    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+    protected CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
         this.samplingRateSnapshot = 1;
     }
 
-    CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+    protected CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
         this.samplingRateSnapshot = 1;
     }
 
-    CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
+    protected CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
         if (toBeCloned.feedResponseDiagnostics != null) {
             this.feedResponseDiagnostics = new FeedResponseDiagnostics(toBeCloned.feedResponseDiagnostics);
         }
@@ -71,7 +71,7 @@ public final class CosmosDiagnostics {
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
-    ClientSideRequestStatistics clientSideRequestStatistics() {
+    protected ClientSideRequestStatistics clientSideRequestStatistics() {
         return clientSideRequestStatistics;
     }
 
@@ -95,7 +95,7 @@ public final class CosmosDiagnostics {
         return this.diagnosticsContext;
     }
 
-    void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+    protected void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
         checkNotNull("ctx", "Argument 'ctx' must not be null.");
         this.diagnosticsContext = ctx;
     }
@@ -202,7 +202,7 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getUserAgent();
     }
 
-    FeedResponseDiagnostics getFeedResponseDiagnostics() {
+    protected FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return feedResponseDiagnostics;
     }
 
@@ -212,7 +212,7 @@ public final class CosmosDiagnostics {
      *
      * @return request payload size in bytes
      */
-    int getRequestPayloadSizeInBytes() {
+    protected int getRequestPayloadSizeInBytes() {
         if (this.feedResponseDiagnostics != null) {
             return 0;
         }
@@ -225,7 +225,7 @@ public final class CosmosDiagnostics {
      *
      * @return response payload size in bytes
      */
-    int getTotalResponsePayloadSizeInBytes() {
+    protected int getTotalResponsePayloadSizeInBytes() {
         if (this.feedResponseDiagnostics != null) {
             int totalResponsePayloadSizeInBytes = 0;
 
@@ -243,11 +243,11 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getMaxResponsePayloadSizeInBytes();
     }
 
-    ClientSideRequestStatistics getClientSideRequestStatisticsRaw() {
+    protected ClientSideRequestStatistics getClientSideRequestStatisticsRaw() {
         return this.clientSideRequestStatistics;
     }
 
-    Collection<ClientSideRequestStatistics> getClientSideRequestStatistics() {
+    protected Collection<ClientSideRequestStatistics> getClientSideRequestStatistics() {
         if (this.feedResponseDiagnostics != null) {
             return this.feedResponseDiagnostics.getClientSideRequestStatistics();
         }
@@ -255,7 +255,7 @@ public final class CosmosDiagnostics {
         return ImmutableList.of(this.clientSideRequestStatistics);
     }
 
-    Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations() {
+    protected Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations() {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
         List<ClientSideRequestStatistics> combinedStatistics = new ArrayList<>();
@@ -269,11 +269,11 @@ public final class CosmosDiagnostics {
         return combinedStatistics;
     }
 
-    double getSamplingRateSnapshot() {
+    protected double getSamplingRateSnapshot() {
         return this.samplingRateSnapshot;
     }
 
-    void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
+    protected void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
             feedResponseDiagnostics.setSamplingRateSnapshot(this.samplingRateSnapshot);
             if (parentNode != null) {
@@ -300,7 +300,7 @@ public final class CosmosDiagnostics {
         }
     }
 
-    void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+    protected void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 
@@ -308,7 +308,7 @@ public final class CosmosDiagnostics {
         return this.diagnosticsCapturedInPagedFlux;
     }
 
-    void addClientSideDiagnosticsToFeed(Collection<ClientSideRequestStatistics> requestStatistics) {
+    protected void addClientSideDiagnosticsToFeed(Collection<ClientSideRequestStatistics> requestStatistics) {
         if (this.feedResponseDiagnostics == null || requestStatistics == null || requestStatistics.isEmpty()) {
             return;
         }
@@ -317,7 +317,7 @@ public final class CosmosDiagnostics {
             .addClientSideRequestStatistics(requestStatistics);
     }
 
-    CosmosDiagnostics setSamplingRateSnapshot(double samplingRate) {
+    protected CosmosDiagnostics setSamplingRateSnapshot(double samplingRate) {
         this.samplingRateSnapshot = samplingRate;
         return this;
     }
@@ -325,7 +325,7 @@ public final class CosmosDiagnostics {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override

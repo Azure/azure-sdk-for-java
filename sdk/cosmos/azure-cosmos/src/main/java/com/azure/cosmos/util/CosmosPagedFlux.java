@@ -40,7 +40,7 @@ import java.util.function.Function;
  * @see CosmosPagedFluxOptions
  * @see FeedResponse
  */
-public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
@@ -50,16 +50,16 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
     private final int defaultPageSize;
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
+    protected CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this(optionsFluxFunction, null, -1);
     }
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
+    protected CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
                     Consumer<FeedResponse<T>> feedResponseConsumer) {
         this(optionsFluxFunction, feedResponseConsumer, -1);
     }
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
+    protected CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
                     Consumer<FeedResponse<T>> feedResponseConsumer,
                     int defaultPageSize) {
         this.optionsFluxFunction = optionsFluxFunction;
@@ -129,7 +129,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         }).subscribe(coreSubscriber);
     }
 
-    CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
+    protected CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
         return new CosmosPagedFlux<>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
     }
 
@@ -322,7 +322,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosPageFluxHelper.setCosmosPageFluxAccessor(
             (ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor) CosmosPagedFlux::new);
     }

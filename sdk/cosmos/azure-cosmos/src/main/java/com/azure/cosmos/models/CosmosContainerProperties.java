@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Being schema-free, the items in a container do not need to share the same structure or fields. Since containers
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public final class CosmosContainerProperties {
+public class CosmosContainerProperties {
 
     private final DocumentCollection documentCollection;
     private static final String PARTITION_KEY_TOKEN_DELIMETER = "/";
@@ -57,16 +57,16 @@ public final class CosmosContainerProperties {
         documentCollection.setPartitionKey(partitionKeyDefinition);
     }
 
-    CosmosContainerProperties(ObjectNode jsonNode) {
+    protected CosmosContainerProperties(ObjectNode jsonNode) {
         this.documentCollection = new DocumentCollection(jsonNode);
     }
 
     // Converting container to CosmosContainerProperties
-    CosmosContainerProperties(DocumentCollection collection) {
+    protected CosmosContainerProperties(DocumentCollection collection) {
         this.documentCollection = new DocumentCollection(collection.toJson());
     }
 
-    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results) {
+    protected static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results) {
         return results.stream().map(CosmosContainerProperties::new).collect(Collectors.toList());
     }
 
@@ -347,22 +347,22 @@ public final class CosmosContainerProperties {
         return this;
     }
 
-    Resource getResource() {
+    protected Resource getResource() {
         return this.documentCollection;
     }
 
-    String getSelfLink(){
+    protected String getSelfLink(){
         return this.documentCollection.getSelfLink();
     }
 
-    DocumentCollection getV2Collection() {
+    protected DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.documentCollection.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());
         return collection;
     }
 
-    List<List<String>> getPartitionKeyPathTokensList() {
+    protected List<List<String>> getPartitionKeyPathTokensList() {
         if (this.getPartitionKeyDefinition() == null) {
             throw new IllegalStateException("Container partition key is empty");
         }
@@ -384,7 +384,7 @@ public final class CosmosContainerProperties {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
                 @Override

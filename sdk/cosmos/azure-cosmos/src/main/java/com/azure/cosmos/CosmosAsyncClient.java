@@ -76,7 +76,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public final class CosmosAsyncClient implements Closeable {
+public class CosmosAsyncClient implements Closeable {
     private static final Logger logger = LoggerFactory.getLogger(CosmosAsyncClient.class);
 
     private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();

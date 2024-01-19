@@ -78,7 +78,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  *    For our use case, Sinks.many().unicast() will work.
  */
-public final class BulkExecutor<TContext> implements Disposable {
+public class BulkExecutor<TContext> implements Disposable {
 
     private final static ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor
         bulkOptionsAccessor = ImplementationBridgeHelpers

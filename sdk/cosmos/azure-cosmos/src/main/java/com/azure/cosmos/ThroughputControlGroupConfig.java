@@ -8,7 +8,7 @@ import com.azure.cosmos.models.PriorityLevel;
 /**
  * Throughput control group configuration.
  */
-public final class ThroughputControlGroupConfig {
+public class ThroughputControlGroupConfig {
     private final String groupName;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
@@ -16,7 +16,7 @@ public final class ThroughputControlGroupConfig {
     private final boolean isDefault;
     private final boolean continueOnInitError;
 
-    ThroughputControlGroupConfig(
+    protected ThroughputControlGroupConfig(
             String groupName,
             Integer targetThroughput,
             Double targetThroughputThreshold,

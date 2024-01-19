@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 @JsonIgnoreProperties({ "empty", "singleValue", "map", "propertyBag" })
 @JsonPropertyOrder({ "min", "max", "isMinInclusive", "isMaxInclusive" })
-public final class Range<T extends Comparable<T>> extends JsonSerializable {
+public class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";
     private static final String IS_MIN_INCLUSIVE_PROPERTY = "isMinInclusive";

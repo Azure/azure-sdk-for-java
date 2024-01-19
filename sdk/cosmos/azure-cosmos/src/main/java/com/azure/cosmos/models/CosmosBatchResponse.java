@@ -18,7 +18,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link CosmosBatch} request.
  */
-public final class CosmosBatchResponse {
+public class CosmosBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
@@ -36,7 +36,7 @@ public final class CosmosBatchResponse {
      * @param responseHeaders the response http headers
      * @param cosmosDiagnostics the diagnostic
      */
-    CosmosBatchResponse(
+    protected CosmosBatchResponse(
         final int statusCode,
         final int subStatusCode,
         final String errorMessage,
@@ -189,14 +189,14 @@ public final class CosmosBatchResponse {
         return this.cosmosDiagnostics.getDuration();
     }
 
-    void addAll(List<? extends CosmosBatchOperationResult> collection) {
+    protected void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
             cosmosBatchResponse -> cosmosBatchResponse.results);
     }

@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Encapsulates the PartitionKey/id tuple that uniquely identifies a CosmosItem
  */
-public final class CosmosItemIdentity {
+public class CosmosItemIdentity {
     private final PartitionKey partitionKey;
     private final String id;
 

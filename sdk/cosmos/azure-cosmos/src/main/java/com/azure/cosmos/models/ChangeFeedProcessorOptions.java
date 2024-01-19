@@ -15,7 +15,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Specifies the options associated with {@link ChangeFeedProcessor}.
  */
-public final class ChangeFeedProcessorOptions {
+public class ChangeFeedProcessorOptions {
     /**
      * Default renew interval.
      */

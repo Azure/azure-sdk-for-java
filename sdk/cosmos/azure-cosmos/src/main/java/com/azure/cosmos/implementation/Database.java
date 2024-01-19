@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * more documents. Since databases are an an administrative resource and the Service Master Key will be required in
  * order to access and successfully complete any action using the User APIs.
  */
-public final class Database extends Resource {
+public class Database extends Resource {
 
     /**
      * Constructor.

@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Used internally to represents the identity of a partition key range in the Azure Cosmos DB database service.
  */
-public final class PartitionKeyRangeIdentity {
+public class PartitionKeyRangeIdentity {
     private final String collectionRid;
     private final String partitionKeyRangeId;
 

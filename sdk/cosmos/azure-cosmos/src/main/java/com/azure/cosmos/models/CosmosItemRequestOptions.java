@@ -47,7 +47,7 @@ public class CosmosItemRequestOptions {
     /**
      * copy constructor
      */
-    CosmosItemRequestOptions(CosmosItemRequestOptions options) {
+    protected CosmosItemRequestOptions(CosmosItemRequestOptions options) {
         consistencyLevel = options.consistencyLevel;
         indexingDirective = options.indexingDirective;
         preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
@@ -83,7 +83,7 @@ public class CosmosItemRequestOptions {
      *
      * @param partitionKey the partition key
      */
-    CosmosItemRequestOptions(PartitionKey partitionKey) {
+    protected CosmosItemRequestOptions(PartitionKey partitionKey) {
         super();
 
         setPartitionKey(partitionKey);
@@ -296,7 +296,7 @@ public class CosmosItemRequestOptions {
      *
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
-    CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+    protected CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
         return endToEndOperationLatencyPolicyConfig;
     }
 
@@ -407,7 +407,7 @@ public class CosmosItemRequestOptions {
      *
      * @return the partition key
      */
-    PartitionKey getPartitionKey() {
+    protected PartitionKey getPartitionKey() {
         return partitionKey;
     }
 
@@ -417,12 +417,12 @@ public class CosmosItemRequestOptions {
      * @param partitionKey the partition key
      * @return the CosmosItemRequestOptions.
      */
-    CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
+    protected CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
 
-    RequestOptions toRequestOptions() {
+    protected RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
@@ -504,7 +504,7 @@ public class CosmosItemRequestOptions {
      *
      * @return the CosmosItemRequestOptions.
      */
-    CosmosItemRequestOptions setHeader(String name, String value) {
+    protected CosmosItemRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -529,22 +529,23 @@ public class CosmosItemRequestOptions {
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    protected Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
-    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    protected void setOperationContextAndListenerTuple(
+        OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    protected OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
 

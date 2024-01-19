@@ -9,7 +9,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public final class QueryFeedOperationState extends FeedOperationState {
+public class QueryFeedOperationState extends FeedOperationState {
 
     private static final ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper

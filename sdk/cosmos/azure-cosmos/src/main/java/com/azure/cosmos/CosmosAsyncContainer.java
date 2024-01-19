@@ -128,7 +128,7 @@ public class CosmosAsyncContainer {
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
 
-    CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
+    protected CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
         this.database = database;
         this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
@@ -626,7 +626,7 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read Cosmos items or an
      * error.
      */
-    <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
+    protected <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
         return readAllItems(new CosmosQueryRequestOptions(), classType);
     }
 
@@ -643,7 +643,7 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read Cosmos items or an
      * error.
      */
-    <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
+    protected <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
             CosmosQueryRequestOptions requestOptions = options != null ? options : new CosmosQueryRequestOptions();
@@ -928,7 +928,7 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
-    <T> CosmosPagedFlux<T> queryItemsInternal(
+    protected <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         if (cosmosQueryRequestOptions != null) {
             if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions
@@ -940,7 +940,7 @@ public class CosmosAsyncContainer {
         return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));
     }
 
-    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+    protected <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosQueryRequestOptions options =
@@ -972,7 +972,7 @@ public class CosmosAsyncContainer {
         return pagedFluxOptionsFluxFunction;
     }
 
-    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+    protected <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
@@ -1040,7 +1040,7 @@ public class CosmosAsyncContainer {
         return queryChangeFeedInternal(options, classType);
     }
 
-    <T> CosmosPagedFlux<T> queryChangeFeedInternal(
+    protected <T> CosmosPagedFlux<T> queryChangeFeedInternal(
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         Class<T> classType) {
 
@@ -1048,7 +1048,7 @@ public class CosmosAsyncContainer {
             queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType));
     }
 
-    String getLinkWithoutTrailingSlash() {
+    protected String getLinkWithoutTrailingSlash() {
         if (this.link.startsWith("/")) {
             return this.link.substring(1);
         }
@@ -1056,7 +1056,7 @@ public class CosmosAsyncContainer {
         return this.link;
     }
 
-    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
+    protected <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         Class<T> classType) {
 
@@ -1453,7 +1453,7 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items or error
      */
-    <T> Mono<FeedResponse<T>> readMany(
+    protected <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         CosmosQueryRequestOptions requestOptions,
         Class<T> classType) {
@@ -2311,7 +2311,7 @@ public class CosmosAsyncContainer {
                 null);
     }
 
-    Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
+    protected Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         Mono<CosmosContainerResponse> responseMono = database
             .getDocClientWrapper()
@@ -2519,7 +2519,7 @@ public class CosmosAsyncContainer {
                 }).map(ModelBridgeInternal::createThroughputRespose));
     }
 
-    ItemDeserializer getItemDeserializer() {
+    protected ItemDeserializer getItemDeserializer() {
         return getDatabase().getDocClientWrapper().getItemDeserializer();
     }
 
@@ -2542,7 +2542,7 @@ public class CosmosAsyncContainer {
         return this.getFeedRanges(true);
     }
 
-    Mono<List<FeedRange>> getFeedRanges(boolean forceRefresh) {
+    protected Mono<List<FeedRange>> getFeedRanges(boolean forceRefresh) {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink(), forceRefresh);
     }
 
@@ -2554,7 +2554,7 @@ public class CosmosAsyncContainer {
      * @param targetedCountAfterSplit
      * @return list of feed ranges after attempted split operation
      */
-    Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
+    protected Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(FeedRange feedRange, int targetedCountAfterSplit) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -2573,7 +2573,7 @@ public class CosmosAsyncContainer {
             );
     }
 
-    Mono<Range<String>> getNormalizedEffectiveRange(FeedRange feedRange) {
+    protected Mono<Range<String>> getNormalizedEffectiveRange(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -2617,7 +2617,7 @@ public class CosmosAsyncContainer {
      * @param groupConfig A {@link ThroughputControlGroupConfig}.
      * @param throughputQueryMono The throughput query mono.
      */
-    void enableLocalThroughputControlGroup(
+    protected void enableLocalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         Mono<Integer> throughputQueryMono) {
 
@@ -2665,7 +2665,7 @@ public class CosmosAsyncContainer {
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      * @param throughputQueryMono The throughput query mono.
      */
-    void enableGlobalThroughputControlGroup(
+    protected void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig,
         Mono<Integer> throughputQueryMono) {
@@ -2676,11 +2676,12 @@ public class CosmosAsyncContainer {
         this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
     }
 
-    void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {
+    protected void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {
         this.database.getClient().configureFaultInjectorProvider(injectorProvider);
     }
 
-    synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(Callable<IFaultInjectorProvider> injectorProviderCallable) {
+    protected synchronized IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
+        Callable<IFaultInjectorProvider> injectorProviderCallable) {
         checkNotNull(injectorProviderCallable, "Argument 'injectorProviderCallable' can not be null");
 
         try {
@@ -2698,7 +2699,7 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
             new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
                 @Override

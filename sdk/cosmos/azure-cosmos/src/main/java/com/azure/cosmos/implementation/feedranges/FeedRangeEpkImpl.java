@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public final class FeedRangeEpkImpl extends FeedRangeInternal {
+public class FeedRangeEpkImpl extends FeedRangeInternal {
     private static final FeedRangeEpkImpl fullRangeEPK =
         new FeedRangeEpkImpl(PartitionKeyInternalHelper.FullRange);
 

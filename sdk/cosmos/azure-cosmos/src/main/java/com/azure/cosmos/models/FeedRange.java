@@ -19,7 +19,7 @@ public interface FeedRange {
      * @param json A string representation of a feed range
      * @return A feed range
      */
-    public static FeedRange fromString(String json) {
+    static FeedRange fromString(String json) {
         return FeedRangeInternal.fromBase64EncodedJsonString(json);
     }
 
@@ -28,14 +28,14 @@ public interface FeedRange {
      * to create a new feed range instance from it - (use factory method fromJsonString to do so)
      * @return a JSON string representing the feed range
      */
-    public String toString();
+    String toString();
 
     /**
      * Creates a range for a certain logical partition
      * @param partitionKey the logical partition key value
      * @return A feed range for a certain logical partition
      */
-    public static FeedRange forLogicalPartition(PartitionKey partitionKey) {
+    static FeedRange forLogicalPartition(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "Argument 'partitionKey' must not be null.");
 
         return new FeedRangePartitionKeyImpl(
@@ -46,7 +46,7 @@ public interface FeedRange {
      * Creates a range for an entire container
      * @return A feed range for an entire container
      */
-    public static FeedRange forFullRange() {
+    static FeedRange forFullRange() {
         return FeedRangeEpkImpl.forFullRange();
     }
 }

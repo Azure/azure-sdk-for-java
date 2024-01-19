@@ -15,7 +15,7 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
     /**
      * copy constructor
      */
-    CosmosPatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
+    protected CosmosPatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
         super(options);
         filterPredicate = options.filterPredicate;
     }
@@ -47,7 +47,7 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
         return this;
     }
 
-    RequestOptions toRequestOptions() {
+    protected RequestOptions toRequestOptions() {
         RequestOptions requestOptions = super.toRequestOptions();
         requestOptions.setFilterPredicate(filterPredicate);
         return requestOptions;

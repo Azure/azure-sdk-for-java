@@ -19,7 +19,7 @@ import java.util.Optional;
  * specifies which
  * item property is used as the partition key in a container that has multiple partitions.
  */
-public final class PartitionKeyDefinition {
+public class PartitionKeyDefinition {
     private List<String> paths;
     private PartitionKind kind;
     private Optional<PartitionKeyDefinitionVersion> versionOptional;
@@ -41,7 +41,7 @@ public final class PartitionKeyDefinition {
      *
      * @param jsonString the JSON string that represents the partition key definition.
      */
-    PartitionKeyDefinition(String jsonString) {
+    protected PartitionKeyDefinition(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
@@ -51,7 +51,7 @@ public final class PartitionKeyDefinition {
      *
      * @param objectNode the object node that represents the partition key definition.
      */
-    PartitionKeyDefinition(ObjectNode objectNode) {
+    protected PartitionKeyDefinition(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
@@ -156,7 +156,7 @@ public final class PartitionKeyDefinition {
      *
      * @return the boolean indicating is it is a system key.
      */
-    Boolean isSystemKey() {
+    protected Boolean isSystemKey() {
         if (this.systemKey == null) {
             if (this.jsonSerializable.has(Constants.Properties.SYSTEM_KEY)) {
                 this.systemKey = this.jsonSerializable.getBoolean(Constants.Properties.SYSTEM_KEY);
@@ -168,7 +168,7 @@ public final class PartitionKeyDefinition {
         return this.systemKey;
     }
 
-    PartitionKeyInternal getNonePartitionKeyValue() {
+    protected PartitionKeyInternal getNonePartitionKeyValue() {
         if (this.getPaths().size() == 0 || this.isSystemKey()) {
             return PartitionKeyInternal.Empty;
         } else {
@@ -176,7 +176,7 @@ public final class PartitionKeyDefinition {
         }
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (this.kind != null) {
             this.jsonSerializable.set(Constants.Properties.PARTITION_KIND, kind.toString());
@@ -190,5 +190,5 @@ public final class PartitionKeyDefinition {
         }
     }
 
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+    protected JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

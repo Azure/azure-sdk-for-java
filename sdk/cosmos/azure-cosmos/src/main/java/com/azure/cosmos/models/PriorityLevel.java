@@ -15,12 +15,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Enumeration specifying Priority Level of requests
  */
-public final class PriorityLevel {
+public class PriorityLevel {
 
     private final String name;
     private final byte priorityValue;
 
-    private PriorityLevel(String name, byte priorityValue) {
+    public PriorityLevel(String name, byte priorityValue) {
         this.name = name;
         this.priorityValue = priorityValue;
     }

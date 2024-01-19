@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class ContainerDirectConnectionMetadata {
+public class ContainerDirectConnectionMetadata {
 
     private final AtomicInteger minConnectionPoolSizePerEndpointForContainer;
 

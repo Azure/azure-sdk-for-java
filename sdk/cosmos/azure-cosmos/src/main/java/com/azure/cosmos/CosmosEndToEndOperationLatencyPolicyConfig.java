@@ -9,7 +9,7 @@ import java.time.Duration;
  * Represents End to end operation latency policy config
  * This enables requests to get cancelled by the client once the specified timeout is reached
  */
-public final class CosmosEndToEndOperationLatencyPolicyConfig {
+public class CosmosEndToEndOperationLatencyPolicyConfig {
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
 
@@ -25,7 +25,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      *                                     can cause the request to never succeed.
      * @param availabilityStrategy         the availability strategy to be used for the policy
      */
-    CosmosEndToEndOperationLatencyPolicyConfig(
+    protected CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout,
         AvailabilityStrategy availabilityStrategy) {

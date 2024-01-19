@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Caller is recommended to type cast {@link JsonNode} to cosmos item structure.
  */
 @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class ChangeFeedProcessorItem {
+public class ChangeFeedProcessorItem {
     @JsonProperty("current")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode current;

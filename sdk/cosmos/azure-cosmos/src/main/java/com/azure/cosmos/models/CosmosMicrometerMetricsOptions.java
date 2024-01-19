@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Micrometer-specific Azure Cosmos DB SDK metrics options
  */
-public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
+public class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private MeterRegistry clientMetricRegistry = Metrics.globalRegistry;
     private EnumSet<MetricCategory> metricCategories = MetricCategory.DEFAULT_CATEGORIES.clone();
     private EnumSet<TagName> defaultTagNames = TagName.DEFAULT_TAGS.clone();

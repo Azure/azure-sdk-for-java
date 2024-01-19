@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This class describes the thresholds when more details diagnostics are emitted for an operation due to high latency,
  * high RU consumption or high payload sizes.
  */
-public final class CosmosDiagnosticsThresholds {
+public class CosmosDiagnosticsThresholds {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnosticsThresholds.class);
 
      /**

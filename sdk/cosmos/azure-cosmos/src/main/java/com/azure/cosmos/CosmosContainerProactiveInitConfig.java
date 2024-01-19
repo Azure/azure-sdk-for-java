@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Encapsulates the list of container identities and no. of proactive connection regions.
  * */
-public final class CosmosContainerProactiveInitConfig {
+public class CosmosContainerProactiveInitConfig {
     private final static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor
         containerIdAccessor = ImplementationBridgeHelpers
             .CosmosContainerIdentityHelper

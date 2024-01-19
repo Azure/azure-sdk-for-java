@@ -81,12 +81,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <b>See:</b>
  * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on CosmosBatch requests</a>.
  */
-public final class CosmosBatch {
+public class CosmosBatch {
 
     private final List<ItemBatchOperation<?>> operations;
     private final PartitionKey partitionKey;
 
-    CosmosBatch(PartitionKey partitionKey) {
+    protected CosmosBatch(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
         this.operations = new ArrayList<>();
@@ -387,14 +387,14 @@ public final class CosmosBatch {
         return partitionKey;
     }
 
-    List<ItemBatchOperation<?>> getOperationsInternal() {
+    protected List<ItemBatchOperation<?>> getOperationsInternal() {
         return operations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
             cosmosBatch -> cosmosBatch.getOperationsInternal());
     }

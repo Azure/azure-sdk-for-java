@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
  */
-public final class ConnectionPolicy {
+public class ConnectionPolicy {
 
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();

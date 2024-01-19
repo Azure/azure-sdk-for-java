@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
  * Request, response and the exception(if any) for a {@link CosmosItemOperation} request when processed using Bulk by calling
  * {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}.
  */
-public final class CosmosBulkOperationResponse<TContext> {
+public class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
     private CosmosBulkItemResponse response;
@@ -25,7 +25,7 @@ public final class CosmosBulkOperationResponse<TContext> {
      * @param response the {@link CosmosBulkItemResponse} the bulk response.
      * @param batchContext the context of this bulk request.
      */
-    CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, TContext batchContext) {
+    protected CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, TContext batchContext) {
         this.operation = operation;
         this.response = response;
         this.exception = null;
@@ -39,14 +39,14 @@ public final class CosmosBulkOperationResponse<TContext> {
      * @param exception the {@link Throwable} for this request.
      * @param batchContext the context of this bulk request.
      */
-    CosmosBulkOperationResponse(CosmosItemOperation operation, Exception exception, TContext batchContext) {
+    protected CosmosBulkOperationResponse(CosmosItemOperation operation, Exception exception, TContext batchContext) {
         this.operation = operation;
         this.response = null;
         this.exception = exception;
         this.batchContext = batchContext;
     }
 
-    CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, Exception exception, TContext batchContext) {
+    protected CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, Exception exception, TContext batchContext) {
         this.operation = operation;
         this.response = response;
         this.exception = exception;

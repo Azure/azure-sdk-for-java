@@ -7,7 +7,7 @@ import java.time.Duration;
 /**
  * Dedicated Gateway Request Options
  */
-public final class DedicatedGatewayRequestOptions {
+public class DedicatedGatewayRequestOptions {
 
     private Duration maxIntegratedCacheStaleness;
 

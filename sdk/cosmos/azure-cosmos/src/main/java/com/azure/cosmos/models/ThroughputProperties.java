@@ -14,7 +14,7 @@ import java.time.Instant;
 public class ThroughputProperties {
     private final Offer offer;
 
-    ThroughputProperties(Offer offer) {
+    protected ThroughputProperties(Offer offer) {
         this.offer = offer;
     }
 
@@ -35,7 +35,7 @@ public class ThroughputProperties {
      * @param autoUpgradethroughputIncrementPercentage the auto upgrade max throughput increment percentage
      * @return the throughput properties
      */
-    static ThroughputProperties createAutoscaledThroughput(
+    protected static ThroughputProperties createAutoscaledThroughput(
         int autoScaleMaxThroughput,
         int autoUpgradethroughputIncrementPercentage) {
         return new ThroughputProperties(Offer.createAutoscaleOffer(autoScaleMaxThroughput,
@@ -67,7 +67,7 @@ public class ThroughputProperties {
      *
      * @return the offer autoscale properties
      */
-    OfferAutoscaleSettings getOfferAutoscaleProperties() {
+    protected OfferAutoscaleSettings getOfferAutoscaleProperties() {
         return this.offer.getOfferAutoScaleSettings();
     }
 
@@ -81,19 +81,19 @@ public class ThroughputProperties {
     }
 
 
-    Offer getOffer() {
+    protected Offer getOffer() {
         return this.offer;
     }
 
     /**
      * Get an updated offer based on the properties.
      */
-    Offer updateOfferFromProperties(Offer oldOffer) {
+    protected Offer updateOfferFromProperties(Offer oldOffer) {
         oldOffer.updateContent(this.offer);
         return oldOffer;
     }
 
-    Resource getResource() {
+    protected Resource getResource() {
         return this.offer;
     }
 
@@ -113,7 +113,7 @@ public class ThroughputProperties {
      * @param id the name of the resource.
      * @return the current instance of {@link ThroughputProperties}.
      */
-    ThroughputProperties setId(String id) {
+    protected ThroughputProperties setId(String id) {
         this.offer.setId(id);
         return this;
     }
@@ -123,7 +123,7 @@ public class ThroughputProperties {
      *
      * @return the ID associated with the resource.
      */
-    String getResourceId() {
+    protected String getResourceId() {
         return this.offer.getResourceId();
     }
 

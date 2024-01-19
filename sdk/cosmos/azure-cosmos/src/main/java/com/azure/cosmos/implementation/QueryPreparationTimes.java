@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.HashMap;
 
-public final class QueryPreparationTimes {
+public class QueryPreparationTimes {
 
     static final QueryPreparationTimes ZERO = new QueryPreparationTimes(Duration.ZERO, Duration.ZERO, Duration.ZERO, Duration.ZERO);
 

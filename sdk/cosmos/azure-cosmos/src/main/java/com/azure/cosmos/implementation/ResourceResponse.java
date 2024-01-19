@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @param <T> the resource type of the resource response.
  */
-public final class ResourceResponse<T extends Resource> {
+public class ResourceResponse<T extends Resource> {
     private final Class<T> cls;
     private final RxDocumentServiceResponse response;
     private final Map<String, Long> usageHeaders;

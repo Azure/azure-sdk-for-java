@@ -14,7 +14,7 @@ public class ThroughputResponse extends CosmosResponse<ThroughputProperties> {
     private ResourceResponse<Offer> offerResourceResponse;
     private ThroughputProperties throughputProperties;
 
-    ThroughputResponse(ResourceResponse<Offer> offerResourceResponse) {
+    protected ThroughputResponse(ResourceResponse<Offer> offerResourceResponse) {
         super(offerResourceResponse);
         this.offerResourceResponse = offerResourceResponse;
     }

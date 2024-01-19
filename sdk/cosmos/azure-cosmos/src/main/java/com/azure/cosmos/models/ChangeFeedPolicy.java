@@ -54,7 +54,7 @@ import java.time.Duration;
  */
 @Beta(value = Beta.SinceVersion.V4_12_0,
     warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class ChangeFeedPolicy {
+public class ChangeFeedPolicy {
 
     private final JsonSerializable jsonSerializable;
 
@@ -153,7 +153,7 @@ public final class ChangeFeedPolicy {
     /**
      * Initializes a new instance of the {@link ChangeFeedPolicy} class for the Azure Cosmos DB service.
      */
-    ChangeFeedPolicy() {
+    protected ChangeFeedPolicy() {
         this.jsonSerializable = new JsonSerializable();
     }
 

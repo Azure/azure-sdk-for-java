@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * </pre>
  * <!-- end com.azure.cosmos.computedProperty.replaceContainer -->
  */
-public final class ComputedProperty {
+public class ComputedProperty {
     private final String name;
     private final String query;
 

@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -36,9 +34,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-
-import java.time.Duration;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -62,7 +57,7 @@ public class CosmosContainer {
      * @param database the database.
      * @param container the container.
      */
-    CosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
+    protected CosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
         this.id = id;
         this.database = database;
         this.asyncContainer = container;
@@ -268,7 +263,7 @@ public class CosmosContainer {
      * @param itemMono the item mono.
      * @return the cosmos item response.
      */
-    <T> CosmosItemResponse<T> blockItemResponse(Mono<CosmosItemResponse<T>> itemMono) {
+    protected <T> CosmosItemResponse<T> blockItemResponse(Mono<CosmosItemResponse<T>> itemMono) {
         try {
             return itemMono.block();
         } catch (Exception ex) {
@@ -287,7 +282,7 @@ public class CosmosContainer {
      * @param itemMono the item mono.
      * @return the cosmos item response.
      */
-    <T> FeedResponse<T> blockFeedResponse(Mono<FeedResponse<T>> itemMono) {
+    protected <T> FeedResponse<T> blockFeedResponse(Mono<FeedResponse<T>> itemMono) {
         try {
             return itemMono.block();
         } catch (Exception ex) {
@@ -349,7 +344,7 @@ public class CosmosContainer {
      * @param classType the classType.
      * @return the {@link CosmosPagedIterable}.
      */
-    <T> CosmosPagedIterable<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
+    protected <T> CosmosPagedIterable<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 

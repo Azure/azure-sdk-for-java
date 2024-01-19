@@ -16,16 +16,16 @@ public class CosmosResponse<T> {
     private T properties;
     final ResourceResponse<?> resourceResponseWrapper;
 
-    CosmosResponse(ResourceResponse<?> resourceResponse) {
+    protected CosmosResponse(ResourceResponse<?> resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    CosmosResponse(T properties) {
+    protected CosmosResponse(T properties) {
         this.properties = properties;
         this.resourceResponseWrapper = null;
     }
 
-    CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
+    protected CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
         this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
@@ -39,7 +39,7 @@ public class CosmosResponse<T> {
         return properties;
     }
 
-    CosmosResponse<T> setProperties(T resourceSettings) {
+    protected CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }

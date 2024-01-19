@@ -24,7 +24,7 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
  */
-public final class QueryMetrics {
+public class QueryMetrics {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryMetrics.class);
     private final long retrievedDocumentCount;

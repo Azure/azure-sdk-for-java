@@ -47,7 +47,7 @@ public class CosmosItemResponse<T> {
 
     private final Supplier<Boolean> hasPayload;
 
-    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+    public CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
@@ -56,7 +56,7 @@ public class CosmosItemResponse<T> {
         this.itemBodyOverride = null;
     }
 
-    private CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, ItemDeserializer itemDeserializer) {
+    public CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
@@ -164,12 +164,12 @@ public class CosmosItemResponse<T> {
      *
      * @return the itemProperties
      */
-    InternalObjectNode getProperties() {
+    protected InternalObjectNode getProperties() {
         ensureInternalObjectNodeInitialized();
         return props;
     }
 
-    int getResponsePayloadLength() {
+    protected int getResponsePayloadLength() {
         return this.resourceResponse.getResponsePayloadLength();
     }
 
@@ -281,7 +281,7 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
-    CosmosItemResponse<T> withRemappedStatusCode(
+    public CosmosItemResponse<T> withRemappedStatusCode(
         int statusCode,
         double additionalRequestCharge,
         boolean isContentResponseOnWriteEnabled) {
@@ -300,7 +300,7 @@ public class CosmosItemResponse<T> {
             mappedResourceResponse, payload, itemBodyOverride, this.itemClassType, this.itemDeserializer);
     }
 
-    boolean hasTrackingId(String candidate) {
+    protected boolean hasTrackingId(String candidate) {
         if (this.hasTrackingIdCalculated.compareAndSet(false, true)) {
             SerializationDiagnosticsContext serializationDiagnosticsContext =
                 BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
@@ -324,7 +324,7 @@ public class CosmosItemResponse<T> {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
                 public <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,

@@ -20,7 +20,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase {
+public class ItemBatchOperation<TInternal> extends CosmosItemOperationBase {
 
     private TInternal item;
 
@@ -53,7 +53,7 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
      * @return instance of JsonSerializable containing values for a operation.
      */
     @Override
-    JsonSerializable getSerializedOperationInternal() {
+    protected JsonSerializable getSerializedOperationInternal() {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(
@@ -88,7 +88,7 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
         return jsonSerializable;
     }
 
-    TInternal getItemInternal() {
+    protected TInternal getItemInternal() {
         return this.item;
     }
 

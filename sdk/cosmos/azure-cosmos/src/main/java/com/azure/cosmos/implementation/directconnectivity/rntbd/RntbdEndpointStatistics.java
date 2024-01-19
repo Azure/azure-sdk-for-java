@@ -17,57 +17,57 @@ import java.time.Instant;
 public class RntbdEndpointStatistics implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    RntbdEndpointStatistics availableChannels(int availableChannels) {
+    protected RntbdEndpointStatistics availableChannels(int availableChannels) {
         this.availableChannels = availableChannels;
         return this;
     }
 
-    RntbdEndpointStatistics acquiredChannels(int acquiredChannels) {
+    protected RntbdEndpointStatistics acquiredChannels(int acquiredChannels) {
         this.acquiredChannels = acquiredChannels;
         return this;
     }
 
-    RntbdEndpointStatistics executorTaskQueueSize(int executorTaskQueueSize) {
+    protected RntbdEndpointStatistics executorTaskQueueSize(int executorTaskQueueSize) {
         this.executorTaskQueueSize = executorTaskQueueSize;
         return this;
     }
 
-    RntbdEndpointStatistics inflightRequests(int inflightRequests) {
+    protected  RntbdEndpointStatistics inflightRequests(int inflightRequests) {
         this.inflightRequests = inflightRequests;
         return this;
     }
 
-    RntbdEndpointStatistics lastSuccessfulRequestNanoTime(long lastSuccessfulRequestNanoTime) {
+    protected RntbdEndpointStatistics lastSuccessfulRequestNanoTime(long lastSuccessfulRequestNanoTime) {
         this.lastSuccessfulRequestNanoTime = lastSuccessfulRequestNanoTime;
         return this;
     }
 
-    RntbdEndpointStatistics lastRequestNanoTime(long lastRequestNanoTime) {
+    protected RntbdEndpointStatistics lastRequestNanoTime(long lastRequestNanoTime) {
         this.lastRequestNanoTime = lastRequestNanoTime;
         return this;
     }
 
-    RntbdEndpointStatistics createdTime(Instant createdTime) {
+    protected RntbdEndpointStatistics createdTime(Instant createdTime) {
         this.createdTime = createdTime;
         return this;
     }
 
-    RntbdEndpointStatistics closed(boolean closed) {
+    protected RntbdEndpointStatistics closed(boolean closed) {
         this.closed = closed;
         return this;
     }
 
-    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
+    protected RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
         this.connectionStateListenerMetrics = new RntbdConnectionStateListenerMetricsDiagnostics(metrics.getLastCallTimestamp(), metrics.getLastActionableContext());
         return this;
     }
 
-    RntbdEndpointStatistics lastFaultInjectionId(String lastFaultInjectionId) {
+    protected RntbdEndpointStatistics lastFaultInjectionId(String lastFaultInjectionId) {
         this.lastFaultInjectionId = lastFaultInjectionId;
         return this;
     }
 
-    RntbdEndpointStatistics lastFaultInjectionTimestamp(Instant lastFaultInjectionTimestamp) {
+    protected RntbdEndpointStatistics lastFaultInjectionTimestamp(Instant lastFaultInjectionTimestamp) {
         this.lastFaultInjectionTimestamp = lastFaultInjectionTimestamp;
         return this;
     }

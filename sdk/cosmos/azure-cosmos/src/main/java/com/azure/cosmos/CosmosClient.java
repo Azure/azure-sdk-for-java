@@ -30,7 +30,7 @@ import java.util.List;
  * CosmosClient initialization is a heavy operation - don't use initialization CosmosClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public final class CosmosClient implements Closeable {
+public class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {

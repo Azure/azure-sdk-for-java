@@ -13,7 +13,7 @@ import java.util.List;
  * Represents the unique key policy configuration for specifying uniqueness constraints on items in the
  * container in the Azure Cosmos DB service.
  */
-public final class UniqueKeyPolicy {
+public class UniqueKeyPolicy {
     private List<UniqueKey> uniqueKeys;
 
     private JsonSerializable jsonSerializable;
@@ -30,7 +30,7 @@ public final class UniqueKeyPolicy {
      *
      * @param jsonString the json string that represents the Unique Key policy.
      */
-    UniqueKeyPolicy(String jsonString) {
+    protected UniqueKeyPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
@@ -39,7 +39,7 @@ public final class UniqueKeyPolicy {
      *
      * @param objectNode the json string that represents the Unique Key policy.
      */
-    UniqueKeyPolicy(ObjectNode objectNode) {
+    protected UniqueKeyPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 

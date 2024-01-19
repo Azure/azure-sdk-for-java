@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
  */
-public final class CosmosBatchRequestOptions {
+public class CosmosBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
@@ -28,7 +28,7 @@ public final class CosmosBatchRequestOptions {
      *
      * @return the consistency level.
      */
-    ConsistencyLevel getConsistencyLevel() {
+    protected ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -38,7 +38,7 @@ public final class CosmosBatchRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the TransactionalBatchRequestOptions.
      */
-    CosmosBatchRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    protected CosmosBatchRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -75,7 +75,7 @@ public final class CosmosBatchRequestOptions {
         return this;
     }
 
-    RequestOptions toRequestOptions() {
+    protected RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
@@ -98,7 +98,7 @@ public final class CosmosBatchRequestOptions {
      *
      * @return the CosmosBatchRequestOptions.
      */
-    CosmosBatchRequestOptions setHeader(String name, String value) {
+    protected CosmosBatchRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -136,14 +136,14 @@ public final class CosmosBatchRequestOptions {
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    protected Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.setCosmosBatchRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor() {
                 @Override

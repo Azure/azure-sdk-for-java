@@ -38,7 +38,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
  * This class provides metadata for an operation in the Cosmos DB SDK that can be used
  * by diagnostic handlers
  */
-public final class CosmosDiagnosticsContext {
+public class CosmosDiagnosticsContext {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
@@ -83,7 +83,7 @@ public final class CosmosDiagnosticsContext {
 
     private final Integer sequenceNumber;
 
-    CosmosDiagnosticsContext(
+    protected CosmosDiagnosticsContext(
         String spanName,
         String accountName,
         String endpoint,
@@ -138,7 +138,7 @@ public final class CosmosDiagnosticsContext {
         return this.accountName;
     }
 
-    String getEndpoint() { return this.endpoint; }
+    protected String getEndpoint() { return this.endpoint; }
 
     /**
      * The name of the database related to the operation
@@ -164,7 +164,7 @@ public final class CosmosDiagnosticsContext {
         return this.resourceTypeString;
     }
 
-    ResourceType getResourceTypeInternal() {
+    protected ResourceType getResourceTypeInternal() {
         return this.resourceType;
     }
 
@@ -193,7 +193,7 @@ public final class CosmosDiagnosticsContext {
         return this.operationType.isPointOperation();
     }
 
-    OperationType getOperationTypeInternal() {
+    protected OperationType getOperationTypeInternal() {
         return this.operationType;
     }
 
@@ -213,7 +213,7 @@ public final class CosmosDiagnosticsContext {
      * is always null.
      * @return null for point operations or the monotonically increasing sequence number of pages/diagnostics
      */
-    Integer getSequenceNumber() {
+    protected Integer getSequenceNumber() {
         return this.sequenceNumber;
     }
 
@@ -249,7 +249,7 @@ public final class CosmosDiagnosticsContext {
      * The span name as a logical identifier for an operation
      * @return the span name as a logical identifier for an operation
      */
-    String getSpanName() {
+    protected String getSpanName() {
         return this.spanName;
     }
 
@@ -286,7 +286,7 @@ public final class CosmosDiagnosticsContext {
         return this.thresholds.getPayloadSizeThreshold() < Math.max(this.maxRequestSize, this.maxResponseSize);
     }
 
-    void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+    protected void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         if (cosmosDiagnostics.getDiagnosticsContext() == this) {
             return;
@@ -311,7 +311,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
+    protected Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
         DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
             new DistinctClientSideRequestStatisticsCollection();
         for (CosmosDiagnostics diagnostics: this.getDiagnostics()) {
@@ -438,19 +438,19 @@ public final class CosmosDiagnosticsContext {
         return c.getRetryContext().getRetryCount();
     }
 
-    void addRequestCharge(float requestCharge) {
+    protected void addRequestCharge(float requestCharge) {
         synchronized (this.spanName) {
             this.totalRequestCharge += requestCharge;
         }
     }
 
-    void addRequestSize(int bytes) {
+    protected void addRequestSize(int bytes) {
         synchronized (this.spanName) {
             this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
         }
     }
 
-    void addResponseSize(int bytes) {
+    protected void addResponseSize(int bytes) {
         synchronized (this.spanName) {
             this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
         }
@@ -493,7 +493,7 @@ public final class CosmosDiagnosticsContext {
         return this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode);
     }
 
-    void startOperation() {
+    protected void startOperation() {
         synchronized (this.spanName) {
             checkState(
                 this.startTime == null,
@@ -504,7 +504,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    boolean endOperation(int statusCode,
+    protected boolean endOperation(int statusCode,
                                       int subStatusCode,
                                       Integer actualItemCount,
                                       Double requestCharge,
@@ -521,7 +521,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    void recordOperation(int statusCode,
+    protected void recordOperation(int statusCode,
                                       int subStatusCode,
                                       Integer actualItemCount,
                                       Double requestCharge,
@@ -556,7 +556,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    void setSamplingRateSnapshot(double samplingRate) {
+    protected void setSamplingRateSnapshot(double samplingRate) {
         synchronized (this.spanName) {
             this.samplingRateSnapshot = samplingRate;
             for (CosmosDiagnostics d : this.diagnostics) {
@@ -565,7 +565,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    String getRequestDiagnostics() {
+    protected String getRequestDiagnostics() {
         ObjectNode ctxNode = mapper.createObjectNode();
 
         ctxNode.put("spanName", this.spanName);
@@ -890,7 +890,7 @@ public final class CosmosDiagnosticsContext {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
+    protected static void initialize() {
         ImplementationBridgeHelpers
             .CosmosDiagnosticsContextHelper
             .setCosmosDiagnosticsContextAccessor(

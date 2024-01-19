@@ -18,7 +18,7 @@ import org.HdrHistogram.ConcurrentDoubleHistogram;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnosticsHandler {
+public class ClientTelemetryDiagnosticsHandler implements CosmosDiagnosticsHandler {
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =

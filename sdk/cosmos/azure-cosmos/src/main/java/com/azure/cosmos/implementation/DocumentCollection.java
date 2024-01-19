@@ -33,7 +33,7 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * Being schema-free, the documents in a collection do not need to share the same structure or fields. Since collections
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public final class DocumentCollection extends Resource {
+public class DocumentCollection extends Resource {
     private static final String COLLECTIONS_ROOT_PROPERTY_NAME = "col";
     private static final String ALT_LINK_PROPERTY_NAME = "altLink";
 

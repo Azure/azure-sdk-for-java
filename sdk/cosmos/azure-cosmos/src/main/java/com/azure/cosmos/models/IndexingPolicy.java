@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
-public final class IndexingPolicy {
+public class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
 
     private List<IncludedPath> includedPaths;
@@ -56,7 +56,7 @@ public final class IndexingPolicy {
      * root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
-    IndexingPolicy(Index[] defaultIndexOverrides) {
+    protected IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
 
         if (defaultIndexOverrides == null) {
@@ -73,7 +73,7 @@ public final class IndexingPolicy {
      *
      * @param jsonString the json string that represents the indexing policy.
      */
-    IndexingPolicy(String jsonString) {
+    protected IndexingPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
@@ -82,7 +82,7 @@ public final class IndexingPolicy {
      *
      * @param objectNode the object node that represents the indexing policy.
      */
-    IndexingPolicy(ObjectNode objectNode) {
+    protected IndexingPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
