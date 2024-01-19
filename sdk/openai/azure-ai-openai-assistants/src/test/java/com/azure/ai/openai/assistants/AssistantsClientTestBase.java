@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.core.credential.AzureKeyCredential;
@@ -94,6 +95,15 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void submitMessageAndRunRunner(Consumer<String> testRunner) {
         testRunner.accept("I need to solve the equation `3x + 11 = 14`. Can you help me?");
+    }
+
+    void createThreadAndRunRunner(Consumer<CreateAndRunThreadOptions> testRunner, String assistantId) {
+        testRunner.accept(
+                new CreateAndRunThreadOptions(assistantId)
+                        .setThread(new AssistantThreadCreationOptions()
+                                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                                        "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
+
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {

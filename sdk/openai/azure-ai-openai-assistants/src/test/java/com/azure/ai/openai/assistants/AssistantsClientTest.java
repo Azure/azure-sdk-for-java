@@ -27,6 +27,7 @@ import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMEN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -233,7 +234,7 @@ public class AssistantsClientTest extends AssistantsClientTestBase {
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
-            // List the messages, it should contains the answer other than the question.
+            // List the messages, it should contain the answer other than the question.
             OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
@@ -243,4 +244,38 @@ public class AssistantsClientTest extends AssistantsClientTestBase {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createThreadAndRun(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            // Create a simple thread without a message
+            ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
+
+            String threadId = run.getThreadId();
+            assertNotNull(run.getId());
+            assertNotNull(run.getCreatedAt());
+            assertEquals("thread.run", run.getObject());
+            assertEquals(mathTutorAssistant.getId(), run.getAssistantId());
+            assertNotNull(run.getInstructions());
+            assertNotNull(threadId);
+
+            // Wait on Run and poll the Run in a loop
+            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
+                String runId = run.getId();
+                run = client.getRun(run.getThreadId(), runId);
+            }
+
+            assertSame(RunStatus.COMPLETED, run.getStatus());
+
+            // List the messages, it should contain the answer other than the question.
+            OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = client.listMessages(threadId);
+            assertNotNull(openAIPageableListOfThreadMessage);
+            assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+
+            // Delete the created thread
+            client.deleteThread(threadId);
+        }, mathTutorAssistant.getId());
+    }
+    
 }
