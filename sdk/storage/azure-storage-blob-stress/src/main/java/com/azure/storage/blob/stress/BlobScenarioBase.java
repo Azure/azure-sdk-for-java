@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
@@ -15,14 +14,13 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectionProbabilities;
-import com.azure.storage.stress.HttpFaultInjectingHttpClient;
+import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.TimeoutException;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
@@ -33,6 +31,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
     private final TelemetryHelper telemetryHelper;
+    private Instant startTime;
 
     public BlobScenarioBase(TOptions options, TelemetryHelper telemetryHelper) {
         super(options);
@@ -49,8 +48,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         asyncNoFaultClient = clientBuilder.buildAsyncClient();
 
         if (options.isFaultInjectionEnabled()) {
-            clientBuilder.httpClient(new HttpFaultInjectingHttpClient(
-                HttpClient.createDefault(), false, getFaultProbabilities()));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities()));
         }
 
         syncClient = clientBuilder.buildClient();
@@ -62,7 +60,8 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        telemetryHelper.logStart(options);
+        startTime = Instant.now();
+        telemetryHelper.recordStart(options);
         return super.globalSetupAsync()
             .then(asyncNoFaultContainerClient.createIfNotExists())
             .then();
@@ -70,8 +69,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        telemetryHelper.logEnd();
-
+        telemetryHelper.recordEnd(startTime);
         return asyncNoFaultContainerClient.deleteIfExists()
             .then(super.globalCleanupAsync());
     }
@@ -79,47 +77,18 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     @SuppressWarnings("try")
     @Override
     public void run() {
-        Context span = telemetryHelper.getTracer().start("run", Context.NONE);
-        try (AutoCloseable s = telemetryHelper.getTracer().makeSpanCurrent(span)) {
-            if (runInternal(span)) {
-                telemetryHelper.trackSuccess(span);
-            } else {
-                telemetryHelper.trackMismatch(span);
-            }
-        } catch (Throwable e) {
-            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
-                telemetryHelper.trackCancellation(span);
-            } else {
-                telemetryHelper.trackFailure(span, e);
-            }
-        }
+        telemetryHelper.instrumentRun(ctx -> runInternal(ctx));
     }
 
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        Context span = telemetryHelper.getTracer().start("runAsync", Context.NONE);
-        try (AutoCloseable s = telemetryHelper.getTracer().makeSpanCurrent(span)) {
-            return runInternalAsync(span)
-                .doOnCancel(() -> telemetryHelper.trackCancellation(span))
-                .doOnError(e -> telemetryHelper.trackFailure(span, e))
-                .doOnNext(match -> {
-                    if (match) {
-                        telemetryHelper.trackSuccess(span);
-                    } else {
-                        telemetryHelper.trackMismatch(span);
-                    }
-                })
-                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span))
-                .then()
+        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
                 .onErrorResume(e -> Mono.empty());
-        } catch (Throwable e) {
-            return Mono.empty();
-        }
     }
 
-    protected abstract boolean runInternal(Context context) throws Exception;
-    protected abstract Mono<Boolean> runInternalAsync(Context context);
+    protected abstract void runInternal(Context context) throws Exception;
+    protected abstract Mono<Void> runInternalAsync(Context context);
 
     protected BlobContainerClient getSyncContainerClient() {
         return syncContainerClient;

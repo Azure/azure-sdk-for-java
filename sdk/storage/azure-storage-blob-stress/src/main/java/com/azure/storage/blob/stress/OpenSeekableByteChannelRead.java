@@ -16,7 +16,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -35,7 +34,7 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
     }
 
     @Override
-    protected boolean runInternal(Context span) throws IOException {
+    protected void runInternal(Context span) throws IOException {
         BlobSeekableByteChannelReadResult result = syncClient.openSeekableByteChannelRead(
                 new BlobSeekableByteChannelReadOptions(), span);
         try (CrcInputStream crcStream = new CrcInputStream(Channels.newInputStream(result.getChannel()))) {
@@ -43,12 +42,12 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
             while (crcStream.read(buffer) != -1) {
                 // do nothing
             }
-            return ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
+            ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
         }
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context span) {
+    protected Mono<Void> runInternalAsync(Context span) {
         return monoError(LOGGER, new RuntimeException("openSeekableByteChannelRead() does not exist on the async client"));
     }
 

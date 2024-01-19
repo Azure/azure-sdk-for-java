@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -34,20 +33,20 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) throws IOException {
+    protected void runInternal(Context span) throws IOException {
         try (InputStream stream = syncClient.openInputStream()) {
             try (CrcInputStream crcStream = new CrcInputStream(stream)) {
                 byte[] buffer = new byte[8192];
                 while (crcStream.read(buffer) != -1) {
                     // do nothing
                 }
-                return ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
+                ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
             }
         }
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context context) {
+    protected Mono<Void> runInternalAsync(Context context) {
         return monoError(LOGGER, new RuntimeException("openInputStream() does not exist on the async client"));
     }
 

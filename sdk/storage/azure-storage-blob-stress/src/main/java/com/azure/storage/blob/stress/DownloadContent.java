@@ -4,7 +4,6 @@
 package com.azure.storage.blob.stress;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
@@ -13,7 +12,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(DownloadContent.class);
     private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(DownloadContent.class);
     private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
     private final BlobClient syncClient;
@@ -28,12 +26,12 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) {
-        return ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block();
+    protected void runInternal(Context span) {
+        ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block();
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context span) {
+    protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadContent().flatMap(response -> ORIGINAL_CONTENT.checkMatch(response, span));
     }
 

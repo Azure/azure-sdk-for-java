@@ -26,17 +26,13 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/sdk/storage/azure-storage-stress/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install ${SKIP_CHECKS}
 
-FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+FROM mcr.microsoft.com/openjdk/jdk:21-mariner
 
 RUN yum -y update
 
 # Copy target files from builder image
 WORKDIR /app
 COPY --from=builder /stress/sdk/storage/azure-storage-blob-stress/target .
-
-# Configure monitoring
-ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.17/applicationinsights-agent-3.4.17.jar
-ADD ${AGENT_URL} ./BOOT-INF/classes/
 
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]

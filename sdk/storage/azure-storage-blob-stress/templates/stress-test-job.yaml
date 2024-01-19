@@ -5,13 +5,16 @@ metadata:
     chaos: "{{ default false .Stress.chaos }}"
     testInstance: "{{.Stress.Scenario}}-{{ .Stress.BaseName }}-{{ .Release.Revision }}"
 spec:
+  nodeSelector:
+    sku: chaosperf
   containers:
     - name: fault-injector
       image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-streaming
       imagePullPolicy: Always
+      restartPolicy: Always
       resources:
         limits:
-          memory: 1500Mi
+          memory: 500Mi
           cpu: "0.5"
     - name: main
       image:  {{ .Stress.imageTag }}
@@ -21,35 +24,30 @@ spec:
           set -exa;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env;
-          export AZURE_HTTP_LOG_DETAIL_LEVEL="HEADERS";
-          export AZURE_LOG_LEVEL="INFO";
-          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL="DEBUG";
-          export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
           java \
-          -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
-          -Xms1g \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.01 \
+          -XX:InitialRAMPercentage=50 \
+          -XX:MaxRAMPercentage=50 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.parallel }} \
-          --duration {{ .Stress.durationSeconds }} \
+          --duration {{ mul 60 .Stress.durationMin }} \
           --size {{ .Stress.sizeBytes }} \
           {{ ternary "--sync" "" .Stress.sync }} \
           {{ ternary "--faults" "" .Stress.faults }} \
           --warmup 0 \
-          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log";
 
-      # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
-      # when iterating, so this is a must.
       imagePullPolicy: Always
-      # More about this section here:
-      # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-      #
-      # Note that I'm only setting 'limits' and not 'requests'. If 'requests' is missing it
-      # just uses 'limits' for both.
       resources:
         limits:
-          memory: 2Gi
-          cpu: "1.0"
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
+
 {{- end -}}

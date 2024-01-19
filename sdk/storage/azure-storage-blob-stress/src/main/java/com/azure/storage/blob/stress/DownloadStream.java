@@ -3,9 +3,7 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
@@ -17,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 
 public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(DownloadStream.class);
     private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(DownloadStream.class);
     private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
     private final BlobClient syncClient;
@@ -32,16 +29,16 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) throws IOException {
+    protected void runInternal(Context span) throws IOException {
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
             syncClient.downloadStreamWithResponse(outputStream, null, null, null, false, null, span);
             outputStream.close();
-            return ORIGINAL_CONTENT.checkMatch(outputStream.getContentInfo(), span).block();
+            ORIGINAL_CONTENT.checkMatch(outputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context span) {
+    protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadStreamWithResponse(null, null, null, false)
             .flatMap(response -> ORIGINAL_CONTENT.checkMatch(response.getValue(), span));
     }

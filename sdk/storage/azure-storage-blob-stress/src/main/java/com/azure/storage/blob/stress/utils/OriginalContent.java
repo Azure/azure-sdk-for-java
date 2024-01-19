@@ -50,26 +50,26 @@ public class OriginalContent {
             .then();
     }
 
-    public Mono<Boolean> checkMatch(BinaryData data, Context span) {
+    public Mono<Void> checkMatch(BinaryData data, Context span) {
         return checkMatch(data.toFluxByteBuffer(), span);
     }
 
-    public Mono<Boolean> checkMatch(Flux<ByteBuffer> data, Context span) {
+    public Mono<Void> checkMatch(Flux<ByteBuffer> data, Context span) {
         return checkMatch(ContentInfo.fromFluxByteBuffer(data), span);
     }
 
-    public Mono<Boolean> checkMatch(Mono<ContentInfo> contentInfo, Context span) {
+    public Mono<Void> checkMatch(Mono<ContentInfo> contentInfo, Context span) {
         if (dataChecksum == -1) {
             return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
         }
         return contentInfo
-                .map(info -> {
+                .flatMap(info -> {
                     if (info.getCrc() != dataChecksum) {
                         logMismatch(info.getCrc(), info.getLength(), info.getHead(), span);
-                        return false;
+                        return Mono.error(new ContentMismatchException());
                     }
 
-                    return true;
+                    return Mono.empty();
                 });
     }
 

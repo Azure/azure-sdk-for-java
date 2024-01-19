@@ -39,20 +39,20 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) {
+    protected void runInternal(Context span) {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
         BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString());
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
-            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block();
+            ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
         }
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context span) {
+    protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
             path ->  asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
@@ -64,7 +64,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
         try {
             path.toFile().delete();
         } catch (Throwable e) {
-            LOGGER.atInfo()
+            LOGGER.atError()
                 .addKeyValue("path", path)
                 .log("failed to delete file", e);
         }
