@@ -37,20 +37,6 @@ public final class FunctionToolCallDetails {
     private String output;
 
     /**
-     * Creates an instance of FunctionToolCallDetails class.
-     *
-     * @param name the name value to set.
-     * @param arguments the arguments value to set.
-     */
-    @Generated
-    @JsonCreator
-    private FunctionToolCallDetails(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "arguments") String arguments) {
-        this.name = name;
-        this.arguments = arguments;
-    }
-
-    /**
      * Get the name property: The name of the function.
      *
      * @return the name value.
@@ -79,5 +65,21 @@ public final class FunctionToolCallDetails {
     @Generated
     public String getOutput() {
         return this.output;
+    }
+
+    /**
+     * Creates an instance of FunctionToolCallDetails class.
+     *
+     * @param name the name value to set.
+     * @param arguments the arguments value to set.
+     * @param output the output value to set.
+     */
+    @Generated
+    @JsonCreator
+    private FunctionToolCallDetails(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "arguments") String arguments, @JsonProperty(value = "output") String output) {
+        this.name = name;
+        this.arguments = arguments;
+        this.output = output;
     }
 }

@@ -37,7 +37,7 @@ public final class MessageFileCitationTextAnnotation extends MessageTextAnnotati
      */
     @Generated
     @JsonCreator
-    public MessageFileCitationTextAnnotation(@JsonProperty(value = "text") String text,
+    private MessageFileCitationTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
         @JsonProperty(value = "file_citation") MessageTextFileCitationDetails fileCitation) {
         super(text, startIndex, endIndex);

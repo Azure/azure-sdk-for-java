@@ -28,7 +28,7 @@ public final class MessageFilePathDetails {
      */
     @Generated
     @JsonCreator
-    public MessageFilePathDetails(@JsonProperty(value = "file_id") String fileId) {
+    private MessageFilePathDetails(@JsonProperty(value = "file_id") String fileId) {
         this.fileId = fileId;
     }
 

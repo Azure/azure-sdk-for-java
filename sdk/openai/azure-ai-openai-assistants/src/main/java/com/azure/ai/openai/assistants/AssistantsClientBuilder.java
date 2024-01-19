@@ -46,20 +46,7 @@ import java.util.Objects;
 /**
  * A builder for creating a new instance of the AssistantsClient type.
  */
-@ServiceClientBuilder(
-    serviceClients = {
-        AssistantsClient.class,
-        AssistantThreadsClient.class,
-        ThreadMessagesClient.class,
-        ThreadRunsClient.class,
-        RunStepsClient.class,
-        FilesClient.class,
-        AssistantsAsyncClient.class,
-        AssistantThreadsAsyncClient.class,
-        ThreadMessagesAsyncClient.class,
-        ThreadRunsAsyncClient.class,
-        RunStepsAsyncClient.class,
-        FilesAsyncClient.class })
+@ServiceClientBuilder(serviceClients = { AssistantsClient.class, AssistantsAsyncClient.class })
 public final class AssistantsClientBuilder implements HttpTrait<AssistantsClientBuilder>,
     ConfigurationTrait<AssistantsClientBuilder>, TokenCredentialTrait<AssistantsClientBuilder>,
     KeyCredentialTrait<AssistantsClientBuilder>, EndpointTrait<AssistantsClientBuilder> {
@@ -269,15 +256,14 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      *
      * @return an instance of AssistantsClientImpl.
      */
-    @Generated
     private AssistantsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AssistantsClientImpl client
-            = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint);
+        AssistantsClientImpl client = new AssistantsClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), useNonAzureOpenAIService() ? OPEN_AI_ENDPOINT
+                : (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai")));
         return client;
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -293,6 +279,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         HttpHeaders headers = new HttpHeaders();
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        headers.add("OpenAI-Beta", "assistants=v1");
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -302,7 +289,8 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
-            policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(useNonAzureOpenAIService() ? new KeyCredentialPolicy("Authorization", keyCredential, "Bearer")
+                : new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
@@ -316,64 +304,29 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return httpPipeline;
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
+
+    /**
+     * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     */
+    public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+
+    /**
+     * OpenAI service can be used by either not setting the endpoint or by setting the endpoint to start with
+     * "https://api.openai.com/v1"
+     */
+    private boolean useNonAzureOpenAIService() {
+        return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+    }
+
     /**
      * Builds an instance of AssistantsAsyncClient class.
      *
      * @return an instance of AssistantsAsyncClient.
      */
     @Generated
-    public AssistantsAsyncClient buildAssistantsAsyncClient() {
-        return new AssistantsAsyncClient(buildInnerClient().getAssistants());
-    }
-
-    /**
-     * Builds an instance of AssistantThreadsAsyncClient class.
-     *
-     * @return an instance of AssistantThreadsAsyncClient.
-     */
-    @Generated
-    public AssistantThreadsAsyncClient buildAssistantThreadsAsyncClient() {
-        return new AssistantThreadsAsyncClient(buildInnerClient().getAssistantThreads());
-    }
-
-    /**
-     * Builds an instance of ThreadMessagesAsyncClient class.
-     *
-     * @return an instance of ThreadMessagesAsyncClient.
-     */
-    @Generated
-    public ThreadMessagesAsyncClient buildThreadMessagesAsyncClient() {
-        return new ThreadMessagesAsyncClient(buildInnerClient().getThreadMessages());
-    }
-
-    /**
-     * Builds an instance of ThreadRunsAsyncClient class.
-     *
-     * @return an instance of ThreadRunsAsyncClient.
-     */
-    @Generated
-    public ThreadRunsAsyncClient buildThreadRunsAsyncClient() {
-        return new ThreadRunsAsyncClient(buildInnerClient().getThreadRuns());
-    }
-
-    /**
-     * Builds an instance of RunStepsAsyncClient class.
-     *
-     * @return an instance of RunStepsAsyncClient.
-     */
-    @Generated
-    public RunStepsAsyncClient buildRunStepsAsyncClient() {
-        return new RunStepsAsyncClient(buildInnerClient().getRunSteps());
-    }
-
-    /**
-     * Builds an instance of FilesAsyncClient class.
-     *
-     * @return an instance of FilesAsyncClient.
-     */
-    @Generated
-    public FilesAsyncClient buildFilesAsyncClient() {
-        return new FilesAsyncClient(buildInnerClient().getFiles());
+    public AssistantsAsyncClient buildAsyncClient() {
+        return new AssistantsAsyncClient(buildInnerClient());
     }
 
     /**
@@ -382,59 +335,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      * @return an instance of AssistantsClient.
      */
     @Generated
-    public AssistantsClient buildAssistantsClient() {
-        return new AssistantsClient(buildInnerClient().getAssistants());
+    public AssistantsClient buildClient() {
+        return new AssistantsClient(buildInnerClient());
     }
-
-    /**
-     * Builds an instance of AssistantThreadsClient class.
-     *
-     * @return an instance of AssistantThreadsClient.
-     */
-    @Generated
-    public AssistantThreadsClient buildAssistantThreadsClient() {
-        return new AssistantThreadsClient(buildInnerClient().getAssistantThreads());
-    }
-
-    /**
-     * Builds an instance of ThreadMessagesClient class.
-     *
-     * @return an instance of ThreadMessagesClient.
-     */
-    @Generated
-    public ThreadMessagesClient buildThreadMessagesClient() {
-        return new ThreadMessagesClient(buildInnerClient().getThreadMessages());
-    }
-
-    /**
-     * Builds an instance of ThreadRunsClient class.
-     *
-     * @return an instance of ThreadRunsClient.
-     */
-    @Generated
-    public ThreadRunsClient buildThreadRunsClient() {
-        return new ThreadRunsClient(buildInnerClient().getThreadRuns());
-    }
-
-    /**
-     * Builds an instance of RunStepsClient class.
-     *
-     * @return an instance of RunStepsClient.
-     */
-    @Generated
-    public RunStepsClient buildRunStepsClient() {
-        return new RunStepsClient(buildInnerClient().getRunSteps());
-    }
-
-    /**
-     * Builds an instance of FilesClient class.
-     *
-     * @return an instance of FilesClient.
-     */
-    @Generated
-    public FilesClient buildFilesClient() {
-        return new FilesClient(buildInnerClient().getFiles());
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AssistantsClientBuilder.class);
 }

@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
  * Represents an assistant that can call the model and use tools.
  */
 @Immutable
-public final class File {
+public final class OpenAIFile {
 
     /*
      * The object type, which is always 'file'.
@@ -60,7 +60,7 @@ public final class File {
     private FilePurpose purpose;
 
     /**
-     * Creates an instance of File class.
+     * Creates an instance of OpenAIFile class.
      *
      * @param id the id value to set.
      * @param bytes the bytes value to set.
@@ -69,7 +69,7 @@ public final class File {
      * @param purpose the purpose value to set.
      */
     @Generated
-    private File(String id, int bytes, String filename, OffsetDateTime createdAt, FilePurpose purpose) {
+    private OpenAIFile(String id, int bytes, String filename, OffsetDateTime createdAt, FilePurpose purpose) {
         this.id = id;
         this.bytes = bytes;
         this.filename = filename;
@@ -79,7 +79,7 @@ public final class File {
 
     @Generated
     @JsonCreator
-    private File(@JsonProperty(value = "id") String id, @JsonProperty(value = "bytes") int bytes,
+    private OpenAIFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "bytes") int bytes,
         @JsonProperty(value = "filename") String filename, @JsonProperty(value = "created_at") long createdAt,
         @JsonProperty(value = "purpose") FilePurpose purpose) {
         this(id, bytes, filename, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), purpose);

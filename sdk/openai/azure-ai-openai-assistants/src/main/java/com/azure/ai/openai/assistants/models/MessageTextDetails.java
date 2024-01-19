@@ -37,7 +37,7 @@ public final class MessageTextDetails {
      */
     @Generated
     @JsonCreator
-    public MessageTextDetails(@JsonProperty(value = "value") String value,
+    private MessageTextDetails(@JsonProperty(value = "value") String value,
         @JsonProperty(value = "annotations") List<MessageTextAnnotation> annotations) {
         this.value = value;
         this.annotations = annotations;

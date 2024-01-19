@@ -148,65 +148,6 @@ public final class ThreadRun {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of ThreadRun class.
-     *
-     * @param id the id value to set.
-     * @param threadId the threadId value to set.
-     * @param assistantId the assistantId value to set.
-     * @param status the status value to set.
-     * @param lastError the lastError value to set.
-     * @param model the model value to set.
-     * @param instructions the instructions value to set.
-     * @param tools the tools value to set.
-     * @param fileIds the fileIds value to set.
-     * @param createdAt the createdAt value to set.
-     * @param expiresAt the expiresAt value to set.
-     * @param startedAt the startedAt value to set.
-     * @param completedAt the completedAt value to set.
-     * @param cancelledAt the cancelledAt value to set.
-     * @param failedAt the failedAt value to set.
-     */
-    @Generated
-    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
-        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
-        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
-        OffsetDateTime failedAt) {
-        this.id = id;
-        this.threadId = threadId;
-        this.assistantId = assistantId;
-        this.status = status;
-        this.lastError = lastError;
-        this.model = model;
-        this.instructions = instructions;
-        this.tools = tools;
-        this.fileIds = fileIds;
-        this.createdAt = createdAt.toEpochSecond();
-        this.expiresAt = expiresAt;
-        this.startedAt = startedAt;
-        this.completedAt = completedAt;
-        this.cancelledAt = cancelledAt;
-        this.failedAt = failedAt;
-    }
-
-    @Generated
-    @JsonCreator
-    private ThreadRun(@JsonProperty(value = "id") String id, @JsonProperty(value = "thread_id") String threadId,
-        @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "status") RunStatus status,
-        @JsonProperty(value = "last_error") RunError lastError, @JsonProperty(value = "model") String model,
-        @JsonProperty(value = "instructions") String instructions,
-        @JsonProperty(value = "tools") List<ToolDefinition> tools,
-        @JsonProperty(value = "file_ids") List<String> fileIds, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "expires_at") OffsetDateTime expiresAt,
-        @JsonProperty(value = "started_at") OffsetDateTime startedAt,
-        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
-        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
-        @JsonProperty(value = "failed_at") OffsetDateTime failedAt) {
-        this(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
-            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiresAt, startedAt,
-            completedAt, cancelledAt, failedAt);
-    }
-
-    /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
      * @return the id value.
@@ -386,5 +327,67 @@ public final class ThreadRun {
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Creates an instance of ThreadRun class.
+     *
+     * @param id the id value to set.
+     * @param threadId the threadId value to set.
+     * @param assistantId the assistantId value to set.
+     * @param status the status value to set.
+     * @param lastError the lastError value to set.
+     * @param model the model value to set.
+     * @param instructions the instructions value to set.
+     * @param tools the tools value to set.
+     * @param fileIds the fileIds value to set.
+     * @param createdAt the createdAt value to set.
+     * @param expiresAt the expiresAt value to set.
+     * @param startedAt the startedAt value to set.
+     * @param completedAt the completedAt value to set.
+     * @param cancelledAt the cancelledAt value to set.
+     * @param failedAt the failedAt value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
+        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
+        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
+        OffsetDateTime failedAt, Map<String, String> metadata) {
+        this.id = id;
+        this.threadId = threadId;
+        this.assistantId = assistantId;
+        this.status = status;
+        this.lastError = lastError;
+        this.model = model;
+        this.instructions = instructions;
+        this.tools = tools;
+        this.fileIds = fileIds;
+        this.createdAt = createdAt.toEpochSecond();
+        this.expiresAt = expiresAt;
+        this.startedAt = startedAt;
+        this.completedAt = completedAt;
+        this.cancelledAt = cancelledAt;
+        this.failedAt = failedAt;
+        this.metadata = metadata;
+    }
+
+    @Generated
+    @JsonCreator
+    private ThreadRun(@JsonProperty(value = "id") String id, @JsonProperty(value = "thread_id") String threadId,
+        @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "status") RunStatus status,
+        @JsonProperty(value = "last_error") RunError lastError, @JsonProperty(value = "model") String model,
+        @JsonProperty(value = "instructions") String instructions,
+        @JsonProperty(value = "tools") List<ToolDefinition> tools,
+        @JsonProperty(value = "file_ids") List<String> fileIds, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "expires_at") OffsetDateTime expiresAt,
+        @JsonProperty(value = "started_at") OffsetDateTime startedAt,
+        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
+        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
+        @JsonProperty(value = "failed_at") OffsetDateTime failedAt,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
+            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiresAt, startedAt,
+            completedAt, cancelledAt, failedAt, metadata);
     }
 }

@@ -4,17 +4,46 @@
 
 package com.azure.ai.openai.assistants.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the AssistantsClient type.
  */
 public final class AssistantsClientImpl {
+    /**
+     * The proxy service used to perform REST calls.
+     */
+    private final AssistantsClientService service;
+
     /**
      * An OpenAI endpoint supporting assistants functionality.
      */
@@ -58,90 +87,6 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * The AssistantsImpl object to access its operations.
-     */
-    private final AssistantsImpl assistants;
-
-    /**
-     * Gets the AssistantsImpl object to access its operations.
-     * 
-     * @return the AssistantsImpl object.
-     */
-    public AssistantsImpl getAssistants() {
-        return this.assistants;
-    }
-
-    /**
-     * The AssistantThreadsImpl object to access its operations.
-     */
-    private final AssistantThreadsImpl assistantThreads;
-
-    /**
-     * Gets the AssistantThreadsImpl object to access its operations.
-     * 
-     * @return the AssistantThreadsImpl object.
-     */
-    public AssistantThreadsImpl getAssistantThreads() {
-        return this.assistantThreads;
-    }
-
-    /**
-     * The ThreadMessagesImpl object to access its operations.
-     */
-    private final ThreadMessagesImpl threadMessages;
-
-    /**
-     * Gets the ThreadMessagesImpl object to access its operations.
-     * 
-     * @return the ThreadMessagesImpl object.
-     */
-    public ThreadMessagesImpl getThreadMessages() {
-        return this.threadMessages;
-    }
-
-    /**
-     * The ThreadRunsImpl object to access its operations.
-     */
-    private final ThreadRunsImpl threadRuns;
-
-    /**
-     * Gets the ThreadRunsImpl object to access its operations.
-     * 
-     * @return the ThreadRunsImpl object.
-     */
-    public ThreadRunsImpl getThreadRuns() {
-        return this.threadRuns;
-    }
-
-    /**
-     * The RunStepsImpl object to access its operations.
-     */
-    private final RunStepsImpl runSteps;
-
-    /**
-     * Gets the RunStepsImpl object to access its operations.
-     * 
-     * @return the RunStepsImpl object.
-     */
-    public RunStepsImpl getRunSteps() {
-        return this.runSteps;
-    }
-
-    /**
-     * The FilesImpl object to access its operations.
-     */
-    private final FilesImpl files;
-
-    /**
-     * Gets the FilesImpl object to access its operations.
-     * 
-     * @return the FilesImpl object.
-     */
-    public FilesImpl getFiles() {
-        return this.files;
-    }
-
-    /**
      * Initializes an instance of AssistantsClient client.
      * 
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
@@ -172,11 +117,4307 @@ public final class AssistantsClientImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.assistants = new AssistantsImpl(this);
-        this.assistantThreads = new AssistantThreadsImpl(this);
-        this.threadMessages = new ThreadMessagesImpl(this);
-        this.threadRuns = new ThreadRunsImpl(this);
-        this.runSteps = new RunStepsImpl(this);
-        this.files = new FilesImpl(this);
+        this.service = RestProxy.create(AssistantsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for AssistantsClient to be used by the proxy service to perform REST
+     * calls.
+     */
+    @Host("{endpoint}")
+    @ServiceInterface(name = "AssistantsClient")
+    public interface AssistantsClientService {
+        @Post("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createAssistant(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData assistantCreationOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createAssistantSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData assistantCreationOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAssistants(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAssistantsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAssistant(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAssistantSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> modifyAssistant(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData modificationOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> modifyAssistantSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData modificationOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteAssistant(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/assistants/{assistantId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteAssistantSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/assistants/{assistantId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createAssistantFile(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/assistants/{assistantId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createAssistantFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAssistantFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAssistantFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAssistantFile(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/assistants/{assistantId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAssistantFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/assistants/{assistantId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteAssistantFile(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/assistants/{assistantId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteAssistantFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/threads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createThread(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData assistantThreadCreationOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/threads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createThreadSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData assistantThreadCreationOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getThread(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getThreadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> modifyThread(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> modifyThreadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Delete("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteThread(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/threads/{threadId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteThreadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/threads/{threadId}/messages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/messages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createMessageSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/messages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMessages(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/messages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listMessagesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getMessageSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/messages/{messageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> modifyMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/messages/{messageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> modifyMessageSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMessageFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listMessageFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMessageFile(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/messages/{messageId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getMessageFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/threads/{threadId}/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createRun(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createRunSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listRuns(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRunsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRun(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRunSync(@HostParam("endpoint") String endpoint, @PathParam("threadId") String threadId,
+            @PathParam("runId") String runId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> modifyRun(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> modifyRunSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> submitToolOutputsToRun(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> submitToolOutputsToRunSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelRun(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/{threadId}/runs/{runId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelRunSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/threads/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createThreadAndRun(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createAndRunThreadOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/threads/runs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createThreadAndRunSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createAndRunThreadOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRunStep(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @PathParam("stepId") String stepId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRunStepSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @PathParam("stepId") String stepId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listRunSteps(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRunStepsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createFile(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createFileSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> retrieveFile(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> retrieveFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+    }
+
+    /**
+     * Creates a new assistant.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Required)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantCreationOptions The request details to use when creating a new assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createAssistantWithResponseAsync(BinaryData assistantCreationOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createAssistant(this.getEndpoint(), accept,
+            assistantCreationOptions, requestOptions, context));
+    }
+
+    /**
+     * Creates a new assistant.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Required)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantCreationOptions The request details to use when creating a new assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createAssistantSync(this.getEndpoint(), accept, assistantCreationOptions, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets a list of assistants that were previously created.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             model: String (Required)
+     *             instructions: String (Required)
+     *             tools (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of assistants that were previously created along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listAssistantsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listAssistants(this.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of assistants that were previously created.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             name: String (Required)
+     *             description: String (Required)
+     *             model: String (Required)
+     *             instructions: String (Required)
+     *             tools (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of assistants that were previously created along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listAssistantsSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Retrieves an existing assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAssistantWithResponseAsync(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getAssistant(this.getEndpoint(), assistantId, accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieves an existing assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAssistantSync(this.getEndpoint(), assistantId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Modifies an existing assistant.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to modify.
+     * @param modificationOptions The details of the modification to perform on the specified assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> modifyAssistantWithResponseAsync(String assistantId,
+        BinaryData modificationOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.modifyAssistant(this.getEndpoint(), assistantId, accept,
+            modificationOptions, requestOptions, context));
+    }
+
+    /**
+     * Modifies an existing assistant.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to modify.
+     * @param modificationOptions The details of the modification to perform on the specified assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyAssistantWithResponse(String assistantId, BinaryData modificationOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.modifyAssistantSync(this.getEndpoint(), assistantId, accept, modificationOptions, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Deletes an assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an assistant deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteAssistantWithResponseAsync(String assistantId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.deleteAssistant(this.getEndpoint(), assistantId, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes an assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an assistant deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteAssistantSync(this.getEndpoint(), assistantId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     file_id: String (Required)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     assistant_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to attach the file to.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createAssistantFileWithResponseAsync(String assistantId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createAssistantFile(this.getEndpoint(), assistantId, accept,
+            request, requestOptions, context));
+    }
+
+    /**
+     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     file_id: String (Required)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     assistant_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to attach the file to.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createAssistantFileSync(this.getEndpoint(), assistantId, accept, request, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             assistant_id: String (Required)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listAssistantFilesWithResponseAsync(String assistantId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listAssistantFiles(this.getEndpoint(), assistantId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             assistant_id: String (Required)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listAssistantFilesSync(this.getEndpoint(), assistantId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Retrieves a file attached to an assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     assistant_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant associated with the attached file.
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAssistantFileWithResponseAsync(String assistantId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(), assistantId, fileId, accept,
+            requestOptions, context));
+    }
+
+    /**
+     * Retrieves a file attached to an assistant.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     assistant_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant associated with the attached file.
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an assistant file deletion operation along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteAssistantFileWithResponseAsync(String assistantId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(), assistantId, fileId,
+            accept, requestOptions, context));
+    }
+
+    /**
+     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
+     * files.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
+     * @param fileId The ID of the file to unlink from the specified assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of an assistant file deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a new thread. Threads contain messages and can be run by assistants.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     messages (Optional): [
+     *          (Optional){
+     *             role: String(user/assistant) (Required)
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantThreadCreationOptions The details used to create a new assistant thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a single thread associated with an assistant along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createThreadWithResponseAsync(BinaryData assistantThreadCreationOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(), accept,
+            assistantThreadCreationOptions, requestOptions, context));
+    }
+
+    /**
+     * Creates a new thread. Threads contain messages and can be run by assistants.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     messages (Optional): [
+     *          (Optional){
+     *             role: String(user/assistant) (Required)
+     *             content: String (Required)
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param assistantThreadCreationOptions The details used to create a new assistant thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a single thread associated with an assistant along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createThreadSync(this.getEndpoint(), accept, assistantThreadCreationOptions, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets information about an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about an existing thread along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getThread(this.getEndpoint(), threadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets information about an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about an existing thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getThreadSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Modifies an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a single thread associated with an assistant along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> modifyThreadWithResponseAsync(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.modifyThread(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+    }
+
+    /**
+     * Modifies an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a single thread associated with an assistant along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyThreadWithResponse(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.modifyThreadSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of a thread deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.deleteThread(this.getEndpoint(), threadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of a thread deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteThreadSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates a new message on a specified thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     role: String(user/assistant) (Required)
+     *     content: String (Required)
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to create the new message on.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createMessageWithResponseAsync(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.createMessage(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+    }
+
+    /**
+     * Creates a new message on a specified thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     role: String(user/assistant) (Required)
+     *     content: String (Required)
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to create the new message on.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createMessageSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of messages that exist on a thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             thread_id: String (Required)
+     *             role: String(user/assistant) (Required)
+     *             content (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             assistant_id: String (Optional)
+     *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to list messages from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of messages that exist on a thread along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listMessagesWithResponseAsync(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listMessages(this.getEndpoint(), threadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of messages that exist on a thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             thread_id: String (Required)
+     *             role: String(user/assistant) (Required)
+     *             content (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             assistant_id: String (Optional)
+     *             run_id: String (Optional)
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to list messages from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of messages that exist on a thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listMessagesSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets an existing message from an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve the specified message from.
+     * @param messageId The ID of the message to retrieve from the specified thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an existing message from an existing thread along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMessageWithResponseAsync(String threadId, String messageId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getMessage(this.getEndpoint(), threadId, messageId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets an existing message from an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve the specified message from.
+     * @param messageId The ID of the message to retrieve from the specified thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an existing message from an existing thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMessageWithResponse(String threadId, String messageId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getMessageSync(this.getEndpoint(), threadId, messageId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Modifies an existing message on an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> modifyMessageWithResponseAsync(String threadId, String messageId,
+        BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.modifyMessage(this.getEndpoint(), threadId, messageId, accept,
+            request, requestOptions, context));
+    }
+
+    /**
+     * Modifies an existing message on an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyMessageWithResponse(String threadId, String messageId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.modifyMessageSync(this.getEndpoint(), threadId, messageId, accept, request, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets a list of previously uploaded files associated with a message from a thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             message_id: String (Required)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the message to list files from.
+     * @param messageId The ID of the message to list files from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}
+     * on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(), threadId, messageId, accept,
+            requestOptions, context));
+    }
+
+    /**
+     * Gets a list of previously uploaded files associated with a message from a thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             message_id: String (Required)
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the message to list files from.
+     * @param messageId The ID of the message to list files from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listMessageFilesSync(this.getEndpoint(), threadId, messageId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets information about a file attachment to a message within a thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     message_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the message to get information from.
+     * @param messageId The ID of the message to get information from.
+     * @param fileId The ID of the file to get information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attachment to a message within a thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMessageFileWithResponseAsync(String threadId, String messageId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(), threadId, messageId, fileId,
+            accept, requestOptions, context));
+    }
+
+    /**
+     * Gets information about a file attachment to a message within a thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     message_id: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread containing the message to get information from.
+     * @param messageId The ID of the message to get information from.
+     * @param fileId The ID of the file to get information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a file attachment to a message within a thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getMessageFileSync(this.getEndpoint(), threadId, messageId, fileId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a new run for an assistant thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     assistant_id: String (Required)
+     *     model: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to run.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createRunWithResponseAsync(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.createRun(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+    }
+
+    /**
+     * Creates a new run for an assistant thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     assistant_id: String (Required)
+     *     model: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to run.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createRunWithResponse(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createRunSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of runs for a specified thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             thread_id: String (Required)
+     *             assistant_id: String (Required)
+     *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *             required_action (Optional): {
+     *             }
+     *             last_error (Required): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *             model: String (Required)
+     *             instructions: String (Required)
+     *             tools (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             created_at: long (Required)
+     *             expires_at: OffsetDateTime (Required)
+     *             started_at: OffsetDateTime (Required)
+     *             completed_at: OffsetDateTime (Required)
+     *             cancelled_at: OffsetDateTime (Required)
+     *             failed_at: OffsetDateTime (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to list runs from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of runs for a specified thread along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listRunsWithResponseAsync(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRuns(this.getEndpoint(), threadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of runs for a specified thread.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             thread_id: String (Required)
+     *             assistant_id: String (Required)
+     *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *             required_action (Optional): {
+     *             }
+     *             last_error (Required): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *             model: String (Required)
+     *             instructions: String (Required)
+     *             tools (Required): [
+     *                  (Required){
+     *                 }
+     *             ]
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *             created_at: long (Required)
+     *             expires_at: OffsetDateTime (Required)
+     *             started_at: OffsetDateTime (Required)
+     *             completed_at: OffsetDateTime (Required)
+     *             cancelled_at: OffsetDateTime (Required)
+     *             failed_at: OffsetDateTime (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to list runs from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of runs for a specified thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listRunsSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets an existing run from an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve run information from.
+     * @param runId The ID of the thread to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an existing run from an existing thread along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getRunWithResponseAsync(String threadId, String runId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getRun(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets an existing run from an existing thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread to retrieve run information from.
+     * @param runId The ID of the thread to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an existing run from an existing thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getRunSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Modifies an existing thread run.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread associated with the specified run.
+     * @param runId The ID of the run to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> modifyRunWithResponseAsync(String threadId, String runId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.modifyRun(this.getEndpoint(), threadId, runId, accept, request,
+            requestOptions, context));
+    }
+
+    /**
+     * Modifies an existing thread run.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread associated with the specified run.
+     * @param runId The ID of the run to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyRunWithResponse(String threadId, String runId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.modifyRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     tool_outputs (Required): [
+     *          (Required){
+     *             tool_call_id: String (Optional)
+     *             output: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
+        BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), threadId, runId,
+            accept, request, requestOptions, context));
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     tool_outputs (Required): [
+     *          (Required){
+     *             tool_call_id: String (Optional)
+     *             output: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Cancels a run of an in progress thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread being run.
+     * @param runId The ID of the run to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelRunWithResponseAsync(String threadId, String runId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.cancelRun(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancels a run of an in progress thread.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread being run.
+     * @param runId The ID of the run to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelRunSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates a new assistant thread and immediately starts a run using that new thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     assistant_id: String (Required)
+     *     thread (Optional): {
+     *         messages (Optional): [
+     *              (Optional){
+     *                 role: String(user/assistant) (Required)
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     model: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createThreadAndRunWithResponseAsync(BinaryData createAndRunThreadOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(), accept,
+            createAndRunThreadOptions, requestOptions, context));
+    }
+
+    /**
+     * Creates a new assistant thread and immediately starts a run using that new thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     assistant_id: String (Required)
+     *     thread (Optional): {
+     *         messages (Optional): [
+     *              (Optional){
+     *                 role: String(user/assistant) (Required)
+     *                 content: String (Required)
+     *                 file_ids (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     model: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createThreadAndRunSync(this.getEndpoint(), accept, createAndRunThreadOptions, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets a single run step from a thread run.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single run step from a thread run along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getRunStepWithResponseAsync(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(), threadId, runId, stepId, accept,
+            requestOptions, context));
+    }
+
+    /**
+     * Gets a single run step from a thread run.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single run step from a thread run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getRunStepSync(this.getEndpoint(), threadId, runId, stepId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             type: String(message_creation/tool_calls) (Required)
+     *             assistant_id: String (Required)
+     *             thread_id: String (Required)
+     *             run_id: String (Required)
+     *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *             step_details (Required): {
+     *             }
+     *             last_error (Required): {
+     *                 code: String(server_error/rate_limit_exceeded) (Required)
+     *                 message: String (Required)
+     *             }
+     *             created_at: long (Required)
+     *             expired_at: OffsetDateTime (Required)
+     *             completed_at: OffsetDateTime (Required)
+     *             cancelled_at: OffsetDateTime (Required)
+     *             failed_at: OffsetDateTime (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run to list steps from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listRunStepsWithResponseAsync(String threadId, String runId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listRunSteps(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>limit</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
+     * 20.</td>
+     * </tr>
+     * <tr>
+     * <td>order</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
+     * Allowed values: "asc", "desc".</td>
+     * </tr>
+     * <tr>
+     * <td>after</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * after=obj_foo in order to fetch the next page of the list.</td>
+     * </tr>
+     * <tr>
+     * <td>before</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
+     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
+     * before=obj_foo in order to fetch the previous page of the list.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             type: String(message_creation/tool_calls) (Required)
+     *             assistant_id: String (Required)
+     *             thread_id: String (Required)
+     *             run_id: String (Required)
+     *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *             step_details (Required): {
+     *             }
+     *             last_error (Required): {
+     *                 code: String(server_error/rate_limit_exceeded) (Required)
+     *                 message: String (Required)
+     *             }
+     *             created_at: long (Required)
+     *             expired_at: OffsetDateTime (Required)
+     *             completed_at: OffsetDateTime (Required)
+     *             cancelled_at: OffsetDateTime (Required)
+     *             failed_at: OffsetDateTime (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     * 
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run to list steps from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listRunStepsSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>purpose</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
+     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             object: String (Required)
+     *             id: String (Required)
+     *             bytes: int (Required)
+     *             filename: String (Required)
+     *             created_at: long (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>purpose</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
+     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             object: String (Required)
+     *             id: String (Required)
+     *             bytes: int (Required)
+     *             filename: String (Required)
+     *             created_at: long (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listFilesSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     filename: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     * 
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createFileWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.createFile(this.getEndpoint(), contentType, accept, request, requestOptions, context));
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     filename: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     * 
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.createFileSync(this.getEndpoint(), contentType, accept, request, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> retrieveFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.retrieveFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> retrieveFileWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.retrieveFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 }

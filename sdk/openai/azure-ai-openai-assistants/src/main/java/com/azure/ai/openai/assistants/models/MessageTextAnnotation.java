@@ -56,7 +56,7 @@ public class MessageTextAnnotation {
      */
     @Generated
     @JsonCreator
-    public MessageTextAnnotation(@JsonProperty(value = "text") String text,
+    protected MessageTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex) {
         this.text = text;
         this.startIndex = startIndex;
