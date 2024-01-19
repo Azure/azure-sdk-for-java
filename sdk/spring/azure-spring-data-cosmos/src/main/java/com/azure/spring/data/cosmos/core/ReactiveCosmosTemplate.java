@@ -1092,8 +1092,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T,?> information, S entity) {
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
         PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
-        PartitionKey partitionKey = null;
-        if (pkFieldValue instanceof ArrayList<?>) {
+        PartitionKey partitionKey;
+        if (pkFieldValue.getClass().isArray()) {
             for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
                 if (pkValue instanceof String || pkValue instanceof UUID) {
                     partitionKeyBuilder.add(pkValue.toString());
