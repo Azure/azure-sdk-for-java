@@ -207,6 +207,7 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testHierarchicalPartitionKeyPathsGetPartitionKeyFieldValue() {
         final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
             new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
