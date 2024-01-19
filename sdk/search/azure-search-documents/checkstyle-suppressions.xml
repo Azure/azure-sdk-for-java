@@ -8,7 +8,6 @@
   <suppress files="com.azure.search.documents.implementation.converters.SearchResultConverter.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.search.documents.implementation.converters.SuggestResultConverter.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.search.documents.indexes.implementation.CoreToCodegenBridgeUtils.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.search.documents.implementation.converters.AnalyzeRequestConverter.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.search.documents.test.environment.models.Book.java" checks="MemberNameCheck" />
   <suppress files="com.azure.search.documents.test.environment.models.LoudHotel.java" checks="MemberNameCheck" />
   <suppress files="com.azure.search.documents.test.environment.models.Book.java" checks="MethodNameCheck" />
