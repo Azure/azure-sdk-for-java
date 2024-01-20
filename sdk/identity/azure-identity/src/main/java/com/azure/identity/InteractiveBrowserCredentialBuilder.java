@@ -58,6 +58,13 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     private String loginHint;
 
     /**
+     * Constructs an instance of InteractiveBrowserCredentialBuilder.
+     */
+    public InteractiveBrowserCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
      * registered as a valid reply URL on the application.
      *
