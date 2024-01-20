@@ -19,7 +19,7 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
-private case class ItemsPartitionReaderWithReadMany
+private[spark] case class ItemsPartitionReaderWithReadMany
 (
   config: Map[String, String],
   feedRange: NormalizedRange,

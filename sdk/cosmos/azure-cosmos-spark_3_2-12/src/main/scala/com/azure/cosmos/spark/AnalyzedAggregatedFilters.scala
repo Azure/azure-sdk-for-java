@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.models.CosmosParameterizedQuery
 import org.apache.spark.sql.sources.Filter
 
-private case class AnalyzedAggregatedFilters(
+private[spark] case class AnalyzedAggregatedFilters(
                                               cosmosParametrizedQuery: CosmosParameterizedQuery,
                                               isCustomQuery: Boolean,
                                               filtersToBePushedDownToCosmos: Array[Filter],

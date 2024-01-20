@@ -9,7 +9,7 @@ import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 
 import java.util
 
-private object CosmosItemIdentityHelper {
+private[spark] object CosmosItemIdentityHelper {
   // pattern will be recognized
   // 1. id(idValue).pk(partitionKeyValue)
   //

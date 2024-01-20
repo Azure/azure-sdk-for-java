@@ -11,7 +11,7 @@ import org.apache.spark.sql.connector.read.SupportsRuntimeFiltering
 import org.apache.spark.sql.sources.Filter
 import org.apache.spark.sql.types.StructType
 
-private class ItemsScan(session: SparkSession,
+private[spark] class ItemsScan(session: SparkSession,
                                schema: StructType,
                                config: Map[String, String],
                                readConfig: CosmosReadConfig,

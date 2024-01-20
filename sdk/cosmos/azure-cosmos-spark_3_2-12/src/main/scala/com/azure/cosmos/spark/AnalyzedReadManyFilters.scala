@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import org.apache.spark.sql.sources.Filter
 
-private case class AnalyzedReadManyFilters(
+private[spark] case class AnalyzedReadManyFilters(
                                             filtersToBePushedDownToCosmos: Array[Filter],
                                             filtersNotSupportedByCosmos: Array[Filter],
                                             readManyFiltersOpt: Option[List[ReadManyFilter]])

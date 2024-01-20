@@ -11,7 +11,7 @@ import org.apache.spark.sql.sources.{
 }
 import scala.collection.mutable.ListBuffer
 
-private case class QueryFilterAnalyzer(readConfig: CosmosReadConfig) {
+private[spark] case class QueryFilterAnalyzer(readConfig: CosmosReadConfig) {
   private val unsupportedAttributes = List[String] {
     readConfig.readManyFilteringConfig.readManyFilterProperty
   }

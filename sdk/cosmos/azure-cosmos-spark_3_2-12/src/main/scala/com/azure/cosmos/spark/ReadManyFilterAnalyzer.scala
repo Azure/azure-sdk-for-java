@@ -8,7 +8,7 @@ import org.apache.spark.sql.sources.{Filter, In}
 
 import scala.collection.mutable.ListBuffer
 
-private case class ReadManyFilterAnalyzer(
+private[spark] case class ReadManyFilterAnalyzer(
                                            readConfig: CosmosReadConfig,
                                            partitionKeyDefinition: PartitionKeyDefinition) {
 

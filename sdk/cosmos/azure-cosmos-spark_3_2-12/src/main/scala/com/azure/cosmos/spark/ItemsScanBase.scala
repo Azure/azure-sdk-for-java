@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import java.util.{OptionalLong, UUID}
 import scala.collection.mutable.ListBuffer
 
-private abstract class ItemsScanBase(session: SparkSession,
+private[spark] abstract class ItemsScanBase(session: SparkSession,
                                      schema: StructType,
                                      config: Map[String, String],
                                      readConfig: CosmosReadConfig,

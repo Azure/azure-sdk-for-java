@@ -5,4 +5,4 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.PartitionKey
 
-private[cosmos] case class ReadManyFilter(partitionKey: PartitionKey, value: String)
+private[spark] case class ReadManyFilter(partitionKey: PartitionKey, value: String)
