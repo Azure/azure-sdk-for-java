@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, PartitionKey, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, SparkModelBridgeInternal}
 import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
 import reactor.util.concurrent.Queues
@@ -232,7 +232,7 @@ class FilterAnalyzerSpec extends UnitSpec {
 
   "_itemIdentity filter" should "be ignored when readManyFiltering is disabled" in {
     val filters = Array[Filter](
-      In("_itemIdentity", Array("id(1)pk(1)", "id(2)pk(2)"))
+      In("_itemIdentity", Array("id(1).pk(1)", "id(2).pk(2)"))
     )
 
     val analyzedFilters = filterProcessorWithoutCustomQuery.analyze(filters)

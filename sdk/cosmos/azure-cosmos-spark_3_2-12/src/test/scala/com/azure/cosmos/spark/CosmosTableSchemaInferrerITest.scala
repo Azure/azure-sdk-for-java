@@ -4,66 +4,52 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.ThroughputProperties
 import org.apache.spark.sql.types.{StringType, StructField}
-
-import java.util.UUID
 
 class CosmosTableSchemaInferrerITest
   extends IntegrationSpec
     with Spark
-    with CosmosClient
-    with AutoCleanableCosmosContainer {
+    with AutoCleanableCosmosContainersWithPkAsPartitionKey {
+
+  private val itemIdentityProperty = "_itemIdentity"
 
   it should "add _itemIdentity in the schema if readMany filtering is enabled and id not the pk" in {
+    for (runTimeFilteringEnabled <- Array(true, false)) {
+      for (readManyFilteringEnabled <- Array(true, false)) {
+        for (inferSchemaEnabled <- Array(true, false)) {
+          val config = Map(
+            "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+            "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+            "spark.cosmos.read.inferSchema.enabled" -> inferSchemaEnabled.toString,
+            "spark.cosmos.applicationName" -> "CosmosTableSchemaInferrerITest",
+            "spark.cosmos.read.runtimeFiltering.enabled" -> runTimeFilteringEnabled.toString,
+            "spark.cosmos.read.readManyFiltering.enabled" -> readManyFilteringEnabled.toString
+          )
 
-    val idNotPkContainerName = "idNotPkContainer-" + UUID.randomUUID().toString
-    val idNotPkContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(idNotPkContainerName)
+          val schema = Loan(
+            List[Option[CosmosClientCacheItem]](
+              Some(CosmosClientCache(
+                CosmosClientConfiguration(config, true, ""),
+                None,
+                "CosmosTableSchemaInferrerITest.inferSchema"
+              ))
+            )).to(cosmosClientCacheItems => {
+            CosmosTableSchemaInferrer.inferSchema(
+              cosmosClientCacheItems(0).get,
+              Option.empty[CosmosClientCacheItem],
+              config,
+              ItemsTable.defaultSchemaForInferenceDisabled)
+          })
 
-    try {
-      cosmosClient.getDatabase(cosmosDatabase)
-        .createContainerIfNotExists(idNotPkContainerName, "/pk", ThroughputProperties.createManualThroughput(400))
-        .block()
-
-      for (runTimeFilteringEnabled <- Array(true, false)) {
-        for (readManyFilteringEnabled <- Array(true, false)) {
-          for (inferSchemaEnabled <- Array(true, false)) {
-            val config = Map(
-              "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-              "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-              "spark.cosmos.database" -> cosmosDatabase,
-              "spark.cosmos.container" -> idNotPkContainerName,
-              "spark.cosmos.read.inferSchema.enabled" -> inferSchemaEnabled.toString,
-              "spark.cosmos.applicationName" -> "CosmosTableSchemaInferrerITest",
-              "spark.cosmos.read.runtimeFiltering.enabled" -> runTimeFilteringEnabled.toString,
-              "spark.cosmos.read.readManyFiltering.enabled" -> readManyFilteringEnabled.toString
-            )
-
-            val schema = Loan(
-              List[Option[CosmosClientCacheItem]](
-                Some(CosmosClientCache(
-                  CosmosClientConfiguration(config, true, ""),
-                  None,
-                  "CosmosTableSchemaInferrerITest.inferSchema"
-                ))
-              )).to(cosmosClientCacheItems => {
-              CosmosTableSchemaInferrer.inferSchema(
-                cosmosClientCacheItems(0).get,
-                Option.empty[CosmosClientCacheItem],
-                config,
-                ItemsTable.defaultSchemaForInferenceDisabled)
-            })
-
-            if (readManyFilteringEnabled) {
-              schema.fields should contain(StructField("_itemIdentity", StringType, true))
-            } else {
-              schema.fields should not contain (StructField("_itemIdentity", StringType, true))
-            }
+          if (readManyFilteringEnabled) {
+            schema.fields should contain(StructField(itemIdentityProperty, StringType, true))
+          } else {
+            schema.fields should not contain (StructField(itemIdentityProperty, StringType, true))
           }
         }
       }
-    } finally {
-      idNotPkContainer.delete().block()
     }
   }
 

@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyDefinition}
-import org.apache.spark.sql.sources.{Filter, In}
+import org.apache.spark.sql.sources.{EqualTo, Filter, In}
 
 import scala.collection.mutable.ListBuffer
 
@@ -25,18 +25,13 @@ private[spark] case class ReadManyFilterAnalyzer(
     for (filter <- filters) {
       filter match {
         case In(effectiveReadManyFilteringConfig.readManyFilterProperty, values) => {
-          effectiveReadManyFilteringConfig.readManyFilterProperty match {
-            case CosmosConstants.Properties.Id =>
-              for (value <- values) {
-                readManyFilters += getReadManyFilterFromId(value.toString)
-              }
-            case _ =>
-              for (value <- values) {
-                readManyFilters += getReadManyFilterFromNonId(value.toString)
-              }
-          }
-
+          getReadManyFilters(values, readManyFilters)
           // if we have reached here, then it means the filter can be handled
+          filtersToBeHandled += filter
+        }
+        // when there is only one item in the IN list,it may be optimized to use EqualTo instead
+        case EqualTo(effectiveReadManyFilteringConfig.readManyFilterProperty, value) => {
+          getReadManyFilters(Array(value), readManyFilters)
           filtersToBeHandled += filter
         }
         case _ => filtersCanNotBeHandled += filter
@@ -60,6 +55,19 @@ private[spark] case class ReadManyFilterAnalyzer(
       case Some(itemIdentity: CosmosItemIdentity) =>
         ReadManyFilter(itemIdentity.getPartitionKey, value)
       case _ => throw new IllegalArgumentException(s"${readConfig.readManyFilteringConfig.readManyFilterProperty} value is mis-formatted")
+    }
+  }
+
+  private[this] def getReadManyFilters(values: Array[Any], readManyFilters: ListBuffer[ReadManyFilter]): Unit = {
+    effectiveReadManyFilteringConfig.readManyFilterProperty match {
+      case CosmosConstants.Properties.Id =>
+        for (value <- values) {
+          readManyFilters += getReadManyFilterFromId(value.toString)
+        }
+      case _ =>
+        for (value <- values) {
+          readManyFilters += getReadManyFilterFromNonId(value.toString)
+        }
     }
   }
 }

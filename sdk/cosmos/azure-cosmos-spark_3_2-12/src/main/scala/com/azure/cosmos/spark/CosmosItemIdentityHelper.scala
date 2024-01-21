@@ -28,9 +28,7 @@ private[spark] object CosmosItemIdentityHelper {
       case cosmosItemIdentityStringRegx(idValue, pkValue) =>
         val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
         partitionKeyValue match {
-          case list: List[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, list.toArray))
           case arrayList: util.ArrayList[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, arrayList.toArray))
-          case array: Array[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, array))
           case _ => Some(new CosmosItemIdentity(new PartitionKey(partitionKeyValue), idValue))
         }
       case _ => None

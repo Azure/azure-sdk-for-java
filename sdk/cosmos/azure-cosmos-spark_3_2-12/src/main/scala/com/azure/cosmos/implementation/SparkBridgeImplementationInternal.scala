@@ -187,13 +187,13 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     partitionKeyToNormalizedRange(new PartitionKey(partitionKeyValue), pkDefinition)
   }
 
- private[cosmos] def partitionKeyToNormalizedRange(
-                                                  partitionKey: PartitionKey,
-                                                  partitionKeyDefinitionJson: PartitionKeyDefinition): NormalizedRange = {
-    val feedRange = FeedRange.forLogicalPartition(partitionKey).asInstanceOf[FeedRangePartitionKeyImpl]
-    val effectiveRange = feedRange.getEffectiveRange(partitionKeyDefinitionJson)
-    rangeToNormalizedRange(effectiveRange)
- }
+  private[cosmos] def partitionKeyToNormalizedRange(
+                                                    partitionKey: PartitionKey,
+                                                    partitionKeyDefinitionJson: PartitionKeyDefinition): NormalizedRange = {
+      val feedRange = FeedRange.forLogicalPartition(partitionKey).asInstanceOf[FeedRangePartitionKeyImpl]
+      val effectiveRange = feedRange.getEffectiveRange(partitionKeyDefinitionJson)
+      rangeToNormalizedRange(effectiveRange)
+  }
 
   private[cosmos] def hierarchicalPartitionKeyValuesToNormalizedRange
   (

@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
+import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.MockTaskContext
@@ -17,8 +17,7 @@ import scala.collection.mutable.ListBuffer
 class ItemsPartitionReaderWithReadManyITest
   extends IntegrationSpec
     with Spark
-    with CosmosClient
-    with AutoCleanableCosmosContainer {
+    with AutoCleanableCosmosContainersWithPkAsPartitionKey {
   private val idProperty = "id"
   private val pkProperty = "pk"
   private val itemIdentityProperty = "_itemIdentity"
@@ -27,29 +26,26 @@ class ItemsPartitionReaderWithReadManyITest
   //scalastyle:off magic.number
 
   "ItemsPartitionReaderWithReadMany" should "be able to get all items for the feedRange targeted to" in {
-    val idNotPkContainerName = "idNotPkContainer-" + UUID.randomUUID().toString
-    val idNotPkContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(idNotPkContainerName)
+    val testCases = Array(
+      (cosmosContainer, idProperty),
+      (cosmosContainersWithPkAsPartitionKey, pkProperty)
+    )
 
-    try {
-      cosmosClient.getDatabase(cosmosDatabase)
-        .createContainerIfNotExists(idNotPkContainerName, s"/$pkProperty", ThroughputProperties.createManualThroughput(400))
-        .block()
+    for (testCase <- testCases) {
+      logInfo(s"TestCase: containerName ${testCase._1}, partitionKeyProperty ${testCase._2}")
+      val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(testCase._1)
 
       // first create few items
-      val partitionKeyDefinition = idNotPkContainer.read().block().getProperties.getPartitionKeyDefinition
+      val partitionKeyDefinition = container.read().block().getProperties.getPartitionKeyDefinition
       val allItems = ListBuffer[ObjectNode]()
       for (_ <- 1 to 20) {
-        val id = UUID.randomUUID().toString
-        val pk = UUID.randomUUID().toString
-        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-        objectNode.put(idProperty, id)
-        objectNode.put(pkProperty, pk)
-        idNotPkContainer.createItem(objectNode).block()
+        val objectNode = getNewItem(testCase._2)
+        container.createItem(objectNode).block()
         allItems += objectNode
-        logInfo(s"ID of test doc: $id")
+        logInfo(s"ID of test doc: ${objectNode.get(idProperty).asText()}")
       }
 
-      val feedRanges = idNotPkContainer.getFeedRanges().block()
+      val feedRanges = container.getFeedRanges().block()
       val sparkPartitionNormalizedRange = SparkBridgeImplementationInternal.toNormalizedRange(feedRanges.get(0))
 
       // then get all items overlap with sparkPartitionNormalizedRange
@@ -57,7 +53,7 @@ class ItemsPartitionReaderWithReadManyITest
         allItems.filter(objectNode => {
           val feedRange =
             SparkBridgeImplementationInternal.partitionKeyToNormalizedRange(
-              new PartitionKey(objectNode.get(pkProperty).asText()),
+              new PartitionKey(objectNode.get(testCase._2).asText()),
               partitionKeyDefinition)
 
           SparkBridgeImplementationInternal.doRangesOverlap(feedRange, sparkPartitionNormalizedRange)
@@ -67,18 +63,14 @@ class ItemsPartitionReaderWithReadManyITest
         "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
         "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
         "spark.cosmos.database" -> cosmosDatabase,
-        "spark.cosmos.container" -> idNotPkContainerName,
+        "spark.cosmos.container" -> testCase._1,
         "spark.cosmos.read.inferSchema.enabled" -> "true",
         "spark.cosmos.applicationName" -> "ItemsScan",
         "spark.cosmos.read.runtimeFiltering.enabled" -> "true",
         "spark.cosmos.read.readManyFiltering.enabled" -> "true"
       )
 
-      val readSchema = StructType(Seq(
-        StructField(idProperty, StringType, false),
-        StructField(pkProperty, StringType, false),
-        StructField("_itemIdentity", StringType, true)
-      ))
+      val readSchema = getSchema(testCase._2)
 
       val diagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "")
       val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
@@ -98,7 +90,7 @@ class ItemsPartitionReaderWithReadManyITest
             .map(objectNode =>
               CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
                 objectNode.get(idProperty).asText(),
-                objectNode.get(pkProperty).asText()))
+                objectNode.get(testCase._2).asText()))
         )
 
       val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
@@ -108,17 +100,23 @@ class ItemsPartitionReaderWithReadManyITest
       }
 
       itemsReadFromPartitionReader.size shouldEqual itemsOnPlannedFeedRange.size
-      // check _itemIdentity column is added
-      itemsReadFromPartitionReader.foreach(item => {
-        item.get(itemIdentityProperty).asText() shouldEqual
-          CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get(idProperty).asText(), item.get(pkProperty).asText())
-      })
+      if (testCase._2.equalsIgnoreCase(idProperty)) {
+        // validate there is no _itemIdentity property being populated
+        itemsReadFromPartitionReader.foreach(item => {
+          item.get(itemIdentityProperty) should be (null)
+        })
+      } else {
+        // check _itemIdentity column is added
+        itemsReadFromPartitionReader.foreach(item => {
+          item.get(itemIdentityProperty).asText() shouldEqual
+            CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get(idProperty).asText(), item.get(testCase._2).asText())
+        })
+      }
 
+      // validate fetched all items on the selected feedRange
       val idsOnPlannedFeedRange = itemsOnPlannedFeedRange
         .map(objectNode => objectNode.get(idProperty).asText())
       itemsReadFromPartitionReader.map(item => item.get(idProperty).asText()).toList should contain allElementsOf (idsOnPlannedFeedRange)
-    } finally {
-      idNotPkContainer.delete().block()
     }
   }
 
@@ -131,6 +129,36 @@ class ItemsPartitionReaderWithReadManyITest
         cosmosClientMetadataCachesSnapshot,
         Option.empty[CosmosClientMetadataCachesSnapshot]))
   }
+
+  private def getSchema(partitionKeyProperty: String): StructType = {
+    if (partitionKeyProperty.equalsIgnoreCase(idProperty)) {
+      StructType(Seq(
+        StructField(idProperty, StringType, false)
+      ))
+    } else {
+      StructType(Seq(
+        StructField(idProperty, StringType, false),
+        StructField(partitionKeyProperty, StringType, false),
+        StructField("_itemIdentity", StringType, true)
+      ))
+    }
+  }
+
+  private def getNewItem(partitionKeyProperty: String): ObjectNode = {
+    val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+
+    val id = UUID.randomUUID().toString
+    objectNode.put(idProperty, id)
+
+    if (!partitionKeyProperty.equalsIgnoreCase(idProperty)) {
+      val pk = UUID.randomUUID().toString
+      objectNode.put(partitionKeyProperty, pk)
+
+    }
+
+    objectNode
+  }
+
   //scalastyle:on multiple.string.literals
   //scalastyle:on magic.number
 }

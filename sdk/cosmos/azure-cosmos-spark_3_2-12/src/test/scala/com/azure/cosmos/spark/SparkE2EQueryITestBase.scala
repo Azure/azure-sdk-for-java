@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
 import java.util.UUID
+import scala.collection.immutable.Map
 import scala.collection.mutable
 
 abstract class SparkE2EQueryITestBase
@@ -1214,6 +1215,69 @@ abstract class SparkE2EQueryITestBase
       } finally {
         SparkBridgeImplementationInternal.configureSimpleObjectMapper(false)
       }
+    }
+  }
+
+  "spark query" can "read item by using readMany" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem =
+      s"""
+         | {
+         |   "id" : "${id}",
+         |   "prop1" : 5,
+         |   "nestedObject" : {
+         |     "prop2" : "6"
+         |   }
+         | }
+         |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val joinContainerName = UUID.randomUUID().toString
+    val joinContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(joinContainerName)
+    try {
+      cosmosClient
+        .getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(joinContainerName, "/id", ThroughputProperties.createManualThroughput(400))
+        .block()
+
+      val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+      val requestOptions = new CosmosItemRequestOptions()
+      container.createItem(blob, new PartitionKey(id), requestOptions).block()
+      joinContainer.createItem(blob, new PartitionKey(id), requestOptions).block()
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+        "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+      )
+
+      val joinCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> joinContainerName,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+      )
+
+      val joinDf = spark.read.format("cosmos.oltp").options(joinCfg).load().select("id")
+      val valuesForFilter = joinDf.collect().map(_.getString(0))
+
+      val df = spark.read.format("cosmos.oltp").options(cfg).load()
+      val rowsArray = df.where(df("id") isin (valuesForFilter: _*)).collect()
+      rowsArray should have size 1
+
+      val item = rowsArray(0)
+      item.getAs[String]("id") shouldEqual id
+      item.getAs[Int]("prop1") shouldEqual 5
+
+    } finally {
+      joinContainer.delete().block()
     }
   }
 
