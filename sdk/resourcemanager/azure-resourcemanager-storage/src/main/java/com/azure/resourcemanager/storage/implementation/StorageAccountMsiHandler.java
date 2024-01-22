@@ -174,10 +174,9 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Method that handle the case where user request indicates all it want to do is remove all identities associated
-     * with the storage account.
+     * Method that handles the case where user request indicates all he/she wants to do is to remove all associated identities。
      *
-     * @return true if user indented to remove all the identities.
+     * @return true if user intends to remove all the identities
      */
     private boolean handleRemoveAllExternalIdentitiesCase() {
         if (!this.userAssignedIdentities.isEmpty()) {
