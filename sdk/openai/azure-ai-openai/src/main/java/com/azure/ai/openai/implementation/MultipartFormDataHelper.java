@@ -7,11 +7,14 @@ package com.azure.ai.openai.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
+import java.util.List;
 import java.util.UUID;
 
 // DO NOT modify this helper class
@@ -120,19 +123,40 @@ public final class MultipartFormDataHelper {
      */
     public MultipartFormDataHelper serializeFileField(String fieldName, BinaryData file, String filename) {
         if (file != null) {
-            // Multipart preamble
-            String fileFieldPreamble = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName
-                + "\"; filename=\"" + filename + "\"" + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
-            byte[] data = fileFieldPreamble.getBytes(encoderCharset);
-            appendBytes(data);
+            if (CoreUtils.isNullOrEmpty(filename)) {
+                filename = fieldName;
+            }
+            filename = normalizeAscii(filename);
 
-            // Writing the file into the request as a byte stream
-            requestLength += file.getLength();
-            requestDataStream = new SequenceInputStream(requestDataStream, file.toStream());
+            writeFileField(fieldName, file, filename);
+        }
+        return this;
+    }
 
-            // CRLF
-            data = CRLF.getBytes(encoderCharset);
-            appendBytes(data);
+    // application/octet-stream, multiple files
+    /**
+     * Formats a application/octet-stream field (potentially multiple files) for a multipart HTTP request.
+     *
+     * @param fieldName the field name
+     * @param files the List of BinaryData of the files
+     * @param filenames the List of filenames.
+     * If it is {@code null}, or the size of the List is smaller than that of "files", implementation-specific filename
+     * is used.
+     * @return the MultipartFormDataHelper instance
+     */
+    public MultipartFormDataHelper serializeFileFields(String fieldName, List<BinaryData> files,
+        List<String> filenames) {
+        if (files != null) {
+            for (int i = 0; i < files.size(); ++i) {
+                BinaryData file = files.get(i);
+                String filename = (filenames != null && filenames.size() > i) ? filenames.get(i) : null;
+                if (CoreUtils.isNullOrEmpty(filename)) {
+                    filename = fieldName + String.valueOf(i + 1);
+                }
+                filename = normalizeAscii(filename);
+
+                writeFileField(fieldName, file, filename);
+            }
         }
         return this;
     }
@@ -154,8 +178,28 @@ public final class MultipartFormDataHelper {
         return this;
     }
 
+    private void writeFileField(String fieldName, BinaryData file, String filename) {
+        // Multipart preamble
+        String fileFieldPreamble = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName
+            + "\"; filename=\"" + filename + "\"" + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
+        byte[] data = fileFieldPreamble.getBytes(encoderCharset);
+        appendBytes(data);
+
+        // Writing the file into the request as a byte stream
+        requestLength += file.getLength();
+        requestDataStream = new SequenceInputStream(requestDataStream, file.toStream());
+
+        // CRLF
+        data = CRLF.getBytes(encoderCharset);
+        appendBytes(data);
+    }
+
     private void appendBytes(byte[] bytes) {
         requestLength += bytes.length;
         requestDataStream = new SequenceInputStream(requestDataStream, new ByteArrayInputStream(bytes));
+    }
+
+    private static String normalizeAscii(String text) {
+        return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[^\\x00-\\x7F]", "");
     }
 }
