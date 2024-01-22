@@ -327,7 +327,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             signingResult.getSignature().length, new Context("key1", "value1"));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context
 
-        byte[] signature = new signResult.getSignature();
+        byte[] signature = signResult.getSignature();
 
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte
         byte[] myData = new byte[32];
