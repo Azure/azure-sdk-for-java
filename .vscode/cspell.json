@@ -53,6 +53,7 @@
     "*.parquet",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**/*-perf/**",
+    "**/*-stress/**",
     "**/*-tests/**",
     "**/*-test-*/**",
     "**/resourcemanager/**",
@@ -375,6 +376,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -697,7 +699,7 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",
@@ -816,7 +818,8 @@
         "Oleh",
         "Dokuka",
         "Netifi",
-        "Zaugg"
+        "Zaugg",
+        "lrgrwrks"
       ]
     },
     {
@@ -1062,6 +1065,12 @@
         "Dspotbugs",
         "Pdev",
 	"Djava"
+      ]
+    },
+    {
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
+      "words": [
+        "javac"
       ]
     },
     {

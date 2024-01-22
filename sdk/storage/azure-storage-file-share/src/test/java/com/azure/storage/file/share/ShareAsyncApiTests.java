@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -21,7 +22,6 @@ import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -242,7 +242,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
 
         Response<Boolean> initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
-        sleepIfRecord(45000);
+        sleepIfRunningAgainstService(45000);
         // Calling delete again after garbage collection is completed
         Response<Boolean> secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
 
@@ -270,7 +270,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @PlaybackOnly
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
@@ -292,7 +292,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void setPremiumProperties() {
         List<ShareRootSquash> rootSquashes = Arrays.asList(

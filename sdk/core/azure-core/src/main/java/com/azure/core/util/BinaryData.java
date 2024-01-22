@@ -22,10 +22,14 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -1403,6 +1407,61 @@ public final class BinaryData {
      */
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return content.toFluxByteBuffer();
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link OutputStream}.
+     * <p>
+     * This method does not close the {@link OutputStream}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param outputStream The {@link OutputStream} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code outputStream} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(OutputStream outputStream) throws IOException {
+        Objects.requireNonNull(outputStream, "'outputStream' cannot be null.");
+
+        content.writeTo(outputStream);
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link WritableByteChannel}.
+     * <p>
+     * This method does not close the {@link WritableByteChannel}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param channel The {@link WritableByteChannel} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code channel} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        Objects.requireNonNull(channel, "'channel' cannot be null.");
+
+        content.writeTo(channel);
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link AsynchronousByteChannel}.
+     * <p>
+     * This method does not close the {@link AsynchronousByteChannel}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryDataAsync()} to create a replayable copy.
+     *
+     * @param channel The {@link AsynchronousByteChannel} to write the contents of this {@link BinaryData} to.
+     * @return A {@link Mono} the completes once content has been written or had an error writing.
+     * @throws NullPointerException If {@code channel} is null.
+     */
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        return content.writeTo(channel);
     }
 
     /**

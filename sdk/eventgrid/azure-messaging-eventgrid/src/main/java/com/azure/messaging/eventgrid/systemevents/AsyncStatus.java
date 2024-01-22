@@ -5,42 +5,49 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Asynchronous operation status of the operation on the app service plan. */
+/**
+ * Asynchronous operation status of the operation on the app service plan.
+ */
 public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
-    /** Async operation has started. */
+    /**
+     * Async operation has started.
+     */
     public static final AsyncStatus STARTED = fromString("Started");
 
-    /** Async operation has completed. */
+    /**
+     * Async operation has completed.
+     */
     public static final AsyncStatus COMPLETED = fromString("Completed");
 
-    /** Async operation failed to complete. */
+    /**
+     * Async operation failed to complete.
+     */
     public static final AsyncStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of AsyncStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AsyncStatus() {}
+    public AsyncStatus() {
+    }
 
     /**
      * Creates or finds a AsyncStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AsyncStatus.
      */
-    @JsonCreator
     public static AsyncStatus fromString(String name) {
         return fromString(name, AsyncStatus.class);
     }
 
     /**
      * Gets known AsyncStatus values.
-     *
+     * 
      * @return known AsyncStatus values.
      */
     public static Collection<AsyncStatus> values() {

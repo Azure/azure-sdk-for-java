@@ -9,102 +9,105 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.PoolInner;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of Pool. */
+/**
+ * An immutable client-side representation of Pool.
+ */
 public interface Pool {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the identity property: The type of identity used for the Batch Pool.
-     *
+     * 
      * @return the identity value.
      */
     BatchPoolIdentity identity();
 
     /**
      * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the displayName property: The display name for the pool.
-     *
-     * <p>The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
-     *
+     * 
+     * The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the lastModified property: The last modified time of the pool.
-     *
-     * <p>This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings,
+     * 
+     * This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings,
      * changed. It does not factor in node-level changes such as a compute node changing state.
-     *
+     * 
      * @return the lastModified value.
      */
     OffsetDateTime lastModified();
 
     /**
      * Gets the creationTime property: The creation time of the pool.
-     *
+     * 
      * @return the creationTime value.
      */
     OffsetDateTime creationTime();
 
     /**
      * Gets the provisioningState property: The current state of the pool.
-     *
+     * 
      * @return the provisioningState value.
      */
     PoolProvisioningState provisioningState();
 
     /**
      * Gets the provisioningStateTransitionTime property: The time at which the pool entered its current state.
-     *
+     * 
      * @return the provisioningStateTransitionTime value.
      */
     OffsetDateTime provisioningStateTransitionTime();
 
     /**
      * Gets the allocationState property: Whether the pool is resizing.
-     *
+     * 
      * @return the allocationState value.
      */
     AllocationState allocationState();
 
     /**
      * Gets the allocationStateTransitionTime property: The time at which the pool entered its current allocation state.
-     *
+     * 
      * @return the allocationStateTransitionTime value.
      */
     OffsetDateTime allocationStateTransitionTime();
 
     /**
      * Gets the vmSize property: The size of virtual machines in the pool. All VMs in a pool are the same size.
-     *
-     * <p>For information about available sizes of virtual machines for Cloud Services pools (pools created with
+     * 
+     * For information about available sizes of virtual machines for Cloud Services pools (pools created with
      * cloudServiceConfiguration), see Sizes for Cloud Services
      * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud
      * Services VM sizes except ExtraSmall. For information about available VM sizes for pools using images from the
@@ -113,69 +116,69 @@ public interface Pool {
      * Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch
      * supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and
      * STANDARD_DSV2 series).
-     *
+     * 
      * @return the vmSize value.
      */
     String vmSize();
 
     /**
      * Gets the deploymentConfiguration property: Deployment configuration properties.
-     *
-     * <p>Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS),
+     * 
+     * Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services (PaaS),
      * while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
-     *
+     * 
      * @return the deploymentConfiguration value.
      */
     DeploymentConfiguration deploymentConfiguration();
 
     /**
      * Gets the currentDedicatedNodes property: The number of dedicated compute nodes currently in the pool.
-     *
+     * 
      * @return the currentDedicatedNodes value.
      */
     Integer currentDedicatedNodes();
 
     /**
      * Gets the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
-     *
+     * 
      * @return the currentLowPriorityNodes value.
      */
     Integer currentLowPriorityNodes();
 
     /**
      * Gets the scaleSettings property: Scale settings for the pool
-     *
-     * <p>Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes
-     * is specified, or 'autoScale' which defines a formula which is periodically reevaluated. If this property is not
+     * 
+     * Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is
+     * specified, or 'autoScale' which defines a formula which is periodically reevaluated. If this property is not
      * specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
-     *
+     * 
      * @return the scaleSettings value.
      */
     ScaleSettings scaleSettings();
 
     /**
      * Gets the autoScaleRun property: The results and errors from an execution of a pool autoscale formula.
-     *
-     * <p>This property is set only if the pool automatically scales, i.e. autoScaleSettings are used.
-     *
+     * 
+     * This property is set only if the pool automatically scales, i.e. autoScaleSettings are used.
+     * 
      * @return the autoScaleRun value.
      */
     AutoScaleRun autoScaleRun();
 
     /**
      * Gets the interNodeCommunication property: Whether the pool permits direct communication between nodes.
-     *
-     * <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
-     * chance of the requested number of nodes to be allocated in the pool. If not specified, this value defaults to
+     * 
+     * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance
+     * of the requested number of nodes to be allocated in the pool. If not specified, this value defaults to
      * 'Disabled'.
-     *
+     * 
      * @return the interNodeCommunication value.
      */
     InterNodeCommunicationState interNodeCommunication();
 
     /**
      * Gets the networkConfiguration property: The network configuration for a pool.
-     *
+     * 
      * @return the networkConfiguration value.
      */
     NetworkConfiguration networkConfiguration();
@@ -183,35 +186,35 @@ public interface Pool {
     /**
      * Gets the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
      * compute node in the pool.
-     *
-     * <p>The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the
-     * pool or 256.
-     *
+     * 
+     * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool
+     * or 256.
+     * 
      * @return the taskSlotsPerNode value.
      */
     Integer taskSlotsPerNode();
 
     /**
      * Gets the taskSchedulingPolicy property: Specifies how tasks should be distributed across compute nodes.
-     *
-     * <p>If not specified, the default is spread.
-     *
+     * 
+     * If not specified, the default is spread.
+     * 
      * @return the taskSchedulingPolicy value.
      */
     TaskSchedulingPolicy taskSchedulingPolicy();
 
     /**
      * Gets the userAccounts property: The list of user accounts to be created on each node in the pool.
-     *
+     * 
      * @return the userAccounts value.
      */
     List<UserAccount> userAccounts();
 
     /**
      * Gets the metadata property: A list of name-value pairs associated with the pool as metadata.
-     *
-     * <p>The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
-     *
+     * 
+     * The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+     * 
      * @return the metadata value.
      */
     List<MetadataItem> metadata();
@@ -219,26 +222,26 @@ public interface Pool {
     /**
      * Gets the startTask property: A task which is run when a compute node joins a pool in the Azure Batch service, or
      * when the compute node is rebooted or reimaged.
-     *
-     * <p>In an PATCH (update) operation, this property can be set to an empty object to remove the start task from the
+     * 
+     * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from the
      * pool.
-     *
+     * 
      * @return the startTask value.
      */
     StartTask startTask();
 
     /**
      * Gets the certificates property: The list of certificates to be installed on each compute node in the pool.
-     *
-     * <p>For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and
+     * 
+     * For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and
      * location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory
      * and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For
      * certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
      * /home/{user-name}/certs) and certificates are placed in that directory.
-     *
-     * <p>Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @return the certificates value.
      */
     List<CertificateReference> certificates();
@@ -246,11 +249,11 @@ public interface Pool {
     /**
      * Gets the applicationPackages property: The list of application packages to be installed on each compute node in
      * the pool.
-     *
-     * <p>Changes to application package references affect all new compute nodes joining the pool, but do not affect
+     * 
+     * Changes to application package references affect all new compute nodes joining the pool, but do not affect
      * compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10
      * application package references on any given pool.
-     *
+     * 
      * @return the applicationPackages value.
      */
     List<ApplicationPackageReference> applicationPackages();
@@ -258,79 +261,96 @@ public interface Pool {
     /**
      * Gets the applicationLicenses property: The list of application licenses the Batch service will make available on
      * each compute node in the pool.
-     *
-     * <p>The list of application licenses must be a subset of available Batch service application licenses. If a
-     * license is requested which is not supported, pool creation will fail.
-     *
+     * 
+     * The list of application licenses must be a subset of available Batch service application licenses. If a license
+     * is requested which is not supported, pool creation will fail.
+     * 
      * @return the applicationLicenses value.
      */
     List<String> applicationLicenses();
 
     /**
      * Gets the resizeOperationStatus property: Details about the current or last completed resize operation.
-     *
-     * <p>Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
+     * 
+     * Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
      * operation (if the AllocationState is Steady).
-     *
+     * 
      * @return the resizeOperationStatus value.
      */
     ResizeOperationStatus resizeOperationStatus();
 
     /**
      * Gets the mountConfiguration property: A list of file systems to mount on each node in the pool.
-     *
-     * <p>This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
-     *
+     * 
+     * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+     * 
      * @return the mountConfiguration value.
      */
     List<MountConfiguration> mountConfiguration();
 
     /**
      * Gets the targetNodeCommunicationMode property: Determines how a pool communicates with the Batch service.
-     *
-     * <p>If omitted, the default value is Default.
-     *
+     * 
+     * If omitted, the default value is Default.
+     * 
      * @return the targetNodeCommunicationMode value.
      */
     NodeCommunicationMode targetNodeCommunicationMode();
 
     /**
      * Gets the currentNodeCommunicationMode property: Determines how a pool communicates with the Batch service.
-     *
+     * 
      * @return the currentNodeCommunicationMode value.
      */
     NodeCommunicationMode currentNodeCommunicationMode();
 
     /**
+     * Gets the resourceTags property: The user-defined tags to be associated with the Azure Batch Pool. When specified,
+     * these tags are propagated to the backing Azure resources associated with the pool. This property can only be
+     * specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     * 
+     * @return the resourceTags value.
+     */
+    Map<String, String> resourceTags();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.PoolInner object.
-     *
+     * 
      * @return the inner object.
      */
     PoolInner innerModel();
 
-    /** The entirety of the Pool definition. */
+    /**
+     * The entirety of the Pool definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Pool definition stages. */
+    /**
+     * The Pool definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Pool definition. */
+        /**
+         * The first stage of the Pool definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Pool definition allowing to specify parent resource. */
+        /**
+         * The stage of the Pool definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group that contains the Batch account.
              * @param accountName The name of the Batch account.
              * @return the next definition stage.
@@ -342,76 +362,72 @@ public interface Pool {
          * The stage of the Pool definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithIdentity,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithVmSize,
-                DefinitionStages.WithDeploymentConfiguration,
-                DefinitionStages.WithScaleSettings,
-                DefinitionStages.WithInterNodeCommunication,
-                DefinitionStages.WithNetworkConfiguration,
-                DefinitionStages.WithTaskSlotsPerNode,
-                DefinitionStages.WithTaskSchedulingPolicy,
-                DefinitionStages.WithUserAccounts,
-                DefinitionStages.WithMetadata,
-                DefinitionStages.WithStartTask,
-                DefinitionStages.WithCertificates,
-                DefinitionStages.WithApplicationPackages,
-                DefinitionStages.WithApplicationLicenses,
-                DefinitionStages.WithMountConfiguration,
-                DefinitionStages.WithTargetNodeCommunicationMode,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithVmSize, DefinitionStages.WithDeploymentConfiguration,
+            DefinitionStages.WithScaleSettings, DefinitionStages.WithInterNodeCommunication,
+            DefinitionStages.WithNetworkConfiguration, DefinitionStages.WithTaskSlotsPerNode,
+            DefinitionStages.WithTaskSchedulingPolicy, DefinitionStages.WithUserAccounts, DefinitionStages.WithMetadata,
+            DefinitionStages.WithStartTask, DefinitionStages.WithCertificates, DefinitionStages.WithApplicationPackages,
+            DefinitionStages.WithApplicationLicenses, DefinitionStages.WithMountConfiguration,
+            DefinitionStages.WithTargetNodeCommunicationMode, DefinitionStages.WithResourceTags,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Pool create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Pool create(Context context);
         }
 
-        /** The stage of the Pool definition allowing to specify identity. */
+        /**
+         * The stage of the Pool definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The type of identity used for the Batch Pool..
-             *
+             * 
              * @param identity The type of identity used for the Batch Pool.
              * @return the next definition stage.
              */
             WithCreate withIdentity(BatchPoolIdentity identity);
         }
 
-        /** The stage of the Pool definition allowing to specify displayName. */
+        /**
+         * The stage of the Pool definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name for the pool.
-             *
-             * <p>The display name need not be unique and can contain any Unicode characters up to a maximum length of
+             * 
+             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
              * 1024..
-             *
+             * 
              * @param displayName The display name for the pool.
-             *     <p>The display name need not be unique and can contain any Unicode characters up to a maximum length
-             *     of 1024.
+             * 
+             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
+             * 1024.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
 
-        /** The stage of the Pool definition allowing to specify vmSize. */
+        /**
+         * The stage of the Pool definition allowing to specify vmSize.
+         */
         interface WithVmSize {
             /**
              * Specifies the vmSize property: The size of virtual machines in the pool. All VMs in a pool are the same
              * size.
-             *
-             * <p>For information about available sizes of virtual machines for Cloud Services pools (pools created with
+             * 
+             * For information about available sizes of virtual machines for Cloud Services pools (pools created with
              * cloudServiceConfiguration), see Sizes for Cloud Services
              * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
              * Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
@@ -421,285 +437,347 @@ public interface Pool {
              * Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
              * Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
              * STANDARD_DS, and STANDARD_DSV2 series)..
-             *
+             * 
              * @param vmSize The size of virtual machines in the pool. All VMs in a pool are the same size.
-             *     <p>For information about available sizes of virtual machines for Cloud Services pools (pools created
-             *     with cloudServiceConfiguration), see Sizes for Cloud Services
-             *     (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
-             *     Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
-             *     images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see
-             *     Sizes for Virtual Machines (Linux)
-             *     (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for
-             *     Virtual Machines (Windows)
-             *     (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-             *     all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and
-             *     STANDARD_DSV2 series).
+             * 
+             * For information about available sizes of virtual machines for Cloud Services pools (pools created with
+             * cloudServiceConfiguration), see Sizes for Cloud Services
+             * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
+             * Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
+             * images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes
+             * for Virtual Machines (Linux)
+             * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual
+             * Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+             * Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+             * STANDARD_DS, and STANDARD_DSV2 series).
              * @return the next definition stage.
              */
             WithCreate withVmSize(String vmSize);
         }
 
-        /** The stage of the Pool definition allowing to specify deploymentConfiguration. */
+        /**
+         * The stage of the Pool definition allowing to specify deploymentConfiguration.
+         */
         interface WithDeploymentConfiguration {
             /**
              * Specifies the deploymentConfiguration property: Deployment configuration properties.
-             *
-             * <p>Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
+             * 
+             * Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
              * (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS)..
-             *
+             * 
              * @param deploymentConfiguration Deployment configuration properties.
-             *     <p>Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud
-             *     Services (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
+             * 
+             * Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
+             * (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
              * @return the next definition stage.
              */
             WithCreate withDeploymentConfiguration(DeploymentConfiguration deploymentConfiguration);
         }
 
-        /** The stage of the Pool definition allowing to specify scaleSettings. */
+        /**
+         * The stage of the Pool definition allowing to specify scaleSettings.
+         */
         interface WithScaleSettings {
             /**
              * Specifies the scaleSettings property: Scale settings for the pool
-             *
-             * <p>Defines the desired size of the pool. This can either be 'fixedScale' where the requested
+             * 
+             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
              * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
              * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
              * targetDedicatedNodes..
-             *
+             * 
              * @param scaleSettings Scale settings for the pool
-             *     <p>Defines the desired size of the pool. This can either be 'fixedScale' where the requested
-             *     targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
-             *     reevaluated. If this property is not specified, the pool will have a fixed scale with 0
-             *     targetDedicatedNodes.
+             * 
+             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
+             * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
+             * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
+             * targetDedicatedNodes.
              * @return the next definition stage.
              */
             WithCreate withScaleSettings(ScaleSettings scaleSettings);
         }
 
-        /** The stage of the Pool definition allowing to specify interNodeCommunication. */
+        /**
+         * The stage of the Pool definition allowing to specify interNodeCommunication.
+         */
         interface WithInterNodeCommunication {
             /**
              * Specifies the interNodeCommunication property: Whether the pool permits direct communication between
              * nodes.
-             *
-             * <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce
-             * the chance of the requested number of nodes to be allocated in the pool. If not specified, this value
+             * 
+             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
+             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
              * defaults to 'Disabled'..
-             *
+             * 
              * @param interNodeCommunication Whether the pool permits direct communication between nodes.
-             *     <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can
-             *     reduce the chance of the requested number of nodes to be allocated in the pool. If not specified,
-             *     this value defaults to 'Disabled'.
+             * 
+             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
+             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
+             * defaults to 'Disabled'.
              * @return the next definition stage.
              */
             WithCreate withInterNodeCommunication(InterNodeCommunicationState interNodeCommunication);
         }
 
-        /** The stage of the Pool definition allowing to specify networkConfiguration. */
+        /**
+         * The stage of the Pool definition allowing to specify networkConfiguration.
+         */
         interface WithNetworkConfiguration {
             /**
              * Specifies the networkConfiguration property: The network configuration for a pool..
-             *
+             * 
              * @param networkConfiguration The network configuration for a pool.
              * @return the next definition stage.
              */
             WithCreate withNetworkConfiguration(NetworkConfiguration networkConfiguration);
         }
 
-        /** The stage of the Pool definition allowing to specify taskSlotsPerNode. */
+        /**
+         * The stage of the Pool definition allowing to specify taskSlotsPerNode.
+         */
         interface WithTaskSlotsPerNode {
             /**
              * Specifies the taskSlotsPerNode property: The number of task slots that can be used to run concurrent
              * tasks on a single compute node in the pool.
-             *
-             * <p>The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize
-             * of the pool or 256..
-             *
+             * 
+             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
+             * the pool or 256..
+             * 
              * @param taskSlotsPerNode The number of task slots that can be used to run concurrent tasks on a single
-             *     compute node in the pool.
-             *     <p>The default value is 1. The maximum value is the smaller of 4 times the number of cores of the
-             *     vmSize of the pool or 256.
+             * compute node in the pool.
+             * 
+             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
+             * the pool or 256.
              * @return the next definition stage.
              */
             WithCreate withTaskSlotsPerNode(Integer taskSlotsPerNode);
         }
 
-        /** The stage of the Pool definition allowing to specify taskSchedulingPolicy. */
+        /**
+         * The stage of the Pool definition allowing to specify taskSchedulingPolicy.
+         */
         interface WithTaskSchedulingPolicy {
             /**
              * Specifies the taskSchedulingPolicy property: Specifies how tasks should be distributed across compute
              * nodes.
-             *
-             * <p>If not specified, the default is spread..
-             *
+             * 
+             * If not specified, the default is spread..
+             * 
              * @param taskSchedulingPolicy Specifies how tasks should be distributed across compute nodes.
-             *     <p>If not specified, the default is spread.
+             * 
+             * If not specified, the default is spread.
              * @return the next definition stage.
              */
             WithCreate withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy);
         }
 
-        /** The stage of the Pool definition allowing to specify userAccounts. */
+        /**
+         * The stage of the Pool definition allowing to specify userAccounts.
+         */
         interface WithUserAccounts {
             /**
              * Specifies the userAccounts property: The list of user accounts to be created on each node in the pool..
-             *
+             * 
              * @param userAccounts The list of user accounts to be created on each node in the pool.
              * @return the next definition stage.
              */
             WithCreate withUserAccounts(List<UserAccount> userAccounts);
         }
 
-        /** The stage of the Pool definition allowing to specify metadata. */
+        /**
+         * The stage of the Pool definition allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: A list of name-value pairs associated with the pool as metadata.
-             *
-             * <p>The Batch service does not assign any meaning to metadata; it is solely for the use of user code..
-             *
+             * 
+             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code..
+             * 
              * @param metadata A list of name-value pairs associated with the pool as metadata.
-             *     <p>The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+             * 
+             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
              * @return the next definition stage.
              */
             WithCreate withMetadata(List<MetadataItem> metadata);
         }
 
-        /** The stage of the Pool definition allowing to specify startTask. */
+        /**
+         * The stage of the Pool definition allowing to specify startTask.
+         */
         interface WithStartTask {
             /**
              * Specifies the startTask property: A task which is run when a compute node joins a pool in the Azure Batch
              * service, or when the compute node is rebooted or reimaged.
-             *
-             * <p>In an PATCH (update) operation, this property can be set to an empty object to remove the start task
-             * from the pool..
-             *
+             * 
+             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
+             * the pool..
+             * 
              * @param startTask A task which is run when a compute node joins a pool in the Azure Batch service, or when
-             *     the compute node is rebooted or reimaged.
-             *     <p>In an PATCH (update) operation, this property can be set to an empty object to remove the start
-             *     task from the pool.
+             * the compute node is rebooted or reimaged.
+             * 
+             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
+             * the pool.
              * @return the next definition stage.
              */
             WithCreate withStartTask(StartTask startTask);
         }
 
-        /** The stage of the Pool definition allowing to specify certificates. */
+        /**
+         * The stage of the Pool definition allowing to specify certificates.
+         */
         interface WithCertificates {
             /**
              * Specifies the certificates property: The list of certificates to be installed on each compute node in the
              * pool.
-             *
-             * <p>For Windows compute nodes, the Batch service installs the certificates to the specified certificate
-             * store and location. For Linux compute nodes, the certificates are stored in a directory inside the task
-             * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query
-             * for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in
-             * the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
-             *
-             * <p>Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
+             * 
+             * For Windows compute nodes, the Batch service installs the certificates to the specified certificate store
+             * and location. For Linux compute nodes, the certificates are stored in a directory inside the task working
+             * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+             * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+             * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+             * 
+             * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
              * KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead..
-             *
+             * 
              * @param certificates The list of certificates to be installed on each compute node in the pool.
-             *     <p>For Windows compute nodes, the Batch service installs the certificates to the specified
-             *     certificate store and location. For Linux compute nodes, the certificates are stored in a directory
-             *     inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied
-             *     to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs'
-             *     directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates
-             *     are placed in that directory.
-             *     <p>Warning: This property is deprecated and will be removed after February, 2024. Please use the
-             *     [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-             *     instead.
+             * 
+             * For Windows compute nodes, the Batch service installs the certificates to the specified certificate store
+             * and location. For Linux compute nodes, the certificates are stored in a directory inside the task working
+             * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+             * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+             * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+             * 
+             * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
+             * KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
              * @return the next definition stage.
              */
             WithCreate withCertificates(List<CertificateReference> certificates);
         }
 
-        /** The stage of the Pool definition allowing to specify applicationPackages. */
+        /**
+         * The stage of the Pool definition allowing to specify applicationPackages.
+         */
         interface WithApplicationPackages {
             /**
              * Specifies the applicationPackages property: The list of application packages to be installed on each
              * compute node in the pool.
-             *
-             * <p>Changes to application package references affect all new compute nodes joining the pool, but do not
+             * 
+             * Changes to application package references affect all new compute nodes joining the pool, but do not
              * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
              * of 10 application package references on any given pool..
-             *
+             * 
              * @param applicationPackages The list of application packages to be installed on each compute node in the
-             *     pool.
-             *     <p>Changes to application package references affect all new compute nodes joining the pool, but do
-             *     not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a
-             *     maximum of 10 application package references on any given pool.
+             * pool.
+             * 
+             * Changes to application package references affect all new compute nodes joining the pool, but do not
+             * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
+             * of 10 application package references on any given pool.
              * @return the next definition stage.
              */
             WithCreate withApplicationPackages(List<ApplicationPackageReference> applicationPackages);
         }
 
-        /** The stage of the Pool definition allowing to specify applicationLicenses. */
+        /**
+         * The stage of the Pool definition allowing to specify applicationLicenses.
+         */
         interface WithApplicationLicenses {
             /**
              * Specifies the applicationLicenses property: The list of application licenses the Batch service will make
              * available on each compute node in the pool.
-             *
-             * <p>The list of application licenses must be a subset of available Batch service application licenses. If
-             * a license is requested which is not supported, pool creation will fail..
-             *
+             * 
+             * The list of application licenses must be a subset of available Batch service application licenses. If a
+             * license is requested which is not supported, pool creation will fail..
+             * 
              * @param applicationLicenses The list of application licenses the Batch service will make available on each
-             *     compute node in the pool.
-             *     <p>The list of application licenses must be a subset of available Batch service application licenses.
-             *     If a license is requested which is not supported, pool creation will fail.
+             * compute node in the pool.
+             * 
+             * The list of application licenses must be a subset of available Batch service application licenses. If a
+             * license is requested which is not supported, pool creation will fail.
              * @return the next definition stage.
              */
             WithCreate withApplicationLicenses(List<String> applicationLicenses);
         }
 
-        /** The stage of the Pool definition allowing to specify mountConfiguration. */
+        /**
+         * The stage of the Pool definition allowing to specify mountConfiguration.
+         */
         interface WithMountConfiguration {
             /**
              * Specifies the mountConfiguration property: A list of file systems to mount on each node in the pool.
-             *
-             * <p>This supports Azure Files, NFS, CIFS/SMB, and Blobfuse..
-             *
+             * 
+             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse..
+             * 
              * @param mountConfiguration A list of file systems to mount on each node in the pool.
-             *     <p>This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+             * 
+             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
              * @return the next definition stage.
              */
             WithCreate withMountConfiguration(List<MountConfiguration> mountConfiguration);
         }
 
-        /** The stage of the Pool definition allowing to specify targetNodeCommunicationMode. */
+        /**
+         * The stage of the Pool definition allowing to specify targetNodeCommunicationMode.
+         */
         interface WithTargetNodeCommunicationMode {
             /**
              * Specifies the targetNodeCommunicationMode property: Determines how a pool communicates with the Batch
              * service.
-             *
-             * <p>If omitted, the default value is Default..
-             *
+             * 
+             * If omitted, the default value is Default..
+             * 
              * @param targetNodeCommunicationMode Determines how a pool communicates with the Batch service.
-             *     <p>If omitted, the default value is Default.
+             * 
+             * If omitted, the default value is Default.
              * @return the next definition stage.
              */
             WithCreate withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode);
         }
 
-        /** The stage of the Pool definition allowing to specify ifMatch. */
+        /**
+         * The stage of the Pool definition allowing to specify resourceTags.
+         */
+        interface WithResourceTags {
+            /**
+             * Specifies the resourceTags property: The user-defined tags to be associated with the Azure Batch Pool.
+             * When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+             * property can only be specified when the Batch account was created with the poolAllocationMode property
+             * set to 'UserSubscription'..
+             * 
+             * @param resourceTags The user-defined tags to be associated with the Azure Batch Pool. When specified,
+             * these tags are propagated to the backing Azure resources associated with the pool. This property can only
+             * be specified when the Batch account was created with the poolAllocationMode property set to
+             * 'UserSubscription'.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceTags(Map<String, String> resourceTags);
+        }
+
+        /**
+         * The stage of the Pool definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The entity state (ETag) version of the pool to update. A value of "*" can
              * be used to apply the operation only if the pool already exists. If omitted, this operation will always be
              * applied..
-             *
+             * 
              * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply
-             *     the operation only if the pool already exists. If omitted, this operation will always be applied.
+             * the operation only if the pool already exists. If omitted, this operation will always be applied.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
 
-        /** The stage of the Pool definition allowing to specify ifNoneMatch. */
+        /**
+         * The stage of the Pool definition allowing to specify ifNoneMatch.
+         */
         interface WithIfNoneMatch {
             /**
              * Specifies the ifNoneMatch property: Set to '*' to allow a new pool to be created, but to prevent updating
              * an existing pool. Other values will be ignored..
-             *
+             * 
              * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing
-             *     pool. Other values will be ignored.
+             * pool. Other values will be ignored.
              * @return the next definition stage.
              */
             WithCreate withIfNoneMatch(String ifNoneMatch);
@@ -708,83 +786,82 @@ public interface Pool {
 
     /**
      * Begins update for the Pool resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Pool.Update update();
 
-    /** The template for Pool update. */
-    interface Update
-        extends UpdateStages.WithIdentity,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithVmSize,
-            UpdateStages.WithDeploymentConfiguration,
-            UpdateStages.WithScaleSettings,
-            UpdateStages.WithInterNodeCommunication,
-            UpdateStages.WithNetworkConfiguration,
-            UpdateStages.WithTaskSlotsPerNode,
-            UpdateStages.WithTaskSchedulingPolicy,
-            UpdateStages.WithUserAccounts,
-            UpdateStages.WithMetadata,
-            UpdateStages.WithStartTask,
-            UpdateStages.WithCertificates,
-            UpdateStages.WithApplicationPackages,
-            UpdateStages.WithApplicationLicenses,
-            UpdateStages.WithMountConfiguration,
-            UpdateStages.WithTargetNodeCommunicationMode,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for Pool update.
+     */
+    interface Update extends UpdateStages.WithIdentity, UpdateStages.WithDisplayName, UpdateStages.WithVmSize,
+        UpdateStages.WithDeploymentConfiguration, UpdateStages.WithScaleSettings,
+        UpdateStages.WithInterNodeCommunication, UpdateStages.WithNetworkConfiguration,
+        UpdateStages.WithTaskSlotsPerNode, UpdateStages.WithTaskSchedulingPolicy, UpdateStages.WithUserAccounts,
+        UpdateStages.WithMetadata, UpdateStages.WithStartTask, UpdateStages.WithCertificates,
+        UpdateStages.WithApplicationPackages, UpdateStages.WithApplicationLicenses, UpdateStages.WithMountConfiguration,
+        UpdateStages.WithTargetNodeCommunicationMode, UpdateStages.WithResourceTags, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Pool apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Pool apply(Context context);
     }
 
-    /** The Pool update stages. */
+    /**
+     * The Pool update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Pool update allowing to specify identity. */
+        /**
+         * The stage of the Pool update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The type of identity used for the Batch Pool..
-             *
+             * 
              * @param identity The type of identity used for the Batch Pool.
              * @return the next definition stage.
              */
             Update withIdentity(BatchPoolIdentity identity);
         }
 
-        /** The stage of the Pool update allowing to specify displayName. */
+        /**
+         * The stage of the Pool update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: The display name for the pool.
-             *
-             * <p>The display name need not be unique and can contain any Unicode characters up to a maximum length of
+             * 
+             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
              * 1024..
-             *
+             * 
              * @param displayName The display name for the pool.
-             *     <p>The display name need not be unique and can contain any Unicode characters up to a maximum length
-             *     of 1024.
+             * 
+             * The display name need not be unique and can contain any Unicode characters up to a maximum length of
+             * 1024.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
 
-        /** The stage of the Pool update allowing to specify vmSize. */
+        /**
+         * The stage of the Pool update allowing to specify vmSize.
+         */
         interface WithVmSize {
             /**
              * Specifies the vmSize property: The size of virtual machines in the pool. All VMs in a pool are the same
              * size.
-             *
-             * <p>For information about available sizes of virtual machines for Cloud Services pools (pools created with
+             * 
+             * For information about available sizes of virtual machines for Cloud Services pools (pools created with
              * cloudServiceConfiguration), see Sizes for Cloud Services
              * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
              * Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
@@ -794,271 +871,331 @@ public interface Pool {
              * Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
              * Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
              * STANDARD_DS, and STANDARD_DSV2 series)..
-             *
+             * 
              * @param vmSize The size of virtual machines in the pool. All VMs in a pool are the same size.
-             *     <p>For information about available sizes of virtual machines for Cloud Services pools (pools created
-             *     with cloudServiceConfiguration), see Sizes for Cloud Services
-             *     (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
-             *     Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
-             *     images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see
-             *     Sizes for Virtual Machines (Linux)
-             *     (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for
-             *     Virtual Machines (Windows)
-             *     (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-             *     all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and
-             *     STANDARD_DSV2 series).
+             * 
+             * For information about available sizes of virtual machines for Cloud Services pools (pools created with
+             * cloudServiceConfiguration), see Sizes for Cloud Services
+             * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all
+             * Cloud Services VM sizes except ExtraSmall. For information about available VM sizes for pools using
+             * images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes
+             * for Virtual Machines (Linux)
+             * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual
+             * Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+             * Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
+             * STANDARD_DS, and STANDARD_DSV2 series).
              * @return the next definition stage.
              */
             Update withVmSize(String vmSize);
         }
 
-        /** The stage of the Pool update allowing to specify deploymentConfiguration. */
+        /**
+         * The stage of the Pool update allowing to specify deploymentConfiguration.
+         */
         interface WithDeploymentConfiguration {
             /**
              * Specifies the deploymentConfiguration property: Deployment configuration properties.
-             *
-             * <p>Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
+             * 
+             * Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
              * (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS)..
-             *
+             * 
              * @param deploymentConfiguration Deployment configuration properties.
-             *     <p>Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud
-             *     Services (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
+             * 
+             * Using CloudServiceConfiguration specifies that the nodes should be creating using Azure Cloud Services
+             * (PaaS), while VirtualMachineConfiguration uses Azure Virtual Machines (IaaS).
              * @return the next definition stage.
              */
             Update withDeploymentConfiguration(DeploymentConfiguration deploymentConfiguration);
         }
 
-        /** The stage of the Pool update allowing to specify scaleSettings. */
+        /**
+         * The stage of the Pool update allowing to specify scaleSettings.
+         */
         interface WithScaleSettings {
             /**
              * Specifies the scaleSettings property: Scale settings for the pool
-             *
-             * <p>Defines the desired size of the pool. This can either be 'fixedScale' where the requested
+             * 
+             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
              * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
              * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
              * targetDedicatedNodes..
-             *
+             * 
              * @param scaleSettings Scale settings for the pool
-             *     <p>Defines the desired size of the pool. This can either be 'fixedScale' where the requested
-             *     targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
-             *     reevaluated. If this property is not specified, the pool will have a fixed scale with 0
-             *     targetDedicatedNodes.
+             * 
+             * Defines the desired size of the pool. This can either be 'fixedScale' where the requested
+             * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
+             * reevaluated. If this property is not specified, the pool will have a fixed scale with 0
+             * targetDedicatedNodes.
              * @return the next definition stage.
              */
             Update withScaleSettings(ScaleSettings scaleSettings);
         }
 
-        /** The stage of the Pool update allowing to specify interNodeCommunication. */
+        /**
+         * The stage of the Pool update allowing to specify interNodeCommunication.
+         */
         interface WithInterNodeCommunication {
             /**
              * Specifies the interNodeCommunication property: Whether the pool permits direct communication between
              * nodes.
-             *
-             * <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce
-             * the chance of the requested number of nodes to be allocated in the pool. If not specified, this value
+             * 
+             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
+             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
              * defaults to 'Disabled'..
-             *
+             * 
              * @param interNodeCommunication Whether the pool permits direct communication between nodes.
-             *     <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can
-             *     reduce the chance of the requested number of nodes to be allocated in the pool. If not specified,
-             *     this value defaults to 'Disabled'.
+             * 
+             * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the
+             * chance of the requested number of nodes to be allocated in the pool. If not specified, this value
+             * defaults to 'Disabled'.
              * @return the next definition stage.
              */
             Update withInterNodeCommunication(InterNodeCommunicationState interNodeCommunication);
         }
 
-        /** The stage of the Pool update allowing to specify networkConfiguration. */
+        /**
+         * The stage of the Pool update allowing to specify networkConfiguration.
+         */
         interface WithNetworkConfiguration {
             /**
              * Specifies the networkConfiguration property: The network configuration for a pool..
-             *
+             * 
              * @param networkConfiguration The network configuration for a pool.
              * @return the next definition stage.
              */
             Update withNetworkConfiguration(NetworkConfiguration networkConfiguration);
         }
 
-        /** The stage of the Pool update allowing to specify taskSlotsPerNode. */
+        /**
+         * The stage of the Pool update allowing to specify taskSlotsPerNode.
+         */
         interface WithTaskSlotsPerNode {
             /**
              * Specifies the taskSlotsPerNode property: The number of task slots that can be used to run concurrent
              * tasks on a single compute node in the pool.
-             *
-             * <p>The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize
-             * of the pool or 256..
-             *
+             * 
+             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
+             * the pool or 256..
+             * 
              * @param taskSlotsPerNode The number of task slots that can be used to run concurrent tasks on a single
-             *     compute node in the pool.
-             *     <p>The default value is 1. The maximum value is the smaller of 4 times the number of cores of the
-             *     vmSize of the pool or 256.
+             * compute node in the pool.
+             * 
+             * The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of
+             * the pool or 256.
              * @return the next definition stage.
              */
             Update withTaskSlotsPerNode(Integer taskSlotsPerNode);
         }
 
-        /** The stage of the Pool update allowing to specify taskSchedulingPolicy. */
+        /**
+         * The stage of the Pool update allowing to specify taskSchedulingPolicy.
+         */
         interface WithTaskSchedulingPolicy {
             /**
              * Specifies the taskSchedulingPolicy property: Specifies how tasks should be distributed across compute
              * nodes.
-             *
-             * <p>If not specified, the default is spread..
-             *
+             * 
+             * If not specified, the default is spread..
+             * 
              * @param taskSchedulingPolicy Specifies how tasks should be distributed across compute nodes.
-             *     <p>If not specified, the default is spread.
+             * 
+             * If not specified, the default is spread.
              * @return the next definition stage.
              */
             Update withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy);
         }
 
-        /** The stage of the Pool update allowing to specify userAccounts. */
+        /**
+         * The stage of the Pool update allowing to specify userAccounts.
+         */
         interface WithUserAccounts {
             /**
              * Specifies the userAccounts property: The list of user accounts to be created on each node in the pool..
-             *
+             * 
              * @param userAccounts The list of user accounts to be created on each node in the pool.
              * @return the next definition stage.
              */
             Update withUserAccounts(List<UserAccount> userAccounts);
         }
 
-        /** The stage of the Pool update allowing to specify metadata. */
+        /**
+         * The stage of the Pool update allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: A list of name-value pairs associated with the pool as metadata.
-             *
-             * <p>The Batch service does not assign any meaning to metadata; it is solely for the use of user code..
-             *
+             * 
+             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code..
+             * 
              * @param metadata A list of name-value pairs associated with the pool as metadata.
-             *     <p>The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+             * 
+             * The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
              * @return the next definition stage.
              */
             Update withMetadata(List<MetadataItem> metadata);
         }
 
-        /** The stage of the Pool update allowing to specify startTask. */
+        /**
+         * The stage of the Pool update allowing to specify startTask.
+         */
         interface WithStartTask {
             /**
              * Specifies the startTask property: A task which is run when a compute node joins a pool in the Azure Batch
              * service, or when the compute node is rebooted or reimaged.
-             *
-             * <p>In an PATCH (update) operation, this property can be set to an empty object to remove the start task
-             * from the pool..
-             *
+             * 
+             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
+             * the pool..
+             * 
              * @param startTask A task which is run when a compute node joins a pool in the Azure Batch service, or when
-             *     the compute node is rebooted or reimaged.
-             *     <p>In an PATCH (update) operation, this property can be set to an empty object to remove the start
-             *     task from the pool.
+             * the compute node is rebooted or reimaged.
+             * 
+             * In an PATCH (update) operation, this property can be set to an empty object to remove the start task from
+             * the pool.
              * @return the next definition stage.
              */
             Update withStartTask(StartTask startTask);
         }
 
-        /** The stage of the Pool update allowing to specify certificates. */
+        /**
+         * The stage of the Pool update allowing to specify certificates.
+         */
         interface WithCertificates {
             /**
              * Specifies the certificates property: The list of certificates to be installed on each compute node in the
              * pool.
-             *
-             * <p>For Windows compute nodes, the Batch service installs the certificates to the specified certificate
-             * store and location. For Linux compute nodes, the certificates are stored in a directory inside the task
-             * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query
-             * for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in
-             * the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
-             *
-             * <p>Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
+             * 
+             * For Windows compute nodes, the Batch service installs the certificates to the specified certificate store
+             * and location. For Linux compute nodes, the certificates are stored in a directory inside the task working
+             * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+             * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+             * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+             * 
+             * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
              * KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead..
-             *
+             * 
              * @param certificates The list of certificates to be installed on each compute node in the pool.
-             *     <p>For Windows compute nodes, the Batch service installs the certificates to the specified
-             *     certificate store and location. For Linux compute nodes, the certificates are stored in a directory
-             *     inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied
-             *     to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs'
-             *     directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates
-             *     are placed in that directory.
-             *     <p>Warning: This property is deprecated and will be removed after February, 2024. Please use the
-             *     [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
-             *     instead.
+             * 
+             * For Windows compute nodes, the Batch service installs the certificates to the specified certificate store
+             * and location. For Linux compute nodes, the certificates are stored in a directory inside the task working
+             * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+             * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+             * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+             * 
+             * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure
+             * KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
              * @return the next definition stage.
              */
             Update withCertificates(List<CertificateReference> certificates);
         }
 
-        /** The stage of the Pool update allowing to specify applicationPackages. */
+        /**
+         * The stage of the Pool update allowing to specify applicationPackages.
+         */
         interface WithApplicationPackages {
             /**
              * Specifies the applicationPackages property: The list of application packages to be installed on each
              * compute node in the pool.
-             *
-             * <p>Changes to application package references affect all new compute nodes joining the pool, but do not
+             * 
+             * Changes to application package references affect all new compute nodes joining the pool, but do not
              * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
              * of 10 application package references on any given pool..
-             *
+             * 
              * @param applicationPackages The list of application packages to be installed on each compute node in the
-             *     pool.
-             *     <p>Changes to application package references affect all new compute nodes joining the pool, but do
-             *     not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a
-             *     maximum of 10 application package references on any given pool.
+             * pool.
+             * 
+             * Changes to application package references affect all new compute nodes joining the pool, but do not
+             * affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum
+             * of 10 application package references on any given pool.
              * @return the next definition stage.
              */
             Update withApplicationPackages(List<ApplicationPackageReference> applicationPackages);
         }
 
-        /** The stage of the Pool update allowing to specify applicationLicenses. */
+        /**
+         * The stage of the Pool update allowing to specify applicationLicenses.
+         */
         interface WithApplicationLicenses {
             /**
              * Specifies the applicationLicenses property: The list of application licenses the Batch service will make
              * available on each compute node in the pool.
-             *
-             * <p>The list of application licenses must be a subset of available Batch service application licenses. If
-             * a license is requested which is not supported, pool creation will fail..
-             *
+             * 
+             * The list of application licenses must be a subset of available Batch service application licenses. If a
+             * license is requested which is not supported, pool creation will fail..
+             * 
              * @param applicationLicenses The list of application licenses the Batch service will make available on each
-             *     compute node in the pool.
-             *     <p>The list of application licenses must be a subset of available Batch service application licenses.
-             *     If a license is requested which is not supported, pool creation will fail.
+             * compute node in the pool.
+             * 
+             * The list of application licenses must be a subset of available Batch service application licenses. If a
+             * license is requested which is not supported, pool creation will fail.
              * @return the next definition stage.
              */
             Update withApplicationLicenses(List<String> applicationLicenses);
         }
 
-        /** The stage of the Pool update allowing to specify mountConfiguration. */
+        /**
+         * The stage of the Pool update allowing to specify mountConfiguration.
+         */
         interface WithMountConfiguration {
             /**
              * Specifies the mountConfiguration property: A list of file systems to mount on each node in the pool.
-             *
-             * <p>This supports Azure Files, NFS, CIFS/SMB, and Blobfuse..
-             *
+             * 
+             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse..
+             * 
              * @param mountConfiguration A list of file systems to mount on each node in the pool.
-             *     <p>This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+             * 
+             * This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
              * @return the next definition stage.
              */
             Update withMountConfiguration(List<MountConfiguration> mountConfiguration);
         }
 
-        /** The stage of the Pool update allowing to specify targetNodeCommunicationMode. */
+        /**
+         * The stage of the Pool update allowing to specify targetNodeCommunicationMode.
+         */
         interface WithTargetNodeCommunicationMode {
             /**
              * Specifies the targetNodeCommunicationMode property: Determines how a pool communicates with the Batch
              * service.
-             *
-             * <p>If omitted, the default value is Default..
-             *
+             * 
+             * If omitted, the default value is Default..
+             * 
              * @param targetNodeCommunicationMode Determines how a pool communicates with the Batch service.
-             *     <p>If omitted, the default value is Default.
+             * 
+             * If omitted, the default value is Default.
              * @return the next definition stage.
              */
             Update withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode);
         }
 
-        /** The stage of the Pool update allowing to specify ifMatch. */
+        /**
+         * The stage of the Pool update allowing to specify resourceTags.
+         */
+        interface WithResourceTags {
+            /**
+             * Specifies the resourceTags property: The user-defined tags to be associated with the Azure Batch Pool.
+             * When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+             * property can only be specified when the Batch account was created with the poolAllocationMode property
+             * set to 'UserSubscription'..
+             * 
+             * @param resourceTags The user-defined tags to be associated with the Azure Batch Pool. When specified,
+             * these tags are propagated to the backing Azure resources associated with the pool. This property can only
+             * be specified when the Batch account was created with the poolAllocationMode property set to
+             * 'UserSubscription'.
+             * @return the next definition stage.
+             */
+            Update withResourceTags(Map<String, String> resourceTags);
+        }
+
+        /**
+         * The stage of the Pool update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The entity state (ETag) version of the pool to update. This value can be
              * omitted or set to "*" to apply the operation unconditionally..
-             *
+             * 
              * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to
-             *     "*" to apply the operation unconditionally.
+             * "*" to apply the operation unconditionally.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -1067,14 +1204,14 @@ public interface Pool {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Pool refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -1082,7 +1219,7 @@ public interface Pool {
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1093,7 +1230,7 @@ public interface Pool {
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool.
@@ -1102,13 +1239,13 @@ public interface Pool {
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1119,13 +1256,13 @@ public interface Pool {
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool.

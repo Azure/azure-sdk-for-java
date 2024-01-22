@@ -227,7 +227,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = containerGateway.createItem(internalObjectNode);
         String diagnostics = createResponse.getDiagnostics().toString();
-
+        logger.info("DIAGNOSTICS: {}", diagnostics);
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
         assertThat(diagnostics).contains("gatewayStatisticsList");
@@ -715,6 +715,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String userAgent) throws Exception {
 
         String diagnostics = cosmosDiagnostics.toString();
+        logger.info("DIAGNOSTICS: {}", diagnostics);
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("gatewayStatisticsList");

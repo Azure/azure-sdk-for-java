@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The type Cosmos stored procedure response.
@@ -16,9 +17,9 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
 
     CosmosStoredProcedureResponse(ResourceResponse<StoredProcedure> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (!StringUtils.isEmpty(bodyAsString)) {
-            super.setProperties(new CosmosStoredProcedureProperties(bodyAsString));
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson != null) {
+            super.setProperties(new CosmosStoredProcedureProperties(bodyAsJson));
         }
         storedProcedureResponse = null;
     }

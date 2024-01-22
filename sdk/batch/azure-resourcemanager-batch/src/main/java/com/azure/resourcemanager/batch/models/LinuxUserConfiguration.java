@@ -7,12 +7,14 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to create a user account on a Linux node. */
+/**
+ * Properties used to create a user account on a Linux node.
+ */
 @Fluent
 public final class LinuxUserConfiguration {
     /*
      * The user ID of the user account.
-     *
+     * 
      * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the uid.
      */
@@ -21,7 +23,7 @@ public final class LinuxUserConfiguration {
 
     /*
      * The group ID for the user account.
-     *
+     * 
      * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the gid.
      */
@@ -30,7 +32,7 @@ public final class LinuxUserConfiguration {
 
     /*
      * The SSH private key for the user account.
-     *
+     * 
      * The private key must not be password protected. The private key is used to automatically configure
      * asymmetric-key based authentication for SSH between nodes in a Linux pool when the pool's
      * enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does
@@ -40,16 +42,18 @@ public final class LinuxUserConfiguration {
     @JsonProperty(value = "sshPrivateKey")
     private String sshPrivateKey;
 
-    /** Creates an instance of LinuxUserConfiguration class. */
+    /**
+     * Creates an instance of LinuxUserConfiguration class.
+     */
     public LinuxUserConfiguration() {
     }
 
     /**
      * Get the uid property: The user ID of the user account.
-     *
-     * <p>The uid and gid properties must be specified together or not at all. If not specified the underlying operating
+     * 
+     * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the uid.
-     *
+     * 
      * @return the uid value.
      */
     public Integer uid() {
@@ -58,10 +62,10 @@ public final class LinuxUserConfiguration {
 
     /**
      * Set the uid property: The user ID of the user account.
-     *
-     * <p>The uid and gid properties must be specified together or not at all. If not specified the underlying operating
+     * 
+     * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the uid.
-     *
+     * 
      * @param uid the uid value to set.
      * @return the LinuxUserConfiguration object itself.
      */
@@ -72,10 +76,10 @@ public final class LinuxUserConfiguration {
 
     /**
      * Get the gid property: The group ID for the user account.
-     *
-     * <p>The uid and gid properties must be specified together or not at all. If not specified the underlying operating
+     * 
+     * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the gid.
-     *
+     * 
      * @return the gid value.
      */
     public Integer gid() {
@@ -84,10 +88,10 @@ public final class LinuxUserConfiguration {
 
     /**
      * Set the gid property: The group ID for the user account.
-     *
-     * <p>The uid and gid properties must be specified together or not at all. If not specified the underlying operating
+     * 
+     * The uid and gid properties must be specified together or not at all. If not specified the underlying operating
      * system picks the gid.
-     *
+     * 
      * @param gid the gid value to set.
      * @return the LinuxUserConfiguration object itself.
      */
@@ -98,13 +102,13 @@ public final class LinuxUserConfiguration {
 
     /**
      * Get the sshPrivateKey property: The SSH private key for the user account.
-     *
-     * <p>The private key must not be password protected. The private key is used to automatically configure
+     * 
+     * The private key must not be password protected. The private key is used to automatically configure
      * asymmetric-key based authentication for SSH between nodes in a Linux pool when the pool's
      * enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does
      * this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not
      * configured between nodes (no modification of the user's .ssh directory is done).
-     *
+     * 
      * @return the sshPrivateKey value.
      */
     public String sshPrivateKey() {
@@ -113,13 +117,13 @@ public final class LinuxUserConfiguration {
 
     /**
      * Set the sshPrivateKey property: The SSH private key for the user account.
-     *
-     * <p>The private key must not be password protected. The private key is used to automatically configure
+     * 
+     * The private key must not be password protected. The private key is used to automatically configure
      * asymmetric-key based authentication for SSH between nodes in a Linux pool when the pool's
      * enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does
      * this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not
      * configured between nodes (no modification of the user's .ssh directory is done).
-     *
+     * 
      * @param sshPrivateKey the sshPrivateKey value to set.
      * @return the LinuxUserConfiguration object itself.
      */
@@ -130,7 +134,7 @@ public final class LinuxUserConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

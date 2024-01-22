@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the Identity provider for MS AAD. */
+/**
+ * Defines the Identity provider for MS AAD.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("AADIdentityProvider")
 @Fluent
@@ -38,7 +40,9 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
     @JsonProperty(value = "customerAdminGroupId")
     private String customerAdminGroupId;
 
-    /** Creates an instance of OpenShiftManagedClusterAadIdentityProvider class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterAadIdentityProvider class.
+     */
     public OpenShiftManagedClusterAadIdentityProvider() {
     }
 

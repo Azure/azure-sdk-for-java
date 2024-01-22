@@ -5,13 +5,12 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
-import com.azure.cosmos.implementation.guava25.collect.Sets;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
@@ -75,11 +74,11 @@ public final class RntbdConstants {
         IdleTimeoutInSeconds((short) 0x0004, RntbdTokenType.ULong, false),
         UnauthenticatedTimeoutInSeconds((short) 0x0005, RntbdTokenType.ULong, false);
 
-        public static final ImmutableMap<Short, RntbdContextHeader> map;
-        public static final ImmutableSet<RntbdContextHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdContextHeader.class));
+        public static final Map<Short, RntbdContextHeader> map;
+        public static final EnumSet<RntbdContextHeader> set = EnumSet.allOf(RntbdContextHeader.class);
 
         static {
-            final Collector<RntbdContextHeader, ?, ImmutableMap<Short, RntbdContextHeader>> collector = ImmutableMap.toImmutableMap(RntbdContextHeader::id, h -> h);
+            final Collector<RntbdContextHeader, ?, Map<Short, RntbdContextHeader>> collector = Collectors.toMap(RntbdContextHeader::id, h -> h);
             map = set.stream().collect(collector);
         }
 
@@ -112,11 +111,11 @@ public final class RntbdConstants {
         ClientVersion((short) 0x0001, RntbdTokenType.SmallString, true),
         UserAgent((short) 0x0002, RntbdTokenType.SmallString, true);
 
-        public static final ImmutableMap<Short, RntbdContextRequestHeader> map;
-        public static final ImmutableSet<RntbdContextRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdContextRequestHeader.class));
+        public static final Map<Short, RntbdContextRequestHeader> map;
+        public static final EnumSet<RntbdContextRequestHeader> set = EnumSet.allOf(RntbdContextRequestHeader.class);
 
         static {
-            final Collector<RntbdContextRequestHeader, ?, ImmutableMap<Short, RntbdContextRequestHeader>> collector = ImmutableMap.toImmutableMap(h -> h.id(), h -> h);
+            final Collector<RntbdContextRequestHeader, ?, Map<Short, RntbdContextRequestHeader>> collector = Collectors.toMap(RntbdContextRequestHeader::id, h -> h);
             map = set.stream().collect(collector);
         }
 
@@ -594,11 +593,11 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false);
 
-        public static final ImmutableMap<Short, RntbdRequestHeader> map;
-        public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
+        public static final Map<Short, RntbdRequestHeader> map;
+        public static final EnumSet<RntbdRequestHeader> set = EnumSet.allOf(RntbdRequestHeader.class);
 
         static {
-            final Collector<RntbdRequestHeader, ?, ImmutableMap<Short, RntbdRequestHeader>> collector = ImmutableMap.toImmutableMap(RntbdRequestHeader::id, h -> h);
+            final Collector<RntbdRequestHeader, ?, Map<Short, RntbdRequestHeader>> collector = Collectors.toMap(RntbdRequestHeader::id, h -> h);
             map = set.stream().collect(collector);
         }
 
@@ -870,11 +869,11 @@ public final class RntbdConstants {
         BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
         CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
 
-        public static final ImmutableMap<Short, RntbdResponseHeader> map;
-        public static final ImmutableSet<RntbdResponseHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdResponseHeader.class));
+        public static final Map<Short, RntbdResponseHeader> map;
+        public static final EnumSet<RntbdResponseHeader> set = EnumSet.allOf(RntbdResponseHeader.class);
 
         static {
-            final Collector<RntbdResponseHeader, ?, ImmutableMap<Short, RntbdResponseHeader>> collector = ImmutableMap.toImmutableMap(RntbdResponseHeader::id, header -> header);
+            final Collector<RntbdResponseHeader, ?, Map<Short, RntbdResponseHeader>> collector = Collectors.toMap(RntbdResponseHeader::id, header -> header);
             map = set.stream().collect(collector);
         }
 

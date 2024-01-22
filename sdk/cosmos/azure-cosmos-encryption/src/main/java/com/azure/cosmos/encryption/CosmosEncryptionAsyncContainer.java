@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -782,7 +783,7 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private Mono<CosmosItemResponse<byte[]>> setByteArrayContent(CosmosItemResponse<byte[]> rsp,
-                                                                 Mono<byte[]> bytesMono) {
+                                                                 Mono<Pair<byte[], JsonNode>> bytesMono) {
         return bytesMono.flatMap(
             bytes -> {
                 cosmosItemResponseBuilderAccessor.setByteArrayContent(rsp, bytes);

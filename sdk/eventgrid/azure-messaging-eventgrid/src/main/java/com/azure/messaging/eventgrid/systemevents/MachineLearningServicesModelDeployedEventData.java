@@ -5,47 +5,52 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event.
+ */
 @Fluent
-public final class MachineLearningServicesModelDeployedEventData {
+public final class MachineLearningServicesModelDeployedEventData
+    implements JsonSerializable<MachineLearningServicesModelDeployedEventData> {
     /*
      * The name of the deployed service.
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
     /*
      * The compute type (e.g. ACI, AKS) of the deployed service.
      */
-    @JsonProperty(value = "serviceComputeType")
     private String serviceComputeType;
 
     /*
      * A common separated list of model IDs. The IDs of the models deployed in the service.
      */
-    @JsonProperty(value = "modelIds")
     private String modelIds;
 
     /*
      * The tags of the deployed service.
      */
-    @JsonProperty(value = "serviceTags")
     private Object serviceTags;
 
     /*
      * The properties of the deployed service.
      */
-    @JsonProperty(value = "serviceProperties")
     private Object serviceProperties;
 
-    /** Creates an instance of MachineLearningServicesModelDeployedEventData class. */
-    public MachineLearningServicesModelDeployedEventData() {}
+    /**
+     * Creates an instance of MachineLearningServicesModelDeployedEventData class.
+     */
+    public MachineLearningServicesModelDeployedEventData() {
+    }
 
     /**
      * Get the serviceName property: The name of the deployed service.
-     *
+     * 
      * @return the serviceName value.
      */
     public String getServiceName() {
@@ -54,7 +59,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Set the serviceName property: The name of the deployed service.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the MachineLearningServicesModelDeployedEventData object itself.
      */
@@ -65,7 +70,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Get the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
-     *
+     * 
      * @return the serviceComputeType value.
      */
     public String getServiceComputeType() {
@@ -74,7 +79,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Set the serviceComputeType property: The compute type (e.g. ACI, AKS) of the deployed service.
-     *
+     * 
      * @param serviceComputeType the serviceComputeType value to set.
      * @return the MachineLearningServicesModelDeployedEventData object itself.
      */
@@ -85,7 +90,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Get the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
-     *
+     * 
      * @return the modelIds value.
      */
     public String getModelIds() {
@@ -94,7 +99,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Set the modelIds property: A common separated list of model IDs. The IDs of the models deployed in the service.
-     *
+     * 
      * @param modelIds the modelIds value to set.
      * @return the MachineLearningServicesModelDeployedEventData object itself.
      */
@@ -105,7 +110,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Get the serviceTags property: The tags of the deployed service.
-     *
+     * 
      * @return the serviceTags value.
      */
     public Object getServiceTags() {
@@ -114,7 +119,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Set the serviceTags property: The tags of the deployed service.
-     *
+     * 
      * @param serviceTags the serviceTags value to set.
      * @return the MachineLearningServicesModelDeployedEventData object itself.
      */
@@ -125,7 +130,7 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Get the serviceProperties property: The properties of the deployed service.
-     *
+     * 
      * @return the serviceProperties value.
      */
     public Object getServiceProperties() {
@@ -134,12 +139,58 @@ public final class MachineLearningServicesModelDeployedEventData {
 
     /**
      * Set the serviceProperties property: The properties of the deployed service.
-     *
+     * 
      * @param serviceProperties the serviceProperties value to set.
      * @return the MachineLearningServicesModelDeployedEventData object itself.
      */
     public MachineLearningServicesModelDeployedEventData setServiceProperties(Object serviceProperties) {
         this.serviceProperties = serviceProperties;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
+        jsonWriter.writeStringField("modelIds", this.modelIds);
+        jsonWriter.writeUntypedField("serviceTags", this.serviceTags);
+        jsonWriter.writeUntypedField("serviceProperties", this.serviceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineLearningServicesModelDeployedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineLearningServicesModelDeployedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineLearningServicesModelDeployedEventData.
+     */
+    public static MachineLearningServicesModelDeployedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineLearningServicesModelDeployedEventData deserializedMachineLearningServicesModelDeployedEventData
+                = new MachineLearningServicesModelDeployedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceName = reader.getString();
+                } else if ("serviceComputeType".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceComputeType = reader.getString();
+                } else if ("modelIds".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.modelIds = reader.getString();
+                } else if ("serviceTags".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceTags = reader.readUntyped();
+                } else if ("serviceProperties".equals(fieldName)) {
+                    deserializedMachineLearningServicesModelDeployedEventData.serviceProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineLearningServicesModelDeployedEventData;
+        });
     }
 }

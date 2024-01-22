@@ -25,12 +25,18 @@ import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesCli
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourcesListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerServiceManagementClientImpl client;
 
     /**
@@ -39,9 +45,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(ContainerServiceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,25 +57,20 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     public interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourcesListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourcesListResultInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -80,19 +80,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    public Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -104,24 +100,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -132,19 +119,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -156,21 +139,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, accept, context);
     }
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -187,7 +163,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -198,15 +174,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return a list of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourcesListResultInner> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<PrivateLinkResourcesListResultInner> listWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
      *
-     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.

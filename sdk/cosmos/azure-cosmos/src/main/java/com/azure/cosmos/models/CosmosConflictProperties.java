@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,10 +28,10 @@ public final class CosmosConflictProperties {
     /**
      * Initialize a conflict object from json string.
      *
-     * @param jsonString the json string that represents the conflict.
+     * @param jsonNode the json node that represents the conflict.
      */
-    CosmosConflictProperties(String jsonString) {
-        this.conflict = new Conflict(jsonString);
+    CosmosConflictProperties(ObjectNode jsonNode) {
+        this.conflict = new Conflict(jsonNode);
     }
 
     /**
@@ -116,7 +117,7 @@ public final class CosmosConflictProperties {
     }
 
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {
-        return results.stream().map(conflict -> new CosmosConflictProperties(conflict.toJson()))
+        return results.stream().map(conflict -> new CosmosConflictProperties(conflict.getPropertyBag()))
                    .collect(Collectors.toList());
     }
 }

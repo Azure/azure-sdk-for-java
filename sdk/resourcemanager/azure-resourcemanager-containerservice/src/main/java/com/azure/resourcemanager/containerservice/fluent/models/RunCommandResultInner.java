@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** run command result. */
+/**
+ * run command result.
+ */
 @Immutable
 public final class RunCommandResultInner {
     /*
@@ -23,7 +25,9 @@ public final class RunCommandResultInner {
     @JsonProperty(value = "properties")
     private CommandResultProperties innerProperties;
 
-    /** Creates an instance of RunCommandResultInner class. */
+    /**
+     * Creates an instance of RunCommandResultInner class.
+     */
     public RunCommandResultInner() {
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Kubernetes patch version profile. */
+/**
+ * Kubernetes patch version profile.
+ */
 @Fluent
 public final class KubernetesPatchVersion {
     /*
@@ -17,7 +19,9 @@ public final class KubernetesPatchVersion {
     @JsonProperty(value = "upgrades")
     private List<String> upgrades;
 
-    /** Creates an instance of KubernetesPatchVersion class. */
+    /**
+     * Creates an instance of KubernetesPatchVersion class.
+     */
     public KubernetesPatchVersion() {
     }
 

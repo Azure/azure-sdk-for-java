@@ -3,11 +3,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Specifies the options associated with {@link ChangeFeedProcessor}.
@@ -47,6 +50,7 @@ public final class ChangeFeedProcessorOptions {
     private int maxScaleCount;
 
     private Scheduler scheduler;
+    private ThroughputControlGroupConfig feedPollThroughputControlGroupConfig;
 
     /**
      * Instantiates a new Change feed processor options.
@@ -61,6 +65,7 @@ public final class ChangeFeedProcessorOptions {
         this.maxScaleCount = 0; // unlimited
 
         this.scheduler = Schedulers.boundedElastic();
+        this.feedPollThroughputControlGroupConfig = null;
     }
 
     /**
@@ -368,5 +373,28 @@ public final class ChangeFeedProcessorOptions {
         }
         this.scheduler = scheduler;
         return this;
+    }
+
+    /***
+     * Set the feed poll throughput control config.
+     *
+     * @param feedPollThroughputControlGroupConfig the throughput control for change feed requests for the monitored collection
+     * @return the {@link ChangeFeedProcessorOptions}.
+     */
+    public ChangeFeedProcessorOptions setFeedPollThroughputControlConfig(ThroughputControlGroupConfig feedPollThroughputControlGroupConfig) {
+        checkNotNull(
+            feedPollThroughputControlGroupConfig,
+            "Argument 'feedPollThroughputControlGroupConfig' can not be null");
+        this.feedPollThroughputControlGroupConfig = feedPollThroughputControlGroupConfig;
+
+        return this;
+    }
+
+    /**
+     * Get the feed pool throughput control config.
+     * @return the {@link ThroughputControlGroupConfig}.
+     */
+    public ThroughputControlGroupConfig getFeedPollThroughputControlGroupConfig() {
+        return this.feedPollThroughputControlGroupConfig;
     }
 }

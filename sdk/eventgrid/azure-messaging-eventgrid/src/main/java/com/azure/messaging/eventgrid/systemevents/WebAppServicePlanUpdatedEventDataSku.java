@@ -5,47 +5,52 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** sku of app service plan. */
+/**
+ * sku of app service plan.
+ */
 @Fluent
-public final class WebAppServicePlanUpdatedEventDataSku {
+public final class WebAppServicePlanUpdatedEventDataSku
+    implements JsonSerializable<WebAppServicePlanUpdatedEventDataSku> {
     /*
      * name of app service plan sku.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * tier of app service plan sku.
      */
-    @JsonProperty(value = "Tier")
     private String tier;
 
     /*
      * size of app service plan sku.
      */
-    @JsonProperty(value = "Size")
     private String size;
 
     /*
      * family of app service plan sku.
      */
-    @JsonProperty(value = "Family")
     private String family;
 
     /*
      * capacity of app service plan sku.
      */
-    @JsonProperty(value = "Capacity")
     private String capacity;
 
-    /** Creates an instance of WebAppServicePlanUpdatedEventDataSku class. */
-    public WebAppServicePlanUpdatedEventDataSku() {}
+    /**
+     * Creates an instance of WebAppServicePlanUpdatedEventDataSku class.
+     */
+    public WebAppServicePlanUpdatedEventDataSku() {
+    }
 
     /**
      * Get the name property: name of app service plan sku.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -54,7 +59,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the name property: name of app service plan sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -65,7 +70,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the tier property: tier of app service plan sku.
-     *
+     * 
      * @return the tier value.
      */
     public String getTier() {
@@ -74,7 +79,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the tier property: tier of app service plan sku.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -85,7 +90,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the size property: size of app service plan sku.
-     *
+     * 
      * @return the size value.
      */
     public String getSize() {
@@ -94,7 +99,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the size property: size of app service plan sku.
-     *
+     * 
      * @param size the size value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -105,7 +110,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the family property: family of app service plan sku.
-     *
+     * 
      * @return the family value.
      */
     public String getFamily() {
@@ -114,7 +119,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the family property: family of app service plan sku.
-     *
+     * 
      * @param family the family value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -125,7 +130,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the capacity property: capacity of app service plan sku.
-     *
+     * 
      * @return the capacity value.
      */
     public String getCapacity() {
@@ -134,12 +139,58 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the capacity property: capacity of app service plan sku.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
     public WebAppServicePlanUpdatedEventDataSku setCapacity(String capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("Tier", this.tier);
+        jsonWriter.writeStringField("Size", this.size);
+        jsonWriter.writeStringField("Family", this.family);
+        jsonWriter.writeStringField("Capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAppServicePlanUpdatedEventDataSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAppServicePlanUpdatedEventDataSku if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebAppServicePlanUpdatedEventDataSku.
+     */
+    public static WebAppServicePlanUpdatedEventDataSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAppServicePlanUpdatedEventDataSku deserializedWebAppServicePlanUpdatedEventDataSku
+                = new WebAppServicePlanUpdatedEventDataSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWebAppServicePlanUpdatedEventDataSku.name = reader.getString();
+                } else if ("Tier".equals(fieldName)) {
+                    deserializedWebAppServicePlanUpdatedEventDataSku.tier = reader.getString();
+                } else if ("Size".equals(fieldName)) {
+                    deserializedWebAppServicePlanUpdatedEventDataSku.size = reader.getString();
+                } else if ("Family".equals(fieldName)) {
+                    deserializedWebAppServicePlanUpdatedEventDataSku.family = reader.getString();
+                } else if ("Capacity".equals(fieldName)) {
+                    deserializedWebAppServicePlanUpdatedEventDataSku.capacity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAppServicePlanUpdatedEventDataSku;
+        });
     }
 }

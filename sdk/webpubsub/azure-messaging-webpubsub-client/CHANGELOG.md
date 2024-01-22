@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-01-18)
 
 ### Features Added
 
@@ -17,12 +27,10 @@
 - Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
 - Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
 
-### Bugs Fixed
-
 ### Other Changes
 
-- Upgraded `azure-core` from `1.38.0` to version `1.45.0`.
-- Upgraded `netty-codec-http` from `4.1.89.Final` to version `4.1.100.Final`.
+- Upgraded `azure-core` from `1.38.0` to version `1.45.1`.
+- Upgraded `netty-codec-http` from `4.1.89.Final` to version `4.1.101.Final`.
 
 ## 1.0.0-beta.1 (2023-04-17)
 

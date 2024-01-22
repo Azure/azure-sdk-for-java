@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for an activating an application package. */
+/**
+ * Parameters for an activating an application package.
+ */
 @Fluent
 public final class ActivateApplicationPackageParameters {
     /*
@@ -17,13 +19,15 @@ public final class ActivateApplicationPackageParameters {
     @JsonProperty(value = "format", required = true)
     private String format;
 
-    /** Creates an instance of ActivateApplicationPackageParameters class. */
+    /**
+     * Creates an instance of ActivateApplicationPackageParameters class.
+     */
     public ActivateApplicationPackageParameters() {
     }
 
     /**
      * Get the format property: The format of the application package binary file.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -32,7 +36,7 @@ public final class ActivateApplicationPackageParameters {
 
     /**
      * Set the format property: The format of the application package binary file.
-     *
+     * 
      * @param format the format value to set.
      * @return the ActivateApplicationPackageParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class ActivateApplicationPackageParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (format() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property format in model ActivateApplicationPackageParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property format in model ActivateApplicationPackageParameters"));
         }
     }
 

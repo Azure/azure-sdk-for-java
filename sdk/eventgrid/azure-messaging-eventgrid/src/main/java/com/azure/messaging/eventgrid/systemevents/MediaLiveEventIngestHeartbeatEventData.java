@@ -6,7 +6,11 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -14,111 +18,98 @@ import java.time.OffsetDateTime;
  * Microsoft.Media.LiveEventIngestHeartbeat event.
  */
 @Immutable
-public final class MediaLiveEventIngestHeartbeatEventData {
+public final class MediaLiveEventIngestHeartbeatEventData
+    implements JsonSerializable<MediaLiveEventIngestHeartbeatEventData> {
     /*
      * Gets the type of the track (Audio / Video).
      */
-    @JsonProperty(value = "trackType", access = JsonProperty.Access.WRITE_ONLY)
     private String trackType;
 
     /*
      * Gets the track name.
      */
-    @JsonProperty(value = "trackName", access = JsonProperty.Access.WRITE_ONLY)
     private String trackName;
 
     /*
      * Gets the Live Transcription language.
      */
-    @JsonProperty(value = "transcriptionLanguage", access = JsonProperty.Access.WRITE_ONLY)
     private String transcriptionLanguage;
 
     /*
      * Gets the Live Transcription state.
      */
-    @JsonProperty(value = "transcriptionState", access = JsonProperty.Access.WRITE_ONLY)
     private String transcriptionState;
 
     /*
      * Gets the bitrate of the track.
      */
-    @JsonProperty(value = "bitrate", access = JsonProperty.Access.WRITE_ONLY)
     private Long bitrate;
 
     /*
      * Gets the incoming bitrate.
      */
-    @JsonProperty(value = "incomingBitrate", access = JsonProperty.Access.WRITE_ONLY)
     private Long incomingBitrate;
 
     /*
      * Gets the track ingest drift value.
      */
-    @JsonProperty(value = "ingestDriftValue", access = JsonProperty.Access.WRITE_ONLY)
     private String ingestDriftValue;
 
     /*
      * Gets the arrival UTC time of the last fragment.
      */
-    @JsonProperty(value = "lastFragmentArrivalTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastFragmentArrivalTime;
 
     /*
      * Gets the last timestamp.
      */
-    @JsonProperty(value = "lastTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String lastTimestamp;
 
     /*
      * Gets the timescale of the last timestamp.
      */
-    @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
     /*
      * Gets the fragment Overlap count.
      */
-    @JsonProperty(value = "overlapCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long overlapCount;
 
     /*
      * Gets the fragment Discontinuity count.
      */
-    @JsonProperty(value = "discontinuityCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long discontinuityCount;
 
     /*
      * Gets Non increasing count.
      */
-    @JsonProperty(value = "nonincreasingCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long nonincreasingCount;
 
     /*
      * Gets a value indicating whether unexpected bitrate is present or not.
      */
-    @JsonProperty(value = "unexpectedBitrate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean unexpectedBitrate;
 
     /*
      * Gets the state of the live event.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * Gets a value indicating whether preview is healthy or not.
      */
-    @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
-
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
 
-    /** Creates an instance of MediaLiveEventIngestHeartbeatEventData class. */
-    public MediaLiveEventIngestHeartbeatEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIngestHeartbeatEventData class.
+     */
+    public MediaLiveEventIngestHeartbeatEventData() {
+    }
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
+     * 
      * @return the trackType value.
      */
     public String getTrackType() {
@@ -127,7 +118,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the trackName property: Gets the track name.
-     *
+     * 
      * @return the trackName value.
      */
     public String getTrackName() {
@@ -136,7 +127,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the transcriptionLanguage property: Gets the Live Transcription language.
-     *
+     * 
      * @return the transcriptionLanguage value.
      */
     public String getTranscriptionLanguage() {
@@ -145,7 +136,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the transcriptionState property: Gets the Live Transcription state.
-     *
+     * 
      * @return the transcriptionState value.
      */
     public String getTranscriptionState() {
@@ -154,7 +145,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the bitrate property: Gets the bitrate of the track.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long getBitrate() {
@@ -163,7 +154,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the incomingBitrate property: Gets the incoming bitrate.
-     *
+     * 
      * @return the incomingBitrate value.
      */
     public Long getIncomingBitrate() {
@@ -172,7 +163,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the ingestDriftValue property: Gets the track ingest drift value.
-     *
+     * 
      * @return the ingestDriftValue value.
      */
     public Integer getIngestDriftValue() {
@@ -189,7 +180,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the lastFragmentArrivalTime property: Gets the arrival UTC time of the last fragment.
-     *
+     * 
      * @return the lastFragmentArrivalTime value.
      */
     public OffsetDateTime getLastFragmentArrivalTime() {
@@ -198,7 +189,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the lastTimestamp property: Gets the last timestamp.
-     *
+     * 
      * @return the lastTimestamp value.
      */
     public String getLastTimestamp() {
@@ -207,7 +198,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the timescale property: Gets the timescale of the last timestamp.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {
@@ -216,7 +207,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the overlapCount property: Gets the fragment Overlap count.
-     *
+     * 
      * @return the overlapCount value.
      */
     public Long getOverlapCount() {
@@ -225,7 +216,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the discontinuityCount property: Gets the fragment Discontinuity count.
-     *
+     * 
      * @return the discontinuityCount value.
      */
     public Long getDiscontinuityCount() {
@@ -234,7 +225,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the nonincreasingCount property: Gets Non increasing count.
-     *
+     * 
      * @return the nonincreasingCount value.
      */
     public Long getNonincreasingCount() {
@@ -243,7 +234,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the unexpectedBitrate property: Gets a value indicating whether unexpected bitrate is present or not.
-     *
+     * 
      * @return the unexpectedBitrate value.
      */
     public Boolean isUnexpectedBitrate() {
@@ -252,7 +243,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the state property: Gets the state of the live event.
-     *
+     * 
      * @return the state value.
      */
     public String getState() {
@@ -261,10 +252,80 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the healthy property: Gets a value indicating whether preview is healthy or not.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean isHealthy() {
         return this.healthy;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaLiveEventIngestHeartbeatEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventIngestHeartbeatEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventIngestHeartbeatEventData.
+     */
+    public static MediaLiveEventIngestHeartbeatEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventIngestHeartbeatEventData deserializedMediaLiveEventIngestHeartbeatEventData
+                = new MediaLiveEventIngestHeartbeatEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trackType".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.trackType = reader.getString();
+                } else if ("trackName".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.trackName = reader.getString();
+                } else if ("transcriptionLanguage".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.transcriptionLanguage = reader.getString();
+                } else if ("transcriptionState".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.transcriptionState = reader.getString();
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.bitrate
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("incomingBitrate".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.incomingBitrate
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("ingestDriftValue".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.ingestDriftValue = reader.getString();
+                } else if ("lastFragmentArrivalTime".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.lastFragmentArrivalTime = reader.getString();
+                } else if ("lastTimestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.lastTimestamp = reader.getString();
+                } else if ("timescale".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.timescale = reader.getString();
+                } else if ("overlapCount".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.overlapCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("discontinuityCount".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.discontinuityCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("nonincreasingCount".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.nonincreasingCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("unexpectedBitrate".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.unexpectedBitrate
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.state = reader.getString();
+                } else if ("healthy".equals(fieldName)) {
+                    deserializedMediaLiveEventIngestHeartbeatEventData.healthy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaLiveEventIngestHeartbeatEventData;
+        });
     }
 }

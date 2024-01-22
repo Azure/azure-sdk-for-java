@@ -7,9 +7,11 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a bug with auto generated id's when using bulk `saveAll` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).
 
 #### Other Changes
 * Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 37840](https://github.com/Azure/azure-sdk-for-java/pull/37840).
+* Optimized querying entities with nested partition keys by passing the nested partition key in `CosmosQueryRequestOptions` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).
 
 ### 3.41.0 (2023-12-14)
 

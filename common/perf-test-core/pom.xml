@@ -52,6 +52,7 @@
                 <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
                 <include>io.projectreactor:reactor-core:[3.4.34]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.0]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -80,6 +81,22 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.17</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-vertx</artifactId>
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <version>4.5.0</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>

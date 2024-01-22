@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The description of the service. */
+/**
+ * The description of the service.
+ */
 @Fluent
 public final class ServicesPatchDescription {
     /*
@@ -27,8 +29,14 @@ public final class ServicesPatchDescription {
     private ServicesPropertiesUpdateParameters innerProperties;
 
     /**
+     * Creates an instance of ServicesPatchDescription class.
+     */
+    public ServicesPatchDescription() {
+    }
+
+    /**
      * Get the tags property: Instance tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -37,7 +45,7 @@ public final class ServicesPatchDescription {
 
     /**
      * Set the tags property: Instance tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServicesPatchDescription object itself.
      */
@@ -48,7 +56,7 @@ public final class ServicesPatchDescription {
 
     /**
      * Get the innerProperties property: The properties for updating a service instance.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServicesPropertiesUpdateParameters innerProperties() {
@@ -56,9 +64,9 @@ public final class ServicesPatchDescription {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -66,9 +74,9 @@ public final class ServicesPatchDescription {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServicesPatchDescription object itself.
      */
@@ -82,7 +90,7 @@ public final class ServicesPatchDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

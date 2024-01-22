@@ -13,6 +13,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
@@ -29,7 +30,6 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -212,7 +212,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(serviceProperties), 202);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
@@ -381,7 +381,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @ResourceLock("ServiceProperties")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
     @Test
     public void listSystemFileSystems() {
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
@@ -504,7 +504,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystem() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -529,7 +529,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystemWithResponse() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -562,7 +562,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());

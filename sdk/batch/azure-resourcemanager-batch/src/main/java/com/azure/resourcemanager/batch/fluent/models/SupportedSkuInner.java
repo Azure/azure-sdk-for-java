@@ -9,7 +9,9 @@ import com.azure.resourcemanager.batch.models.SkuCapability;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a Batch supported SKU. */
+/**
+ * Describes a Batch supported SKU.
+ */
 @Immutable
 public final class SupportedSkuInner {
     /*
@@ -30,13 +32,15 @@ public final class SupportedSkuInner {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of SupportedSkuInner class. */
+    /**
+     * Creates an instance of SupportedSkuInner class.
+     */
     public SupportedSkuInner() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +49,7 @@ public final class SupportedSkuInner {
 
     /**
      * Get the familyName property: The family name of the SKU.
-     *
+     * 
      * @return the familyName value.
      */
     public String familyName() {
@@ -54,7 +58,7 @@ public final class SupportedSkuInner {
 
     /**
      * Get the capabilities property: A collection of capabilities which this SKU supports.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -63,7 +67,7 @@ public final class SupportedSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

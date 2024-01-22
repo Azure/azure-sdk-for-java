@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Mode of the service mesh. */
+/**
+ * Mode of the service mesh.
+ */
 public final class ServiceMeshMode extends ExpandableStringEnum<ServiceMeshMode> {
-    /** Static value Istio for ServiceMeshMode. */
+    /**
+     * Static value Istio for ServiceMeshMode.
+     */
     public static final ServiceMeshMode ISTIO = fromString("Istio");
 
-    /** Static value Disabled for ServiceMeshMode. */
+    /**
+     * Static value Disabled for ServiceMeshMode.
+     */
     public static final ServiceMeshMode DISABLED = fromString("Disabled");
 
     /**

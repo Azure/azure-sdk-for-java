@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
+/**
+ * OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs.
+ */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
     /*
@@ -41,7 +43,9 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     @JsonProperty(value = "osType")
     private OSType osType;
 
-    /** Creates an instance of OpenShiftManagedClusterMasterPoolProfile class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterMasterPoolProfile class.
+     */
     public OpenShiftManagedClusterMasterPoolProfile() {
     }
 
@@ -154,10 +158,8 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
 

@@ -215,6 +215,8 @@ service
 <details>
 <summary> batch </summary>
 
+* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2023-11)
+    * [1.1.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-batch/1.1.0-beta.3)
 * [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2023-05)
     * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-batch/1.1.0-beta.2)
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager#tag-package-2022-10)
@@ -547,6 +549,8 @@ service
 
 * [package-preview-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-preview-2022-11)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.0.0-beta.2)
+* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2023-11)
+    * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.2.0)
 * [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2023-05)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dataprotection/1.1.0)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager#tag-package-2023-01)
@@ -641,6 +645,8 @@ service
 <details>
 <summary> deviceupdate </summary>
 
+* [package-2023-07-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager#tag-package-2023-07-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-deviceupdate/1.0.0)
 * [package-2022-10-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager#tag-package-2022-10-01)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-deviceupdate/1.0.0-beta.2)
 * [package-2022-04-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager#tag-package-2022-04-01-preview)
@@ -872,6 +878,8 @@ service
 <details>
 <summary> healthcareapis </summary>
 
+* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2023-11)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthcareapis/1.0.0)
 * [package-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2021-11)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthcareapis/1.0.0-beta.2)
 * [package-2021-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager#tag-package-2021-01)
@@ -1246,6 +1254,8 @@ service
 <details>
 <summary> netapp </summary>
 
+* [package-preview-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-preview-2023-05)
+    * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.1.0-beta.1)
 * [package-netapp-2023-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2023-05-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.0.0)
 * [package-netapp-2022-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2022-11-01)
@@ -1273,6 +1283,14 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.2)
 * [package-netapp-2020-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2020-11-01)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> networkanalytics </summary>
+
+* [package-2023-11-15](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkanalytics/resource-manager#tag-package-2023-11-15)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkanalytics/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1678,6 +1696,7 @@ service
 <summary> selfhelp </summary>
 
 * [package-2023-09-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/help/resource-manager#tag-package-2023-09-01-preview)
+    * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-selfhelp/1.1.0-beta.2)
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-selfhelp/1.1.0-beta.1)
 * [package-2023-06-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/help/resource-manager#tag-package-2023-06-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-selfhelp/1.0.0)
@@ -1690,6 +1709,7 @@ service
 <summary> servicefabric </summary>
 
 * [package-2021-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager#tag-package-2021-06)
+    * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabric/1.0.0-beta.4)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabric/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabric/1.0.0-beta.2)
 * [package-2019-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager#tag-package-2019-03)
@@ -1709,6 +1729,8 @@ service
 <details>
 <summary> servicenetworking </summary>
 
+* [package-2023-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicenetworking/resource-manager#tag-package-2023-11-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicenetworking/1.0.0)
 * [package-2023-05-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicenetworking/resource-manager#tag-package-2023-05-01-preview)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicenetworking/1.0.0-beta.2)
 * [package-2022-10-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicenetworking/resource-manager#tag-package-2022-10-01-preview)

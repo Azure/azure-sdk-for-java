@@ -5,49 +5,53 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details of JobOutput errors. */
+/**
+ * Details of JobOutput errors.
+ */
 @Immutable
-public final class MediaJobError {
+public final class MediaJobError implements JsonSerializable<MediaJobError> {
     /*
      * Error code describing the error.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private MediaJobErrorCode code;
 
     /*
      * A human-readable language-dependent representation of the error.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Helps with categorization of errors.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private MediaJobErrorCategory category;
 
     /*
      * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
      * Azure Portal.
      */
-    @JsonProperty(value = "retry", access = JsonProperty.Access.WRITE_ONLY)
     private MediaJobRetry retry;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<MediaJobErrorDetail> details;
 
-    /** Creates an instance of MediaJobError class. */
-    public MediaJobError() {}
+    /**
+     * Creates an instance of MediaJobError class.
+     */
+    public MediaJobError() {
+    }
 
     /**
      * Get the code property: Error code describing the error.
-     *
+     * 
      * @return the code value.
      */
     public MediaJobErrorCode getCode() {
@@ -56,7 +60,7 @@ public final class MediaJobError {
 
     /**
      * Get the message property: A human-readable language-dependent representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -65,7 +69,7 @@ public final class MediaJobError {
 
     /**
      * Get the category property: Helps with categorization of errors.
-     *
+     * 
      * @return the category value.
      */
     public MediaJobErrorCategory getCategory() {
@@ -75,7 +79,7 @@ public final class MediaJobError {
     /**
      * Get the retry property: Indicates that it may be possible to retry the Job. If retry is unsuccessful, please
      * contact Azure support via Azure Portal.
-     *
+     * 
      * @return the retry value.
      */
     public MediaJobRetry getRetry() {
@@ -84,10 +88,52 @@ public final class MediaJobError {
 
     /**
      * Get the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     public List<MediaJobErrorDetail> getDetails() {
         return this.details;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobError.
+     */
+    public static MediaJobError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobError deserializedMediaJobError = new MediaJobError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMediaJobError.code = MediaJobErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedMediaJobError.message = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedMediaJobError.category = MediaJobErrorCategory.fromString(reader.getString());
+                } else if ("retry".equals(fieldName)) {
+                    deserializedMediaJobError.retry = MediaJobRetry.fromString(reader.getString());
+                } else if ("details".equals(fieldName)) {
+                    List<MediaJobErrorDetail> details
+                        = reader.readArray(reader1 -> MediaJobErrorDetail.fromJson(reader1));
+                    deserializedMediaJobError.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobError;
+        });
     }
 }
