@@ -72,8 +72,8 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  * </h3>
  *
  * <p>
- *     Azure AI Search supports <a href="https://learn.microsoft.com/en-us/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal">
- *         Microsoft Entra ID (role-based) authentication </a> and <a href="https://learn.microsoft.com/en-us/azure/search/search-security-api-keys?tabs=portal-use%2Cportal-find%2Cportal-query">API keys</a> for authentication.
+ *     Azure AI Search supports <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal">
+ *         Microsoft Entra ID (role-based) authentication </a> and <a href="https://learn.microsoft.com/azure/search/search-security-api-keys?tabs=portal-use%2Cportal-find%2Cportal-query">API keys</a> for authentication.
  * </p>
  *
  * <p>
@@ -135,7 +135,7 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  *   You can also create a {@link SearchClient} or {@link SearchAsyncClient} using Azure Active Directory (AAD)
  *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using the
  *   DefaultAzureCredential you can authenticate a service using Managed Identity or a service principal, authenticate
- *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/en-us/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
+ *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
  *   instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
  * </p>
  *

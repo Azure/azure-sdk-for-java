@@ -41,7 +41,7 @@ import java.util.Objects;
  *
  * <p>
  *     Indexers provide indexing automation. An indexer connects to a data source, reads in the data, and passes it to a
- *     search engine for indexing into a target search index. Indexers read from an external source using connection
+ *     skillset pipeline for indexing into a target search index. Indexers read from an external source using connection
  *     information in a data source, and serialize the incoming data into JSON search documents. In addition to a data
  *     source, an indexer also requires an index. The index specifies the fields and attributes of the search documents.
  * </p>
