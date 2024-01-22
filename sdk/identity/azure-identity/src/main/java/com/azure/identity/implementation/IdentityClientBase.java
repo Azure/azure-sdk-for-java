@@ -120,6 +120,9 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+
+    private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
     private final Map<String, String> properties;
 
 
@@ -640,13 +643,20 @@ public abstract class IdentityClientBase {
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
                 SerializerEncoding.JSON);
             String accessToken = objectMap.get("accessToken");
-            String time = objectMap.get("expiresOn");
-            String timeToSecond = time.substring(0, time.indexOf("."));
-            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                .atZone(ZoneId.systemDefault())
-                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            OffsetDateTime tokenExpiry;
+
+            if (objectMap.containsKey("expires_on")) {
+                Long seconds = Long.parseLong(objectMap.get("expires_on"));
+                tokenExpiry = EPOCH.plusSeconds(seconds);
+            } else {
+                String time = objectMap.get("expiresOn");
+                String timeToSecond = time.substring(0, time.indexOf("."));
+                String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+                tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .atZone(ZoneId.systemDefault())
+                    .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            }
+            token = new AccessToken(accessToken, tokenExpiry);
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
