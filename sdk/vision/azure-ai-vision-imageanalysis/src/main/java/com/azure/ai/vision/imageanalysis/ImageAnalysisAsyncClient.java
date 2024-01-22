@@ -30,6 +30,18 @@ import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
+ *
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
@@ -572,7 +584,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
-     *
+     * 
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-url -->
      * <pre>
      * &#47;&#47;
@@ -628,7 +640,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
-     *
+     * 
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-file -->
      * <pre>
      * &#47;&#47;
