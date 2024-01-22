@@ -310,18 +310,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void directDiagnostics() throws Exception {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
-        validateDirectModeDiagnosticsOnSuccess(
-                createResponse.getDiagnostics(),
-                directClient.asyncClient(),
-                this.directClientUserAgent,
-                false);
+        validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
+        validateChannelAcquisitionContext(createResponse.getDiagnostics(), false);
 
         // validate that on failed operation request timeline is populated
         try {
             containerDirect.createItem(internalObjectNode);
             fail("expected 409");
         } catch (CosmosException e) {
-            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent, false);
+            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
+            validateChannelAcquisitionContext(e.getDiagnostics(), false);
         }
     }
 
@@ -716,9 +714,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateDirectModeDiagnosticsOnSuccess(
         CosmosDiagnostics cosmosDiagnostics,
-        CosmosAsyncClient testDirectClient,
-        String userAgent,
-        boolean channelAcquisitionContextExists) throws Exception {
+        CosmosClient testDirectClient,
+        String userAgent) throws Exception {
 
         String diagnostics = cosmosDiagnostics.toString();
         logger.info("DIAGNOSTICS: {}", diagnostics);
@@ -740,24 +737,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"retryAfterInMs\"");
         assertThat(diagnostics).contains("\"channelStatistics\"");
 
-        if (channelAcquisitionContextExists) {
-            assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
-        } else {
-            assertThat(diagnostics).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
-        }
-
         assertThat(cosmosDiagnostics.getContactedRegionNames()).isNotEmpty();
         assertThat(cosmosDiagnostics.getDuration()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
-        validateRegionContacted(cosmosDiagnostics, testDirectClient);
+        validateRegionContacted(cosmosDiagnostics, testDirectClient.asyncClient());
         validateChannelStatistics(cosmosDiagnostics);
         isValidJSON(diagnostics);
     }
 
-    private void validateDirectModeDiagnosticsOnException(
-            CosmosException cosmosException,
-            String userAgent,
-            boolean channelAcquisitionContextExists) {
+    private void validateDirectModeDiagnosticsOnException(CosmosException cosmosException, String userAgent) {
         CosmosDiagnostics cosmosDiagnostics = cosmosException.getDiagnostics();
         String diagnosticsString = cosmosDiagnostics.toString();
         assertThat(diagnosticsString).contains("\"backendLatencyInMs\"");
@@ -772,12 +760,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         if (!(cosmosException instanceof OperationCancelledException)) {
             assertThat(diagnosticsString).doesNotContain("\"statusCode\":408");
             assertThat(diagnosticsString).doesNotContain("\"subStatusCode\":20008");
-        }
-
-        if (channelAcquisitionContextExists) {
-            assertThat(diagnosticsString).contains("\"transportRequestChannelAcquisitionContext\"");
-        } else {
-            assertThat(diagnosticsString).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
         }
     }
 
@@ -1523,10 +1505,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                         .result(
                                 FaultInjectionResultBuilders
                                         .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
-                                        .interval(Duration.ofMillis(100))
+                                        .interval(Duration.ofMillis(10))
                                         .threshold(1.0)
                                         .build())
-                        .hitLimit(1)
+                        .duration(Duration.ofMillis(50))
                         .build();
 
         try {
@@ -1542,7 +1524,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(connectionDelayRule)).block();
             CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode).block();
-            validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), testClient, userAgentSuffix, true);
+            validateChannelAcquisitionContext(createResponse.getDiagnostics(), true);
 
             try {
                 CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(closeConnectionsRule)).block();
@@ -1551,7 +1533,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 container.createItem(internalObjectNode).block();
                 fail("expected 409");
             } catch (CosmosException e) {
-                validateDirectModeDiagnosticsOnException(e, userAgentSuffix, true);
+                validateChannelAcquisitionContext(e.getDiagnostics(), true);
             }
 
         } finally {
@@ -1694,6 +1676,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     fail("Failed to parse RntbdChannelStatistics");
                 }
             }
+        }
+    }
+
+    private void validateChannelAcquisitionContext(CosmosDiagnostics diagnostics, boolean channelAcquisitionContextExists) {
+        String diagnosticsString = diagnostics.toString();
+
+        if (channelAcquisitionContextExists) {
+            assertThat(diagnosticsString).contains("\"transportRequestChannelAcquisitionContext\"");
+        } else {
+            assertThat(diagnosticsString).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
         }
     }
 
