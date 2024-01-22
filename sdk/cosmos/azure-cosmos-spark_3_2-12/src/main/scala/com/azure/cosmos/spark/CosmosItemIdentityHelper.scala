@@ -8,6 +8,11 @@ import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 
 import java.util
+import scala.collection.mutable
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 private[spark] object CosmosItemIdentityHelper {
   // pattern will be recognized
@@ -20,7 +25,13 @@ private[spark] object CosmosItemIdentityHelper {
   private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosItemIdentityValueString(id: String, partitionKeyValue: Object): String = {
-    s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue)})"
+    partitionKeyValue match {
+      // for subpartitions case
+      case wrappedArray: mutable.WrappedArray[Any] =>
+        s"id($id).pk(${objectMapper.writeValueAsString(wrappedArray.toList.asJava)})"
+
+      case _ => s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue)})"
+    }
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {

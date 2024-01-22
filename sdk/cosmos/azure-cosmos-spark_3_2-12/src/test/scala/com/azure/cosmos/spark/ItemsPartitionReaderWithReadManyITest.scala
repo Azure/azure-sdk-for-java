@@ -25,7 +25,7 @@ class ItemsPartitionReaderWithReadManyITest
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  "ItemsPartitionReaderWithReadMany" should "be able to get all items for the feedRange targeted to" in {
+  it should "be able to get all items for the feedRange targeted to" in {
     val testCases = Array(
       (cosmosContainer, idProperty),
       (cosmosContainersWithPkAsPartitionKey, pkProperty)
