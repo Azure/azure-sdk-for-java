@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +58,7 @@ public class ChainedTokenCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredential.class);
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
+    private AtomicReference<TokenCredential> cachedWorkingCredential;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -63,6 +66,7 @@ public class ChainedTokenCredential implements TokenCredential {
      */
     ChainedTokenCredential(List<TokenCredential> credentials) {
         this.credentials = Collections.unmodifiableList(credentials);
+        cachedWorkingCredential = new AtomicReference<>();
     }
 
     /**
@@ -79,24 +83,45 @@ public class ChainedTokenCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
-        return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> LOGGER.info("Azure Identity => Attempted credential {} returns a token",
-                    p.getClass().getSimpleName()))
+        Mono<AccessToken> accessTokenMono;
+        if (cachedWorkingCredential.get() != null) {
+            accessTokenMono =  Mono.defer(() -> cachedWorkingCredential.get().getToken(request)
+                .doOnNext(t -> LOGGER.info("Azure Identity => Returning token from cached credential {}",
+                    cachedWorkingCredential.get().getClass().getSimpleName()))
                 .onErrorResume(Exception.class, t -> {
                     if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
                         return Mono.error(new ClientAuthenticationException(
-                            unavailableError + p.getClass().getSimpleName()
+                            unavailableError + cachedWorkingCredential.get().getClass().getSimpleName()
                                 + " authentication failed. Error Details: " + t.getMessage(),
                             null, t));
                     }
                     exceptions.add((CredentialUnavailableException) t);
-                    LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
-                        p.getClass().getSimpleName());
+                    LOGGER.info("Azure Identity => Cached credential {} is unavailable.",
+                        cachedWorkingCredential.get().getClass().getSimpleName());
                     return Mono.empty();
-                }), 1)
-            .next()
-            .switchIfEmpty(Mono.defer(() -> {
+                }));
+        } else {
+            accessTokenMono = Flux.fromIterable(credentials)
+                .flatMap(p -> p.getToken(request)
+                    .doOnNext(t -> {
+                        LOGGER.info("Azure Identity => Attempted credential {} returns a token",
+                            p.getClass().getSimpleName());
+                        cachedWorkingCredential.set(p);
+                    }).onErrorResume(Exception.class, t -> {
+                        if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                            return Mono.error(new ClientAuthenticationException(
+                                unavailableError + p.getClass().getSimpleName()
+                                    + " authentication failed. Error Details: " + t.getMessage(),
+                                null, t));
+                        }
+                        exceptions.add((CredentialUnavailableException) t);
+                        LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
+                            p.getClass().getSimpleName());
+                        return Mono.empty();
+                    }), 1)
+                .next();
+        }
+        return accessTokenMono.switchIfEmpty(Mono.defer(() -> {
                 // Chain Exceptions.
                 CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                 for (int z = exceptions.size() - 2; z >= 0; z--) {
