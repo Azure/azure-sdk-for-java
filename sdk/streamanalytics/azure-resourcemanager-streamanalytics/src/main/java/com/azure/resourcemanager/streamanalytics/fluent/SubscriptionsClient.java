@@ -7,16 +7,43 @@ package com.azure.resourcemanager.streamanalytics.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryCompilationResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryTestingResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputResultInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotasListResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestDatasourceResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestOutputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestQueryInner;
+import com.azure.resourcemanager.streamanalytics.models.CompileQuery;
 
-/** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubscriptionsClient.
+ */
 public interface SubscriptionsClient {
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the GetQuotas operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SubscriptionQuotasListResultInner> listQuotasWithResponse(String location, Context context);
+
+    /**
+     * Retrieves the subscription's current quota information in a particular region.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -26,16 +53,278 @@ public interface SubscriptionsClient {
     SubscriptionQuotasListResultInner listQuotas(String location);
 
     /**
-     * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<QueryTestingResultInner>, QueryTestingResultInner> beginTestQuery(String location,
+        TestQueryInner testQuery);
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
+     * @return the {@link SyncPoller} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<QueryTestingResultInner>, QueryTestingResultInner> beginTestQuery(String location,
+        TestQueryInner testQuery, Context context);
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionQuotasListResultInner> listQuotasWithResponse(String location, Context context);
+    QueryTestingResultInner testQuery(String location, TestQueryInner testQuery);
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QueryTestingResultInner testQuery(String location, TestQueryInner testQuery, Context context);
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<QueryCompilationResultInner> compileQueryWithResponse(String location, CompileQuery compileQuery,
+        Context context);
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QueryCompilationResultInner compileQuery(String location, CompileQuery compileQuery);
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SampleInputResultInner>, SampleInputResultInner> beginSampleInput(String location,
+        SampleInputInner sampleInput);
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SampleInputResultInner>, SampleInputResultInner> beginSampleInput(String location,
+        SampleInputInner sampleInput, Context context);
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SampleInputResultInner sampleInput(String location, SampleInputInner sampleInput);
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SampleInputResultInner sampleInput(String location, SampleInputInner sampleInput, Context context);
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestInput(String location,
+        TestInputInner testInput);
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestInput(String location,
+        TestInputInner testInput, Context context);
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TestDatasourceResultInner testInput(String location, TestInputInner testInput);
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TestDatasourceResultInner testInput(String location, TestInputInner testInput, Context context);
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestOutput(String location,
+        TestOutputInner testOutput);
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestOutput(String location,
+        TestOutputInner testOutput, Context context);
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TestDatasourceResultInner testOutput(String location, TestOutputInner testOutput);
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TestDatasourceResultInner testOutput(String location, TestOutputInner testOutput, Context context);
 }

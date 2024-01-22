@@ -5,36 +5,49 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Describes how identity is verified. */
+/**
+ * Describes how identity is verified.
+ */
 @Fluent
-public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
+public final class Identity {
     /*
-     * The identity tenantId
+     * The tenantId of the identity.
      */
-    @JsonProperty(value = "tenantId")
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The identity principal ID
+     * The principalId of the identity.
      */
-    @JsonProperty(value = "principalId")
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The identity type
+     * The type of identity, can be SystemAssigned or UserAssigned.
      */
     @JsonProperty(value = "type")
     private String type;
 
+    /*
+     * The user assigned identities associated with the streaming job resource.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> userAssignedIdentities;
+
     /**
-     * Get the tenantId property: The identity tenantId.
-     *
+     * Creates an instance of Identity class.
+     */
+    public Identity() {
+    }
+
+    /**
+     * Get the tenantId property: The tenantId of the identity.
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -42,19 +55,8 @@ public class Identity {
     }
 
     /**
-     * Set the tenantId property: The identity tenantId.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /**
-     * Get the principalId property: The identity principal ID.
-     *
+     * Get the principalId property: The principalId of the identity.
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -62,19 +64,8 @@ public class Identity {
     }
 
     /**
-     * Set the principalId property: The identity principal ID.
-     *
-     * @param principalId the principalId value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
-    }
-
-    /**
-     * Get the type property: The identity type.
-     *
+     * Get the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * 
      * @return the type value.
      */
     public String type() {
@@ -82,8 +73,8 @@ public class Identity {
     }
 
     /**
-     * Set the type property: The identity type.
-     *
+     * Set the type property: The type of identity, can be SystemAssigned or UserAssigned.
+     * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -93,8 +84,30 @@ public class Identity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The user assigned identities associated with the streaming job
+     * resource.
+     * 
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, Object> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The user assigned identities associated with the streaming job
+     * resource.
+     * 
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the Identity object itself.
+     */
+    public Identity withUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
