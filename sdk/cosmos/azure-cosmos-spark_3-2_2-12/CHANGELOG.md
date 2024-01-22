@@ -3,6 +3,7 @@
 ### 4.26.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299)
 
 #### Breaking Changes
 

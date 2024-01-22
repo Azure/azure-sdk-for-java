@@ -52,24 +52,24 @@
               "allowCustom": true
             },
             "value": {
-              "durationMs": 3600000
+              "durationMs": 86400000
             }
           },
           {
             "id": "1b563bbe-70e0-48e6-ae33-d71d97ab8332",
             "version": "KqlParameterItem/1.0",
             "name": "runId",
+            "label": "Pod name",
             "type": 2,
             "isRequired": true,
-            "query": "dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where sdkVersion contains \"java\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| summarize start=min(timestamp) by runId, pod = tostring(customDimensions[\"hostname\"])\r\n| order by start desc\r\n| project runId, pod",
+            "query": "dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp) by runId, pod = tostring(customDimensions[\"hostname\"])\r\n| order by start desc\r\n| project runId, pod",
             "typeSettings": {
               "additionalResourceOptions": [],
               "showDefault": false
             },
             "queryType": 0,
             "resourceType": "microsoft.insights/components",
-            "value": "s095aa",
-            "label": "Pod name"
+            "value": null
           }
         ],
         "style": "pills",
@@ -86,7 +86,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where sdkVersion contains \"java\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| where sdkVersion contains \"java\" and name == \"before run\"\r\n| extend annotation = coalesce(customDimensions[\"annotation\"], \"\")\r\n| extend serviceBusPackageVersion = coalesce(customDimensions[\"serviceBusPackageVersion\"], \"\")\r\n| distinct annotation, serviceBusPackageVersion, runId, pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1\r\n",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" and  name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| extend serviceBusPackageVersion = coalesce(customDimensions[\"serviceBusPackageVersion\"], \"\")\r\n| distinct serviceBusPackageVersion, runId, pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1",
         "size": 0,
         "title": "Runs in {timeRange:label}",
         "noDataMessageStyle": 5,
@@ -117,7 +117,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet queueProperties = testSpans \r\n| where name == \"getRemainingQueueMessages\"\r\n| extend activeCount = tostring(customDimensions[\"activeCount\"]), dead_lettered = tostring(customDimensions[\"deadLetteredCount\"])\r\n| summarize arg_max(timestamp, activeCount, dead_lettered) \r\n| project-away timestamp\r\n| project active_messages_remaning_in_the_queue = activeCount, dead_lettered\r\n| evaluate narrow();\r\nlet errors = metrics\r\n| where name == \"stress_test.errors\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=sum(valueCount) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet sentCounter = metrics | where name == \"messaging.servicebus.messages.sent\"\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"\r\n| summarize sent_mesages = sum(valueSum)\r\n| evaluate narrow();\r\nlet receivedCounter = metrics | where name == \"messaging.servicebus.receiver.lag\"\r\n| summarize received_messages = sum(valueCount)\r\n| evaluate narrow();\r\nlet settled = metrics \r\n| where name == \"messaging.servicebus.settlement.request.duration\" and customDimensions[\"otel.status_code\"] == \"ok\" \r\n| extend status = tostring(customDimensions[\"messaging.servicebus.disposition_status\"])\r\n| summarize completed = sumif(valueCount,  status == \"completed\"), abandoned=sumif(valueCount,  status == \"abandoned\"), total = sum(valueCount)\r\n| project settled = bag_pack(\"completed\", completed, \"abandoned\", abandoned, \"total\", total)\r\n| evaluate narrow(); \r\nlet testDuration = testSpans \r\n| where name == \"after run\" and cloud_RoleInstance startswith \"receiver\"\r\n| summarize test_driation_in_sec = max(toreal(customDimensions[\"durationMs\"])/1000)\r\n| evaluate narrow();\r\nlet annotation = testSpans \r\n| where name == \"before run\" and cloud_RoleInstance == \"receiver1\"\r\n| project annotation=tostring(customDimensions[\"annotation\"]), serviceBusPackageVersion=tostring(customDimensions[\"serviceBusPackageVersion\"]), pod=tostring(customDimensions[\"hostname\"])\r\n| evaluate narrow();\r\nqueueProperties \r\n| union errors, receivedCounter, sentCounter, settled, testDuration, annotation\r\n| project Check = Column, Result = Value\r\n| order by Check asc",
+        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = metrics\r\n| where name == \"test.run.errors\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=toint(sum(valueSum)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet sentCounter = metrics | where name == \"messaging.servicebus.messages.sent\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| extend evenHubName = tostring(customDimensions[\"messaging.destination.name\"])\r\n| summarize sent = sum(valueSum) by evenHubName\r\n| summarize sent_mesages=make_bag(bag_pack(evenHubName, toint(sent)))\r\n| evaluate narrow();\r\nlet receivedCounter = metrics | where name == \"messaging.servicebus.receiver.lag\"\r\n| summarize received_messages = sum(valueCount)\r\n| evaluate narrow();\r\nlet settled = metrics \r\n| where name == \"messaging.servicebus.settlement.request.duration\" and (customDimensions[\"otel.status_code\"] == \"ok\" or customDimensions[\"otel.status_code\"] == \"\")\r\n| summarize settled_messages = sum(valueCount)\r\n| evaluate narrow(); \r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize duration = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| summarize actual_test_duration_in_sec = make_bag(bag_pack(cloud_RoleInstance, duration))\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" and cloud_RoleInstance endswith \"receiver\"\r\n| project parameters_common=bag_pack(\"pod\", customDimensions[\"hostname\"], \"packageVersion\", customDimensions[\"packageVersion\"]), parameters_receiver = bag_remove_keys(customDimensions, dynamic(['eventHubName', 'duration', 'sample.in', 'consumerGroupName', 'annotation', 'hostname', 'packageVersion', 'jreVendor', 'jreVersion']))\r\n| evaluate narrow();\r\nlet sender_parameters = testSpans \r\n| where name == \"before run\" and cloud_RoleInstance endswith \"sender\"\r\n| project parameters_sender = bag_remove_keys(customDimensions, dynamic(['eventHubName', 'duration', 'sample.in', 'annotation', 'hostname', 'packageVersion', 'consumerGroupName', 'jreVendor', 'jreVersion']))\r\n| evaluate narrow();\r\nlet queueProperties = testSpans \r\n| where name == \"getRemainingQueueMessages\"\r\n| extend activeCount = tostring(customDimensions[\"activeCount\"]), dead_lettered = tostring(customDimensions[\"deadLetteredCount\"])\r\n| summarize arg_max(timestamp, activeCount, dead_lettered) \r\n| project-away timestamp\r\n| project active_messages_remaning_in_the_queue = activeCount, dead_lettered\r\n| evaluate narrow();\r\nparameters \r\n| union sender_parameters, sentCounter, receivedCounter, settled, actualDuration, errors,queueProperties\r\n| project Property = Column, Value",
         "size": 0,
         "title": "Test results",
         "noDataMessageStyle": 5,
@@ -131,8 +131,9 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet sender_name=strcat(\"sender-\", runId);\r\nlet receiver_name=strcat(\"receiver-\", runId);\r\nlet send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| where cloud_RoleName  == sender_name\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"\r\n| summarize message_send=sum(valueSum) by bin(timestamp, 1m);\r\nlet receive = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.receiver.lag\"\r\n| where cloud_RoleName endswith runId\r\n| summarize receive = sum(valueCount) by bin(timestamp, 1m), cloud_RoleName;\r\nlet settle = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| where cloud_RoleName == \"receiver-{runId}\"\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"\r\n| summarize settle = sum(valueCount) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (receive) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render timechart",
+        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-servicebus-\", runId);\r\nlet send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| where cloud_RoleName  == role_name and cloud_RoleInstance==\"sender\"\r\n| where customDimensions[\"otel.status_code\"] == \"ok\" or customDimensions[\"otel.status_code\"] == \"\"\r\n| summarize message_send=sum(valueSum) by bin(timestamp, 1m);\r\nlet receive = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.receiver.lag\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| summarize receive = sum(valueCount) by bin(timestamp, 1m);\r\nlet settle = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"  or customDimensions[\"otel.status_code\"] == \"\"\r\n| summarize settle = sum(valueCount) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (receive) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render timechart",
         "size": 0,
+        "aggregation": 3,
         "title": "Send/receive/settle success rate (per minute)",
         "noDataMessageStyle": 5,
         "queryType": 0,
@@ -149,7 +150,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "// duration\r\nlet runId = \"{runId}\";\r\nlet sender_name=strcat(\"sender-\", runId);\r\nlet receiver_name=strcat(\"receiver-\", runId);\r\nlet amqp_send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.az.amqp.producer.send.duration\"\r\n| where cloud_RoleName == sender_name\r\n| where customDimensions[\"amqp.delivery_state\"] == \"accepted\"\r\n| summarize amqp_send = avg(valueSum/valueCount) by bin(timestamp, 1m); // amqp_send_avg = avg(valueSum/valueCount), amqp_send_max = max(valueMax) \r\nlet settle = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| where cloud_RoleName == receiver_name\r\n| where customDimensions[\"otel.status_code\"] == \"ok\"\r\n| summarize settle = avg(valueSum/valueCount) by bin(timestamp, 1m); // settle_avg = avg(valueSum/valueCount), settle_max = max(valueMax)\r\nlet management = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| where cloud_RoleName == receiver_name or cloud_RoleName == sender_name\r\n| where customDimensions[\"amqp.status_code\"] == \"accepted\"\r\n| summarize management = avg(valueSum/valueCount) by bin(timestamp, 1m); // management_avg = avg(valueSum/valueCount), management_max = max(valueMax)\r\namqp_send\r\n| join kind = fullouter (settle) on timestamp\r\n| join kind = fullouter (management) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render linechart",
+        "query": "// duration\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-servicebus-\", runId);\r\nlet amqp_send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.az.amqp.producer.send.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"sender\"\r\n| where customDimensions[\"amqp.delivery_state\"] == \"accepted\"\r\n| summarize amqp_send = avg(valueSum/valueCount) by bin(timestamp, 1m); \r\nlet settle = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"otel.status_code\"] == \"ok\" or customDimensions[\"otel.status_code\"] == \"\"\r\n| summarize settle = avg(valueSum/valueCount) by bin(timestamp, 1m);\r\nlet management = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| where cloud_RoleName == role_name\r\n| where customDimensions[\"amqp.status_code\"] == \"accepted\"\r\n| summarize management = avg(valueSum/valueCount) by bin(timestamp, 1m); \r\namqp_send\r\n| join kind = fullouter (settle) on timestamp\r\n| join kind = fullouter (management) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render linechart",
         "size": 0,
         "title": "Duration (ms), average per minute",
         "noDataMessageStyle": 5,
@@ -166,7 +167,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet sender_name=strcat(\"sender-\", runId);\r\nlet receiver_name=strcat(\"receiver-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == sender_name or cloud_RoleName == receiver_name;\r\nlet send = metrics\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"\r\n| summarize send_errors = sum(valueSum) by status;\r\nlet settle = metrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"\r\n| summarize settle_errors = sum(valueCount) by status;\r\nlet management = metrics\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| extend status = tostring(customDimensions[\"amqp.status_code\"])\r\n| where status != \"ok\" and  status != \"accepted\"\r\n| summarize management_errors = sum(valueCount) by status;\r\nlet connection = metrics\r\n| where name == \"messaging.az.amqp.client.connections.closed\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize connection_errors = sum(valueSum) by status;\r\nlet transport = metrics \r\n| where name == \"messaging.az.amqp.client.transport.errors\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize transport_errors = sum(valueSum) by status;\r\nsend \r\n| join kind = fullouter (settle) on status\r\n| join kind = fullouter (management) on status\r\n| join kind = fullouter (connection) on status\r\n| join kind = fullouter (transport) on status\r\n| project status = coalesce(status, status1, status2, status3, status4), send_errors, settle_errors, management_errors, connection_errors, transport_errors\r\n",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-servicebus-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name;\r\nlet send = metrics\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\" and status != \"\"\r\n| summarize send_errors = sum(valueSum) by status;\r\nlet settle = metrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"  and status != \"\"\r\n| summarize settle_errors = sum(valueCount) by status;\r\nlet management = metrics\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| extend status = tostring(customDimensions[\"amqp.status_code\"])\r\n| where status != \"ok\" and  status != \"accepted\" and status != \"\"\r\n| summarize management_errors = sum(valueCount) by status;\r\nlet connection = metrics\r\n| where name == \"messaging.az.amqp.client.connections.closed\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize connection_errors = sum(valueSum) by status;\r\nlet transport = metrics \r\n| where name == \"messaging.az.amqp.client.transport.errors\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize transport_errors = sum(valueSum) by status;\r\nsend \r\n| join kind = fullouter (settle) on status\r\n| join kind = fullouter (management) on status\r\n| join kind = fullouter (connection) on status\r\n| join kind = fullouter (transport) on status\r\n| project status = coalesce(status, status1, status2, status3, status4), send_errors, settle_errors, management_errors, connection_errors, transport_errors\r\n",
         "size": 0,
         "title": "Send/receive/settle error rate (per minute)",
         "queryType": 0,
@@ -183,39 +184,75 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where sdkVersion contains \"java\";\r\nmetrics\r\n| where name == \"Heap Memory Used (MB)\"\r\n| summarize avg_memory = avg(value) by cloud_RoleInstance, bin(timestamp, 1m)\r\n| render areachart",
+        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus-\" and cloud_RoleName endswith \"{runId}\";\r\nmetrics\r\n| where name == \"process.runtime.jvm.memory.usage\" and customDimensions[\"type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart",
         "size": 0,
+        "aggregation": 2,
         "title": "Heap memory used (MB)",
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
-      "customWidth": "50",
+      "customWidth": "30",
       "name": "query - 8",
       "styleSettings": {
-        "maxWidth": "50"
+        "maxWidth": "30"
       }
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet metrics = performanceCounters\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where sdkVersion contains \"java\";\r\nmetrics\r\n| where name == \"% Processor Time Normalized\"\r\n| summarize avg_cpu = avg(value) by cloud_RoleInstance, bin(timestamp, 1m)\r\n| render timechart",
+        "query": "let runId = \"{runId}\";\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus-\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.cpu.utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart",
         "size": 0,
+        "aggregation": 3,
         "title": "CPU %",
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
-      "customWidth": "50",
+      "customWidth": "30",
       "name": "query - 9",
       "styleSettings": {
-        "maxWidth": "50"
+        "maxWidth": "30"
       }
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet send = metrics\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"\r\n| summarize send_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet settle = metrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"\r\n| summarize settle_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet management = metrics\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| extend status = tostring(customDimensions[\"amqp.status_code\"])\r\n| where status != \"ok\" and  status != \"accepted\"\r\n| summarize management_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet connection = metrics\r\n| where name == \"messaging.az.amqp.client.connections.closed\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize connection_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet transport = metrics \r\n| where name == \"messaging.az.amqp.client.transport.errors\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize transport_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet testErrors = metrics\r\n| where name == \"stress_test.errors\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize test_errors=sum(valueSum) by errorType, bin(timestamp, 1m);\r\nlet logs = traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith \"{runId}\" and severityLevel > 1\r\n| summarize log_errors = count() by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (testErrors) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| join kind = fullouter (management) on timestamp\r\n| join kind = fullouter (connection) on timestamp\r\n| join kind = fullouter (transport) on timestamp\r\n| join kind = fullouter (logs) on timestamp\r\n| project timestamp = coalesce(timestamp, timestamp1, timestamp2, timestamp3, timestamp4, timestamp5, timestamp6), test_errors, send_errors, settle_errors, management_errors, connection_errors, transport_errors, log_errors\r\n| render timechart\r\n",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.threads.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Thread count",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 11",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"gc\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by cloud_RoleInstance, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "% of time spent in GC",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 12",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet send = metrics\r\n| where name == \"messaging.servicebus.messages.sent\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"  and status != \"\"\r\n| summarize send_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet settle = metrics\r\n| where name == \"messaging.servicebus.settlement.request.duration\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"ok\"  and status != \"\"\r\n| summarize settle_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet management = metrics\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| extend status = tostring(customDimensions[\"amqp.status_code\"])\r\n| where status != \"ok\" and  status != \"accepted\"\r\n| summarize management_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet connection = metrics\r\n| where name == \"messaging.az.amqp.client.connections.closed\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize connection_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet transport = metrics \r\n| where name == \"messaging.az.amqp.client.transport.errors\"\r\n| extend status = tostring(customDimensions[\"amqp.error_condition\"])\r\n| where status != \"ok\"\r\n| summarize transport_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet testErrors = metrics\r\n| where name == \"test.run.errors\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize test_errors=sum(valueSum) by errorType, bin(timestamp, 1m);\r\nlet logs = traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith \"{runId}\" and severityLevel > 1\r\n| summarize log_errors = count() by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (testErrors) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| join kind = fullouter (management) on timestamp\r\n| join kind = fullouter (connection) on timestamp\r\n| join kind = fullouter (transport) on timestamp\r\n| join kind = fullouter (logs) on timestamp\r\n| project timestamp = coalesce(timestamp, timestamp1, timestamp2, timestamp3, timestamp4, timestamp5, timestamp6), test_errors, send_errors, settle_errors, management_errors, connection_errors, transport_errors, log_errors\r\n| render timechart\r\n",
         "size": 0,
         "title": "Errors by time",
         "queryType": 0,
@@ -231,7 +268,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith \"-{runId}\" and severityLevel > 1\r\n| extend category = tostring(customDimensions[\"LoggerName\"]), message=substring(coalesce(message, outerMessage), 0, 48)\r\n| project timestamp, category, message, severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", severityLevel == 1, \"Info\", \"\"), cloud_RoleName\r\n| summarize occurences = count() by severity, category, message, cloud_RoleName\r\n| order by occurences desc\r\n",
+        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-servicebus\" and cloud_RoleName endswith \"-{runId}\" and severityLevel > 1\r\n| extend category = tostring(customDimensions[\"LoggerName\"]), message=substring(coalesce(message, outerMessage), 0, 48)\r\n| project timestamp, category, message, severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", severityLevel == 1, \"Info\", \"\"), cloud_RoleName\r\n| summarize occurences = count() by severity, category, message, cloud_RoleName\r\n| order by occurences desc\r\n",
         "size": 0,
         "title": "Warnings and errors in logs (sampled, 1%)",
         "queryType": 0,

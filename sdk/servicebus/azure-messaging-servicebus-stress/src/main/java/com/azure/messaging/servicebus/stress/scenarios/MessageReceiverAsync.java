@@ -21,12 +21,12 @@ public class MessageReceiverAsync extends ServiceBusScenario {
         client.receiveMessages()
             .flatMap(message -> client.complete(message)
                 .onErrorResume(ex -> {
-                    recordError("completion error", ex, "complete");
+                    telemetryHelper.recordError(ex, "complete");
                     return Mono.empty();
                 }))
             .take(options.getTestDuration())
             .onErrorResume(error -> {
-                recordError("receiving error", error, "receiveMessages");
+                telemetryHelper.recordError(error, "receiveMessages");
                 return Mono.empty();
             })
             .blockLast();
