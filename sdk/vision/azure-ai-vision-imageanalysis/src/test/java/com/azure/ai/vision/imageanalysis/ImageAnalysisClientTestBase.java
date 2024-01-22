@@ -109,7 +109,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         List<Double> aspectRatios = null;
 
         if (options != null) {
-            genderNeutralCaption = options.getGenderNeutralCaption();
+            genderNeutralCaption = options.isGenderNeutralCaption();
             aspectRatios = options.getSmartCropsAspectRatios();
         }
 

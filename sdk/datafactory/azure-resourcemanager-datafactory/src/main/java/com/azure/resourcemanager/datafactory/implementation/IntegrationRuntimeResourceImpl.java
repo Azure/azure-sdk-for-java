@@ -116,9 +116,10 @@ public final class IntegrationRuntimeResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.integrationRuntimeName = Utils.getValueFromIdByName(innerObject.id(), "integrationRuntimes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.integrationRuntimeName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationRuntimes");
     }
 
     public IntegrationRuntimeResource refresh() {

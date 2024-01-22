@@ -11,15 +11,16 @@ public final class AmazonMwsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonMwsSource model = BinaryData.fromString(
-            "{\"type\":\"AmazonMWSSource\",\"query\":\"datahtz\",\"queryTimeout\":\"datazqrpfhzxkjyg\",\"additionalColumns\":\"dataidgwdhawj\",\"sourceRetryCount\":\"datazb\",\"sourceRetryWait\":\"datat\",\"maxConcurrentConnections\":\"datacmxqdexnkp\",\"disableMetricsCollection\":\"dataxc\",\"\":{\"kpn\":\"dataz\",\"jtfmcnrgwgcstozr\":\"datagiumuztb\"}}")
+            "{\"type\":\"AmazonMWSSource\",\"query\":\"datatmhwgencmoswcxlg\",\"queryTimeout\":\"datauqxews\",\"additionalColumns\":\"datapifzavctywappa\",\"sourceRetryCount\":\"dataprzrsqcu\",\"sourceRetryWait\":\"datanp\",\"maxConcurrentConnections\":\"dataqlanuhmsrnp\",\"disableMetricsCollection\":\"dataaghoeqiwpdxpd\",\"\":{\"yplhsto\":\"dataajq\",\"kgqjd\":\"datayybwlysvp\",\"xppqpsin\":\"dataglecjfgyivsiirx\"}}")
             .toObject(AmazonMwsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonMwsSource model = new AmazonMwsSource().withSourceRetryCount("datazb").withSourceRetryWait("datat")
-            .withMaxConcurrentConnections("datacmxqdexnkp").withDisableMetricsCollection("dataxc")
-            .withQueryTimeout("datazqrpfhzxkjyg").withAdditionalColumns("dataidgwdhawj").withQuery("datahtz");
+        AmazonMwsSource model = new AmazonMwsSource().withSourceRetryCount("dataprzrsqcu").withSourceRetryWait("datanp")
+            .withMaxConcurrentConnections("dataqlanuhmsrnp").withDisableMetricsCollection("dataaghoeqiwpdxpd")
+            .withQueryTimeout("datauqxews").withAdditionalColumns("datapifzavctywappa")
+            .withQuery("datatmhwgencmoswcxlg");
         model = BinaryData.fromObject(model).toObject(AmazonMwsSource.class);
     }
 }

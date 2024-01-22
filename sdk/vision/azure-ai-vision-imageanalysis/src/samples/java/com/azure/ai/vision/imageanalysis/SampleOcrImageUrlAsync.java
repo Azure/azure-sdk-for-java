@@ -19,13 +19,6 @@
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
 //       the recognition of the word. 
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleOcrImageUrlAsync.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleOcrImageUrlAsync
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
@@ -38,12 +31,14 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class SampleOcrImageUrlAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException, InterruptedException {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");
@@ -60,18 +55,19 @@ public class SampleOcrImageUrlAsync {
             .credential(new KeyCredential(key))
             .buildAsyncClient();
 
-        try {
-            // Extract text from an input image URL. This is an synchronous (non-blocking) call, but here we block until the service responds.
-            ImageAnalysisResult result = client.analyze(
-                new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze
-                Arrays.asList(VisualFeatures.READ), // visualFeatures
-                null)
-                .block();
+        // Extract text from an input image URL. This is an asynchronous (non-blocking) call.
+        client.analyze(
+            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+            Arrays.asList(VisualFeatures.READ), // visualFeatures
+            null) // options
+            .subscribe(
+                result -> printAnalysisResults(result),
+                error -> System.err.println("Image analysis terminated with error message: " + error));
 
-            printAnalysisResults(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // The .subscribe() is not a blocking call. For the purpose of this sample, we sleep
+        // the thread so the program does not end before the analyze operation is complete.
+        // Using .block() instead of .subscribe() will turn this into a synchronous call.
+        TimeUnit.SECONDS.sleep(5);
     }
 
     // Print analysis results to the console

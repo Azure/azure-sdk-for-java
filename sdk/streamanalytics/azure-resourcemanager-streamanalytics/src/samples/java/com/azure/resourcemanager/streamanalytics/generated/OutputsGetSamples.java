@@ -4,134 +4,183 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Outputs Get. */
+/**
+ * Samples for Outputs Get.
+ */
 public final class OutputsGetSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_DocumentDB.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_DeltaLake.json
      */
     /**
-     * Sample code: Get a DocumentDB output.
-     *
+     * Sample code: Get a Delta Lake output.
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void getADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", Context.NONE);
+    public static void getADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_EventHub_JSON.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_DocumentDB.json
+     */
+    /**
+     * Sample code: Get a DocumentDB output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void getADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_EventHub_JSON.json
      */
     /**
      * Sample code: Get an Event Hub output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAnEventHubOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", Context.NONE);
+        manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureSQL.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_AzureSQL.json
      */
     /**
      * Sample code: Get an Azure SQL database output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void getAnAzureSQLDatabaseOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg2157", "sj6458", "output1755", Context.NONE);
+    public static void
+        getAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg2157", "sj6458", "output1755", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_ServiceBusQueue_Avro.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_ServiceBusQueue_Avro.json
      */
     /**
      * Sample code: Get a Service Bus Queue output with Avro serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAServiceBusQueueOutputWithAvroSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg3410", "sj5095", "output3456", Context.NONE);
+        manager.outputs().getWithResponse("sjrg3410", "sj5095", "output3456", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureTable.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_AzureTable.json
      */
     /**
      * Sample code: Get an Azure Table output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAnAzureTableOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg5176", "sj2790", "output958", Context.NONE);
+        manager.outputs().getWithResponse("sjrg5176", "sj2790", "output958", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_PowerBI.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_PowerBI.json
      */
     /**
      * Sample code: Get a Power BI output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", Context.NONE);
+        manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_Blob_CSV.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_Blob_CSV.json
      */
     /**
      * Sample code: Get a blob output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void getABlobOutputWithCSVSerialization(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg5023", "sj900", "output1623", Context.NONE);
+    public static void
+        getABlobOutputWithCSVSerialization(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg5023", "sj900", "output1623", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_ServiceBusTopic_CSV.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_ServiceBusTopic_CSV.json
      */
     /**
      * Sample code: Get a Service Bus Topic output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAServiceBusTopicOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg6450", "sj7094", "output7886", Context.NONE);
+        manager.outputs().getWithResponse("sjrg6450", "sj7094", "output7886", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureDataLakeStore_JSON.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_AzureDataLakeStore_JSON.json
      */
     /**
      * Sample code: Get an Azure Data Lake Store output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void getAnAzureDataLakeStoreOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", Context.NONE);
+        manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_DataWarehouse.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_DataWarehouse.json
      */
     /**
      * Sample code: Get an Azure Data Warehouse output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void getAnAzureDataWarehouseOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().getWithResponse("sjrg", "sjName", "output958", Context.NONE);
+    public static void
+        getAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg", "sjName", "dwOutput", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Get_AzureFunction.json
+     */
+    /**
+     * Sample code: Get an Azure Function output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        getAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs().getWithResponse("sjrg", "sjName", "azureFunction1", com.azure.core.util.Context.NONE);
     }
 }

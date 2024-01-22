@@ -5,28 +5,31 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the output of a function. */
+/**
+ * Describes the output of a function.
+ */
 @Fluent
 public final class FunctionOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionOutput.class);
-
     /*
-     * The (Azure Stream Analytics supported) data type of the function output.
-     * A list of valid Azure Stream Analytics data types are described at
-     * https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
+     * The (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics
+     * data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
      */
     @JsonProperty(value = "dataType")
     private String dataType;
 
     /**
+     * Creates an instance of FunctionOutput class.
+     */
+    public FunctionOutput() {
+    }
+
+    /**
      * Get the dataType property: The (Azure Stream Analytics supported) data type of the function output. A list of
      * valid Azure Stream Analytics data types are described at
      * https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -37,7 +40,7 @@ public final class FunctionOutput {
      * Set the dataType property: The (Azure Stream Analytics supported) data type of the function output. A list of
      * valid Azure Stream Analytics data types are described at
      * https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the FunctionOutput object itself.
      */
@@ -48,7 +51,7 @@ public final class FunctionOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

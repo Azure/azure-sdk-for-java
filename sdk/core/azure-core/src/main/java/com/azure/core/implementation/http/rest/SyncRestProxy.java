@@ -76,11 +76,12 @@ public class SyncRestProxy extends RestProxyBase {
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
 
-            int statusCode = decodedResponse.getSourceResponse().getStatusCode();
-            tracer.end(statusCode >= 400 ? "" : null, null, context);
-
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
+            Object result = handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);
+
+            int statusCode = decodedResponse.getSourceResponse().getStatusCode();
+            tracer.end(statusCode >= 400 ? String.valueOf(statusCode) : null, null, context);
+            return result;
         } catch (Exception e) {
             tracer.end(null, e, context);
             ImplUtils.sneakyThrows(e);

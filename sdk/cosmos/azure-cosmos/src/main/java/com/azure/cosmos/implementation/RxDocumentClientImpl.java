@@ -435,7 +435,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         logger.info(
             "Initializing DocumentClient [{}] with"
-                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
+                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
             this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
         try {
@@ -628,7 +628,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.clientTelemetryConfig,
                     this,
                     this.connectionPolicy.getPreferredRegions());
-            clientTelemetry.init();
+            clientTelemetry.init().thenEmpty((publisher) -> {
+                logger.info(
+                    "Initialized DocumentClient [{}] with machineId[{}]"
+                        + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
+                    clientId,
+                    ClientTelemetry.getMachineId(diagnosticsClientConfig),
+                    serviceEndpoint,
+                    connectionPolicy,
+                    consistencyLevel);
+            }).subscribe();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {
@@ -788,7 +797,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return null;
         }
 
-        return this.diagnosticsClientConfig.getMachineId();
+        return ClientTelemetry.getMachineId(diagnosticsClientConfig);
     }
 
     @Override

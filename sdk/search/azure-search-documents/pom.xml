@@ -51,6 +51,11 @@
     </javaModulesSurefireArgLine>
 
     <spotbugs.includeTests>true</spotbugs.includeTests>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

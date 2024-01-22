@@ -1,16 +1,19 @@
 # Release History
 
-## 7.15.0-beta.6 (Unreleased)
+## 7.15.0 (2024-01-18)
 
 ### Features Added
 
-### Breaking Changes
+- The version 7.15.0 is the stable release for all the features introduced in the 7.15.0-beta.* versions.
 
 ### Bugs Fixed
 
 - Removes extraneous log messages when deserializing topics or subscriptions. ([32325](https://github.com/Azure/azure-sdk-for-java/issues/32325))
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.14` to `2.9.0`.
 
 ## 7.14.7 (2023-12-07)
 
@@ -28,6 +31,8 @@
 - Fixes the need for byte array allocation to track the combined size of messages in the batch. ([37197](https://github.com/Azure/azure-sdk-for-java/issues/37197))
 
 ### Other Changes
+
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
 
 #### Dependency Updates
 - Upgraded `azure-core` from `1.44.1` to `1.45.0`.

@@ -16,21 +16,21 @@ public final class ParquetSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetSource model = BinaryData.fromString(
-            "{\"type\":\"ParquetSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datayph\",\"disableMetricsCollection\":\"datarxrpahp\",\"\":{\"qllolnxhsupilhx\":\"datakfenmiflky\",\"y\":\"dataabli\",\"isydhardx\":\"dataomgse\"}},\"formatSettings\":{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"vprb\":\"datafffglftlqakierx\",\"fziztgddahymvk\":\"dataxewcscuveljfarin\",\"waoex\":\"datajtdhmig\",\"jqygo\":\"dataienyls\"}},\"\":{\"dsafgkysymh\":\"datadaehxvvi\",\"cetezaapwszrbttz\":\"dataxslmllbpe\",\"xsz\":\"dataqeyrwfhfgoy\"}},\"additionalColumns\":\"dataiecurfs\",\"sourceRetryCount\":\"datashfmgi\",\"sourceRetryWait\":\"dataurveekhsmulvmywo\",\"maxConcurrentConnections\":\"datakpuuuxiuwhcyc\",\"disableMetricsCollection\":\"datakmufipygtmoycp\",\"\":{\"bwwqgi\":\"dataaosongtbhvhsqv\",\"wjxmwalhlj\":\"dataujnr\",\"mortr\":\"datansnbpiuvqhod\"}}")
+            "{\"type\":\"ParquetSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datagadkrknyyjngdf\",\"disableMetricsCollection\":\"datacjfqmyfgwbuxq\",\"\":{\"xzyj\":\"datagbqsv\"}},\"formatSettings\":{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"xrsky\":\"datamqutgxdlznfokc\"}},\"\":{\"teikktret\":\"datapp\",\"nvb\":\"datatsygzjplaxxfnrlt\"}},\"additionalColumns\":\"dataotghxkrrpmgdoli\",\"sourceRetryCount\":\"datazsglavdtttyd\",\"sourceRetryWait\":\"dataomz\",\"maxConcurrentConnections\":\"datakjq\",\"disableMetricsCollection\":\"datahbypwmveyrciked\",\"\":{\"sz\":\"datafjuqowuicvjy\",\"lwkcgu\":\"dataleuqxhmr\"}}")
             .toObject(ParquetSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParquetSource model
-            = new ParquetSource().withSourceRetryCount("datashfmgi").withSourceRetryWait("dataurveekhsmulvmywo")
-                .withMaxConcurrentConnections("datakpuuuxiuwhcyc").withDisableMetricsCollection("datakmufipygtmoycp")
-                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datayph")
-                    .withDisableMetricsCollection("datarxrpahp")
+            = new ParquetSource().withSourceRetryCount("datazsglavdtttyd").withSourceRetryWait("dataomz")
+                .withMaxConcurrentConnections("datakjq").withDisableMetricsCollection("datahbypwmveyrciked")
+                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datagadkrknyyjngdf")
+                    .withDisableMetricsCollection("datacjfqmyfgwbuxq")
                     .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
                 .withFormatSettings(new ParquetReadSettings().withCompressionProperties(
                     new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
-                .withAdditionalColumns("dataiecurfs");
+                .withAdditionalColumns("dataotghxkrrpmgdoli");
         model = BinaryData.fromObject(model).toObject(ParquetSource.class);
     }
 
