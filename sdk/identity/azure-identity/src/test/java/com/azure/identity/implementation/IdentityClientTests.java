@@ -47,6 +47,8 @@ import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -89,8 +91,23 @@ public class IdentityClientTests {
                 })
                 .verifyComplete();
         });
+    }
 
+    @Test
+    public void testExpiresOnParsing() {
+        // setup
+        Map<String, String> tokenDetails = new HashMap<>();
 
+        tokenDetails.put("expiresOn", "2023-10-31 21:59:10.000000");
+
+        // Test the scenario with expires_on not present.
+        OffsetDateTime offsetDateTime = IdentityClientBase.getTokenExpiryOffsetDateTime(tokenDetails);
+        Assertions.assertEquals(offsetDateTime.toEpochSecond(), 1675209550);
+
+        // Test the scenario with expires_on present, it should be given priority.
+        tokenDetails.put("expires_on", "1572371520");
+        offsetDateTime = IdentityClientBase.getTokenExpiryOffsetDateTime(tokenDetails);
+        Assertions.assertEquals(offsetDateTime.toEpochSecond(), 1572371520);
     }
 
     @Test

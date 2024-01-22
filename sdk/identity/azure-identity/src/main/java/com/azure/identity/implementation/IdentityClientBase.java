@@ -645,17 +645,7 @@ public abstract class IdentityClientBase {
             String accessToken = objectMap.get("accessToken");
             OffsetDateTime tokenExpiry;
 
-            if (objectMap.containsKey("expires_on")) {
-                Long seconds = Long.parseLong(objectMap.get("expires_on"));
-                tokenExpiry = EPOCH.plusSeconds(seconds);
-            } else {
-                String time = objectMap.get("expiresOn");
-                String timeToSecond = time.substring(0, time.indexOf("."));
-                String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-                tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.systemDefault())
-                    .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            }
+            tokenExpiry = getTokenExpiryOffsetDateTime(objectMap);
             token = new AccessToken(accessToken, tokenExpiry);
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
@@ -663,6 +653,22 @@ public abstract class IdentityClientBase {
             throw LOGGER.logExceptionAsError(ex);
         }
         return token;
+    }
+
+    static OffsetDateTime getTokenExpiryOffsetDateTime(Map<String, String> objectMap) {
+        OffsetDateTime tokenExpiry;
+        if (objectMap.containsKey("expires_on")) {
+            Long seconds = Long.parseLong(objectMap.get("expires_on"));
+            tokenExpiry = EPOCH.plusSeconds(seconds);
+        } else {
+            String time = objectMap.get("expiresOn");
+            String timeToSecond = time.substring(0, time.indexOf("."));
+            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+            tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                .atZone(ZoneId.systemDefault())
+                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+        }
+        return tokenExpiry;
     }
 
     AccessToken getTokenFromAzureDeveloperCLIAuthentication(StringBuilder azdCommand) {
