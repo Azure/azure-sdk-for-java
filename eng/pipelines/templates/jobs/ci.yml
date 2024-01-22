@@ -66,6 +66,8 @@ jobs:
       name: azsdk-pool-mms-ubuntu-2004-general
 
     steps:
+      - checkout: azure-sdk-build-tools
+      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
