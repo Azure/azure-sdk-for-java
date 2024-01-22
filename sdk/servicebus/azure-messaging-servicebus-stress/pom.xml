@@ -102,7 +102,6 @@
                 <include>org.springframework.boot:spring-boot-starter:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
-                <include>ch.qos.logback:logback-classic:[1.2.13]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

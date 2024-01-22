@@ -48,6 +48,8 @@ public class ServiceBusScenarioRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws InterruptedException {
+        TELEMETRY_HELPER.initLogging();
+
         String scenarioName = Objects.requireNonNull(options.getTestClass(),
             "The test class should be provided, please add --TEST_CLASS=<your test class> as start argument");
         ServiceBusScenario scenario = (ServiceBusScenario) applicationContext.getBean(scenarioName);

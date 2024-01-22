@@ -111,6 +111,11 @@ public class TelemetryHelper {
         return otel;
     }
 
+    public void initLogging() {
+        // needs to re-init logging after Spring starts :(
+        OpenTelemetryAppender.install(OTEL);
+    }
+
     /**
      * Records an event representing the start of a test along with test options.
      * @param options test parameters

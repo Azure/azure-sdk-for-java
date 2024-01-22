@@ -60,7 +60,7 @@ spec:
           export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 0 .Stress.processCallbackDurationMaxInMs }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
           export CONTAINER_NAME=receiver
-          export MESSAGE_SIZE_IN_BYTES={{ .Stress.messageSizeInBytes }}
+          export MESSAGE_SIZE_IN_BYTES={{ default 1024 .Stress.messageSizeInBytes }}
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
