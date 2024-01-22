@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure Cognitive Search, provides secure information retrieval at scale over
+ * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure Cognitive Search", provides secure information retrieval at scale over
  * user-owned content in traditional and conversational search applications.</p>
  *
  * <p>The Azure AI Search service provides:/p>
