@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Validation status for migration. */
+/**
+ * Validation status for migration.
+ */
 public final class ValidationState extends ExpandableStringEnum<ValidationState> {
-    /** Static value Failed for ValidationState. */
+    /**
+     * Static value Failed for ValidationState.
+     */
     public static final ValidationState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for ValidationState. */
+    /**
+     * Static value Succeeded for ValidationState.
+     */
     public static final ValidationState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Warning for ValidationState. */
+    /**
+     * Static value Warning for ValidationState.
+     */
     public static final ValidationState WARNING = fromString("Warning");
 
     /**
      * Creates a new instance of ValidationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
 
     /**
      * Creates or finds a ValidationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValidationState.
      */
@@ -41,7 +49,7 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
 
     /**
      * Gets known ValidationState values.
-     *
+     * 
      * @return known ValidationState values.
      */
     public static Collection<ValidationState> values() {

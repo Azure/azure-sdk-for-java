@@ -17,12 +17,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in
+ * PrivateEndpointConnectionOperationsClient.
  */
 public interface PrivateEndpointConnectionOperationsClient {
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -30,19 +31,16 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the private endpoint connection resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -54,14 +52,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String serverName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -73,14 +69,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String serverName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -93,15 +87,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -112,15 +103,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -131,15 +119,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner update(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -151,16 +136,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnectionInner update(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -170,12 +151,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -185,12 +166,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -200,12 +181,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -216,12 +197,12 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -235,7 +216,7 @@ public interface PrivateEndpointConnectionOperationsClient {
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -248,7 +229,7 @@ public interface PrivateEndpointConnectionOperationsClient {
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
