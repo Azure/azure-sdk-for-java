@@ -85,7 +85,5 @@ public class MessageSenderAsync extends ServiceBusScenario {
         return Mono.usingWhen(rateLimiter.acquire(),
             i -> run,
             i -> { rateLimiter.release(); return Mono.empty(); });
-
-        //return run;
     }
 }

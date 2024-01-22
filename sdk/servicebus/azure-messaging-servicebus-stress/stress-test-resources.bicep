@@ -16,7 +16,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: baseName
   location: location
   sku: {
-    capacity: 4
+    capacity: 2
     name: 'Premium'
     tier: 'Premium'
   }
