@@ -17,7 +17,7 @@ public final class AudioTranslationOptions {
      * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    private byte[] file;
+    private final byte[] file;
 
     /*
      * The requested format of the translation response data, which will influence the content and detail of the
