@@ -5,8 +5,22 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
+
 /**
- * Error raised during response deserialization. The HTTP response could not be decoded.
+ * <p>The {@code DecodeException} class is a subclass of {@code HttpResponseException} that represents an
+ * exception thrown when the HTTP response could not be decoded during the deserialization process.</p>
+ *
+ * <p>This exception is thrown in the following scenarios:</p>
+ *
+ * <ul>
+ *     <li>The HTTP response received from Azure service is not in the expected format or structure, causing the
+ *     deserialization process to fail.</li>
+ *
+ *     <li>The HTTP response contains data that could not be correctly mapped to the expected data model.</li>
+ * </ul>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.HttpResponseException
  */
 public class DecodeException extends HttpResponseException {
     /**

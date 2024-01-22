@@ -16,31 +16,25 @@ import java.time.Duration;
  * <p>This class is useful when you need to customize the behavior of the exponential backoff strategy. It allows you
  * to specify the maximum number of retry attempts, the base delay duration, and the maximum delay duration.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * ExponentialBackoffOptions options = new ExponentialBackoffOptions()
- *     .setMaxRetries(5)
- *     .setBaseDelay(Duration.ofSeconds(1))
- *     .setMaxDelay(Duration.ofSeconds(10));
- *
- * ExponentialBackoff retryStrategy = new ExponentialBackoff(options);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, an {@code ExponentialBackoffOptions} is created and used to configure an
- * {@code ExponentialBackoff} retry strategy. The strategy is then used in a {@code RetryPolicy} which is added to the
- * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. If the server responds with a
- * transient error, the request will be retried with an exponentially increasing delay.</p>
+ * {@code ExponentialBackoff} retry strategy. The strategy is then used in a {@code RetryPolicy} which can then be added to
+ * a pipeline. For a request then sent by the pipeline, If the server responds with a transient error, the request
+ * will be retried with an exponentially increasing delay.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.ExponentialBackoffOptions.constructor -->
+ * <pre>
+ * ExponentialBackoffOptions options = new ExponentialBackoffOptions&#40;&#41;
+ *     .setMaxRetries&#40;5&#41;
+ *     .setBaseDelay&#40;Duration.ofSeconds&#40;1&#41;&#41;
+ *     .setMaxDelay&#40;Duration.ofSeconds&#40;10&#41;&#41;;
+ *
+ * ExponentialBackoff retryStrategy = new ExponentialBackoff&#40;options&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.ExponentialBackoffOptions.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.ExponentialBackoff
  * @see com.azure.core.http.policy.RetryPolicy
  * @see com.azure.core.http.HttpPipeline

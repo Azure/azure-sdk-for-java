@@ -3,8 +3,19 @@
 
 package com.azure.core.exception;
 
+
 /**
- * This exception class represents an error when the specified input length doesn't match the data length.
+ * <p>The {@code UnexpectedLengthException} class is a subclass of {@code IllegalStateException} that represents an
+ * exception thrown when the specified input length doesn't match the actual data length.</p>
+ *
+ * <p>This exception is typically thrown when the number of bytes read from an input source does not match the
+ * expected number of bytes. This could occur, for example, when reading data from a file or a network connection.</p>
+ *
+ * <p>This class also provides methods to get the number of bytes read from the input and the number of bytes that were
+ * expected to be read from the input.</p>
+ *
+ * @see com.azure.core.exception
+ * @see java.lang.IllegalStateException
  */
 public final class UnexpectedLengthException extends IllegalStateException {
     /**

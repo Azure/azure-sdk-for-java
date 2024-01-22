@@ -30,25 +30,19 @@ import java.util.Map;
  * requests. This is useful for maintaining session information or other stateful information across multiple requests
  * to the same server.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, a {@code CookiePolicy} is constructed. The policy can then be added to a pipeline.
+ * Any cookies set by the server in the response to a request by the pipeline will be stored by the {@code CookiePolicy}
+ * and added to subsequent requests to the same server.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.CookiePolicy.constructor -->
  * <pre>
- * {@code
- * CookiePolicy cookiePolicy = new CookiePolicy();
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(cookiePolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * CookiePolicy cookiePolicy = new CookiePolicy&#40;&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.CookiePolicy.constructor -->
  *
- * <p>In this example, a {@code CookiePolicy} is added to the pipeline. The pipeline is then used to send an HTTP
- * request, and the response is retrieved. Any cookies set by the server in the response will be stored by the
- * {@code CookiePolicy} and added to subsequent requests to the same server.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

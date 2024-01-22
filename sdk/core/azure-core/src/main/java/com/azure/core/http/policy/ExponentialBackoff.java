@@ -22,25 +22,20 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
  * <p>This class is useful when you need to handle retries for operations that may transiently fail. It ensures that
  * the retries are performed with an increasing delay to avoid overloading the system.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, an {@code ExponentialBackoff} is created and used in a {@code RetryPolicy} which can be added to
+ * a pipeline. For a request sent by the pipeline, If the server responds with a transient error, the request will be
+ * retried with an exponentially increasing delay.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.ExponentialBackoff.constructor -->
  * <pre>
- * {@code
- * ExponentialBackoff retryStrategy = new ExponentialBackoff();
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * ExponentialBackoff retryStrategy = new ExponentialBackoff&#40;&#41;;
+ * RetryPolicy policy = new RetryPolicy&#40;retryStrategy&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.ExponentialBackoff.constructor -->
  *
- * <p>In this example, an {@code ExponentialBackoff} is created and used in a {@code RetryPolicy} which is added to the
- * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. If the server responds with a
- * transient error, the request will be retried with an exponentially increasing delay.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.RetryStrategy
  * @see com.azure.core.http.policy.RetryPolicy
  * @see com.azure.core.http.HttpPipeline

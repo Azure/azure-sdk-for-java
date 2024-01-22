@@ -10,7 +10,10 @@
  * a Mono of HttpResponse. Implementations of this interface can modify the request, pass it to the next policy, and
  * then modify the response.</p>
  *
- * <p>Here's a code sample of how to use a policy:</p>
+ * <p><strong>Code Sample:</strong></p>
+ *
+ * <p>In this example, the UserAgentPolicy, RetryPolicy, and CustomPolicy are added to the pipeline. The pipeline is
+ * then used to send an HTTP request, and the response is retrieved.</p>
  *
  * <pre>
  * {@code
@@ -22,9 +25,6 @@
  * HttpResponse response = pipeline.send(request).block();
  * }
  * </pre>
- *
- * <p>In this example, the UserAgentPolicy, RetryPolicy, and CustomPolicy are added to the pipeline. The pipeline is
- * then used to send an HTTP request, and the response is retrieved.</p>
  *
  * <p>This package is crucial for the communication between Azure SDK client libraries and Azure services. It provides
  * a layer of abstraction over the HTTP protocol, allowing client libraries to focus on service-specific logic.</p>

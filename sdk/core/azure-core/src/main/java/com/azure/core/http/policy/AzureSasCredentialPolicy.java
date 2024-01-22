@@ -21,26 +21,19 @@ import java.util.Objects;
  * <p>This class is useful when you need to authorize requests with a SAS from Azure. It ensures that the requests are
  * sent over HTTPS to prevent the SAS from being leaked.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, an {@code AzureSasCredentialPolicy} is created with a SAS. The policy can then added to the
+ * pipeline. The requess sent by the pipeline will then include the SAS appended to its query string.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  * <pre>
- * {@code
- * AzureSasCredential credential = new AzureSasCredential("my_sas");
- * AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy(credential);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(policy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * AzureSasCredential credential = new AzureSasCredential&#40;&quot;my_sas&quot;&#41;;
+ * AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy&#40;credential&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  *
- * <p>In this example, an {@code AzureSasCredentialPolicy} is created with a SAS. The policy is then added to the
- * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will include the
- * SAS appended to its query string.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.credential.AzureSasCredential
  * @see com.azure.core.http.HttpPipeline

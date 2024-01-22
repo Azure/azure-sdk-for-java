@@ -6,9 +6,20 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpRequest;
 
 /**
- * The exception when an HTTP request fails.
- * <p>
- * Generally, these errors are safe to retry.
+ * <p>The {@code HttpRequestException} class is a subclass of {@code AzureException} that represents an
+ * exception thrown when an HTTP request fails.</p>
+ *
+ * <p>This exception is typically thrown in the following scenarios:</p>
+ *
+ * <ul>
+ *     <li>The client sends an HTTP request to the Azure service, but the service returns a non-success status code.</li>
+ *
+ *     <li>The client sends an HTTP request to the Azure service, but the service is unable to process the request.</li>
+ * </ul>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.AzureException
+ * @see com.azure.core.http.HttpRequest
  */
 public class HttpRequestException extends AzureException {
 

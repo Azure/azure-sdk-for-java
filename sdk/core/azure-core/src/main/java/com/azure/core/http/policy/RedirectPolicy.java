@@ -24,25 +24,19 @@ import java.util.Set;
  * decide if a request should be redirected. By default, it uses the {@link DefaultRedirectStrategy}, which redirects
  * the request based on the HTTP status code of the response.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code RedirectPolicy} is created and added to the pipeline. The pipeline is used to send an
- * HTTP request, and the response is retrieved. If the server responds with a redirect status code, the request will
- * be redirected according to the {@link RedirectStrategy} used by the {@code RedirectPolicy}.</p>
+ * <p>In this example, a {@code RedirectPolicy} is constructed and can be added to a pipeline. For a request sent by the
+ * pipeline, If the server responds with a redirect status code, the request will be redirected according
+ * to the {@link RedirectStrategy} used by the {@code RedirectPolicy}.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.RedirectPolicy.constructor -->
  * <pre>
- * {@code
- * RedirectPolicy redirectPolicy = new RedirectPolicy();
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(redirectPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * RedirectPolicy redirectPolicy = new RedirectPolicy&#40;&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.RedirectPolicy.constructor -->
  *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

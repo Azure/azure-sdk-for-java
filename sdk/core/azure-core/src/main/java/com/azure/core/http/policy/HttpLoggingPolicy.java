@@ -54,30 +54,22 @@ import java.util.stream.Collectors;
  * <p>This class is useful when you need to log HTTP traffic for debugging or auditing purposes. It allows you to
  * control the amount of information that is logged, including the URL, headers, and body of requests and responses.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * HttpLogOptions logOptions = new HttpLogOptions();
- * logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
- *
- * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(loggingPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, an {@code HttpLogOptions} is created and the log level is set to
  * {@code HttpLogDetailLevel.BODY_AND_HEADERS}. This means that the URL, HTTP method, headers, and body content of
  * each request and response will be logged. The {@code HttpLogOptions} is then used to create an
- * {@code HttpLoggingPolicy}, which is added to the pipeline. The pipeline is used to send an HTTP request, and the
- * response is retrieved.</p>
+ * {@code HttpLoggingPolicy}, which can then added to the pipeline.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.HttpLoggingPolicy.constructor -->
+ * <pre>
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;;
+ * logOptions.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;;
+ * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy&#40;logOptions&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.HttpLoggingPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

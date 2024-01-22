@@ -24,27 +24,23 @@ import java.util.Set;
  * <p>This class is useful when you need to handle HTTP redirects. It ensures that the requests are redirected
  * correctly based on the response status code and the maximum number of redirect attempts.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy(3, "Location", EnumSet.of(HttpMethod.GET, HttpMethod.HEAD));
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new RetryPolicy(), new CustomPolicy(), new RedirectPolicy(redirectStrategy))
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code DefaultRedirectStrategy} is created with a maximum of 3 redirect attempts,
  * "Location" as the header name to locate the redirect URL, and GET and HEAD as the allowed methods for performing
- * the redirect. The strategy is then used in a {@code RedirectPolicy} which is added to the pipeline. The pipeline
- * is used to send an HTTP request, and the response is retrieved. If the server responds with a redirect status code
- * and provides a "Location" header, the request will be redirected up to 3 times as needed.</p>
+ * the redirect. The strategy is then used in a {@code RedirectPolicy} which can be added to the pipeline. For a request
+ * sent by the pipeline, If the server responds with a redirect status code and provides a "Location" header,
+ * the request will be redirected up to 3 times as needed.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.DefaultRedirectStrategy.constructor -->
+ * <pre>
+ * DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy&#40;3, &quot;Location&quot;,
+ *     EnumSet.of&#40;HttpMethod.GET, HttpMethod.HEAD&#41;&#41;;
+ * RedirectPolicy redirectPolicy = new RedirectPolicy&#40;redirectStrategy&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.DefaultRedirectStrategy.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.RedirectStrategy
  * @see com.azure.core.http.policy.RedirectPolicy
  * @see com.azure.core.http.HttpPipeline

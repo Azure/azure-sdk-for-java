@@ -16,12 +16,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-/**
- * Pipeline policy that uses an {@link KeyCredential} to set the authorization key for a request.
- * <p>
- * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the key.
- */
 
 /**
  * The {@code KeyCredentialPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
@@ -30,26 +24,20 @@ import java.util.Objects;
  * <p>This class is useful when you need to authorize requests with a key. It ensures that the requests are sent over
  * HTTPS to prevent the key from being leaked. The key is set in the header of the HTTP request.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code KeyCredentialPolicy} is created with a key and a header name. The policy is then added
- * to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will
- * include the specified header with the key as its value.</p>
+ * <p>In this example, a {@code KeyCredentialPolicy} is created with a key and a header name. The policy can then be
+ * added to the pipeline. The request sent by the pipeline will then include the specified header with the key as its
+ * value.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.KeyCredentialPolicy.constructor -->
  * <pre>
- * {@code
- * KeyCredential credential = new KeyCredential("my_key");
- * KeyCredentialPolicy policy = new KeyCredentialPolicy("my_header", credential);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(policy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * KeyCredential credential = new KeyCredential&#40;&quot;my_key&quot;&#41;;
+ * KeyCredentialPolicy policy = new KeyCredentialPolicy&#40;&quot;my_header&quot;, credential&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.KeyCredentialPolicy.constructor -->
  *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.credential.KeyCredential
  * @see com.azure.core.http.HttpPipeline

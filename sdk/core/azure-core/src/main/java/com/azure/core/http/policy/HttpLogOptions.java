@@ -23,33 +23,25 @@ import java.util.Set;
  * HTTP requests and responses. It allows you to specify the log level, which determines the amount of detail included
  * in the logs (such as the URL, headers, and body of requests and responses).</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * HttpLogOptions logOptions = new HttpLogOptions();
- * logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
- * logOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList("Date", "x-ms-request-id")));
- * logOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList("api-version")));
- * logOptions.setPrettyPrintBody(true);
- *
- * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(loggingPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, the {@code HttpLogOptions} is created and the log level is set to {@code HttpLogDetailLevel.BODY_AND_HEADERS}.
  * This means that the URL, HTTP method, headers, and body content of each request and response will be logged.
  * The allowed header names and query parameters for logging are also specified, and pretty printing of the body is enabled.
- * The {@code HttpLogOptions} is then used to create an {@code HttpLoggingPolicy}, which is added to the pipeline.
- * The pipeline is used to send an HTTP request, and the response is retrieved.</p>
+ * The {@code HttpLogOptions} is then used to create an {@code HttpLoggingPolicy}, which can then be added to the pipeline.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.HttpLogOptions.constructor -->
+ * <pre>
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;;
+ * logOptions.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;;
+ * logOptions.setAllowedHeaderNames&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;&quot;Date&quot;, &quot;x-ms-request-id&quot;&#41;&#41;&#41;;
+ * logOptions.setAllowedQueryParamNames&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;&quot;api-version&quot;&#41;&#41;&#41;;
+ * logOptions.setPrettyPrintBody&#40;true&#41;;
+ * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy&#40;logOptions&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.HttpLogOptions.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpLoggingPolicy
  * @see com.azure.core.http.policy.HttpLogDetailLevel
  * @see com.azure.core.http.HttpPipeline

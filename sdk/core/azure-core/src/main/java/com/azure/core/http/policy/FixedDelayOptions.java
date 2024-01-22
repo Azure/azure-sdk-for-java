@@ -15,28 +15,21 @@ import java.util.Objects;
  * <p>This class is useful when you need to customize the behavior of the fixed delay retry strategy. It allows you
  * to specify the maximum number of retry attempts and the delay duration between each attempt.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * FixedDelayOptions options = new FixedDelayOptions(3, Duration.ofSeconds(1));
- *
- * FixedDelay retryStrategy = new FixedDelay(options);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code FixedDelayOptions} is created and used to configure a {@code FixedDelay} retry strategy.
- * The strategy is then used in a {@code RetryPolicy} which is added to the pipeline. The pipeline is used to send an
- * HTTP request, and the response is retrieved. If the server responds with a transient error, the request will be
- * retried with a fixed delay between each attempt.</p>
+ * The strategy is then used in a {@code RetryPolicy} which can then be added to the pipeline. For a request then sent
+ * by the pipeline, If the server responds with a transient error, the request will be retried with a fixed delay
+ * between each attempt.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.FixedDelayOptions.constructor -->
+ * <pre>
+ * FixedDelayOptions options = new FixedDelayOptions&#40;3, Duration.ofSeconds&#40;1&#41;&#41;;
+ * FixedDelay retryStrategy = new FixedDelay&#40;options&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.FixedDelayOptions.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.FixedDelay
  * @see com.azure.core.http.policy.RetryPolicy
  * @see com.azure.core.http.HttpPipeline

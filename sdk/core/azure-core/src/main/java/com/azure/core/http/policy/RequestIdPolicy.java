@@ -24,29 +24,22 @@ import java.util.Objects;
  * <p>This class is useful when you need to track HTTP requests for debugging or auditing purposes. It allows you to
  * specify a custom header name for the request id, or use the default header name 'x-ms-client-request-id'.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code RequestIdPolicy} is created with a custom header name. The policy is then added to
- * the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will have
- * its request id set in the 'x-ms-my-custom-request-id' header by the {@code RequestIdPolicy}.</p>
+ * <p>In this example, a {@code RequestIdPolicy} is created with a custom header name. The policy can then be added to
+ * the pipeline. The request sent by the pipeline will then have its request id set in the 'x-ms-my-custom-request-id'
+ * header by the {@code RequestIdPolicy}.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor -->
  * <pre>
- * {@code
- * // Using the default header name
- * RequestIdPolicy defaultPolicy = new RequestIdPolicy();
- *
- * // Using a custom header name
- * RequestIdPolicy customPolicy = new RequestIdPolicy("x-ms-my-custom-request-id");
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(customPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * &#47;&#47; Using the default header name
+ * RequestIdPolicy defaultPolicy = new RequestIdPolicy&#40;&#41;;
+ * &#47;&#47; Using a custom header name
+ * RequestIdPolicy customRequestIdPolicy = new RequestIdPolicy&#40;&quot;x-ms-my-custom-request-id&quot;&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.RequestIdPolicy.constructor -->
  *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

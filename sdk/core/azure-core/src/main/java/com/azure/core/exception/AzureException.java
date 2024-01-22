@@ -10,6 +10,20 @@ package com.azure.core.exception;
  * @see ServiceResponseException
  * @see HttpResponseException
  */
+
+/**
+ * <p>The {@code AzureException} class is the base class for all exceptions thrown by Azure SDKs.
+ * This class extends the {@code RuntimeException} class, which means that it is an unchecked exception.</p>
+ *
+ * <p>Instances of this class or its subclasses are typically thrown in response to errors that occur when interacting
+ * with Azure services. For example, if a network request to an Azure service fails, an {@code AzureException} might be
+ * thrown. The specific subclass of {@code AzureException} that is thrown depends on the nature of the error.</p>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.HttpRequestException
+ * @see com.azure.core.exception.ServiceResponseException
+ * @see com.azure.core.exception.HttpResponseException
+ */
 public class AzureException extends RuntimeException {
 
     /**

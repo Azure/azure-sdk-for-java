@@ -18,27 +18,22 @@ import reactor.core.publisher.Mono;
  * might want to include a "User-Agent" header in all requests to identify your application, or a "Content-Type" header
  * to specify the format of the request body.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, the {@code AddHeadersPolicy} is created from the specified headers. The policy can be added to
+ * the pipeline and the requests sent will include the headers specified in the {@code AddHeadersPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.AddHeaderPolicy.constructor -->
  * <pre>
- * {@code
- * HttpHeaders headers = new HttpHeaders();
- * headers.put("User-Agent", "MyApp/1.0");
- * headers.put("Content-Type", "application/json");
+ * HttpHeaders headers = new HttpHeaders&#40;&#41;;
+ * headers.put&#40;&quot;User-Agent&quot;, &quot;MyApp&#47;1.0&quot;&#41;;
+ * headers.put&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;;
  *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new AddHeadersPolicy(headers), new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * new AddHeadersPolicy&#40;headers&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.AddHeaderPolicy.constructor -->
  *
- * <p>In this example, the {@code AddHeadersPolicy} is added to the pipeline with a set of headers. The pipeline is
- * then used to send an HTTP request, and the response is retrieved. The request will include the headers specified
- * in the {@code AddHeadersPolicy}.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

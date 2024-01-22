@@ -24,23 +24,7 @@ import java.util.Locale;
  * originated. By adding this header to the request, we can provide information about when the request was sent to
  * the server.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new AddDatePolicy(), new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
- *
- * <p>In this example, the {@code AddDatePolicy} is added to the pipeline. The pipeline is then used to send an
- * HTTP request, and the response is retrieved. The request will include a "Date" header with the current date and
- * time in RFC 1123 format.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

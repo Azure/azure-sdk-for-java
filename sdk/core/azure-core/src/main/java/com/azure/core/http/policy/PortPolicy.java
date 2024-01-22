@@ -22,25 +22,19 @@ import java.net.MalformedURLException;
  * <p>This class is useful when you need to set a specific port for all requests in a pipeline. It ensures that the
  * port is set correctly for each request.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code PortPolicy} is created with a port of 8080 and an overwrite flag set to true. The
- * policy is then added to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved.
- * The request will have its port set to 8080 by the {@code PortPolicy}.</p>
+ * policy can then be added to the pipeline. The request sent by the pipeline will have its port set to 8080 by the
+ * {@code PortPolicy}.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.PortPolicy.constructor -->
  * <pre>
- * {@code
- * PortPolicy portPolicy = new PortPolicy(8080, true);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(portPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * PortPolicy portPolicy = new PortPolicy&#40;8080, true&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.PortPolicy.constructor -->
  *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

@@ -14,26 +14,21 @@ import java.util.Objects;
  * <p>This class is useful when you need to handle retries for operations that may transiently fail. It ensures that
  * the retries are performed with a fixed delay to provide a consistent delay between retries.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
- *
- * <pre>
- * {@code
- * FixedDelay retryStrategy = new FixedDelay(3, Duration.ofSeconds(1));
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
- * </pre>
+ * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code FixedDelay} is created with a maximum of 3 retry attempts and a delay of 1 second
- * between each attempt. The strategy is then used in a {@code RetryPolicy} which is added to the pipeline. The
- * pipeline is used to send an HTTP request, and the response is retrieved. If the server responds with a transient
- * error, the request will be retried with a fixed delay of 1 second between each attempt.</p>
+ * between each attempt. The strategy is then used in a {@code RetryPolicy} which can then be added to the pipeline.
+ * For a request then sent by the pipeline, If the server responds with a transient error, the request will be retried
+ * with a fixed delay of 1 second between each attempt.</p>
  *
+ * <!-- src_embed com.azure.core.http.policy.FixedDelay.constructor -->
+ * <pre>
+ * FixedDelay retryStrategy = new FixedDelay&#40;3, Duration.ofSeconds&#40;1&#41;&#41;;
+ * RetryPolicy policy = new RetryPolicy&#40;retryStrategy&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.FixedDelay.constructor -->
+ *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.RetryStrategy
  * @see com.azure.core.http.policy.RetryPolicy
  * @see com.azure.core.http.HttpPipeline

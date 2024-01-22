@@ -20,25 +20,19 @@ import java.net.MalformedURLException;
  * <p>This class is useful when you need to set a specific host for all requests in a pipeline. It ensures that the
  * host is set correctly for each request.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, a {@code HostPolicy} is created with a host of "www.example.com". The policy can then be added to
+ * the pipeline. For a request sent by the pipeline will then have its host set to "www.example.com" by the
+ * {@code HostPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.HostPolicy.constructor -->
  * <pre>
- * {@code
- * HostPolicy hostPolicy = new HostPolicy("www.example.com");
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(hostPolicy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * HostPolicy hostPolicy = new HostPolicy&#40;&quot;www.example.com&quot;&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.HostPolicy.constructor -->
  *
- * <p>In this example, a {@code HostPolicy} is created with a host of "www.example.com". The policy is then added to
- * the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will have
- * its host set to "www.example.com" by the {@code HostPolicy}.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest

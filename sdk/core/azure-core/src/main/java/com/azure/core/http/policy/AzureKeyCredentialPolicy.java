@@ -17,26 +17,20 @@ import java.util.Objects;
  * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using
  * {@code HTTPS} an exception will be thrown to prevent leaking the key.</p>
  *
- * <p>Here's a code sample of how to use this class:</p>
+ * <p><strong>Code sample:</strong></p>
  *
+ * <p>In this example, an {@code AzureKeyCredentialPolicy} is created with a key and a header name. The policy
+ * can be added to a pipeline. The requests sent by the pipeline will then include the specified header with the
+ * key as its value.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
  * <pre>
- * {@code
- * AzureKeyCredential credential = new AzureKeyCredential("my_key");
- * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy("my_header", credential);
- *
- * HttpPipeline pipeline = new HttpPipelineBuilder()
- *     .policies(policy, new RetryPolicy(), new CustomPolicy())
- *     .build();
- *
- * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
- * HttpResponse response = pipeline.send(request).block();
- * }
+ * AzureKeyCredential credential = new AzureKeyCredential&#40;&quot;my_key&quot;&#41;;
+ * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy&#40;&quot;my_header&quot;, credential&#41;;
  * </pre>
+ * <!-- end com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
  *
- * <p>In this example, an {@code AzureKeyCredentialPolicy} is created with a key and a header name. The policy is then
- * added to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will
- * include the specified header with the key as its value.</p>
- *
+ * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.KeyCredentialPolicy
  * @see com.azure.core.credential.AzureKeyCredential
  * @see com.azure.core.http.HttpPipeline
