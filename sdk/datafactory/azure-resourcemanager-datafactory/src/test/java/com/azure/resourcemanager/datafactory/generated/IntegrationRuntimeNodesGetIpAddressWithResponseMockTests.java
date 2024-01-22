@@ -29,7 +29,7 @@ public final class IntegrationRuntimeNodesGetIpAddressWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"ipAddress\":\"gvafbdzokpl\"}";
+        String responseStr = "{\"ipAddress\":\"jujsovd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -46,9 +46,9 @@ public final class IntegrationRuntimeNodesGetIpAddressWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IntegrationRuntimeNodeIpAddress response = manager.integrationRuntimeNodes()
-            .getIpAddressWithResponse("a", "wofqnttbkjcgupxn", "vshg", "ubpmvppgui", com.azure.core.util.Context.NONE)
-            .getValue();
+        IntegrationRuntimeNodeIpAddress response
+            = manager.integrationRuntimeNodes().getIpAddressWithResponse("bfekxbcbumjy", "ukezqohthsmdua", "y",
+                "ryuwuypouvpdc", com.azure.core.util.Context.NONE).getValue();
 
     }
 }
