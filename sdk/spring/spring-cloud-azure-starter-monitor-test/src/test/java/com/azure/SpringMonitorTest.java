@@ -213,7 +213,6 @@ class SpringMonitorTest {
     @Test
     void verifyOpenTelemetryVersion() {
         String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
-        System.out.println("currentOTelVersion = " + currentOTelVersion);
         assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
             .as(
                 "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
