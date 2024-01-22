@@ -6,8 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The configuration information for an audio transcription request.
@@ -19,7 +17,6 @@ public final class AudioTranscriptionOptions {
      * The audio data to transcribe. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @JsonProperty(value = "file")
     private byte[] file;
 
     /*
@@ -243,8 +240,7 @@ public final class AudioTranscriptionOptions {
      *
      * @param file the file value to set.
      */
-    @JsonCreator
-    public AudioTranscriptionOptions(@JsonProperty(value = "file") byte[] file) {
+    public AudioTranscriptionOptions(byte[] file) {
         this.file = file;
     }
 
