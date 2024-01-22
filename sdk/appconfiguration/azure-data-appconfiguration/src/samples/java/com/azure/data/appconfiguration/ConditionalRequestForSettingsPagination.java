@@ -3,21 +3,13 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.MatchConditions;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.X509TrustManager;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -36,36 +28,52 @@ public class ConditionalRequestForSettingsPagination {
         .buildClient();
 
     public static void main(String[] args) throws MalformedURLException {
+        collectUrlMatchConditions();
+
+        String url = client.getEndpoint() + "/kv?api-version=2023-10-01";
+        String eTag = "your-page-etag";
+        monitorPageSettings(url, eTag);
+    }
+
+    private static void monitorPageSettings(String url, String eTag) throws MalformedURLException {
+        // Having the URL and eTag values, we can now make a conditional request to the service.
+        PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
+                new SettingSelector()
+                        .setPageLink(new URL(url))
+                        .setMatchConditions(new MatchConditions().setIfNoneMatch(eTag)));
+
+        // Status code = 200 means that the requested settings have changes, so we can print them.
+        settings.iterableByPage().forEach(pagedResponse -> {
+            System.out.println("Status code = " + pagedResponse.getStatusCode());
+            System.out.println("Settings:");
+            pagedResponse.getElements().forEach(setting -> {
+                System.out.println("Key: " + setting.getKey() + ", Value: " + setting.getValue());
+            });
+        });
+    }
+
+    // This method is used to collect the URL and eTag values from the paged responses.
+    private static Map<URL, MatchConditions> collectUrlMatchConditions() {
+        // list all settings
         List<PagedResponse<ConfigurationSetting>> pagedResponses = client.listConfigurationSettings(null)
             .streamByPage()
             .collect(Collectors.toList());
 
-        Map<URL, MatchConditions> urlMatchConditionsMap = collectUrlMatchConditions(pagedResponses);
+        // collect the URL and eTag values from the paged responses
+        Map<URL, MatchConditions> urlMatchConditionsMap = new HashMap<>();
+        for (int i = 0; i < pagedResponses.size(); i++) {
+            final PagedResponse<ConfigurationSetting> currentPagedResponse = pagedResponses.get(i);
+            URL currentPageLink = currentPagedResponse.getRequest().getUrl();
+            MatchConditions currentETag = new MatchConditions().setIfNoneMatch(currentPagedResponse.getHeaders().getValue("Etag"));
+            urlMatchConditionsMap.put(currentPageLink, currentETag);
+        }
 
+        // print the URL and eTag values
         urlMatchConditionsMap.forEach((url, matchConditions) -> {
             System.out.println("URL = " + url.toString());
             System.out.println("eTag = " + matchConditions.getIfNoneMatch());
-            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
-                    new SettingSelector().setPageLink(url).setMatchConditions(matchConditions));
-            for (ConfigurationSetting setting : settings) {
-                System.out.println(setting.getKey());
-            }
         });
-    }
 
-    private static Map<URL, MatchConditions> collectUrlMatchConditions(List<PagedResponse<ConfigurationSetting>> pagedResponses) throws MalformedURLException {
-        Map<URL, MatchConditions> urlMatchConditionsMap = new HashMap<>();
-
-        for (int i = 0; i < pagedResponses.size(); i++) {
-            final PagedResponse<ConfigurationSetting> pagedResponse = pagedResponses.get(i);
-            final String pagedETagInResponseHeader = pagedResponse.getHeaders().getValue("Etag");
-            final String continuationToken = pagedResponse.getContinuationToken();
-            if (continuationToken == null) {
-                continue;
-            }
-            urlMatchConditionsMap.put(new URL(client.getEndpoint() + pagedResponse.getContinuationToken()),
-                    new MatchConditions().setIfNoneMatch(pagedETagInResponseHeader));
-        }
         return urlMatchConditionsMap;
     }
 }

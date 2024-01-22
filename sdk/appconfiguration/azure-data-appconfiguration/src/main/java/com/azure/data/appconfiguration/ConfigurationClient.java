@@ -39,10 +39,10 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -1056,43 +1056,49 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        MatchConditions matchConditions = selector == null ? null : selector.getMatchConditions();
+        String eTagInFirstPage = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        URL url = selector == null ? null : selector.getPageLink();
+        if (url != null) {
+            try {
+                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(
+                        url.toString(),
+                        acceptDateTime,
+                        null,
+                        matchConditions.getIfNoneMatch(),
+                        enableSyncRestProxy(addTracingNamespace(context)));
+
+                List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
+                pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
+
+                return new PagedIterable<>(() -> new PagedResponseBase<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(), settings, null, null));
+
+
+            } catch (HttpResponseException ex) {
+                final HttpResponse httpResponse = ex.getResponse();
+                if (httpResponse.getStatusCode() == 304) {
+                    return new PagedIterable<>(() ->
+                            new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                            httpResponse.getHeaders(), null, null, null));
+                }
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        }
 
         return new PagedIterable<>(
             () -> {
-                MatchConditions matchConditions = selector == null ? null : selector.getMatchConditions();
-                String eTagInFirstPage = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-
                 final PagedResponse<KeyValue> pagedResponse;
-
-                try {
-                    pagedResponse = serviceClient.getKeyValuesSinglePage(
-                            selector == null ? null : selector.getKeyFilter(),
-                            selector == null ? null : selector.getLabelFilter(),
-                            null,
-                            acceptDateTime,
-                            selector == null ? null : toSettingFieldsList(selector.getFields()),
-                            null,
-                            null,
-                            eTagInFirstPage,
-                            enableSyncRestProxy(addTracingNamespace(context)));
-                } catch (HttpResponseException ex) {
-                    final HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-//                        String continuesToken = httpResponse.getHeaders().getValue("link");
-//                        continuesToken = continuesToken == null ? null : continuesToken.substring(1, continuesToken.indexOf(">"));
-                        return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                                httpResponse.getHeaders(), null, null, null);
-                    }
-                    throw LOGGER.logExceptionAsError(ex);
-                }
-
-                if (eTagInFirstPage != null) {
-                    List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
-                    pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
-
-                    return new PagedResponseBase<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
-                            pagedResponse.getHeaders(), settings, null, null);
-                }
+                pagedResponse = serviceClient.getKeyValuesSinglePage(
+                        selector == null ? null : selector.getKeyFilter(),
+                        selector == null ? null : selector.getLabelFilter(),
+                        null,
+                        acceptDateTime,
+                        selector == null ? null : toSettingFieldsList(selector.getFields()),
+                        null,
+                        null,
+                        null,
+                        enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
