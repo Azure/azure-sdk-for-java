@@ -23,7 +23,7 @@ import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessageP
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.getProcessorBuilder;
 
 /**
- * Test for EventProcessorClient that forwards messages
+ * Test for EventProcessorClient
  */
 @Component("EventProcessor")
 public class EventProcessor extends EventHubsScenario {
