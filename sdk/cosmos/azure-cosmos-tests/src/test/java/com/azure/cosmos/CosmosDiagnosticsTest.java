@@ -47,6 +47,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -309,14 +310,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void directDiagnostics() throws Exception {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
-        validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
+        validateDirectModeDiagnosticsOnSuccess(
+                createResponse.getDiagnostics(),
+                directClient.asyncClient(),
+                this.directClientUserAgent,
+                false);
 
         // validate that on failed operation request timeline is populated
         try {
             containerDirect.createItem(internalObjectNode);
             fail("expected 409");
         } catch (CosmosException e) {
-            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
+            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent, false);
         }
     }
 
@@ -711,8 +716,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateDirectModeDiagnosticsOnSuccess(
         CosmosDiagnostics cosmosDiagnostics,
-        CosmosClient testDirectClient,
-        String userAgent) throws Exception {
+        CosmosAsyncClient testDirectClient,
+        String userAgent,
+        boolean channelAcquisitionContextExists) throws Exception {
 
         String diagnostics = cosmosDiagnostics.toString();
         logger.info("DIAGNOSTICS: {}", diagnostics);
@@ -734,17 +740,24 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"retryAfterInMs\"");
         assertThat(diagnostics).contains("\"channelStatistics\"");
 
-        // TODO: Add this check back when enable the channelAcquisitionContext again
-        // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
+        if (channelAcquisitionContextExists) {
+            assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
+        } else {
+            assertThat(diagnostics).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
+        }
+
         assertThat(cosmosDiagnostics.getContactedRegionNames()).isNotEmpty();
         assertThat(cosmosDiagnostics.getDuration()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
-        validateRegionContacted(cosmosDiagnostics, testDirectClient.asyncClient());
+        validateRegionContacted(cosmosDiagnostics, testDirectClient);
         validateChannelStatistics(cosmosDiagnostics);
         isValidJSON(diagnostics);
     }
 
-    private void validateDirectModeDiagnosticsOnException(CosmosException cosmosException, String userAgent) {
+    private void validateDirectModeDiagnosticsOnException(
+            CosmosException cosmosException,
+            String userAgent,
+            boolean channelAcquisitionContextExists) {
         CosmosDiagnostics cosmosDiagnostics = cosmosException.getDiagnostics();
         String diagnosticsString = cosmosDiagnostics.toString();
         assertThat(diagnosticsString).contains("\"backendLatencyInMs\"");
@@ -759,6 +772,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         if (!(cosmosException instanceof OperationCancelledException)) {
             assertThat(diagnosticsString).doesNotContain("\"statusCode\":408");
             assertThat(diagnosticsString).doesNotContain("\"subStatusCode\":20008");
+        }
+
+        if (channelAcquisitionContextExists) {
+            assertThat(diagnosticsString).contains("\"transportRequestChannelAcquisitionContext\"");
+        } else {
+            assertThat(diagnosticsString).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
         }
     }
 
@@ -1480,6 +1499,63 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
         finally {
             safeClose(client);
+        }
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void directDiagnosticsWithChannelAcquisitionContext() throws Exception {
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule connectionDelayRule =
+                new FaultInjectionRuleBuilder("connectionDelay")
+                        .condition(new FaultInjectionConditionBuilder().build())
+                        .result(
+                                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                                        .delay(Duration.ofSeconds(2))
+                                        .build()
+                        )
+                        .build();
+
+        FaultInjectionRule closeConnectionsRule =
+                new FaultInjectionRuleBuilder("connectionClose")
+                        .condition(new FaultInjectionConditionBuilder().build())
+                        .result(
+                                FaultInjectionResultBuilders
+                                        .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                                        .interval(Duration.ofMillis(100))
+                                        .threshold(1.0)
+                                        .build())
+                        .hitLimit(1)
+                        .build();
+
+        try {
+            String userAgentSuffix = "testForChannelAcquisitionContext";
+            testClient = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .contentResponseOnWriteEnabled(true)
+                    .userAgentSuffix(userAgentSuffix)
+                    .buildAsyncClient();
+
+            CosmosAsyncContainer container = testClient.getDatabase(cosmosAsyncDatabase.getId()).getContainer(cosmosAsyncContainer.getId());
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(connectionDelayRule)).block();
+            CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode).block();
+            validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), testClient, userAgentSuffix, true);
+
+            try {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(closeConnectionsRule)).block();
+                // wait for some time to let the connection close rule kick in
+                Thread.sleep(100);
+                container.createItem(internalObjectNode).block();
+                fail("expected 409");
+            } catch (CosmosException e) {
+                validateDirectModeDiagnosticsOnException(e, userAgentSuffix, true);
+            }
+
+        } finally {
+            safeClose(testClient);
         }
     }
 
