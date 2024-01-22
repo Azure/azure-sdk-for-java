@@ -26,7 +26,7 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/sdk/storage/azure-storage-stress/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress/sdk/storage/azure-storage-blob-stress/pom.xml clean install ${SKIP_CHECKS}
 
-FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+FROM mcr.microsoft.com/openjdk/jdk:21-mariner
 
 RUN yum -y update
 
