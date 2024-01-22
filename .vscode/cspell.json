@@ -137,6 +137,7 @@
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
+    "sdk/cosmos/dev.md",
     "sdk/spring/azure-spring-data-cosmos/**",
     "sdk/core/azure-json/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
