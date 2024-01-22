@@ -5,61 +5,67 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties that are associated with a blob data source. */
+/**
+ * The properties that are associated with a blob data source.
+ */
 @Fluent
 public class BlobDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobDataSourceProperties.class);
-
     /*
-     * A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "storageAccounts")
     private List<StorageAccount> storageAccounts;
 
     /*
-     * The name of a container within the associated Storage account. This
-     * container contains either the blob(s) to be read from or written to.
-     * Required on PUT (CreateOrReplace) requests.
+     * The name of a container within the associated Storage account. This container contains either the blob(s) to be
+     * read from or written to. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "container")
     private String container;
 
     /*
-     * The blob path pattern. Not a regular expression. It represents a pattern
-     * against which blob names will be matched to determine whether or not
-     * they should be included as input or output to the job. See
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input
-     * or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
-     * for a more detailed explanation and example.
+     * The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be
+     * matched to determine whether or not they should be included as input or output to the job. See
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
+     * explanation and example.
      */
     @JsonProperty(value = "pathPattern")
     private String pathPattern;
 
     /*
-     * The date format. Wherever {date} appears in pathPattern, the value of
-     * this property is used as the date format instead.
+     * The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format
+     * instead.
      */
     @JsonProperty(value = "dateFormat")
     private String dateFormat;
 
     /*
-     * The time format. Wherever {time} appears in pathPattern, the value of
-     * this property is used as the time format instead.
+     * The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format
+     * instead.
      */
     @JsonProperty(value = "timeFormat")
     private String timeFormat;
 
+    /*
+     * Authentication Mode.
+     */
+    @JsonProperty(value = "authenticationMode")
+    private AuthenticationMode authenticationMode;
+
     /**
-     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
-     * requests.
-     *
+     * Creates an instance of BlobDataSourceProperties class.
+     */
+    public BlobDataSourceProperties() {
+    }
+
+    /**
+     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
      * @return the storageAccounts value.
      */
     public List<StorageAccount> storageAccounts() {
@@ -67,9 +73,9 @@ public class BlobDataSourceProperties {
     }
 
     /**
-     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
-     * requests.
-     *
+     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the BlobDataSourceProperties object itself.
      */
@@ -81,7 +87,7 @@ public class BlobDataSourceProperties {
     /**
      * Get the container property: The name of a container within the associated Storage account. This container
      * contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the container value.
      */
     public String container() {
@@ -91,7 +97,7 @@ public class BlobDataSourceProperties {
     /**
      * Set the container property: The name of a container within the associated Storage account. This container
      * contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param container the container value to set.
      * @return the BlobDataSourceProperties object itself.
      */
@@ -104,9 +110,9 @@ public class BlobDataSourceProperties {
      * Get the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
-     * and example.
-     *
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
+     * explanation and example.
+     * 
      * @return the pathPattern value.
      */
     public String pathPattern() {
@@ -117,9 +123,9 @@ public class BlobDataSourceProperties {
      * Set the pathPattern property: The blob path pattern. Not a regular expression. It represents a pattern against
      * which blob names will be matched to determine whether or not they should be included as input or output to the
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
-     * and example.
-     *
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed
+     * explanation and example.
+     * 
      * @param pathPattern the pathPattern value to set.
      * @return the BlobDataSourceProperties object itself.
      */
@@ -131,7 +137,7 @@ public class BlobDataSourceProperties {
     /**
      * Get the dateFormat property: The date format. Wherever {date} appears in pathPattern, the value of this property
      * is used as the date format instead.
-     *
+     * 
      * @return the dateFormat value.
      */
     public String dateFormat() {
@@ -141,7 +147,7 @@ public class BlobDataSourceProperties {
     /**
      * Set the dateFormat property: The date format. Wherever {date} appears in pathPattern, the value of this property
      * is used as the date format instead.
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the BlobDataSourceProperties object itself.
      */
@@ -153,7 +159,7 @@ public class BlobDataSourceProperties {
     /**
      * Get the timeFormat property: The time format. Wherever {time} appears in pathPattern, the value of this property
      * is used as the time format instead.
-     *
+     * 
      * @return the timeFormat value.
      */
     public String timeFormat() {
@@ -163,7 +169,7 @@ public class BlobDataSourceProperties {
     /**
      * Set the timeFormat property: The time format. Wherever {time} appears in pathPattern, the value of this property
      * is used as the time format instead.
-     *
+     * 
      * @param timeFormat the timeFormat value to set.
      * @return the BlobDataSourceProperties object itself.
      */
@@ -173,8 +179,28 @@ public class BlobDataSourceProperties {
     }
 
     /**
+     * Get the authenticationMode property: Authentication Mode.
+     * 
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.authenticationMode;
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     * 
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the BlobDataSourceProperties object itself.
+     */
+    public BlobDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
+        this.authenticationMode = authenticationMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
