@@ -73,6 +73,7 @@ jobs:
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
+            SkipCheckoutNone: true
             Paths:
               - '**/*.xml'
               - '**/*.md'
