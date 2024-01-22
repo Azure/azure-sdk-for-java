@@ -45,8 +45,8 @@ public final class PrivateEndpointConnectionOperationsDeleteWithResponseMockTest
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateEndpointConnectionOperations().deleteWithResponse("gyvpfyjlfnj", "wbtoq", "yprpwk",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations().deleteWithResponse("hottykfkwzkwuwgz", "ersukveknwldq",
+            "lgzcwrhhg", com.azure.core.util.Context.NONE);
 
     }
 }

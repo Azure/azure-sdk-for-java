@@ -34,7 +34,7 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"jxqintjhvcorobmq\",\"alias\":\"zipzkkleazkc\",\"\":{\"vofhpgu\":\"dataq\",\"wyfsqg\":\"dataibk\",\"cxazvrmu\":\"datass\"}},\"name\":\"jegohp\",\"type\":\"rmh\",\"etag\":\"tknbruszq\",\"id\":\"dmefsxmdmlowesi\"}";
+            = "{\"properties\":{\"vNetId\":\"yiivoixefn\",\"alias\":\"fewqnznctnmkits\",\"\":{\"ounugxnz\":\"dataopevqsabo\",\"ggalvorz\":\"dataq\",\"mqnbaerggq\":\"datadysndiexbskw\"}},\"name\":\"haxqvbzz\",\"type\":\"orengkunydgw\",\"etag\":\"oharvjfzzvj\",\"id\":\"cduwuintiib\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,12 +52,12 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedVirtualNetworkResource response
-            = manager.managedVirtualNetworks().define("ncvnoqwgnllicovv").withExistingFactory("fm", "psvww")
-                .withProperties(new ManagedVirtualNetwork()
-                    .withAdditionalProperties(mapOf("vNetId", "obfnbdpaoijxqgf", "alias", "trvvhxjfkpu")))
-                .withIfMatch("uxo").create();
+            = manager.managedVirtualNetworks().define("txubebb").withExistingFactory("degvxz", "o")
+                .withProperties(
+                    new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "yde", "alias", "yefgnib")))
+                .withIfMatch("ovbrf").create();
 
-        Assertions.assertEquals("dmefsxmdmlowesi", response.id());
+        Assertions.assertEquals("cduwuintiib", response.id());
     }
 
     // Use "Map.of" if available
