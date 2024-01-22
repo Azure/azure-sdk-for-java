@@ -21,6 +21,7 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.ResourceAttributes;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +131,8 @@ class SpringMonitorTest {
                 "com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter"); // AzureMonitorMetricExporter is not public
     }
 
+    // TODO (heya) will enable this test after beta.16 exporter release
+    @Disabled
     @Test
     public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
@@ -205,9 +208,12 @@ class SpringMonitorTest {
             .collect(Collectors.toList());
     }
 
+    // TODO (heya) will enable this test after beta.16 exporter release
+    @Disabled
     @Test
     void verifyOpenTelemetryVersion() {
         String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
+        System.out.println("currentOTelVersion = " + currentOTelVersion);
         assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
             .as(
                 "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
