@@ -31,7 +31,7 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import static java.time.OffsetDateTime.now;
 
 public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy {
-    private final AzureNamedKeyCredential azureNamedKeyCred;
+    private final AzureNamedKeyCredential azureNamedKeyCredential;
     private Mac hmacSha256;
 
     /**
@@ -40,7 +40,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
      * @param credential the SharedKey credential used to create the policy.
      */
     public BatchSharedKeyCredentialsPolicy(AzureNamedKeyCredential credential) {
-        this.azureNamedKeyCred = credential;
+        this.azureNamedKeyCredential = credential;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
     private synchronized Mac getHmac256() throws NoSuchAlgorithmException, InvalidKeyException {
         if (this.hmacSha256 == null) {
             // Initializes the HMAC-SHA256 Mac and SecretKey.
-            byte[] key = Base64.getDecoder().decode(azureNamedKeyCred.getAzureNamedKey().getKey());
+            byte[] key = Base64.getDecoder().decode(azureNamedKeyCredential.getAzureNamedKey().getKey());
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
             this.hmacSha256.init(new SecretKeySpec(key, "HmacSHA256"));
         }
@@ -131,7 +131,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         signature.append("/")
-                .append(azureNamedKeyCred.getAzureNamedKey().getName().toLowerCase(Locale.ROOT)).append("/")
+                .append(azureNamedKeyCredential.getAzureNamedKey().getName().toLowerCase(Locale.ROOT)).append("/")
                 .append(request.getUrl().getPath().replaceAll("^[/]+", ""));
 
         String query = request.getUrl().getQuery();
@@ -154,7 +154,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         String signedSignature = sign(signature.toString());
-        String authorization = "SharedKey " + azureNamedKeyCred.getAzureNamedKey().getName()
+        String authorization = "SharedKey " + azureNamedKeyCredential.getAzureNamedKey().getName()
                 + ":" + signedSignature;
 
         return authorization;
