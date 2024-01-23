@@ -7,6 +7,7 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -106,6 +107,6 @@ public class MathTutorAssistant {
         // Unlike creating a completion in the Chat Completions API, creating a Run is an asynchronous operation.
         // It will return immediately with the Run's metadata, which includes a status that will initially be set to
         // queued. The status will be updated as the Assistant performs operations (like using tools and adding messages).
-        return client.createRun(threadId, assistantId);
+        return client.createRun(threadId, new CreateRunOptions(assistantId, null));
     }
 }

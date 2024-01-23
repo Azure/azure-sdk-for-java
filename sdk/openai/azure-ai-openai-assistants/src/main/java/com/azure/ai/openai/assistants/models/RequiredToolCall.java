@@ -12,41 +12,38 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * An abstract representation of a detailed tool call as recorded within a run step for an existing run.
+ * An abstract representation a a tool invocation needed by the model to continue a run.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = ToolCall.class)
-@JsonTypeName("ToolCall")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "code_interpreter", value = CodeInterpreterToolCall.class),
-    @JsonSubTypes.Type(name = "retrieval", value = RetrievalToolCall.class),
-    @JsonSubTypes.Type(name = "function", value = FunctionToolCall.class) })
+    defaultImpl = RequiredToolCall.class)
+@JsonTypeName("RequiredToolCall")
+@JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = RequiredFunctionToolCall.class) })
 @Immutable
-public class ToolCall {
+public class RequiredToolCall {
 
     /*
-     * The ID of the tool call. This ID must be referenced when you submit tool outputs.
+     * The ID of the tool call. This ID must be referenced when submitting tool outputs.
      */
     @Generated
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Creates an instance of ToolCall class.
+     * Creates an instance of RequiredToolCall class.
      *
      * @param id the id value to set.
      */
     @Generated
     @JsonCreator
-    protected ToolCall(@JsonProperty(value = "id") String id) {
+    protected RequiredToolCall(@JsonProperty(value = "id") String id) {
         this.id = id;
     }
 
     /**
-     * Get the id property: The ID of the tool call. This ID must be referenced when you submit tool outputs.
+     * Get the id property: The ID of the tool call. This ID must be referenced when submitting tool outputs.
      *
      * @return the id value.
      */

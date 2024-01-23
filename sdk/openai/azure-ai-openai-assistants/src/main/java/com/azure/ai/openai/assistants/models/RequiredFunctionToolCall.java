@@ -11,43 +11,42 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A record of a call to a function tool, issued by the model in evaluation of a defined tool, that represents the
- * inputs
- * and output consumed and emitted by the specified function.
+ * A representation of a requested call to a function tool, needed by the model to continue evaluation of a run.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
-public final class FunctionToolCall extends ToolCall {
+public final class RequiredFunctionToolCall extends RequiredToolCall {
 
     /*
-     * The detailed information about the function called by the model.
+     * Detailed information about the function to be executed by the tool that includes name and arguments.
      */
     @Generated
     @JsonProperty(value = "function")
-    private FunctionToolCallDetails function;
+    private FunctionDefinition function;
 
     /**
-     * Creates an instance of FunctionToolCall class.
+     * Creates an instance of RequiredFunctionToolCall class.
      *
      * @param id the id value to set.
      * @param function the function value to set.
      */
     @Generated
     @JsonCreator
-    private FunctionToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "function") FunctionToolCallDetails function) {
+    private RequiredFunctionToolCall(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "function") FunctionDefinition function) {
         super(id);
         this.function = function;
     }
 
     /**
-     * Get the function property: The detailed information about the function called by the model.
+     * Get the function property: Detailed information about the function to be executed by the tool that includes name
+     * and arguments.
      *
      * @return the function value.
      */
     @Generated
-    public FunctionToolCallDetails getFunction() {
+    public FunctionDefinition getFunction() {
         return this.function;
     }
 }
