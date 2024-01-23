@@ -66,7 +66,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         // check if FeatureFlags section exist
         String featureFlagsSectionKey = "";
         for (String key : features.keySet()) {
-            if ("FeatureFlags".equalsIgnoreCase(key)) {
+            if ("FeatureFlags".equalsIgnoreCase(key) || "feature-flags".equalsIgnoreCase(key)) {
                 featureFlagsSectionKey = key;
                 break;
             }
