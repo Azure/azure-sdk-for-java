@@ -16,10 +16,10 @@ public final class SpringbootsitesGetByResourceGroupSamples {
     /**
      * Sample code: springbootsites_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesGetMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootsitesGetByResourceGroupSamples {
     /**
      * Sample code: springbootsites_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesGetMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
             com.azure.core.util.Context.NONE);
     }

@@ -18,10 +18,10 @@ public final class SpringbootserversUpdateSamples {
     /**
      * Sample code: springbootservers_Update_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversUpdateMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootserversModel resource = manager.springbootservers()
             .getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
                 "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE)
@@ -37,10 +37,10 @@ public final class SpringbootserversUpdateSamples {
     /**
      * Sample code: springbootservers_Update_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversUpdateMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootserversModel resource = manager.springbootservers()
             .getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
                 "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE)

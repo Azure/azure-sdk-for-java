@@ -16,10 +16,10 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
     /**
      * Sample code: springbootsites_TriggerRefreshSite_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesTriggerRefreshSiteMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
     /**
      * Sample code: springbootsites_TriggerRefreshSite_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesTriggerRefreshSiteMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu",
             com.azure.core.util.Context.NONE);
     }

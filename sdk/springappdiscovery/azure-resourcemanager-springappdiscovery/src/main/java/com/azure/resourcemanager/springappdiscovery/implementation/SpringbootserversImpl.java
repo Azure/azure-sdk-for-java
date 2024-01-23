@@ -19,10 +19,10 @@ public final class SpringbootserversImpl implements Springbootservers {
 
     private final SpringbootserversClient innerClient;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     public SpringbootserversImpl(SpringbootserversClient innerClient,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -160,7 +160,7 @@ public final class SpringbootserversImpl implements Springbootservers {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 

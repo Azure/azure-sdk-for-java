@@ -13,10 +13,10 @@ import com.azure.resourcemanager.springappdiscovery.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     OperationImpl(OperationInner innerObject,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +45,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 }

@@ -18,10 +18,10 @@ public final class SpringbootappsUpdateSamples {
     /**
      * Sample code: springbootapps_Update_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsUpdateMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
             com.azure.core.util.Context.NONE);
@@ -35,10 +35,10 @@ public final class SpringbootappsUpdateSamples {
     /**
      * Sample code: springbootapps_Update_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsUpdateMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(),
             com.azure.core.util.Context.NONE);

@@ -53,25 +53,25 @@ public final class SpringbootsitesClientImpl implements SpringbootsitesClient {
     /**
      * The service client containing this operation class.
      */
-    private final SpringAppsDiscoveryClientImpl client;
+    private final SpringAppDiscoveryMgmtClientImpl client;
 
     /**
      * Initializes an instance of SpringbootsitesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SpringbootsitesClientImpl(SpringAppsDiscoveryClientImpl client) {
+    SpringbootsitesClientImpl(SpringAppDiscoveryMgmtClientImpl client) {
         this.service
             = RestProxy.create(SpringbootsitesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SpringAppsDiscoveryClientSpringbootsites to be used by the proxy
+     * The interface defining all the services for SpringAppDiscoveryMgmtClientSpringbootsites to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SpringAppsDiscoveryC")
+    @ServiceInterface(name = "SpringAppDiscoveryMg")
     public interface SpringbootsitesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OffAzureSpringBoot/springbootsites/{springbootsitesName}")

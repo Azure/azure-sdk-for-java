@@ -16,10 +16,10 @@ public final class SpringbootserversListBySubscriptionSamples {
     /**
      * Sample code: springbootservers_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversListBySubscriptionMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootserversListBySubscriptionSamples {
     /**
      * Sample code: springbootservers_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversListBySubscriptionMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj",
             com.azure.core.util.Context.NONE);
     }

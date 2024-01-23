@@ -16,10 +16,10 @@ public final class SpringbootsitesListByResourceGroupSamples {
     /**
      * Sample code: springbootsites_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesListByResourceGroupMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().listByResourceGroup("rgspringbootsites", com.azure.core.util.Context.NONE);
     }
 
@@ -31,10 +31,10 @@ public final class SpringbootsitesListByResourceGroupSamples {
     /**
      * Sample code: springbootsites_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesListByResourceGroupMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().listByResourceGroup("rgspringbootsites", com.azure.core.util.Context.NONE);
     }
 }

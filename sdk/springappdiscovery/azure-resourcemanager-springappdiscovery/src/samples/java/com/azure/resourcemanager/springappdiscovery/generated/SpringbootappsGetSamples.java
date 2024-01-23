@@ -16,10 +16,10 @@ public final class SpringbootappsGetSamples {
     /**
      * Sample code: springbootapps_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsGetMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void
+        springbootappsGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootappsGetSamples {
     /**
      * Sample code: springbootapps_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsGetMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void
+        springbootappsGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }

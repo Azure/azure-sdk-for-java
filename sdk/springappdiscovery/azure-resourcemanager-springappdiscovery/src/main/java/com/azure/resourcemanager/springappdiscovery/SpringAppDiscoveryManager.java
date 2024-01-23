@@ -23,10 +23,10 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.springappdiscovery.fluent.SpringAppsDiscoveryClient;
+import com.azure.resourcemanager.springappdiscovery.fluent.SpringAppDiscoveryMgmtClient;
 import com.azure.resourcemanager.springappdiscovery.implementation.ErrorSummariesImpl;
 import com.azure.resourcemanager.springappdiscovery.implementation.OperationsImpl;
-import com.azure.resourcemanager.springappdiscovery.implementation.SpringAppsDiscoveryClientBuilder;
+import com.azure.resourcemanager.springappdiscovery.implementation.SpringAppDiscoveryMgmtClientBuilder;
 import com.azure.resourcemanager.springappdiscovery.implementation.SpringbootappsImpl;
 import com.azure.resourcemanager.springappdiscovery.implementation.SpringbootserversImpl;
 import com.azure.resourcemanager.springappdiscovery.implementation.SpringbootsitesImpl;
@@ -45,10 +45,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to SpringAppsDiscoveryManager.
+ * Entry point to SpringAppDiscoveryManager.
  * Spring App Discovery Client.
  */
-public final class SpringAppsDiscoveryManager {
+public final class SpringAppDiscoveryManager {
     private Springbootsites springbootsites;
 
     private Operations operations;
@@ -61,49 +61,49 @@ public final class SpringAppsDiscoveryManager {
 
     private ErrorSummaries errorSummaries;
 
-    private final SpringAppsDiscoveryClient clientObject;
+    private final SpringAppDiscoveryMgmtClient clientObject;
 
-    private SpringAppsDiscoveryManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private SpringAppDiscoveryManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new SpringAppsDiscoveryClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new SpringAppDiscoveryMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
-     * Creates an instance of SpringAppsDiscovery service API entry point.
+     * Creates an instance of Spring App Discovery service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the SpringAppsDiscovery service API instance.
+     * @return the Spring App Discovery service API instance.
      */
-    public static SpringAppsDiscoveryManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static SpringAppDiscoveryManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of SpringAppsDiscovery service API entry point.
+     * Creates an instance of Spring App Discovery service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the SpringAppsDiscovery service API instance.
+     * @return the Spring App Discovery service API instance.
      */
-    public static SpringAppsDiscoveryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static SpringAppDiscoveryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new SpringAppsDiscoveryManager(httpPipeline, profile, null);
+        return new SpringAppDiscoveryManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create SpringAppsDiscoveryManager with optional configuration.
+     * Gets a Configurable instance that can be used to create SpringAppDiscoveryManager with optional configuration.
      * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new SpringAppsDiscoveryManager.Configurable();
+        return new SpringAppDiscoveryManager.Configurable();
     }
 
     /**
@@ -208,13 +208,13 @@ public final class SpringAppsDiscoveryManager {
         }
 
         /**
-         * Creates an instance of SpringAppsDiscovery service API entry point.
+         * Creates an instance of Spring App Discovery service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the SpringAppsDiscovery service API instance.
+         * @return the Spring App Discovery service API instance.
          */
-        public SpringAppsDiscoveryManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public SpringAppDiscoveryManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -255,7 +255,7 @@ public final class SpringAppsDiscoveryManager {
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
-            return new SpringAppsDiscoveryManager(httpPipeline, profile, defaultPollInterval);
+            return new SpringAppDiscoveryManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -332,12 +332,12 @@ public final class SpringAppsDiscoveryManager {
     }
 
     /**
-     * Gets wrapped service client SpringAppsDiscoveryClient providing direct access to the underlying auto-generated
+     * Gets wrapped service client SpringAppDiscoveryMgmtClient providing direct access to the underlying auto-generated
      * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client SpringAppsDiscoveryClient.
+     * @return Wrapped service client SpringAppDiscoveryMgmtClient.
      */
-    public SpringAppsDiscoveryClient serviceClient() {
+    public SpringAppDiscoveryMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

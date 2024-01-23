@@ -16,10 +16,10 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void
-        operationsListMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        operationsListMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
@@ -31,10 +31,10 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void
-        operationsListMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        operationsListMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

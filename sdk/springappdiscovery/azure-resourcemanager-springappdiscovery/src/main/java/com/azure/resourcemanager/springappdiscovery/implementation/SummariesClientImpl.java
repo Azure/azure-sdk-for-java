@@ -42,25 +42,25 @@ public final class SummariesClientImpl implements SummariesClient {
     /**
      * The service client containing this operation class.
      */
-    private final SpringAppsDiscoveryClientImpl client;
+    private final SpringAppDiscoveryMgmtClientImpl client;
 
     /**
      * Initializes an instance of SummariesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SummariesClientImpl(SpringAppsDiscoveryClientImpl client) {
+    SummariesClientImpl(SpringAppDiscoveryMgmtClientImpl client) {
         this.service
             = RestProxy.create(SummariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SpringAppsDiscoveryClientSummaries to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for SpringAppDiscoveryMgmtClientSummaries to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SpringAppsDiscoveryC")
+    @ServiceInterface(name = "SpringAppDiscoveryMg")
     public interface SummariesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OffAzureSpringBoot/springbootsites/{siteName}/summaries/{summaryName}")

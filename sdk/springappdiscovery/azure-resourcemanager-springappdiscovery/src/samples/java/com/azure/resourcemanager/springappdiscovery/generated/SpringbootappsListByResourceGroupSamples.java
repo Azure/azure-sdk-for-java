@@ -16,10 +16,10 @@ public final class SpringbootappsListByResourceGroupSamples {
     /**
      * Sample code: springbootapps_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsListByResourceGroupMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listByResourceGroup("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootappsListByResourceGroupSamples {
     /**
      * Sample code: springbootapps_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsListByResourceGroupMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listByResourceGroup("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
             com.azure.core.util.Context.NONE);
     }

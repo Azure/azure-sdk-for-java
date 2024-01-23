@@ -42,25 +42,25 @@ public final class ErrorSummariesClientImpl implements ErrorSummariesClient {
     /**
      * The service client containing this operation class.
      */
-    private final SpringAppsDiscoveryClientImpl client;
+    private final SpringAppDiscoveryMgmtClientImpl client;
 
     /**
      * Initializes an instance of ErrorSummariesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ErrorSummariesClientImpl(SpringAppsDiscoveryClientImpl client) {
+    ErrorSummariesClientImpl(SpringAppDiscoveryMgmtClientImpl client) {
         this.service
             = RestProxy.create(ErrorSummariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SpringAppsDiscoveryClientErrorSummaries to be used by the proxy
+     * The interface defining all the services for SpringAppDiscoveryMgmtClientErrorSummaries to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SpringAppsDiscoveryC")
+    @ServiceInterface(name = "SpringAppDiscoveryMg")
     public interface ErrorSummariesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OffAzureSpringBoot/springbootsites/{siteName}/errorSummaries/{errorSummaryName}")

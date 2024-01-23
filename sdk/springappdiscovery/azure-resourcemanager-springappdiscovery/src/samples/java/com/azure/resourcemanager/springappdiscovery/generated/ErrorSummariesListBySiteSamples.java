@@ -16,10 +16,10 @@ public final class ErrorSummariesListBySiteSamples {
     /**
      * Sample code: ErrorSummaries_ListBySite_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void errorSummariesListBySiteMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class ErrorSummariesListBySiteSamples {
     /**
      * Sample code: ErrorSummaries_ListBySite_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void errorSummariesListBySiteMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
             com.azure.core.util.Context.NONE);
     }

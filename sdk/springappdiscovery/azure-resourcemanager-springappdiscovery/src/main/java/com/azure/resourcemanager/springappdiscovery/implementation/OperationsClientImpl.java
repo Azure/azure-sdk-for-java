@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final SpringAppsDiscoveryClientImpl client;
+    private final SpringAppDiscoveryMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(SpringAppsDiscoveryClientImpl client) {
+    OperationsClientImpl(SpringAppDiscoveryMgmtClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SpringAppsDiscoveryClientOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for SpringAppDiscoveryMgmtClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SpringAppsDiscoveryC")
+    @ServiceInterface(name = "SpringAppDiscoveryMg")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.OffAzureSpringBoot/operations")

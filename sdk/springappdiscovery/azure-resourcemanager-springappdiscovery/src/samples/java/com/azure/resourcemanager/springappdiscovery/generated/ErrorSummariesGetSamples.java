@@ -16,10 +16,10 @@ public final class ErrorSummariesGetSamples {
     /**
      * Sample code: ErrorSummaries_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesGetMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void
+        errorSummariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
             "K2lv", com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class ErrorSummariesGetSamples {
     /**
      * Sample code: ErrorSummaries_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesGetMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void
+        errorSummariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
             "K2lv", com.azure.core.util.Context.NONE);
     }

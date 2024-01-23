@@ -21,10 +21,10 @@ public final class SpringbootsitesCreateOrUpdateSamples {
     /**
      * Sample code: springbootsites_CreateOrUpdate_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
             .withExistingResourceGroup("rgspringbootsites").withTags(mapOf("key3558", "fakeTokenPlaceholder"))
             .withProperties(new SpringbootsitesProperties().withMasterSiteId("xsoimrgshsactearljwuljmi")
@@ -42,10 +42,10 @@ public final class SpringbootsitesCreateOrUpdateSamples {
     /**
      * Sample code: springbootsites_CreateOrUpdate_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq")
             .withExistingResourceGroup("rgspringbootsites").create();
     }

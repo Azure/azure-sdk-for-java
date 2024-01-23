@@ -16,10 +16,10 @@ public final class SpringbootsitesDeleteSamples {
     /**
      * Sample code: springbootsites_Delete_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesDeleteMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
             com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootsitesDeleteSamples {
     /**
      * Sample code: springbootsites_Delete_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesDeleteMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
             com.azure.core.util.Context.NONE);
     }

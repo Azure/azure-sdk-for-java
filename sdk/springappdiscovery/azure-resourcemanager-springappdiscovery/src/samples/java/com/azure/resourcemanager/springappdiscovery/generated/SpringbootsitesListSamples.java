@@ -16,10 +16,10 @@ public final class SpringbootsitesListSamples {
     /**
      * Sample code: springbootsites_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesListBySubscriptionMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().list(com.azure.core.util.Context.NONE);
     }
 
@@ -31,10 +31,10 @@ public final class SpringbootsitesListSamples {
     /**
      * Sample code: springbootsites_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootsitesListBySubscriptionMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -14,10 +14,10 @@ import java.util.Map;
 public final class SpringbootappsModelImpl implements SpringbootappsModel {
     private SpringbootappsModelInner innerObject;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     SpringbootappsModelImpl(SpringbootappsModelInner innerObject,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -55,7 +55,7 @@ public final class SpringbootappsModelImpl implements SpringbootappsModel {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 }

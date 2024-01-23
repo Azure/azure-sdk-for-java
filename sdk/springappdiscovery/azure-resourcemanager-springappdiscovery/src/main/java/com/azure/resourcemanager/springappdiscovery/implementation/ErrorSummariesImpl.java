@@ -19,10 +19,10 @@ public final class ErrorSummariesImpl implements ErrorSummaries {
 
     private final ErrorSummariesClient innerClient;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     public ErrorSummariesImpl(ErrorSummariesClient innerClient,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -62,7 +62,7 @@ public final class ErrorSummariesImpl implements ErrorSummaries {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 }

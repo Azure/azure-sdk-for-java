@@ -50,25 +50,25 @@ public final class SpringbootappsClientImpl implements SpringbootappsClient {
     /**
      * The service client containing this operation class.
      */
-    private final SpringAppsDiscoveryClientImpl client;
+    private final SpringAppDiscoveryMgmtClientImpl client;
 
     /**
      * Initializes an instance of SpringbootappsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SpringbootappsClientImpl(SpringAppsDiscoveryClientImpl client) {
+    SpringbootappsClientImpl(SpringAppDiscoveryMgmtClientImpl client) {
         this.service
             = RestProxy.create(SpringbootappsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SpringAppsDiscoveryClientSpringbootapps to be used by the proxy
+     * The interface defining all the services for SpringAppDiscoveryMgmtClientSpringbootapps to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SpringAppsDiscoveryC")
+    @ServiceInterface(name = "SpringAppDiscoveryMg")
     public interface SpringbootappsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OffAzureSpringBoot/springbootsites/{siteName}/springbootapps/{springbootappsName}")

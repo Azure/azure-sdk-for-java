@@ -17,7 +17,7 @@ public final class SpringbootserversModelImpl
     implements SpringbootserversModel, SpringbootserversModel.Definition, SpringbootserversModel.Update {
     private SpringbootserversModelInner innerObject;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -56,7 +56,7 @@ public final class SpringbootserversModelImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 
@@ -89,7 +89,7 @@ public final class SpringbootserversModelImpl
     }
 
     SpringbootserversModelImpl(String name,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = new SpringbootserversModelInner();
         this.serviceManager = serviceManager;
         this.springbootserversName = name;
@@ -113,7 +113,7 @@ public final class SpringbootserversModelImpl
     }
 
     SpringbootserversModelImpl(SpringbootserversModelInner innerObject,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

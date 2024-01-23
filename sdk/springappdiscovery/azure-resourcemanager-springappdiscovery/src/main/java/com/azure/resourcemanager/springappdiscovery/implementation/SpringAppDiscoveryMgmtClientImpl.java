@@ -24,7 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.springappdiscovery.fluent.ErrorSummariesClient;
 import com.azure.resourcemanager.springappdiscovery.fluent.OperationsClient;
-import com.azure.resourcemanager.springappdiscovery.fluent.SpringAppsDiscoveryClient;
+import com.azure.resourcemanager.springappdiscovery.fluent.SpringAppDiscoveryMgmtClient;
 import com.azure.resourcemanager.springappdiscovery.fluent.SpringbootappsClient;
 import com.azure.resourcemanager.springappdiscovery.fluent.SpringbootserversClient;
 import com.azure.resourcemanager.springappdiscovery.fluent.SpringbootsitesClient;
@@ -39,10 +39,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the SpringAppsDiscoveryClientImpl type.
+ * Initializes a new instance of the SpringAppDiscoveryMgmtClientImpl type.
  */
-@ServiceClient(builder = SpringAppsDiscoveryClientBuilder.class)
-public final class SpringAppsDiscoveryClientImpl implements SpringAppsDiscoveryClient {
+@ServiceClient(builder = SpringAppDiscoveryMgmtClientBuilder.class)
+public final class SpringAppDiscoveryMgmtClientImpl implements SpringAppDiscoveryMgmtClient {
     /**
      * The ID of the target subscription.
      */
@@ -212,7 +212,7 @@ public final class SpringAppsDiscoveryClientImpl implements SpringAppsDiscoveryC
     }
 
     /**
-     * Initializes an instance of SpringAppsDiscoveryClient client.
+     * Initializes an instance of SpringAppDiscoveryMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -221,7 +221,7 @@ public final class SpringAppsDiscoveryClientImpl implements SpringAppsDiscoveryC
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    SpringAppsDiscoveryClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    SpringAppDiscoveryMgmtClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -363,5 +363,5 @@ public final class SpringAppsDiscoveryClientImpl implements SpringAppsDiscoveryC
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(SpringAppsDiscoveryClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SpringAppDiscoveryMgmtClientImpl.class);
 }

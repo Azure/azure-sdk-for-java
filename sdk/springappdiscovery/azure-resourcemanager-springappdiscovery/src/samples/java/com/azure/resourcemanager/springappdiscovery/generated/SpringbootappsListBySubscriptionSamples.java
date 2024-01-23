@@ -16,10 +16,10 @@ public final class SpringbootappsListBySubscriptionSamples {
     /**
      * Sample code: springbootapps_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsListBySubscriptionMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listBySubscription("pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 
@@ -31,10 +31,10 @@ public final class SpringbootappsListBySubscriptionSamples {
     /**
      * Sample code: springbootapps_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootappsListBySubscriptionMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listBySubscription("pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 }

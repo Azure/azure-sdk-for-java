@@ -19,10 +19,10 @@ public final class SpringbootserversCreateOrUpdateSamples {
     /**
      * Sample code: springbootservers_CreateOrUpdate_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn")
             .withExistingSpringbootsite("rgspringbootservers",
                 "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj")
@@ -40,10 +40,10 @@ public final class SpringbootserversCreateOrUpdateSamples {
     /**
      * Sample code: springbootservers_CreateOrUpdate_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn").withExistingSpringbootsite(
             "rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj").create();
     }

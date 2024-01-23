@@ -16,10 +16,10 @@ public final class SpringbootserversListByResourceGroupSamples {
     /**
      * Sample code: springbootservers_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversListByResourceGroupMinimumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listByResourceGroup("rgspringbootservers",
             "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }
@@ -32,10 +32,10 @@ public final class SpringbootserversListByResourceGroupSamples {
     /**
      * Sample code: springbootservers_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
     public static void springbootserversListByResourceGroupMaximumSetGen(
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listByResourceGroup("rgspringbootservers",
             "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }

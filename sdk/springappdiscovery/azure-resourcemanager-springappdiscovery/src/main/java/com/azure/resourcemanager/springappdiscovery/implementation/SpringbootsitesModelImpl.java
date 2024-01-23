@@ -19,7 +19,7 @@ public final class SpringbootsitesModelImpl
     implements SpringbootsitesModel, SpringbootsitesModel.Definition, SpringbootsitesModel.Update {
     private SpringbootsitesModelInner innerObject;
 
-    private final com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager;
+    private final com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -74,7 +74,7 @@ public final class SpringbootsitesModelImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager() {
+    private com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager() {
         return this.serviceManager;
     }
 
@@ -103,7 +103,7 @@ public final class SpringbootsitesModelImpl
     }
 
     SpringbootsitesModelImpl(String name,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = new SpringbootsitesModelInner();
         this.serviceManager = serviceManager;
         this.springbootsitesName = name;
@@ -127,7 +127,7 @@ public final class SpringbootsitesModelImpl
     }
 
     SpringbootsitesModelImpl(SpringbootsitesModelInner innerObject,
-        com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager serviceManager) {
+        com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

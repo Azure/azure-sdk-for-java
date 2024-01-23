@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for SpringAppsDiscoveryClient class.
+ * The interface for SpringAppDiscoveryMgmtClient class.
  */
-public interface SpringAppsDiscoveryClient {
+public interface SpringAppDiscoveryMgmtClient {
     /**
      * Gets The ID of the target subscription.
      * 

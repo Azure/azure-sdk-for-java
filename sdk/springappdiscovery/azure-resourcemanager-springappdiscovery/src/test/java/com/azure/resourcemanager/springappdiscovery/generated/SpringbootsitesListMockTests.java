@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager;
+import com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager;
 import com.azure.resourcemanager.springappdiscovery.models.ProvisioningState;
 import com.azure.resourcemanager.springappdiscovery.models.SpringbootsitesModel;
 import java.nio.ByteBuffer;
@@ -46,7 +46,7 @@ public final class SpringbootsitesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SpringAppsDiscoveryManager manager = SpringAppsDiscoveryManager.configure().withHttpClient(httpClient)
+        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure().withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 

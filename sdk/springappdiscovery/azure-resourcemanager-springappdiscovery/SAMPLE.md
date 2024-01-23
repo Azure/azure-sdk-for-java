@@ -53,9 +53,9 @@ public final class ErrorSummariesGetSamples {
     /**
      * Sample code: ErrorSummaries_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void errorSummariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "K2lv", com.azure.core.util.Context.NONE);
     }
 
@@ -65,9 +65,9 @@ public final class ErrorSummariesGetSamples {
     /**
      * Sample code: ErrorSummaries_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void errorSummariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "K2lv", com.azure.core.util.Context.NONE);
     }
 }
@@ -86,9 +86,9 @@ public final class ErrorSummariesListBySiteSamples {
     /**
      * Sample code: ErrorSummaries_ListBySite_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesListBySiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void errorSummariesListBySiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", com.azure.core.util.Context.NONE);
     }
 
@@ -98,9 +98,9 @@ public final class ErrorSummariesListBySiteSamples {
     /**
      * Sample code: ErrorSummaries_ListBySite_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void errorSummariesListBySiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void errorSummariesListBySiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.errorSummaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", com.azure.core.util.Context.NONE);
     }
 }
@@ -119,9 +119,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void operationsListMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void operationsListMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
@@ -131,9 +131,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void operationsListMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void operationsListMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -152,9 +152,9 @@ public final class SpringbootappsGetSamples {
     /**
      * Sample code: springbootapps_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }
 
@@ -164,9 +164,9 @@ public final class SpringbootappsGetSamples {
     /**
      * Sample code: springbootapps_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }
 }
@@ -185,9 +185,9 @@ public final class SpringbootappsListByResourceGroupSamples {
     /**
      * Sample code: springbootapps_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listByResourceGroup("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 
@@ -197,9 +197,9 @@ public final class SpringbootappsListByResourceGroupSamples {
     /**
      * Sample code: springbootapps_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listByResourceGroup("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 }
@@ -218,9 +218,9 @@ public final class SpringbootappsListBySubscriptionSamples {
     /**
      * Sample code: springbootapps_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listBySubscription("pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 
@@ -230,9 +230,9 @@ public final class SpringbootappsListBySubscriptionSamples {
     /**
      * Sample code: springbootapps_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().listBySubscription("pdfosfhtemfsaglvwjdyqlyeipucrd", com.azure.core.util.Context.NONE);
     }
 }
@@ -253,9 +253,9 @@ public final class SpringbootappsUpdateSamples {
     /**
      * Sample code: springbootapps_Update_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(), com.azure.core.util.Context.NONE);
     }
 
@@ -265,9 +265,9 @@ public final class SpringbootappsUpdateSamples {
     /**
      * Sample code: springbootapps_Update_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootappsUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootappsUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootapps().update("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd", "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", new SpringbootappsPatch(), com.azure.core.util.Context.NONE);
     }
 }
@@ -289,9 +289,9 @@ public final class SpringbootserversCreateOrUpdateSamples {
     /**
      * Sample code: springbootservers_CreateOrUpdate_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn").withExistingSpringbootsite("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj").withProperties(new SpringbootserversProperties().withPort(10).withServer("thhuxocfyqpeluqcgnypi").withFqdnAndIpAddressList(Arrays.asList()).withMachineArmId("fvfkiapbqsprnbzczdfmuryknrna").withTotalApps(5).withSpringBootApps(17).withErrors(Arrays.asList())).create();
     }
 
@@ -301,9 +301,9 @@ public final class SpringbootserversCreateOrUpdateSamples {
     /**
      * Sample code: springbootservers_CreateOrUpdate_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().define("zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn").withExistingSpringbootsite("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj").create();
     }
 }
@@ -322,9 +322,9 @@ public final class SpringbootserversDeleteSamples {
     /**
      * Sample code: springbootservers_Delete_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversDeleteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversDeleteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().delete("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 
@@ -334,9 +334,9 @@ public final class SpringbootserversDeleteSamples {
     /**
      * Sample code: springbootservers_Delete_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversDeleteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversDeleteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().delete("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 }
@@ -355,9 +355,9 @@ public final class SpringbootserversGetSamples {
     /**
      * Sample code: springbootservers_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 
@@ -367,9 +367,9 @@ public final class SpringbootserversGetSamples {
     /**
      * Sample code: springbootservers_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE);
     }
 }
@@ -388,9 +388,9 @@ public final class SpringbootserversListByResourceGroupSamples {
     /**
      * Sample code: springbootservers_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listByResourceGroup("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }
 
@@ -400,9 +400,9 @@ public final class SpringbootserversListByResourceGroupSamples {
     /**
      * Sample code: springbootservers_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listByResourceGroup("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }
 }
@@ -421,9 +421,9 @@ public final class SpringbootserversListBySubscriptionSamples {
     /**
      * Sample code: springbootservers_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }
 
@@ -433,9 +433,9 @@ public final class SpringbootserversListBySubscriptionSamples {
     /**
      * Sample code: springbootservers_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootservers().listBySubscription("hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", com.azure.core.util.Context.NONE);
     }
 }
@@ -456,9 +456,9 @@ public final class SpringbootserversUpdateSamples {
     /**
      * Sample code: springbootservers_Update_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootserversModel resource = manager.springbootservers().getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
@@ -469,9 +469,9 @@ public final class SpringbootserversUpdateSamples {
     /**
      * Sample code: springbootservers_Update_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootserversUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootserversUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootserversModel resource = manager.springbootservers().getWithResponse("rgspringbootservers", "hlkrzldhyobavtabgpubtjbhlslnjmsvkthwcfboriwyxndacjypzbj", "zkarbqnwnxeozvjrkpdqmgnwedwgtwcmmyqwaijkn", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
@@ -496,9 +496,9 @@ public final class SpringbootsitesCreateOrUpdateSamples {
     /**
      * Sample code: springbootsites_CreateOrUpdate_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq").withExistingResourceGroup("rgspringbootsites").withTags(mapOf("key3558", "fakeTokenPlaceholder")).withProperties(new SpringbootsitesProperties().withMasterSiteId("xsoimrgshsactearljwuljmi").withMigrateProjectId("wwuattybgco")).withExtendedLocation(new SpringbootsitesModelExtendedLocation().withType("lvsb").withName("rywvpbfsqovhlfirtwisugsdsfsgf")).create();
     }
 
@@ -508,9 +508,9 @@ public final class SpringbootsitesCreateOrUpdateSamples {
     /**
      * Sample code: springbootsites_CreateOrUpdate_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().define("xrmzlavpewxtfeitghdrj").withRegion("tgobtvxktootwhhvjtsmpddvlqlrq").withExistingResourceGroup("rgspringbootsites").create();
     }
 
@@ -541,9 +541,9 @@ public final class SpringbootsitesDeleteSamples {
     /**
      * Sample code: springbootsites_Delete_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesDeleteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesDeleteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 
@@ -553,9 +553,9 @@ public final class SpringbootsitesDeleteSamples {
     /**
      * Sample code: springbootsites_Delete_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesDeleteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesDeleteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 }
@@ -574,9 +574,9 @@ public final class SpringbootsitesGetByResourceGroupSamples {
     /**
      * Sample code: springbootsites_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 
@@ -586,9 +586,9 @@ public final class SpringbootsitesGetByResourceGroupSamples {
     /**
      * Sample code: springbootsites_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 }
@@ -607,9 +607,9 @@ public final class SpringbootsitesListSamples {
     /**
      * Sample code: springbootsites_ListBySubscription_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesListBySubscriptionMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().list(com.azure.core.util.Context.NONE);
     }
 
@@ -619,9 +619,9 @@ public final class SpringbootsitesListSamples {
     /**
      * Sample code: springbootsites_ListBySubscription_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesListBySubscriptionMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -640,9 +640,9 @@ public final class SpringbootsitesListByResourceGroupSamples {
     /**
      * Sample code: springbootsites_ListByResourceGroup_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesListByResourceGroupMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().listByResourceGroup("rgspringbootsites", com.azure.core.util.Context.NONE);
     }
 
@@ -652,9 +652,9 @@ public final class SpringbootsitesListByResourceGroupSamples {
     /**
      * Sample code: springbootsites_ListByResourceGroup_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesListByResourceGroupMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().listByResourceGroup("rgspringbootsites", com.azure.core.util.Context.NONE);
     }
 }
@@ -673,9 +673,9 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
     /**
      * Sample code: springbootsites_TriggerRefreshSite_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesTriggerRefreshSiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesTriggerRefreshSiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu", com.azure.core.util.Context.NONE);
     }
 
@@ -685,9 +685,9 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
     /**
      * Sample code: springbootsites_TriggerRefreshSite_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesTriggerRefreshSiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesTriggerRefreshSiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu", com.azure.core.util.Context.NONE);
     }
 }
@@ -710,9 +710,9 @@ public final class SpringbootsitesUpdateSamples {
     /**
      * Sample code: springbootsites_Update_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesUpdateMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootsitesModel resource = manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("key9581", "fakeTokenPlaceholder")).apply();
     }
@@ -723,9 +723,9 @@ public final class SpringbootsitesUpdateSamples {
     /**
      * Sample code: springbootsites_Update_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void springbootsitesUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void springbootsitesUpdateMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         SpringbootsitesModel resource = manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
@@ -757,9 +757,9 @@ public final class SummariesGetSamples {
     /**
      * Sample code: Summaries_Get_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void summariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void summariesGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.summaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB", com.azure.core.util.Context.NONE);
     }
 
@@ -769,9 +769,9 @@ public final class SummariesGetSamples {
     /**
      * Sample code: Summaries_Get_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void summariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void summariesGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.summaries().getWithResponse("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", "vjB", com.azure.core.util.Context.NONE);
     }
 }
@@ -790,9 +790,9 @@ public final class SummariesListBySiteSamples {
     /**
      * Sample code: Summaries_ListBySite_MaximumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void summariesListBySiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void summariesListBySiteMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.summaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", com.azure.core.util.Context.NONE);
     }
 
@@ -802,9 +802,9 @@ public final class SummariesListBySiteSamples {
     /**
      * Sample code: Summaries_ListBySite_MinimumSet_Gen.
      * 
-     * @param manager Entry point to SpringAppsDiscoveryManager.
+     * @param manager Entry point to SpringAppDiscoveryManager.
      */
-    public static void summariesListBySiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppsDiscoveryManager manager) {
+    public static void summariesListBySiteMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
         manager.summaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps", com.azure.core.util.Context.NONE);
     }
 }

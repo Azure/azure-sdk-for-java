@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the SpringAppsDiscoveryClientImpl type.
+ * A builder for creating a new instance of the SpringAppDiscoveryMgmtClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { SpringAppsDiscoveryClientImpl.class })
-public final class SpringAppsDiscoveryClientBuilder {
+@ServiceClientBuilder(serviceClients = { SpringAppDiscoveryMgmtClientImpl.class })
+public final class SpringAppDiscoveryMgmtClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -28,9 +28,9 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder subscriptionId(String subscriptionId) {
+    public SpringAppDiscoveryMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder endpoint(String endpoint) {
+    public SpringAppDiscoveryMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder environment(AzureEnvironment environment) {
+    public SpringAppDiscoveryMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder pipeline(HttpPipeline pipeline) {
+    public SpringAppDiscoveryMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public SpringAppDiscoveryMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class SpringAppsDiscoveryClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the SpringAppsDiscoveryClientBuilder.
+     * @return the SpringAppDiscoveryMgmtClientBuilder.
      */
-    public SpringAppsDiscoveryClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public SpringAppDiscoveryMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of SpringAppsDiscoveryClientImpl with the provided parameters.
+     * Builds an instance of SpringAppDiscoveryMgmtClientImpl with the provided parameters.
      * 
-     * @return an instance of SpringAppsDiscoveryClientImpl.
+     * @return an instance of SpringAppDiscoveryMgmtClientImpl.
      */
-    public SpringAppsDiscoveryClientImpl buildClient() {
+    public SpringAppDiscoveryMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null) ? pipeline
@@ -129,8 +129,8 @@ public final class SpringAppsDiscoveryClientBuilder {
             = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        SpringAppsDiscoveryClientImpl client = new SpringAppsDiscoveryClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
+        SpringAppDiscoveryMgmtClientImpl client = new SpringAppDiscoveryMgmtClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }
