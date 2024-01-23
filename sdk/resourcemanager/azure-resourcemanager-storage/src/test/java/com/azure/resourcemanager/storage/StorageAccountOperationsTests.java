@@ -353,7 +353,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -385,7 +385,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -410,7 +410,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -440,7 +440,9 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity).apply();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -464,7 +466,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update().withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
         Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
@@ -494,7 +496,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update().withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
@@ -524,13 +526,13 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -554,7 +556,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update().withoutSystemAssignedManagedServiceIdentity()
             .withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
@@ -593,7 +595,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -616,7 +618,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update()
             .withSystemAssignedManagedServiceIdentity()
@@ -648,13 +650,13 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
 
         storageAccount.update().withSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -683,7 +685,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 
     @Test
@@ -710,6 +712,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 }
