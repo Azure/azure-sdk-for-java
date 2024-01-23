@@ -134,8 +134,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
 
         if (serverSideFeature != null && serverSideFeature.getId() != null) {
-            if (serverSideFeature.getConditions() != null && serverSideFeature.getConditions().getClientFilters() != null
-                && serverSideFeature.getConditions().getClientFilters().size() > 0) {
+            if (serverSideFeature.getConditions() != null && serverSideFeature.getConditions().getClientFilters() != null) {
                 final Feature feature = new Feature();
                 feature.setKey(serverSideFeature.getId());
                 feature.setEvaluate(serverSideFeature.isEnabled());

@@ -21,5 +21,8 @@ FeatureManagement:
         -
             id: Gamma
             enabled: true
-            # conditions:
-            # client_filters: []    // todo do we need to support both arrayList and Map<Integer, FeatureFilterEvaluationContext>
+
+        -   id: Delta
+            enabled: true
+            conditions:
+                client_filters: {}

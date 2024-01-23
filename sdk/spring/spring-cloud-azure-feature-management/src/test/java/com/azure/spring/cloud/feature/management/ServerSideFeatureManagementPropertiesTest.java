@@ -40,6 +40,10 @@ public class ServerSideFeatureManagementPropertiesTest {
         assertEquals(betaFeatureItem.getKey(), "Beta");
         assertEquals(betaFeatureItem.getEnabledFor().size(), 1);
         assertEquals(betaFeatureItem.getEnabledFor().get(0).getName(), "Microsoft.TimeWindowFilter");
+
+        final Feature deltaFeatureItem = serverSideProperties.getFeatureManagement().get("Delta");
+        assertEquals(deltaFeatureItem.getKey(), "Delta");
+        assertEquals(deltaFeatureItem.getEnabledFor().size(), 0);
     }
 
 }
