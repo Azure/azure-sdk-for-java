@@ -198,16 +198,16 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
         return this;
     }
 
-    private AzureNamedKeyCredential azureNamedKeyCred;
+    private AzureNamedKeyCredential azureNamedKeyCredential;
 
     /**
      * The AzureNamedKeyCredential used for authentication.
      *
-     * @param azureNamedKeyCred the AzureNamedKeyCredential.
+     * @param azureNamedKeyCredential the AzureNamedKeyCredential.
      * @return the credential.
      */
-    public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCred) {
-        this.azureNamedKeyCred = Objects.requireNonNull(azureNamedKeyCred, "'azureNamedKeyCred' cannot be null.");
+    public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential) {
+        this.azureNamedKeyCredential = Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
         this.tokenCredential = null;
         return this;
     }
@@ -304,8 +304,8 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        } else if (azureNamedKeyCred != null) {
-            policies.add(new BatchSharedKeyCredentialsPolicy(azureNamedKeyCred));
+        } else if (azureNamedKeyCredential != null) {
+            policies.add(new BatchSharedKeyCredentialsPolicy(azureNamedKeyCredential));
         }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
