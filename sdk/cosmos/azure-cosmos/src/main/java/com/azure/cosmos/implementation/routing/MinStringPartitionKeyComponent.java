@@ -56,4 +56,18 @@ class MinStringPartitionKeyComponent implements IPartitionKeyComponent {
     public IPartitionKeyComponent truncate() {
         return this;
     }
+
+    @Override
+    public Object toObject() {
+        return MinString.Value;
+    }
+
+    private static final class MinString
+    {
+        public static final MinString Value = new MinString();
+
+        private MinString()
+        {
+        }
+    }
 }

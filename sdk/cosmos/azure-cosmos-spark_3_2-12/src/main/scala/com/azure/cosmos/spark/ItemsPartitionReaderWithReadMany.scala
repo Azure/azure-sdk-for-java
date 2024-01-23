@@ -151,7 +151,10 @@ private[spark] case class ItemsPartitionReaderWithReadMany
             ((objectNodeParam: ObjectNode) => {
               val idValue = objectNodeParam.get(IdAttributeName).asText()
               val partitionKey = PartitionKeyHelper.getPartitionKeyPath(objectNodeParam, partitionKeyDefinition)
-              CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, ModelBridgeInternal.getPartitionKeyObject(partitionKey))
+              CosmosItemIdentityHelper
+                .getCosmosItemIdentityValueString(
+                  idValue,
+                  ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray().toList)
             })
         )
 

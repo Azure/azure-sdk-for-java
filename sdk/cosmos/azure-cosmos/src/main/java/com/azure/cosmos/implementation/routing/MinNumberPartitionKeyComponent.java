@@ -55,4 +55,18 @@ class MinNumberPartitionKeyComponent implements IPartitionKeyComponent {
     public IPartitionKeyComponent truncate() {
         return this;
     }
+
+    @Override
+    public Object toObject() {
+        return MinNumber.Value;
+    }
+
+    private static class MinNumber
+    {
+        public static final MinNumber Value = new MinNumber();
+
+        private MinNumber()
+        {
+        }
+    }
 }

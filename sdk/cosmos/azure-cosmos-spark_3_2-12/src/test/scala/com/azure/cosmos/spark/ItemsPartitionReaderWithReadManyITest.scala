@@ -90,7 +90,7 @@ class ItemsPartitionReaderWithReadManyITest
             .map(objectNode =>
               CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
                 objectNode.get(idProperty).asText(),
-                objectNode.get(testCase._2).asText()))
+                List(objectNode.get(testCase._2).asText())))
         )
 
       val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))
@@ -109,7 +109,7 @@ class ItemsPartitionReaderWithReadManyITest
         // check _itemIdentity column is added
         itemsReadFromPartitionReader.foreach(item => {
           item.get(itemIdentityProperty).asText() shouldEqual
-            CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get(idProperty).asText(), item.get(testCase._2).asText())
+            CosmosItemIdentityHelper.getCosmosItemIdentityValueString(item.get(idProperty).asText(), List(item.get(testCase._2).asText()))
         })
       }
 

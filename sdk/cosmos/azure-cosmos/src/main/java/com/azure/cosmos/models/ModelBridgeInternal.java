@@ -421,11 +421,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getAltLink(Resource resource) {
         return resource.getAltLink();
     }
