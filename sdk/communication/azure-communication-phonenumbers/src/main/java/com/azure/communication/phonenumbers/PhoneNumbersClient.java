@@ -722,11 +722,11 @@ public final class PhoneNumbersClient {
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers,
+    public Response<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers,
             boolean includeAdditionalPhoneAndOperatorDetails) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
         request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
-        return client.operatorInformationSearch(request);
+        return client.operatorInformationSearchWithResponse(request);
     }
 }

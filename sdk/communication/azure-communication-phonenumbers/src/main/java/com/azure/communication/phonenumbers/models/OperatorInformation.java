@@ -4,11 +4,11 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents metadata about a phone number that is controlled/provided by that phone number's operator. */
-@Fluent
+@Immutable
 public final class OperatorInformation {
     /*
      * E.164 formatted string representation of the phone number
@@ -19,13 +19,13 @@ public final class OperatorInformation {
     /*
      * National format of the phone number
      */
-    @JsonProperty(value = "nationalFormat", required = true)
+    @JsonProperty(value = "nationalFormat", access = JsonProperty.Access.WRITE_ONLY)
     private String nationalFormat;
 
     /*
      * International format of the phone number
      */
-    @JsonProperty(value = "internationalFormat", required = true)
+    @JsonProperty(value = "internationalFormat", access = JsonProperty.Access.WRITE_ONLY)
     private String internationalFormat;
 
     /*
@@ -66,34 +66,12 @@ public final class OperatorInformation {
     }
 
     /**
-     * Set the nationalFormat property: National format of the phone number.
-     *
-     * @param nationalFormat the nationalFormat value to set.
-     * @return the OperatorInformation object itself.
-     */
-    public OperatorInformation setNationalFormat(String nationalFormat) {
-        this.nationalFormat = nationalFormat;
-        return this;
-    }
-
-    /**
      * Get the internationalFormat property: International format of the phone number.
      *
      * @return the internationalFormat value.
      */
     public String getInternationalFormat() {
         return this.internationalFormat;
-    }
-
-    /**
-     * Set the internationalFormat property: International format of the phone number.
-     *
-     * @param internationalFormat the internationalFormat value to set.
-     * @return the OperatorInformation object itself.
-     */
-    public OperatorInformation setInternationalFormat(String internationalFormat) {
-        this.internationalFormat = internationalFormat;
-        return this;
     }
 
     /**

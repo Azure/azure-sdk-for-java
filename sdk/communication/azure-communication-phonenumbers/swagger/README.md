@@ -24,7 +24,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ### Code generation settings
 ``` yaml
 tag: package-phonenumber-2024-03-01
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7fc6139d4c1a83dc687f2445b8834b0e1f9b76ca/specification/communication/data-plane/PhoneNumbers/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e91cb6ec619e2a4744f59c5391e906cfe608e569/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
@@ -212,6 +212,8 @@ directive:
       $["properties"]["numberType"].readOnly = true;
       $["properties"]["isoCountryCode"].readOnly = true;
       $["properties"]["operatorDetails"].readOnly = true;
+      $["properties"]["nationalFormat"].readOnly = true;
+      $["properties"]["internationalFormat"].readOnly = true;
 ```
 
 ### Add readonly attribute to OperatorInformationResult properties

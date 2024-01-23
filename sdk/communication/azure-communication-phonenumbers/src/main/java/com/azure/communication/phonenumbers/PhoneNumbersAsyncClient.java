@@ -741,11 +741,11 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails) {
+    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
         request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
-        return client.operatorInformationSearchAsync(request)
+        return client.operatorInformationSearchWithResponseAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
