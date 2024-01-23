@@ -118,6 +118,7 @@ redis.clients:jedis;4.3.2
 io.lettuce:lettuce-core;6.3.0.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.14.10
+net.bytebuddy:byte-buddy-agent;1.14.10
 testdep_net.bytebuddy:byte-buddy;1.14.8
 testdep_net.bytebuddy:byte-buddy-agent;1.14.8
 
