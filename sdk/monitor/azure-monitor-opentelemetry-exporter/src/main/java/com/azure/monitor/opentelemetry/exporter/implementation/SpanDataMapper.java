@@ -370,11 +370,6 @@ public final class SpanDataMapper {
             Long port = attributes.get(SemanticAttributes.SERVER_PORT);
             return getTarget(host, port, defaultPort);
         }
-        host = attributes.get(SemanticAttributes.NETWORK_PEER_ADDRESS);
-        if (host != null) {
-            Long port = attributes.get(SemanticAttributes.NETWORK_PEER_PORT);
-            return getTarget(host, port, defaultPort);
-        }
         return null;
     }
 
