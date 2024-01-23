@@ -12,6 +12,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
  * Repository interface with search and delete operation
+ *
+ * @param <T> the type of the domain class.
+ * @param <K> the type of the id of the entity the repository manages.
  */
 @NoRepositoryBean
 public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepository<T, K>, ReactiveCrudRepository<T, K> {

@@ -10,6 +10,12 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
  */
 public class ProcessorProperties extends ConsumerProperties implements ServiceBusProcessorClientProperties {
 
+    /**
+     * Create an instance of {@link ProcessorProperties}.
+     */
+    public ProcessorProperties() {
+    }
+
     private Integer maxConcurrentCalls;
     private Integer maxConcurrentSessions;
 

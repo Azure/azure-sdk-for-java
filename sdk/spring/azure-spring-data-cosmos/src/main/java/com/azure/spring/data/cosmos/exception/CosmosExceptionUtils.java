@@ -15,6 +15,12 @@ import reactor.core.publisher.Mono;
 public class CosmosExceptionUtils {
 
     /**
+     * Creates an instance of {@link CosmosExceptionUtils}
+     */
+    public CosmosExceptionUtils() {
+    }
+
+    /**
      * To throw a CosmosDBAccessException
      *
      * @param message the detail message

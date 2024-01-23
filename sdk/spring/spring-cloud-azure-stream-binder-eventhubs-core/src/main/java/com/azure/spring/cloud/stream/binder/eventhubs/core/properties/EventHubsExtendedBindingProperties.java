@@ -24,6 +24,12 @@ public class EventHubsExtendedBindingProperties
     implements InitializingBean {
 
     /**
+     * Creates an instance of {@link EventHubsExtendedBindingProperties}
+     */
+    public EventHubsExtendedBindingProperties() {
+    }
+
+    /**
      * Event Hubs extended binding properties prefix.
      */
     public static final String PREFIX = "spring.cloud.stream.eventhubs";

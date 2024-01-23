@@ -13,6 +13,12 @@ import java.time.Duration;
 public class ExponentialRetryProperties implements RetryOptionsProvider.RetryOptions.ExponentialRetryOptions {
 
     /**
+     * Creates an instance of {@link ExponentialRetryProperties}.
+     */
+    public ExponentialRetryProperties() {
+    }
+
+    /**
      * The maximum number of attempts.
      */
     private Integer maxRetries;

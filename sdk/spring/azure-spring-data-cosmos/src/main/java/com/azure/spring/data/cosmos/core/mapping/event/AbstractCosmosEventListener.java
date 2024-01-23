@@ -13,6 +13,7 @@ import org.springframework.core.GenericTypeResolver;
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/AbstractMongoEventListener.java
  *
+ * @param <E> the type of the event.
  */
 public abstract class AbstractCosmosEventListener<E> implements ApplicationListener<CosmosMappingEvent<?>> {
 

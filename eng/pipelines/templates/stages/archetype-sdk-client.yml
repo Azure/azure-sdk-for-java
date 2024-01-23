@@ -81,6 +81,7 @@ stages:
     - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        JavadocSafeJavaBuildVersion: ${{ parameters.JavadocSafeJavaBuildVersion }}
         TestPipeline: ${{ parameters.TestPipeline }}
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}

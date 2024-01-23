@@ -11,6 +11,12 @@ import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 public final class HttpProxyProperties extends ProxyProperties implements ProxyOptionsProvider.HttpProxyOptions {
 
     /**
+     * Creates an instance of {@link HttpProxyProperties}.
+     */
+    public HttpProxyProperties() {
+    }
+
+    /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
     private String nonProxyHosts;

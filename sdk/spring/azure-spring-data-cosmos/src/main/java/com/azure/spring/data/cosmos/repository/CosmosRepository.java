@@ -16,6 +16,9 @@ import java.util.Optional;
 /**
  * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve entities using the
  * pagination and sorting abstraction.
+ *
+ * @param <T> domain type.
+ * @param <ID> id type.
  */
 @NoRepositoryBean
 public interface CosmosRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,

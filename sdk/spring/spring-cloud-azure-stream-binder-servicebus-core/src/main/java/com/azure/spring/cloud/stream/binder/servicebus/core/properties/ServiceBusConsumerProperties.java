@@ -14,6 +14,12 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties implements ServiceBusEntityOptionsProvider {
 
+    /**
+     * Create an instance of {@link ServiceBusConsumerProperties}.
+     */
+    public ServiceBusConsumerProperties() {
+    }
+
     private boolean requeueRejected;
 
     private Long maxSizeInMegabytes = 1024L;

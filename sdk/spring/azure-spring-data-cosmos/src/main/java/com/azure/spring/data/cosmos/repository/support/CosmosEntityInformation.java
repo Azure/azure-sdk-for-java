@@ -41,6 +41,9 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
 
 /**
  * Class to describe cosmosDb entity
+ *
+ * @param <T> domain type.
+ * @param <ID> id type.
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
@@ -290,6 +293,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Return the partition key field name.
      * @return the partition key field name
      */
     public String getPartitionKeyFieldName() {
@@ -328,6 +332,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Return whether indexing policy is specified.
      * @return whether indexing policy is specified
      */
     public boolean isIndexingPolicySpecified() {

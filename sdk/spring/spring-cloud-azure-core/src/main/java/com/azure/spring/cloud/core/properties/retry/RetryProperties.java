@@ -11,6 +11,12 @@ import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 public class RetryProperties implements RetryOptionsProvider.RetryOptions {
 
     /**
+     * Creates an instance of {@link RetryProperties}.
+     */
+    public RetryProperties() {
+    }
+
+    /**
      * The mode for retry backoff.
      */
     private RetryOptionsProvider.RetryMode mode;

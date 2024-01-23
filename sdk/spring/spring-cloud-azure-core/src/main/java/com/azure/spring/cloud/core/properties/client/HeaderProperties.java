@@ -11,6 +11,12 @@ import java.util.List;
 public final class HeaderProperties {
 
     /**
+     * Creates an instance of {@link HeaderProperties}.
+     */
+    public HeaderProperties() {
+    }
+
+    /**
      * The name of the header.
      */
     private String name;

@@ -26,6 +26,12 @@ import java.util.Set;
 public abstract class CosmosConfigurationSupport {
 
     /**
+     * Creates an instance of {@link CosmosConfigurationSupport}.
+     */
+    public CosmosConfigurationSupport() {
+    }
+
+    /**
      * Return the name of the database to connect to
      *
      * @return must not be {@literal null}.

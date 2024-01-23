@@ -26,6 +26,12 @@ import java.util.stream.Stream;
 public abstract class AbstractAzureStorageProtocolResolver implements ProtocolResolver, ResourcePatternResolver,
     ResourceLoaderAware, BeanFactoryPostProcessor {
 
+    /**
+     * Creates an instance of {@link AbstractAzureStorageProtocolResolver}.
+     */
+    public AbstractAzureStorageProtocolResolver() {
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureStorageProtocolResolver.class);
 
     /**

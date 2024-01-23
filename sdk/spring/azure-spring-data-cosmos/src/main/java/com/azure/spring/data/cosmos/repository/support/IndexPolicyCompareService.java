@@ -16,6 +16,12 @@ import java.util.stream.Collectors;
 public class IndexPolicyCompareService {
 
     /**
+     * Creates an instance of {@link IndexPolicyCompareService}.
+     */
+    public IndexPolicyCompareService() {
+    }
+
+    /**
      * Whether the policy needs updating.
      *
      * @param existingPolicy Existing policy

@@ -2,23 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
-
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
  */
 public final class TimeWindowFilter implements FeatureFilter {
+
+    /**
+     * Creates an instance of {@link TimeWindowFilter}
+     */
+    public TimeWindowFilter() {
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
 

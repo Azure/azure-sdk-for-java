@@ -26,6 +26,9 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
 
 /**
  * Repository class for simple reactive Cosmos operation
+ *
+ * @param <T> the type of the domain class managed by this repository.
+ * @param <K> the type of the id of the domain class managed by this repository.
  */
 public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
 

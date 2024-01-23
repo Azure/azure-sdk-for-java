@@ -24,11 +24,23 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AppConfigurationAutoConfiguration {
 
     /**
+     * Creates an instance of {@link AppConfigurationAutoConfiguration}
+     */
+    public AppConfigurationAutoConfiguration() {
+    }
+
+    /**
      * Auto Watch
      */
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
     public static class AppConfigurationWatchAutoConfiguration {
+
+        /**
+         * Creates an instance of {@link AppConfigurationWatchAutoConfiguration}
+         */
+        public AppConfigurationWatchAutoConfiguration() {
+        }
 
         @Bean
         @ConditionalOnMissingBean

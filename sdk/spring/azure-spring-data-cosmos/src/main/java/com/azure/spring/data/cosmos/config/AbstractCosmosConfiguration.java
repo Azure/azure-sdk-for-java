@@ -25,6 +25,12 @@ import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSupport {
 
     /**
+     * Creates an instance of {@link AbstractCosmosConfiguration}.
+     */
+    public AbstractCosmosConfiguration() {
+    }
+
+    /**
      * Declare CosmosFactory bean.
      *
      * @param cosmosAsyncClient of cosmosFactory

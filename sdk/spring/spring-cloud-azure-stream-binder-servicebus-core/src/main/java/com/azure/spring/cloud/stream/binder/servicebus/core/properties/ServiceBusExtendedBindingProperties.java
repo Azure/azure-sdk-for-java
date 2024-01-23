@@ -17,13 +17,19 @@ import java.util.Objects;
 import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
 /**
- *
+ *  Service Bus extended binding properties
  */
 @ConfigurationProperties("spring.cloud.stream.servicebus")
 public class ServiceBusExtendedBindingProperties
     extends AbstractExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties,
     ServiceBusBindingProperties>
     implements InitializingBean {
+
+    /**
+     * Creates an instance of {@link ServiceBusExtendedBindingProperties}.
+     */
+    public ServiceBusExtendedBindingProperties() {
+    }
 
     private static final String DEFAULTS_PREFIX = "spring.cloud.stream.servicebus.default";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusExtendedBindingProperties.class);
