@@ -6,7 +6,7 @@ metadata:
     testInstance: "{{.Stress.Scenario}}-{{ .Stress.BaseName }}-{{ .Release.Revision }}"
 spec:
   nodeSelector:
-    sku: chaosperf
+    sku: default
   containers:
     - name: fault-injector
       image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-streaming
