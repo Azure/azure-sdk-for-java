@@ -20,7 +20,7 @@ public final class SubmitToolOutputsDetails {
      */
     @Generated
     @JsonProperty(value = "tool_calls")
-    private List<ToolCall> toolCalls;
+    private List<RequiredToolCall> toolCalls;
 
     /**
      * Creates an instance of SubmitToolOutputsDetails class.
@@ -29,7 +29,7 @@ public final class SubmitToolOutputsDetails {
      */
     @Generated
     @JsonCreator
-    private SubmitToolOutputsDetails(@JsonProperty(value = "tool_calls") List<ToolCall> toolCalls) {
+    private SubmitToolOutputsDetails(@JsonProperty(value = "tool_calls") List<RequiredToolCall> toolCalls) {
         this.toolCalls = toolCalls;
     }
 
@@ -40,7 +40,7 @@ public final class SubmitToolOutputsDetails {
      * @return the toolCalls value.
      */
     @Generated
-    public List<ToolCall> getToolCalls() {
+    public List<RequiredToolCall> getToolCalls() {
         return this.toolCalls;
     }
 }

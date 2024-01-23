@@ -16,17 +16,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("file_path")
 @Immutable
-public final class MessageFilePathTextAnnotation extends MessageTextAnnotation {
+public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
 
     /*
      * A URL for the file that's generated when the assistant used the code_interpreter tool to generate a file.
      */
     @Generated
     @JsonProperty(value = "file_path")
-    private MessageFilePathDetails filePath;
+    private MessageTextFilePathDetails filePath;
 
     /**
-     * Creates an instance of MessageFilePathTextAnnotation class.
+     * Creates an instance of MessageTextFilePathAnnotation class.
      *
      * @param text the text value to set.
      * @param startIndex the startIndex value to set.
@@ -35,9 +35,9 @@ public final class MessageFilePathTextAnnotation extends MessageTextAnnotation {
      */
     @Generated
     @JsonCreator
-    private MessageFilePathTextAnnotation(@JsonProperty(value = "text") String text,
+    private MessageTextFilePathAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
-        @JsonProperty(value = "file_path") MessageFilePathDetails filePath) {
+        @JsonProperty(value = "file_path") MessageTextFilePathDetails filePath) {
         super(text, startIndex, endIndex);
         this.filePath = filePath;
     }
@@ -49,7 +49,7 @@ public final class MessageFilePathTextAnnotation extends MessageTextAnnotation {
      * @return the filePath value.
      */
     @Generated
-    public MessageFilePathDetails getFilePath() {
+    public MessageTextFilePathDetails getFilePath() {
         return this.filePath;
     }
 }

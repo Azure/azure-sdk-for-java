@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("file_citation")
 @Immutable
-public final class MessageFileCitationTextAnnotation extends MessageTextAnnotation {
+public final class MessageTextFileCitationAnnotation extends MessageTextAnnotation {
 
     /*
      * A citation within the message that points to a specific quote from a specific file.
@@ -28,7 +28,7 @@ public final class MessageFileCitationTextAnnotation extends MessageTextAnnotati
     private MessageTextFileCitationDetails fileCitation;
 
     /**
-     * Creates an instance of MessageFileCitationTextAnnotation class.
+     * Creates an instance of MessageTextFileCitationAnnotation class.
      *
      * @param text the text value to set.
      * @param startIndex the startIndex value to set.
@@ -37,7 +37,7 @@ public final class MessageFileCitationTextAnnotation extends MessageTextAnnotati
      */
     @Generated
     @JsonCreator
-    private MessageFileCitationTextAnnotation(@JsonProperty(value = "text") String text,
+    private MessageTextFileCitationAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
         @JsonProperty(value = "file_citation") MessageTextFileCitationDetails fileCitation) {
         super(text, startIndex, endIndex);

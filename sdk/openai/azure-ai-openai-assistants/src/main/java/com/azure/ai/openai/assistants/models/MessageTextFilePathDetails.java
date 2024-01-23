@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * An encapsulation of an image file ID, as used by message image content.
  */
 @Immutable
-public final class MessageFilePathDetails {
+public final class MessageTextFilePathDetails {
 
     /*
      * The ID of the specific file that the citation is from.
@@ -22,13 +22,13 @@ public final class MessageFilePathDetails {
     private String fileId;
 
     /**
-     * Creates an instance of MessageFilePathDetails class.
+     * Creates an instance of MessageTextFilePathDetails class.
      *
      * @param fileId the fileId value to set.
      */
     @Generated
     @JsonCreator
-    private MessageFilePathDetails(@JsonProperty(value = "file_id") String fileId) {
+    private MessageTextFilePathDetails(@JsonProperty(value = "file_id") String fileId) {
         this.fileId = fileId;
     }
 

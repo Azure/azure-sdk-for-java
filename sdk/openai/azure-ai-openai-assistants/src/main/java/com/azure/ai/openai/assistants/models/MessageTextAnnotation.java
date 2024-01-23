@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = MessageTextAnnotation.class)
 @JsonTypeName("MessageTextAnnotation")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "file_citation", value = MessageFileCitationTextAnnotation.class),
-    @JsonSubTypes.Type(name = "file_path", value = MessageFilePathTextAnnotation.class) })
+    @JsonSubTypes.Type(name = "file_citation", value = MessageTextFileCitationAnnotation.class),
+    @JsonSubTypes.Type(name = "file_path", value = MessageTextFilePathAnnotation.class) })
 @Immutable
 public class MessageTextAnnotation {
 

@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A tool call to a code interpreter tool, issued by the model in evaluation of a configured code interpreter tool,
- * that
- * represents submitted output needed or already fulfilled by the tool for the model to continue.
+ * A record of a call to a code interpreter tool, issued by the model in evaluation of a defined tool, that
+ * represents inputs and outputs consumed and emitted by the code interpreter.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("code_interpreter")

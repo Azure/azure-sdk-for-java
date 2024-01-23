@@ -13,7 +13,7 @@ import java.util.Map;
  * The request details to use when modifying an existing assistant.
  */
 @Fluent
-public final class AssistantModificationOptions {
+public final class UpdateAssistantOptions {
 
     /*
      * The ID of the model to use.
@@ -67,10 +67,10 @@ public final class AssistantModificationOptions {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of AssistantModificationOptions class.
+     * Creates an instance of UpdateAssistantOptions class.
      */
     @Generated
-    public AssistantModificationOptions() {
+    public UpdateAssistantOptions() {
     }
 
     /**
@@ -87,10 +87,10 @@ public final class AssistantModificationOptions {
      * Set the model property: The ID of the model to use.
      *
      * @param model the model value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setModel(String model) {
+    public UpdateAssistantOptions setModel(String model) {
         this.model = model;
         return this;
     }
@@ -109,10 +109,10 @@ public final class AssistantModificationOptions {
      * Set the name property: The modified name for the assistant to use.
      *
      * @param name the name value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setName(String name) {
+    public UpdateAssistantOptions setName(String name) {
         this.name = name;
         return this;
     }
@@ -131,10 +131,10 @@ public final class AssistantModificationOptions {
      * Set the description property: The modified description for the assistant to use.
      *
      * @param description the description value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setDescription(String description) {
+    public UpdateAssistantOptions setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -153,10 +153,10 @@ public final class AssistantModificationOptions {
      * Set the instructions property: The modified system instructions for the new assistant to use.
      *
      * @param instructions the instructions value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setInstructions(String instructions) {
+    public UpdateAssistantOptions setInstructions(String instructions) {
         this.instructions = instructions;
         return this;
     }
@@ -175,10 +175,10 @@ public final class AssistantModificationOptions {
      * Set the tools property: The modified collection of tools to enable for the assistant.
      *
      * @param tools the tools value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setTools(List<ToolDefinition> tools) {
+    public UpdateAssistantOptions setTools(List<ToolDefinition> tools) {
         this.tools = tools;
         return this;
     }
@@ -197,10 +197,10 @@ public final class AssistantModificationOptions {
      * Set the fileIds property: The modified list of previously uploaded fileIDs to attach to the assistant.
      *
      * @param fileIds the fileIds value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setFileIds(List<String> fileIds) {
+    public UpdateAssistantOptions setFileIds(List<String> fileIds) {
         this.fileIds = fileIds;
         return this;
     }
@@ -223,10 +223,10 @@ public final class AssistantModificationOptions {
      * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
-     * @return the AssistantModificationOptions object itself.
+     * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public AssistantModificationOptions setMetadata(Map<String, String> metadata) {
+    public UpdateAssistantOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

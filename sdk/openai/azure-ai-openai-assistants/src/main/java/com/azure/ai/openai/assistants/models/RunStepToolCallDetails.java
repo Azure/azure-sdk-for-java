@@ -20,7 +20,7 @@ import java.util.List;
 public final class RunStepToolCallDetails extends RunStepDetails {
 
     /*
-     * A list tool call details for this run step.
+     * A list of tool call details for this run step.
      */
     @Generated
     @JsonProperty(value = "tool_calls")
@@ -38,7 +38,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     }
 
     /**
-     * Get the toolCalls property: A list tool call details for this run step.
+     * Get the toolCalls property: A list of tool call details for this run step.
      *
      * @return the toolCalls value.
      */

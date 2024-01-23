@@ -9,10 +9,10 @@ import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
-import com.azure.ai.openai.assistants.models.AssistantModificationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
@@ -30,8 +30,8 @@ import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
-import com.azure.ai.openai.assistants.models.ToolDefinition;
 import com.azure.ai.openai.assistants.models.ToolOutput;
+import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -208,70 +208,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listAssistantsWithResponse(requestOptions);
-    }
-
-    /**
-     * Modifies an existing assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     model: String (Optional)
-     *     name: String (Optional)
-     *     description: String (Optional)
-     *     instructions: String (Optional)
-     *     tools (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     file_ids (Optional): [
-     *         String (Optional)
-     *     ]
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     name: String (Required)
-     *     description: String (Required)
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *         }
-     *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param assistantId The ID of the assistant to modify.
-     * @param modificationOptions The details of the modification to perform on the specified assistant.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> modifyAssistantWithResponse(String assistantId, BinaryData modificationOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.modifyAssistantWithResponse(assistantId, modificationOptions, requestOptions);
     }
 
     /**
@@ -529,28 +465,6 @@ public final class AssistantsClient {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
-    }
-
-    /**
-     * Modifies an existing assistant.
-     *
-     * @param assistantId The ID of the assistant to modify.
-     * @param modificationOptions The details of the modification to perform on the specified assistant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Assistant modifyAssistant(String assistantId, AssistantModificationOptions modificationOptions) {
-        // Generated convenience method for modifyAssistantWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return modifyAssistantWithResponse(assistantId, BinaryData.fromObject(modificationOptions), requestOptions)
-            .getValue().toObject(Assistant.class);
     }
 
     /**
@@ -850,48 +764,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param threadId The ID of the thread to modify.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a single thread associated with an assistant along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> modifyThreadWithResponse(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.modifyThreadWithResponse(threadId, request, requestOptions);
-    }
-
-    /**
      * Deletes an existing thread.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -1112,60 +984,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an existing message on an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     thread_id: String (Required)
-     *     role: String(user/assistant) (Required)
-     *     content (Required): [
-     *          (Required){
-     *         }
-     *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param threadId The ID of the thread containing the specified message to modify.
-     * @param messageId The ID of the message to modify on the specified thread.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single, existing message within an assistant thread along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> modifyMessageWithResponse(String threadId, String messageId, BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.modifyMessageWithResponse(threadId, messageId, request, requestOptions);
-    }
-
-    /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      * <p>
      * <strong>Query Parameters</strong>
@@ -1287,6 +1105,7 @@ public final class AssistantsClient {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
+     *     additional_instructions: String (Required)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -1334,7 +1153,7 @@ public final class AssistantsClient {
      * }</pre>
      *
      * @param threadId The ID of the thread to run.
-     * @param request The request parameter.
+     * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1344,9 +1163,9 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createRunWithResponse(String threadId, BinaryData request,
+    public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
-        return this.serviceClient.createRunWithResponse(threadId, request, requestOptions);
+        return this.serviceClient.createRunWithResponse(threadId, createRunOptions, requestOptions);
     }
 
     /**
@@ -1505,72 +1324,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         return this.serviceClient.getRunWithResponse(threadId, runId, requestOptions);
-    }
-
-    /**
-     * Modifies an existing thread run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     thread_id: String (Required)
-     *     assistant_id: String (Required)
-     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
-     *     required_action (Optional): {
-     *     }
-     *     last_error (Required): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *     }
-     *     model: String (Required)
-     *     instructions: String (Required)
-     *     tools (Required): [
-     *          (Required){
-     *         }
-     *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
-     *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param threadId The ID of the thread associated with the specified run.
-     * @param runId The ID of the run to modify.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> modifyRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.modifyRunWithResponse(threadId, runId, request, requestOptions);
     }
 
     /**
@@ -1985,49 +1738,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     bytes: int (Required)
-     *     filename: String (Required)
-     *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     * }
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createFileWithResponse(BinaryData request, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'createFile' is
-        // 'multipart/form-data'
-        return this.serviceClient.createFileWithResponse(request, requestOptions);
-    }
-
-    /**
      * Delete a previously uploaded file.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2052,36 +1762,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
-    }
-
-    /**
-     * Returns information about a specific file. Does not retrieve file content.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     bytes: int (Required)
-     *     filename: String (Required)
-     *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     * }
-     * }</pre>
-     *
-     * @param fileId The ID of the file to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> retrieveFileWithResponse(String fileId, RequestOptions requestOptions) {
-        return this.serviceClient.retrieveFileWithResponse(fileId, requestOptions);
     }
 
     /**
@@ -2165,54 +1845,6 @@ public final class AssistantsClient {
         // Generated convenience method for getThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getThreadWithResponse(threadId, requestOptions).getValue().toObject(AssistantThread.class);
-    }
-
-    /**
-     * Modifies an existing thread.
-     *
-     * @param threadId The ID of the thread to modify.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a single thread associated with an assistant.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread modifyThread(String threadId, Map<String, String> metadata) {
-        // Generated convenience method for modifyThreadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
-    }
-
-    /**
-     * Modifies an existing thread.
-     *
-     * @param threadId The ID of the thread to modify.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a single thread associated with an assistant.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread modifyThread(String threadId) {
-        // Generated convenience method for modifyThreadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
     }
 
     /**
@@ -2382,58 +2014,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an existing message on an existing thread.
-     *
-     * @param threadId The ID of the thread containing the specified message to modify.
-     * @param messageId The ID of the message to modify on the specified thread.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single, existing message within an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadMessage modifyMessage(String threadId, String messageId, Map<String, String> metadata) {
-        // Generated convenience method for modifyMessageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
-            .toObject(ThreadMessage.class);
-    }
-
-    /**
-     * Modifies an existing message on an existing thread.
-     *
-     * @param threadId The ID of the thread containing the specified message to modify.
-     * @param messageId The ID of the message to modify on the specified thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single, existing message within an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadMessage modifyMessage(String threadId, String messageId) {
-        // Generated convenience method for modifyMessageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
-            .toObject(ThreadMessage.class);
-    }
-
-    /**
      * Gets a list of previously uploaded files associated with a message from a thread.
      *
      * @param threadId The ID of the thread containing the message to list files from.
@@ -2524,65 +2104,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Creates a new run for an assistant thread.
-     *
-     * @param threadId The ID of the thread to run.
-     * @param assistantId The ID of the assistant that should run the thread.
-     * @param model The overridden model name that the assistant should use to run the thread.
-     * @param instructions The overridden system instructions that the assistant should use to run the thread.
-     * @param tools The overridden list of enabled tools that the assistant should use to run the thread.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun createRun(String threadId, String assistantId, String model, String instructions,
-        List<ToolDefinition> tools, Map<String, String> metadata) {
-        // Generated convenience method for createRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("assistant_id", assistantId);
-        requestObj.put("model", model);
-        requestObj.put("instructions", instructions);
-        requestObj.put("tools", tools);
-        requestObj.put("metadata", metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createRunWithResponse(threadId, request, requestOptions).getValue().toObject(ThreadRun.class);
-    }
-
-    /**
-     * Creates a new run for an assistant thread.
-     *
-     * @param threadId The ID of the thread to run.
-     * @param assistantId The ID of the assistant that should run the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun createRun(String threadId, String assistantId) {
-        // Generated convenience method for createRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("assistant_id", assistantId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createRunWithResponse(threadId, request, requestOptions).getValue().toObject(ThreadRun.class);
-    }
-
-    /**
      * Gets a list of runs for a specified thread.
      *
      * @param threadId The ID of the thread to list runs from.
@@ -2664,56 +2185,6 @@ public final class AssistantsClient {
         // Generated convenience method for getRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getRunWithResponse(threadId, runId, requestOptions).getValue().toObject(ThreadRun.class);
-    }
-
-    /**
-     * Modifies an existing thread run.
-     *
-     * @param threadId The ID of the thread associated with the specified run.
-     * @param runId The ID of the run to modify.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun modifyRun(String threadId, String runId, Map<String, String> metadata) {
-        // Generated convenience method for modifyRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
-    }
-
-    /**
-     * Modifies an existing thread run.
-     *
-     * @param threadId The ID of the thread associated with the specified run.
-     * @param runId The ID of the run to modify.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun modifyRun(String threadId, String runId) {
-        // Generated convenience method for modifyRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return modifyRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
     }
 
     /**
@@ -2916,58 +2387,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile createFile(byte[] file, FilePurpose purpose, String filename) {
-        // Generated convenience method for createFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        requestObj.put("filename", filename);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile createFile(byte[] file, FilePurpose purpose) {
-        // Generated convenience method for createFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
-    }
-
-    /**
      * Delete a previously uploaded file.
      *
      * @param fileId The ID of the file to delete.
@@ -2988,6 +2407,551 @@ public final class AssistantsClient {
     }
 
     /**
+     * Modifies an existing assistant.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     name: String (Optional)
+     *     description: String (Optional)
+     *     instructions: String (Optional)
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     description: String (Required)
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param assistantId The ID of the assistant to modify.
+     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateAssistantWithResponse(assistantId, updateAssistantOptions, requestOptions);
+    }
+
+    /**
+     * Modifies an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param threadId The ID of the thread to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about a single thread associated with an assistant along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateThreadWithResponse(threadId, request, requestOptions);
+    }
+
+    /**
+     * Modifies an existing message on an existing thread.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     thread_id: String (Required)
+     *     role: String(user/assistant) (Required)
+     *     content (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     assistant_id: String (Optional)
+     *     run_id: String (Optional)
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single, existing message within an assistant thread along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateMessageWithResponse(threadId, messageId, request, requestOptions);
+    }
+
+    /**
+     * Modifies an existing thread run.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     thread_id: String (Required)
+     *     assistant_id: String (Required)
+     *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
+     *     required_action (Optional): {
+     *     }
+     *     last_error (Required): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *     }
+     *     model: String (Required)
+     *     instructions: String (Required)
+     *     tools (Required): [
+     *          (Required){
+     *         }
+     *     ]
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     created_at: long (Required)
+     *     expires_at: OffsetDateTime (Required)
+     *     started_at: OffsetDateTime (Required)
+     *     completed_at: OffsetDateTime (Required)
+     *     cancelled_at: OffsetDateTime (Required)
+     *     failed_at: OffsetDateTime (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param threadId The ID of the thread associated with the specified run.
+     * @param runId The ID of the run to modify.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateRunWithResponse(threadId, runId, request, requestOptions);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     filename: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     *
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+        // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
+        // 'multipart/form-data'
+        return this.serviceClient.uploadFileWithResponse(request, requestOptions);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     * }
+     * }</pre>
+     *
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        return this.serviceClient.getFileWithResponse(fileId, requestOptions);
+    }
+
+    /**
+     * Modifies an existing assistant.
+     *
+     * @param assistantId The ID of the assistant to modify.
+     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Assistant updateAssistant(String assistantId, UpdateAssistantOptions updateAssistantOptions) {
+        // Generated convenience method for updateAssistantWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateAssistantWithResponse(assistantId, BinaryData.fromObject(updateAssistantOptions), requestOptions)
+            .getValue().toObject(Assistant.class);
+    }
+
+    /**
+     * Modifies an existing thread.
+     *
+     * @param threadId The ID of the thread to modify.
+     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
+     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
+     * up to 512 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a single thread associated with an assistant.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssistantThread updateThread(String threadId, Map<String, String> metadata) {
+        // Generated convenience method for updateThreadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("metadata", metadata);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
+    }
+
+    /**
+     * Modifies an existing thread.
+     *
+     * @param threadId The ID of the thread to modify.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a single thread associated with an assistant.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssistantThread updateThread(String threadId) {
+        // Generated convenience method for updateThreadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
+    }
+
+    /**
+     * Modifies an existing message on an existing thread.
+     *
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
+     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
+     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
+     * up to 512 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single, existing message within an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadMessage updateMessage(String threadId, String messageId, Map<String, String> metadata) {
+        // Generated convenience method for updateMessageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("metadata", metadata);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+            .toObject(ThreadMessage.class);
+    }
+
+    /**
+     * Modifies an existing message on an existing thread.
+     *
+     * @param threadId The ID of the thread containing the specified message to modify.
+     * @param messageId The ID of the message to modify on the specified thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single, existing message within an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadMessage updateMessage(String threadId, String messageId) {
+        // Generated convenience method for updateMessageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateMessageWithResponse(threadId, messageId, request, requestOptions).getValue()
+            .toObject(ThreadMessage.class);
+    }
+
+    /**
+     * Creates a new run for an assistant thread.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for the run to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun createRun(String threadId, CreateRunOptions createRunOptions) {
+        // Generated convenience method for createRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions).getValue()
+            .toObject(ThreadRun.class);
+    }
+
+    /**
+     * Modifies an existing thread run.
+     *
+     * @param threadId The ID of the thread associated with the specified run.
+     * @param runId The ID of the run to modify.
+     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
+     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
+     * up to 512 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun updateRun(String threadId, String runId, Map<String, String> metadata) {
+        // Generated convenience method for updateRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("metadata", metadata);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+    }
+
+    /**
+     * Modifies an existing thread run.
+     *
+     * @param threadId The ID of the thread associated with the specified run.
+     * @param runId The ID of the run to modify.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun updateRun(String threadId, String runId) {
+        // Generated convenience method for updateRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     *
+     * @param file The file data (not filename) to upload.
+     * @param purpose The intended purpose of the file.
+     * @param filename A filename to associate with the uploaded data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIFile uploadFile(byte[] file, FilePurpose purpose, String filename) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("file", file);
+        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
+        requestObj.put("filename", filename);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     *
+     * @param file The file data (not filename) to upload.
+     * @param purpose The intended purpose of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIFile uploadFile(byte[] file, FilePurpose purpose) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("file", file);
+        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+    }
+
+    /**
      * Returns information about a specific file. Does not retrieve file content.
      *
      * @param fileId The ID of the file to retrieve.
@@ -3001,9 +2965,9 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile retrieveFile(String fileId) {
-        // Generated convenience method for retrieveFileWithResponse
+    public OpenAIFile getFile(String fileId) {
+        // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return retrieveFileWithResponse(fileId, requestOptions).getValue().toObject(OpenAIFile.class);
+        return getFileWithResponse(fileId, requestOptions).getValue().toObject(OpenAIFile.class);
     }
 }
