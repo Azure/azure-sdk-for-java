@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether Geo-Redundant backup is enabled on the server. */
+/**
+ * A value indicating whether Geo-Redundant backup is enabled on the server.
+ */
 public final class GeoRedundantBackupEnum extends ExpandableStringEnum<GeoRedundantBackupEnum> {
-    /** Static value Enabled for GeoRedundantBackupEnum. */
+    /**
+     * Static value Enabled for GeoRedundantBackupEnum.
+     */
     public static final GeoRedundantBackupEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for GeoRedundantBackupEnum. */
+    /**
+     * Static value Disabled for GeoRedundantBackupEnum.
+     */
     public static final GeoRedundantBackupEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of GeoRedundantBackupEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class GeoRedundantBackupEnum extends ExpandableStringEnum<GeoRedund
 
     /**
      * Creates or finds a GeoRedundantBackupEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GeoRedundantBackupEnum.
      */
@@ -38,7 +44,7 @@ public final class GeoRedundantBackupEnum extends ExpandableStringEnum<GeoRedund
 
     /**
      * Gets known GeoRedundantBackupEnum values.
-     *
+     * 
      * @return known GeoRedundantBackupEnum values.
      */
     public static Collection<GeoRedundantBackupEnum> values() {

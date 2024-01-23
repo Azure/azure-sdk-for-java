@@ -13,14 +13,14 @@ public final class StoreReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreReadSettings model = BinaryData.fromString(
-            "{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datajsmtghm\",\"disableMetricsCollection\":\"datazyycqsxy\",\"\":{\"ixjgyamo\":\"datadezpry\"}}")
+            "{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataukqurrtcf\",\"disableMetricsCollection\":\"datat\",\"\":{\"leghozs\":\"datar\",\"ozryyyvlxmsp\":\"datajjsvy\",\"quazo\":\"dataqafsxv\",\"sdolodfodokhaog\":\"datalxxksputizpvvihg\"}}")
             .toObject(StoreReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreReadSettings model = new StoreReadSettings().withMaxConcurrentConnections("datajsmtghm")
-            .withDisableMetricsCollection("datazyycqsxy").withAdditionalProperties(mapOf("type", "StoreReadSettings"));
+        StoreReadSettings model = new StoreReadSettings().withMaxConcurrentConnections("dataukqurrtcf")
+            .withDisableMetricsCollection("datat").withAdditionalProperties(mapOf("type", "StoreReadSettings"));
         model = BinaryData.fromObject(model).toObject(StoreReadSettings.class);
     }
 

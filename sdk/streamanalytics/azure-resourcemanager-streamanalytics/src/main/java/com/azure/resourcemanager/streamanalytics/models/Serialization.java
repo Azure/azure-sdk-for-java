@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes how data from an input is serialized or how data is serialized when written to an output. */
+/**
+ * Describes how data from an input is serialized or how data is serialized when written to an output.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,18 +19,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = Serialization.class)
 @JsonTypeName("Serialization")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "Delta", value = DeltaSerialization.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetSerialization.class),
+    @JsonSubTypes.Type(name = "CustomClr", value = CustomClrSerialization.class),
     @JsonSubTypes.Type(name = "Csv", value = CsvSerialization.class),
     @JsonSubTypes.Type(name = "Json", value = JsonSerialization.class),
-    @JsonSubTypes.Type(name = "Avro", value = AvroSerialization.class)
-})
+    @JsonSubTypes.Type(name = "Avro", value = AvroSerialization.class) })
 @Immutable
 public class Serialization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Serialization.class);
+    /**
+     * Creates an instance of Serialization class.
+     */
+    public Serialization() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,16 +11,16 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataadafecwnufldzjc\",\"queryTimeout\":\"datahjbzpoh\",\"additionalColumns\":\"datajgpe\",\"sourceRetryCount\":\"databoxvwtlnv\",\"sourceRetryWait\":\"datahtujaqpkup\",\"maxConcurrentConnections\":\"datacrjeypd\",\"disableMetricsCollection\":\"datascxzsynbdrqirni\",\"\":{\"sorsola\":\"datathyebwgesovsvjx\",\"afpyil\":\"datahlyhgiisnfaxtob\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datarbgnyvypu\",\"queryTimeout\":\"dataxhowwe\",\"additionalColumns\":\"datayw\",\"sourceRetryCount\":\"datahiuwv\",\"sourceRetryWait\":\"datagejytqnzrcbh\",\"maxConcurrentConnections\":\"datahctjvlwfnzgz\",\"disableMetricsCollection\":\"datafyvytydrdcwbaiaq\",\"\":{\"edusu\":\"datahsmuclxg\",\"vykagsxhzhervv\":\"dataq\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GoogleBigQuerySource model
-            = new GoogleBigQuerySource().withSourceRetryCount("databoxvwtlnv").withSourceRetryWait("datahtujaqpkup")
-                .withMaxConcurrentConnections("datacrjeypd").withDisableMetricsCollection("datascxzsynbdrqirni")
-                .withQueryTimeout("datahjbzpoh").withAdditionalColumns("datajgpe").withQuery("dataadafecwnufldzjc");
+            = new GoogleBigQuerySource().withSourceRetryCount("datahiuwv").withSourceRetryWait("datagejytqnzrcbh")
+                .withMaxConcurrentConnections("datahctjvlwfnzgz").withDisableMetricsCollection("datafyvytydrdcwbaiaq")
+                .withQueryTimeout("dataxhowwe").withAdditionalColumns("datayw").withQuery("datarbgnyvypu");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

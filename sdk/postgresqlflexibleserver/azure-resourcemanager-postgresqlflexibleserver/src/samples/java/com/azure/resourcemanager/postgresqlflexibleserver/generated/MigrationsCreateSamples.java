@@ -13,124 +13,99 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import java.util.Arrays;
 
-/** Samples for Migrations Create. */
+/**
+ * Samples for Migrations Create.
+ */
 public final class MigrationsCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Create_Validate_Only.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * Migrations_Create_Validate_Only.json
      */
     /**
      * Sample code: Create Pre-migration Validation.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void createPreMigrationValidation(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .migrations()
-            .define("testmigration")
-            .withRegion("westus")
+    public static void
+        createPreMigrationValidation(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.migrations().define("testmigration").withRegion("westus")
             .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
-            .withMigrationMode(MigrationMode.OFFLINE)
-            .withMigrationOption(MigrationOption.VALIDATE)
+            .withMigrationMode(MigrationMode.OFFLINE).withMigrationOption(MigrationOption.VALIDATE)
             .withSourceDbServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource")
-            .withSecretParameters(
-                new MigrationSecretParameters()
-                    .withAdminCredentials(
-                        new AdminCredentials()
-                            .withSourceServerPassword("fakeTokenPlaceholder")
-                            .withTargetServerPassword("fakeTokenPlaceholder")))
+            .withSecretParameters(new MigrationSecretParameters().withAdminCredentials(new AdminCredentials()
+                .withSourceServerPassword("fakeTokenPlaceholder").withTargetServerPassword("fakeTokenPlaceholder")))
             .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4"))
-            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE)
-            .create();
+            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE).create();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Create_With_Other_Users.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * Migrations_Create_With_Other_Users.json
      */
     /**
      * Sample code: Migrations Create by passing user names.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void migrationsCreateByPassingUserNames(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .migrations()
-            .define("testmigration")
-            .withRegion("westus")
+        manager.migrations().define("testmigration").withRegion("westus")
             .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
             .withMigrationMode(MigrationMode.OFFLINE)
             .withSourceDbServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource")
-            .withSecretParameters(
-                new MigrationSecretParameters()
-                    .withAdminCredentials(
-                        new AdminCredentials()
-                            .withSourceServerPassword("fakeTokenPlaceholder")
-                            .withTargetServerPassword("fakeTokenPlaceholder"))
-                    .withSourceServerUsername("newadmin@testsource")
-                    .withTargetServerUsername("targetadmin"))
-            .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4"))
-            .create();
+            .withSecretParameters(new MigrationSecretParameters()
+                .withAdminCredentials(new AdminCredentials().withSourceServerPassword("fakeTokenPlaceholder")
+                    .withTargetServerPassword("fakeTokenPlaceholder"))
+                .withSourceServerUsername("newadmin@testsource").withTargetServerUsername("targetadmin"))
+            .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4")).create();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Create.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * Migrations_Create.json
      */
     /**
      * Sample code: Migrations_Create.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void migrationsCreate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .migrations()
-            .define("testmigration")
-            .withRegion("westus")
+        manager.migrations().define("testmigration").withRegion("westus")
             .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
             .withMigrationMode(MigrationMode.OFFLINE)
             .withSourceDbServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource")
-            .withSecretParameters(
-                new MigrationSecretParameters()
-                    .withAdminCredentials(
-                        new AdminCredentials()
-                            .withSourceServerPassword("fakeTokenPlaceholder")
-                            .withTargetServerPassword("fakeTokenPlaceholder")))
+            .withSecretParameters(new MigrationSecretParameters().withAdminCredentials(new AdminCredentials()
+                .withSourceServerPassword("fakeTokenPlaceholder").withTargetServerPassword("fakeTokenPlaceholder")))
             .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4"))
-            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE)
-            .create();
+            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE).create();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/Migrations_Create_Other_SourceTypes_Validate_Migrate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * Migrations_Create_Other_SourceTypes_Validate_Migrate.json
      */
     /**
      * Sample code: Create Migration with other source types for Validate and Migrate.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void createMigrationWithOtherSourceTypesForValidateAndMigrate(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .migrations()
-            .define("testmigration")
-            .withRegion("westus")
+        manager.migrations().define("testmigration").withRegion("westus")
             .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
-            .withMigrationMode(MigrationMode.OFFLINE)
-            .withMigrationOption(MigrationOption.VALIDATE_AND_MIGRATE)
-            .withSourceType(SourceType.ON_PREMISES)
-            .withSslMode(SslMode.PREFER)
+            .withMigrationMode(MigrationMode.OFFLINE).withMigrationOption(MigrationOption.VALIDATE_AND_MIGRATE)
+            .withSourceType(SourceType.ON_PREMISES).withSslMode(SslMode.PREFER)
             .withSourceDbServerResourceId("testsource:5432@pguser")
-            .withSecretParameters(
-                new MigrationSecretParameters()
-                    .withAdminCredentials(
-                        new AdminCredentials()
-                            .withSourceServerPassword("fakeTokenPlaceholder")
-                            .withTargetServerPassword("fakeTokenPlaceholder")))
+            .withSecretParameters(new MigrationSecretParameters().withAdminCredentials(new AdminCredentials()
+                .withSourceServerPassword("fakeTokenPlaceholder").withTargetServerPassword("fakeTokenPlaceholder")))
             .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4"))
-            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE)
-            .create();
+            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE).create();
     }
 }

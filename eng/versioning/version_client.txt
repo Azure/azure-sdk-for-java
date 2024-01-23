@@ -196,7 +196,7 @@ com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-xml;1.0.0-beta.2;1.0.0-beta.3
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.1;1.0.0-beta.2
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.14.0;4.15.0-beta.1
@@ -312,7 +312,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.3;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.24;1.0.0-beta.25
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.25;1.0.0-beta.26
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.2;1.0.0-beta.3
@@ -349,7 +349,7 @@ com.azure.resourcemanager:azure-resourcemanager-deploymentmanager;1.0.0-beta.2;1
 com.azure.resourcemanager:azure-resourcemanager-notificationhubs;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-marketplaceordering;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-timeseriesinsights;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-streamanalytics;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-streamanalytics;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-operationsmanagement;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-batch;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-datalakeanalytics;1.0.0-beta.2;1.0.0-beta.3

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
 import com.azure.resourcemanager.streamanalytics.models.BlobReferenceInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobStreamInputDataSource;
@@ -16,87 +15,89 @@ import com.azure.resourcemanager.streamanalytics.models.IoTHubStreamInputDataSou
 import com.azure.resourcemanager.streamanalytics.models.ReferenceInputProperties;
 import com.azure.resourcemanager.streamanalytics.models.StreamInputProperties;
 
-/** Samples for Inputs Update. */
+/**
+ * Samples for Inputs Update.
+ */
 public final class InputsUpdateSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_IoTHub.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_Update_Stream_IoTHub.json
      */
     /**
      * Sample code: Update a stream IoT Hub input.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAStreamIoTHubInput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Input resource = manager.inputs().getWithResponse("sjrg3467", "sj9742", "input7970", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new StreamInputProperties()
-                    .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
-                    .withDatasource(
-                        new IoTHubStreamInputDataSource().withEndpoint("messages/operationsMonitoringEvents")))
+    public static void
+        updateAStreamIoTHubInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Input resource = manager.inputs()
+            .getWithResponse("sjrg3467", "sj9742", "input7970", com.azure.core.util.Context.NONE).getValue();
+        resource.update()
+            .withProperties(new StreamInputProperties()
+                .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
+                .withDatasource(new IoTHubStreamInputDataSource().withEndpoint("messages/operationsMonitoringEvents")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Reference_Blob.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_Update_Reference_Blob.json
      */
     /**
      * Sample code: Update a reference blob input.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAReferenceBlobInput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Input resource = manager.inputs().getWithResponse("sjrg8440", "sj9597", "input7225", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new ReferenceInputProperties()
-                    .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
-                    .withDatasource(new BlobReferenceInputDataSource()))
+    public static void
+        updateAReferenceBlobInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Input resource = manager.inputs()
+            .getWithResponse("sjrg8440", "sj9597", "input7225", com.azure.core.util.Context.NONE).getValue();
+        resource.update()
+            .withProperties(new ReferenceInputProperties()
+                .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
+                .withDatasource(new BlobReferenceInputDataSource().withContainer("differentContainer")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_EventHub.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_Update_Stream_EventHub.json
      */
     /**
      * Sample code: Update a stream Event Hub input.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAStreamEventHubInput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Input resource = manager.inputs().getWithResponse("sjrg3139", "sj197", "input7425", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new StreamInputProperties()
-                    .withSerialization(new AvroSerialization())
-                    .withDatasource(
-                        new EventHubStreamInputDataSource().withConsumerGroupName("differentConsumerGroupName")))
+    public static void
+        updateAStreamEventHubInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Input resource = manager.inputs()
+            .getWithResponse("sjrg3139", "sj197", "input7425", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withProperties(new StreamInputProperties().withSerialization(new AvroSerialization())
+            .withDatasource(new EventHubStreamInputDataSource().withConsumerGroupName("differentConsumerGroupName")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_Blob.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_Update_Stream_Blob.json
      */
     /**
      * Sample code: Update a stream blob input.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAStreamBlobInput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Input resource = manager.inputs().getWithResponse("sjrg8161", "sj6695", "input8899", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new StreamInputProperties()
-                    .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
-                    .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(32)))
+    public static void
+        updateAStreamBlobInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Input resource = manager.inputs()
+            .getWithResponse("sjrg8161", "sj6695", "input8899", com.azure.core.util.Context.NONE).getValue();
+        resource.update()
+            .withProperties(new StreamInputProperties()
+                .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
+                .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(32)))
             .apply();
     }
 }

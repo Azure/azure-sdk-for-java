@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Describes how data from an input is serialized or how data is serialized when written to an output in Parquet format.
+ * Describes how data from an input is serialized or how data is serialized when written to an output in Parquet
+ * format.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Parquet")
 @Fluent
 public final class ParquetSerialization extends Serialization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParquetSerialization.class);
-
     /*
-     * The properties that are associated with the Parquet serialization type.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace)
+     * requests.
      */
     @JsonProperty(value = "properties")
     private Object properties;
 
     /**
+     * Creates an instance of ParquetSerialization class.
+     */
+    public ParquetSerialization() {
+    }
+
+    /**
      * Get the properties property: The properties that are associated with the Parquet serialization type. Required on
      * PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -40,7 +43,7 @@ public final class ParquetSerialization extends Serialization {
     /**
      * Set the properties property: The properties that are associated with the Parquet serialization type. Required on
      * PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ParquetSerialization object itself.
      */
@@ -51,7 +54,7 @@ public final class ParquetSerialization extends Serialization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

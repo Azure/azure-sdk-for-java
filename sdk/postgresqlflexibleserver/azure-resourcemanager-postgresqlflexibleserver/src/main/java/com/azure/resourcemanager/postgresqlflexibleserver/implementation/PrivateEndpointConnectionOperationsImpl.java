@@ -18,20 +18,16 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public PrivateEndpointConnectionOperationsImpl(
-        PrivateEndpointConnectionOperationsClient innerClient,
+    public PrivateEndpointConnectionOperationsImpl(PrivateEndpointConnectionOperationsClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PrivateEndpointConnection update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().update(resourceGroupName, serverName, privateEndpointConnectionName, parameters);
+    public PrivateEndpointConnection update(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters) {
+        PrivateEndpointConnectionInner inner
+            = this.serviceClient().update(resourceGroupName, serverName, privateEndpointConnectionName, parameters);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -39,16 +35,10 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
         }
     }
 
-    public PrivateEndpointConnection update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context) {
-        PrivateEndpointConnectionInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, serverName, privateEndpointConnectionName, parameters, context);
+    public PrivateEndpointConnection update(String resourceGroupName, String serverName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context) {
+        PrivateEndpointConnectionInner inner = this.serviceClient().update(resourceGroupName, serverName,
+            privateEndpointConnectionName, parameters, context);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -60,8 +50,8 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
         this.serviceClient().delete(resourceGroupName, serverName, privateEndpointConnectionName);
     }
 
-    public void delete(
-        String resourceGroupName, String serverName, String privateEndpointConnectionName, Context context) {
+    public void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, serverName, privateEndpointConnectionName, context);
     }
 

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ActiveDirectoryAdministratorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActiveDirectoryAdministratorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"msxaobhd\",\"objectId\":\"mtqio\",\"tenantId\":\"zehtbmu\"},\"id\":\"ownoizhw\",\"name\":\"rxybqsoq\",\"type\":\"jgkdmbpazlobcu\"}")
-                .toObject(ActiveDirectoryAdministratorInner.class);
+        ActiveDirectoryAdministratorInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"msxaobhd\",\"objectId\":\"mtqio\",\"tenantId\":\"zehtbmu\"},\"id\":\"ownoizhw\",\"name\":\"rxybqsoq\",\"type\":\"jgkdmbpazlobcu\"}")
+            .toObject(ActiveDirectoryAdministratorInner.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("msxaobhd", model.principalName());
         Assertions.assertEquals("mtqio", model.objectId());
@@ -25,12 +23,9 @@ public final class ActiveDirectoryAdministratorInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActiveDirectoryAdministratorInner model =
-            new ActiveDirectoryAdministratorInner()
-                .withPrincipalType(PrincipalType.UNKNOWN)
-                .withPrincipalName("msxaobhd")
-                .withObjectId("mtqio")
-                .withTenantId("zehtbmu");
+        ActiveDirectoryAdministratorInner model
+            = new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("msxaobhd").withObjectId("mtqio").withTenantId("zehtbmu");
         model = BinaryData.fromObject(model).toObject(ActiveDirectoryAdministratorInner.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("msxaobhd", model.principalName());
