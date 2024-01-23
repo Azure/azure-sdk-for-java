@@ -3318,6 +3318,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions queryRequestOptions,
         Class<T> klass) {
 
+        // if there is any factory method being passed in, use the factory method to deserializ the object
+        // else fallback to use the original way
+        // typically used by spark trying to convert into SparkRowItem
+        ItemDeserializer effectiveItemDeserializer = getEffectiveItemDeserializer(queryRequestOptions, klass);
+
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
                 if (cosmosItemIdentityList.size() == 1) {
@@ -3364,17 +3369,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         Collections.singleton(
                             BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
                 } else {
-                    // if there is any factory method being passed in, use the factory method to deserializ the object
-                    // else fallback to use the original way
-                    // typically used by spark trying to convert into SparkRowItem
-                    Function<JsonNode, T> factoryMethod =
-                            DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-                            queryRequestOptions,
-                            false,
-                            klass);
-
                     CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, effectiveItemDeserializer);
                     feedResponse = ModelBridgeInternal.createFeedResponse(
                             Arrays.asList(cosmosItemResponse.getItem()),
                             cosmosItemResponse.getResponseHeaders());
@@ -3394,6 +3390,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionLink, String query, QueryFeedOperationState state, Class<T> classOfT) {
 
         return queryDocuments(collectionLink, new SqlQuerySpec(query), state, classOfT);
+    }
+
+    private <T> ItemDeserializer getEffectiveItemDeserializer(
+            CosmosQueryRequestOptions queryRequestOptions,
+            Class<T> klass) {
+
+        Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
+                null :
+                ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .getItemFactoryMethod(queryRequestOptions, klass);
+
+        if (factoryMethod == null) {
+            return this.itemDeserializer; // using default itemDeserializer
+        }
+
+        return new ItemDeserializer.JsonDeserializer(factoryMethod);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
