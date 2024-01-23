@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.test;
+package com.generic.core.shared;
 
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.Response;

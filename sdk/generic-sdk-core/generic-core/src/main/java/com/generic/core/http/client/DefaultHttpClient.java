@@ -34,7 +34,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 

@@ -5,7 +5,6 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -16,6 +15,8 @@ import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.models.Headers;
+import com.generic.core.models.HeaderName;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

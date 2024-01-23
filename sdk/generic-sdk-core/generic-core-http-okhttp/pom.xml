@@ -41,22 +41,21 @@
     <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
-      --add-opens com.generic.core.http.okhttp/com.generic.core.http.okhttp.implementation=org.junit.platform.commons
-      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
-      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+      --add-exports com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
+      --add-exports com.generic.core/com.generic.core.implementation.http.serializer=ALL-UNNAMED
+      --add-exports com.generic.core/com.generic.core.implementation.util=ALL-UNNAMED
 
-      --add-opens com.generic.core.http.okhttp/com.generic.core.http.okhttp=ALL-UNNAMED,org.junit.platform.commons
+      --add-opens com.generic.core.http.okhttp/com.generic.core.http.okhttp=ALL-UNNAMED
       --add-opens com.generic.core.http.okhttp/com.generic.core.http.okhttp.implementation=ALL-UNNAMED
-
-      --add-reads com.generic.core.http.okhttp=org.junit.jupiter.api,org.junit.jupiter.params
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
     <javadoc.excludePackageNames>
-      com.generic.core.annotation,com.generic.core.credential,com.generic.core.http,com.generic.core.http*,com.generic.core.implementation,
-      com.generic.core.implementation*,com.generic.core.models,com.generic.core.util,com.generic.core.util*,com.generic.json
+      com.generic.core.annotation,com.generic.core.credential,com.generic.core.http,com.generic.core.http*,
+      com.generic.core.implementation,com.generic.core.implementation*,com.generic.core.models,com.generic.core.util,
+      com.generic.core.util*,com.generic.json
     </javadoc.excludePackageNames>
   </properties>
 

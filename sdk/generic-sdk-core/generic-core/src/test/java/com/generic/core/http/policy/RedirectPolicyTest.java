@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import static com.generic.core.CoreTestUtils.createUrl;
+import static com.generic.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

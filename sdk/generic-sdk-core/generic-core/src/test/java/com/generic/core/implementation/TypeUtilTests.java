@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TypeUtilTests {
-
     @Test
     public void testGetClasses() {
         Puppy puppy = new Puppy();

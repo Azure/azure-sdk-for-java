@@ -12,14 +12,13 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.models.Context;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.generic.core.CoreTestUtils.createUrl;
+import static com.generic.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {

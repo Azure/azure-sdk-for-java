@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.generic.core.util.serializer;
 
 import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
-import com.generic.core.util.serializer.JsonSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
