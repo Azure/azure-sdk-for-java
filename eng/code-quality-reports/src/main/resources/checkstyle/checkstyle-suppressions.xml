@@ -505,4 +505,6 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.generic.json.*" />
 </suppressions>

@@ -23,6 +23,34 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example:</strong></p>
  *
  * <!-- src_embed com.generic.core.http.annotation.UnexpectedResponseExceptionType.class -->
+ * <pre>
+ * &#47;&#47; Set it so that all response exceptions use a custom exception type.
+ *
+ * &#64;UnexpectedResponseExceptionInformation&#40;exceptionBodyClass = MyCustomExceptionBody.class&#41;
+ * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
+ *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
+ *     + &quot;getEntityTypeImageUploadUrl&quot;,
+ *     returnValueWireType = void.class&#41;
+ * void singleExceptionType&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String resourceGroupName,
+ *     &#64;PathParam&#40;&quot;hubName&quot;&#41; String hubName, &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
+ *     &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; RequestBody parameters&#41;;
+ *
+ *
+ * &#47;&#47; Set it so 404 uses a specific exception type while others use a generic exception type.
+ *
+ * &#64;UnexpectedResponseExceptionInformation&#40;statusCode = &#123;404&#125;, exceptionBodyClass = MyCustomExceptionBody.class&#41;
+ * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
+ *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
+ *     + &quot;getEntityTypeImageUploadUrl&quot;,
+ *     returnValueWireType = void.class&#41;
+ * void multipleExceptionTypes&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String resourceGroupName,
+ *     &#64;PathParam&#40;&quot;hubName&quot;&#41; String hubName,
+ *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
+ *     &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; RequestBody parameters&#41;;
+ *
+ * &#47;&#47; If multiple annotations share the same HTTP status code or there is multiple default annotations the
+ * &#47;&#47; exception, the last annotation in the top to bottom order will be used &#40;so the bottom most annotation&#41;.
+ * </pre>
  * <!-- end com.generic.core.http.annotation.UnexpectedResponseExceptionType.class -->
  */
 @Retention(RUNTIME)

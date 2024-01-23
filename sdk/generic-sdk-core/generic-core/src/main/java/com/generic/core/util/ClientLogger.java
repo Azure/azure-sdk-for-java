@@ -84,6 +84,13 @@ public class ClientLogger {
      * context that will be populated on all log records produced with this logger.
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
+     * <pre>
+     * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
+     * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
+     *
+     * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
+     * loggerWithContext.atInfo&#40;&#41;.log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
@@ -107,6 +114,10 @@ public class ClientLogger {
      * <p>Logging with a specific log level</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log -->
+     * <pre>
+     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
@@ -124,6 +135,12 @@ public class ClientLogger {
      * <p>Logging with a specific log level and exception</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log#throwable -->
+     * <pre>
+     * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
+     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
+     *     illegalArgumentException&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
@@ -342,6 +359,11 @@ public class ClientLogger {
      * <p>Logging with context at error level.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
@@ -360,6 +382,11 @@ public class ClientLogger {
      * <p>Logging with context at warning level.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atWarning -->
+     * <pre>
+     * logger.atWarning&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
@@ -378,6 +405,11 @@ public class ClientLogger {
      * <p>Logging with context at info level.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
@@ -395,6 +427,11 @@ public class ClientLogger {
      * <p>Logging with context at verbose level.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
@@ -413,6 +450,13 @@ public class ClientLogger {
      * <p>Logging with context at provided level.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atLevel -->
+     * <pre>
+     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
+     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * logger.atLevel&#40;level&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;message&quot;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
@@ -432,6 +476,13 @@ public class ClientLogger {
      * <p>Logging event with context.</p>
      * <p>
      * <!-- src_embed com.generic.core.util.logging.loggingeventbuilder -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
+     *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
      */
     @Metadata(conditions = FLUENT)
@@ -477,6 +528,11 @@ public class ClientLogger {
          * <p>Adding a String value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+         * <pre>
+         * logger.atInfo&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+         *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
          * @param key Key to associate the provided {@code value} with.
@@ -502,6 +558,12 @@ public class ClientLogger {
          * <p>Adding a String value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+         * <pre>
+         * logger.atVerbose&#40;&#41;
+         *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
+         *     .log&#40;&quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
          * @param key Key to associate the provided {@code value} with.
@@ -541,6 +603,11 @@ public class ClientLogger {
          * <p>Adding a long value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+         * <pre>
+         * logger.atVerbose&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
          *
          * @param key Key to associate the provided {@code value} with.

@@ -102,7 +102,7 @@ public class MockHttpResponse extends HttpResponse {
     private static byte[] serialize(Object serializable) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        SERIALIZER.serialize(stream, serializable);
+        SERIALIZER.serializeToStream(stream, serializable);
 
         return stream.toByteArray();
     }
