@@ -45,7 +45,7 @@ public final class ChangeDataCapturesDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.changeDataCaptures().deleteWithResponse("oohzifbbsncorini", "dlxqjshyyrcr", "wzqsfaurmqpkgwfb",
+        manager.changeDataCaptures().deleteWithResponse("fnl", "jivtzshuzyyn", "vrrq",
             com.azure.core.util.Context.NONE);
 
     }

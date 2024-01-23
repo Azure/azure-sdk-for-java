@@ -22,10 +22,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
+import static com.azure.core.http.policy.HttpLoggingPolicy.RETRY_COUNT_CONTEXT;
 import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
@@ -33,39 +36,27 @@ import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
  * Pipeline policy that initiates distributed tracing.
  */
 public class InstrumentationPolicy implements HttpPipelinePolicy {
-    private static final String HTTP_USER_AGENT = "http.user_agent";
+
+    // TODO (limolkova):
+    // following attributes are kept for backward compatibility with current ApplicationInsights agent.
+    // We'll need to update them to stable semconv attribute names (as an optimization) prior to tracing stability
+    // and after new azure-core-tracing-opentelemetry is released and OTel/ApplicationInsights agents are updated to used it.
     private static final String HTTP_METHOD = "http.method";
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
-    private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
-    private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
+
+    // new attributes:
+    private static final String HTTP_RESEND_COUNT = "http.request.resend_count";
+    private static final String SERVER_ADDRESS = "server.address";
+    private static final String SERVER_PORT = "server.port";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;
-    private static boolean foundLegacyOTelPolicy;
-
-    static {
-        try {
-            Class.forName(LEGACY_OTEL_POLICY_NAME, true, HttpPipelinePolicy.class.getClassLoader());
-            foundLegacyOTelPolicy = true;
-        } catch (ClassNotFoundException e) {
-            foundLegacyOTelPolicy = false;
-        }
-    }
-
-    static {
-        try {
-            Class.forName(LEGACY_OTEL_POLICY_NAME, true, HttpPipelinePolicy.class.getClassLoader());
-            foundLegacyOTelPolicy = true;
-        } catch (ClassNotFoundException e) {
-            foundLegacyOTelPolicy = false;
-        }
-    }
 
     /**
-     * Creates an InstrumentationPolicy.
+     * Creates an instance of {@link InstrumentationPolicy}.
      */
     public InstrumentationPolicy() {
     }
@@ -126,8 +117,10 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         String methodName = request.getHttpMethod().toString();
         StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
             .setAttribute(HTTP_METHOD, methodName)
-            .setAttribute(HTTP_URL, request.getUrl().toString());
-        Context span = tracer.start("HTTP " + methodName, spanOptions, azContext.getContext());
+            .setAttribute(HTTP_URL, request.getUrl().toString())
+            .setAttribute(SERVER_ADDRESS, request.getUrl().getHost())
+            .setAttribute(SERVER_PORT, getPort(request.getUrl()));
+        Context span = tracer.start(methodName, spanOptions, azContext.getContext());
 
         addPostSamplingAttributes(span, request);
 
@@ -136,10 +129,18 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return span;
     }
 
+    private static int getPort(URL url) {
+        int port = url.getPort();
+        if (port == -1) {
+            port = url.getDefaultPort();
+        }
+        return port;
+    }
+
     private void addPostSamplingAttributes(Context span, HttpRequest request) {
-        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
-        if (!CoreUtils.isNullOrEmpty(userAgent)) {
-            tracer.setAttribute(HTTP_USER_AGENT, userAgent, span);
+        Object rawRetryCount = span.getData(RETRY_COUNT_CONTEXT).orElse(null);
+        if (rawRetryCount instanceof Integer && ((Integer) rawRetryCount) > 0) {
+            tracer.setAttribute(HTTP_RESEND_COUNT, ((Integer) rawRetryCount).longValue(), span);
         }
 
         String requestId = request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
@@ -152,7 +153,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         if (response != null) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
-            String requestId = response.getHeaderValue(SERVICE_REQUEST_ID_HEADER);
+            String requestId = response.getHeaderValue(X_MS_REQUEST_ID);
             if (requestId != null) {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
@@ -160,7 +161,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
-        return tracer != null && tracer.isEnabled() && !foundLegacyOTelPolicy
+        return tracer != null && tracer.isEnabled()
             && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 

@@ -11,16 +11,16 @@ public final class CosmosDbSqlApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSink model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datawevlohuahl\",\"writeBatchSize\":\"datacboxgpmmz\",\"writeBatchTimeout\":\"dataoyllxc\",\"sinkRetryCount\":\"datahzylspz\",\"sinkRetryWait\":\"datarhynlbtr\",\"maxConcurrentConnections\":\"dataecvag\",\"disableMetricsCollection\":\"datarhadg\",\"\":{\"hiafbhzdjv\":\"datarasxeomjqqhbkxi\",\"ggbpdpzgvq\":\"datayrzi\",\"lvxilaytj\":\"dataznxzaliicrutyhm\",\"ghqdlj\":\"datawfqzwn\"}}")
+            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datall\",\"writeBatchSize\":\"datavhthxcrwee\",\"writeBatchTimeout\":\"datadmpfmcrcelsnj\",\"sinkRetryCount\":\"datanfdcjtveibntwi\",\"sinkRetryWait\":\"datagwxysut\",\"maxConcurrentConnections\":\"datafdhrifekstrms\",\"disableMetricsCollection\":\"datadgrzkeuplorn\",\"\":{\"zcdlnvupi\":\"datasmaa\",\"elv\":\"datacbzyhtbjyycac\"}}")
             .toObject(CosmosDbSqlApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("datacboxgpmmz")
-            .withWriteBatchTimeout("dataoyllxc").withSinkRetryCount("datahzylspz").withSinkRetryWait("datarhynlbtr")
-            .withMaxConcurrentConnections("dataecvag").withDisableMetricsCollection("datarhadg")
-            .withWriteBehavior("datawevlohuahl");
+        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("datavhthxcrwee")
+            .withWriteBatchTimeout("datadmpfmcrcelsnj").withSinkRetryCount("datanfdcjtveibntwi")
+            .withSinkRetryWait("datagwxysut").withMaxConcurrentConnections("datafdhrifekstrms")
+            .withDisableMetricsCollection("datadgrzkeuplorn").withWriteBehavior("datall");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSink.class);
     }
 }

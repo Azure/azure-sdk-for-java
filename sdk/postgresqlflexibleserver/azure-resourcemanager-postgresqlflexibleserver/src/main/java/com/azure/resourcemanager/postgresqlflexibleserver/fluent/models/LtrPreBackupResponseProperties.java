@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for the pre-backup request. */
+/**
+ * Response for the pre-backup request.
+ */
 @Fluent
 public final class LtrPreBackupResponseProperties {
     /*
@@ -17,14 +19,16 @@ public final class LtrPreBackupResponseProperties {
     @JsonProperty(value = "numberOfContainers", required = true)
     private int numberOfContainers;
 
-    /** Creates an instance of LtrPreBackupResponseProperties class. */
+    /**
+     * Creates an instance of LtrPreBackupResponseProperties class.
+     */
     public LtrPreBackupResponseProperties() {
     }
 
     /**
      * Get the numberOfContainers property: Number of storage containers the plugin will use during backup. More than
      * one containers may be used for size limitations, parallelism, or redundancy etc.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     public int numberOfContainers() {
@@ -34,7 +38,7 @@ public final class LtrPreBackupResponseProperties {
     /**
      * Set the numberOfContainers property: Number of storage containers the plugin will use during backup. More than
      * one containers may be used for size limitations, parallelism, or redundancy etc.
-     *
+     * 
      * @param numberOfContainers the numberOfContainers value to set.
      * @return the LtrPreBackupResponseProperties object itself.
      */
@@ -45,7 +49,7 @@ public final class LtrPreBackupResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

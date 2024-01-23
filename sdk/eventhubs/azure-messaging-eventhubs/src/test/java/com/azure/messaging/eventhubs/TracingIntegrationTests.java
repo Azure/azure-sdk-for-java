@@ -30,6 +30,7 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -64,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Isolated("Sets global TracingProvider.")
 @Execution(ExecutionMode.SAME_THREAD)
+@Disabled("Tracing tests need to be disabled until the discrepancy with the core is resolved.")
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";

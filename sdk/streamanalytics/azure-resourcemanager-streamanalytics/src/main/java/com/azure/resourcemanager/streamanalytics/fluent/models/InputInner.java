@@ -6,9 +6,7 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.InputProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class InputInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputInner.class);
-
     /*
-     * The properties that are associated with an input. Required on PUT
-     * (CreateOrReplace) requests.
+     * The properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private InputProperties properties;
@@ -39,9 +34,15 @@ public final class InputInner extends SubResource {
     private String type;
 
     /**
+     * Creates an instance of InputInner class.
+     */
+    public InputInner() {
+    }
+
+    /**
      * Get the properties property: The properties that are associated with an input. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the properties value.
      */
     public InputProperties properties() {
@@ -51,7 +52,7 @@ public final class InputInner extends SubResource {
     /**
      * Set the properties property: The properties that are associated with an input. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the InputInner object itself.
      */
@@ -62,7 +63,7 @@ public final class InputInner extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +72,7 @@ public final class InputInner extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the InputInner object itself.
      */
@@ -82,14 +83,16 @@ public final class InputInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InputInner withId(String id) {
         super.withId(id);
@@ -98,7 +101,7 @@ public final class InputInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

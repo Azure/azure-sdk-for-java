@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sets the promote options for a replica server. This is a write only property. */
+/**
+ * Sets the promote options for a replica server. This is a write only property.
+ */
 public final class ReplicationPromoteOption extends ExpandableStringEnum<ReplicationPromoteOption> {
-    /** Static value planned for ReplicationPromoteOption. */
+    /**
+     * Static value planned for ReplicationPromoteOption.
+     */
     public static final ReplicationPromoteOption PLANNED = fromString("planned");
 
-    /** Static value forced for ReplicationPromoteOption. */
+    /**
+     * Static value forced for ReplicationPromoteOption.
+     */
     public static final ReplicationPromoteOption FORCED = fromString("forced");
 
     /**
      * Creates a new instance of ReplicationPromoteOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ReplicationPromoteOption extends ExpandableStringEnum<Replica
 
     /**
      * Creates or finds a ReplicationPromoteOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationPromoteOption.
      */
@@ -38,7 +44,7 @@ public final class ReplicationPromoteOption extends ExpandableStringEnum<Replica
 
     /**
      * Gets known ReplicationPromoteOption values.
-     *
+     * 
      * @return known ReplicationPromoteOption values.
      */
     public static Collection<ReplicationPromoteOption> values() {

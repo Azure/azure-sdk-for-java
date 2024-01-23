@@ -108,9 +108,9 @@ public final class ManagedIdentityCredentialResourceImpl implements ManagedIdent
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.credentialName = Utils.getValueFromIdByName(innerObject.id(), "credentials");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.credentialName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "credentials");
     }
 
     public ManagedIdentityCredentialResource refresh() {

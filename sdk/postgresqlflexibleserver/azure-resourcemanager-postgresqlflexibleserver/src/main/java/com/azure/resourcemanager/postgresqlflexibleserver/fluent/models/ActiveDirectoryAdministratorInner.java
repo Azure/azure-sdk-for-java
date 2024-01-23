@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an Active Directory administrator. */
+/**
+ * Represents an Active Directory administrator.
+ */
 @Fluent
 public final class ActiveDirectoryAdministratorInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ActiveDirectoryAdministratorInner class. */
+    /**
+     * Creates an instance of ActiveDirectoryAdministratorInner class.
+     */
     public ActiveDirectoryAdministratorInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the active directory administrator.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdministratorProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -59,7 +63,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -73,7 +77,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -82,7 +86,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @param principalName the principalName value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -96,7 +100,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -105,7 +109,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -119,7 +123,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -128,7 +132,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -142,15 +146,13 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
         } else {
             innerProperties().validate();
         }

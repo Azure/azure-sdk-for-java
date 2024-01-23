@@ -32,6 +32,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
     @JsonSubTypes.Type(name = "AzureMySqlSink", value = AzureMySqlSink.class),
     @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSink", value = AzureDatabricksDeltaLakeSink.class),
+    @JsonSubTypes.Type(name = "WarehouseSink", value = WarehouseSink.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
     @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
     @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
@@ -48,6 +49,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
     @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
     @JsonSubTypes.Type(name = "SnowflakeSink", value = SnowflakeSink.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2Sink", value = SnowflakeV2Sink.class),
     @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
@@ -64,7 +66,9 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "MongoDbAtlasSink", value = MongoDbAtlasSink.class),
     @JsonSubTypes.Type(name = "MongoDbV2Sink", value = MongoDbV2Sink.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class),
-    @JsonSubTypes.Type(name = "LakeHouseTableSink", value = LakeHouseTableSink.class) })
+    @JsonSubTypes.Type(name = "LakeHouseTableSink", value = LakeHouseTableSink.class),
+    @JsonSubTypes.Type(name = "SalesforceV2Sink", value = SalesforceV2Sink.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Sink", value = SalesforceServiceCloudV2Sink.class) })
 @Fluent
 public class CopySink {
     /*

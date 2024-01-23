@@ -1,10 +1,6 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/main/docs/policies/opensource.md#codeowners
 
-################
-# Automation
-################
-
 # BOM
 # PRLabel: %azure-spring
 /sdk/boms/spring-cloud-azure-dependencies/          @chenrujun @netyyyy @saragluna @moarychan
