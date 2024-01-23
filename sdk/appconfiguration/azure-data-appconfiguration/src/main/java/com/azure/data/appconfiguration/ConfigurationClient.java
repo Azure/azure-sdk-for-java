@@ -43,6 +43,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -1056,16 +1057,32 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        MatchConditions matchConditions = selector == null ? null : selector.getMatchConditions();
-        String eTagInFirstPage = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        URL url = selector == null ? null : selector.getPageLink();
-        if (url != null) {
+
+        Optional<Object> pageETagOption = context.getData("pageETag");
+        MatchConditions matchConditions = null;
+        if (pageETagOption.isPresent()) {
+            matchConditions = new MatchConditions().setIfNoneMatch((String) pageETagOption.get());
+        }
+        Optional<Object> continuesTokenOption = context.getData("continuesToken");
+        String url = "";
+        String endpoint = this.getEndpoint();
+        if (endpoint != null && !endpoint.endsWith("/")) {
+            url = endpoint;
+        } else {
+            url = endpoint.substring(0, endpoint.length() - 1);
+        }
+
+        if (continuesTokenOption.isPresent()) {
+            url += continuesTokenOption.get();
+        }
+
+        if (pageETagOption.isPresent()) {
             try {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(
-                        url.toString(),
+                        url,
                         acceptDateTime,
                         null,
-                        matchConditions.getIfNoneMatch(),
+                        matchConditions == null ? null : matchConditions.getIfNoneMatch(),
                         enableSyncRestProxy(addTracingNamespace(context)));
 
                 List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
@@ -1073,8 +1090,6 @@ public final class ConfigurationClient {
 
                 return new PagedIterable<>(() -> new PagedResponseBase<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
                         pagedResponse.getHeaders(), settings, null, null));
-
-
             } catch (HttpResponseException ex) {
                 final HttpResponse httpResponse = ex.getResponse();
                 if (httpResponse.getStatusCode() == 304) {

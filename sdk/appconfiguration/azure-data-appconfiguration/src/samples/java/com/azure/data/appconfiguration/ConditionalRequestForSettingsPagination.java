@@ -7,11 +7,9 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,21 +25,18 @@ public class ConditionalRequestForSettingsPagination {
         .connectionString(connectionString)
         .buildClient();
 
-    public static void main(String[] args) throws MalformedURLException {
-        collectUrlMatchConditions();
+    public static void main(String[] args) {
+        collectContinuesTokenAndPagedETags();
+        String continuesToken = "/kv?api-version=2023-10-01";
+        String eTag = "HFRHspwdgpY65Rnm1EuarWuL9mX-5T2q0s7k-Cmlf5g";
 
-        String url = client.getEndpoint() + "/kv?api-version=2023-10-01";
-        String eTag = "your-page-etag";
-        monitorPageSettings(url, eTag);
+        monitorPageSettings(continuesToken, eTag);
     }
 
-    private static void monitorPageSettings(String url, String eTag) throws MalformedURLException {
-        // Having the URL and eTag values, we can now make a conditional request to the service.
-        PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
-                new SettingSelector()
-                        .setPageLink(new URL(url))
-                        .setMatchConditions(new MatchConditions().setIfNoneMatch(eTag)));
+    private static void monitorPageSettings(String continuesToken, String etag) {
 
+        PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(null,
+                new Context("continuesToken", continuesToken).addData("pageETag", etag));
         // Status code = 200 means that the requested settings have changes, so we can print them.
         settings.iterableByPage().forEach(pagedResponse -> {
             System.out.println("Status code = " + pagedResponse.getStatusCode());
@@ -50,30 +45,33 @@ public class ConditionalRequestForSettingsPagination {
                 System.out.println("Key: " + setting.getKey() + ", Value: " + setting.getValue());
             });
         });
+
     }
 
-    // This method is used to collect the URL and eTag values from the paged responses.
-    private static Map<URL, MatchConditions> collectUrlMatchConditions() {
+    private static Map<String, MatchConditions> collectContinuesTokenAndPagedETags() {
         // list all settings
         List<PagedResponse<ConfigurationSetting>> pagedResponses = client.listConfigurationSettings(null)
             .streamByPage()
             .collect(Collectors.toList());
 
-        // collect the URL and eTag values from the paged responses
-        Map<URL, MatchConditions> urlMatchConditionsMap = new HashMap<>();
+        Map<String, MatchConditions> urlMatchConditionsMap = new HashMap<>();
+
+        MatchConditions currentETag;
+        String currentPageLink;
+        String nextPageLink = "";
+
         for (int i = 0; i < pagedResponses.size(); i++) {
             final PagedResponse<ConfigurationSetting> currentPagedResponse = pagedResponses.get(i);
-            URL currentPageLink = currentPagedResponse.getRequest().getUrl();
-            MatchConditions currentETag = new MatchConditions().setIfNoneMatch(currentPagedResponse.getHeaders().getValue("Etag"));
+            currentETag = new MatchConditions().setIfNoneMatch(currentPagedResponse.getHeaders().getValue("Etag"));
+
+            currentPageLink = nextPageLink;
+            nextPageLink = currentPagedResponse.getContinuationToken();
+
+            // First page will have empty continuation token with current page ETag
+            // subsequent pages will have next page's link with current page ETag
+            // Last page will have empty continuation token with current page ETag
             urlMatchConditionsMap.put(currentPageLink, currentETag);
         }
-
-        // print the URL and eTag values
-        urlMatchConditionsMap.forEach((url, matchConditions) -> {
-            System.out.println("URL = " + url.toString());
-            System.out.println("eTag = " + matchConditions.getIfNoneMatch());
-        });
-
         return urlMatchConditionsMap;
     }
 }

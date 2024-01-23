@@ -4,11 +4,9 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -38,10 +36,6 @@ public class SettingSelector {
     private String labelFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
-
-    private URL pageLink;
-
-    private MatchConditions matchConditions;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -149,46 +143,6 @@ public class SettingSelector {
      */
     public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
-        return this;
-    }
-
-    /**
-     * Gets the link of the page to retrieve the settings.
-     *
-     * @return The link of the page to retrieve the settings.
-     */
-    public URL getPageLink() {
-        return pageLink;
-    }
-
-    /**
-     * Sets the link of the page to retrieve the settings.
-     *
-     * @param pageLink The link of the page to retrieve the settings.
-     * @return The updated SettingSelector object.
-     */
-    public SettingSelector setPageLink(URL pageLink) {
-        this.pageLink = pageLink;
-        return this;
-    }
-
-    /**
-     * Gets the match conditions for the setting page.
-     *
-     * @return The match conditions for the setting.
-     */
-    public MatchConditions getMatchConditions() {
-        return matchConditions;
-    }
-
-    /**
-     * Sets the match conditions for the setting page.
-     *
-     * @param matchConditions The match conditions for the setting page.
-     * @return The updated SettingSelector object.
-     */
-    public SettingSelector setMatchConditions(MatchConditions matchConditions) {
-        this.matchConditions = matchConditions;
         return this;
     }
 
