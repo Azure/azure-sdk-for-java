@@ -5,7 +5,6 @@ stages:
     parameters:
       PackageName: azure-communication-rooms
       SafeName: azurecommunicationrooms
-      ServiceDirectory: communication
       CloudConfig:
         Public:
           SubscriptionConfigurations:
