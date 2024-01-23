@@ -2539,6 +2539,24 @@ public interface VirtualMachine
             Update withoutVTpm();
         }
 
+        /** The stage of the definition allowing to specify the security profile for the virtual machine. */
+        interface WithSecurityProfile {
+
+            /**
+             * Request to enable the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withEncryptionAtHost();
+
+            /**
+             * Request to disable the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutEncryptionAtHost();
+        }
+
         /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
         interface WithDeleteOptions {
             /**
@@ -2610,6 +2628,7 @@ public interface VirtualMachine
             UpdateStages.WithOSDisk,
             UpdateStages.WithSecurityFeatures,
             UpdateStages.WithDeleteOptions,
+            UpdateStages.WithSecurityProfile,
             UpdateStages.WithUserData {
         /**
          * Specifies the encryption settings for the OS Disk.

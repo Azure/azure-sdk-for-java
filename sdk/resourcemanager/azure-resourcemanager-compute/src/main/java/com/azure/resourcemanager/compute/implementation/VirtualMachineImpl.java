@@ -2922,6 +2922,12 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl withoutEncryptionAtHost() {
+        ensureSecurityProfile().withEncryptionAtHost(false);
+        return this;
+    }
+
     /** Class to manage Data disk collection. */
     private class ManagedDataDiskCollection {
         private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
