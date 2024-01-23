@@ -75,20 +75,15 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
         return "f";
     }
 
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy next) {
         HttpRequest request = httpPipelineCallContext.getHttpRequest();
         URL originalUrl = request.getUrl();
-        request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
-        String faultType = faultInjectorHandling();
-        request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
+        injectFault(request);
 
         return next.process()
-            .map(response -> {
-                response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
-                response.getRequest().setUrl(originalUrl);
-                return response;
-            });
+            .map(response -> cleanup(response, originalUrl));
 
     }
 
@@ -96,11 +91,19 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextSyncPolicy next) {
         HttpRequest request = httpPipelineCallContext.getHttpRequest();
         URL originalUrl = request.getUrl();
+
+        injectFault(request);
+        return cleanup(next.processSync(), originalUrl);
+    }
+
+    private void injectFault(HttpRequest request) {
+        URL originalUrl = request.getUrl();
         request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
         String faultType = faultInjectorHandling();
         request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
+    }
 
-        HttpResponse response = next.processSync();
+    private HttpResponse cleanup(HttpResponse response, URL originalUrl) {
         response.getRequest().setUrl(originalUrl);
         response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
         return response;
