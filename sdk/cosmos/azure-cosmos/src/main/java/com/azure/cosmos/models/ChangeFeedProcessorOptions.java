@@ -382,7 +382,7 @@ public final class ChangeFeedProcessorOptions {
      * only use this config if you want to limit the RU that can be used for your change feed processing.
      * By using this config, it can slow down the process and cause the lag.
      * 
-     * For direct mode, please configure the throughput control group with the (total RU you would allow for changeFeed processing).
+     * For direct mode, please configure the throughput control group with the total RU you would allow for changeFeed processing.
      * For gateway mode, please configure the throughput control group with the (total RU you would allow for changeFeed processing / total CFP Instances).
      *
      * @param feedPollThroughputControlGroupConfig the throughput control for change feed requests for the monitored collection
