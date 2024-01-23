@@ -1308,7 +1308,7 @@ private object CosmosReadManyFilteringConfig {
       "When enabled, if there is a filter based on the readMany filtering property, readMany will be used internally. " +
       "For containers with `id` being the partitionKey, the readManyFiltering property will be `id`, else it will be `_itemIdentity`. " +
       "And can use udf `GetCosmosItemIdentityValue` to compute the `_itemIdentity` column. " +
-      "GetCosmosItemIdentityValue(id, pk) or GetCosmosItemIdentityValue(id, array(pk1, pk2, pk3)) for contains with subpartitions. ")
+      "GetCosmosItemIdentityValue(id, pk) or GetCosmosItemIdentityValue(id, array(pk1, pk2, pk3)) for containers with subpartitions. ")
 
   def parseCosmosReadManyFilterConfig(cfg: Map[String, String]): CosmosReadManyFilteringConfig = {
     val cosmosReadManyFilteringEnabled = CosmosConfigEntry.parse(cfg, readManyFilteringEnabled)
