@@ -2917,7 +2917,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine.DefinitionStages.WithCreate withEncryptionAtHost() {
+    public VirtualMachineImpl withEncryptionAtHost() {
         ensureSecurityProfile().withEncryptionAtHost(true);
         return this;
     }
