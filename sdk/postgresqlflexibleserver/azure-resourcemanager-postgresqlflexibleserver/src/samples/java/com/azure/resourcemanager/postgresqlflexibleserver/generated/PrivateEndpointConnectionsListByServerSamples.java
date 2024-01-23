@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-/** Samples for PrivateEndpointConnections ListByServer. */
+/**
+ * Samples for PrivateEndpointConnections ListByServer.
+ */
 public final class PrivateEndpointConnectionsListByServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/PrivateEndpointConnectionList.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a server.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void getsListOfPrivateEndpointConnectionsOnAServer(

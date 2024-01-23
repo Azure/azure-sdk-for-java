@@ -74,6 +74,19 @@ private[cosmos] class CosmosRowConverterBase(
         new GenericRowWithSchema(values.toArray, schema)
     }
 
+    def fromObjectNodeToRowWithComputedColumns(schema: StructType,
+                                               objectNode: ObjectNode,
+                                               schemaConversionMode: SchemaConversionMode,
+                                               computedColumns: Map[String, ObjectNode => Any]): Row = {
+        val values: Seq[Any] =
+            convertStructToSparkDataTypeWithComputedColumns(
+                schema,
+                objectNode,
+                schemaConversionMode,
+                computedColumns)
+        new GenericRowWithSchema(values.toArray, schema)
+    }
+
     def fromObjectNodeToChangeFeedRowV1(schema: StructType,
                                         objectNode: ObjectNode,
                                         schemaConversionMode: SchemaConversionMode): Row = {
@@ -785,6 +798,31 @@ private[cosmos] class CosmosRowConverterBase(
                 parseLsn(objectNode)
             case StructField(name, dataType, _, _) =>
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orNull
+        }
+
+    private def convertStructToSparkDataTypeWithComputedColumns(
+                                                                 schema: StructType,
+                                                                 objectNode: ObjectNode,
+                                                                 schemaConversionMode: SchemaConversionMode,
+                                                                 computedColumns: Map[String, (ObjectNode) => Any]): Seq[Any] =
+        schema.fields.map {
+            case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
+                objectNode.toString
+            case StructField(CosmosTableSchemaInferrer.PreviousRawJsonBodyAttributeName, StringType, _, _) =>
+                getAttributeNodeAsString(objectNode, PreviousRawJsonBodyAttributeName)
+            case StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType, _, _) =>
+                parseOperationType(objectNode)
+            case StructField(CosmosTableSchemaInferrer.TtlExpiredAttributeName, BooleanType, _, _) =>
+                parseTtlExpired(objectNode)
+            case StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType, _, _) =>
+                parseLsn(objectNode)
+            case StructField(name, dataType, _, _) =>
+                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orElse {
+                    computedColumns.get(name) match {
+                        case Some(function) => Some(function.apply(objectNode))
+                        case _ => None
+                    }
+                }.orNull
         }
 
     private def convertStructToChangeFeedSparkDataTypeV1(schema: StructType,

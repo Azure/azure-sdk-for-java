@@ -82,7 +82,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Creates an instance of ImageAnalysisResult class.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @param modelVersion the modelVersion value to set.
      */
@@ -96,7 +96,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the caption property: The generated phrase that describes the content of the analyzed image.
-     * 
+     *
      * @return the caption value.
      */
     @Generated
@@ -108,7 +108,7 @@ public final class ImageAnalysisResult {
      * Get the denseCaptions property: The up to 10 generated phrases, the first describing the content of the whole
      * image,
      * and the others describing the content of different regions of the image.
-     * 
+     *
      * @return the denseCaptions value.
      */
     @Generated
@@ -118,7 +118,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the metadata property: Metadata associated with the analyzed image.
-     * 
+     *
      * @return the metadata value.
      */
     @Generated
@@ -128,7 +128,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the modelVersion property: The cloud AI model used for the analysis.
-     * 
+     *
      * @return the modelVersion value.
      */
     @Generated
@@ -138,7 +138,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the objects property: A list of detected physical objects in the analyzed image, and their location.
-     * 
+     *
      * @return the objects value.
      */
     @Generated
@@ -148,7 +148,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the people property: A list of detected people in the analyzed image, and their location.
-     * 
+     *
      * @return the people value.
      */
     @Generated
@@ -158,7 +158,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the read property: The extracted printed and hand-written text in the analyze image. Also knows as OCR.
-     * 
+     *
      * @return the read value.
      */
     @Generated
@@ -171,7 +171,7 @@ public final class ImageAnalysisResult {
      * used as image thumbnails.
      * These regions preserve as much content as possible from the analyzed image, with priority given to detected
      * faces.
-     * 
+     *
      * @return the smartCrops value.
      */
     @Generated
@@ -181,7 +181,7 @@ public final class ImageAnalysisResult {
 
     /**
      * Get the tags property: A list of content tags in the analyzed image.
-     * 
+     *
      * @return the tags value.
      */
     @Generated

@@ -34,6 +34,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
+import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 
 /**
  * An asynchronous REST proxy implementation.
@@ -271,12 +272,12 @@ public class AsyncRestProxy extends RestProxyBase {
                 .doOnEach(signal -> {
                     if (signal.hasValue()) {
                         int statusCode = signal.get().getSourceResponse().getStatusCode();
-                        tracer.end(statusCode >= 400 ? "" : null, null, span);
+                        tracer.end(statusCode >= 400 ? String.valueOf(statusCode) : null, null, span);
                     } else if (signal.isOnError()) {
                         tracer.end(null, signal.getThrowable(), span);
                     }
                 })
-                .doOnCancel(() -> tracer.end("cancel", null, span))
+                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
         }
 

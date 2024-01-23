@@ -14,21 +14,21 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"datahl\",\"type\":\"Guid\",\"value\":\"datagbcroltddifyw\",\"direction\":\"Output\",\"size\":1798739332}")
+            "{\"name\":\"datau\",\"type\":\"DateTimeOffset\",\"value\":\"datajoshmmzotcpf\",\"direction\":\"Output\",\"size\":119206096}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.GUID, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(1798739332, model.size());
+        Assertions.assertEquals(119206096, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("datahl")
-            .withType(ScriptActivityParameterType.GUID).withValue("datagbcroltddifyw")
-            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(1798739332);
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datau")
+            .withType(ScriptActivityParameterType.DATE_TIME_OFFSET).withValue("datajoshmmzotcpf")
+            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(119206096);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.GUID, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(1798739332, model.size());
+        Assertions.assertEquals(119206096, model.size());
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Identity for the image template. */
+/**
+ * Identity for the image template.
+ */
 @Fluent
 public final class ImageTemplateIdentity {
     /*
@@ -22,21 +24,24 @@ public final class ImageTemplateIdentity {
     /*
      * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
      * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of ImageTemplateIdentity class. */
+    /**
+     * Creates an instance of ImageTemplateIdentity class.
+     */
     public ImageTemplateIdentity() {
     }
 
     /**
      * Get the type property: The type of identity used for the image template. The type 'None' will remove any
      * identities from the image template.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -46,7 +51,7 @@ public final class ImageTemplateIdentity {
     /**
      * Set the type property: The type of identity used for the image template. The type 'None' will remove any
      * identities from the image template.
-     *
+     * 
      * @param type the type value to set.
      * @return the ImageTemplateIdentity object itself.
      */
@@ -60,7 +65,7 @@ public final class ImageTemplateIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -72,7 +77,7 @@ public final class ImageTemplateIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ImageTemplateIdentity object itself.
      */
@@ -83,19 +88,16 @@ public final class ImageTemplateIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

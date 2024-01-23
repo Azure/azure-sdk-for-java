@@ -497,6 +497,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Class<T> domainType = entityInformation.getJavaType();
 
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
+            generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();

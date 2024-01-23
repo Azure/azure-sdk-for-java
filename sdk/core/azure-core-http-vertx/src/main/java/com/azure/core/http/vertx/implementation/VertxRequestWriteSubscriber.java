@@ -34,6 +34,14 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private volatile State state = State.UNINITIALIZED;
     private volatile Throwable error;
 
+    /**
+     * Creates a new {@link VertxRequestWriteSubscriber} that writes a stream of {@link ByteBuffer ByteBuffers} to a
+     * {@link HttpClientRequest Vert.x request}.
+     *
+     * @param request The {@link HttpClientRequest Vert.x request} to write to.
+     * @param emitter The {@link MonoSink} to emit the {@link HttpResponse response} to.
+     * @param progressReporter The {@link ProgressReporter} to report progress to.
+     */
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
         ProgressReporter progressReporter) {
         this.request = request.exceptionHandler(this::onError)

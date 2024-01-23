@@ -4,11 +4,11 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported user-assigned service identity for `StorageAccount` in create and update. 
 
 ### Other Changes
+
+- Added dependency of `azure-resourcemanager-msi` and `azure-resourcemanager-authorization`.
 
 ## 2.34.0 (2023-12-22)
 

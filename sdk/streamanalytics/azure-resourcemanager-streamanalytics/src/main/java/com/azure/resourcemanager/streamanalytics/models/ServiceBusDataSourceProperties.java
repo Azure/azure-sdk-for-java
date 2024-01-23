@@ -5,33 +5,29 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The common properties that are associated with Service Bus data sources (Queues, Topics, Event Hubs, etc.). */
+/**
+ * The common properties that are associated with Service Bus data sources (Queues, Topics, Event Hubs, etc.).
+ */
 @Fluent
 public class ServiceBusDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusDataSourceProperties.class);
-
     /*
-     * The namespace that is associated with the desired Event Hub, Service Bus
-     * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
-     * requests.
+     * The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required
+     * on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "serviceBusNamespace")
     private String serviceBusNamespace;
 
     /*
-     * The shared access policy name for the Event Hub, Service Bus Queue,
-     * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
+     * The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
+     * (CreateOrReplace) requests.
      */
     @JsonProperty(value = "sharedAccessPolicyName")
     private String sharedAccessPolicyName;
 
     /*
-     * The shared access policy key for the specified shared access policy.
-     * Required on PUT (CreateOrReplace) requests.
+     * The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "sharedAccessPolicyKey")
     private String sharedAccessPolicyKey;
@@ -43,9 +39,15 @@ public class ServiceBusDataSourceProperties {
     private AuthenticationMode authenticationMode;
 
     /**
+     * Creates an instance of ServiceBusDataSourceProperties class.
+     */
+    public ServiceBusDataSourceProperties() {
+    }
+
+    /**
      * Get the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
@@ -55,7 +57,7 @@ public class ServiceBusDataSourceProperties {
     /**
      * Set the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serviceBusNamespace the serviceBusNamespace value to set.
      * @return the ServiceBusDataSourceProperties object itself.
      */
@@ -67,7 +69,7 @@ public class ServiceBusDataSourceProperties {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -77,7 +79,7 @@ public class ServiceBusDataSourceProperties {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the ServiceBusDataSourceProperties object itself.
      */
@@ -89,7 +91,7 @@ public class ServiceBusDataSourceProperties {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -99,7 +101,7 @@ public class ServiceBusDataSourceProperties {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the ServiceBusDataSourceProperties object itself.
      */
@@ -110,7 +112,7 @@ public class ServiceBusDataSourceProperties {
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -119,7 +121,7 @@ public class ServiceBusDataSourceProperties {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the ServiceBusDataSourceProperties object itself.
      */
@@ -130,7 +132,7 @@ public class ServiceBusDataSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

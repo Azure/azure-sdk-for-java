@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes an input data source that contains stream data. */
+/**
+ * Describes an input data source that contains stream data.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,15 +22,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Microsoft.Storage/Blob", value = BlobStreamInputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/EventHub", value = EventHubStreamInputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.EventHub/EventHub", value = EventHubV2StreamInputDataSource.class),
-    @JsonSubTypes.Type(name = "Microsoft.Devices/IotHubs", value = IoTHubStreamInputDataSource.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.Devices/IotHubs", value = IoTHubStreamInputDataSource.class),
+    @JsonSubTypes.Type(name = "Raw", value = RawStreamInputDataSource.class),
+    @JsonSubTypes.Type(name = "GatewayMessageBus", value = GatewayMessageBusStreamInputDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.EventGrid/EventSubscriptions", value = EventGridStreamInputDataSource.class) })
 @Immutable
 public class StreamInputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamInputDataSource.class);
+    /**
+     * Creates an instance of StreamInputDataSource class.
+     */
+    public StreamInputDataSource() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
