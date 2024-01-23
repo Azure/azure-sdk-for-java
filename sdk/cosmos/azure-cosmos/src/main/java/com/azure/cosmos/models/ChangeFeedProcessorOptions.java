@@ -378,7 +378,7 @@ public final class ChangeFeedProcessorOptions {
     /***
      * Set the feed poll local throughput control config.
      *
-     * Please use this config with cautious. By default, CFP will try to process the changes as fast as possible,
+     * Please use this config with caution. By default, CFP will try to process the changes as fast as possible,
      * only use this config if you want to limit the RU can be used for your change feed processing.
      * By using this config, it can possibly slow down the process and causing the lag.
      * 
