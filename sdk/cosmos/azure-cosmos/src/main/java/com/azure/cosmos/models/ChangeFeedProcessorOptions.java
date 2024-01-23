@@ -380,7 +380,7 @@ public final class ChangeFeedProcessorOptions {
      *
      * Please use this config with caution. By default, CFP will try to process the changes as fast as possible,
      * only use this config if you want to limit the RU that can be used for your change feed processing.
-     * By using this config, it can possibly slow down the process and causing the lag.
+     * By using this config, it can slow down the process and cause the lag.
      * 
      * For direct mode, please configure the throughput control group with the (total RU you would allow for changeFeed processing).
      * For gateway mode, please configure the throughput control group with the (total RU you would allow for changeFeed processing / total CFP Instances).
