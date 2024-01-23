@@ -4,7 +4,15 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
+import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
+import com.azure.ai.openai.assistants.models.AssistantThread;
+import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.RunStatus;
+import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -12,24 +20,30 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureAssistantsClientTest extends AssistantsClientTestBase {
+public class AssistantsSyncTest extends AssistantsClientTestBase {
     private AssistantsClient client;
 
-    private AssistantsClient getAssistantsClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        return getAzureAssistantsClientBuilder(buildAssertingClient(
-                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
-                serviceVersion)
+    private AssistantsClient getAssistantsClient(HttpClient httpClient) {
+        return getAssistantsClientBuilder(buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
                 .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createAndThenDeleteAssistant(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
+        client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
             // Create an assistant
@@ -46,12 +60,11 @@ public class AzureAssistantsClientTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createAndThenDeleteAssistantWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
+        client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
-            Response<BinaryData> response = client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), new RequestOptions());
-
-            Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
             // Create an assistant
+            Response<BinaryData> response = client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), new RequestOptions());
+            Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
             assertEquals(assistantCreationOptions.getName(), assistant.getName());
             assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
             assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());

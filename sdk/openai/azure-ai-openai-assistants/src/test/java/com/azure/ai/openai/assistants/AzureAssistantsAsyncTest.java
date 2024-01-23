@@ -18,7 +18,7 @@ import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMEN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureAssistantsAsyncClientTest extends AssistantsClientTestBase {
+public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
     private AssistantsAsyncClient client;
 
     private AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {

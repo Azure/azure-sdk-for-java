@@ -67,21 +67,11 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     public static String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
 
-    @Test
-    public abstract void createAndThenDeleteAssistant(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void createAndThenDeleteAssistantWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less."));
     }
-
-//    @Test
-//    public abstract void createThread(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-//
 
     void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
