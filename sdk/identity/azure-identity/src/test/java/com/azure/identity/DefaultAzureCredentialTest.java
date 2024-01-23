@@ -409,4 +409,38 @@ public class DefaultAzureCredentialTest {
         StepVerifier.create(credential.getToken(request))
             .verifyErrorMatches(e -> e.getCause() instanceof MsalServiceException);
     }
+
+    @Test
+    public void testCredentialCaching() {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
+        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
+        // mock
+        try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithAzureCli(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithAzurePowerShell(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithSharedTokenCache(request, null)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithIntelliJ(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithVsCodeCredential(any(), any())).thenReturn(Mono.empty());
+        }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+        })) {
+
+            // test
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+
+            StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
+
+
+        }
+    }
 }
