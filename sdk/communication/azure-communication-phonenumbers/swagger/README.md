@@ -66,7 +66,6 @@ directive:
       $["properties"]["billingFrequency"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
 directive:
@@ -149,7 +148,6 @@ directive:
       $["properties"]["localizedName"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberLocalities properties
 ```yaml
 directive:
@@ -211,4 +209,10 @@ directive:
 directive:
   where-model: PurchasedPhoneNumber
   remove-property: phoneNumberSource
+```
+
+# Removed Model Error
+``` yaml
+directive:
+  - remove-model: Error
 ```
