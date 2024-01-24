@@ -23,6 +23,11 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     public static final CreateMode RESTORE = fromString("Restore");
 
     /**
+     * Static value PointInTimeRestore for CreateMode.
+     */
+    public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
+
+    /**
      * Creates a new instance of CreateMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

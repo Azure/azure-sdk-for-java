@@ -113,6 +113,12 @@ public final class DataCenterResourceProperties {
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
 
+    /*
+     * Ip of the VPN Endpoint for this data center.
+     */
+    @JsonProperty(value = "privateEndpointIpAddress")
+    private String privateEndpointIpAddress;
+
     /**
      * Creates an instance of DataCenterResourceProperties class.
      */
@@ -435,6 +441,26 @@ public final class DataCenterResourceProperties {
      */
     public DataCenterResourceProperties withProvisionError(CassandraError provisionError) {
         this.provisionError = provisionError;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointIpAddress property: Ip of the VPN Endpoint for this data center.
+     * 
+     * @return the privateEndpointIpAddress value.
+     */
+    public String privateEndpointIpAddress() {
+        return this.privateEndpointIpAddress;
+    }
+
+    /**
+     * Set the privateEndpointIpAddress property: Ip of the VPN Endpoint for this data center.
+     * 
+     * @param privateEndpointIpAddress the privateEndpointIpAddress value to set.
+     * @return the DataCenterResourceProperties object itself.
+     */
+    public DataCenterResourceProperties withPrivateEndpointIpAddress(String privateEndpointIpAddress) {
+        this.privateEndpointIpAddress = privateEndpointIpAddress;
         return this;
     }
 

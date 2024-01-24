@@ -40,6 +40,15 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
      * {@inheritDoc}
      */
     @Override
+    public ThroughputSettingsUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ThroughputSettingsUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

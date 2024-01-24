@@ -179,6 +179,16 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
      */
     @Override
     public RestorableSqlContainerPropertiesResourceContainer
+        withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer
         withComputedProperties(List<ComputedProperty> computedProperties) {
         super.withComputedProperties(computedProperties);
         return this;

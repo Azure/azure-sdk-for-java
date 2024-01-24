@@ -12,7 +12,8 @@ import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionState
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/
      * CosmosDBPrivateEndpointConnectionUpdate.json
      */
     /**

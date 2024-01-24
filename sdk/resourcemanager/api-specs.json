@@ -82,7 +82,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2023-11"
+    "args": "--tag=package-preview-2023-11 --modelerfour.lenient-model-deduplication"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",

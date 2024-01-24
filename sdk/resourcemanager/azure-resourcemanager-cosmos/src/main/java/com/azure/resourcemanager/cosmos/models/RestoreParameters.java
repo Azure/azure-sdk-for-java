@@ -38,6 +38,12 @@ public final class RestoreParameters extends RestoreParametersBase {
     @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
 
+    /*
+     * The source backup location for restore.
+     */
+    @JsonProperty(value = "sourceBackupLocation")
+    private String sourceBackupLocation;
+
     /**
      * Creates an instance of RestoreParameters class.
      */
@@ -122,6 +128,26 @@ public final class RestoreParameters extends RestoreParametersBase {
      */
     public RestoreParameters withTablesToRestore(List<String> tablesToRestore) {
         this.tablesToRestore = tablesToRestore;
+        return this;
+    }
+
+    /**
+     * Get the sourceBackupLocation property: The source backup location for restore.
+     * 
+     * @return the sourceBackupLocation value.
+     */
+    public String sourceBackupLocation() {
+        return this.sourceBackupLocation;
+    }
+
+    /**
+     * Set the sourceBackupLocation property: The source backup location for restore.
+     * 
+     * @param sourceBackupLocation the sourceBackupLocation value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withSourceBackupLocation(String sourceBackupLocation) {
+        this.sourceBackupLocation = sourceBackupLocation;
         return this;
     }
 

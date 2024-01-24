@@ -160,6 +160,16 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      * {@inheritDoc}
      */
     @Override
+    public SqlContainerGetPropertiesResource
+        withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlContainerGetPropertiesResource withComputedProperties(List<ComputedProperty> computedProperties) {
         super.withComputedProperties(computedProperties);
         return this;
