@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocation;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedCluster;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterProperties;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusters;
 
-public final class ProvisionedClustersImpl implements ProvisionedClusters {
-    private ProvisionedClustersInner innerObject;
+public final class ProvisionedClusterImpl implements ProvisionedCluster {
+    private ProvisionedClusterInner innerObject;
 
     private final com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager;
 
-    ProvisionedClustersImpl(ProvisionedClustersInner innerObject,
+    ProvisionedClusterImpl(ProvisionedClusterInner innerObject,
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -45,7 +45,7 @@ public final class ProvisionedClustersImpl implements ProvisionedClusters {
         return this.innerModel().systemData();
     }
 
-    public ProvisionedClustersInner innerModel() {
+    public ProvisionedClusterInner innerModel() {
         return this.innerObject;
     }
 

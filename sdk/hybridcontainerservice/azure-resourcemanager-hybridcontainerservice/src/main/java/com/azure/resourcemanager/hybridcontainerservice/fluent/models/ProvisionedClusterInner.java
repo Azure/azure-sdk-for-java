@@ -12,18 +12,18 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedCluste
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The provisionedClusterInstances resource definition.
+ * The provisioned cluster resource definition.
  */
 @Fluent
-public final class ProvisionedClustersInner extends ProxyResource {
+public final class ProvisionedClusterInner extends ProxyResource {
     /*
-     * All properties of the provisioned cluster
+     * Properties of the provisioned cluster.
      */
     @JsonProperty(value = "properties")
     private ProvisionedClusterProperties properties;
 
     /*
-     * Extended Location definition
+     * Extended location pointing to the underlying infrastructure
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
@@ -35,13 +35,13 @@ public final class ProvisionedClustersInner extends ProxyResource {
     private SystemData systemData;
 
     /**
-     * Creates an instance of ProvisionedClustersInner class.
+     * Creates an instance of ProvisionedClusterInner class.
      */
-    public ProvisionedClustersInner() {
+    public ProvisionedClusterInner() {
     }
 
     /**
-     * Get the properties property: All properties of the provisioned cluster.
+     * Get the properties property: Properties of the provisioned cluster.
      * 
      * @return the properties value.
      */
@@ -50,18 +50,18 @@ public final class ProvisionedClustersInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: All properties of the provisioned cluster.
+     * Set the properties property: Properties of the provisioned cluster.
      * 
      * @param properties the properties value to set.
-     * @return the ProvisionedClustersInner object itself.
+     * @return the ProvisionedClusterInner object itself.
      */
-    public ProvisionedClustersInner withProperties(ProvisionedClusterProperties properties) {
+    public ProvisionedClusterInner withProperties(ProvisionedClusterProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
-     * Get the extendedLocation property: Extended Location definition.
+     * Get the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -70,12 +70,12 @@ public final class ProvisionedClustersInner extends ProxyResource {
     }
 
     /**
-     * Set the extendedLocation property: Extended Location definition.
+     * Set the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @param extendedLocation the extendedLocation value to set.
-     * @return the ProvisionedClustersInner object itself.
+     * @return the ProvisionedClusterInner object itself.
      */
-    public ProvisionedClustersInner withExtendedLocation(ExtendedLocation extendedLocation) {
+    public ProvisionedClusterInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
     }

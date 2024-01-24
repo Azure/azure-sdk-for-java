@@ -78,16 +78,16 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VmSkuProfileInner>> listSinglePageAsync(String customLocationResourceUri) {
@@ -109,17 +109,17 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VmSkuProfileInner>> listSinglePageAsync(String customLocationResourceUri,
@@ -141,16 +141,16 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources as paginated response with {@link PagedFlux}.
+     * @return the list of supported VM SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VmSkuProfileInner> listAsync(String customLocationResourceUri) {
@@ -159,17 +159,17 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources as paginated response with {@link PagedFlux}.
+     * @return the list of supported VM SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VmSkuProfileInner> listAsync(String customLocationResourceUri, Context context) {
@@ -178,16 +178,16 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources as paginated response with {@link PagedIterable}.
+     * @return the list of supported VM SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmSkuProfileInner> list(String customLocationResourceUri) {
@@ -195,17 +195,17 @@ public final class VMSkusClientImpl implements VMSkusClient {
     }
 
     /**
-     * Lists the supported VM SKUs
+     * Lists the supported VM skus
      * 
-     * Lists the supported VM SKUs from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources as paginated response with {@link PagedIterable}.
+     * @return the list of supported VM SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VmSkuProfileInner> list(String customLocationResourceUri, Context context) {
@@ -221,7 +221,7 @@ public final class VMSkusClientImpl implements VMSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VmSkuProfileInner>> listNextSinglePageAsync(String nextLink) {
@@ -249,7 +249,7 @@ public final class VMSkusClientImpl implements VMSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of VM SKU resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VmSkuProfileInner>> listNextSinglePageAsync(String nextLink, Context context) {

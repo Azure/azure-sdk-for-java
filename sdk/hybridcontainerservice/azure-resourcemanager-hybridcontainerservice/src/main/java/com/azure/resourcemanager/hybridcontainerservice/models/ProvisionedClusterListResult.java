@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of provisioned clusters resources.
+ * Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
  */
 @Fluent
-public final class ProvisionedClustersListResult {
+public final class ProvisionedClusterListResult {
     /*
      * The value property.
      */
     @JsonProperty(value = "value")
-    private List<ProvisionedClustersInner> value;
+    private List<ProvisionedClusterInner> value;
 
     /*
      * The nextLink property.
@@ -27,9 +27,9 @@ public final class ProvisionedClustersListResult {
     private String nextLink;
 
     /**
-     * Creates an instance of ProvisionedClustersListResult class.
+     * Creates an instance of ProvisionedClusterListResult class.
      */
-    public ProvisionedClustersListResult() {
+    public ProvisionedClusterListResult() {
     }
 
     /**
@@ -37,7 +37,7 @@ public final class ProvisionedClustersListResult {
      * 
      * @return the value value.
      */
-    public List<ProvisionedClustersInner> value() {
+    public List<ProvisionedClusterInner> value() {
         return this.value;
     }
 
@@ -45,9 +45,9 @@ public final class ProvisionedClustersListResult {
      * Set the value property: The value property.
      * 
      * @param value the value value to set.
-     * @return the ProvisionedClustersListResult object itself.
+     * @return the ProvisionedClusterListResult object itself.
      */
-    public ProvisionedClustersListResult withValue(List<ProvisionedClustersInner> value) {
+    public ProvisionedClusterListResult withValue(List<ProvisionedClusterInner> value) {
         this.value = value;
         return this;
     }
@@ -65,9 +65,9 @@ public final class ProvisionedClustersListResult {
      * Set the nextLink property: The nextLink property.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the ProvisionedClustersListResult object itself.
+     * @return the ProvisionedClusterListResult object itself.
      */
-    public ProvisionedClustersListResult withNextLink(String nextLink) {
+    public ProvisionedClusterListResult withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

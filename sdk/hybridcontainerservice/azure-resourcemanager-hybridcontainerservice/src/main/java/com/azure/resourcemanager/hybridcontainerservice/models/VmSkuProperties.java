@@ -9,36 +9,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The profile for supported VM skus.
+ * The profile for supported VM SKUs.
  */
 @Immutable
 public final class VmSkuProperties {
     /*
-     * The resource type of the vm
+     * The type of resource the SKU applies to.
      */
     @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
-     * A name value pair to describe the specific vm's capability
+     * The list of name-value pairs to describe VM SKU capabilities like MemoryGB, vCPUs, etc.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<VmSkuCapabilities> capabilities;
 
     /*
-     * The name of the VM Family
+     * The name of the VM SKU
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The tier of the VM Family
+     * The tier of the VM SKU
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
-     * The size of the VM Family
+     * The size of the VM SKU
      */
     @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
@@ -50,7 +50,7 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the resourceType property: The resource type of the vm.
+     * Get the resourceType property: The type of resource the SKU applies to.
      * 
      * @return the resourceType value.
      */
@@ -59,7 +59,8 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the capabilities property: A name value pair to describe the specific vm's capability.
+     * Get the capabilities property: The list of name-value pairs to describe VM SKU capabilities like MemoryGB,
+     * vCPUs, etc.
      * 
      * @return the capabilities value.
      */
@@ -68,7 +69,7 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the name property: The name of the VM Family.
+     * Get the name property: The name of the VM SKU.
      * 
      * @return the name value.
      */
@@ -77,7 +78,7 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the tier property: The tier of the VM Family.
+     * Get the tier property: The tier of the VM SKU.
      * 
      * @return the tier value.
      */
@@ -86,7 +87,7 @@ public final class VmSkuProperties {
     }
 
     /**
-     * Get the size property: The size of the VM Family.
+     * Get the size property: The size of the VM SKU.
      * 
      * @return the size value.
      */

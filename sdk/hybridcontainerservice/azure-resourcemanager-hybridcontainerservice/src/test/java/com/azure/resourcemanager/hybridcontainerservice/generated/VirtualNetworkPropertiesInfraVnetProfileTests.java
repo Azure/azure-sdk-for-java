@@ -7,31 +7,28 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfileHci;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfileVmware;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkPropertiesInfraVnetProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkPropertiesInfraVnetProfile model = BinaryData.fromString(
-            "{\"hci\":{\"mocGroup\":\"d\",\"mocLocation\":\"ygdvwv\",\"mocVnetName\":\"iohgwxrtfud\"},\"vmware\":{\"segmentName\":\"xg\"}}")
+        VirtualNetworkPropertiesInfraVnetProfile model = BinaryData
+            .fromString(
+                "{\"hci\":{\"mocGroup\":\"iplbpodxunkbebxm\",\"mocLocation\":\"yyntwl\",\"mocVnetName\":\"qtkoievs\"}}")
             .toObject(VirtualNetworkPropertiesInfraVnetProfile.class);
-        Assertions.assertEquals("d", model.hci().mocGroup());
-        Assertions.assertEquals("ygdvwv", model.hci().mocLocation());
-        Assertions.assertEquals("iohgwxrtfud", model.hci().mocVnetName());
-        Assertions.assertEquals("xg", model.vmware().segmentName());
+        Assertions.assertEquals("iplbpodxunkbebxm", model.hci().mocGroup());
+        Assertions.assertEquals("yyntwl", model.hci().mocLocation());
+        Assertions.assertEquals("qtkoievs", model.hci().mocVnetName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkPropertiesInfraVnetProfile model = new VirtualNetworkPropertiesInfraVnetProfile()
-            .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("d").withMocLocation("ygdvwv")
-                .withMocVnetName("iohgwxrtfud"))
-            .withVmware(new VirtualNetworkPropertiesInfraVnetProfileVmware().withSegmentName("xg"));
+        VirtualNetworkPropertiesInfraVnetProfile model
+            = new VirtualNetworkPropertiesInfraVnetProfile().withHci(new VirtualNetworkPropertiesInfraVnetProfileHci()
+                .withMocGroup("iplbpodxunkbebxm").withMocLocation("yyntwl").withMocVnetName("qtkoievs"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPropertiesInfraVnetProfile.class);
-        Assertions.assertEquals("d", model.hci().mocGroup());
-        Assertions.assertEquals("ygdvwv", model.hci().mocLocation());
-        Assertions.assertEquals("iohgwxrtfud", model.hci().mocVnetName());
-        Assertions.assertEquals("xg", model.vmware().segmentName());
+        Assertions.assertEquals("iplbpodxunkbebxm", model.hci().mocGroup());
+        Assertions.assertEquals("yyntwl", model.hci().mocLocation());
+        Assertions.assertEquals("qtkoievs", model.hci().mocVnetName());
     }
 }
