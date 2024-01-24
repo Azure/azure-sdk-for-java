@@ -25,6 +25,8 @@ public final class MultipartFormDataHelper {
      */
     private static final String CRLF = "\r\n";
 
+    private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
+
     /**
      * Value to be used as part of the divider for the multipart requests.
      */
@@ -112,50 +114,56 @@ public final class MultipartFormDataHelper {
         return this;
     }
 
-    // application/octet-stream
     /**
-     * Formats a application/octet-stream field for a multipart HTTP request.
+     * Formats a file field for a multipart HTTP request.
      *
      * @param fieldName the field name
      * @param file the BinaryData of the file
+     * @param contentType the content-type of the file
      * @param filename the filename
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataHelper serializeFileField(String fieldName, BinaryData file, String filename) {
+    public MultipartFormDataHelper serializeFileField(String fieldName, BinaryData file, String contentType,
+        String filename) {
         if (file != null) {
+            if (CoreUtils.isNullOrEmpty(contentType)) {
+                contentType = APPLICATION_OCTET_STREAM;
+            }
             if (CoreUtils.isNullOrEmpty(filename)) {
                 filename = fieldName;
             }
             filename = normalizeAscii(filename);
 
-            writeFileField(fieldName, file, filename);
+            writeFileField(fieldName, file, contentType, filename);
         }
         return this;
     }
 
-    // application/octet-stream, multiple files
     /**
-     * Formats a application/octet-stream field (potentially multiple files) for a multipart HTTP request.
+     * Formats a file field (potentially multiple files) for a multipart HTTP request.
      *
      * @param fieldName the field name
      * @param files the List of BinaryData of the files
-     * @param filenames the List of filenames.
-     * If it is {@code null}, or the size of the List is smaller than that of "files", implementation-specific filename
-     * is used.
+     * @param contentTypes the List of content-type of the files
+     * @param filenames the List of filenames
      * @return the MultipartFormDataHelper instance
      */
     public MultipartFormDataHelper serializeFileFields(String fieldName, List<BinaryData> files,
-        List<String> filenames) {
+        List<String> contentTypes, List<String> filenames) {
         if (files != null) {
             for (int i = 0; i < files.size(); ++i) {
                 BinaryData file = files.get(i);
-                String filename = (filenames != null && filenames.size() > i) ? filenames.get(i) : null;
+                String contentType = contentTypes.get(i);
+                if (CoreUtils.isNullOrEmpty(contentType)) {
+                    contentType = APPLICATION_OCTET_STREAM;
+                }
+                String filename = filenames.get(i);
                 if (CoreUtils.isNullOrEmpty(filename)) {
                     filename = fieldName + String.valueOf(i + 1);
                 }
                 filename = normalizeAscii(filename);
 
-                writeFileField(fieldName, file, filename);
+                writeFileField(fieldName, file, contentType, filename);
             }
         }
         return this;
@@ -178,10 +186,10 @@ public final class MultipartFormDataHelper {
         return this;
     }
 
-    private void writeFileField(String fieldName, BinaryData file, String filename) {
+    private void writeFileField(String fieldName, BinaryData file, String contentType, String filename) {
         // Multipart preamble
         String fileFieldPreamble = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName
-            + "\"; filename=\"" + filename + "\"" + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
+            + "\"; filename=\"" + filename + "\"" + CRLF + "Content-Type: " + contentType + CRLF + CRLF;
         byte[] data = fileFieldPreamble.getBytes(encoderCharset);
         appendBytes(data);
 
