@@ -24,6 +24,12 @@ public final class HttpClientProviders {
         // no-op
     }
 
+    /**
+     * Creates a new instance of the {@link HttpClient} that this {@link HttpClientProvider} is configured to create.
+     *
+     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created
+     * previously.
+     */
     public static HttpClient createInstance() {
         return HTTP_CLIENT_PROVIDERS.create(HttpClientProvider::createInstance, new DefaultHttpClientBuilder().build(),
             null);

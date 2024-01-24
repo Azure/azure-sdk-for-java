@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.generic.core.models;
 
 import com.generic.core.implementation.util.SliceInputStream;
@@ -13,6 +16,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
@@ -104,6 +108,11 @@ public class FileBinaryData extends BinaryData {
         return this.length;
     }
 
+    /**
+     * Gets the position, or offset, within the path where reading begins.
+     *
+     * @return The position, or offset, within the path where reading begins.
+     */
     public long getPosition() {
         return position;
     }
@@ -124,7 +133,7 @@ public class FileBinaryData extends BinaryData {
 
     @Override
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserialize(toStream(), typeReference);
+        return serializer.deserializeFromStream(toStream(), typeReference);
     }
 
     @Override
@@ -136,7 +145,7 @@ public class FileBinaryData extends BinaryData {
         }
     }
 
-    protected FileInputStream getFileInputStream() throws FileNotFoundException {
+    FileInputStream getFileInputStream() throws FileNotFoundException {
         return new FileInputStream(file.toFile());
     }
 
@@ -151,10 +160,7 @@ public class FileBinaryData extends BinaryData {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        try (FileInputStream inputStream = new FileInputStream(file.toFile())) {
-            inputStream.skip(position); // Set the FileInputStream reader to the offset represented by position.
-            inputStream.transferTo(outputStream);
-        }
+        writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
@@ -164,7 +170,7 @@ public class FileBinaryData extends BinaryData {
         }
     }
 
-    protected ByteBuffer toByteBufferInternal() {
+    ByteBuffer toByteBufferInternal() {
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
@@ -176,7 +182,7 @@ public class FileBinaryData extends BinaryData {
         }
     }
 
-    protected AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
+    AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
         return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 

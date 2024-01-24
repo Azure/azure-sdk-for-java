@@ -151,7 +151,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static byte[] asJsonByteArray(Object object) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        SERIALIZER.serialize(stream, object);
+        SERIALIZER.serializeToStream(stream, object);
 
         return stream.toByteArray();
     }

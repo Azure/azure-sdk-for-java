@@ -211,7 +211,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try(HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {

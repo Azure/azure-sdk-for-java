@@ -52,7 +52,7 @@ public class RangeReplaceSubstitution extends Substitution {
         return ranges;
     }
 
-    static final class Range implements Comparable<Range> {
+    public static final class Range implements Comparable<Range> {
         private final int start;
         private final int end;
 

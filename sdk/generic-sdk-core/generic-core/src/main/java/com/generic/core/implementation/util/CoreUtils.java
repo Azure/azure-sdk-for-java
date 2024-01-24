@@ -3,11 +3,6 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.http.Response;
-import com.generic.core.http.models.HttpRequest;
-import com.generic.core.implementation.http.SimpleResponse;
-import com.generic.core.models.Headers;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

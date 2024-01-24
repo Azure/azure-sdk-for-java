@@ -188,7 +188,7 @@ public class DefaultJsonSerializerTests {
     @MethodSource("textSerializationSupplier")
     public void textToOutputStreamSerialization(Object value, String expected) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        SERIALIZER.serialize(outputStream, value);
+        SERIALIZER.serializeToStream(outputStream, value);
 
         if (expected == null) {
             assertEquals(0, outputStream.count());
@@ -240,7 +240,7 @@ public class DefaultJsonSerializerTests {
     @MethodSource("bytesDeserializationSupplier")
     public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected) {
         Object actual =
-            SERIALIZER.deserialize(new ByteArrayInputStream(inputStreamBytes), TypeReference.createInstance(type));
+            SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), TypeReference.createInstance(type));
 
         if (type == byte[].class) {
             assertArraysEqual((byte[]) expected, (byte[]) actual);

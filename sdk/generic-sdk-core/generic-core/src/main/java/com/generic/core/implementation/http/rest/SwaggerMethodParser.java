@@ -584,7 +584,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return (stringValue == null) ? "null" : stringValue;
         } else {
             try (OutputStream outputStream = new ByteArrayOutputStream()) {
-                serializer.serialize(outputStream, value);
+                serializer.serializeToStream(outputStream, value);
 
                 return outputStream.toString();
             } catch (IOException e) {

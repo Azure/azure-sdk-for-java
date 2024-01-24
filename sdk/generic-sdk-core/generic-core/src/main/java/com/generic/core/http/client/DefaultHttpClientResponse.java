@@ -14,7 +14,7 @@ class DefaultHttpClientResponse extends HttpResponse {
     private final Headers headers;
     private final BinaryData body;
 
-    public DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
+    DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;

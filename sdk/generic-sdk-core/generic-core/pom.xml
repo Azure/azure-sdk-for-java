@@ -81,14 +81,15 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
-    <javadoc.excludePackageNames>com.generic.json</javadoc.excludePackageNames>
+
+    <javadoc.excludePackageNames>com.generic.json,com.azure.json,com.azure.xml,com.azure.core*</javadoc.excludePackageNames>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.generic</groupId>
       <artifactId>generic-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core-json;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -98,12 +99,12 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.52.v20230823</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.53.v20231009</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.52.v20230823</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.53.v20231009</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -124,7 +125,7 @@
     <dependency>
       <groupId>com.generic</groupId>
       <artifactId>generic-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core-json;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -143,7 +144,13 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.22</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <version>1.24.0</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>1.1.4</version> <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -178,8 +185,8 @@
                 <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-engine:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-                <include>org.eclipse.jetty:jetty-server:[9.4.52.v20230823]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
-                <include>org.eclipse.jetty:jetty-servlet:[9.4.52.v20230823]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-server:[9.4.53.v20231009]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-servlet:[9.4.53.v20231009]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -190,7 +197,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <plugins>
             <plugin>

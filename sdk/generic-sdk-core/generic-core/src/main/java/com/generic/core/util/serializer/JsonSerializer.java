@@ -22,9 +22,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON byte array.
      */
     @Override
-    default <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
-        return ObjectSerializer.super.deserializeFromBytes(data, typeReference);
-    }
+    <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference);
 
     /**
      * Reads a JSON stream into its object representation.
@@ -36,7 +34,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> T deserialize(InputStream stream, TypeReference<T> typeReference);
+    <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Converts the object into a JSON byte array.
@@ -46,9 +44,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The JSON binary representation of the serialized object.
      */
     @Override
-    default byte[] serializeToBytes(Object value) {
-        return ObjectSerializer.super.serializeToBytes(value);
-    }
+    byte[] serializeToBytes(Object value);
 
     /**
      * Writes an object's JSON representation into a stream.
@@ -57,5 +53,5 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param value The object to serialize.
      */
     @Override
-    void serialize(OutputStream stream, Object value);
+    void serializeToStream(OutputStream stream, Object value);
 }

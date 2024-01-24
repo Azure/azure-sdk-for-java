@@ -15,6 +15,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example:</strong></p>
  *
  * <!-- src_embed com.generic.core.http.annotation.FormParam.class -->
+ * <pre>
+ * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;spellcheck&quot;, returnValueWireType = ResponseBody.class&#41;
+ * Response&lt;ResponseBody&gt; spellChecker&#40;&#64;HeaderParam&#40;&quot;X-BingApis-SDK&quot;&#41; String xBingApisSDK,
+ *     &#64;QueryParam&#40;&quot;UserId&quot;&#41; String userId, &#64;FormParam&#40;&quot;Text&quot;&#41; String text&#41;;
+ * </pre>
  * <!-- end com.generic.core.http.annotation.FormParam.class -->
  *
  * <p>The value of parameter text will be encoded and encoded value will be added to the form data sent to the API.</p>

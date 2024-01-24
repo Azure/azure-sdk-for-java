@@ -39,28 +39,24 @@ public class CredentialsTests {
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
     public void keyCredentialsInvalidArgumentTest(String key, Class<Exception> excepionType) {
-        Assertions.assertThrows(excepionType, () -> {
-            new KeyCredential(key);
-        });
+        Assertions.assertThrows(excepionType, () -> new KeyCredential(key));
     }
 
     @Test
     public void keyCredentialValueTest() {
-        KeyCredential KeyCredential =
-            new KeyCredential(DUMMY_VALUE);
+        KeyCredential keyCredential = new KeyCredential(DUMMY_VALUE);
 
-        Assertions.assertEquals(DUMMY_VALUE, KeyCredential.getKey());
+        Assertions.assertEquals(DUMMY_VALUE, keyCredential.getKey());
     }
 
     @Test
     public void keyCredentialUpdateTest() {
-        KeyCredential KeyCredential =
-            new KeyCredential(DUMMY_NAME);
+        KeyCredential keyCredential = new KeyCredential(DUMMY_NAME);
 
         String expectedValue = "NewValue";
 
-        KeyCredential.update(expectedValue);
+        keyCredential.update(expectedValue);
 
-        Assertions.assertEquals(expectedValue, KeyCredential.getKey());
+        Assertions.assertEquals(expectedValue, keyCredential.getKey());
     }
 }

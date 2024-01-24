@@ -544,7 +544,7 @@ public final class UrlBuilder {
         private boolean done = false;
         private int position;
 
-        public QueryParameterIterator(String queryParameters) {
+        QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
 

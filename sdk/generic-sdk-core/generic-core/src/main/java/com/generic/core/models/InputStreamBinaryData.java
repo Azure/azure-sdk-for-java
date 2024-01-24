@@ -43,6 +43,7 @@ public final class InputStreamBinaryData extends BinaryData {
      * Creates an instance of {@link InputStreamBinaryData}.
      *
      * @param inputStream The inputStream that is used as the content for this instance.
+     * @param length The length of the inputStream.
      * @throws NullPointerException if {@code content} is null.
      */
     public InputStreamBinaryData(InputStream inputStream, Long length) {

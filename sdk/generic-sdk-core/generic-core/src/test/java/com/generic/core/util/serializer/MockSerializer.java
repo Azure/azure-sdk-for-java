@@ -1,13 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.generic.core.util.serializer;
 
-import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
-import com.generic.core.util.serializer.JsonSerializer;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 
 public class MockSerializer implements JsonSerializer {
     @Override
@@ -16,12 +15,7 @@ public class MockSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return null;
-    }
-
-    @Override
-    public <T> T deserialize(Headers headers, Type type) throws IOException {
+    public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
         return null;
     }
 
@@ -31,6 +25,6 @@ public class MockSerializer implements JsonSerializer {
     }
 
     @Override
-    public void serialize(OutputStream stream, Object value) {
+    public void serializeToStream(OutputStream stream, Object value) {
     }
 }

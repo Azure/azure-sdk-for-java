@@ -12,7 +12,6 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.models.Context;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;

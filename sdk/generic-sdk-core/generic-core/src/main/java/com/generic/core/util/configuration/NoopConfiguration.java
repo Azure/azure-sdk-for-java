@@ -12,15 +12,16 @@ import java.util.function.Function;
 class NoopConfiguration extends Configuration {
 
     /**
-     * Constructs a configuration containing the known properties constants. Use {@link ConfigurationBuilder} to
-     * create instance of {@link Configuration}.
+     * Constructs a configuration containing the known properties constants. Use {@link ConfigurationBuilder} to create
+     * instance of {@link Configuration}.
      *
-     * @param configurationSource      Configuration property source.
+     * @param configurationSource Configuration property source.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
-     * @param path                     Absolute path of current configuration section for logging and diagnostics purposes.
-     * @param sharedConfiguration      Instance of shared {@link Configuration} section to retrieve shared properties.
+     * @param path Absolute path of current configuration section for logging and diagnostics purposes.
+     * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    NoopConfiguration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    NoopConfiguration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration,
+        String path, Configuration sharedConfiguration) {
         super(configurationSource, environmentConfiguration, path, sharedConfiguration);
     }
 

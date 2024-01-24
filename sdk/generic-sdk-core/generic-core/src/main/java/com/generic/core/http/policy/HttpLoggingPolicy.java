@@ -3,7 +3,6 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -11,8 +10,10 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
@@ -48,8 +49,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     // or another type of cache, for better cache management.
     private static final int LOGGER_CACHE_MAX_SIZE = 1000;
     private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
-
-    private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
 
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
@@ -197,10 +196,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void logUrl(HttpResponse response, Duration duration, ClientLogger.LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogUrl()) {
-                // logBuilder
-                //     .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
-                //     .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                //     .addKeyValue(LoggingKeys.DURATION_MS_KEY, duration.toMillis());
+                logBuilder
+                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
+                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(),
+                        allowedQueryParameterNames))
+                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, duration.toMillis());
             }
         }
 
@@ -208,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             String contentLengthString = response.getHeaderValue(HeaderName.CONTENT_LENGTH);
 
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
-                // logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
+                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
         }
 
@@ -419,7 +419,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * The log configurations for HTTP messages.
      */
     public static class HttpLogOptions {
-        private String applicationId;
         private HttpLogDetailLevel logLevel;
         private Set<String> allowedHeaderNames;
         private Set<String> allowedQueryParamNames;
@@ -470,7 +469,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logLevel = HttpLogDetailLevel.BASIC; // change
             allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
             allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
-            applicationId = null;
         }
 
         /**
