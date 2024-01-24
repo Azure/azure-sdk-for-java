@@ -24,7 +24,7 @@ public final class IstioIngressGatewayMode extends ExpandableStringEnum<IstioIng
 
     /**
      * Creates a new instance of IstioIngressGatewayMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class IstioIngressGatewayMode extends ExpandableStringEnum<IstioIng
 
     /**
      * Creates or finds a IstioIngressGatewayMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IstioIngressGatewayMode.
      */
@@ -44,7 +44,7 @@ public final class IstioIngressGatewayMode extends ExpandableStringEnum<IstioIng
 
     /**
      * Gets known IstioIngressGatewayMode values.
-     *
+     * 
      * @return known IstioIngressGatewayMode values.
      */
     public static Collection<IstioIngressGatewayMode> values() {

@@ -32,7 +32,7 @@ public final class ManagedClusterOidcIssuerProfile {
 
     /**
      * Get the issuerUrl property: The OIDC issuer url of the Managed Cluster.
-     *
+     * 
      * @return the issuerUrl value.
      */
     public String issuerUrl() {
@@ -41,7 +41,7 @@ public final class ManagedClusterOidcIssuerProfile {
 
     /**
      * Get the enabled property: Whether the OIDC issuer is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -50,7 +50,7 @@ public final class ManagedClusterOidcIssuerProfile {
 
     /**
      * Set the enabled property: Whether the OIDC issuer is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterOidcIssuerProfile object itself.
      */
@@ -61,7 +61,7 @@ public final class ManagedClusterOidcIssuerProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

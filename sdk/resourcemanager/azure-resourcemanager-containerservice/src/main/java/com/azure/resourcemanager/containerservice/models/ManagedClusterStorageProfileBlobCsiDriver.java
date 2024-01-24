@@ -26,7 +26,7 @@ public final class ManagedClusterStorageProfileBlobCsiDriver {
 
     /**
      * Get the enabled property: Whether to enable AzureBlob CSI Driver. The default value is false.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterStorageProfileBlobCsiDriver {
 
     /**
      * Set the enabled property: Whether to enable AzureBlob CSI Driver. The default value is false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStorageProfileBlobCsiDriver object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterStorageProfileBlobCsiDriver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
