@@ -1867,7 +1867,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
-            .enableEncryptionAtHost()
+            .withEncryptionAtHost()
             .create();
 
         Assertions.assertNotNull(vm.innerModel().securityProfile());
@@ -1895,7 +1895,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .create();
 
         vm.deallocate();
-        vm.update().enableEncryptionAtHost().apply();
+        vm.update().withEncryptionAtHost().apply();
 
         Assertions.assertNotNull(vm.innerModel().securityProfile());
         Assertions.assertTrue(vm.isEncryptionAtHost());
@@ -1919,11 +1919,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
-            .enableEncryptionAtHost()
+            .withEncryptionAtHost()
             .create();
 
         vm.deallocate();
-        vm.update().disableEncryptionAtHost().apply();
+        vm.update().withoutEncryptionAtHost().apply();
 
         Assertions.assertNotNull(vm.innerModel().securityProfile());
         Assertions.assertFalse(vm.isEncryptionAtHost());

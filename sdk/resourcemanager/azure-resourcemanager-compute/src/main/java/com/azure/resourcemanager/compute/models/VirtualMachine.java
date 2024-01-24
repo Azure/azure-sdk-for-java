@@ -1948,11 +1948,11 @@ public interface VirtualMachine
         interface WithSecurityProfile {
 
             /**
-             * Enable the Host Encryption for the virtual machine.
+             * Enables the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
-            WithCreate enableEncryptionAtHost();
+            WithCreate withEncryptionAtHost();
         }
 
         /** The stage of a virtual machine definition allowing to specify user data configurations. */
@@ -2546,18 +2546,18 @@ public interface VirtualMachine
         interface WithSecurityProfile {
 
             /**
-             * Enable the Host Encryption for the virtual machine.
+             * Enables the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
-            Update enableEncryptionAtHost();
+            Update withEncryptionAtHost();
 
             /**
-             * Disable the Host Encryption for the virtual machine.
+             * Disables the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
-            Update disableEncryptionAtHost();
+            Update withoutEncryptionAtHost();
         }
 
         /** The stage of the VM update allowing to change delete options of resources attached to this VM . */

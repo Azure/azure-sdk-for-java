@@ -2922,13 +2922,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl enableEncryptionAtHost() {
+    public VirtualMachineImpl withEncryptionAtHost() {
         ensureSecurityProfile().withEncryptionAtHost(true);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl disableEncryptionAtHost() {
+    public VirtualMachineImpl withoutEncryptionAtHost() {
         ensureSecurityProfile().withEncryptionAtHost(false);
         return this;
     }
