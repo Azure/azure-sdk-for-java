@@ -6,9 +6,9 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
@@ -21,8 +21,8 @@ import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
@@ -132,7 +132,7 @@ public abstract class RestProxyBase {
      *
      * @throws IOException If the body contents cannot be serialized.
      */
-    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer ObjectSerializer, Object[] args)
+    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer objectSerializer, Object[] args)
         throws IOException {
 
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
@@ -169,7 +169,7 @@ public abstract class RestProxyBase {
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request =
-            configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, ObjectSerializer, args);
+            configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, objectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         Headers httpHeaders = request.getHeaders();
 
@@ -178,8 +178,8 @@ public abstract class RestProxyBase {
         return request;
     }
 
-    private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
-                                      ObjectSerializer ObjectSerializer, final Object[] args) throws IOException {
+    private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
+        ObjectSerializer objectSerializer, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
@@ -230,7 +230,7 @@ public abstract class RestProxyBase {
             }
 
             updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject),
-                ObjectSerializer);
+                objectSerializer);
         }
 
         return request;

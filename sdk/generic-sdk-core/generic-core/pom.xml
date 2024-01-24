@@ -81,7 +81,8 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
-    <javadoc.excludePackageNames>com.generic.json</javadoc.excludePackageNames>
+
+    <javadoc.excludePackageNames>com.generic.json,com.azure.json,com.azure.xml,com.azure.core*</javadoc.excludePackageNames>
   </properties>
 
   <dependencies>

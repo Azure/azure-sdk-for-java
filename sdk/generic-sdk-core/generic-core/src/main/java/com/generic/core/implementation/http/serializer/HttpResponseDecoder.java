@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;

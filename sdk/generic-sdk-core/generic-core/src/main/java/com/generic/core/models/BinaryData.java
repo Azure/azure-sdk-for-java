@@ -490,7 +490,7 @@ public abstract class BinaryData {
      * <p>This method returns a reference to the underlying byte array. Modifying the contents of the returned byte
      * array may change the content of this BinaryData instance. If the content source of this BinaryData instance is
      * a file, an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the
-     * byte array, it is recommended to make a copy of the contents first.<p>
+     * byte array, it is recommended to make a copy of the contents first.</p>
      *
      * <p>If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
      * {@link IllegalStateException}.</p>
@@ -564,7 +564,7 @@ public abstract class BinaryData {
      *
      * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.<p>
+     * {@link TypeReference#createInstance(Class)}.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *

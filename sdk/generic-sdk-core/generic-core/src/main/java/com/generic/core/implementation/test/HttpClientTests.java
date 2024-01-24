@@ -451,7 +451,7 @@ public abstract class HttpClientTests {
 
         @Override
         public byte[] serializeToBytes(Object value) {
-            return null;
+            return (byte[]) value;
         }
 
         @Override
@@ -1482,7 +1482,7 @@ public abstract class HttpClientTests {
 
     @Test
     public void binaryDataUploadTest() throws Exception {
-        Path filePath = Paths.get(HttpClientTests.class.getClassLoader().getResource("upload.txt").toURI());
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         BinaryData data = BinaryData.fromFile(filePath);
 
         final HttpClient httpClient = createHttpClient();

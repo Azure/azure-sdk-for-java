@@ -32,7 +32,7 @@ class DefaultHttpClientProvider implements HttpClientProvider {
      * For testing purpose only, assigning 'ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
-    public DefaultHttpClientProvider() {
+    DefaultHttpClientProvider() {
         enableHttpClientSharing = ENABLE_HTTP_CLIENT_SHARING;
     }
 

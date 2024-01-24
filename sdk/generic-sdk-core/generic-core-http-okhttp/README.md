@@ -66,7 +66,7 @@ The following sections provide several code snippets covering some of the most c
 Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
+HttpClient client = new OkHttpHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy
@@ -74,7 +74,7 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
 Create an OkHttp client that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new OkHttpAsyncHttpClientBuilder()
+HttpClient client = new OkHttpHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
@@ -86,9 +86,8 @@ Create an OkHttp client that supports both the HTTP/1.1 and HTTP/2 protocols, wi
 ```java readme-sample-useHttp2WithConfiguredOkHttpClient 
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
 // This is the default handling for OkHttp.
-HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
-    .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
-    .build())
+HttpClient client = new OkHttpHttpClientBuilder(
+    new OkHttpClient.Builder().protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1)).build())
     .build();
 ```
 
@@ -96,9 +95,8 @@ It is also possible to create an OkHttp client that only supports HTTP/2.
 
 ```java readme-sample-useHttp2OnlyWithConfiguredOkHttpClient
 // Constructs an HttpClient that only supports HTTP/2.
-HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
-    .protocols(Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE))
-    .build())
+HttpClient client = new OkHttpHttpClientBuilder(
+    new OkHttpClient.Builder().protocols(Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE)).build())
     .build();
 ```
 

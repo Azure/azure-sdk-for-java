@@ -45,11 +45,11 @@ public interface Response<T> {
     /**
      * A static method that creates a default {@link Response} implementation.
      *
+     * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
      * @param request The HTTP request which resulted in this response.
      * @param statusCode The HTTP response status code.
      * @param headers The HTTP response headers.
      * @param value The deserialized value of the HTTP response.
-     *
      * @return A default {@link Response} implementation.
      */
     static <T> Response<T> create(HttpRequest request, int statusCode, Headers headers, T value) {

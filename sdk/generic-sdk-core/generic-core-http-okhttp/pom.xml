@@ -56,7 +56,8 @@
 
     <javadoc.excludePackageNames>
       com.generic.core.annotation,com.generic.core.credential,com.generic.core.http,com.generic.core.http*,com.generic.core.implementation,
-      com.generic.core.implementation*,com.generic.core.models,com.generic.core.util,com.generic.core.util*,com.generic.json
+      com.generic.core.implementation*,com.generic.core.models,com.generic.core.util,com.generic.core.util*,com.generic.json,
+      com.azure.json,com.azure.xml,com.azure.core*
     </javadoc.excludePackageNames>
   </properties>
 
