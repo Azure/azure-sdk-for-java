@@ -96,7 +96,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -158,7 +158,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createIndex(SearchIndex)}.
  * </em>
  *
  * <h3>
@@ -175,7 +175,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#listIndexes()}.
  * </em>
  *
  * <h3>
@@ -194,7 +194,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#getIndex(String)}.
  * </em>
  *
  *
@@ -216,7 +216,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createOrUpdateIndex(SearchIndex)}.
  * </em>
  *
  *
@@ -235,7 +235,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#deleteIndex(String)}.
  * </em>
  *
  *
@@ -256,7 +256,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createSynonymMap(SynonymMap)}.
  * </em>
  *
  *
@@ -276,7 +276,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#listSynonymMaps()}.
  * </em>
  *
  *
@@ -295,7 +295,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#getSynonymMap(String)}.
  * </em>
  *
  *
@@ -315,7 +315,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createOrUpdateSynonymMap(SynonymMap)}.
  * </em>
  *
  *
@@ -336,12 +336,13 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#deleteSynonymMap(String)}.
  * </em>
  *
  *
- *
+ * @see SearchIndexAsyncClient
  * @see SearchIndexClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {

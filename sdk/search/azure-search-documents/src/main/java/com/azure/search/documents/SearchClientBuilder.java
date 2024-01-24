@@ -166,6 +166,8 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  *
  * <p>The following sample builds a SearchClient using DefaultAzureCredential.</p>
  *
+ * <p><strong>Instantiating a synchronous Search Client</strong></p>
+ *
  * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.credential -->
  * <pre>
  * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -178,10 +180,14 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  * </pre>
  * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.credential -->
  *
+ * <p><strong>Instantiating an asynchronous Search Client</strong></p>
  *
+ * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
+ * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
  *
  * @see SearchClient
  * @see SearchAsyncClient
+ * @see com.azure.search.documents
  */
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
 public final class SearchClientBuilder implements

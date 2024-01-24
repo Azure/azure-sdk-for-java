@@ -118,7 +118,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -140,7 +140,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#uploadDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -161,7 +161,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#mergeDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -181,7 +181,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#deleteDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -200,7 +200,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#getDocument(String, Class)}.
  * </em>
  *
  * <h3>
@@ -233,7 +233,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#search(String)}.
  * </em>
  *
  * <h3>
@@ -254,7 +254,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#suggest(String, String)}.
  * </em>
  *
  * <h3>
@@ -275,10 +275,12 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchClient}.
+ *     For a synchronous sample see {@link SearchClient#autocomplete(String, String)}.
  * </em>
  *
+ * @see SearchClient
  * @see SearchClientBuilder
+ * @see com.azure.search.documents
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {

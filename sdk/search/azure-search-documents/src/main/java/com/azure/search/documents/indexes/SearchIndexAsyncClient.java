@@ -101,7 +101,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -164,7 +164,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createIndex#SearchIndex -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
+ *     For a synchronous sample see {@link SearchIndexClient#createIndex(SearchIndex)}.
  * </em>
  *
  * <h3>
@@ -182,7 +182,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listIndexes -->
  *
  * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
+ *     For a synchronous sample see {@link SearchIndexClient#listIndexes()}.
  * </em>
  *
  * <h3>
@@ -193,16 +193,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample retrieves an index.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
- *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
  * <pre>
  * SearchIndex searchIndex = SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
  * System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#getIndex(String)}.
+ * </em>
  *
  * <h3>
  *     Update an Index
@@ -212,10 +212,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample updates an index.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
- *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  * <pre>
  * SearchIndex searchIndex = SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
@@ -223,6 +219,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateIndex&#40;searchIndex&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createOrUpdateIndex(SearchIndex)}.
+ * </em>
  *
  * <h3>
  *     Delete an Index
@@ -232,10 +232,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample deletes an index.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
- *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
  * <pre>
  * String indexName = &quot;indexName&quot;;
@@ -243,7 +239,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
  *
- * <h3>
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#deleteIndex(String)}.
+ * </em>
+ *
+ *  <h3>
  *     Create a Synonym Map
  * </h3>
  *
@@ -251,16 +251,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample creates a synonym map.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
- *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  * <pre>
  * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
  * SEARCH_INDEX_ASYNC_CLIENT.createSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createSynonymMap(SynonymMap)}.
+ * </em>
  *
  * <h3>
  *     List Synonym Maps
@@ -270,9 +270,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample lists all synonym maps.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps -->
  * <pre>
@@ -282,6 +279,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps -->
  *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#listSynonymMaps()}.
+ * </em>
+ *
  * <h3>
  *     Retrieve a Synonym Map
  * </h3>
@@ -290,16 +291,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample retrieves a synonym map.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
- *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
  * <pre>
  * SynonymMap synonymMap = SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
  * System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#getSynonymMap(String)}.
+ * </em>
  *
  * <h3>
  *     Update a Synonym Map
@@ -309,9 +310,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample updates a synonym map.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <pre>
@@ -321,6 +319,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createOrUpdateSynonymMap(SynonymMap)}.
+ * </em>
+ *
  * <h3>
  *     Delete a Synonym Map
  * </h3>
@@ -329,9 +331,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample deletes a synonym map.
  * </p>
  *
- * <em>
- *     For a synchronous sample see {@link SearchIndexClient}.
- * </em>
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
  * <pre>
@@ -340,7 +339,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
  *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#deleteSynonymMap(String)}.
+ * </em>
+ *
+ * @see SearchIndexAsyncClient
  * @see SearchIndexClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {

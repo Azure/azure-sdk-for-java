@@ -142,6 +142,8 @@ import java.util.Objects;
  *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
  * </p>
  *
+ * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
+ *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential -->
  * <pre>
  * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -153,9 +155,14 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential -->
  *
+ * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential -->
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential -->
+ *
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient
- * @see com.azure.search.documents
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder implements

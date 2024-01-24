@@ -116,20 +116,17 @@ import java.util.Objects;
  *
  * <p>
  *   You can also create a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using Azure Active Directory (AAD)
- *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using the
- *   DefaultAzureCredential you can authenticate a service using Managed Identity or a service principal, authenticate
+ *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using Azure Identity
+ *   you can authenticate a service using Managed Identity or a service principal, authenticate
  *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
  *   instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
  * </p>
  *
  * <p>
- *     Before you can use the `DefaultAzureCredential`, or any credential type from Azure.Identity, you'll first need to install the Azure.Identity package.
- * </p>
- *
- * <p>
- *     To use DefaultAzureCredential with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`,
- *     and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values to the
- *     `ClientSecretCredential` also in azure-identity.
+ *     Before you can use any credential type from Azure.Identity, you'll first need to install the Azure.Identity package. <br/>
+ *     There are a variety of credentials types available in Azure.Identity. To better understand your authentication options, view the
+ *     <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">Azure Identity README</a>. and
+ *     <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples">Azure Identity Samples</a>.
  * </p>
  *
  * <p>
@@ -147,6 +144,8 @@ import java.util.Objects;
  *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
  * </p>
  *
+ * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
+ *
  * <!-- src_embed com.azure.search.documents.SearchIndexClientBuilder.credential -->
  * <pre>
  * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -158,8 +157,14 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexClientBuilder.credential -->
  *
+ * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexClientBuilder.async.credential -->
+ * <!-- end com.azure.search.documents.SearchIndexClientBuilder.async.credential -->
+ *
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public final class SearchIndexClientBuilder implements

@@ -97,7 +97,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -116,7 +116,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#createIndexer(SearchIndexer)}.
  * </em>
  *
  * <h3>
@@ -135,7 +135,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers -->
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#listIndexers()}.
  * </em>
  *
  * <h3>
@@ -153,7 +153,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String -->
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#getIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -175,7 +175,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}.
  * </em>
  *
  * <h3>
@@ -193,7 +193,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#deleteIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -211,7 +211,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#runIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -229,7 +229,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#resetIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -279,7 +279,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#createSkillset(SearchIndexerSkillset)}.
  * </em>
  *
  * <h3>
@@ -299,7 +299,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#listSkillsets()}.
  * </em>
  *
  * <h3>
@@ -318,7 +318,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#getSkillset(String)}.
  * </em>
  *
  * <h3>
@@ -340,7 +340,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#createOrUpdateSkillset(SearchIndexerSkillset)}.
  * </em>
  *
  * <h3>
@@ -358,10 +358,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String -->
  *
  * <em>
- *     For a synchronous sample, see {@link SearchIndexerClient}.
+ *     For a synchronous sample, see {@link SearchIndexerClient#deleteSkillset(String)}.
  * </em>
  *
+ * @see SearchIndexerClient
  * @see SearchIndexerClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public class SearchIndexerAsyncClient {

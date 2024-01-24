@@ -92,7 +92,7 @@ import java.util.Objects;
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -111,7 +111,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#createIndexer(SearchIndexer)}.
  * </em>
  *
  * <h3>
@@ -130,7 +130,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers -->
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#listIndexers()}.
  * </em>
  *
  * <h3>
@@ -149,7 +149,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getIndexer#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#getIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -171,7 +171,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#createOrUpdateIndexer(SearchIndexer)}.
  * </em>
  *
  * <h3>
@@ -189,7 +189,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.deleteIndexer#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#deleteIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -207,7 +207,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.runIndexer#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#runIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -225,7 +225,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.resetIndexer#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#resetIndexer(String)}.
  * </em>
  *
  * <h3>
@@ -275,7 +275,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#createSkillset(SearchIndexerSkillset)}.
  * </em>
  *
  * <h3>
@@ -295,7 +295,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#listSkillsets()}.
  * </em>
  *
  * <h3>
@@ -314,7 +314,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getSkillset#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#getSkillset(String)}.
  * </em>
  *
  * <h3>
@@ -336,7 +336,7 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#createOrUpdateSkillset(SearchIndexerSkillset)}.
  * </em>
  *
  * <h3>
@@ -354,11 +354,12 @@ import java.util.Objects;
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.deleteSkillset#String -->
  *
  * <em>
- *     For an asynchronous sample, see {@link SearchIndexerAsyncClient}.
+ *     For an asynchronous sample, see {@link SearchIndexerAsyncClient#deleteSkillset(String)}.
  * </em>
  *
  * @see SearchIndexerAsyncClient
  * @see SearchIndexerClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class)
 public class SearchIndexerClient {

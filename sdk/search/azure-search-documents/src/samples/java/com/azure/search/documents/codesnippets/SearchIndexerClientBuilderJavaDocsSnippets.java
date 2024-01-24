@@ -36,7 +36,7 @@ public class SearchIndexerClientBuilderJavaDocsSnippets {
     }
 
     /**
-     * Code snippet for authenticating with Default Azure Credential.
+     * Code snippet for authenticating a synchronous client with Default Azure Credential.
      */
     public void createSearchIndexerClientWithDefaultAzureCredential() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential
@@ -47,5 +47,19 @@ public class SearchIndexerClientBuilderJavaDocsSnippets {
             .credential(credential)
             .buildClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential
+    }
+
+    /**
+     * Code snippet for authenticating an asynchronous client with Default Azure Credential.
+     */
+    public void createSearchIndexerAsyncClientWithDefaultAzureCredential() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        SearchIndexerAsyncClient searchIndexerClient = new SearchIndexerClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildAsyncClient();
+        // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential
     }
 }

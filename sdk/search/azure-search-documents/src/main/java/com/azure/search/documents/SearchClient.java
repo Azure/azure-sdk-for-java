@@ -112,7 +112,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
  *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
  *         import into your own index from the Azure portal.</a>
- *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
  * </p>
  *
  * <h3>
@@ -134,7 +134,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#uploadDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -155,7 +155,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#mergeDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -175,7 +175,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#deleteDocuments(Iterable)}.
  * </em>
  *
  * <h3>
@@ -194,7 +194,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#getDocument(String, Class)}.
  * </em>
  *
  * <h3>
@@ -226,7 +226,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String -->
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#search(String)}.
  * </em>
  *
  * <h3>
@@ -247,7 +247,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#suggest(String, String)}.
  * </em>
  *
  * <h3>
@@ -268,10 +268,12 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String -->
  *
  * <em>
- *     For an asynchronous sample see {@link SearchAsyncClient}.
+ *     For an asynchronous sample see {@link SearchAsyncClient#autocomplete(String, String)}.
  * </em>
  *
+ * @see SearchAsyncClient
  * @see SearchClientBuilder
+ * @see com.azure.search.documents
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
