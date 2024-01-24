@@ -231,7 +231,6 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("blobSize"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
-        before.setAttribute(AttributeKey.stringKey("blobName"), options.getBlobName());
         before.setAttribute(AttributeKey.booleanKey("faultInjection"), options.isFaultInjectionEnabled());
         before.setAttribute(AttributeKey.stringKey("httpClientProvider"), options.getHttpClient().toString());
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));

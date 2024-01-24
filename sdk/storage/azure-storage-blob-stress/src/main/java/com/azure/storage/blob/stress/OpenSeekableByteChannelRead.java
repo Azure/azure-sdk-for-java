@@ -10,7 +10,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
-import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
@@ -22,15 +21,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelRead.class);
-    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(OpenSeekableByteChannelRead.class);
     private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
     public OpenSeekableByteChannelRead(StorageStressOptions options) {
-        super(options, TELEMETRY_HELPER);
-        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(options.getBlobName());
-        this.syncClient = getSyncContainerClient().getBlobClient(options.getBlobName());
+        super(options);
+        String blobName = generateBlobName();
+        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
+        this.syncClient = getSyncContainerClient().getBlobClient(blobName);
     }
 
     @Override
@@ -52,14 +51,16 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+    public Mono<Void> setupAsync() {
+        // setup is called for each instance of scenario. Number of instances equals options.getParallel()
+        // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
+        return super.setupAsync()
+                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override
-    public Mono<Void> globalCleanupAsync() {
+    public Mono<Void> cleanupAsync() {
         return asyncNoFaultClient.delete()
-            .then(super.globalCleanupAsync());
+                .then(super.cleanupAsync());
     }
 }

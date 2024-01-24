@@ -24,19 +24,18 @@ import java.util.UUID;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
+    protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final BlobServiceClient syncClient;
     private final BlobServiceAsyncClient asyncClient;
     private final BlobServiceAsyncClient asyncNoFaultClient;
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
-    private final TelemetryHelper telemetryHelper;
     private Instant startTime;
 
-    public BlobScenarioBase(TOptions options, TelemetryHelper telemetryHelper) {
+    public BlobScenarioBase(TOptions options) {
         super(options);
 
-        this.telemetryHelper = telemetryHelper;
         String connectionString = options.getConnectionString();
 
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
@@ -100,6 +99,10 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
 
     protected BlobContainerAsyncClient getAsyncContainerClientNoFault() {
         return asyncNoFaultContainerClient;
+    }
+
+    protected String generateBlobName() {
+        return "blob-" + UUID.randomUUID();
     }
 
     private static HttpLogOptions getLogOptions() {

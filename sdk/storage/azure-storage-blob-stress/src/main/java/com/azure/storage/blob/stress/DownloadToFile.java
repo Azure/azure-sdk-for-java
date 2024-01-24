@@ -10,7 +10,6 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
-import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +22,6 @@ import java.util.UUID;
 
 public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadToFile.class);
-    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(DownloadToFile.class);
     private final Path directoryPath;
     private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
     private final BlobClient syncClient;
@@ -31,11 +29,12 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private final BlobAsyncClient asyncNoFaultClient;
 
     public DownloadToFile(StorageStressOptions options) {
-        super(options, TELEMETRY_HELPER);
+        super(options);
         this.directoryPath = getTempPath("test");
-        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(options.getBlobName());
-        this.syncClient = getSyncContainerClient().getBlobClient(options.getBlobName());
-        this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(options.getBlobName());
+        String blobName = generateBlobName();
+        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
+        this.syncClient = getSyncContainerClient().getBlobClient(blobName);
+        this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
     }
 
     @Override
@@ -71,15 +70,17 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+    public Mono<Void> setupAsync() {
+        // setup is called for each instance of scenario. Number of instances equals options.getParallel()
+        // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
+        return super.setupAsync()
+                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override
-    public Mono<Void> globalCleanupAsync() {
+    public Mono<Void> cleanupAsync() {
         return asyncNoFaultClient.delete()
-            .then(super.globalCleanupAsync());
+                .then(super.cleanupAsync());
     }
 
     private Path getTempPath(String prefix) {
