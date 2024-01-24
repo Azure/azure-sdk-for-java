@@ -1945,7 +1945,7 @@ public interface VirtualMachine
         interface WithSecurityProfile {
 
             /**
-             * Request to enable the Host Encryption for the virtual machine.
+             * Enable the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
@@ -2539,18 +2539,18 @@ public interface VirtualMachine
             Update withoutVTpm();
         }
 
-        /** The stage of the definition allowing to specify the security profile for the virtual machine. */
+        /** The stage of the VM update allowing to change security profile. */
         interface WithSecurityProfile {
 
             /**
-             * Request to enable the Host Encryption for the virtual machine.
+             * Enable the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
             Update withEncryptionAtHost();
 
             /**
-             * Request to disable the Host Encryption for the virtual machine.
+             * Disable the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
