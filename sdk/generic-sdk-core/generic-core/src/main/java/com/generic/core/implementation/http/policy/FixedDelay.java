@@ -28,17 +28,6 @@ public class FixedDelay implements RetryPolicy.RetryStrategy {
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
     }
 
-//    /**
-//     * Creates an instance of {@link FixedDelay}.
-//     *
-//     * @param fixedDelayOptions The {@link RetryPolicy.FixedDelayOptions}.
-//     */
-//    public FixedDelay(RetryPolicy.FixedDelayOptions fixedDelayOptions) {
-//        this(
-//            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()
-//        );
-//    }
-
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
         return delay;

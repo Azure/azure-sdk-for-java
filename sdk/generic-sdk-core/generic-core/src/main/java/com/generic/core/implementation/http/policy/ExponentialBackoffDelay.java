@@ -34,23 +34,6 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
         this(DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
-//    /**
-//     * Creates an instance of {@link ExponentialBackoff}.
-//     *
-//     * @param options The {@link RetryPolicy.ExponentialBackoffOptions}.
-//     * @throws NullPointerException if {@code options} is {@code null}.
-//     */
-//    public ExponentialBackoff(RetryPolicy.ExponentialBackoffOptions options) {
-//        this(
-//            ObjectsUtil.requireNonNullElse(
-//                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
-//                DEFAULT_BASE_DELAY),
-//            ObjectsUtil.requireNonNullElse(
-//                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-//                DEFAULT_MAX_DELAY)
-//        );
-//    }
-
     /**
      * Creates an instance of {@link ExponentialBackoffDelay}.
      *

@@ -370,25 +370,6 @@ public final class ImplUtils {
                 "Class '" + className + "' is not found on the classpath.", e));
         }
     }
-//
-//    /**
-//     * Converts the {@link RetryPolicy.RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
-//     *
-//     * @param retryOptions The retry options.
-//     * @return The retry strategy based on the retry options.
-//     */
-//    public static RetryStrategy getRetryStrategyFromOptions(RetryPolicy.RetryOptions retryOptions) {
-//        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-//
-//        if (retryOptions.getExponentialBackoffOptions() != null) {
-//            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
-//        } else if (retryOptions.getFixedDelayOptions() != null) {
-//            return new FixedDelay(retryOptions.getFixedDelayOptions());
-//        } else {
-//            // This should never happen.
-//            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
-//        }
-//    }
 
     @SuppressWarnings("unchecked")
     public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
