@@ -31,6 +31,7 @@ parameters:
     type: boolean
     default: true
   - name: release_genericcorehttpokhttp
+    displayName: 'generic-core-http-okhttp'
     type: boolean
     default: false
   - name: release_genericjson
