@@ -83,7 +83,7 @@ class DefaultHttpClient implements HttpClient {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw LOGGER.logThrowableAsWarning(new UncheckedIOException(e));
         }
     }
 
@@ -115,7 +115,7 @@ class DefaultHttpClient implements HttpClient {
                         connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                     }
                 } else {
-                    throw new ConnectException("Invalid proxy address");
+                    throw LOGGER.logThrowableAsWarning(new ConnectException("Invalid proxy address"));
                 }
             } else {
                 connection = (HttpURLConnection) url.openConnection();
@@ -231,7 +231,7 @@ class DefaultHttpClient implements HttpClient {
     private static class SocketClient {
 
         private static final String HTTP_VERSION = " HTTP/1.1";
-        private static final SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        private static final SSLSocketFactory SSL_SOCKET_FACTORY = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
         /**
          * Opens a socket connection, then writes the PATCH request across the
@@ -239,6 +239,8 @@ class DefaultHttpClient implements HttpClient {
          *
          * @param httpRequest The HTTP Request being sent
          * @return an instance of HttpUrlConnectionResponse
+         * @throws ProtocolException If the protocol is not HTTP or HTTPS
+         * @throws IOException If an I/O error occurs
          */
         public static DefaultHttpClientResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
             final URL requestUrl = httpRequest.getUrl();
@@ -247,18 +249,20 @@ class DefaultHttpClient implements HttpClient {
             final int port = requestUrl.getPort();
 
             switch (protocol) {
-                case "https": {
-                    try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
+                case "https":
+                    try (SSLSocket socket = (SSLSocket) SSL_SOCKET_FACTORY.createSocket(host, port)) {
                         return doInputOutput(httpRequest, socket);
                     }
-                }
-                case "http": {
+
+                case "http":
                     try (Socket socket = new Socket(host, port)) {
                         return doInputOutput(httpRequest, socket);
                     }
-                }
+
+                default:
+                    throw LOGGER.logThrowableAsWarning(
+                        new ProtocolException("Only HTTP and HTTPS are supported by this client."));
             }
-            throw new ProtocolException("Only HTTP and HTTPS are supported by this client.");
         }
 
         /**
@@ -305,12 +309,12 @@ class DefaultHttpClient implements HttpClient {
          *
          * @param httpRequest The HTTP Request being sent
          * @param out output stream for writing the request
+         * @throws IOException If an I/O error occurs
          */
         private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
             final StringBuilder request = new StringBuilder();
 
-            request.append("PATCH")
-                .append(" ")
+            request.append("PATCH ")
                 .append(httpRequest.getUrl().getPath())
                 .append(HTTP_VERSION)
                 .append("\r\n");
@@ -340,11 +344,13 @@ class DefaultHttpClient implements HttpClient {
          * @param httpRequest The HTTP Request being sent
          * @param reader the input stream from the socket
          * @return an instance of HttpUrlConnectionResponse
+         * @throws IOException If an I/O error occurs
          */
-        private static DefaultHttpClientResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
+        private static DefaultHttpClientResponse buildResponse(HttpRequest httpRequest, BufferedReader reader)
+            throws IOException {
             String statusLine = reader.readLine();
             int dotIndex = statusLine.indexOf('.');
-            int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
+            int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
 
             Headers headers = new Headers();
             String line;

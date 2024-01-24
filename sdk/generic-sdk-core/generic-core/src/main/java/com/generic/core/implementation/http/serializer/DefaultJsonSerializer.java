@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.JsonSerializer;
@@ -18,7 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 
 /**
  * Default implementation of the {@link JsonSerializer}.
@@ -47,7 +45,7 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+    public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
             if (JsonSerializable.class.isAssignableFrom(typeReference.getJavaClass())) {
                 Class<T> clazz = typeReference.getJavaClass();
@@ -61,11 +59,6 @@ public class DefaultJsonSerializer implements JsonSerializer {
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
-    }
-
-    @Override
-    public <T> T deserialize(Headers headers, Type type) throws IOException {
-        return null;
     }
 
     @Override
@@ -87,7 +80,7 @@ public class DefaultJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public void serialize(OutputStream stream, Object value) {
+    public void serializeToStream(OutputStream stream, Object value) {
         if (value == null) {
             return;
         }

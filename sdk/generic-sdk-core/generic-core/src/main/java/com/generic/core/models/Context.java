@@ -55,6 +55,16 @@ public class Context {
      * <p><strong>Code samples</strong></p>
      *
      * <!-- src_embed com.generic.core.util.context#object-object -->
+     * <pre>
+     * &#47;&#47; Create an empty context having no data
+     * Context emptyContext = Context.NONE;
+     *
+     * &#47;&#47; OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
+     * &#47;&#47; when OpenTelemetry context is not provided explicitly, ambient
+     * &#47;&#47; io.opentelemetry.context.Context.current&#40;&#41; is used
+     *
+     * &#47;&#47; Context contextWithSpan = new Context&#40;PARENT_TRACE_CONTEXT_KEY, openTelemetryContext&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.context#object-object -->
      *
      * @param key The key with which the specified value should be associated.
@@ -116,6 +126,24 @@ public class Context {
      * <p><strong>Code samples</strong></p>
      *
      * <!-- src_embed com.generic.core.util.context.addData#object-object -->
+     * <pre>
+     * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
+     * &#47;&#47; using the com.generic.core.util.Context object.
+     * final String hostNameValue = &quot;host-name-value&quot;;
+     * final String entityPathValue = &quot;entity-path-value&quot;;
+     *
+     * &#47;&#47; TraceContext represents a tracing solution context type - io.opentelemetry.context.Context for OpenTelemetry.
+     * final TraceContext parentContext = TraceContext.root&#40;&#41;;
+     * Context parentSpanContext = new Context&#40;&quot;PARENT_TRACE_CONTEXT_KEY&quot;, parentContext&#41;;
+     *
+     * &#47;&#47; Add a new key value pair to the existing context object.
+     * Context updatedContext = parentSpanContext.addData&#40;&quot;HOST_NAME_KEY&quot;, hostNameValue&#41;
+     *     .addData&#40;&quot;ENTITY_PATH_KEY&quot;, entityPathValue&#41;;
+     *
+     * &#47;&#47; Both key values found on the same updated context object
+     * System.out.printf&#40;&quot;Hostname value: %s%n&quot;, updatedContext.getData&#40;&quot;HOST_NAME_KEY&quot;&#41;.get&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Entity Path value: %s%n&quot;, updatedContext.getData&#40;&quot;ENTITY_PATH_KEY&quot;&#41;.get&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.context.addData#object-object -->
      *
      * @param key The key with which the specified value should be associated.
@@ -140,6 +168,21 @@ public class Context {
      * <p><strong>Code samples</strong></p>
      *
      * <!-- src_embed com.generic.core.util.context.getData#object -->
+     * <pre>
+     * final String key1 = &quot;Key1&quot;;
+     * final String value1 = &quot;first-value&quot;;
+     *
+     * &#47;&#47; Create a context object with given key and value
+     * Context context = new Context&#40;key1, value1&#41;;
+     *
+     * &#47;&#47; Look for the specified key in the returned context object
+     * Optional&lt;Object&gt; optionalObject = context.getData&#40;key1&#41;;
+     * if &#40;optionalObject.isPresent&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Key1 value: %s%n&quot;, optionalObject.get&#40;&#41;&#41;;
+     * &#125; else &#123;
+     *     System.out.println&#40;&quot;Key1 does not exist or have data.&quot;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.generic.core.util.context.getData#object -->
      *
      * @param key The key to search for.

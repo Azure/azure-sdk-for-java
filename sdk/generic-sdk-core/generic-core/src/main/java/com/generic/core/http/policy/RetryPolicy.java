@@ -128,7 +128,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(ie));
+                    err.addSuppressed(ie);
+                    throw LOGGER.logThrowableAsError(err);
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -241,8 +242,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    public static Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, RetryStrategy retryStrategy,
-                                                  Supplier<OffsetDateTime> nowSupplier) {
+    static Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, RetryStrategy retryStrategy,
+        Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;

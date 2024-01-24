@@ -19,6 +19,16 @@ import java.util.function.Function;
  * Contains configuration information that is used during construction of client libraries.
  *
  * <!-- src_embed com.generic.core.util.Configuration -->
+ * <pre>
+ * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+ *     .root&#40;&quot;azure.sdk&quot;&#41;
+ *     .buildSection&#40;&quot;client-name&quot;&#41;;
+ *
+ * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+ *     .shared&#40;true&#41;
+ *     .build&#40;&#41;;
+ * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.Configuration -->
  */
 public class Configuration {
@@ -265,6 +275,17 @@ public class Configuration {
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
      * <!-- src_embed com.generic.core.util.Configuration.get#ConfigurationProperty -->
+     * <pre>
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .logValue&#40;true&#41;
+     *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param property instance.

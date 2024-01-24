@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
@@ -84,21 +83,6 @@ public final class HttpResponseDecoder {
             }
 
             return this.bodyCached;
-        }
-
-        /**
-         * Gets the decoded {@link Headers} object.
-         * <p>
-         * Null is returned if the headers aren't able to be decoded or if there is no decoded headers type.
-         *
-         * @return The decoded headers object, or null if they aren't able to be decoded.
-         */
-        public Object getDecodedHeaders() {
-            if (headersCached == null) {
-                headersCached = HttpResponseHeaderDecoder.decode(response, serializer, decodeData.getHeadersType());
-            }
-
-            return this.headersCached;
         }
 
         @Override

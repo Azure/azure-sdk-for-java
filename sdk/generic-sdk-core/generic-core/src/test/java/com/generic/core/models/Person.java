@@ -70,22 +70,22 @@ public class Person implements JsonSerializable<Person> {
 
     public static Person fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-                Person person = new Person();
+            Person person = new Person();
 
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getString();
-                    reader.nextToken();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getString();
+                reader.nextToken();
 
-                    if ("name".equals(fieldName)) {
-                        person.setName(reader.getString());
-                    } else if ("age".equals(fieldName)) {
-                        person.setAge(reader.getInt());
-                    } else {
-                        reader.skipChildren();
-                    }
+                if ("name".equals(fieldName)) {
+                    person.setName(reader.getString());
+                } else if ("age".equals(fieldName)) {
+                    person.setAge(reader.getInt());
+                } else {
+                    reader.skipChildren();
                 }
+            }
 
-                return person;
-            });
+            return person;
+        });
     }
 }

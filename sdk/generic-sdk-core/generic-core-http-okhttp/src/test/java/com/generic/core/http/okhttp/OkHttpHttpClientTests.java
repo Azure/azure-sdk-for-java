@@ -7,6 +7,7 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.implementation.test.LocalTestServer;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
@@ -146,25 +147,24 @@ public class OkHttpHttpClientTests {
         HeaderName multiValueHeaderName = HeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
-        Headers headers = new Headers()
-            .set(singleValueHeaderName, singleValueHeaderValue)
+        Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        HttpResponse response =
-            client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
+        HttpResponse response = client.send(
+            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
 
-            assertEquals(200, response.getStatusCode());
+        assertEquals(200, response.getStatusCode());
 
-            Headers responseHeaders = response.getHeaders();
-            Header singleValueHeader = responseHeaders.get(singleValueHeaderName);
+        Headers responseHeaders = response.getHeaders();
+        Header singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
-            assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
+        assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
+        assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
-            Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
+        Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
-            assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
+        assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
+        assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
     }
 
     static URL url(LocalTestServer server, String path) {

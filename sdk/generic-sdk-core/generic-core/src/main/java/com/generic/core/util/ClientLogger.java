@@ -34,10 +34,6 @@ import static com.generic.core.annotation.TypeConditions.FLUENT;
  * {@link Configuration#PROPERTY_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
- * <p><strong>Log level hierarchy</strong></p>
- * <ol>
- * </ol>
- *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
  *
@@ -82,8 +78,19 @@ public class ClientLogger {
     /**
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
-     * <p>
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context.</p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
+     * <pre>
+     * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
+     * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
+     *
+     * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
+     * loggerWithContext.atInfo&#40;&#41;.log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
@@ -105,8 +112,12 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with a specific log level</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log -->
+     * <pre>
+     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
@@ -122,8 +133,14 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with a specific log level and exception</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log#throwable -->
+     * <pre>
+     * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
+     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
+     *     illegalArgumentException&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
@@ -139,13 +156,11 @@ public class ClientLogger {
     /**
      * Logs the {@link Throwable} at the warning level and returns it to be thrown.
      * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * This API covers the cases where a checked exception type needs to be thrown and logged.
      *
      * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
-     *
      * @return The passed {@link Throwable}.
-     *
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
@@ -160,13 +175,11 @@ public class ClientLogger {
     /**
      * Logs the {@link Throwable} at the error level and returns it to be thrown.
      * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * This API covers the cases where a checked exception type needs to be thrown and logged.
      *
      * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
-     *
      * @return The passed {@link Throwable}.
-     *
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
@@ -313,7 +326,6 @@ public class ClientLogger {
      * Determines if the app or environment logger support logging at the given log level.
      *
      * @param logLevel Logging level for the log message.
-     *
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
@@ -340,8 +352,13 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at error level.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
@@ -358,8 +375,13 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atWarning -->
+     * <pre>
+     * logger.atWarning&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
@@ -376,8 +398,13 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at info level.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
@@ -393,8 +420,13 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at verbose level.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
@@ -411,8 +443,15 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at provided level.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atLevel -->
+     * <pre>
+     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
+     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * logger.atLevel&#40;level&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;message&quot;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
@@ -430,8 +469,15 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging event with context.</p>
-     * <p>
+     *
      * <!-- src_embed com.generic.core.util.logging.loggingeventbuilder -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
+     *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
      */
     @Metadata(conditions = FLUENT)
@@ -477,11 +523,15 @@ public class ClientLogger {
          * <p>Adding a String value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+         * <pre>
+         * logger.atInfo&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+         *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The {@link String} value.
-         *
          * @return The updated {@link LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, String value) {
@@ -502,11 +552,16 @@ public class ClientLogger {
          * <p>Adding a String value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+         * <pre>
+         * logger.atVerbose&#40;&#41;
+         *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
+         *     .log&#40;&quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The {@link Object} value.
-         *
          * @return The updated {@link LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, Object value) {
@@ -522,7 +577,6 @@ public class ClientLogger {
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The boolean value.
-         *
          * @return The updated {@link LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, boolean value) {
@@ -541,11 +595,15 @@ public class ClientLogger {
          * <p>Adding a long value to the logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+         * <pre>
+         * logger.atVerbose&#40;&#41;
+         *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+         * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
          *
          * @param key Key to associate the provided {@code value} with.
          * @param value The long value.
-         *
          * @return The updated {@link LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, long value) {
@@ -562,7 +620,6 @@ public class ClientLogger {
          *
          * @param key Key to associate the provided {@code value} with.
          * @param valueSupplier The {@link String} value {@link Supplier} function.
-         *
          * @return The updated {@link LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
@@ -630,9 +687,7 @@ public class ClientLogger {
          * Logs the {@link Throwable} and returns it to be thrown.
          *
          * @param throwable {@link Throwable} to be logged and returned.
-         *
          * @return The passed {@link Throwable}.
-         *
          * @throws NullPointerException If {@code throwable} is {@code null}.
          */
         public Throwable log(Throwable throwable) {
@@ -650,9 +705,7 @@ public class ClientLogger {
          * exception type needs to be thrown and logged.
          *
          * @param runtimeException {@link RuntimeException} to be logged and returned.
-         *
          * @return The passed {@link RuntimeException}.
-         *
          * @throws NullPointerException If {@code runtimeException} is {@code null}.
          */
         public RuntimeException log(RuntimeException runtimeException) {
@@ -772,7 +825,6 @@ public class ClientLogger {
          * <p>For complex object serialization, it calls {@code toString()} guarded with null check.</p>
          *
          * @param context Context to serialize.
-         *
          * @return Serialized JSON fragment or an empty string.
          */
         static String writeJsonFragment(Map<String, Object> context) {
@@ -859,7 +911,6 @@ public class ClientLogger {
          * last element in the argument list.
          *
          * @param args The arguments passed to format the log message.
-         *
          * @return {@code true} if the last element is a {@link Throwable}, {@code false} otherwise.
          */
         private static boolean doesArgsHaveThrowable(Object... args) {
@@ -874,7 +925,6 @@ public class ClientLogger {
          * Removes the last element from the arguments as it is a {@link Throwable}.
          *
          * @param args The arguments passed to format the log message.
-         *
          * @return The arguments with the last element removed.
          */
         private static Object[] removeThrowable(Object... args) {
@@ -940,10 +990,6 @@ public class ClientLogger {
         /**
          * Converts the passed log level string to the corresponding {@link LogLevel}.
          *
-         * @param logLevelVal The log level value which needs to be converted.
-         *
-         * @return The {@link LogLevel} enum if a valid string was provided.
-         *
          * <p>The valid strings for {@link LogLevel} are:</p>
          *
          * <ul>
@@ -955,6 +1001,8 @@ public class ClientLogger {
          *
          * <p>Returns NOT_SET if {@code null} is passed in.</p>
          *
+         * @param logLevelVal The log level value which needs to be converted.
+         * @return The {@link LogLevel} enum if a valid string was provided.
          * @throws IllegalArgumentException If the log level value is invalid.
          */
         public static LogLevel fromString(String logLevelVal) {

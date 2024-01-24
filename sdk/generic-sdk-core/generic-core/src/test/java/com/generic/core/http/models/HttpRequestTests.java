@@ -110,14 +110,14 @@ public class HttpRequestTests {
         assertArraysEqual(BODY_BYTES, request.getBody().toBytes());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testClone() throws IOException {
         final Headers headers = new Headers()
             .set(HeaderName.fromString("my-header"), "my-value")
             .set(HeaderName.fromString("other-header"), "other-value");
 
-        final HttpRequest request =new HttpRequest(HttpMethod.PUT, createUrl("http://request.url")).setHeaders(headers);
+        final HttpRequest request = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"))
+            .setHeaders(headers);
 
         final HttpRequest bufferedRequest = request.copy();
 

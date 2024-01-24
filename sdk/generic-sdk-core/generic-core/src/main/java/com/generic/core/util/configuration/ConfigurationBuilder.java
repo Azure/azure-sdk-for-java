@@ -30,6 +30,17 @@ public final class ConfigurationBuilder {
      * Creates {@code ConfigurationBuilder}.
      *
      * <!-- src_embed com.generic.core.util.ConfigurationBuilder#putProperty -->
+     * <pre>
+     * configuration = new ConfigurationBuilder&#40;&#41;
+     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
+     * </pre>
      * <!-- end com.com.generic.core.util.ConfigurationBuilder#putProperty -->
      */
     public ConfigurationBuilder() {
@@ -41,6 +52,16 @@ public final class ConfigurationBuilder {
      * Creates {@code ConfigurationBuilder} with configuration source.
      *
      * <!-- src_embed com.generic.core.util.Configuration -->
+     * <pre>
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+     * </pre>
      * <!-- end com.com.generic.core.util.Configuration -->
      *
      * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties.
@@ -76,6 +97,17 @@ public final class ConfigurationBuilder {
      * value will be overwritten with the new value passed.
      *
      * <!-- src_embed com.generic.core.util.ConfigurationBuilder#putProperty -->
+     * <pre>
+     * configuration = new ConfigurationBuilder&#40;&#41;
+     *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.ConfigurationBuilder#putProperty -->
      *
      * @param name Property name.
@@ -96,6 +128,16 @@ public final class ConfigurationBuilder {
      * property is missing, {@link Configuration} falls back to shared properties.
      *
      * <!-- src_embed com.generic.core.util.Configuration -->
+     * <pre>
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+     * </pre>
      * <!-- end com.com.generic.core.util.Configuration -->
      *
      * @param rootPath absolute root path, can be {@code null}.
@@ -113,6 +155,12 @@ public final class ConfigurationBuilder {
      * properties.
      *
      * <!-- src_embed com.generic.core.util.ConfigurationBuilder#build -->
+     * <pre>
+     * &#47;&#47; Builds shared Configuration only.
+     * Configuration sharedConfiguration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
      * <!-- end com.com.generic.core.util.ConfigurationBuilder#build -->
      *
      * @return Root {@link Configuration} with shared properties.
@@ -131,6 +179,12 @@ public final class ConfigurationBuilder {
      * fallback to root section for properties that can be shared between clients.
      *
      * <!-- src_embed com.generic.core.util.ConfigurationBuilder#buildSection -->
+     * <pre>
+     * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
+     * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.ConfigurationBuilder#buildSection -->
      *
      * @param path relative path from {@link ConfigurationBuilder#root(String)} to client section.

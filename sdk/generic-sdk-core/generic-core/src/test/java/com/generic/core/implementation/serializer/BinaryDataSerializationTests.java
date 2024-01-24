@@ -240,7 +240,7 @@ public class BinaryDataSerializationTests {
                     String fieldName = jsonReader.getString();
                     jsonReader.nextToken();
 
-                    if (fieldName.equals("simpleProperty")) {
+                    if ("simpleProperty".equals(fieldName)) {
                         Object object = reader.readUntyped();
 
                         if (object instanceof String) {
@@ -346,7 +346,7 @@ public class BinaryDataSerializationTests {
                     String fieldName = jsonReader.getString();
                     jsonReader.nextToken();
 
-                    if (fieldName.equals("listProperty")) {
+                    if ("listProperty".equals(fieldName)) {
                         List<BinaryData> list = new ArrayList<>();
                         @SuppressWarnings("unchecked")
                         List<Object> objectList = (List<Object>) reader.readUntyped();
@@ -473,7 +473,7 @@ public class BinaryDataSerializationTests {
                     String fieldName = jsonReader.getString();
                     jsonReader.nextToken();
 
-                    if (fieldName.equals("mapProperty")) {
+                    if ("mapProperty".equals(fieldName)) {
                         Map<String, BinaryData> map = new LinkedHashMap<>();
                         @SuppressWarnings("unchecked")
                         Map<String, Object> objectMap = (Map<String, Object>) reader.readUntyped();
@@ -551,11 +551,11 @@ public class BinaryDataSerializationTests {
                     String fieldName = jsonReader.getString();
                     jsonReader.nextToken();
 
-                    if (fieldName.equals("string")) {
+                    if ("string".equals(fieldName)) {
                         simplePojo.setString(jsonReader.getString());
-                    } else if (fieldName.equals("number")) {
+                    } else if ("number".equals(fieldName)) {
                         simplePojo.setNumber(jsonReader.getDouble());
-                    } else if (fieldName.equals("boolean")) {
+                    } else if ("boolean".equals(fieldName)) {
                         simplePojo.setBool(jsonReader.getBoolean());
                     } else {
                         jsonReader.skipChildren();

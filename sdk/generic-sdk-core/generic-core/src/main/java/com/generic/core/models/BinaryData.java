@@ -57,26 +57,56 @@ import java.util.Objects;
  * <p><strong>Create an instance from a byte array</strong></p>
  *
  * <!-- src_embed com.generic.core.util.BinaryData.fromBytes#byte -->
+ * <pre>
+ * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+ * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+ * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.BinaryData.fromBytes#byte -->
  *
  * <p><strong>Create an instance from a String</strong></p>
  *
  * <!-- src_embed com.generic.core.util.BinaryData.fromString#String -->
+ * <pre>
+ * final String data = &quot;Some Data&quot;;
+ * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
+ * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
+ * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.BinaryData.fromString#String -->
  *
  * <p><strong>Create an instance from an InputStream</strong></p>
  *
  * <!-- src_embed com.generic.core.util.BinaryData.fromStream#InputStream -->
+ * <pre>
+ * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+ * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
+ * System.out.println&#40;binaryData&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.BinaryData.fromStream#InputStream -->
  *
  * <p><strong>Create an instance from an Object</strong></p>
  *
  * <!-- src_embed com.generic.core.util.BinaryData.fromObject#Object -->
+ * <pre>
+ * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+ *
+ * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+ * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+ *
+ * System.out.println&#40;binaryData&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.BinaryData.fromObject#Object -->
  *
  * <p><strong>Create an instance from a file</strong></p>
  *
  * <!-- src_embed com.generic.core.util.BinaryData.fromFile -->
+ * <pre>
+ * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
+ * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * </pre>
  * <!-- end com.generic.core.util.BinaryData.fromFile -->
  *
  * @see ObjectSerializer
@@ -106,6 +136,11 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromStream#InputStream -->
+     * <pre>
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromStream#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
@@ -130,6 +165,12 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromStream#InputStream-Long -->
+     * <pre>
+     * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;inputStream, &#40;long&#41; bytes.length&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromStream#InputStream-Long -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
@@ -153,6 +194,12 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from a String</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromString#String -->
+     * <pre>
+     * final String data = &quot;Some Data&quot;;
+     * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
+     * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromString#String -->
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
@@ -176,6 +223,11 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from a byte array</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromBytes#byte -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromBytes#byte -->
      *
      * @param data The byte array that {@link BinaryData} will represent.
@@ -200,6 +252,11 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from a ByteBuffer</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <pre>
+     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
      *
      * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
@@ -221,6 +278,13 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromListByteBuffer#List -->
+     * <pre>
+     * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
+     *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromListByteBuffer#List -->
      *
      * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
@@ -238,6 +302,16 @@ public abstract class BinaryData {
      * <p><strong>Creating an instance from an Object</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromObject#Object -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromObject#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
@@ -261,6 +335,17 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from an Object</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
@@ -287,6 +372,10 @@ public abstract class BinaryData {
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromFile -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromFile -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
@@ -306,8 +395,12 @@ public abstract class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * <!-- src_embed BinaryData.fromFile#Path-int -->
-     * <!-- end BinaryData.fromFile#Path-int -->
+     * <!-- src_embed com.generic.core.util.BinaryData.fromFile#Path-int -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.generic.core.util.BinaryData.fromFile#Path-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
@@ -333,6 +426,13 @@ public abstract class BinaryData {
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromFile#Path-Long-Long -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
@@ -358,6 +458,14 @@ public abstract class BinaryData {
      * <p><strong>Create an instance from a file</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * int chunkSize = 8092;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
@@ -382,7 +490,7 @@ public abstract class BinaryData {
      * <p>This method returns a reference to the underlying byte array. Modifying the contents of the returned byte
      * array may change the content of this BinaryData instance. If the content source of this BinaryData instance is
      * a file, an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the
-     * byte array, it is recommended to make a copy of the contents first.<p>
+     * byte array, it is recommended to make a copy of the contents first.</p>
      *
      * <p>If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
      * {@link IllegalStateException}.</p>
@@ -420,6 +528,20 @@ public abstract class BinaryData {
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#Class -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.generic.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class&#41;;
+     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#Class -->
      *
      * @param <T> Type of the deserialized Object.
@@ -442,16 +564,50 @@ public abstract class BinaryData {
      *
      * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
      * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.<p>
+     * {@link TypeReference#createInstance(Class)}.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.generic.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;&#41;;
+     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.generic.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     *
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
+     *
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;&#41;;
+     * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
@@ -481,6 +637,19 @@ public abstract class BinaryData {
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
@@ -515,11 +684,39 @@ public abstract class BinaryData {
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
+     *
+     * &#47;&#47; Retains the type of the list when deserializing
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41;;
+     * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
@@ -540,6 +737,15 @@ public abstract class BinaryData {
      * <p><strong>Get an InputStream from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.toStream -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;;
+     * final byte[] bytes = new byte[data.length];
+     * try &#40;InputStream inputStream = binaryData.toStream&#40;&#41;&#41; &#123;
+     *     inputStream.read&#40;bytes, 0, data.length&#41;;
+     *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.generic.core.util.BinaryData.toStream -->
      *
      * @return An {@link InputStream} representing the {@link BinaryData}.
@@ -591,6 +797,13 @@ public abstract class BinaryData {
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
      * <!-- src_embed com.generic.util.BinaryData.toByteBuffer -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+     * final byte[] bytes = new byte[data.length];
+     * binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
+     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.util.BinaryData.toByteBuffer -->
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
@@ -613,6 +826,16 @@ public abstract class BinaryData {
      * of what this method returns.</p>
      *
      * <!-- src_embed com.generic.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.util.BinaryData.replayability -->
      *
      * @return A flag indicating whether the content can be repeatedly consumed using all accessors.
@@ -630,6 +853,16 @@ public abstract class BinaryData {
      * {@link BinaryData} simultaneously.</p>
      *
      * <!-- src_embed com.generic.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.generic.util.BinaryData.replayability -->
      *
      * @return A replayable {@link BinaryData}.
