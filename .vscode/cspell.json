@@ -214,6 +214,9 @@
     "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**"
+    "sdk/generic-sdk-core/generic-core/**",
+    "sdk/generic-sdk-core/generic-core-http-okhttp/**",
+    "sdk/generic-sdk-core/generic-json/**"
   ],
   "words": [
     "adal",
