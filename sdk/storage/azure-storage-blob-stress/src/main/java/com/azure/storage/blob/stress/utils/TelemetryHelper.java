@@ -190,6 +190,7 @@ public class TelemetryHelper {
         Throwable unwrapped = Exceptions.unwrap(e);
 
         span.recordException(unwrapped);
+        span.setAttribute(ERROR_TYPE_ATTRIBUTE, unwrapped.getClass().getName());
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
