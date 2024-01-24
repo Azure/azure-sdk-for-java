@@ -71,7 +71,19 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.10.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <version>4.12.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.6.0</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio</artifactId>
+      <version>3.6.0</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies on generic-core, because we want to run tests inherited from this module using OkHttp -->
@@ -109,13 +121,13 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.52.v20230823</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.53.v20231009</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.52.v20230823</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.53.v20231009</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -130,7 +142,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup.okhttp3:okhttp:[4.10.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okhttp3:okhttp:[4.12.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okio:okio-jvm:[3.6.0]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
+                <include>com.squareup.okio:okio:[3.6.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
