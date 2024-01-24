@@ -146,27 +146,25 @@
  * database tables.) The azure-search-documents client library exposes operations on these resources through two main
  * client types.</p>
  *
+ * <p>SearchClient helps with:</p>
  * <ul>
- *     <li>SearchClient helps with:</li>
- *     <ul>
- *         <li><a href="https://learn.microsoft.com/azure/search/search-lucene-query-architecture">Searching</a>
+ *     <li><a href="https://learn.microsoft.com/azure/search/search-lucene-query-architecture">Searching</a>
  *         your indexed documents using <a href="https://learn.microsoft.com/azure/search/search-query-overview">rich queries</a>
  *         and <a href="https://learn.microsoft.com/azure/search/search-filters">powerful data shaping.</a></li>
- *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/autocomplete">Autocompleting</a> partially typed search terms based on documents in the index.</li>
- *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/suggestions">Suggesting</a> the most likely matching text in documents as a user types.</li>
- *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Adding, Updating or Deleting</a> documents from an index.</li>
- *     </ul>
- *     <li>SearchIndexClient allows you to:</li>
- *     <ul>
- *         <li>Create, delete, update, or configure a search index</li>
- *         <li>Declare custom synonym maps to expand or rewrite queries</li>
- *         <li>Most of the SearchServiceClient functionality is not yet available in our current preview</li>
- *     </ul>
- *     <li>SearchIndexerClient allows you to:</li>
- *     <ul>
- *         <li>Start indexers to automatically crawl data sources</li>
- *         <li>Define AI powered Skillsets to transform and enrich your data</li>
- *     </ul>
+ *     <li><a href="https://learn.microsoft.com/rest/api/searchservice/autocomplete">Autocompleting</a> partially typed search terms based on documents in the index.</li>
+ *     <li><a href="https://learn.microsoft.com/rest/api/searchservice/suggestions">Suggesting</a> the most likely matching text in documents as a user types.</li>
+ *     <li><a href="https://learn.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Adding, Updating or Deleting</a> documents from an index.</li>
+ * </ul>
+ * <p>SearchIndexClient allows you to:</p>
+ * <ul>
+ *      <li>Create, delete, update, or configure a search index</li>
+ *      <li>Declare custom synonym maps to expand or rewrite queries</li>
+ *      <li>Most of the SearchServiceClient functionality is not yet available in our current preview</li>
+ * </ul>
+ * <p>SearchIndexerClient allows you to:</p>
+ * <ul>
+ *      <li>Start indexers to automatically crawl data sources</li>
+ *      <li>Define AI powered Skillsets to transform and enrich your data</li>
  * </ul>
  *
  * <p>Azure Cognitive Search provides two powerful features:</p>
@@ -280,9 +278,8 @@
  * and more.</p>
  *
  * <p>There are multiple ways of preparing search fields for a search index. For basic needs, there is a static helper
- * method buildSearchFields in SearchIndexClient and SearchIndexAsyncClient, which can convert Java POJO class into
- * List<SearchField>. There are three annotations SimpleFieldProperty, SearchFieldProperty and FieldBuilderIgnore to
- * configure the field of model class.</p>
+ * method buildSearchFields in SearchIndexClient and SearchIndexAsyncClient. There are three annotations
+ * SimpleFieldProperty, SearchFieldProperty and FieldBuilderIgnore to configure the field of model class.</p>
  *
  * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex -->
  * <pre>
