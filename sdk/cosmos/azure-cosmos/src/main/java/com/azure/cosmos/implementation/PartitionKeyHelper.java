@@ -71,20 +71,4 @@ public class PartitionKeyHelper {
 
         return null;
     }
-
-    public static String getPartitionKeyObjectKey(Object[] values) {
-        StringBuilder backendValues = new StringBuilder();
-        if (values.length == 1) {
-            backendValues.append((String) values[0]);
-        } else {
-            for (int i = 0; i < values.length; i++) {
-                backendValues.append((String) values[i]);
-                if (i < values.length-1) {
-                    backendValues.append("=");
-                }
-            }
-        }
-
-        return backendValues.toString();
-    }
 }

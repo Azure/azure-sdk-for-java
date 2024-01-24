@@ -58,15 +58,11 @@ class MaxNumberPartitionKeyComponent implements IPartitionKeyComponent {
 
     @Override
     public Object toObject() {
-        return MaxNumber.Value;
+        return MaxNumber.VALUE;
     }
 
     private static class MaxNumber
     {
-        public static final MaxNumber Value = new MaxNumber();
-
-        private MaxNumber()
-        {
-        }
+        public static final MaxNumber VALUE = new MaxNumber();
     }
 }

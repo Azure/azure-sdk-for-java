@@ -59,15 +59,11 @@ class MinStringPartitionKeyComponent implements IPartitionKeyComponent {
 
     @Override
     public Object toObject() {
-        return MinString.Value;
+        return MinString.VALUE;
     }
 
     private static final class MinString
     {
-        public static final MinString Value = new MinString();
-
-        private MinString()
-        {
-        }
+        public static final MinString VALUE = new MinString();
     }
 }

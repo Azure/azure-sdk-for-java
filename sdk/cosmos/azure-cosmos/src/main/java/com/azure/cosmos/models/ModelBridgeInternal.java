@@ -421,6 +421,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Object getPartitionKeyObject(PartitionKey right) {
+        throw new UnsupportedOperationException("getPartitionKeyObject is not supported");
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getAltLink(Resource resource) {
         return resource.getAltLink();
     }

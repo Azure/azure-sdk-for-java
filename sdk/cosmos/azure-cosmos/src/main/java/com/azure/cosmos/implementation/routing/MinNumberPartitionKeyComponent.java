@@ -58,15 +58,11 @@ class MinNumberPartitionKeyComponent implements IPartitionKeyComponent {
 
     @Override
     public Object toObject() {
-        return MinNumber.Value;
+        return MinNumber.VALUE;
     }
 
     private static class MinNumber
     {
-        public static final MinNumber Value = new MinNumber();
-
-        private MinNumber()
-        {
-        }
+        public static final MinNumber VALUE = new MinNumber();
     }
 }
