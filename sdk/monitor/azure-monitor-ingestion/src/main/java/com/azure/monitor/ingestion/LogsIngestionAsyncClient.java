@@ -46,7 +46,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
  * <h2>Overview</h2>
  *
  * <p>
- *     This client encapsulates REST API calls used to to send data to a Log Analytics workspace into a set of asynchronous operations.
+ *     This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of asynchronous operations.
  * </p>
  *
  * <h2>Getting Started</h2>
