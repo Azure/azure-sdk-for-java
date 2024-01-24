@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.generic.core.CoreTestUtils.assertArraysEqual;
+import static com.generic.core.util.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;

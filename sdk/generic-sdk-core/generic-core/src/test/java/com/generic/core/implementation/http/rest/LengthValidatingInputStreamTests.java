@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import static com.generic.core.CoreTestUtils.assertArraysEqual;
-import static com.generic.core.CoreTestUtils.fillArray;
-import static com.generic.core.CoreTestUtils.readStream;
-import static com.generic.core.CoreTestUtils.readStreamByteByByte;
+import static com.generic.core.util.TestUtils.assertArraysEqual;
+import static com.generic.core.util.TestUtils.fillArray;
+import static com.generic.core.util.TestUtils.readStream;
+import static com.generic.core.util.TestUtils.readStreamByteByByte;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**

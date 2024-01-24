@@ -33,9 +33,9 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.generic.core.CoreTestUtils.assertArraysEqual;
-import static com.generic.core.CoreTestUtils.fillArray;
-import static com.generic.core.CoreTestUtils.readStream;
+import static com.generic.core.util.TestUtils.assertArraysEqual;
+import static com.generic.core.util.TestUtils.fillArray;
+import static com.generic.core.util.TestUtils.readStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;

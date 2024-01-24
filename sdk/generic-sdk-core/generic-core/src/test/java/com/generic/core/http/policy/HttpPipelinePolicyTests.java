@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.generic.core.CoreTestUtils.createUrl;
+import static com.generic.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {

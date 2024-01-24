@@ -48,7 +48,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.generic.json/com.generic.json=ALL-UNNAMED
       --add-opens com.generic.json/com.generic.json.contract=ALL-UNNAMED
-      --add-opens com.generic.json/com.generic.json.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Ignore shaded code -->
