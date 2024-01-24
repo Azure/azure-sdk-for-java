@@ -380,6 +380,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
+        logger.info("validateDocCRUDAndQuery-Going to delete all items");
+        System.out.println("validateDocCRUDAndQuery-delete by partition key with incomplete partition key completed");
         deleteAllItems();
     }
 
@@ -505,7 +507,12 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         CosmosPagedIterable<ObjectNode> feedResponseIterator =
             createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         for (Object item : feedResponseIterator.stream().toArray()) {
-            createdMultiHashContainer.deleteItem(item, new CosmosItemRequestOptions());
+            try {
+                createdMultiHashContainer.deleteItem(item, new CosmosItemRequestOptions());
+            } catch (CosmosException e) {
+                logger.error("Getting exception when trying to delete item " + item.toString());
+                throw e;
+            }
         }
     }
 
