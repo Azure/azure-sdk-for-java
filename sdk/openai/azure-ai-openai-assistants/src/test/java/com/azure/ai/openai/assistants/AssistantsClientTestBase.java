@@ -17,7 +17,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -93,7 +92,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    public static String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
+    public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
 
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)

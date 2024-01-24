@@ -6,13 +6,11 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
-import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -92,10 +90,11 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
 
             // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId)).assertNext(deletionStatus -> {
-                assertEquals(threadId, deletionStatus.getId());
-                assertTrue(deletionStatus.isDeleted());
-            })
+            StepVerifier.create(client.deleteThread(threadId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(threadId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
                     .verifyComplete();
         });
     }
@@ -135,14 +134,15 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                         assertFalse(threadMessage.getContent().isEmpty());
                         assertEquals(threadId, threadMessage.getThreadId());
                     })
-                    .verifyComplete();;
+                    .verifyComplete();
 
             // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId)).assertNext(deletionStatus -> {
+            StepVerifier.create(client.deleteThread(threadId))
+                    .assertNext(deletionStatus -> {
                         assertEquals(threadId, deletionStatus.getId());
                         assertTrue(deletionStatus.isDeleted());
                     })
-                    .verifyComplete();;
+                    .verifyComplete();
         });
     }
 }

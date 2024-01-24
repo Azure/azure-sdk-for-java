@@ -64,10 +64,10 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Create a simple thread without a message
             AssistantThread assistantThread = client.createThread(new AssistantThreadCreationOptions());
             String threadId = assistantThread.getId();
-
             assertNotNull(threadId);
             assertNotNull(assistantThread.getCreatedAt());
             assertEquals("thread", assistantThread.getObject());
+
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
             assertNotNull(threadMessage.getId());
             assertNotNull(threadMessage.getCreatedAt());

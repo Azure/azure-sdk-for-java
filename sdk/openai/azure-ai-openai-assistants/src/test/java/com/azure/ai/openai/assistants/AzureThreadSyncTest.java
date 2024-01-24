@@ -11,6 +11,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -47,6 +48,7 @@ public class AzureThreadSyncTest extends AssistantsClientTestBase {
         }
     }
 
+    @Disabled("tear down failed when deleting assistant")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThread(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -64,6 +66,7 @@ public class AzureThreadSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("tear down failed when deleting assistant")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {

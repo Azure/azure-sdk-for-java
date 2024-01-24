@@ -7,13 +7,6 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantThread;
-import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
-import com.azure.ai.openai.assistants.models.CreateRunOptions;
-import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.openai.assistants.models.RunStatus;
-import com.azure.ai.openai.assistants.models.ThreadMessage;
-import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -21,14 +14,9 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ThreadSyncTest extends AssistantsClientTestBase {
