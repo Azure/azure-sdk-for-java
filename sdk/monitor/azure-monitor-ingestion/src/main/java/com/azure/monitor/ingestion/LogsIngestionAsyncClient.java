@@ -80,7 +80,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
  *
  * <ul>
  *     <li>
- *         {@link LogsIngestionAsyncClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to Azure Monitor.
+ *         {@link LogsIngestionAsyncClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to a Log Analytics workspace.
  *     </li>
  *     <li>
  *         {@link LogsIngestionAsyncClient#upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)} - Uploads logs to Azure Monitor with options to configure the upload request.
