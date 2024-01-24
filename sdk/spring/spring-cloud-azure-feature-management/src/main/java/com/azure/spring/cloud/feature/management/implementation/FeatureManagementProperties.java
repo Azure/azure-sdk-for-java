@@ -26,6 +26,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
+    private static final String FEATURE_FLAG_PASCAL_CASE = "FeatureFlag";
+    private static final String FEATURE_FLAG_KEBAB_CASE = "feature-flag";
 
     /**
      * Map of all Feature Flags that use Feature Filters.
@@ -66,7 +68,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         // check if FeatureFlags section exist
         String featureFlagsSectionKey = "";
         for (String key : features.keySet()) {
-            if ("FeatureFlags".equalsIgnoreCase(key) || "feature-flags".equalsIgnoreCase(key)) {
+            if (FEATURE_FLAG_PASCAL_CASE.equalsIgnoreCase(key) || FEATURE_FLAG_KEBAB_CASE.equalsIgnoreCase(key)) {
                 featureFlagsSectionKey = key;
                 break;
             }
