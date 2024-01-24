@@ -3,23 +3,20 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.stress.util.RunResult;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.atomic.AtomicReference;
-
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getSessionProcessorBuilder;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.getSessionProcessorBuilder;
 
 /**
  * Test ServiceBusSessionProcessorClient
  */
 @Component("MessageSessionProcessor")
 public class MessageSessionProcessor extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionProcessor.class);
 
     @Value("${MAX_CONCURRENT_SESSIONS:1}")
     private int maxConcurrentSessions;
@@ -31,23 +28,24 @@ public class MessageSessionProcessor extends ServiceBusScenario {
     private int prefetchCount;
 
     @Override
-    public RunResult run() {
-        AtomicReference<RunResult> runResult = new AtomicReference<>(RunResult.INCONCLUSIVE);
+    public void run() {
         ServiceBusProcessorClient processor = toClose(getSessionProcessorBuilder(options)
                 .maxConcurrentSessions(maxConcurrentSessions)
                 .maxConcurrentCalls(maxConcurrentCalls)
                 .prefetchCount(prefetchCount)
                 .processMessage(messageContext -> messageContext.complete())
-                .processError(err -> {
-                    LOGGER.atError()
-                        .addKeyValue("source", err.getErrorSource())
-                        .log("processor error", err.getException());
-                    runResult.set(RunResult.ERROR);
-                })
+                .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
                 .buildProcessorClient());
         processor.start();
 
         blockingWait(options.getTestDuration());
-        return runResult.get();
+    }
+
+    @Override
+    public void recordRunOptions(Span span) {
+        super.recordRunOptions(span);
+        span.setAttribute(AttributeKey.longKey("maxConcurrentSessions"), maxConcurrentSessions);
+        span.setAttribute(AttributeKey.longKey("maxConcurrentCalls"), maxConcurrentCalls);
+        span.setAttribute(AttributeKey.longKey("prefetchCount"), prefetchCount);
     }
 }

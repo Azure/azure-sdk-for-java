@@ -12,7 +12,9 @@ import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypeP
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Execute data flow activity properties. */
+/**
+ * Execute data flow activity properties.
+ */
 @Fluent
 public class ExecuteDataFlowActivityTypeProperties {
     /*
@@ -67,13 +69,15 @@ public class ExecuteDataFlowActivityTypeProperties {
     @JsonProperty(value = "sourceStagingConcurrency")
     private Object sourceStagingConcurrency;
 
-    /** Creates an instance of ExecuteDataFlowActivityTypeProperties class. */
+    /**
+     * Creates an instance of ExecuteDataFlowActivityTypeProperties class.
+     */
     public ExecuteDataFlowActivityTypeProperties() {
     }
 
     /**
      * Get the dataFlow property: Data flow reference.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowReference dataFlow() {
@@ -82,7 +86,7 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Set the dataFlow property: Data flow reference.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -93,7 +97,7 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Get the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @return the staging value.
      */
     public DataFlowStagingInfo staging() {
@@ -102,7 +106,7 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Set the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -113,7 +117,7 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Get the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @return the integrationRuntime value.
      */
     public IntegrationRuntimeReference integrationRuntime() {
@@ -122,19 +126,19 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Set the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
-    public ExecuteDataFlowActivityTypeProperties withIntegrationRuntime(
-        IntegrationRuntimeReference integrationRuntime) {
+    public ExecuteDataFlowActivityTypeProperties
+        withIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
         return this;
     }
 
     /**
      * Get the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @return the compute value.
      */
     public ExecuteDataFlowActivityTypePropertiesCompute compute() {
@@ -143,7 +147,7 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Set the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @param compute the compute value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -155,7 +159,7 @@ public class ExecuteDataFlowActivityTypeProperties {
     /**
      * Get the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the traceLevel value.
      */
     public Object traceLevel() {
@@ -165,7 +169,7 @@ public class ExecuteDataFlowActivityTypeProperties {
     /**
      * Set the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param traceLevel the traceLevel value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -177,7 +181,7 @@ public class ExecuteDataFlowActivityTypeProperties {
     /**
      * Get the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the continueOnError value.
      */
     public Object continueOnError() {
@@ -187,7 +191,7 @@ public class ExecuteDataFlowActivityTypeProperties {
     /**
      * Set the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param continueOnError the continueOnError value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -197,9 +201,9 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
-     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
+     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the runConcurrently value.
      */
     public Object runConcurrently() {
@@ -207,9 +211,9 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
-     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
+     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -219,9 +223,9 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
-     * Type: integer (or Expression with resultType integer).
-     *
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
+     * sink. Type: integer (or Expression with resultType integer).
+     * 
      * @return the sourceStagingConcurrency value.
      */
     public Object sourceStagingConcurrency() {
@@ -229,9 +233,9 @@ public class ExecuteDataFlowActivityTypeProperties {
     }
 
     /**
-     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
-     * Type: integer (or Expression with resultType integer).
-     *
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
+     * sink. Type: integer (or Expression with resultType integer).
+     * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivityTypeProperties object itself.
      */
@@ -242,15 +246,13 @@ public class ExecuteDataFlowActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataFlow() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataFlow in model ExecuteDataFlowActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataFlow in model ExecuteDataFlowActivityTypeProperties"));
         } else {
             dataFlow().validate();
         }

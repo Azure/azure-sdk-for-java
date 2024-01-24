@@ -9,10 +9,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.ManagedPrivateEndpoin
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpointResource;
 
-public final class ManagedPrivateEndpointResourceImpl
-    implements ManagedPrivateEndpointResource,
-        ManagedPrivateEndpointResource.Definition,
-        ManagedPrivateEndpointResource.Update {
+public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateEndpointResource,
+    ManagedPrivateEndpointResource.Definition, ManagedPrivateEndpointResource.Update {
     private ManagedPrivateEndpointResourceInner innerObject;
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
@@ -61,8 +59,8 @@ public final class ManagedPrivateEndpointResourceImpl
 
     private String updateIfMatch;
 
-    public ManagedPrivateEndpointResourceImpl withExistingManagedVirtualNetwork(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
+    public ManagedPrivateEndpointResourceImpl withExistingManagedVirtualNetwork(String resourceGroupName,
+        String factoryName, String managedVirtualNetworkName) {
         this.resourceGroupName = resourceGroupName;
         this.factoryName = factoryName;
         this.managedVirtualNetworkName = managedVirtualNetworkName;
@@ -70,41 +68,23 @@ public final class ManagedPrivateEndpointResourceImpl
     }
 
     public ManagedPrivateEndpointResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager
+            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
+                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedPrivateEndpointResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager
+            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
+                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    ManagedPrivateEndpointResourceImpl(
-        String name, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    ManagedPrivateEndpointResourceImpl(String name,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = new ManagedPrivateEndpointResourceInner();
         this.serviceManager = serviceManager;
         this.managedPrivateEndpointName = name;
@@ -117,81 +97,48 @@ public final class ManagedPrivateEndpointResourceImpl
     }
 
     public ManagedPrivateEndpointResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager
+            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
+                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedPrivateEndpointResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager
+            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
+                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    ManagedPrivateEndpointResourceImpl(
-        ManagedPrivateEndpointResourceInner innerObject,
+    ManagedPrivateEndpointResourceImpl(ManagedPrivateEndpointResourceInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.managedVirtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
-        this.managedPrivateEndpointName = Utils.getValueFromIdByName(innerObject.id(), "managedPrivateEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.managedVirtualNetworkName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
+        this.managedPrivateEndpointName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedPrivateEndpoints");
     }
 
     public ManagedPrivateEndpointResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .getWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    localIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getManagedPrivateEndpoints()
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                localIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedPrivateEndpointResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedPrivateEndpoints()
-                .getWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    managedVirtualNetworkName,
-                    managedPrivateEndpointName,
-                    localIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getManagedPrivateEndpoints()
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                localIfNoneMatch, context)
+            .getValue();
         return this;
     }
 

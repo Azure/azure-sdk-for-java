@@ -6,8 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The configuration information for an audio transcription request.
@@ -19,16 +17,13 @@ public final class AudioTranscriptionOptions {
      * The audio data to transcribe. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @Generated
-    @JsonProperty(value = "file")
-    private byte[] file;
+    private final byte[] file;
 
     /*
      * The requested format of the transcription response data, which will influence the content and detail of the
      * result.
      */
     @Generated
-    @JsonProperty(value = "response_format")
     private AudioTranscriptionFormat responseFormat;
 
     /*
@@ -38,7 +33,6 @@ public final class AudioTranscriptionOptions {
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
@@ -46,7 +40,6 @@ public final class AudioTranscriptionOptions {
      * prompt should match the primary spoken language of the audio data.
      */
     @Generated
-    @JsonProperty(value = "prompt")
     private String prompt;
 
     /*
@@ -57,26 +50,13 @@ public final class AudioTranscriptionOptions {
      * thresholds are hit.
      */
     @Generated
-    @JsonProperty(value = "temperature")
     private Double temperature;
 
     /*
      * The model to use for this transcription request.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
-
-    /**
-     * Creates an instance of AudioTranscriptionOptions class.
-     *
-     * @param file the file value to set.
-     */
-    @Generated
-    @JsonCreator
-    public AudioTranscriptionOptions(@JsonProperty(value = "file") byte[] file) {
-        this.file = file;
-    }
 
     /**
      * Get the file property: The audio data to transcribe. This must be the binary content of a file in one of the
@@ -85,7 +65,6 @@ public final class AudioTranscriptionOptions {
      *
      * @return the file value.
      */
-    @Generated
     public byte[] getFile() {
         return CoreUtils.clone(this.file);
     }
@@ -217,6 +196,71 @@ public final class AudioTranscriptionOptions {
     @Generated
     public AudioTranscriptionOptions setModel(String model) {
         this.model = model;
+        return this;
+    }
+
+    /*
+     * The optional filename or descriptive identifier to associate with with the audio data.
+     */
+    @Generated
+    private String filename;
+
+    /**
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
+    }
+
+    /**
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @param filename the filename value to set.
+     * @return the AudioTranscriptionOptions object itself.
+     */
+    @Generated
+    public AudioTranscriptionOptions setFilename(String filename) {
+        this.filename = filename;
+        return this;
+    }
+
+    /*
+     * The filename for file
+     */
+    @Generated
+    private String fileFilename = "file";
+
+    /**
+     * Creates an instance of AudioTranscriptionOptions class.
+     *
+     * @param file the file value to set.
+     */
+    public AudioTranscriptionOptions(byte[] file) {
+        this.file = file;
+    }
+
+    /**
+     * Get the fileFilename property: The filename for file.
+     *
+     * @return the fileFilename value.
+     */
+    String getFileFilename() {
+        return this.fileFilename;
+    }
+
+    /**
+     * Set the fileFilename property: The filename for file.
+     *
+     * @param fileFilename the fileFilename value to set.
+     * @return the AudioTranscriptionOptions object itself.
+     */
+    AudioTranscriptionOptions setFileFilename(String fileFilename) {
+        this.fileFilename = fileFilename;
         return this;
     }
 }

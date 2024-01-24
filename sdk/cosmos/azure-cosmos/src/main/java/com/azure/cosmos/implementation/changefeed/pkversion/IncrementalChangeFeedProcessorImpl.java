@@ -428,6 +428,9 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+
+        FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
+
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl(
             factory,
             leaseStoreManager,
@@ -436,7 +439,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
                 this.feedContextClient.getContainerClient(),
-                this.collectionId),
+                this.collectionId,
+                feedRangeThroughputControlConfigManager),
             this.changeFeedProcessorOptions,
             this.scheduler
         );
@@ -475,6 +479,16 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);
 
         return Mono.just(partitionManager);
+    }
+
+    private FeedRangeThroughputControlConfigManager getFeedRangeThroughputControlConfigManager() {
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig() != null) {
+            return new FeedRangeThroughputControlConfigManager(
+                this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig(),
+                this.feedContextClient);
+        }
+
+        return null;
     }
 
     @Override

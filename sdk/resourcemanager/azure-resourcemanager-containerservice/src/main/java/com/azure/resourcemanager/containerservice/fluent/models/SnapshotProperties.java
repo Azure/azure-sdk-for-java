@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to configure a node pool snapshot. */
+/**
+ * Properties used to configure a node pool snapshot.
+ */
 @Fluent
 public final class SnapshotProperties {
     /*
@@ -63,7 +65,9 @@ public final class SnapshotProperties {
     @JsonProperty(value = "enableFIPS", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enableFips;
 
-    /** Creates an instance of SnapshotProperties class. */
+    /**
+     * Creates an instance of SnapshotProperties class.
+     */
     public SnapshotProperties() {
     }
 

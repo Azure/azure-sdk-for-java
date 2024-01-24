@@ -12,8 +12,7 @@ public final class UnlockDeleteResponseImpl implements UnlockDeleteResponse {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    UnlockDeleteResponseImpl(
-        UnlockDeleteResponseInner innerObject,
+    UnlockDeleteResponseImpl(UnlockDeleteResponseInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

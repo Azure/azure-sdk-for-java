@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants, Exceptions}
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -169,17 +169,47 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
 
     private def getPartitionKeyDefinition(containerProperties: Map[String, String]): PartitionKeyDefinition = {
         val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-
         val partitionKeyDef = new PartitionKeyDefinition
         val paths = new util.ArrayList[String]
-        paths.add(partitionKeyPath)
-        partitionKeyDef.setPaths(paths)
-
-        CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
-            case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
-            case None =>
+        val pathList = partitionKeyPath.split(",").toList
+        if (pathList.size >= 2) {
+            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) => {
+                    if (pkKind == PartitionKind.HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
+                    }
+                    PartitionKind.MULTI_HASH
+                }
+                case None => PartitionKind.MULTI_HASH
+            })
+            partitionKeyDef.setVersion(CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+                case Some(pkVersion) =>
+                    {
+                        if (pkVersion == PartitionKeyDefinitionVersion.V1.toString) {
+                            throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
+                        }
+                        PartitionKeyDefinitionVersion.V2
+                    }
+                case None => PartitionKeyDefinitionVersion.V2
+            })
+            pathList.foreach(path => paths.add(path.trim))
+        } else {
+            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) => {
+                    if (pkKind == PartitionKind.MULTI_HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
+                    }
+                    PartitionKind.HASH
+                }
+                case None => PartitionKind.HASH
+            })
+            CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+                case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
+                case None =>
+            }
+            paths.add(partitionKeyPath)
         }
-
+        partitionKeyDef.setPaths(paths)
         partitionKeyDef
     }
 

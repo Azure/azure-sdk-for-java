@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.PowerQuerySource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Power Query data flow type properties. */
+/**
+ * Power Query data flow type properties.
+ */
 @Fluent
 public final class PowerQueryTypeProperties {
     /*
@@ -30,13 +32,15 @@ public final class PowerQueryTypeProperties {
     @JsonProperty(value = "documentLocale")
     private String documentLocale;
 
-    /** Creates an instance of PowerQueryTypeProperties class. */
+    /**
+     * Creates an instance of PowerQueryTypeProperties class.
+     */
     public PowerQueryTypeProperties() {
     }
 
     /**
      * Get the sources property: List of sources in Power Query.
-     *
+     * 
      * @return the sources value.
      */
     public List<PowerQuerySource> sources() {
@@ -45,7 +49,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the sources property: List of sources in Power Query.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Get the script property: Power query mashup script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -65,7 +69,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the script property: Power query mashup script.
-     *
+     * 
      * @param script the script value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Get the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @return the documentLocale value.
      */
     public String documentLocale() {
@@ -85,7 +89,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @param documentLocale the documentLocale value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

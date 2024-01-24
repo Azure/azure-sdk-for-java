@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.FileSystemSink;
 public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSystemSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datagw\",\"writeBatchSize\":\"dataujshcsnk\",\"writeBatchTimeout\":\"datagpqxqevt\",\"sinkRetryCount\":\"datavyy\",\"sinkRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
-                .toObject(FileSystemSink.class);
+        FileSystemSink model = BinaryData.fromString(
+            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datassayrwy\",\"writeBatchSize\":\"datautezxrpxdhzwdyva\",\"writeBatchTimeout\":\"datav\",\"sinkRetryCount\":\"datawexwhosc\",\"sinkRetryWait\":\"datapmvc\",\"maxConcurrentConnections\":\"datamgqlshglympe\",\"disableMetricsCollection\":\"datazvcfh\",\"\":{\"twz\":\"dataropxeezlqwbgl\",\"orfpizyb\":\"datatkhyrwdsnpuo\",\"pqatkzghwcywrb\":\"dataj\",\"kf\":\"dataxwls\"}}")
+            .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model =
-            new FileSystemSink()
-                .withWriteBatchSize("dataujshcsnk")
-                .withWriteBatchTimeout("datagpqxqevt")
-                .withSinkRetryCount("datavyy")
-                .withSinkRetryWait("datakjirvjogsalvjl")
-                .withMaxConcurrentConnections("dataimua")
-                .withDisableMetricsCollection("datakympwquu")
-                .withCopyBehavior("datagw");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datautezxrpxdhzwdyva")
+            .withWriteBatchTimeout("datav").withSinkRetryCount("datawexwhosc").withSinkRetryWait("datapmvc")
+            .withMaxConcurrentConnections("datamgqlshglympe").withDisableMetricsCollection("datazvcfh")
+            .withCopyBehavior("datassayrwy");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }

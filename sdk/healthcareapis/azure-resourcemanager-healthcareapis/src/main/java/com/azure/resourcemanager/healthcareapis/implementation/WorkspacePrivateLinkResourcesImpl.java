@@ -21,47 +21,43 @@ public final class WorkspacePrivateLinkResourcesImpl implements WorkspacePrivate
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public WorkspacePrivateLinkResourcesImpl(
-        WorkspacePrivateLinkResourcesClient innerClient,
+    public WorkspacePrivateLinkResourcesImpl(WorkspacePrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateLinkResourceDescription> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
-        PagedIterable<PrivateLinkResourceDescriptionInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public PagedIterable<PrivateLinkResourceDescription> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
+        PagedIterable<PrivateLinkResourceDescriptionInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResourceDescription> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<PrivateLinkResourceDescriptionInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+    public PagedIterable<PrivateLinkResourceDescription> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceDescriptionInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResourceDescription get(String resourceGroupName, String workspaceName, String groupName) {
-        PrivateLinkResourceDescriptionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, groupName);
+    public Response<PrivateLinkResourceDescription> getWithResponse(String resourceGroupName, String workspaceName,
+        String groupName, Context context) {
+        Response<PrivateLinkResourceDescriptionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupName, context);
         if (inner != null) {
-            return new PrivateLinkResourceDescriptionImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<PrivateLinkResourceDescription> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupName, Context context) {
-        Response<PrivateLinkResourceDescriptionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupName, context);
+    public PrivateLinkResourceDescription get(String resourceGroupName, String workspaceName, String groupName) {
+        PrivateLinkResourceDescriptionInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, groupName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkResourceDescriptionImpl(inner.getValue(), this.manager()));
+            return new PrivateLinkResourceDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }

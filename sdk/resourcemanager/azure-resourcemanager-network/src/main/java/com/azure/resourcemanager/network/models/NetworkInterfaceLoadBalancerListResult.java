@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list ip configurations API service call. */
+/**
+ * Response for list ip configurations API service call.
+ */
 @Fluent
 public final class NetworkInterfaceLoadBalancerListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkInterfaceLoadBalancerListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of NetworkInterfaceLoadBalancerListResult class. */
+    /**
+     * Creates an instance of NetworkInterfaceLoadBalancerListResult class.
+     */
     public NetworkInterfaceLoadBalancerListResult() {
     }
 
     /**
      * Get the value property: A list of load balancers.
-     *
+     * 
      * @return the value value.
      */
     public List<LoadBalancerInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkInterfaceLoadBalancerListResult {
 
     /**
      * Set the value property: A list of load balancers.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkInterfaceLoadBalancerListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkInterfaceLoadBalancerListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkInterfaceLoadBalancerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

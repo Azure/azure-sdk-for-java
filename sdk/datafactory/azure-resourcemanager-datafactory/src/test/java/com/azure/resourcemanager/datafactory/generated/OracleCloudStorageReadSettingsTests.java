@@ -10,29 +10,20 @@ import com.azure.resourcemanager.datafactory.models.OracleCloudStorageReadSettin
 public final class OracleCloudStorageReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OracleCloudStorageReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OracleCloudStorageReadSettings\",\"recursive\":\"datauazoblxxks\",\"wildcardFolderPath\":\"datatiz\",\"wildcardFileName\":\"datavihg\",\"prefix\":\"datadolodfodokh\",\"fileListPath\":\"datag\",\"enablePartitionDiscovery\":\"datadhlnar\",\"partitionRootPath\":\"datauoa\",\"deleteFilesAfterCompletion\":\"datairiccuyqtjvrz\",\"modifiedDatetimeStart\":\"datagmgfa\",\"modifiedDatetimeEnd\":\"datab\",\"maxConcurrentConnections\":\"dataaenvpzd\",\"disableMetricsCollection\":\"datapizgaujvc\",\"\":{\"trkdno\":\"dataybxorrceomsqar\"}}")
-                .toObject(OracleCloudStorageReadSettings.class);
+        OracleCloudStorageReadSettings model = BinaryData.fromString(
+            "{\"type\":\"OracleCloudStorageReadSettings\",\"recursive\":\"dataljcauegymc\",\"wildcardFolderPath\":\"datasmnjitxu\",\"wildcardFileName\":\"datalbibwodayipgsh\",\"prefix\":\"dataoecmbyo\",\"fileListPath\":\"datavbvfchfuxuqp\",\"enablePartitionDiscovery\":\"dataebok\",\"partitionRootPath\":\"datashhhdixnzapz\",\"deleteFilesAfterCompletion\":\"datamstvz\",\"modifiedDatetimeStart\":\"datazvfywspajakj\",\"modifiedDatetimeEnd\":\"datapktbnmhxtmzzpa\",\"maxConcurrentConnections\":\"datasrvsbkn\",\"disableMetricsCollection\":\"datauytsaj\",\"\":{\"j\":\"datausnwic\",\"btegiw\":\"datawctlsohrtgpvv\"}}")
+            .toObject(OracleCloudStorageReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleCloudStorageReadSettings model =
-            new OracleCloudStorageReadSettings()
-                .withMaxConcurrentConnections("dataaenvpzd")
-                .withDisableMetricsCollection("datapizgaujvc")
-                .withRecursive("datauazoblxxks")
-                .withWildcardFolderPath("datatiz")
-                .withWildcardFileName("datavihg")
-                .withPrefix("datadolodfodokh")
-                .withFileListPath("datag")
-                .withEnablePartitionDiscovery("datadhlnar")
-                .withPartitionRootPath("datauoa")
-                .withDeleteFilesAfterCompletion("datairiccuyqtjvrz")
-                .withModifiedDatetimeStart("datagmgfa")
-                .withModifiedDatetimeEnd("datab");
+        OracleCloudStorageReadSettings model
+            = new OracleCloudStorageReadSettings().withMaxConcurrentConnections("datasrvsbkn")
+                .withDisableMetricsCollection("datauytsaj").withRecursive("dataljcauegymc")
+                .withWildcardFolderPath("datasmnjitxu").withWildcardFileName("datalbibwodayipgsh")
+                .withPrefix("dataoecmbyo").withFileListPath("datavbvfchfuxuqp").withEnablePartitionDiscovery("dataebok")
+                .withPartitionRootPath("datashhhdixnzapz").withDeleteFilesAfterCompletion("datamstvz")
+                .withModifiedDatetimeStart("datazvfywspajakj").withModifiedDatetimeEnd("datapktbnmhxtmzzpa");
         model = BinaryData.fromObject(model).toObject(OracleCloudStorageReadSettings.class);
     }
 }

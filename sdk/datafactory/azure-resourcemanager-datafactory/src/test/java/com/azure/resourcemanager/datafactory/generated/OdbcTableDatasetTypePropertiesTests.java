@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.OdbcTableDatasetTypeP
 public final class OdbcTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OdbcTableDatasetTypeProperties model =
-            BinaryData.fromString("{\"tableName\":\"dataaeeekfztvna\"}").toObject(OdbcTableDatasetTypeProperties.class);
+        OdbcTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"dataaeeekfztvna\"}")
+            .toObject(OdbcTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

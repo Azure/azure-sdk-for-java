@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error response from the pod identity provisioning. */
+/**
+ * An error response from the pod identity provisioning.
+ */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningErrorBody {
     /*
@@ -35,7 +37,9 @@ public final class ManagedClusterPodIdentityProvisioningErrorBody {
     @JsonProperty(value = "details")
     private List<ManagedClusterPodIdentityProvisioningErrorBody> details;
 
-    /** Creates an instance of ManagedClusterPodIdentityProvisioningErrorBody class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentityProvisioningErrorBody class.
+     */
     public ManagedClusterPodIdentityProvisioningErrorBody() {
     }
 
@@ -118,8 +122,8 @@ public final class ManagedClusterPodIdentityProvisioningErrorBody {
      * @param details the details value to set.
      * @return the ManagedClusterPodIdentityProvisioningErrorBody object itself.
      */
-    public ManagedClusterPodIdentityProvisioningErrorBody withDetails(
-        List<ManagedClusterPodIdentityProvisioningErrorBody> details) {
+    public ManagedClusterPodIdentityProvisioningErrorBody
+        withDetails(List<ManagedClusterPodIdentityProvisioningErrorBody> details) {
         this.details = details;
         return this;
     }

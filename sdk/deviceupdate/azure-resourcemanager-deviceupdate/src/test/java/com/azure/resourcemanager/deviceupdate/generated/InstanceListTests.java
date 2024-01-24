@@ -6,61 +6,62 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.InstanceInner;
+import com.azure.resourcemanager.deviceupdate.models.AuthenticationType;
+import com.azure.resourcemanager.deviceupdate.models.DiagnosticStorageProperties;
 import com.azure.resourcemanager.deviceupdate.models.InstanceList;
+import com.azure.resourcemanager.deviceupdate.models.IotHubSettings;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InstanceListTests {
-    @Test
-    public void testDeserialize() {
-        InstanceList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"qduujitcjczdz\",\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"accountName\":\"rwpdappdsbdkvwrw\",\"iotHubs\":[],\"enableDiagnostics\":false},\"location\":\"hutje\",\"tags\":{\"hugjzzdatqxhoc\":\"rl\",\"ozwyiftyhxhuro\":\"geablgphuticndvk\"},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"},{\"properties\":{\"provisioningState\":\"Creating\",\"accountName\":\"gcbacphejkot\",\"iotHubs\":[],\"enableDiagnostics\":false},\"location\":\"l\",\"tags\":{\"adgakeqsrxybz\":\"likwyqkgfgib\",\"mnkzsmod\":\"qedqytbciqfoufl\",\"tmut\":\"glougpbk\",\"pwgcuertu\":\"uqktap\"},\"id\":\"kdosvqw\",\"name\":\"bmdg\",\"type\":\"bjf\"}]}")
-                .toObject(InstanceList.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InstanceList model = BinaryData.fromString(
+            "{\"nextLink\":\"qduujitcjczdz\",\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"accountName\":\"rwpdappdsbdkvwrw\",\"iotHubs\":[{\"resourceId\":\"usnhutje\"},{\"resourceId\":\"tmrldhugjzzdatq\"}],\"enableDiagnostics\":false,\"diagnosticStorageProperties\":{\"authenticationType\":\"KeyBased\",\"connectionString\":\"eablg\",\"resourceId\":\"huticndvkao\"}},\"location\":\"yiftyhxhuro\",\"tags\":{\"cukjf\":\"yxolniwp\",\"lryplwckbasyy\":\"giawx\",\"jkot\":\"nddhsgcbacph\"},\"id\":\"nqgoulzndli\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"},{\"properties\":{\"provisioningState\":\"Failed\",\"accountName\":\"xybz\",\"iotHubs\":[{\"resourceId\":\"dqytbciqfouflmm\"}],\"enableDiagnostics\":false,\"diagnosticStorageProperties\":{\"authenticationType\":\"KeyBased\",\"connectionString\":\"dmgloug\",\"resourceId\":\"b\"}},\"location\":\"tmut\",\"tags\":{\"kdosvqw\":\"ktapspwgcuertu\",\"bjf\":\"bmdg\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"},\"id\":\"algbquxigjyjg\",\"name\":\"jaoyfhrtx\",\"type\":\"lnerkujysvleju\"}]}")
+            .toObject(InstanceList.class);
         Assertions.assertEquals("qduujitcjczdz", model.nextLink());
-        Assertions.assertEquals("hutje", model.value().get(0).location());
-        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals("yiftyhxhuro", model.value().get(0).location());
+        Assertions.assertEquals("yxolniwp", model.value().get(0).tags().get("cukjf"));
+        Assertions.assertEquals("usnhutje", model.value().get(0).iotHubs().get(0).resourceId());
         Assertions.assertEquals(false, model.value().get(0).enableDiagnostics());
+        Assertions.assertEquals(AuthenticationType.KEY_BASED,
+            model.value().get(0).diagnosticStorageProperties().authenticationType());
+        Assertions.assertEquals("eablg", model.value().get(0).diagnosticStorageProperties().connectionString());
+        Assertions.assertEquals("huticndvkao", model.value().get(0).diagnosticStorageProperties().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        InstanceList model =
-            new InstanceList()
-                .withNextLink("qduujitcjczdz")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new InstanceInner()
-                                .withLocation("hutje")
-                                .withTags(mapOf("hugjzzdatqxhoc", "rl", "ozwyiftyhxhuro", "geablgphuticndvk"))
-                                .withIotHubs(Arrays.asList())
-                                .withEnableDiagnostics(false),
-                            new InstanceInner()
-                                .withLocation("l")
-                                .withTags(
-                                    mapOf(
-                                        "adgakeqsrxybz",
-                                        "likwyqkgfgib",
-                                        "mnkzsmod",
-                                        "qedqytbciqfoufl",
-                                        "tmut",
-                                        "glougpbk",
-                                        "pwgcuertu",
-                                        "uqktap"))
-                                .withIotHubs(Arrays.asList())
-                                .withEnableDiagnostics(false)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InstanceList model = new InstanceList().withNextLink("qduujitcjczdz")
+            .withValue(Arrays.asList(
+                new InstanceInner().withLocation("yiftyhxhuro")
+                    .withTags(mapOf("cukjf", "yxolniwp", "lryplwckbasyy", "giawx", "jkot", "nddhsgcbacph"))
+                    .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("usnhutje"),
+                        new IotHubSettings().withResourceId("tmrldhugjzzdatq")))
+                    .withEnableDiagnostics(false).withDiagnosticStorageProperties(
+                        new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
+                            .withConnectionString("eablg").withResourceId("huticndvkao")),
+                new InstanceInner().withLocation("tmut")
+                    .withTags(mapOf("kdosvqw", "ktapspwgcuertu", "bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq"))
+                    .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("dqytbciqfouflmm")))
+                    .withEnableDiagnostics(false).withDiagnosticStorageProperties(
+                        new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
+                            .withConnectionString("dmgloug").withResourceId("b"))));
         model = BinaryData.fromObject(model).toObject(InstanceList.class);
         Assertions.assertEquals("qduujitcjczdz", model.nextLink());
-        Assertions.assertEquals("hutje", model.value().get(0).location());
-        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals("yiftyhxhuro", model.value().get(0).location());
+        Assertions.assertEquals("yxolniwp", model.value().get(0).tags().get("cukjf"));
+        Assertions.assertEquals("usnhutje", model.value().get(0).iotHubs().get(0).resourceId());
         Assertions.assertEquals(false, model.value().get(0).enableDiagnostics());
+        Assertions.assertEquals(AuthenticationType.KEY_BASED,
+            model.value().get(0).diagnosticStorageProperties().authenticationType());
+        Assertions.assertEquals("eablg", model.value().get(0).diagnosticStorageProperties().connectionString());
+        Assertions.assertEquals("huticndvkao", model.value().get(0).diagnosticStorageProperties().resourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

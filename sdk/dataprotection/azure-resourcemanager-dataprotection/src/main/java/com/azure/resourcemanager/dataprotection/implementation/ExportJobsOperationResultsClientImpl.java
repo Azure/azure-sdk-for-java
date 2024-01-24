@@ -25,24 +25,28 @@ import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResult
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient.
+ */
 public final class ExportJobsOperationResultsClientImpl implements ExportJobsOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExportJobsOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of ExportJobsOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExportJobsOperationResultsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ExportJobsOperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ExportJobsOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,27 +57,21 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface ExportJobsOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs/operations/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupJobs/operations/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExportJobsResultInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExportJobsResultInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
@@ -81,22 +79,18 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportJobsResultInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId) {
+    private Mono<Response<ExportJobsResultInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -110,18 +104,8 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -129,7 +113,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
@@ -138,22 +122,18 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExportJobsResultInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    private Mono<Response<ExportJobsResultInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,23 +147,15 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, operationId, accept, context);
     }
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
@@ -202,7 +174,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
@@ -213,8 +185,8 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExportJobsResultInner> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    public Response<ExportJobsResultInner> getWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, operationId, context).block();
     }
 
@@ -222,7 +194,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.

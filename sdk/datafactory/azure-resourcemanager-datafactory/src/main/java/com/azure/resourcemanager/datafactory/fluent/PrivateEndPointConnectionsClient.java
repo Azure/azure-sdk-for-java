@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndPointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndPointConnectionsClient.
+ */
 public interface PrivateEndPointConnectionsClient {
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface PrivateEndPointConnectionsClient {
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -37,6 +39,6 @@ public interface PrivateEndPointConnectionsClient {
      * @return a list of linked service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 }

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for all triggers that support one to many model for trigger to pipeline. */
+/**
+ * Base class for all triggers that support one to many model for trigger to pipeline.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,8 +24,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
     @JsonSubTypes.Type(name = "BlobTrigger", value = BlobTrigger.class),
     @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class),
-    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class)
-})
+    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class) })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {
     /*
@@ -32,13 +33,15 @@ public class MultiplePipelineTrigger extends Trigger {
     @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
 
-    /** Creates an instance of MultiplePipelineTrigger class. */
+    /**
+     * Creates an instance of MultiplePipelineTrigger class.
+     */
     public MultiplePipelineTrigger() {
     }
 
     /**
      * Get the pipelines property: Pipelines that need to be started.
-     *
+     * 
      * @return the pipelines value.
      */
     public List<TriggerPipelineReference> pipelines() {
@@ -47,7 +50,7 @@ public class MultiplePipelineTrigger extends Trigger {
 
     /**
      * Set the pipelines property: Pipelines that need to be started.
-     *
+     * 
      * @param pipelines the pipelines value to set.
      * @return the MultiplePipelineTrigger object itself.
      */
@@ -56,14 +59,18 @@ public class MultiplePipelineTrigger extends Trigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MultiplePipelineTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MultiplePipelineTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -72,7 +79,7 @@ public class MultiplePipelineTrigger extends Trigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

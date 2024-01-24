@@ -6,25 +6,25 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
 
-/** Samples for CredentialOperations CreateOrUpdate. */
+/**
+ * Samples for CredentialOperations CreateOrUpdate.
+ */
 public final class CredentialOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.
+     * json
      */
     /**
      * Sample code: Credentials_Create.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .credentialOperations()
-            .define("exampleCredential")
+        manager.credentialOperations().define("exampleCredential")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(
-                new ManagedIdentityCredential()
-                    .withResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"))
+            .withProperties(new ManagedIdentityCredential().withResourceId(
+                "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"))
             .create();
     }
 }

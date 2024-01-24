@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterPodIdentityProvisioningInfo model. */
+/**
+ * The ManagedClusterPodIdentityProvisioningInfo model.
+ */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningInfo {
     /*
@@ -16,7 +18,9 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
     @JsonProperty(value = "error")
     private ManagedClusterPodIdentityProvisioningError error;
 
-    /** Creates an instance of ManagedClusterPodIdentityProvisioningInfo class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentityProvisioningInfo class.
+     */
     public ManagedClusterPodIdentityProvisioningInfo() {
     }
 

@@ -5,40 +5,34 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
 import com.azure.resourcemanager.datafactory.models.OrcSink;
 import com.azure.resourcemanager.datafactory.models.OrcWriteSettings;
 import com.azure.resourcemanager.datafactory.models.StoreWriteSettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class OrcSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrcSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OrcSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datagwv\",\"disableMetricsCollection\":\"datasqlyahlaoqkcit\",\"copyBehavior\":\"datauzvaxltrznwh\",\"\":{\"ddkkoyzsyjvk\":\"datasauvprqzpfpbxl\",\"hczqm\":\"dataldonsekazxewnlpc\",\"zzcbohbbavode\":\"dataxmyfrmfclkyncjya\",\"bvhxnjorvpc\":\"dataduabqbverbjcts\"}},\"formatSettings\":{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"datalppuknnmnp\",\"fileNamePrefix\":\"datanm\",\"\":{\"efivozrdzrik\":\"datadh\",\"gozoelamerpbctrw\":\"dataiucvvrkxpb\",\"ywq\":\"datavnscmacb\"}},\"writeBatchSize\":\"dataztlf\",\"writeBatchTimeout\":\"datalgxrsn\",\"sinkRetryCount\":\"datarooaahhvsf\",\"sinkRetryWait\":\"datawkinkhvtxngme\",\"maxConcurrentConnections\":\"dataninjhdkvkqjjouh\",\"disableMetricsCollection\":\"datakcttpcctvcjdrmkn\",\"\":{\"zbmyftzbxfgo\":\"datavcrj\",\"egursbzmixwaxtn\":\"datarbullqnfz\",\"gsuqmrkyaovcbds\":\"datavtzdvxsgdaajl\",\"j\":\"dataxhpqlxnb\"}}")
-                .toObject(OrcSink.class);
+        OrcSink model = BinaryData.fromString(
+            "{\"type\":\"OrcSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataftqombdsgqxa\",\"disableMetricsCollection\":\"dataduo\",\"copyBehavior\":\"datazhdjbyf\",\"metadata\":[{\"name\":\"datajnhpyylekubiwvjv\",\"value\":\"datanyjqbwxpwjvfi\"}],\"\":{\"ttkbzwgj\":\"dataq\",\"jqsshu\":\"datapjbdqmnki\",\"uwome\":\"dataxjttnurkmerqza\",\"tce\":\"dataqvvtjwdlduvim\"}},\"formatSettings\":{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"dataxoxtapafbjvbkj\",\"fileNamePrefix\":\"datazkc\",\"\":{\"pydnujgblski\":\"datavc\",\"puacajxdrgxpu\":\"datapr\",\"pzrycchqz\":\"datapzslmfr\"}},\"writeBatchSize\":\"datagesdzgszjhe\",\"writeBatchTimeout\":\"datamdhchi\",\"sinkRetryCount\":\"datasrhgpityeu\",\"sinkRetryWait\":\"dataysbme\",\"maxConcurrentConnections\":\"datag\",\"disableMetricsCollection\":\"datanlihbku\",\"\":{\"tvyzuyqzjfv\":\"dataywy\",\"scyzvv\":\"datanyyjvz\"}}")
+            .toObject(OrcSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrcSink model =
-            new OrcSink()
-                .withWriteBatchSize("dataztlf")
-                .withWriteBatchTimeout("datalgxrsn")
-                .withSinkRetryCount("datarooaahhvsf")
-                .withSinkRetryWait("datawkinkhvtxngme")
-                .withMaxConcurrentConnections("dataninjhdkvkqjjouh")
-                .withDisableMetricsCollection("datakcttpcctvcjdrmkn")
-                .withStoreSettings(
-                    new StoreWriteSettings()
-                        .withMaxConcurrentConnections("datagwv")
-                        .withDisableMetricsCollection("datasqlyahlaoqkcit")
-                        .withCopyBehavior("datauzvaxltrznwh")
-                        .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-                .withFormatSettings(
-                    new OrcWriteSettings().withMaxRowsPerFile("datalppuknnmnp").withFileNamePrefix("datanm"));
+        OrcSink model = new OrcSink().withWriteBatchSize("datagesdzgszjhe").withWriteBatchTimeout("datamdhchi")
+            .withSinkRetryCount("datasrhgpityeu").withSinkRetryWait("dataysbme").withMaxConcurrentConnections("datag")
+            .withDisableMetricsCollection("datanlihbku")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataftqombdsgqxa")
+                .withDisableMetricsCollection("dataduo").withCopyBehavior("datazhdjbyf")
+                .withMetadata(
+                    Arrays.asList(new MetadataItem().withName("datajnhpyylekubiwvjv").withValue("datanyjqbwxpwjvfi")))
+                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
+            .withFormatSettings(
+                new OrcWriteSettings().withMaxRowsPerFile("dataxoxtapafbjvbkj").withFileNamePrefix("datazkc"));
         model = BinaryData.fromObject(model).toObject(OrcSink.class);
     }
 

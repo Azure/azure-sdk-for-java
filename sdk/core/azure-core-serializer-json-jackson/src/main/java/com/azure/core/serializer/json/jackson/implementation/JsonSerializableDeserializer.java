@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import java.io.IOException;
 
+/**
+ * Implementation of Jackson's {@link JsonDeserializer} that is capable of handling {@link JsonSerializable} types.
+ */
 public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 

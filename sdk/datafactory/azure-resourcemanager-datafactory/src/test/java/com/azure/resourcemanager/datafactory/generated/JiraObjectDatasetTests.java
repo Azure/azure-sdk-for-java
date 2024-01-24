@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JiraObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JiraObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"JiraObject\",\"typeProperties\":{\"tableName\":\"datamhp\"},\"description\":\"sfgvrvq\",\"structure\":\"datawbdrwroqkljnzpqh\",\"schema\":\"datasarkyulfa\",\"linkedServiceName\":{\"referenceName\":\"ea\",\"parameters\":{\"geytlplslfc\":\"dataqenhekzaz\",\"ksuowt\":\"datae\",\"rhnxzmfvmw\":\"datalkyqfnjo\",\"rawwhyxf\":\"datanrtc\"}},\"parameters\":{\"uns\":{\"type\":\"String\",\"defaultValue\":\"datadmvwn\"}},\"annotations\":[\"dataevzshqykebmps\",\"dataaezc\",\"datadkckr\"],\"folder\":{\"name\":\"qdmhcejstfs\"},\"\":{\"wxqd\":\"datajakgk\",\"wdjox\":\"dataoqzh\",\"sobvcnsb\":\"datakbd\"}}")
-                .toObject(JiraObjectDataset.class);
+        JiraObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"JiraObject\",\"typeProperties\":{\"tableName\":\"datamhp\"},\"description\":\"sfgvrvq\",\"structure\":\"datawbdrwroqkljnzpqh\",\"schema\":\"datasarkyulfa\",\"linkedServiceName\":{\"referenceName\":\"ea\",\"parameters\":{\"geytlplslfc\":\"dataqenhekzaz\",\"ksuowt\":\"datae\",\"rhnxzmfvmw\":\"datalkyqfnjo\",\"rawwhyxf\":\"datanrtc\"}},\"parameters\":{\"uns\":{\"type\":\"String\",\"defaultValue\":\"datadmvwn\"}},\"annotations\":[\"dataevzshqykebmps\",\"dataaezc\",\"datadkckr\"],\"folder\":{\"name\":\"qdmhcejstfs\"},\"\":{\"wxqd\":\"datajakgk\",\"wdjox\":\"dataoqzh\",\"sobvcnsb\":\"datakbd\"}}")
+            .toObject(JiraObjectDataset.class);
         Assertions.assertEquals("sfgvrvq", model.description());
         Assertions.assertEquals("ea", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uns").type());
@@ -31,31 +29,15 @@ public final class JiraObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JiraObjectDataset model =
-            new JiraObjectDataset()
-                .withDescription("sfgvrvq")
-                .withStructure("datawbdrwroqkljnzpqh")
-                .withSchema("datasarkyulfa")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("ea")
-                        .withParameters(
-                            mapOf(
-                                "geytlplslfc",
-                                "dataqenhekzaz",
-                                "ksuowt",
-                                "datae",
-                                "rhnxzmfvmw",
-                                "datalkyqfnjo",
-                                "rawwhyxf",
-                                "datanrtc")))
-                .withParameters(
-                    mapOf(
-                        "uns",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datadmvwn")))
-                .withAnnotations(Arrays.asList("dataevzshqykebmps", "dataaezc", "datadkckr"))
-                .withFolder(new DatasetFolder().withName("qdmhcejstfs"))
-                .withTableName("datamhp");
+        JiraObjectDataset model = new JiraObjectDataset().withDescription("sfgvrvq")
+            .withStructure("datawbdrwroqkljnzpqh").withSchema("datasarkyulfa")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ea")
+                .withParameters(mapOf("geytlplslfc", "dataqenhekzaz", "ksuowt", "datae", "rhnxzmfvmw", "datalkyqfnjo",
+                    "rawwhyxf", "datanrtc")))
+            .withParameters(
+                mapOf("uns", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datadmvwn")))
+            .withAnnotations(Arrays.asList("dataevzshqykebmps", "dataaezc", "datadkckr"))
+            .withFolder(new DatasetFolder().withName("qdmhcejstfs")).withTableName("datamhp");
         model = BinaryData.fromObject(model).toObject(JiraObjectDataset.class);
         Assertions.assertEquals("sfgvrvq", model.description());
         Assertions.assertEquals("ea", model.linkedServiceName().referenceName());

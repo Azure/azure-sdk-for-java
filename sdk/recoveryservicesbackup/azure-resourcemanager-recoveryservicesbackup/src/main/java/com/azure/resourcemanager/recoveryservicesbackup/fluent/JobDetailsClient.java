@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 
-/** An instance of this class provides access to all the operations defined in JobDetailsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobDetailsClient.
+ */
 public interface JobDetailsClient {
     /**
      * Gets extended information associated with the job.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job whose details are to be fetched.
@@ -25,12 +27,12 @@ public interface JobDetailsClient {
      * @return extended information associated with the job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String jobName, Context context);
+    Response<JobResourceInner> getWithResponse(String vaultName, String resourceGroupName, String jobName,
+        Context context);
 
     /**
      * Gets extended information associated with the job.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job whose details are to be fetched.

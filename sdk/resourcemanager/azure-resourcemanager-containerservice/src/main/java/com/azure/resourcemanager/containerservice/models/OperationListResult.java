@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.OperationValueIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Operation response. */
+/**
+ * The List Operation response.
+ */
 @Immutable
 public final class OperationListResult {
     /*
@@ -18,7 +20,9 @@ public final class OperationListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationValueInner> value;
 
-    /** Creates an instance of OperationListResult class. */
+    /**
+     * Creates an instance of OperationListResult class.
+     */
     public OperationListResult() {
     }
 

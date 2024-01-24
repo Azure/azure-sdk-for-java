@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the reboot setting for all AutomaticByPlatform patch installation operations. */
+/**
+ * Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
+ */
 public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<WindowsVMGuestPatchAutomaticByPlatformRebootSetting> {
-    /** Static value Unknown for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Unknown for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
-    /** Static value IfRequired for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value IfRequired for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
-    /** Static value Never for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Never for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
-    /** Static value Always for WindowsVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Always for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
      * Creates a new instance of WindowsVMGuestPatchAutomaticByPlatformRebootSetting value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
 
     /**
      * Creates or finds a WindowsVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
      */
@@ -45,7 +55,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
 
     /**
      * Gets known WindowsVMGuestPatchAutomaticByPlatformRebootSetting values.
-     *
+     * 
      * @return known WindowsVMGuestPatchAutomaticByPlatformRebootSetting values.
      */
     public static Collection<WindowsVMGuestPatchAutomaticByPlatformRebootSetting> values() {

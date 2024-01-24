@@ -10,23 +10,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Operation result response for Vault Storage Config. */
+/**
+ * Operation result response for Vault Storage Config.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
     defaultImpl = VaultStorageConfigOperationResultResponseInner.class)
 @JsonTypeName("VaultStorageConfigOperationResultResponse")
-@JsonSubTypes({@JsonSubTypes.Type(name = "PrepareDataMoveResponse", value = PrepareDataMoveResponse.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "PrepareDataMoveResponse", value = PrepareDataMoveResponse.class) })
 @Immutable
 public class VaultStorageConfigOperationResultResponseInner {
-    /** Creates an instance of VaultStorageConfigOperationResultResponseInner class. */
+    /**
+     * Creates an instance of VaultStorageConfigOperationResultResponseInner class.
+     */
     public VaultStorageConfigOperationResultResponseInner() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

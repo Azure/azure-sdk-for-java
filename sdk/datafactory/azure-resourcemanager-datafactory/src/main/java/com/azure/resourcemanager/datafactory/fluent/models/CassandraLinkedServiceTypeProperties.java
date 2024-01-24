@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cassandra linked service properties. */
+/**
+ * Cassandra linked service properties.
+ */
 @Fluent
 public final class CassandraLinkedServiceTypeProperties {
     /*
@@ -49,13 +51,15 @@ public final class CassandraLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of CassandraLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CassandraLinkedServiceTypeProperties class.
+     */
     public CassandraLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -64,7 +68,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class CassandraLinkedServiceTypeProperties {
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object authenticationType() {
@@ -86,7 +90,7 @@ public final class CassandraLinkedServiceTypeProperties {
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the port value.
      */
     public Object port() {
@@ -106,7 +110,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param port the port value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -117,7 +121,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -126,7 +130,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -137,7 +141,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password for authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -146,7 +150,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password for authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -156,9 +160,9 @@ public final class CassandraLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -166,9 +170,9 @@ public final class CassandraLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -179,15 +183,13 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property host in model CassandraLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property host in model CassandraLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

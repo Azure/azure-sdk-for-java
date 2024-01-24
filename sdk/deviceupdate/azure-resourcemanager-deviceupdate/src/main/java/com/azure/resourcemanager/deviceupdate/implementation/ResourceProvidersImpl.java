@@ -21,32 +21,28 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(request, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest request) {
         CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(request);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(request, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

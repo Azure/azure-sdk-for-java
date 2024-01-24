@@ -13,34 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PackageStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PackageStore model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ubru\",\"packageStoreLinkedService\":{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"uoyrbdkgqdm\"}}")
-                .toObject(PackageStore.class);
-        Assertions.assertEquals("ubru", model.name());
-        Assertions
-            .assertEquals(
-                IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
-                model.packageStoreLinkedService().type());
-        Assertions.assertEquals("uoyrbdkgqdm", model.packageStoreLinkedService().referenceName());
+        PackageStore model = BinaryData.fromString(
+            "{\"name\":\"paseqcp\",\"packageStoreLinkedService\":{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"reuwv\"}}")
+            .toObject(PackageStore.class);
+        Assertions.assertEquals("paseqcp", model.name());
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
+            model.packageStoreLinkedService().type());
+        Assertions.assertEquals("reuwv", model.packageStoreLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageStore model =
-            new PackageStore()
-                .withName("ubru")
-                .withPackageStoreLinkedService(
-                    new EntityReference()
-                        .withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
-                        .withReferenceName("uoyrbdkgqdm"));
+        PackageStore model = new PackageStore().withName("paseqcp").withPackageStoreLinkedService(new EntityReference()
+            .withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE).withReferenceName("reuwv"));
         model = BinaryData.fromObject(model).toObject(PackageStore.class);
-        Assertions.assertEquals("ubru", model.name());
-        Assertions
-            .assertEquals(
-                IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
-                model.packageStoreLinkedService().type());
-        Assertions.assertEquals("uoyrbdkgqdm", model.packageStoreLinkedService().referenceName());
+        Assertions.assertEquals("paseqcp", model.name());
+        Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
+            model.packageStoreLinkedService().type());
+        Assertions.assertEquals("reuwv", model.packageStoreLinkedService().referenceName());
     }
 }

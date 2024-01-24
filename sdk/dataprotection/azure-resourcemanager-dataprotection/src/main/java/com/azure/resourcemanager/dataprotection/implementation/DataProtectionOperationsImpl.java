@@ -19,8 +19,7 @@ public final class DataProtectionOperationsImpl implements DataProtectionOperati
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public DataProtectionOperationsImpl(
-        DataProtectionOperationsClient innerClient,
+    public DataProtectionOperationsImpl(DataProtectionOperationsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

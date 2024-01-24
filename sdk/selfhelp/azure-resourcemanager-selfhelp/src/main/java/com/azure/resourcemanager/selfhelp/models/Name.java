@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trigger criterion name. */
+/**
+ * Trigger criterion name.
+ */
 public final class Name extends ExpandableStringEnum<Name> {
-    /** Static value SolutionId for Name. */
+    /**
+     * Static value SolutionId for Name.
+     */
     public static final Name SOLUTION_ID = fromString("SolutionId");
 
-    /** Static value ProblemClassificationId for Name. */
+    /**
+     * Static value ProblemClassificationId for Name.
+     */
     public static final Name PROBLEM_CLASSIFICATION_ID = fromString("ProblemClassificationId");
 
-    /** Static value ReplacementKey for Name. */
+    /**
+     * Static value ReplacementKey for Name.
+     */
     public static final Name REPLACEMENT_KEY = fromString("ReplacementKey");
 
     /**
      * Creates a new instance of Name value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class Name extends ExpandableStringEnum<Name> {
 
     /**
      * Creates or finds a Name from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Name.
      */
@@ -41,7 +49,7 @@ public final class Name extends ExpandableStringEnum<Name> {
 
     /**
      * Gets known Name values.
-     *
+     * 
      * @return known Name values.
      */
     public static Collection<Name> values() {

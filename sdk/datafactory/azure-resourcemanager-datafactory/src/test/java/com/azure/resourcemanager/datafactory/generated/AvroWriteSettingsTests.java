@@ -11,25 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AvroWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvroWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AvroWriteSettings\",\"recordName\":\"gadrvxbcye\",\"recordNamespace\":\"jbcbrtiqpj\",\"maxRowsPerFile\":\"datakamhdqluicrqxqj\",\"fileNamePrefix\":\"dataosmlhcppfgtns\",\"\":{\"mfhde\":\"datahztnjpkpmdlt\",\"xpebsxcnhq\":\"dataliaaiqyxlro\",\"rdamyumr\":\"datacbtyor\",\"ygj\":\"databbaxnym\"}}")
-                .toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("gadrvxbcye", model.recordName());
-        Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());
+        AvroWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"AvroWriteSettings\",\"recordName\":\"yqqonkre\",\"recordNamespace\":\"ojusmdod\",\"maxRowsPerFile\":\"datak\",\"fileNamePrefix\":\"datantaovlyyk\",\"\":{\"rwvswlhjlbk\":\"datapkdsldy\",\"fwlkyrnmgsbubzfa\":\"dataygszhpnatltjekq\",\"erzsnfgmo\":\"datayuqecwrtre\"}}")
+            .toObject(AvroWriteSettings.class);
+        Assertions.assertEquals("yqqonkre", model.recordName());
+        Assertions.assertEquals("ojusmdod", model.recordNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroWriteSettings model =
-            new AvroWriteSettings()
-                .withRecordName("gadrvxbcye")
-                .withRecordNamespace("jbcbrtiqpj")
-                .withMaxRowsPerFile("datakamhdqluicrqxqj")
-                .withFileNamePrefix("dataosmlhcppfgtns");
+        AvroWriteSettings model = new AvroWriteSettings().withRecordName("yqqonkre").withRecordNamespace("ojusmdod")
+            .withMaxRowsPerFile("datak").withFileNamePrefix("datantaovlyyk");
         model = BinaryData.fromObject(model).toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("gadrvxbcye", model.recordName());
-        Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());
+        Assertions.assertEquals("yqqonkre", model.recordName());
+        Assertions.assertEquals("ojusmdod", model.recordNamespace());
     }
 }

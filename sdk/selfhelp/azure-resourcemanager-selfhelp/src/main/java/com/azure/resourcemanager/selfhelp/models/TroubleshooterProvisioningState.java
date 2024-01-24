@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of troubleshooter provisioning. */
+/**
+ * Status of troubleshooter provisioning.
+ */
 public final class TroubleshooterProvisioningState extends ExpandableStringEnum<TroubleshooterProvisioningState> {
-    /** Static value Succeeded for TroubleshooterProvisioningState. */
+    /**
+     * Static value Succeeded for TroubleshooterProvisioningState.
+     */
     public static final TroubleshooterProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for TroubleshooterProvisioningState. */
+    /**
+     * Static value Failed for TroubleshooterProvisioningState.
+     */
     public static final TroubleshooterProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for TroubleshooterProvisioningState. */
+    /**
+     * Static value Canceled for TroubleshooterProvisioningState.
+     */
     public static final TroubleshooterProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Running for TroubleshooterProvisioningState. */
+    /**
+     * Static value Running for TroubleshooterProvisioningState.
+     */
     public static final TroubleshooterProvisioningState RUNNING = fromString("Running");
 
-    /** Static value AutoContinue for TroubleshooterProvisioningState. */
+    /**
+     * Static value AutoContinue for TroubleshooterProvisioningState.
+     */
     public static final TroubleshooterProvisioningState AUTO_CONTINUE = fromString("AutoContinue");
 
     /**
      * Creates a new instance of TroubleshooterProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class TroubleshooterProvisioningState extends ExpandableStringEnum<
 
     /**
      * Creates or finds a TroubleshooterProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TroubleshooterProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class TroubleshooterProvisioningState extends ExpandableStringEnum<
 
     /**
      * Gets known TroubleshooterProvisioningState values.
-     *
+     * 
      * @return known TroubleshooterProvisioningState values.
      */
     public static Collection<TroubleshooterProvisioningState> values() {

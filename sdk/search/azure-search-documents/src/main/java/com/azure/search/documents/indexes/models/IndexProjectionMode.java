@@ -9,26 +9,33 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines behavior of the index projections in relation to the rest of the indexer. */
+/**
+ * Defines behavior of the index projections in relation to the rest of the indexer.
+ */
 public final class IndexProjectionMode extends ExpandableStringEnum<IndexProjectionMode> {
-    /** The source document will be skipped from writing into the indexer's target index. */
+    /**
+     * The source document will be skipped from writing into the indexer's target index.
+     */
     public static final IndexProjectionMode SKIP_INDEXING_PARENT_DOCUMENTS = fromString("skipIndexingParentDocuments");
 
-    /** The source document will be written into the indexer's target index. This is the default pattern. */
-    public static final IndexProjectionMode INCLUDE_INDEXING_PARENT_DOCUMENTS =
-            fromString("includeIndexingParentDocuments");
+    /**
+     * The source document will be written into the indexer's target index. This is the default pattern.
+     */
+    public static final IndexProjectionMode INCLUDE_INDEXING_PARENT_DOCUMENTS
+        = fromString("includeIndexingParentDocuments");
 
     /**
      * Creates a new instance of IndexProjectionMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IndexProjectionMode() {}
+    public IndexProjectionMode() {
+    }
 
     /**
      * Creates or finds a IndexProjectionMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IndexProjectionMode.
      */
@@ -38,7 +45,7 @@ public final class IndexProjectionMode extends ExpandableStringEnum<IndexProject
 
     /**
      * Gets known IndexProjectionMode values.
-     *
+     * 
      * @return known IndexProjectionMode values.
      */
     public static Collection<IndexProjectionMode> values() {

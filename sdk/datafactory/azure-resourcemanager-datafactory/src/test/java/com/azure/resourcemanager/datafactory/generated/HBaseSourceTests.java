@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.HBaseSource;
 public final class HBaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HBaseSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HBaseSource\",\"query\":\"datamibwzuhyda\",\"queryTimeout\":\"datakgwtbfxxsfj\",\"additionalColumns\":\"dataascjighmkdsv\",\"sourceRetryCount\":\"datayhtiyxeh\",\"sourceRetryWait\":\"dataizoybtehky\",\"maxConcurrentConnections\":\"datanmmyznw\",\"disableMetricsCollection\":\"datafqwkqulkzovqohwi\",\"\":{\"nsjjjcddsv\":\"dataqxjxlssosndnyp\",\"jhpmajg\":\"datadbfniqxbc\",\"jwjhmtca\":\"datazpdioddtjylimz\"}}")
-                .toObject(HBaseSource.class);
+        HBaseSource model = BinaryData.fromString(
+            "{\"type\":\"HBaseSource\",\"query\":\"datao\",\"queryTimeout\":\"datavtvbfpu\",\"additionalColumns\":\"dataobtdhum\",\"sourceRetryCount\":\"dataqwckapoetdfzjwje\",\"sourceRetryWait\":\"datalihanawipdqoz\",\"maxConcurrentConnections\":\"datalqzopvhwmtdbfrj\",\"disableMetricsCollection\":\"datavu\",\"\":{\"rd\":\"datasnfeag\"}}")
+            .toObject(HBaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HBaseSource model =
-            new HBaseSource()
-                .withSourceRetryCount("datayhtiyxeh")
-                .withSourceRetryWait("dataizoybtehky")
-                .withMaxConcurrentConnections("datanmmyznw")
-                .withDisableMetricsCollection("datafqwkqulkzovqohwi")
-                .withQueryTimeout("datakgwtbfxxsfj")
-                .withAdditionalColumns("dataascjighmkdsv")
-                .withQuery("datamibwzuhyda");
+        HBaseSource model
+            = new HBaseSource().withSourceRetryCount("dataqwckapoetdfzjwje").withSourceRetryWait("datalihanawipdqoz")
+                .withMaxConcurrentConnections("datalqzopvhwmtdbfrj").withDisableMetricsCollection("datavu")
+                .withQueryTimeout("datavtvbfpu").withAdditionalColumns("dataobtdhum").withQuery("datao");
         model = BinaryData.fromObject(model).toObject(HBaseSource.class);
     }
 }

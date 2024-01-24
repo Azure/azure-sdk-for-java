@@ -3,30 +3,26 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.stress.util.RunResult;
+import com.azure.messaging.servicebus.stress.util.RateLimiter;
+import com.azure.messaging.servicebus.stress.util.TestUtils;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
-
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.createMessagePayload;
 
 /**
  * Test ServiceBusSenderAsyncClient
  */
 @Component("MessageSenderAsync")
 public class MessageSenderAsync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSenderAsync.class);
     @Value("${SEND_MESSAGE_RATE:100}")
     private int sendMessageRatePerSecond;
 
@@ -36,63 +32,58 @@ public class MessageSenderAsync extends ServiceBusScenario {
     @Value("${SEND_CONCURRENCY:5}")
     private int sendConcurrency;
 
-    private final AtomicReference<RunResult> runResult = new AtomicReference<>(RunResult.INCONCLUSIVE);
-    private final AtomicReference<ServiceBusSenderAsyncClient> client = new AtomicReference<>();
+    private ServiceBusSenderAsyncClient client;
 
-    private final AtomicLong sentCounter = new AtomicLong();
-
-    private final String prefix = UUID.randomUUID().toString().substring(25);
+    private BinaryData messagePayload;
+    private RateLimiter rateLimiter;
 
     @Override
-    public RunResult run() {
-
-        client.set(toClose(TestUtils.getSenderBuilder(options, false).buildAsyncClient()));
+    public void run() {
+        messagePayload = createMessagePayload(options.getMessageSize());
 
         int batchRatePerSec = sendMessageRatePerSecond / batchSize;
-        RateLimiter rateLimiter = toClose(new RateLimiter(batchRatePerSec, sendConcurrency));
+        client = toClose(TestUtils.getSenderBuilder(options, false).buildAsyncClient());
+        rateLimiter = toClose(new RateLimiter(batchRatePerSec, sendConcurrency));
 
-        toClose(createBatch().repeat()
+        toClose(Mono.just(client)
+            .repeat()
+            .flatMap(i -> singleRun(), sendConcurrency)
             .take(options.getTestDuration())
-            .flatMap(batch ->
-                rateLimiter.acquire()
-                    .then(send(batch)
-                        .doFinally(i -> rateLimiter.release())))
-            .parallel(sendConcurrency, sendConcurrency)
+            .parallel(sendConcurrency, 1)
             .runOn(Schedulers.boundedElastic())
             .subscribe());
 
-        blockingWait(options.getTestDuration().plusSeconds(30));
-
-        LOGGER.atInfo()
-            .addKeyValue("sent", sentCounter.get())
-            .log("sender complete");
-
-        return runResult.get();
+        blockingWait(options.getTestDuration().plusSeconds(1));
     }
 
-    private Mono<Void> send(ServiceBusMessageBatch batch) {
-        return client.get().sendMessages(batch).onErrorResume(t -> true, t -> {
-            runResult.set(RunResult.ERROR);
-            LOGGER.error("error when sending", t);
-            client.set(toClose(TestUtils.getSenderBuilder(options, false).buildAsyncClient()));
-            return Mono.empty();
-        });
+    @Override
+    public void recordRunOptions(Span span) {
+        super.recordRunOptions(span);
+        span.setAttribute(AttributeKey.longKey("sendMessageRatePerSecond"), sendMessageRatePerSecond);
+        span.setAttribute(AttributeKey.longKey("sendConcurrency"), sendConcurrency);
+        span.setAttribute(AttributeKey.longKey("batchSize"), batchSize);
     }
 
-    private Mono<ServiceBusMessageBatch> createBatch() {
-        final byte[] messagePayload = createMessagePayload(options.getMessageSize());
 
-        return Mono.defer(() -> client.get().createMessageBatch()
-            .doOnNext(b -> IntStream.range(0, batchSize).boxed()
-                .forEach(unused -> {
-                    ServiceBusMessage message = new ServiceBusMessage(messagePayload);
-                    message.setMessageId(prefix + sentCounter.getAndIncrement());
-
-                    if (b.tryAddMessage(message)) {
-                        LOGGER.atInfo()
-                            .addKeyValue("messageId", message.getMessageId())
-                            .log("message sent");
+    private Mono<Void> singleRun() {
+        Mono<Void> run = client.createMessageBatch()
+            .flatMap(b -> {
+                for (int i = 0; i < batchSize; i ++) {
+                    if (!b.tryAddMessage(new ServiceBusMessage(messagePayload))) {
+                        telemetryHelper.recordError("batch is full", "createBatch");
+                        break;
                     }
-                })));
+                }
+                return client.sendMessages(b);
+            })
+            .onErrorResume(e -> {
+                telemetryHelper.recordError(e, "create and send batch");
+                return Mono.empty();
+            })
+            .doOnCancel(() -> telemetryHelper.recordError("cancelled", "create and send batch"));
+
+        return Mono.usingWhen(rateLimiter.acquire(),
+            i -> run,
+            i -> { rateLimiter.release(); return Mono.empty(); });
     }
 }

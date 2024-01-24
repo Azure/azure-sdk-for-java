@@ -88,7 +88,6 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 
     // region Fields
-
     private static final ClosedChannelException ON_CHANNEL_UNREGISTERED =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "channelUnregistered");
 
@@ -119,13 +118,26 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final long idleConnectionTimerResolutionInNanos;
     private final long tcpNetworkRequestTimeoutInNanos;
     private final RntbdServerErrorInjector serverErrorInjector;
-
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
 
     // endregion
-
     public RntbdRequestManager(
+        final ChannelHealthChecker healthChecker,
+        final RntbdEndpoint.Config config,
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector serverErrorInjector) {
+
+        this(
+            healthChecker,
+            checkNotNull(config, "config").maxRequestsPerChannel(),
+            connectionStateListener,
+            config.idleConnectionTimerResolutionInNanos(),
+            serverErrorInjector,
+            config.tcpNetworkRequestTimeoutInNanos());
+    }
+
+    private RntbdRequestManager(
         final ChannelHealthChecker healthChecker,
         final int pendingRequestLimit,
         final RntbdConnectionStateListener connectionStateListener,
@@ -714,7 +726,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         context.executor().schedule(
             () -> {
-
                 rntbdRequestRecord.complete(storeResponse);
             },
             delay.toNanos(),
@@ -735,7 +746,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         context.executor().schedule(
             () -> {
-
                 rntbdRequestRecord.completeExceptionally(cause);
             },
             delay.toNanos(),

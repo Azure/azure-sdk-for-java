@@ -4,23 +4,21 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-/** Samples for Application Create. */
+/**
+ * Samples for Application Create.
+ */
 public final class ApplicationCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationCreate.json
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/ApplicationCreate.json
      */
     /**
      * Sample code: ApplicationCreate.
-     *
+     * 
      * @param manager Entry point to BatchManager.
      */
     public static void applicationCreate(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager
-            .applications()
-            .define("app1")
-            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
-            .withDisplayName("myAppName")
-            .withAllowUpdates(false)
-            .create();
+        manager.applications().define("app1").withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withDisplayName("myAppName").withAllowUpdates(false).create();
     }
 }

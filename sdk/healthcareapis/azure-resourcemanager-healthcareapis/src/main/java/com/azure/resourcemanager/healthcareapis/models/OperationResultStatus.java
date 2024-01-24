@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationResultStatus. */
+/**
+ * The status of the operation being performed.
+ */
 public final class OperationResultStatus extends ExpandableStringEnum<OperationResultStatus> {
-    /** Static value Canceled for OperationResultStatus. */
+    /**
+     * Static value Canceled for OperationResultStatus.
+     */
     public static final OperationResultStatus CANCELED = fromString("Canceled");
 
-    /** Static value Succeeded for OperationResultStatus. */
+    /**
+     * Static value Succeeded for OperationResultStatus.
+     */
     public static final OperationResultStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OperationResultStatus. */
+    /**
+     * Static value Failed for OperationResultStatus.
+     */
     public static final OperationResultStatus FAILED = fromString("Failed");
 
-    /** Static value Requested for OperationResultStatus. */
+    /**
+     * Static value Requested for OperationResultStatus.
+     */
     public static final OperationResultStatus REQUESTED = fromString("Requested");
 
-    /** Static value Running for OperationResultStatus. */
+    /**
+     * Static value Running for OperationResultStatus.
+     */
     public static final OperationResultStatus RUNNING = fromString("Running");
 
     /**
+     * Creates a new instance of OperationResultStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationResultStatus() {
+    }
+
+    /**
      * Creates or finds a OperationResultStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationResultStatus.
      */
@@ -36,7 +57,11 @@ public final class OperationResultStatus extends ExpandableStringEnum<OperationR
         return fromString(name, OperationResultStatus.class);
     }
 
-    /** @return known OperationResultStatus values. */
+    /**
+     * Gets known OperationResultStatus values.
+     * 
+     * @return known OperationResultStatus values.
+     */
     public static Collection<OperationResultStatus> values() {
         return values(OperationResultStatus.class);
     }

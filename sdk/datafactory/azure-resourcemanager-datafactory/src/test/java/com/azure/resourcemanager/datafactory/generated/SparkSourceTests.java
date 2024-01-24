@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.SparkSource;
 public final class SparkSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SparkSource\",\"query\":\"datasr\",\"queryTimeout\":\"datafagoov\",\"additionalColumns\":\"datazysvnvrfjgbxu\",\"sourceRetryCount\":\"datahgonovwu\",\"sourceRetryWait\":\"dataarowrm\",\"maxConcurrentConnections\":\"dataziubkyvcgkoufwk\",\"disableMetricsCollection\":\"datamytlxrwdjby\",\"\":{\"makxyhuetztorh\":\"datafmsxamncuhxz\",\"jqgzloorhxdu\":\"dataeuuysszhse\",\"akgd\":\"dataegljqpyxi\",\"qwgoomapc\":\"dataanmhvwgchgpbd\"}}")
-                .toObject(SparkSource.class);
+        SparkSource model = BinaryData.fromString(
+            "{\"type\":\"SparkSource\",\"query\":\"datadqzewr\",\"queryTimeout\":\"datatgsocqkdclbzqnao\",\"additionalColumns\":\"datagmpdcbheza\",\"sourceRetryCount\":\"datauaysxh\",\"sourceRetryWait\":\"datapvq\",\"maxConcurrentConnections\":\"dataqlafi\",\"disableMetricsCollection\":\"dataw\",\"\":{\"mgaifgy\":\"datapuyefhhd\",\"hxpcxqc\":\"datakgqwmp\",\"dhx\":\"datankxhc\"}}")
+            .toObject(SparkSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkSource model =
-            new SparkSource()
-                .withSourceRetryCount("datahgonovwu")
-                .withSourceRetryWait("dataarowrm")
-                .withMaxConcurrentConnections("dataziubkyvcgkoufwk")
-                .withDisableMetricsCollection("datamytlxrwdjby")
-                .withQueryTimeout("datafagoov")
-                .withAdditionalColumns("datazysvnvrfjgbxu")
-                .withQuery("datasr");
+        SparkSource model = new SparkSource().withSourceRetryCount("datauaysxh").withSourceRetryWait("datapvq")
+            .withMaxConcurrentConnections("dataqlafi").withDisableMetricsCollection("dataw")
+            .withQueryTimeout("datatgsocqkdclbzqnao").withAdditionalColumns("datagmpdcbheza").withQuery("datadqzewr");
         model = BinaryData.fromObject(model).toObject(SparkSource.class);
     }
 }

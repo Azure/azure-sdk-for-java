@@ -20,27 +20,33 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of CapacityReservationInstanceViewWithName class. */
+    /**
+     * Creates an instance of CapacityReservationInstanceViewWithName class.
+     */
     public CapacityReservationInstanceViewWithName() {
     }
 
     /**
      * Get the name property: The name of the capacity reservation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
         return this.name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityReservationInstanceViewWithName withUtilizationInfo(CapacityReservationUtilization utilizationInfo) {
         super.withUtilizationInfo(utilizationInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityReservationInstanceViewWithName withStatuses(List<InstanceViewStatus> statuses) {
         super.withStatuses(statuses);
@@ -49,7 +55,7 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Snapshot update resource. */
+/**
+ * Snapshot update resource.
+ */
 @Fluent
 public final class SnapshotUpdate {
     /*
@@ -33,13 +35,15 @@ public final class SnapshotUpdate {
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
 
-    /** Creates an instance of SnapshotUpdate class. */
+    /**
+     * Creates an instance of SnapshotUpdate class.
+     */
     public SnapshotUpdate() {
     }
 
     /**
      * Get the innerProperties property: Snapshot resource update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotUpdateProperties innerProperties() {
@@ -48,7 +52,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -57,7 +61,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -70,7 +74,7 @@ public final class SnapshotUpdate {
      * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
      * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
      * the previous snapshot.
-     *
+     * 
      * @return the sku value.
      */
     public SnapshotSku sku() {
@@ -81,7 +85,7 @@ public final class SnapshotUpdate {
      * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
      * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
      * the previous snapshot.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -92,7 +96,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the osType property: the Operating System type.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -101,7 +105,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the osType property: the Operating System type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -118,7 +122,7 @@ public final class SnapshotUpdate {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -130,7 +134,7 @@ public final class SnapshotUpdate {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -145,7 +149,7 @@ public final class SnapshotUpdate {
     /**
      * Get the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -155,7 +159,7 @@ public final class SnapshotUpdate {
     /**
      * Set the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -170,7 +174,7 @@ public final class SnapshotUpdate {
     /**
      * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -180,7 +184,7 @@ public final class SnapshotUpdate {
     /**
      * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -194,7 +198,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
@@ -203,7 +207,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @param networkAccessPolicy the networkAccessPolicy value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -217,7 +221,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
@@ -226,7 +230,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @param diskAccessId the diskAccessId value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -240,7 +244,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
+     * 
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
@@ -249,7 +253,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
+     * 
      * @param supportsHibernation the supportsHibernation value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -263,7 +267,7 @@ public final class SnapshotUpdate {
 
     /**
      * Get the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -272,7 +276,7 @@ public final class SnapshotUpdate {
 
     /**
      * Set the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -285,9 +289,9 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @return the dataAccessAuthMode value.
      */
     public DataAccessAuthMode dataAccessAuthMode() {
@@ -295,9 +299,9 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -312,7 +316,7 @@ public final class SnapshotUpdate {
     /**
      * Get the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
      * created.
-     *
+     * 
      * @return the supportedCapabilities value.
      */
     public SupportedCapabilities supportedCapabilities() {
@@ -322,7 +326,7 @@ public final class SnapshotUpdate {
     /**
      * Set the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
      * created.
-     *
+     * 
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the SnapshotUpdate object itself.
      */
@@ -336,7 +340,7 @@ public final class SnapshotUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

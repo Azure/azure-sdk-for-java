@@ -13,23 +13,28 @@ import java.util.Collection;
  * IR.
  */
 public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<GoogleAdWordsAuthenticationType> {
-    /** Static value ServiceAuthentication for GoogleAdWordsAuthenticationType. */
+    /**
+     * Static value ServiceAuthentication for GoogleAdWordsAuthenticationType.
+     */
     public static final GoogleAdWordsAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
-    /** Static value UserAuthentication for GoogleAdWordsAuthenticationType. */
+    /**
+     * Static value UserAuthentication for GoogleAdWordsAuthenticationType.
+     */
     public static final GoogleAdWordsAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
      * Creates a new instance of GoogleAdWordsAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GoogleAdWordsAuthenticationType() {}
+    public GoogleAdWordsAuthenticationType() {
+    }
 
     /**
      * Creates or finds a GoogleAdWordsAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GoogleAdWordsAuthenticationType.
      */
@@ -40,7 +45,7 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
 
     /**
      * Gets known GoogleAdWordsAuthenticationType values.
-     *
+     * 
      * @return known GoogleAdWordsAuthenticationType values.
      */
     public static Collection<GoogleAdWordsAuthenticationType> values() {

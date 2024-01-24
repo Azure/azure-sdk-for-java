@@ -6,6 +6,7 @@ package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.TextCategoriesAnalysis;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 
@@ -21,10 +22,9 @@ public class AnalyzeText {
 
         AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
 
-        System.out.println("Hate severity: " + response.getHateResult().getSeverity());
-        System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
-        System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
-        System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+        for (TextCategoriesAnalysis result : response.getCategoriesAnalysis()) {
+            System.out.println(result.getCategory() + " severity: " + result.getSeverity());
+        }
         // END:com.azure.ai.contentsafety.analyzetext
     }
 }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Response for ElasticSan update request. */
+/**
+ * Response for ElasticSan update request.
+ */
 @Fluent
 public final class ElasticSanUpdate {
     /*
@@ -26,13 +28,15 @@ public final class ElasticSanUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ElasticSanUpdate class. */
+    /**
+     * Creates an instance of ElasticSanUpdate class.
+     */
     public ElasticSanUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of ElasticSan.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ElasticSanUpdateProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Get the tags property: Update tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +54,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Set the tags property: Update tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ElasticSanUpdate object itself.
      */
@@ -61,7 +65,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Get the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the baseSizeTiB value.
      */
     public Long baseSizeTiB() {
@@ -70,7 +74,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Set the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanUpdate object itself.
      */
@@ -84,7 +88,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Get the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the extendedCapacitySizeTiB value.
      */
     public Long extendedCapacitySizeTiB() {
@@ -93,7 +97,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Set the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanUpdate object itself.
      */
@@ -108,7 +112,7 @@ public final class ElasticSanUpdate {
     /**
      * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -118,7 +122,7 @@ public final class ElasticSanUpdate {
     /**
      * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ElasticSanUpdate object itself.
      */
@@ -132,7 +136,7 @@ public final class ElasticSanUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

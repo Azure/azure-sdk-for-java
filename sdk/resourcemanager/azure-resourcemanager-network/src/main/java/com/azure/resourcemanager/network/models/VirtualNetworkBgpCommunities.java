@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET. */
+/**
+ * Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET.
+ */
 @Fluent
 public final class VirtualNetworkBgpCommunities {
     /*
@@ -23,13 +25,15 @@ public final class VirtualNetworkBgpCommunities {
     @JsonProperty(value = "regionalCommunity", access = JsonProperty.Access.WRITE_ONLY)
     private String regionalCommunity;
 
-    /** Creates an instance of VirtualNetworkBgpCommunities class. */
+    /**
+     * Creates an instance of VirtualNetworkBgpCommunities class.
+     */
     public VirtualNetworkBgpCommunities() {
     }
 
     /**
      * Get the virtualNetworkCommunity property: The BGP community associated with the virtual network.
-     *
+     * 
      * @return the virtualNetworkCommunity value.
      */
     public String virtualNetworkCommunity() {
@@ -38,7 +42,7 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Set the virtualNetworkCommunity property: The BGP community associated with the virtual network.
-     *
+     * 
      * @param virtualNetworkCommunity the virtualNetworkCommunity value to set.
      * @return the VirtualNetworkBgpCommunities object itself.
      */
@@ -49,7 +53,7 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Get the regionalCommunity property: The BGP community associated with the region of the virtual network.
-     *
+     * 
      * @return the regionalCommunity value.
      */
     public String regionalCommunity() {
@@ -58,15 +62,13 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualNetworkCommunity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
         }
     }
 

@@ -5,37 +5,42 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobQueued event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobQueued event.
+ */
 @Fluent
 public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
     /*
      * Router Job Priority
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Router Job Queued Attached Worker Selector
      */
-    @JsonProperty(value = "attachedWorkerSelectors")
     private List<AcsRouterWorkerSelector> attachedWorkerSelectors;
 
     /*
      * Router Job Queued Requested Worker Selector
      */
-    @JsonProperty(value = "requestedWorkerSelectors")
     private List<AcsRouterWorkerSelector> requestedWorkerSelectors;
 
-    /** Creates an instance of AcsRouterJobQueuedEventData class. */
-    public AcsRouterJobQueuedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobQueuedEventData class.
+     */
+    public AcsRouterJobQueuedEventData() {
+    }
 
     /**
      * Get the priority property: Router Job Priority.
-     *
+     * 
      * @return the priority value.
      */
     public Integer getPriority() {
@@ -44,7 +49,7 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the priority property: Router Job Priority.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
@@ -55,7 +60,7 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the attachedWorkerSelectors property: Router Job Queued Attached Worker Selector.
-     *
+     * 
      * @return the attachedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getAttachedWorkerSelectors() {
@@ -64,19 +69,19 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the attachedWorkerSelectors property: Router Job Queued Attached Worker Selector.
-     *
+     * 
      * @param attachedWorkerSelectors the attachedWorkerSelectors value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
-    public AcsRouterJobQueuedEventData setAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
+    public AcsRouterJobQueuedEventData
+        setAttachedWorkerSelectors(List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
         this.attachedWorkerSelectors = attachedWorkerSelectors;
         return this;
     }
 
     /**
      * Get the requestedWorkerSelectors property: Router Job Queued Requested Worker Selector.
-     *
+     * 
      * @return the requestedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getRequestedWorkerSelectors() {
@@ -85,55 +90,132 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the requestedWorkerSelectors property: Router Job Queued Requested Worker Selector.
-     *
+     * 
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
-    public AcsRouterJobQueuedEventData setRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
+    public AcsRouterJobQueuedEventData
+        setRequestedWorkerSelectors(List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", getQueueId());
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("attachedWorkerSelectors", this.attachedWorkerSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("requestedWorkerSelectors", this.requestedWorkerSelectors,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobQueuedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobQueuedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobQueuedEventData.
+     */
+    public static AcsRouterJobQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobQueuedEventData deserializedAcsRouterJobQueuedEventData = new AcsRouterJobQueuedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobQueuedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobQueuedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobQueuedEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobQueuedEventData.setQueueId(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobQueuedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobQueuedEventData.setTags(tags);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedAcsRouterJobQueuedEventData.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("attachedWorkerSelectors".equals(fieldName)) {
+                    List<AcsRouterWorkerSelector> attachedWorkerSelectors
+                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                    deserializedAcsRouterJobQueuedEventData.attachedWorkerSelectors = attachedWorkerSelectors;
+                } else if ("requestedWorkerSelectors".equals(fieldName)) {
+                    List<AcsRouterWorkerSelector> requestedWorkerSelectors
+                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                    deserializedAcsRouterJobQueuedEventData.requestedWorkerSelectors = requestedWorkerSelectors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobQueuedEventData;
+        });
     }
 }

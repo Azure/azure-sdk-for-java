@@ -17,7 +17,7 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceI
 public interface OperationStatusResourceGroupContextsClient {
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -27,12 +27,12 @@ public interface OperationStatusResourceGroupContextsClient {
      * @return the operation status for an operation over a ResourceGroup's context along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String operationId, Context context);
+    Response<OperationResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String operationId,
+        Context context);
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

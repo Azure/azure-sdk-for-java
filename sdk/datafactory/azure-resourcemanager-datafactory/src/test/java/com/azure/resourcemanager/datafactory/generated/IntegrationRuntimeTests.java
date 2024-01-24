@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntime model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"IntegrationRuntime\",\"description\":\"l\",\"\":{\"wiyighxpkdw\":\"datasxnkjzkdeslpvlo\",\"upedeojnabckhs\":\"databaiuebbaumny\",\"ie\":\"datatxp\",\"jdhtldwkyzxu\":\"datatfhvpesapskrdqmh\"}}")
-                .toObject(IntegrationRuntime.class);
+        IntegrationRuntime model = BinaryData.fromString(
+            "{\"type\":\"IntegrationRuntime\",\"description\":\"l\",\"\":{\"wiyighxpkdw\":\"datasxnkjzkdeslpvlo\",\"upedeojnabckhs\":\"databaiuebbaumny\",\"ie\":\"datatxp\",\"jdhtldwkyzxu\":\"datatfhvpesapskrdqmh\"}}")
+            .toObject(IntegrationRuntime.class);
         Assertions.assertEquals("l", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntime model =
-            new IntegrationRuntime().withDescription("l").withAdditionalProperties(mapOf("type", "IntegrationRuntime"));
+        IntegrationRuntime model = new IntegrationRuntime().withDescription("l")
+            .withAdditionalProperties(mapOf("type", "IntegrationRuntime"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntime.class);
         Assertions.assertEquals("l", model.description());
     }

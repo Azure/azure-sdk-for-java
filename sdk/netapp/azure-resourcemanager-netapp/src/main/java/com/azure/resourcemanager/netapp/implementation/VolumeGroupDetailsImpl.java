@@ -18,8 +18,8 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    VolumeGroupDetailsImpl(
-        VolumeGroupDetailsInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    VolumeGroupDetailsImpl(VolumeGroupDetailsInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -86,20 +86,14 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeGroups()
-                .create(resourceGroupName, accountName, volumeGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumeGroups().create(resourceGroupName, accountName,
+            volumeGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VolumeGroupDetails create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeGroups()
-                .create(resourceGroupName, accountName, volumeGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getVolumeGroups().create(resourceGroupName, accountName,
+            volumeGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -110,22 +104,14 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeGroups()
-                .getWithResponse(resourceGroupName, accountName, volumeGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumeGroups()
+            .getWithResponse(resourceGroupName, accountName, volumeGroupName, Context.NONE).getValue();
         return this;
     }
 
     public VolumeGroupDetails refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumeGroups()
-                .getWithResponse(resourceGroupName, accountName, volumeGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumeGroups()
+            .getWithResponse(resourceGroupName, accountName, volumeGroupName, context).getValue();
         return this;
     }
 

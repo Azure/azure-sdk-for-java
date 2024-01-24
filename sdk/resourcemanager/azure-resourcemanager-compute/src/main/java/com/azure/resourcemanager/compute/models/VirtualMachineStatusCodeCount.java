@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status code and count of the virtual machine scale set instance view status summary. */
+/**
+ * The status code and count of the virtual machine scale set instance view status summary.
+ */
 @Immutable
 public final class VirtualMachineStatusCodeCount {
     /*
@@ -22,13 +24,15 @@ public final class VirtualMachineStatusCodeCount {
     @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
-    /** Creates an instance of VirtualMachineStatusCodeCount class. */
+    /**
+     * Creates an instance of VirtualMachineStatusCodeCount class.
+     */
     public VirtualMachineStatusCodeCount() {
     }
 
     /**
      * Get the code property: The instance view status code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class VirtualMachineStatusCodeCount {
 
     /**
      * Get the count property: The number of instances having a particular status code.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -46,7 +50,7 @@ public final class VirtualMachineStatusCodeCount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

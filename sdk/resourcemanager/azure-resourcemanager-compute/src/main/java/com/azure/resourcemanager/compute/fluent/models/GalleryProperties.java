@@ -12,7 +12,9 @@ import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Shared Image Gallery. */
+/**
+ * Describes the properties of a Shared Image Gallery.
+ */
 @Fluent
 public final class GalleryProperties {
     /*
@@ -29,7 +31,7 @@ public final class GalleryProperties {
 
     /*
      * The current state of the gallery or gallery artifact.
-     *
+     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -53,13 +55,15 @@ public final class GalleryProperties {
     @JsonProperty(value = "sharingStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SharingStatus sharingStatus;
 
-    /** Creates an instance of GalleryProperties class. */
+    /**
+     * Creates an instance of GalleryProperties class.
+     */
     public GalleryProperties() {
     }
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -68,7 +72,7 @@ public final class GalleryProperties {
 
     /**
      * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class GalleryProperties {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -88,7 +92,7 @@ public final class GalleryProperties {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GalleryProperties object itself.
      */
@@ -99,9 +103,9 @@ public final class GalleryProperties {
 
     /**
      * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * 
+     * The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -110,7 +114,7 @@ public final class GalleryProperties {
 
     /**
      * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
@@ -119,7 +123,7 @@ public final class GalleryProperties {
 
     /**
      * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the GalleryProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class GalleryProperties {
 
     /**
      * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @return the softDeletePolicy value.
      */
     public SoftDeletePolicy softDeletePolicy() {
@@ -139,7 +143,7 @@ public final class GalleryProperties {
 
     /**
      * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @param softDeletePolicy the softDeletePolicy value to set.
      * @return the GalleryProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class GalleryProperties {
 
     /**
      * Get the sharingStatus property: Sharing status of current gallery.
-     *
+     * 
      * @return the sharingStatus value.
      */
     public SharingStatus sharingStatus() {
@@ -159,7 +163,7 @@ public final class GalleryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

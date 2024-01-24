@@ -7,13 +7,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectedItemOperationStatuses. */
+/**
+ * Resource collection API of ProtectedItemOperationStatuses.
+ */
 public interface ProtectedItemOperationStatuses {
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -26,20 +29,15 @@ public interface ProtectedItemOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context);
+    Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId, Context context);
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -51,11 +49,6 @@ public interface ProtectedItemOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status.
      */
-    OperationStatus get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId);
+    OperationStatus get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String operationId);
 }

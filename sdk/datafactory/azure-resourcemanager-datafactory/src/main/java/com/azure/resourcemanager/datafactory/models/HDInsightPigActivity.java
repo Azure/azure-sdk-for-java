@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight Pig activity type. */
+/**
+ * HDInsight Pig activity type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightPig")
 @Fluent
@@ -24,69 +26,87 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightPigActivityTypeProperties innerTypeProperties = new HDInsightPigActivityTypeProperties();
 
-    /** Creates an instance of HDInsightPigActivity class. */
+    /**
+     * Creates an instance of HDInsightPigActivity class.
+     */
     public HDInsightPigActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: HDInsight Pig activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HDInsightPigActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withState(ActivityState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightPigActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -95,7 +115,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -104,7 +124,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -119,7 +139,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @return the arguments value.
      */
     public Object arguments() {
@@ -129,7 +149,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -143,7 +163,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -152,7 +172,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -166,7 +186,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object scriptPath() {
@@ -175,7 +195,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -189,7 +209,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference scriptLinkedService() {
@@ -198,7 +218,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -212,7 +232,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Get the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -221,7 +241,7 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Set the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightPigActivity object itself.
      */
@@ -235,17 +255,15 @@ public final class HDInsightPigActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HDInsightPigActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model HDInsightPigActivity"));
         } else {
             innerTypeProperties().validate();
         }

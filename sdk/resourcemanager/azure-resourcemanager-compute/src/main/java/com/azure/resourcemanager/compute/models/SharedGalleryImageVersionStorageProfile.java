@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the storage profile of a Gallery Image Version. */
+/**
+ * This is the storage profile of a Gallery Image Version.
+ */
 @Fluent
 public final class SharedGalleryImageVersionStorageProfile {
     /*
@@ -23,13 +25,15 @@ public final class SharedGalleryImageVersionStorageProfile {
     @JsonProperty(value = "dataDiskImages")
     private List<SharedGalleryDataDiskImage> dataDiskImages;
 
-    /** Creates an instance of SharedGalleryImageVersionStorageProfile class. */
+    /**
+     * Creates an instance of SharedGalleryImageVersionStorageProfile class.
+     */
     public SharedGalleryImageVersionStorageProfile() {
     }
 
     /**
      * Get the osDiskImage property: This is the OS disk image.
-     *
+     * 
      * @return the osDiskImage value.
      */
     public SharedGalleryOSDiskImage osDiskImage() {
@@ -38,7 +42,7 @@ public final class SharedGalleryImageVersionStorageProfile {
 
     /**
      * Set the osDiskImage property: This is the OS disk image.
-     *
+     * 
      * @param osDiskImage the osDiskImage value to set.
      * @return the SharedGalleryImageVersionStorageProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class SharedGalleryImageVersionStorageProfile {
 
     /**
      * Get the dataDiskImages property: A list of data disk images.
-     *
+     * 
      * @return the dataDiskImages value.
      */
     public List<SharedGalleryDataDiskImage> dataDiskImages() {
@@ -58,7 +62,7 @@ public final class SharedGalleryImageVersionStorageProfile {
 
     /**
      * Set the dataDiskImages property: A list of data disk images.
-     *
+     * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the SharedGalleryImageVersionStorageProfile object itself.
      */
@@ -69,7 +73,7 @@ public final class SharedGalleryImageVersionStorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

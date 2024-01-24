@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.IpGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListIpGroups API service call. */
+/**
+ * Response for the ListIpGroups API service call.
+ */
 @Fluent
 public final class IpGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class IpGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of IpGroupListResult class. */
+    /**
+     * Creates an instance of IpGroupListResult class.
+     */
     public IpGroupListResult() {
     }
 
     /**
      * Get the value property: The list of IpGroups information resources.
-     *
+     * 
      * @return the value value.
      */
     public List<IpGroupInner> value() {
@@ -39,7 +43,7 @@ public final class IpGroupListResult {
 
     /**
      * Set the value property: The list of IpGroups information resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the IpGroupListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class IpGroupListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class IpGroupListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IpGroupListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class IpGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

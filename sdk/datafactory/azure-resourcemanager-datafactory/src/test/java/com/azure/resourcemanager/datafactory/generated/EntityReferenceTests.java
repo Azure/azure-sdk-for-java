@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityReference model =
-            BinaryData
-                .fromString("{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"azlycx\"}")
+        EntityReference model
+            = BinaryData.fromString("{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"somuogeqe\"}")
                 .toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("azlycx", model.referenceName());
+        Assertions.assertEquals("somuogeqe", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityReference model =
-            new EntityReference()
-                .withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
-                .withReferenceName("azlycx");
+        EntityReference model
+            = new EntityReference().withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
+                .withReferenceName("somuogeqe");
         model = BinaryData.fromObject(model).toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE, model.type());
-        Assertions.assertEquals("azlycx", model.referenceName());
+        Assertions.assertEquals("somuogeqe", model.referenceName());
     }
 }

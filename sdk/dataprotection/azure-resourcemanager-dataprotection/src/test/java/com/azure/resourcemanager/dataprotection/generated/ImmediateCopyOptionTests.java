@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.ImmediateCopyOption;
 public final class ImmediateCopyOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmediateCopyOption model =
-            BinaryData.fromString("{\"objectType\":\"ImmediateCopyOption\"}").toObject(ImmediateCopyOption.class);
+        ImmediateCopyOption model
+            = BinaryData.fromString("{\"objectType\":\"ImmediateCopyOption\"}").toObject(ImmediateCopyOption.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or
- * PremiumV2_LRS.
+ * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS,
+ * or PremiumV2_LRS.
  */
 @Fluent
 public final class DiskSku {
@@ -25,13 +25,15 @@ public final class DiskSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
-    /** Creates an instance of DiskSku class. */
+    /**
+     * Creates an instance of DiskSku class.
+     */
     public DiskSku() {
     }
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public DiskStorageAccountTypes name() {
@@ -40,7 +42,7 @@ public final class DiskSku {
 
     /**
      * Set the name property: The sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskSku object itself.
      */
@@ -51,7 +53,7 @@ public final class DiskSku {
 
     /**
      * Get the tier property: The sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -60,7 +62,7 @@ public final class DiskSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

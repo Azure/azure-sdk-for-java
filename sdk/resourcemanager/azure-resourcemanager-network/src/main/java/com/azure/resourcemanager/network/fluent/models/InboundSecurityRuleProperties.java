@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the Inbound Security Rules resource. */
+/**
+ * Properties of the Inbound Security Rules resource.
+ */
 @Fluent
 public final class InboundSecurityRuleProperties {
     /*
@@ -25,13 +27,15 @@ public final class InboundSecurityRuleProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of InboundSecurityRuleProperties class. */
+    /**
+     * Creates an instance of InboundSecurityRuleProperties class.
+     */
     public InboundSecurityRuleProperties() {
     }
 
     /**
      * Get the rules property: List of allowed rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<InboundSecurityRules> rules() {
@@ -40,7 +44,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Set the rules property: List of allowed rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the InboundSecurityRuleProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -60,7 +64,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

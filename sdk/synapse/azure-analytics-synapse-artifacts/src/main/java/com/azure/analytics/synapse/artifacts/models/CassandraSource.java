@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for a Cassandra database. */
+/**
+ * A copy activity source for a Cassandra database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CassandraSource")
 @Fluent
@@ -30,13 +32,16 @@ public final class CassandraSource extends TabularSource {
     @JsonProperty(value = "consistencyLevel")
     private CassandraSourceReadConsistencyLevels consistencyLevel;
 
-    /** Creates an instance of CassandraSource class. */
-    public CassandraSource() {}
+    /**
+     * Creates an instance of CassandraSource class.
+     */
+    public CassandraSource() {
+    }
 
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)
      * command. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -46,7 +51,7 @@ public final class CassandraSource extends TabularSource {
     /**
      * Set the query property: Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL)
      * command. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the CassandraSource object itself.
      */
@@ -60,7 +65,7 @@ public final class CassandraSource extends TabularSource {
      * read request before returning data to the client application. Cassandra checks the specified number of Cassandra
      * servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default
      * value is 'ONE'. It is case-insensitive.
-     *
+     * 
      * @return the consistencyLevel value.
      */
     public CassandraSourceReadConsistencyLevels getConsistencyLevel() {
@@ -72,7 +77,7 @@ public final class CassandraSource extends TabularSource {
      * read request before returning data to the client application. Cassandra checks the specified number of Cassandra
      * servers for data to satisfy the read request. Must be one of cassandraSourceReadConsistencyLevels. The default
      * value is 'ONE'. It is case-insensitive.
-     *
+     * 
      * @param consistencyLevel the consistencyLevel value to set.
      * @return the CassandraSource object itself.
      */
@@ -81,35 +86,45 @@ public final class CassandraSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Subvolumes ListByVolume. */
+/**
+ * Samples for Subvolumes ListByVolume.
+ */
 public final class SubvolumesListByVolumeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Subvolumes_List.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Subvolumes_List.json
      */
     /**
      * Sample code: Subvolumes_List.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void subvolumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

@@ -132,6 +132,7 @@
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/netapp</module>
+    <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
     <module>sdk/newrelicobservability</module>
@@ -183,6 +184,7 @@
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
+    <module>sdk/springappdiscovery</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/storage</module>
     <module>sdk/storagecache</module>
@@ -200,6 +202,7 @@
     <module>sdk/tools</module>
     <module>sdk/translation</module>
     <module>sdk/videoanalyzer</module>
+    <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>

@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MarketoSource;
 public final class MarketoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketoSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MarketoSource\",\"query\":\"datafplgxc\",\"queryTimeout\":\"datactbxpuisfjamgn\",\"additionalColumns\":\"dataosusiyycoflj\",\"sourceRetryCount\":\"datadmwa\",\"sourceRetryWait\":\"datapbuqkdieuopwsa\",\"maxConcurrentConnections\":\"datahmizcfk\",\"disableMetricsCollection\":\"datafmoonnria\",\"\":{\"dvbbuuipelo\":\"datagzkdbmjzob\",\"x\":\"dataptteojxhwgja\",\"sl\":\"datarpwjgkxvkjd\"}}")
-                .toObject(MarketoSource.class);
+        MarketoSource model = BinaryData.fromString(
+            "{\"type\":\"MarketoSource\",\"query\":\"datafarqxjoazyxmumfb\",\"queryTimeout\":\"dataxzrycvacspzj\",\"additionalColumns\":\"datayphxeoqma\",\"sourceRetryCount\":\"dataikceiyuv\",\"sourceRetryWait\":\"databbawrbqoox\",\"maxConcurrentConnections\":\"datarqlxqhqgip\",\"disableMetricsCollection\":\"datatnkngjnhxufo\",\"\":{\"pfsesi\":\"dataifijdtpedvh\"}}")
+            .toObject(MarketoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketoSource model =
-            new MarketoSource()
-                .withSourceRetryCount("datadmwa")
-                .withSourceRetryWait("datapbuqkdieuopwsa")
-                .withMaxConcurrentConnections("datahmizcfk")
-                .withDisableMetricsCollection("datafmoonnria")
-                .withQueryTimeout("datactbxpuisfjamgn")
-                .withAdditionalColumns("dataosusiyycoflj")
-                .withQuery("datafplgxc");
+        MarketoSource model = new MarketoSource().withSourceRetryCount("dataikceiyuv")
+            .withSourceRetryWait("databbawrbqoox").withMaxConcurrentConnections("datarqlxqhqgip")
+            .withDisableMetricsCollection("datatnkngjnhxufo").withQueryTimeout("dataxzrycvacspzj")
+            .withAdditionalColumns("datayphxeoqma").withQuery("datafarqxjoazyxmumfb");
         model = BinaryData.fromObject(model).toObject(MarketoSource.class);
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datafactory.models.PipelineRunInvokedBy;
 public final class PipelineRunInvokedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelineRunInvokedBy model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jplmagstcy\",\"id\":\"pfkyrkdbdgiogsj\",\"invokedByType\":\"nwqjnoba\",\"pipelineName\":\"hdd\",\"pipelineRunId\":\"acegfnmntf\"}")
-                .toObject(PipelineRunInvokedBy.class);
+        PipelineRunInvokedBy model = BinaryData.fromString(
+            "{\"name\":\"jplmagstcy\",\"id\":\"pfkyrkdbdgiogsj\",\"invokedByType\":\"nwqjnoba\",\"pipelineName\":\"hdd\",\"pipelineRunId\":\"acegfnmntf\"}")
+            .toObject(PipelineRunInvokedBy.class);
     }
 
     @org.junit.jupiter.api.Test

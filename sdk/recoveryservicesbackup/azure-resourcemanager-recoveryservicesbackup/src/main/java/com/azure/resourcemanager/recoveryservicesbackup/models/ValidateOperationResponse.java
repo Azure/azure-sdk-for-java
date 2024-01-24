@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Base class for validate operation response. */
+/**
+ * Base class for validate operation response.
+ */
 @Fluent
 public final class ValidateOperationResponse {
     /*
@@ -17,13 +19,15 @@ public final class ValidateOperationResponse {
     @JsonProperty(value = "validationResults")
     private List<ErrorDetail> validationResults;
 
-    /** Creates an instance of ValidateOperationResponse class. */
+    /**
+     * Creates an instance of ValidateOperationResponse class.
+     */
     public ValidateOperationResponse() {
     }
 
     /**
      * Get the validationResults property: Gets the validation result.
-     *
+     * 
      * @return the validationResults value.
      */
     public List<ErrorDetail> validationResults() {
@@ -32,7 +36,7 @@ public final class ValidateOperationResponse {
 
     /**
      * Set the validationResults property: Gets the validation result.
-     *
+     * 
      * @param validationResults the validationResults value to set.
      * @return the ValidateOperationResponse object itself.
      */
@@ -43,7 +47,7 @@ public final class ValidateOperationResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

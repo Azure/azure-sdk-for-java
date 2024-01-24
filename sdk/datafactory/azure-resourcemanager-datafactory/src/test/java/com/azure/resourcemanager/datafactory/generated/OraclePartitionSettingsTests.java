@@ -10,21 +10,16 @@ import com.azure.resourcemanager.datafactory.models.OraclePartitionSettings;
 public final class OraclePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OraclePartitionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"partitionNames\":\"datarjooepfb\",\"partitionColumnName\":\"databffxansgntjmnl\",\"partitionUpperBound\":\"datalrjdkyp\",\"partitionLowerBound\":\"datavilgn\"}")
-                .toObject(OraclePartitionSettings.class);
+        OraclePartitionSettings model = BinaryData.fromString(
+            "{\"partitionNames\":\"dataas\",\"partitionColumnName\":\"datamwsooq\",\"partitionUpperBound\":\"datavplmyzebvgh\",\"partitionLowerBound\":\"dataydehbvbexrbynnl\"}")
+            .toObject(OraclePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OraclePartitionSettings model =
-            new OraclePartitionSettings()
-                .withPartitionNames("datarjooepfb")
-                .withPartitionColumnName("databffxansgntjmnl")
-                .withPartitionUpperBound("datalrjdkyp")
-                .withPartitionLowerBound("datavilgn");
+        OraclePartitionSettings model
+            = new OraclePartitionSettings().withPartitionNames("dataas").withPartitionColumnName("datamwsooq")
+                .withPartitionUpperBound("datavplmyzebvgh").withPartitionLowerBound("dataydehbvbexrbynnl");
         model = BinaryData.fromObject(model).toObject(OraclePartitionSettings.class);
     }
 }

@@ -12,24 +12,17 @@ import java.util.Map;
 public final class CopySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopySink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CopySink\",\"writeBatchSize\":\"datayajkdejpar\",\"writeBatchTimeout\":\"datasbozfjbdyyxhjf\",\"sinkRetryCount\":\"databwmrdl\",\"sinkRetryWait\":\"dataklhwrikrulj\",\"maxConcurrentConnections\":\"datagzffemryoia\",\"disableMetricsCollection\":\"databz\",\"\":{\"umvbhbli\":\"datacc\"}}")
-                .toObject(CopySink.class);
+        CopySink model = BinaryData.fromString(
+            "{\"type\":\"CopySink\",\"writeBatchSize\":\"dataemrhbzetss\",\"writeBatchTimeout\":\"datawexbotbrep\",\"sinkRetryCount\":\"datarlieeocyarvsfz\",\"sinkRetryWait\":\"datascootfsgilwis\",\"maxConcurrentConnections\":\"datazpzitustrtrf\",\"disableMetricsCollection\":\"datagknocshm\",\"\":{\"birbrvzhfjqpxyd\":\"dataqtu\",\"nsjssreojsgkoue\":\"dataamctzmwrhccdg\"}}")
+            .toObject(CopySink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopySink model =
-            new CopySink()
-                .withWriteBatchSize("datayajkdejpar")
-                .withWriteBatchTimeout("datasbozfjbdyyxhjf")
-                .withSinkRetryCount("databwmrdl")
-                .withSinkRetryWait("dataklhwrikrulj")
-                .withMaxConcurrentConnections("datagzffemryoia")
-                .withDisableMetricsCollection("databz")
-                .withAdditionalProperties(mapOf("type", "CopySink"));
+        CopySink model = new CopySink().withWriteBatchSize("dataemrhbzetss").withWriteBatchTimeout("datawexbotbrep")
+            .withSinkRetryCount("datarlieeocyarvsfz").withSinkRetryWait("datascootfsgilwis")
+            .withMaxConcurrentConnections("datazpzitustrtrf").withDisableMetricsCollection("datagknocshm")
+            .withAdditionalProperties(mapOf("type", "CopySink"));
         model = BinaryData.fromObject(model).toObject(CopySink.class);
     }
 

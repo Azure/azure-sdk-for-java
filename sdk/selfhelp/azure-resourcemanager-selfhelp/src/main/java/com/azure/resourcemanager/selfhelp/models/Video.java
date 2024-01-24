@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Video detail. */
+/**
+ * Video detail.
+ */
 @Fluent
 public final class Video extends VideoGroupVideo {
     /*
@@ -16,13 +18,15 @@ public final class Video extends VideoGroupVideo {
     @JsonProperty(value = "replacementKey")
     private String replacementKey;
 
-    /** Creates an instance of Video class. */
+    /**
+     * Creates an instance of Video class.
+     */
     public Video() {
     }
 
     /**
      * Get the replacementKey property: Place holder used in HTML Content replace control with the insight content.
-     *
+     * 
      * @return the replacementKey value.
      */
     public String replacementKey() {
@@ -31,7 +35,7 @@ public final class Video extends VideoGroupVideo {
 
     /**
      * Set the replacementKey property: Place holder used in HTML Content replace control with the insight content.
-     *
+     * 
      * @param replacementKey the replacementKey value to set.
      * @return the Video object itself.
      */
@@ -40,14 +44,18 @@ public final class Video extends VideoGroupVideo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Video withSrc(String src) {
         super.withSrc(src);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Video withTitle(String title) {
         super.withTitle(title);
@@ -56,7 +64,7 @@ public final class Video extends VideoGroupVideo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

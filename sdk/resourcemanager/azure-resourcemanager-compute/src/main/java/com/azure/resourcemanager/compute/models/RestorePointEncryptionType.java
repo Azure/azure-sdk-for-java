@@ -8,23 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of key used to encrypt the data of the disk restore point. */
+/**
+ * The type of key used to encrypt the data of the disk restore point.
+ */
 public final class RestorePointEncryptionType extends ExpandableStringEnum<RestorePointEncryptionType> {
-    /** Static value EncryptionAtRestWithPlatformKey for RestorePointEncryptionType. */
-    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY =
-        fromString("EncryptionAtRestWithPlatformKey");
+    /**
+     * Static value EncryptionAtRestWithPlatformKey for RestorePointEncryptionType.
+     */
+    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY
+        = fromString("EncryptionAtRestWithPlatformKey");
 
-    /** Static value EncryptionAtRestWithCustomerKey for RestorePointEncryptionType. */
-    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY =
-        fromString("EncryptionAtRestWithCustomerKey");
+    /**
+     * Static value EncryptionAtRestWithCustomerKey for RestorePointEncryptionType.
+     */
+    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY
+        = fromString("EncryptionAtRestWithCustomerKey");
 
-    /** Static value EncryptionAtRestWithPlatformAndCustomerKeys for RestorePointEncryptionType. */
-    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS =
-        fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
+    /**
+     * Static value EncryptionAtRestWithPlatformAndCustomerKeys for RestorePointEncryptionType.
+     */
+    public static final RestorePointEncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS
+        = fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
 
     /**
      * Creates a new instance of RestorePointEncryptionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +41,7 @@ public final class RestorePointEncryptionType extends ExpandableStringEnum<Resto
 
     /**
      * Creates or finds a RestorePointEncryptionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestorePointEncryptionType.
      */
@@ -44,7 +52,7 @@ public final class RestorePointEncryptionType extends ExpandableStringEnum<Resto
 
     /**
      * Gets known RestorePointEncryptionType values.
-     *
+     * 
      * @return known RestorePointEncryptionType values.
      */
     public static Collection<RestorePointEncryptionType> values() {

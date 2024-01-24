@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureSynapseArtifacts
 public final class AzureSynapseArtifactsLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSynapseArtifactsLinkedServiceTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"endpoint\":\"dataojwvvqcjrmnverbf\",\"authentication\":\"datahuw\",\"workspaceResourceId\":\"dataitqeyonmoig\"}")
-                .toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
+        AzureSynapseArtifactsLinkedServiceTypeProperties model = BinaryData.fromString(
+            "{\"endpoint\":\"dataodkq\",\"authentication\":\"datahuxox\",\"workspaceResourceId\":\"datagzvzcfmwfogjrhmt\"}")
+            .toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSynapseArtifactsLinkedServiceTypeProperties model =
-            new AzureSynapseArtifactsLinkedServiceTypeProperties()
-                .withEndpoint("dataojwvvqcjrmnverbf")
-                .withAuthentication("datahuw")
-                .withWorkspaceResourceId("dataitqeyonmoig");
+        AzureSynapseArtifactsLinkedServiceTypeProperties model = new AzureSynapseArtifactsLinkedServiceTypeProperties()
+            .withEndpoint("dataodkq").withAuthentication("datahuxox").withWorkspaceResourceId("datagzvzcfmwfogjrhmt");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 }

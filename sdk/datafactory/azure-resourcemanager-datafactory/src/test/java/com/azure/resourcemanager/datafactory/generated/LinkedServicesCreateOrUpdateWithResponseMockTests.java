@@ -37,74 +37,45 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"idhkigs\",\"parameters\":{\"ztsgklu\":\"datakzl\",\"xbyedca\":\"dataaxcbfrnttlrumv\"}},\"description\":\"jpjnnh\",\"parameters\":{\"icp\":{\"type\":\"SecureString\",\"defaultValue\":\"datamqxbauzvxe\"},\"o\":{\"type\":\"Bool\",\"defaultValue\":\"datacvmuqx\"}},\"annotations\":[\"datajrtcifxledjpu\",\"dataai\",\"datacvsjcdmnvtpb\"],\"\":{\"fvplfywcbnmzshmq\":\"datacaaqvsda\",\"bvqsqwuwxtqdtv\":\"datan\"}},\"name\":\"ilqscjxpro\",\"type\":\"yddrs\",\"etag\":\"rxnweiytkeqjviaw\",\"id\":\"vbc\"}";
+        String responseStr
+            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"sf\",\"parameters\":{\"neqmjodvknxjtttk\":\"datafrtaufrxxvzq\",\"s\":\"datamhquc\"}},\"description\":\"odcxvdqfk\",\"parameters\":{\"bxfrliyikcnlbe\":{\"type\":\"Bool\",\"defaultValue\":\"datafoaabltvlttopl\"},\"diogwckvoxlih\":{\"type\":\"Int\",\"defaultValue\":\"datayoxjqysfej\"},\"nchrouvtbptdeum\":{\"type\":\"Int\",\"defaultValue\":\"datafznzemisqunxwos\"},\"b\":{\"type\":\"Array\",\"defaultValue\":\"datazxqr\"}},\"annotations\":[\"dataeodgpqdcrn\"],\"\":{\"wsnccmunh\":\"datatowohtu\",\"rngney\":\"datawcsgczvui\",\"nelmim\":\"dataxzdayzfuv\",\"gjmznptevafczg\":\"dataccevbprecgeregft\"}},\"name\":\"egdeiynlcdqx\",\"type\":\"nbjkwgk\",\"etag\":\"wkazmw\",\"id\":\"sfejkrcgcfjnozi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LinkedServiceResource response =
-            manager
-                .linkedServices()
-                .define("uqtjcyllpas")
-                .withExistingFactory("uwbnngcdtxxyz", "ybndiqpadhrij")
-                .withProperties(
-                    new LinkedService()
-                        .withConnectVia(
-                            new IntegrationRuntimeReference()
-                                .withReferenceName("qsfpctq")
-                                .withParameters(mapOf("squ", "databjjde")))
-                        .withDescription("rnbdzvcabchdzxj")
-                        .withParameters(
-                            mapOf(
-                                "lsak",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.BOOL)
-                                    .withDefaultValue("datawaadczwmnfavllbs"),
-                                "ppzbdvawbtgvqt",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.ARRAY)
-                                    .withDefaultValue("dataxpofvhkceaxo"),
-                                "guhsjlroaedswh",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.FLOAT)
-                                    .withDefaultValue("datanaeclrjscdoqocdr"),
-                                "yjtollugzsvzi",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.STRING)
-                                    .withDefaultValue("datajuuboyrf")))
-                        .withAnnotations(Arrays.asList("datasbdaudsvdb", "datallmutwmarfbszlp", "datax"))
-                        .withAdditionalProperties(mapOf("type", "LinkedService")))
-                .withIfMatch("nbxgofiphlwyzd")
-                .create();
+        LinkedServiceResource response
+            = manager
+                .linkedServices().define(
+                    "kuxphbwmbgwgmyg")
+                .withExistingFactory("zpxlyabjrz", "ssjfwur")
+                .withProperties(new LinkedService()
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("snkylqd").withParameters(
+                        mapOf("frjewqwdglmfsjp", "datadzz", "lt", "datafdh", "qtzghtjx", "dataywykfuovk")))
+                    .withDescription("ywoq")
+                    .withParameters(mapOf("vykthx",
+                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataiioa"),
+                        "egqzqdcohsqufsy",
+                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datawjwl")))
+                    .withAnnotations(Arrays.asList("datanzsjoxuogyak", "dataxjzalhun", "datamngstvn"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService")))
+                .withIfMatch("kv").create();
 
-        Assertions.assertEquals("vbc", response.id());
-        Assertions.assertEquals("idhkigs", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("jpjnnh", response.properties().description());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, response.properties().parameters().get("icp").type());
+        Assertions.assertEquals("sfejkrcgcfjnozi", response.id());
+        Assertions.assertEquals("sf", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("odcxvdqfk", response.properties().description());
+        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("bxfrliyikcnlbe").type());
     }
 
     // Use "Map.of" if available

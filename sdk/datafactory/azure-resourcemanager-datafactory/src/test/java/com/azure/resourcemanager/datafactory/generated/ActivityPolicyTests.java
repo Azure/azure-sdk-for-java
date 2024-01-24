@@ -13,30 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivityPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"timeout\":\"datamsgg\",\"retry\":\"datacmazilq\",\"retryIntervalInSeconds\":840058407,\"secureInput\":false,\"secureOutput\":false,\"\":{\"zykmdklwbqkmtwua\":\"datay\"}}")
-                .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(840058407, model.retryIntervalInSeconds());
+        ActivityPolicy model = BinaryData.fromString(
+            "{\"timeout\":\"datajsaoggd\",\"retry\":\"datajkoxlccjdooy\",\"retryIntervalInSeconds\":975110556,\"secureInput\":false,\"secureOutput\":true,\"\":{\"bwidsbdftbxruuu\":\"datajhqq\",\"wnpwgchl\":\"dataaarrrgjnqkuca\",\"hflnlutacsslel\":\"databttxfittheaxq\"}}")
+            .toObject(ActivityPolicy.class);
+        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
         Assertions.assertEquals(false, model.secureInput());
-        Assertions.assertEquals(false, model.secureOutput());
+        Assertions.assertEquals(true, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model =
-            new ActivityPolicy()
-                .withTimeout("datamsgg")
-                .withRetry("datacmazilq")
-                .withRetryIntervalInSeconds(840058407)
-                .withSecureInput(false)
-                .withSecureOutput(false)
-                .withAdditionalProperties(mapOf());
+        ActivityPolicy model = new ActivityPolicy().withTimeout("datajsaoggd").withRetry("datajkoxlccjdooy")
+            .withRetryIntervalInSeconds(975110556).withSecureInput(false).withSecureOutput(true)
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(840058407, model.retryIntervalInSeconds());
+        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
         Assertions.assertEquals(false, model.secureInput());
-        Assertions.assertEquals(false, model.secureOutput());
+        Assertions.assertEquals(true, model.secureOutput());
     }
 
     // Use "Map.of" if available

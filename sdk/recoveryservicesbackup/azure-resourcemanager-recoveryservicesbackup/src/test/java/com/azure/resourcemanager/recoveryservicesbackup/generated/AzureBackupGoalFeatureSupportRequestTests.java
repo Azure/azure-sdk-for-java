@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureBackupGoalFe
 public final class AzureBackupGoalFeatureSupportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBackupGoalFeatureSupportRequest model =
-            BinaryData
-                .fromString("{\"featureType\":\"AzureBackupGoals\"}")
-                .toObject(AzureBackupGoalFeatureSupportRequest.class);
+        AzureBackupGoalFeatureSupportRequest model = BinaryData.fromString("{\"featureType\":\"AzureBackupGoals\"}")
+            .toObject(AzureBackupGoalFeatureSupportRequest.class);
     }
 
     @org.junit.jupiter.api.Test

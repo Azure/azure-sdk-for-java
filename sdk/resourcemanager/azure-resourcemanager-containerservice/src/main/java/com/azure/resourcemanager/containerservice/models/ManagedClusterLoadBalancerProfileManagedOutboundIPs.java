@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Desired managed outbound IPs for the cluster load balancer. */
+/**
+ * Desired managed outbound IPs for the cluster load balancer.
+ */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     /*
@@ -24,7 +26,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     @JsonProperty(value = "countIPv6")
     private Integer countIPv6;
 
-    /** Creates an instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs class. */
+    /**
+     * Creates an instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs class.
+     */
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs() {
     }
 
@@ -51,9 +55,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
-     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
-     * and 1 for dual-stack.
+     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster
+     * load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for
+     * single-stack and 1 for dual-stack.
      *
      * @return the countIPv6 value.
      */
@@ -62,9 +66,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
-     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
-     * and 1 for dual-stack.
+     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster
+     * load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for
+     * single-stack and 1 for dual-stack.
      *
      * @param countIPv6 the countIPv6 value to set.
      * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.

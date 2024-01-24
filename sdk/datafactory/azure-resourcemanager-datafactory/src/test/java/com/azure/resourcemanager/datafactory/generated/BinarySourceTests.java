@@ -15,31 +15,21 @@ import java.util.Map;
 public final class BinarySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BinarySource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"BinarySource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datadnok\",\"disableMetricsCollection\":\"datagiecjyftsn\",\"\":{\"tjc\":\"dataz\",\"xxbkqmagpdsuyy\":\"dataa\"}},\"formatSettings\":{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"hhvgddfzcnylz\":\"dataoox\",\"degfhofo\":\"datalhufsgcpwrtg\"}},\"\":{\"otjj\":\"dataiuik\",\"snr\":\"dataecxvkqjpovjvvx\",\"flqwqcxyiqppacji\":\"datawrbmhjm\",\"jzgnla\":\"datarllacylbtkxe\"}},\"sourceRetryCount\":\"datattexaugoj\",\"sourceRetryWait\":\"datajezr\",\"maxConcurrentConnections\":\"datao\",\"disableMetricsCollection\":\"datawlntenhnqtvx\",\"\":{\"lceo\":\"dataehhehotqorrv\",\"gjir\":\"datalyugzl\"}}")
-                .toObject(BinarySource.class);
+        BinarySource model = BinaryData.fromString(
+            "{\"type\":\"BinarySource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataccfwqisouqyz\",\"disableMetricsCollection\":\"datajehdklvqtm\",\"\":{\"oazsj\":\"dataiaetctjhpg\",\"ccvxqbxgq\":\"datauevfvnnt\",\"kibvw\":\"dataawnriwx\"}},\"formatSettings\":{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"bk\":\"datamxsvz\",\"bxldl\":\"dataal\",\"kalpqlnn\":\"datathmibqgldht\",\"ewlwbxuf\":\"dataevjealx\"}},\"\":{\"lfqvo\":\"datakkvij\"}},\"sourceRetryCount\":\"dataowdqvqfldaqoao\",\"sourceRetryWait\":\"dataqpfwnjdyoxformfe\",\"maxConcurrentConnections\":\"datafq\",\"disableMetricsCollection\":\"dataeszxtesnhxp\",\"\":{\"bvtpqttusuxxbzm\":\"datak\",\"grxzcnwguezx\":\"datavueijrnn\",\"wbwmgqzq\":\"datauim\"}}")
+            .toObject(BinarySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySource model =
-            new BinarySource()
-                .withSourceRetryCount("datattexaugoj")
-                .withSourceRetryWait("datajezr")
-                .withMaxConcurrentConnections("datao")
-                .withDisableMetricsCollection("datawlntenhnqtvx")
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datadnok")
-                        .withDisableMetricsCollection("datagiecjyftsn")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-                .withFormatSettings(
-                    new BinaryReadSettings()
-                        .withCompressionProperties(
-                            new CompressionReadSettings()
-                                .withAdditionalProperties(mapOf("type", "CompressionReadSettings"))));
+        BinarySource model
+            = new BinarySource().withSourceRetryCount("dataowdqvqfldaqoao").withSourceRetryWait("dataqpfwnjdyoxformfe")
+                .withMaxConcurrentConnections("datafq").withDisableMetricsCollection("dataeszxtesnhxp")
+                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataccfwqisouqyz")
+                    .withDisableMetricsCollection("datajehdklvqtm")
+                    .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+                .withFormatSettings(new BinaryReadSettings().withCompressionProperties(
+                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))));
         model = BinaryData.fromObject(model).toObject(BinarySource.class);
     }
 

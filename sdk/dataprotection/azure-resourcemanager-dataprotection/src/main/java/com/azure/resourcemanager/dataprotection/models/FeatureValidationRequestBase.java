@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for Backup Feature support. */
+/**
+ * Base class for Backup Feature support.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
     defaultImpl = FeatureValidationRequestBase.class)
 @JsonTypeName("FeatureValidationRequestBase")
-@JsonSubTypes({@JsonSubTypes.Type(name = "FeatureValidationRequest", value = FeatureValidationRequest.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "FeatureValidationRequest", value = FeatureValidationRequest.class) })
 @Immutable
 public class FeatureValidationRequestBase {
-    /** Creates an instance of FeatureValidationRequestBase class. */
+    /**
+     * Creates an instance of FeatureValidationRequestBase class.
+     */
     public FeatureValidationRequestBase() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

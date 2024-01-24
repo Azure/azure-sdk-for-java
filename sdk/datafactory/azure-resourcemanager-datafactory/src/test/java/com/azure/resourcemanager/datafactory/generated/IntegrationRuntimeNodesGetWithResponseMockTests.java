@@ -29,40 +29,26 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"nodeName\":\"fppjunkh\",\"machineName\":\"hkqny\",\"hostServiceUri\":\"fvzrq\",\"status\":\"InitializeFailed\",\"capabilities\":{\"ia\":\"ceheeqqetasi\",\"gpmvl\":\"qwomkzcmwqfd\",\"d\":\"mvqumjmpsxzxbafs\"},\"versionStatus\":\"zporjhubzkzjazf\",\"version\":\"wvxq\",\"registerTime\":\"2021-10-16T11:38:02Z\",\"lastConnectTime\":\"2021-11-05T02:39:54Z\",\"expiryTime\":\"2021-11-03T20:33:22Z\",\"lastStartTime\":\"2021-12-08T01:27:04Z\",\"lastStopTime\":\"2021-10-08T15:53:52Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-08-29T07:09:05Z\",\"lastEndUpdateTime\":\"2021-01-29T07:26:19Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":2104441921,\"maxConcurrentJobs\":680887094,\"\":{\"prgpm\":\"datafcsvipwahehuc\",\"fzcsklvtceaoi\":\"datatjvuhcw\",\"bjfhpaywwesa\":\"dataurqlcdh\"}}";
+        String responseStr
+            = "{\"nodeName\":\"jzhhjgvuvjsn\",\"machineName\":\"nuujkjkqyewtlom\",\"hostServiceUri\":\"xaqvrazthdua\",\"status\":\"InitializeFailed\",\"capabilities\":{\"mgheamxidjdpt\":\"hlnhgngqciiopo\"},\"versionStatus\":\"ie\",\"version\":\"auyphugwauipatod\",\"registerTime\":\"2021-11-05T05:14:24Z\",\"lastConnectTime\":\"2021-04-02T01:24:07Z\",\"expiryTime\":\"2021-02-18T13:41:39Z\",\"lastStartTime\":\"2021-12-02T05:39:26Z\",\"lastStopTime\":\"2021-03-24T03:50:49Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-07-06T18:00:42Z\",\"lastEndUpdateTime\":\"2021-08-13T17:30:02Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1673002875,\"maxConcurrentJobs\":633341735,\"\":{\"blndlahr\":\"dataulefltubwpe\",\"tkehfoephipho\":\"datax\",\"mv\":\"datagmcuqjouk\",\"ogfxbv\":\"dataqismvo\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SelfHostedIntegrationRuntimeNode response =
-            manager
-                .integrationRuntimeNodes()
-                .getWithResponse(
-                    "fmsaedglubqtf", "up", "mwtemirujiqmks", "fjhtlbrkgh", com.azure.core.util.Context.NONE)
-                .getValue();
+        SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
+            .getWithResponse("iqcjylkdby", "bxjkmavppo", "gimt", "ucls", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

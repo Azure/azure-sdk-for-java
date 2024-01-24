@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Square Service linked service. */
+/**
+ * Square Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Square")
 @JsonFlatten
@@ -75,13 +77,16 @@ public class SquareLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SquareLinkedService class. */
-    public SquareLinkedService() {}
+    /**
+     * Creates an instance of SquareLinkedService class.
+     */
+    public SquareLinkedService() {
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -91,7 +96,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -102,7 +107,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -111,7 +116,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
+     * 
      * @param host the host value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -122,7 +127,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: The client ID associated with your Square application.
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -131,7 +136,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: The client ID associated with your Square application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -142,7 +147,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret associated with your Square application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -151,7 +156,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret associated with your Square application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -163,7 +168,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
      * http://localhost:2500).
-     *
+     * 
      * @return the redirectUri value.
      */
     public Object getRedirectUri() {
@@ -173,7 +178,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
      * http://localhost:2500).
-     *
+     * 
      * @param redirectUri the redirectUri value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -185,7 +190,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -195,7 +200,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -207,7 +212,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -217,7 +222,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -227,9 +232,9 @@ public class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -237,9 +242,9 @@ public class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -249,9 +254,9 @@ public class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -259,9 +264,9 @@ public class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -270,28 +275,36 @@ public class SquareLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

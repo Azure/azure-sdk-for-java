@@ -28,6 +28,7 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
     private final CosmosAsyncContainer collectionSelfLink;
     private final String collectionResourceId;
     private final ChangeFeedMode changeFeedMode;
+    private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorFactoryImpl(
             ChangeFeedContextClient documentClient,
@@ -35,11 +36,12 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
             LeaseCheckpointer leaseCheckpointer,
             CosmosAsyncContainer collectionSelfLink,
             String collectionResourceId,
-            ChangeFeedMode changeFeedMode) {
+            ChangeFeedMode changeFeedMode,
+            FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
 
         checkNotNull(documentClient, "Argument 'documentClient' can not be null");
         checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
-        checkNotNull(leaseCheckpointer, "Argument 'leaseCheckpointer' can not be null");
+        checkNotNull(leaseCheckpointer, "Argument 'leaseCheckPointer' can not be null");
         checkNotNull(collectionSelfLink, "Argument 'collectionSelfLink' can not be null");
         checkNotNull(collectionResourceId, "Argument 'collectionResourceId' can not be null");
 
@@ -49,6 +51,7 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
         this.collectionSelfLink = collectionSelfLink;
         this.collectionResourceId = collectionResourceId;
         this.changeFeedMode = changeFeedMode;
+        this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
     @Override
@@ -77,6 +80,14 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 
-        return new PartitionProcessorImpl<>(observer, this.documentClient, settings, checkpointer, lease, classType, this.changeFeedMode);
+        return new PartitionProcessorImpl<>(
+            observer,
+            this.documentClient,
+            settings,
+            checkpointer,
+            lease,
+            classType,
+            this.changeFeedMode,
+            this.feedRangeThroughputControlConfigManager);
     }
 }

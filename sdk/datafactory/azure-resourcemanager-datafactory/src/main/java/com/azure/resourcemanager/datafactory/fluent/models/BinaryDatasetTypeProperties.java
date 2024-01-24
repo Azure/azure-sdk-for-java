@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Binary dataset properties. */
+/**
+ * Binary dataset properties.
+ */
 @Fluent
 public final class BinaryDatasetTypeProperties {
     /*
@@ -25,13 +27,15 @@ public final class BinaryDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of BinaryDatasetTypeProperties class. */
+    /**
+     * Creates an instance of BinaryDatasetTypeProperties class.
+     */
     public BinaryDatasetTypeProperties() {
     }
 
     /**
      * Get the location property: The location of the Binary storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -40,7 +44,7 @@ public final class BinaryDatasetTypeProperties {
 
     /**
      * Set the location property: The location of the Binary storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the BinaryDatasetTypeProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class BinaryDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the binary dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -60,7 +64,7 @@ public final class BinaryDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the binary dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the BinaryDatasetTypeProperties object itself.
      */
@@ -71,15 +75,13 @@ public final class BinaryDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model BinaryDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property location in model BinaryDatasetTypeProperties"));
         } else {
             location().validate();
         }

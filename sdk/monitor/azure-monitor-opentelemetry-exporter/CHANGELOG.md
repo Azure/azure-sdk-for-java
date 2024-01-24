@@ -1,15 +1,31 @@
 # Release History
 
-## 1.0.0-beta.15 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- [Fix flush on JVM shutdown](https://github.com/Azure/azure-sdk-for-java/pull/37618)
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2024-01-23)
+
+### Features Added
+
+- [Update OpenTelemetry to 2.0.0](https://github.com/Azure/azure-sdk-for-java/pull/38360)
+- [Support for stable HTTP semconv](https://github.com/Azure/azure-sdk-for-java/pull/37899)
+- [Update otel schema to 1.22.0](https://github.com/Azure/azure-sdk-for-java/pull/38246)
+
+## 1.0.0-beta.15 (2023-12-18)
+
+### Bugs Fixed
+- [Fix flush on JVM shutdown](https://github.com/Azure/azure-sdk-for-java/pull/37618)
+- [Fix metric names that violate OpenTelemetry spec](https://github.com/Azure/azure-sdk-for-java/pull/37947)
+
+### Other Changes
+- [Update OpenTelemetry to 1.32.0](https://github.com/Azure/azure-sdk-for-java/pull/37819)
 
 ## 1.0.0-beta.14 (2023-11-09)
 

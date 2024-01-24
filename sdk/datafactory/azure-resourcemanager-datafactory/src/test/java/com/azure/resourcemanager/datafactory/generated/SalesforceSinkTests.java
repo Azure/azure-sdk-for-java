@@ -12,27 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SalesforceSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SalesforceSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SalesforceSink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datagazryyjjwggpcdu\",\"ignoreNullValues\":\"dataddo\",\"writeBatchSize\":\"datacsjw\",\"writeBatchTimeout\":\"dataedzm\",\"sinkRetryCount\":\"datag\",\"sinkRetryWait\":\"datafhyhzugwk\",\"maxConcurrentConnections\":\"datamhfm\",\"disableMetricsCollection\":\"dataorvhthxcrwe\",\"\":{\"tnfdcj\":\"datadmpfmcrcelsnj\",\"wxysut\":\"dataveibntwikm\",\"dgrzkeuplorn\":\"dataofdhrifekstrmsb\"}}")
-                .toObject(SalesforceSink.class);
+        SalesforceSink model = BinaryData.fromString(
+            "{\"type\":\"SalesforceSink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datamhioar\",\"ignoreNullValues\":\"datakhufktqgtj\",\"writeBatchSize\":\"datactreotzgkokfztrv\",\"writeBatchTimeout\":\"databt\",\"sinkRetryCount\":\"dataw\",\"sinkRetryWait\":\"datakegyskmh\",\"maxConcurrentConnections\":\"datasbzn\",\"disableMetricsCollection\":\"datagerwotlp\",\"\":{\"fbdbzbaboeegale\":\"dataoslqmftkqzafjy\"}}")
+            .toObject(SalesforceSink.class);
         Assertions.assertEquals(SalesforceSinkWriteBehavior.UPSERT, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceSink model =
-            new SalesforceSink()
-                .withWriteBatchSize("datacsjw")
-                .withWriteBatchTimeout("dataedzm")
-                .withSinkRetryCount("datag")
-                .withSinkRetryWait("datafhyhzugwk")
-                .withMaxConcurrentConnections("datamhfm")
-                .withDisableMetricsCollection("dataorvhthxcrwe")
-                .withWriteBehavior(SalesforceSinkWriteBehavior.UPSERT)
-                .withExternalIdFieldName("datagazryyjjwggpcdu")
-                .withIgnoreNullValues("dataddo");
+        SalesforceSink model
+            = new SalesforceSink().withWriteBatchSize("datactreotzgkokfztrv").withWriteBatchTimeout("databt")
+                .withSinkRetryCount("dataw").withSinkRetryWait("datakegyskmh").withMaxConcurrentConnections("datasbzn")
+                .withDisableMetricsCollection("datagerwotlp").withWriteBehavior(SalesforceSinkWriteBehavior.UPSERT)
+                .withExternalIdFieldName("datamhioar").withIgnoreNullValues("datakhufktqgtj");
         model = BinaryData.fromObject(model).toObject(SalesforceSink.class);
         Assertions.assertEquals(SalesforceSinkWriteBehavior.UPSERT, model.writeBehavior());
     }
