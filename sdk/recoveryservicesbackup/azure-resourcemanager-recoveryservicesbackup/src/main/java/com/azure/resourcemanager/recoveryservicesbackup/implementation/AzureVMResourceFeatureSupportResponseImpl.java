@@ -13,8 +13,7 @@ public final class AzureVMResourceFeatureSupportResponseImpl implements AzureVMR
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    AzureVMResourceFeatureSupportResponseImpl(
-        AzureVMResourceFeatureSupportResponseInner innerObject,
+    AzureVMResourceFeatureSupportResponseImpl(AzureVMResourceFeatureSupportResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

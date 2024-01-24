@@ -30,55 +30,48 @@ import reactor.core.publisher.Mono;
  */
 public final class ProtectionContainerRefreshOperationResultsClientImpl
     implements ProtectionContainerRefreshOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectionContainerRefreshOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectionContainerRefreshOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectionContainerRefreshOperationResultsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProtectionContainerRefreshOperationResultsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ProtectionContainerRefreshOperationResultsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for
-     * RecoveryServicesBackupClientProtectionContainerRefreshOperationResults to be used by the proxy service to perform
-     * REST calls.
+     * RecoveryServicesBackupClientProtectionContainerRefreshOperationResults to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectionContainerRefreshOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/operationResults/{operationId}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/operationResults/{operationId}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -89,13 +82,11 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String operationId) {
+    private Mono<Response<Void>> getWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -105,10 +96,8 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -118,25 +107,14 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -148,13 +126,11 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String operationId, Context context) {
+    private Mono<Response<Void>> getWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -164,10 +140,8 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -177,22 +151,13 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, operationId, accept, context);
     }
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -210,7 +175,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -222,14 +187,14 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String operationId, Context context) {
+    public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, operationId, context).block();
     }
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.

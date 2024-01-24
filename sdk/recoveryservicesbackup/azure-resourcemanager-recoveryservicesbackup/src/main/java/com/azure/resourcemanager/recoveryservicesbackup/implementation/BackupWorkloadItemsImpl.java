@@ -19,33 +19,24 @@ public final class BackupWorkloadItemsImpl implements BackupWorkloadItems {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupWorkloadItemsImpl(
-        BackupWorkloadItemsClient innerClient,
+    public BackupWorkloadItemsImpl(BackupWorkloadItemsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadItemResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        PagedIterable<WorkloadItemResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, fabricName, containerName);
-        return Utils.mapPage(inner, inner1 -> new WorkloadItemResourceImpl(inner1, this.manager()));
+    public PagedIterable<WorkloadItemResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName) {
+        PagedIterable<WorkloadItemResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, fabricName, containerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadItemResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadItemResource> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String filter,
-        String skipToken,
-        Context context) {
-        PagedIterable<WorkloadItemResourceInner> inner =
-            this
-                .serviceClient()
-                .list(vaultName, resourceGroupName, fabricName, containerName, filter, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new WorkloadItemResourceImpl(inner1, this.manager()));
+    public PagedIterable<WorkloadItemResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String filter, String skipToken, Context context) {
+        PagedIterable<WorkloadItemResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName,
+            fabricName, containerName, filter, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadItemResourceImpl(inner1, this.manager()));
     }
 
     private BackupWorkloadItemsClient serviceClient() {
