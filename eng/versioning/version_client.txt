@@ -443,7 +443,7 @@ com.azure.resourcemanager:azure-resourcemanager-networkanalytics;1.0.0-beta.1;1.
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.generic:generic-core;1.0.0-beta.1;1.0.0-beta.1
-com.generic:generic-core-json;1.0.0-beta.1;1.0.0-beta.1
+com.generic:generic-json;1.0.0-beta.1;1.0.0-beta.1
 com.generic:generic-core-http-okhttp;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
