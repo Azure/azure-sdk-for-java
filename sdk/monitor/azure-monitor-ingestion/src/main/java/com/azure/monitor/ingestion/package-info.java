@@ -41,8 +41,7 @@
  * <h2>Overview</h2>
  *
  * <p>
- *     The Logs Ingestion API in Azure Monitor lets you send data to a Log Analytics workspace using either a REST API call or
- *     client libraries. The API allows you to send data to supported Azure tables or to custom tables that you create. You can
+ *     The Logs Ingestion REST API in Azure Monitor lets you send data to a Log Analytics workspace. The API allows you to send data to supported Azure tables or to custom tables that you create. You can
  *     also extend the schema of Azure tables with custom columns to accept additional data.
  * </p>
  *
