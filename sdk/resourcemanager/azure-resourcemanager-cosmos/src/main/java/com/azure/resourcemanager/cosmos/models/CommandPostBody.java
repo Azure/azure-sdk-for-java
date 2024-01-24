@@ -6,9 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /**
  * Specification of which command to run where.
@@ -25,8 +23,7 @@ public final class CommandPostBody {
      * The arguments for the command to be run
      */
     @JsonProperty(value = "arguments")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> arguments;
+    private Object arguments;
 
     /*
      * IP address of the cassandra host to run the command on
@@ -43,8 +40,8 @@ public final class CommandPostBody {
     /*
      * If true, allows the command to *write* to the cassandra directory, otherwise read-only.
      */
-    @JsonProperty(value = "readwrite")
-    private Boolean readwrite;
+    @JsonProperty(value = "readWrite")
+    private Boolean readWrite;
 
     /**
      * Creates an instance of CommandPostBody class.
@@ -77,7 +74,7 @@ public final class CommandPostBody {
      * 
      * @return the arguments value.
      */
-    public Map<String, String> arguments() {
+    public Object arguments() {
         return this.arguments;
     }
 
@@ -87,7 +84,7 @@ public final class CommandPostBody {
      * @param arguments the arguments value to set.
      * @return the CommandPostBody object itself.
      */
-    public CommandPostBody withArguments(Map<String, String> arguments) {
+    public CommandPostBody withArguments(Object arguments) {
         this.arguments = arguments;
         return this;
     }
@@ -135,24 +132,24 @@ public final class CommandPostBody {
     }
 
     /**
-     * Get the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
+     * Get the readWrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
      * 
-     * @return the readwrite value.
+     * @return the readWrite value.
      */
-    public Boolean readwrite() {
-        return this.readwrite;
+    public Boolean readWrite() {
+        return this.readWrite;
     }
 
     /**
-     * Set the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
+     * Set the readWrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
      * 
-     * @param readwrite the readwrite value to set.
+     * @param readWrite the readWrite value to set.
      * @return the CommandPostBody object itself.
      */
-    public CommandPostBody withReadwrite(Boolean readwrite) {
-        this.readwrite = readwrite;
+    public CommandPostBody withReadWrite(Boolean readWrite) {
+        this.readWrite = readWrite;
         return this;
     }
 

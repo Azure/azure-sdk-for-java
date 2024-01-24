@@ -11,6 +11,9 @@ import com.azure.resourcemanager.cosmos.models.Capacity;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
+import com.azure.resourcemanager.cosmos.models.EnableFullTextQuery;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentityUserAssignedIdentities;
@@ -29,7 +32,8 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/
      * CosmosDBDatabaseAccountPatch.json
      */
     /**
@@ -58,12 +62,15 @@ public final class DatabaseAccountsUpdateSamples {
                     new AnalyticalStorageConfiguration().withSchemaType(AnalyticalStorageSchemaType.WELL_DEFINED))
                 .withBackupPolicy(new PeriodicModeBackupPolicy().withPeriodicModeProperties(new PeriodicModeProperties()
                     .withBackupIntervalInMinutes(240).withBackupRetentionIntervalInHours(720)
-                    .withBackupStorageRedundancy(BackupStorageRedundancy.LOCAL)))
+                    .withBackupStorageRedundancy(BackupStorageRedundancy.GEO)))
                 .withNetworkAclBypass(NetworkAclBypass.AZURE_SERVICES)
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
+                .withDiagnosticLogSettings(
+                    new DiagnosticLogSettings().withEnableFullTextQuery(EnableFullTextQuery.TRUE))
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000)).withEnablePartitionMerge(true)
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS).withEnableBurstCapacity(true),
+                .withEnableBurstCapacity(true).withMinimalTlsVersion(MinimalTlsVersion.TLS)
+                .withEnablePriorityBasedExecution(true).withDefaultPriorityLevel(DefaultPriorityLevel.LOW),
             com.azure.core.util.Context.NONE);
     }
 

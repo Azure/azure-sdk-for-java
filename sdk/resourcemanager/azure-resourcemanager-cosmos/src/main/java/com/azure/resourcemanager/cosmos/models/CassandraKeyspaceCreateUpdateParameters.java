@@ -40,6 +40,15 @@ public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourcePr
      * {@inheritDoc}
      */
     @Override
+    public CassandraKeyspaceCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public CassandraKeyspaceCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

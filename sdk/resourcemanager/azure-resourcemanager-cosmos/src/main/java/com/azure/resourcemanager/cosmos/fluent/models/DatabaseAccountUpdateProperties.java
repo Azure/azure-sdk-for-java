@@ -14,6 +14,8 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
@@ -164,6 +166,12 @@ public final class DatabaseAccountUpdateProperties {
     private List<String> networkAclBypassResourceIds;
 
     /*
+     * The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+     */
+    @JsonProperty(value = "diagnosticLogSettings")
+    private DiagnosticLogSettings diagnosticLogSettings;
+
+    /*
      * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
@@ -174,6 +182,12 @@ public final class DatabaseAccountUpdateProperties {
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;
+
+    /*
+     * Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+     */
+    @JsonProperty(value = "enableMaterializedViews")
+    private Boolean enableMaterializedViews;
 
     /*
      * This property is ignored during the update operation, as the metadata is read-only. The object represents the
@@ -189,17 +203,17 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
-     * Tls 1.2.
-     */
-    @JsonProperty(value = "minimalTlsVersion")
-    private MinimalTlsVersion minimalTlsVersion;
-
-    /*
      * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
      */
     @JsonProperty(value = "enableBurstCapacity")
     private Boolean enableBurstCapacity;
+
+    /*
+     * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which
+     * only work with Tls 1.2.
+     */
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersion minimalTlsVersion;
 
     /*
      * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
@@ -207,6 +221,18 @@ public final class DatabaseAccountUpdateProperties {
      */
     @JsonProperty(value = "customerManagedKeyStatus")
     private String customerManagedKeyStatus;
+
+    /*
+     * Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+     */
+    @JsonProperty(value = "enablePriorityBasedExecution")
+    private Boolean enablePriorityBasedExecution;
+
+    /*
+     * Enum to indicate default Priority Level of request for Priority Based Execution.
+     */
+    @JsonProperty(value = "defaultPriorityLevel")
+    private DefaultPriorityLevel defaultPriorityLevel;
 
     /**
      * Creates an instance of DatabaseAccountUpdateProperties class.
@@ -673,6 +699,28 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.diagnosticLogSettings;
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        this.diagnosticLogSettings = diagnosticLogSettings;
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -717,6 +765,28 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.enableMaterializedViews;
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        this.enableMaterializedViews = enableMaterializedViews;
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      * 
@@ -749,28 +819,6 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @return the minimalTlsVersion value.
-     */
-    public MinimalTlsVersion minimalTlsVersion() {
-        return this.minimalTlsVersion;
-    }
-
-    /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @param minimalTlsVersion the minimalTlsVersion value to set.
-     * @return the DatabaseAccountUpdateProperties object itself.
-     */
-    public DatabaseAccountUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
-        return this;
-    }
-
-    /**
      * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
      * 
@@ -793,6 +841,28 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
+     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
+     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * 
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
      * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
      * 
@@ -811,6 +881,50 @@ public final class DatabaseAccountUpdateProperties {
      */
     public DatabaseAccountUpdateProperties withCustomerManagedKeyStatus(String customerManagedKeyStatus) {
         this.customerManagedKeyStatus = customerManagedKeyStatus;
+        return this;
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.enablePriorityBasedExecution;
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        this.enablePriorityBasedExecution = enablePriorityBasedExecution;
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.defaultPriorityLevel;
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        this.defaultPriorityLevel = defaultPriorityLevel;
         return this;
     }
 
@@ -846,6 +960,9 @@ public final class DatabaseAccountUpdateProperties {
         }
         if (cors() != null) {
             cors().forEach(e -> e.validate());
+        }
+        if (diagnosticLogSettings() != null) {
+            diagnosticLogSettings().validate();
         }
         if (capacity() != null) {
             capacity().validate();

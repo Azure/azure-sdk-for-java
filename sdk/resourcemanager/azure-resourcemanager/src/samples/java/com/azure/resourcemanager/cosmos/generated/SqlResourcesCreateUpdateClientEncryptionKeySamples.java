@@ -13,7 +13,8 @@ import com.azure.resourcemanager.cosmos.models.KeyWrapMetadata;
  */
 public final class SqlResourcesCreateUpdateClientEncryptionKeySamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/
      * CosmosDBSqlClientEncryptionKeyCreateUpdate.json
      */
     /**
@@ -22,13 +23,15 @@ public final class SqlResourcesCreateUpdateClientEncryptionKeySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBClientEncryptionKeyCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources()
-            .createUpdateClientEncryptionKey("rgName", "accountName", "databaseName", "cekName",
-                new ClientEncryptionKeyCreateUpdateParameters().withResource(new ClientEncryptionKeyResource()
-                    .withId("cekName").withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")
-                    .withWrappedDataEncryptionKey("U3dhZ2dlciByb2Nrcw==".getBytes())
-                    .withKeyWrapMetadata(new KeyWrapMetadata().withName("customerManagedKey").withType("AzureKeyVault")
-                        .withValue("AzureKeyVault Key URL").withAlgorithm("RSA-OAEP"))),
-                com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().createUpdateClientEncryptionKey("rgName",
+            "accountName", "databaseName", "cekName",
+            new ClientEncryptionKeyCreateUpdateParameters().withResource(new ClientEncryptionKeyResource()
+                .withId("cekName").withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")
+                .withWrappedDataEncryptionKey(
+                    "VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="
+                        .getBytes())
+                .withKeyWrapMetadata(new KeyWrapMetadata().withName("customerManagedKey").withType("AzureKeyVault")
+                    .withValue("AzureKeyVault Key URL").withAlgorithm("RSA-OAEP"))),
+            com.azure.core.util.Context.NONE);
     }
 }
