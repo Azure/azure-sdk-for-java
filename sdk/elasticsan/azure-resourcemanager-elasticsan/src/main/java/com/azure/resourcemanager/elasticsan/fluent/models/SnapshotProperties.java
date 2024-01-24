@@ -10,7 +10,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for Snapshot. */
+/**
+ * Properties for Snapshot.
+ */
 @Fluent
 public final class SnapshotProperties {
     /*
@@ -37,13 +39,15 @@ public final class SnapshotProperties {
     @JsonProperty(value = "volumeName", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeName;
 
-    /** Creates an instance of SnapshotProperties class. */
+    /**
+     * Creates an instance of SnapshotProperties class.
+     */
     public SnapshotProperties() {
     }
 
     /**
      * Get the creationData property: Data used when creating a volume snapshot.
-     *
+     * 
      * @return the creationData value.
      */
     public SnapshotCreationData creationData() {
@@ -52,7 +56,7 @@ public final class SnapshotProperties {
 
     /**
      * Set the creationData property: Data used when creating a volume snapshot.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the SnapshotProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class SnapshotProperties {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -72,7 +76,7 @@ public final class SnapshotProperties {
 
     /**
      * Get the sourceVolumeSizeGiB property: Size of Source Volume.
-     *
+     * 
      * @return the sourceVolumeSizeGiB value.
      */
     public Long sourceVolumeSizeGiB() {
@@ -81,7 +85,7 @@ public final class SnapshotProperties {
 
     /**
      * Get the volumeName property: Source Volume Name of a snapshot.
-     *
+     * 
      * @return the volumeName value.
      */
     public String volumeName() {
@@ -90,14 +94,13 @@ public final class SnapshotProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (creationData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property creationData in model SnapshotProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property creationData in model SnapshotProperties"));
         } else {
             creationData().validate();
         }
