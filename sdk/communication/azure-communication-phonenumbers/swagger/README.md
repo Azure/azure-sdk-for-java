@@ -223,4 +223,6 @@ directive:
   - remove-model: PhoneNumberBrowseCapabilitiesRequest
   - remove-model: PhoneNumbersReservationPurchaseRequest
   - remove-model: Error
+  - remove-model: AvailablePhoneNumber
+  - remove-model: AvailablePhoneNumberCost
 ```
