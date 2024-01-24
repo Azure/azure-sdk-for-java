@@ -211,7 +211,7 @@ directive:
   remove-property: phoneNumberSource
 ```
 
-# Removed Model Error
+# Removed Models
 ``` yaml
 directive:
   - remove-operation-match: /.*Reservation.*/i
