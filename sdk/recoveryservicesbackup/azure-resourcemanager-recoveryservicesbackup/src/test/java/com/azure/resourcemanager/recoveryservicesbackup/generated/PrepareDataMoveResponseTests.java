@@ -13,24 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PrepareDataMoveResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrepareDataMoveResponse model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"lwntsjgqrs\",\"sourceVaultProperties\":{\"szizoyuelyetndnb\":\"ruuuybnch\"}}")
-                .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("lwntsjgqrs", model.correlationId());
-        Assertions.assertEquals("ruuuybnch", model.sourceVaultProperties().get("szizoyuelyetndnb"));
+        PrepareDataMoveResponse model = BinaryData.fromString(
+            "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"tx\",\"sourceVaultProperties\":{\"xbannovvoxc\":\"zna\",\"tlyo\":\"ytprwnwvroev\",\"bcrymodizrx\":\"rrrouuxvnsa\",\"pmkmlmvevfx\":\"lobdxna\"}}")
+            .toObject(PrepareDataMoveResponse.class);
+        Assertions.assertEquals("tx", model.correlationId());
+        Assertions.assertEquals("zna", model.sourceVaultProperties().get("xbannovvoxc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrepareDataMoveResponse model =
-            new PrepareDataMoveResponse()
-                .withCorrelationId("lwntsjgqrs")
-                .withSourceVaultProperties(mapOf("szizoyuelyetndnb", "ruuuybnch"));
+        PrepareDataMoveResponse model
+            = new PrepareDataMoveResponse().withCorrelationId("tx").withSourceVaultProperties(mapOf("xbannovvoxc",
+                "zna", "tlyo", "ytprwnwvroev", "bcrymodizrx", "rrrouuxvnsa", "pmkmlmvevfx", "lobdxna"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("lwntsjgqrs", model.correlationId());
-        Assertions.assertEquals("ruuuybnch", model.sourceVaultProperties().get("szizoyuelyetndnb"));
+        Assertions.assertEquals("tx", model.correlationId());
+        Assertions.assertEquals("zna", model.sourceVaultProperties().get("xbannovvoxc"));
     }
 
     // Use "Map.of" if available

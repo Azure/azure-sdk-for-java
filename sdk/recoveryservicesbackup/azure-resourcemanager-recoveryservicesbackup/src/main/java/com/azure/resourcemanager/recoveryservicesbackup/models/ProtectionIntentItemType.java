@@ -8,32 +8,46 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** backup protectionIntent type. */
+/**
+ * backup protectionIntent type.
+ */
 public final class ProtectionIntentItemType extends ExpandableStringEnum<ProtectionIntentItemType> {
-    /** Static value Invalid for ProtectionIntentItemType. */
+    /**
+     * Static value Invalid for ProtectionIntentItemType.
+     */
     public static final ProtectionIntentItemType INVALID = fromString("Invalid");
 
-    /** Static value AzureResourceItem for ProtectionIntentItemType. */
+    /**
+     * Static value AzureResourceItem for ProtectionIntentItemType.
+     */
     public static final ProtectionIntentItemType AZURE_RESOURCE_ITEM = fromString("AzureResourceItem");
 
-    /** Static value RecoveryServiceVaultItem for ProtectionIntentItemType. */
+    /**
+     * Static value RecoveryServiceVaultItem for ProtectionIntentItemType.
+     */
     public static final ProtectionIntentItemType RECOVERY_SERVICE_VAULT_ITEM = fromString("RecoveryServiceVaultItem");
 
-    /** Static value AzureWorkloadContainerAutoProtectionIntent for ProtectionIntentItemType. */
-    public static final ProtectionIntentItemType AZURE_WORKLOAD_CONTAINER_AUTO_PROTECTION_INTENT =
-        fromString("AzureWorkloadContainerAutoProtectionIntent");
+    /**
+     * Static value AzureWorkloadContainerAutoProtectionIntent for ProtectionIntentItemType.
+     */
+    public static final ProtectionIntentItemType AZURE_WORKLOAD_CONTAINER_AUTO_PROTECTION_INTENT
+        = fromString("AzureWorkloadContainerAutoProtectionIntent");
 
-    /** Static value AzureWorkloadAutoProtectionIntent for ProtectionIntentItemType. */
-    public static final ProtectionIntentItemType AZURE_WORKLOAD_AUTO_PROTECTION_INTENT =
-        fromString("AzureWorkloadAutoProtectionIntent");
+    /**
+     * Static value AzureWorkloadAutoProtectionIntent for ProtectionIntentItemType.
+     */
+    public static final ProtectionIntentItemType AZURE_WORKLOAD_AUTO_PROTECTION_INTENT
+        = fromString("AzureWorkloadAutoProtectionIntent");
 
-    /** Static value AzureWorkloadSQLAutoProtectionIntent for ProtectionIntentItemType. */
-    public static final ProtectionIntentItemType AZURE_WORKLOAD_SQLAUTO_PROTECTION_INTENT =
-        fromString("AzureWorkloadSQLAutoProtectionIntent");
+    /**
+     * Static value AzureWorkloadSQLAutoProtectionIntent for ProtectionIntentItemType.
+     */
+    public static final ProtectionIntentItemType AZURE_WORKLOAD_SQLAUTO_PROTECTION_INTENT
+        = fromString("AzureWorkloadSQLAutoProtectionIntent");
 
     /**
      * Creates a new instance of ProtectionIntentItemType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +56,7 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
 
     /**
      * Creates or finds a ProtectionIntentItemType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectionIntentItemType.
      */
@@ -53,7 +67,7 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
 
     /**
      * Gets known ProtectionIntentItemType values.
-     *
+     * 
      * @return known ProtectionIntentItemType values.
      */
     public static Collection<ProtectionIntentItemType> values() {
