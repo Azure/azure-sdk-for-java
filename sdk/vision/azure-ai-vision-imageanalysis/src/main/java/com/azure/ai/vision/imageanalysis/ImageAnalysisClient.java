@@ -666,8 +666,8 @@ public final class ImageAnalysisClient {
         if (options == null) {
             return analyzeFromImageData(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromImageData(visualFeatures, imageData, options.getLanguage(), options.isGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromImageData(visualFeatures, imageData, options.getLanguage(),
+                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 }
