@@ -7,11 +7,11 @@ metadata:
 spec:
   nodeSelector:
     sku: default
+  shareProcessNamespace: true
   containers:
     - name: fault-injector
       image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-streaming
       imagePullPolicy: Always
-      restartPolicy: Always
       resources:
         limits:
           memory: 500Mi
@@ -41,8 +41,10 @@ spec:
           {{ ternary "--sync" "" .Stress.sync }} \
           {{ ternary "--faults" "" .Stress.faults }} \
           --warmup 0 \
-          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log";
-
+          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
+          yum install -y procps; \
+          sleep 10; \
+          kill `pidof dotnet`; \
       imagePullPolicy: Always
       resources:
         limits:
