@@ -290,6 +290,9 @@ public interface VirtualMachine
     /** @return whether the os disk is ephemeral*/
     boolean isOSDiskEphemeral();
 
+    /** @return whether encryption at host*/
+    boolean isEncryptionAtHost();
+
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
@@ -1949,7 +1952,7 @@ public interface VirtualMachine
              *
              * @return the next stage of the definition
              */
-            WithCreate withEncryptionAtHost();
+            WithCreate enableEncryptionAtHost();
         }
 
         /** The stage of a virtual machine definition allowing to specify user data configurations. */
@@ -2547,14 +2550,14 @@ public interface VirtualMachine
              *
              * @return the next stage of the definition
              */
-            Update withEncryptionAtHost();
+            Update enableEncryptionAtHost();
 
             /**
              * Disable the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
-            Update withoutEncryptionAtHost();
+            Update disableEncryptionAtHost();
         }
 
         /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
