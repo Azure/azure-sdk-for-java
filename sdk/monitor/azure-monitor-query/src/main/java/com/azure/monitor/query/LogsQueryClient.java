@@ -35,7 +35,9 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.updateContext;
 
 /**
- * The synchronous client for querying Azure Monitor logs.
+ * <p>The LogsQueryClient is a synchronous client that provides methods to execute Kusto queries against
+ * Azure Monitor logs. It provides methods to query logs in a specific workspace, execute a batch of queries, and
+ * query logs for a specific Azure resource.</p>
  *
  * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
  *
@@ -46,6 +48,9 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
+ *
+ * @see com.azure.monitor.query
+ * @see LogsQueryClientBuilder
  */
 @ServiceClient(builder = LogsQueryClientBuilder.class)
 public final class LogsQueryClient {

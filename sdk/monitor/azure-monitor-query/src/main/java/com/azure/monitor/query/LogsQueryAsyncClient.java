@@ -37,7 +37,10 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.mapLogsQueryError;
 
 /**
- * The asynchronous client for querying Azure Monitor logs.
+ * <p>The LogsQueryClient is an asynchronous client that provides methods to execute Kusto queries against
+ * Azure Monitor logs. It provides methods to query logs in a specific workspace, execute a batch of queries, and
+ * query logs for a specific Azure resource.</p>
+ *
  * <p><strong>Instantiating an asynchronous Logs query Client</strong></p>
  *
  * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
@@ -47,6 +50,9 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
+ *
+ * @see com.azure.monitor.query
+ * @see LogsQueryClientBuilder
  */
 @ServiceClient(builder = LogsQueryClientBuilder.class, isAsync = true)
 public final class LogsQueryAsyncClient {
