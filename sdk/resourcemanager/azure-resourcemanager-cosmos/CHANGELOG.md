@@ -1,5 +1,9 @@
 # Release History
 
+## 2.35.0-beta.1 (2024-01-24)
+
+- Preview release for `api-version` `2023-11-15-preview`.
+
 ## 2.34.0 (2023-12-22)
 
 ### Other Changes
