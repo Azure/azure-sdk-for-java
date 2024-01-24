@@ -81,7 +81,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  *
  * <ul>
  *     <li>
- *         {@link LogsIngestionClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to Azure Monitor.
+ *         {@link LogsIngestionClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to a Log Analytics workspace.
  *     </li>
  *     <li>
  *         {@link LogsIngestionClient#upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)} - Uploads logs to Azure Monitor with options to configure the upload request.
