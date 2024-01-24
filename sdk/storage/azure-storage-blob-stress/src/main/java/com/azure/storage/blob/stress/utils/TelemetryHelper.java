@@ -44,10 +44,10 @@ import java.util.function.Function;
 public class TelemetryHelper {
     private final Tracer tracer;
     private final ClientLogger logger;
-    private final static OpenTelemetry OTEL;
     private static final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenario_name");
     private static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
     private static final AttributeKey<Boolean> SAMPLE_IN_ATTRIBUTE = AttributeKey.booleanKey("sample.in");
+    private static OpenTelemetry OTEL;
     private final String scenarioName;
     private final Meter meter;
     private final DoubleHistogram runDuration;
@@ -82,7 +82,11 @@ public class TelemetryHelper {
     /**
      * Initializes telemetry helper: sets up Azure Monitor exporter, enables JVM metrics collection.
      */
-    private static OpenTelemetry init() {
+    public static OpenTelemetry init() {
+        if (OTEL != null) {
+            return OTEL;
+        }
+
         System.setProperty("otel.java.global-autoconfigure.enabled", "true");
 
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
@@ -121,7 +125,6 @@ public class TelemetryHelper {
         Threads.registerObservers(otel);
         GarbageCollector.registerObservers(otel);
         OpenTelemetryAppender.install(otel);
-
         return otel;
     }
 

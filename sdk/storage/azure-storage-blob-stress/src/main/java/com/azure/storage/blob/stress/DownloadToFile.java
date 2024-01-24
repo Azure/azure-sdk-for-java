@@ -23,7 +23,7 @@ import java.util.UUID;
 public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadToFile.class);
     private final Path directoryPath;
-    private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
+    private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
@@ -44,7 +44,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
-            ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block();
+            originalContent.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
         }
@@ -54,8 +54,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path ->  asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
-                    .flatMap(ignored -> ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(path), span)),
+            path -> asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
+                    .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             DownloadToFile::deleteFile);
     }
 
@@ -74,7 +74,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
         // setup is called for each instance of scenario. Number of instances equals options.getParallel()
         // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
         return super.setupAsync()
-                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+                .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override

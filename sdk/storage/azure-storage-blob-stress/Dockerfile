@@ -29,6 +29,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 FROM mcr.microsoft.com/openjdk/jdk:21-mariner
 
 RUN yum -y update
+RUN yum install -y procps
 
 # Copy target files from builder image
 WORKDIR /app

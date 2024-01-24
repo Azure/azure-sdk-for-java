@@ -11,7 +11,7 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
-    private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
+    private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
@@ -26,12 +26,12 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected void runInternal(Context span) {
-        ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block();
+        originalContent.checkMatch(syncClient.downloadContent(), span).block();
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        return asyncClient.downloadContent().flatMap(response -> ORIGINAL_CONTENT.checkMatch(response, span));
+        return asyncClient.downloadContent().flatMap(response -> originalContent.checkMatch(response, span));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
         // setup is called for each instance of scenario. Number of instances equals options.getParallel()
         // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
         return super.setupAsync()
-                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+                .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override

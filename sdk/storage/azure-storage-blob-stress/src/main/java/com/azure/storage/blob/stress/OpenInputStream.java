@@ -19,7 +19,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenInputStream.class);
-    private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
+    private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
@@ -39,7 +39,7 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
                 while (crcStream.read(buffer) != -1) {
                     // do nothing
                 }
-                ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
+                originalContent.checkMatch(crcStream.getContentInfo(), span).block();
             }
         }
     }
@@ -54,7 +54,7 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
         // setup is called for each instance of scenario. Number of instances equals options.getParallel()
         // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
         return super.setupAsync()
-                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+                .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override

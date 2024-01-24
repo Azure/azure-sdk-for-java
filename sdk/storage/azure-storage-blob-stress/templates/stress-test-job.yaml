@@ -42,8 +42,7 @@ spec:
           {{ ternary "--faults" "" .Stress.faults }} \
           --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
-          code=$?
-          yum install -y procps; \
+          code=$? \
           kill `pidof dotnet`; \
           exit $code;
       imagePullPolicy: Always

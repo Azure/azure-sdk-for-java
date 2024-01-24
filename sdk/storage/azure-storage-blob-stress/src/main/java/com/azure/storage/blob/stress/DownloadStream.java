@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 
 public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
-    private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
+    private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
@@ -32,14 +32,14 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
             syncClient.downloadStreamWithResponse(outputStream, null, null, null, false, null, span);
             outputStream.close();
-            ORIGINAL_CONTENT.checkMatch(outputStream.getContentInfo(), span).block();
+            originalContent.checkMatch(outputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadStreamWithResponse(null, null, null, false)
-            .flatMap(response -> ORIGINAL_CONTENT.checkMatch(response.getValue(), span));
+            .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
         // setup is called for each instance of scenario. Number of instances equals options.getParallel()
         // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
         return super.setupAsync()
-                .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+                .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override
