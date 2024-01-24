@@ -47,8 +47,8 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-      --add-opens com.azure.ai.openai/com.azure.ai.openai.assistants=ALL-UNNAMED
-      --add-opens com.azure.ai.openai/com.azure.ai.openai.assistants.implementation=com.fasterxml.jackson.databind
+      --add-opens com.azure.ai.openai.assistants/com.azure.ai.openai.assistants=ALL-UNNAMED
+      --add-opens com.azure.ai.openai.assistants/com.azure.ai.openai.assistants.implementation=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
