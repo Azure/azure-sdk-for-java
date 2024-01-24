@@ -32,14 +32,14 @@ public final class DataTypesImpl implements DataTypes {
 
     public PagedIterable<DataType> listByDataProduct(String resourceGroupName, String dataProductName) {
         PagedIterable<DataTypeInner> inner = this.serviceClient().listByDataProduct(resourceGroupName, dataProductName);
-        return Utils.mapPage(inner, inner1 -> new DataTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataTypeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataType> listByDataProduct(String resourceGroupName, String dataProductName,
         Context context) {
         PagedIterable<DataTypeInner> inner
             = this.serviceClient().listByDataProduct(resourceGroupName, dataProductName, context);
-        return Utils.mapPage(inner, inner1 -> new DataTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataTypeImpl(inner1, this.manager()));
     }
 
     public Response<DataType> getWithResponse(String resourceGroupName, String dataProductName, String dataTypeName,
@@ -104,17 +104,17 @@ public final class DataTypesImpl implements DataTypes {
     }
 
     public DataType getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
         }
-        String dataTypeName = Utils.getValueFromIdByName(id, "dataTypes");
+        String dataTypeName = ResourceManagerUtils.getValueFromIdByName(id, "dataTypes");
         if (dataTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataTypes'.", id)));
@@ -123,17 +123,17 @@ public final class DataTypesImpl implements DataTypes {
     }
 
     public Response<DataType> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
         }
-        String dataTypeName = Utils.getValueFromIdByName(id, "dataTypes");
+        String dataTypeName = ResourceManagerUtils.getValueFromIdByName(id, "dataTypes");
         if (dataTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataTypes'.", id)));
@@ -142,17 +142,17 @@ public final class DataTypesImpl implements DataTypes {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
         }
-        String dataTypeName = Utils.getValueFromIdByName(id, "dataTypes");
+        String dataTypeName = ResourceManagerUtils.getValueFromIdByName(id, "dataTypes");
         if (dataTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataTypes'.", id)));
@@ -161,17 +161,17 @@ public final class DataTypesImpl implements DataTypes {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
         }
-        String dataTypeName = Utils.getValueFromIdByName(id, "dataTypes");
+        String dataTypeName = ResourceManagerUtils.getValueFromIdByName(id, "dataTypes");
         if (dataTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataTypes'.", id)));
