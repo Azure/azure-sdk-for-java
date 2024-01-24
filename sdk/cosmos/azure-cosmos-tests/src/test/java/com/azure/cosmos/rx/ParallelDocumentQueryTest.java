@@ -704,7 +704,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     //TODO: Fix the test for GW mode
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readMany() throws Exception {
+    public void readMany() {
         if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }

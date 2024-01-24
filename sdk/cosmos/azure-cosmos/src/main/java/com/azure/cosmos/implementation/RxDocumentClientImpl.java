@@ -3115,11 +3115,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             List<CosmosItemIdentity> cosmosItemIdentityList = entry.getValue();
             if (cosmosItemIdentityList.size() > 1) {
                 if (partitionKeySelector.equals("[\"id\"]")) {
-                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList, partitionKeySelector);
-                } else if (partitionKeyDefinition.getKind().equals(PartitionKind.MULTI_HASH)) {
-                    sqlQuerySpec = createReadManyQuerySpecMultiHash(entry.getValue(), partitionKeyDefinition);
+                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList);
                 } else {
-                    sqlQuerySpec = createReadManyQuerySpec(cosmosItemIdentityList, partitionKeySelector);
+                    sqlQuerySpec = createReadManyQuerySpec(entry.getValue(), partitionKeyDefinition);
                 }
                 // Add query for this partition to rangeQueryMap
                 rangeQueryMap.put(entry.getKey(), sqlQuerySpec);
@@ -3129,9 +3127,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return rangeQueryMap;
     }
 
-    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(
-        List<CosmosItemIdentity> idPartitionKeyPairList,
-        String partitionKeySelector) {
+    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<CosmosItemIdentity> idPartitionKeyPairList) {
 
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
@@ -3155,44 +3151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    private SqlQuerySpec createReadManyQuerySpec(List<CosmosItemIdentity> itemIdentities, String partitionKeySelector) {
-        StringBuilder queryStringBuilder = new StringBuilder();
-        List<SqlParameter> parameters = new ArrayList<>();
-
-        queryStringBuilder.append("SELECT * FROM c WHERE ( ");
-        for (int i = 0; i < itemIdentities.size(); i++) {
-            CosmosItemIdentity itemIdentity = itemIdentities.get(i);
-
-            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
-            Object pkValue = ModelBridgeInternal.getPartitionKeyInternal(pkValueAsPartitionKey).toObjectArray()[0];
-            String pkParamName = "@param" + (2 * i);
-            parameters.add(new SqlParameter(pkParamName, pkValue));
-
-            String idValue = itemIdentity.getId();
-            String idParamName = "@param" + (2 * i + 1);
-            parameters.add(new SqlParameter(idParamName, idValue));
-
-            queryStringBuilder.append("(");
-            queryStringBuilder.append("c.id = ");
-            queryStringBuilder.append(idParamName);
-            queryStringBuilder.append(" AND ");
-            queryStringBuilder.append(" c");
-            // partition key def
-            queryStringBuilder.append(partitionKeySelector);
-            queryStringBuilder.append((" = "));
-            queryStringBuilder.append(pkParamName);
-            queryStringBuilder.append(" )");
-
-            if (i < itemIdentities.size() - 1) {
-                queryStringBuilder.append(" OR ");
-            }
-        }
-        queryStringBuilder.append(" )");
-
-        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
-    }
-
-    private SqlQuerySpec createReadManyQuerySpecMultiHash(
+    private SqlQuerySpec createReadManyQuerySpec(
         List<CosmosItemIdentity> itemIdentities,
         PartitionKeyDefinition partitionKeyDefinition) {
         StringBuilder queryStringBuilder = new StringBuilder();

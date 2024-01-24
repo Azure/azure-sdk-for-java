@@ -257,10 +257,16 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             createdMultiHashContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
         assertThat(readAllResults.stream().toArray().length).isEqualTo(2);
 
+        readAllResults = createdMultiHashContainer.readAllItems(partitionKey, ObjectNode.class);
+        assertThat(readAllResults.stream().toArray().length).isEqualTo(2);
+
         //Read All - prefix partition key
         partialPK = new PartitionKeyBuilder().add("Redmond").build();
         cosmosQueryRequestOptions.setPartitionKey(partialPK);
         readAllResults = createdMultiHashContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
+        assertThat(readAllResults.stream().toArray().length).isEqualTo(3);
+
+        readAllResults = createdMultiHashContainer.readAllItems(partialPK, ObjectNode.class);
         assertThat(readAllResults.stream().toArray().length).isEqualTo(3);
 
         //Negative test - read all with non-prefix partition key
