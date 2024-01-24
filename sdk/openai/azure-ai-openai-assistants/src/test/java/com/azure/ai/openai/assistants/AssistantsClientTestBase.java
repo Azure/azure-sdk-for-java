@@ -27,6 +27,34 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
+
+    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
+        return getAssistantsClientBuilder(buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
+                false))
+                .buildAsyncClient();
+    }
+
+    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        return getAzureAssistantsClientBuilder(buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
+                false), serviceVersion)
+                .buildAsyncClient();
+    }
+
+    AssistantsClient getAssistantsClient(HttpClient httpClient) {
+        return getAssistantsClientBuilder(buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
+                .buildClient();
+    }
+
+    AssistantsClient getAssistantsClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        return getAzureAssistantsClientBuilder(buildAssertingClient(
+                        interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
+                serviceVersion)
+                .buildClient();
+    }
+
     AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         AssistantsClientBuilder builder = new AssistantsClientBuilder()
                 .httpClient(httpClient)

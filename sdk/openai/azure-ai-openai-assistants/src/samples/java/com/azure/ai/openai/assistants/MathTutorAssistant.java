@@ -81,16 +81,7 @@ public class MathTutorAssistant {
         }
     }
 
-    /*
-     * Create a new thread and run. This is same as OpenAI API:
-     *
-     * client.createThreadAndRun(
-     *     new CreateAndRunThreadOptions(assistantId)
-     *         .setThread(new AssistantThreadCreationOptions()
-     *             .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER, userMessage)))));
-     */
     private static ThreadRun createThreadAndRun(String assistantId, String userMessage) {
-        // Create a new thread and run
         AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
         return submitMessage(assistantId, thread.getId(), userMessage);
     }

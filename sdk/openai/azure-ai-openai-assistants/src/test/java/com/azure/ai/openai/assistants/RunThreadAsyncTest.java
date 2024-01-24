@@ -3,5 +3,5 @@
 
 package com.azure.ai.openai.assistants;
 
-public class RunThreadAsyncTest {
+public class RunThreadAsyncTest extends AssistantsClientTestBase {
 }

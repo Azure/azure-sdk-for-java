@@ -34,12 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AssistantsSyncTest extends AssistantsClientTestBase {
     private AssistantsClient client;
 
-    private AssistantsClient getAssistantsClient(HttpClient httpClient) {
-        return getAssistantsClientBuilder(buildAssertingClient(
-                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
-                .buildClient();
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createAndThenDeleteAssistant(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
