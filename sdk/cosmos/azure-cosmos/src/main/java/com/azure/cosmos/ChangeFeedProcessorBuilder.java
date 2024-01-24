@@ -39,6 +39,60 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * </pre>
  * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
  *
+ * Below is an example of building ChangeFeedProcessor with throughput control for handleChanges.
+ *
+ * <!-- src_embed com.azure.cosmos.changeFeedProcessor.withThroughputControl -->
+ * <pre>
+ * ThroughputControlGroupConfig throughputControlGroupConfig =
+ *         new ThroughputControlGroupConfigBuilder&#40;&#41;
+ *                 .groupName&#40;&quot;cfp&quot;&#41;
+ *                 .targetThroughput&#40;300&#41;
+ *                 .priorityLevel&#40;PriorityLevel.LOW&#41;
+ *                 .build&#40;&#41;;
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *         .hostName&#40;hostName&#41;
+ *         .feedContainer&#40;feedContainer&#41;
+ *         .leaseContainer&#40;leaseContainer&#41;
+ *         .handleChanges&#40;docs -&gt; &#123;
+ *             for &#40;JsonNode item : docs&#41; &#123;
+ *                 &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+ *             &#125;
+ *         &#125;&#41;
+ *         .options&#40;
+ *                 new ChangeFeedProcessorOptions&#40;&#41;
+ *                         .setFeedPollThroughputControlConfig&#40;throughputControlGroupConfig&#41;
+ *         &#41;
+ *         .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.changeFeedProcessor.withThroughputControl -->
+ *
+ * Below is an example of building ChangeFeedProcessor with throughput control for LatestVersion mode.
+ *
+ * <!-- src_embed com.azure.cosmos.latestVersionChanges.withThroughputControl -->
+ * <pre>
+ * ThroughputControlGroupConfig throughputControlGroupConfig =
+ *         new ThroughputControlGroupConfigBuilder&#40;&#41;
+ *                 .groupName&#40;&quot;cfp&quot;&#41;
+ *                 .targetThroughput&#40;300&#41;
+ *                 .priorityLevel&#40;PriorityLevel.LOW&#41;
+ *                 .build&#40;&#41;;
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *         .hostName&#40;hostName&#41;
+ *         .feedContainer&#40;feedContainer&#41;
+ *         .leaseContainer&#40;leaseContainer&#41;
+ *         .handleLatestVersionChanges&#40;changeFeedProcessorItems -&gt; &#123;
+ *             for &#40;ChangeFeedProcessorItem item : changeFeedProcessorItems&#41; &#123;
+ *                 &#47;&#47; Implementation for handling and processing of each change feed item goes here
+ *             &#125;
+ *         &#125;&#41;
+ *         .options&#40;
+ *                 new ChangeFeedProcessorOptions&#40;&#41;
+ *                         .setFeedPollThroughputControlConfig&#40;throughputControlGroupConfig&#41;
+ *         &#41;
+ *         .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.latestVersionChanges.withThroughputControl -->
+ *
  * Below is an example of building ChangeFeedProcessor for AllVersionsAndDeletes mode.
  *
  * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder -->

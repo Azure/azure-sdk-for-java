@@ -1941,6 +1941,17 @@ public interface VirtualMachine
             WithSecurityFeatures withVTpm();
         }
 
+        /** The stage of the definition allowing to specify the security profile for the virtual machine. */
+        interface WithSecurityProfile {
+
+            /**
+             * Request to enable the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withEncryptionAtHost();
+        }
+
         /** The stage of a virtual machine definition allowing to specify user data configurations. */
         interface WithUserData {
             /**
@@ -1977,6 +1988,7 @@ public interface VirtualMachine
                 DefinitionStages.WithEphemeralOSDisk,
                 DefinitionStages.WithScaleSet,
                 DefinitionStages.WithSecurityTypes,
+                DefinitionStages.WithSecurityProfile,
                 DefinitionStages.WithUserData {
 
             /**
