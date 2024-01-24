@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core;
+package com.generic.core.util;
 
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 /**
  * Utility methods for testing {@code generic-core}.
  */
-public final class CoreTestUtils {
+public final class TestUtils {
     private static final byte[] BYTES;
     private static final int BYTES_LENGTH;
 
@@ -175,7 +175,7 @@ public final class CoreTestUtils {
         return UrlBuilder.parse(urlString).toUrl();
     }
 
-    private CoreTestUtils() {
+    private TestUtils() {
     }
 
     /**

@@ -3,7 +3,7 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.implementation.test.TestConfigurationSource;
+import com.generic.core.shared.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import com.generic.core.util.configuration.ConfigurationSource;

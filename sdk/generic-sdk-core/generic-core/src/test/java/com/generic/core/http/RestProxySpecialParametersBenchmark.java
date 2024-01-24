@@ -19,7 +19,7 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.generic.core.CoreTestUtils.findFirstOfType;
+import static com.generic.core.util.TestUtils.findFirstOfType;
 
 /**
  * Benchmarks retrieving the special parameters {@link Context} and {@link RequestOptions}.

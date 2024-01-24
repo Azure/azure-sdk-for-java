@@ -3,11 +3,12 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.implementation.test.HttpClientTests;
-import com.generic.core.implementation.test.HttpClientTestsServer;
-import com.generic.core.implementation.test.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+
+import com.generic.core.shared.HttpClientTests;
+import com.generic.core.shared.HttpClientTestsServer;
+import com.generic.core.shared.LocalTestServer;
 
 public class DefaultHttpClientTests extends HttpClientTests {
 

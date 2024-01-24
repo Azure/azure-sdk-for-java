@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 
-import static com.generic.core.CoreTestUtils.createUrl;
+import static com.generic.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;

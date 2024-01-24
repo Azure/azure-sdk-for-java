@@ -18,8 +18,8 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static com.generic.core.CoreTestUtils.assertArraysEqual;
-import static com.generic.core.CoreTestUtils.createUrl;
+import static com.generic.core.util.TestUtils.assertArraysEqual;
+import static com.generic.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;

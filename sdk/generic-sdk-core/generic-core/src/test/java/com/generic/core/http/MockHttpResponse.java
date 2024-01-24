@@ -13,7 +13,7 @@ import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
 
-import static com.generic.core.CoreTestUtils.cloneByteArray;
+import static com.generic.core.util.TestUtils.cloneByteArray;
 
 public class MockHttpResponse extends HttpResponse {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
