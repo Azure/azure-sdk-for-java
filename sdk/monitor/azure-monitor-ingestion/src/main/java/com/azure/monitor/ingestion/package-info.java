@@ -26,7 +26,7 @@
  * <p>
  *     The {@link com.azure.monitor.ingestion.LogsIngestionClient LogIngestionClient} and
  *     {@link com.azure.monitor.ingestion.LogsIngestionAsyncClient LogIngestionAsyncClient} can be authenticated
- *     using Azure Active Directory. To authenticate with Azure Active Directory, create a
+ *     using Microsoft Entra ID. To authenticate with Microsoft Entra ID, create a
  *     {@link com.azure.core.credential.TokenCredential TokenCredential} that can be passed to the
  *     {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder}. The Azure Identity
  *     library provides implementations of {@link com.azure.core.credential.TokenCredential TokenCredential} for
