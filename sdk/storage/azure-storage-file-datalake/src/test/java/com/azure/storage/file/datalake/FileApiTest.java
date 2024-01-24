@@ -199,7 +199,7 @@ public class FileApiTest extends DataLakeTestBase {
             .setContentType(contentType);
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         fc.createWithResponse(null, null, headers, null, null, null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -502,7 +502,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
 
         fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -710,7 +710,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc.deleteWithResponse(null, null, null);
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> fc.getPropertiesWithResponse(null, null, null));
+            () -> fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
 
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
@@ -758,7 +758,7 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void deleteIfExistsFileDoesNotExistAnymore() {
         assertEquals(200, fc.deleteIfExistsWithResponse(null, null, null).getStatusCode());
-        assertThrows(DataLakeStorageException.class, () -> fc.getPropertiesWithResponse(null, null, null));
+        assertThrows(DataLakeStorageException.class, () -> fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
     }
 
     @Test
@@ -990,7 +990,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void getPropertiesDefault() {
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
         HttpHeaders headers = response.getHeaders();
         PathProperties properties = response.getValue();
 
@@ -1027,7 +1027,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertEquals(200, fc.getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -1107,7 +1107,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         fc.setHttpHeaders(putHeaders);
 
-        validatePathProperties(fc.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
+        validatePathProperties(fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null), cacheControl, contentDisposition,
             contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
@@ -1803,7 +1803,7 @@ public class FileApiTest extends DataLakeTestBase {
     public void renameWithResponse() {
         DataLakeFileClient renamedClient = fc.renameWithResponse(null, generatePathName(), null, null, null, null).getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, fc::getProperties);
     }
 
@@ -1814,7 +1814,7 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient renamedClient = fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(),
             null, null, null, null).getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, fc::getProperties);
     }
 
@@ -1834,7 +1834,7 @@ public class FileApiTest extends DataLakeTestBase {
         Response<DataLakeFileClient> response = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null);
 
         assertEquals(201, response.getStatusCode());
-        assertEquals(200,  response.getValue().getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200,  response.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -1920,7 +1920,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
-        assertDoesNotThrow(destClient::getProperties);
+        assertDoesNotThrow(() -> destClient.getProperties());
     }
 
     @Test
@@ -1939,7 +1939,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         DataLakeFileClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
-        assertDoesNotThrow(destClient::getProperties);
+        assertDoesNotThrow(() -> destClient.getProperties());
     }
 
     @Test
@@ -2219,7 +2219,7 @@ public class FileApiTest extends DataLakeTestBase {
             .setContentType(contentType);
 
         fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, headers, null, null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -3350,7 +3350,7 @@ public class FileApiTest extends DataLakeTestBase {
             .buildFileClient();
 
         // blob endpoint
-        assertEquals("2019-02-02", fileClient.getPropertiesWithResponse(null, null, null).getHeaders()
+        assertEquals("2019-02-02", fileClient.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getHeaders()
             .getValue(X_MS_VERSION));
 
         // dfs endpoint

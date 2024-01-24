@@ -6,7 +6,9 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -34,6 +36,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -1144,7 +1147,32 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathProperties getProperties() {
-        return getPropertiesWithResponse(null, null, Context.NONE).getValue();
+        return getPropertiesWithResponse((DataLakeRequestConditions) null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions -->
+     * <pre>
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUpn&#40;true&#41;;
+     *
+     * System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, client.getProperties&#40;options&#41;.getCreationTime&#40;&#41;,
+     *     client.getProperties&#40;options&#41;.getFileSize&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @return The resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathProperties getProperties(PathGetPropertiesOptions options) {
+        return getPropertiesWithResponse(options, null, Context.NONE).getValue();
     }
 
     /**
@@ -1178,6 +1206,63 @@ public class DataLakePathClient {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
+        }, LOGGER);
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context -->
+     * <pre>
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUpn&#40;true&#41;;
+     *
+     * Response&lt;PathProperties&gt; response2 = client.getPropertiesWithResponse&#40;options, timeout,
+     *     new Context&#40;key2, value2&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response2.getValue&#40;&#41;.getCreationTime&#40;&#41;,
+     *     response2.getValue&#40;&#41;.getFileSize&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathProperties> getPropertiesWithResponse(PathGetPropertiesOptions options, Duration timeout,
+                                                              Context context) {
+        Context newContext;
+        if (options.isUpn()){
+            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "true");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else if (!options.isUpn()){
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "false");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else {
+            newContext = null;
+        }
+
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
+                Transforms.toBlobRequestConditions(options.getRequestConditions()), timeout, newContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

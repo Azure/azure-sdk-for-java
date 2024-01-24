@@ -6,6 +6,8 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -52,6 +54,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1135,8 +1138,30 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
+        Context newContext;
+        if (options.isUpn()) {
+            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "true");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else if (!options.isUpn()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "false");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else {
+            newContext = null;
+        }
+
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
-        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, newContext);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
     }
@@ -1215,6 +1240,33 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Reads the entire file into a file specified by the path.
      *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions -->
+     * <pre>
+     * client.readToFile&#40;new ReadToFileOptions&#40;&#41;.setFilePath&#40;file&#41;&#41;;
+     * System.out.println&#40;&quot;Completed download to file&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link ReadToFileOptions}
+     * @return The file properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathProperties readToFile(ReadToFileOptions options) {
+        return readToFile(options, false);
+    }
+
+    /**
+     * Reads the entire file into a file specified by the path.
+     *
      * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown.</p>
      *
@@ -1248,6 +1300,44 @@ public class DataLakeFileClient extends DataLakePathClient {
             openOptions.add(StandardOpenOption.WRITE);
         }
         return readToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Reads the entire file into a file specified by the path.
+     *
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean -->
+     * <pre>
+     * boolean overwrite1 = false; &#47;&#47; Default value
+     * client.readToFile&#40;new ReadToFileOptions&#40;&#41;.setFilePath&#40;file&#41;, overwrite1&#41;;
+     * System.out.println&#40;&quot;Completed download to file&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link ReadToFileOptions}
+     * @param overwrite Whether to overwrite the file, should the file exist.
+     * @return The file properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathProperties readToFile(ReadToFileOptions options, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+            options.setOpenOptions(openOptions);
+        }
+        return readToFileWithResponse(options, null, Context.NONE)
             .getValue();
     }
 
@@ -1302,6 +1392,74 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
                     .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+        }, LOGGER);
+    }
+
+    /**
+     * Reads the entire file into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context -->
+     * <pre>
+     * ReadToFileOptions options = new ReadToFileOptions&#40;&#41;;
+     * options.setRange&#40;new FileRange&#40;1024, 2048L&#41;&#41;;
+     * options.setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;;
+     * options.setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,
+     *         StandardOpenOption.WRITE, StandardOpenOption.READ&#41;&#41;&#41;; &#47;&#47;Default options
+     * options.setParallelTransferOptions&#40;new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;4L * Constants.MB&#41;&#41;;
+     * options.setDataLakeRequestConditions&#40;null&#41;;
+     * options.setRangeGetContentMd5&#40;false&#41;;
+     *
+     * client.readToFileWithResponse&#40;options, timeout, new Context&#40;key2, value2&#41;&#41;;
+     * System.out.println&#40;&quot;Completed download to file&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context -->
+     *
+     * @param options {@link ReadToFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the file properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
+        Context newContext;
+        if (options.isUpn()) {
+            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "true");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else if (!options.isUpn()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("x-ms-upn", "false");
+            if (context == null) {
+                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            } else {
+                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            }
+        } else {
+            newContext = null;
+        }
+
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(options.getFilePath())
+                    .setRange(Transforms.toBlobRange(options.getRange()))
+                    .setParallelTransferOptions(options.getParallelTransferOptions())
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
+                    .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
+                    .setOpenOptions(options.getOpenOptions()), timeout, newContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, LOGGER);
     }
