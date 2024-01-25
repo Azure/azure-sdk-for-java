@@ -103,7 +103,7 @@ public class EventDataTest {
         // Act
         final long sequenceNumber = 5L;
         final HashMap<Symbol, Object> properties = new HashMap<>();
-        final long replicationSegment = 10;
+        final int replicationSegment = 10;
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
         properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
         properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);

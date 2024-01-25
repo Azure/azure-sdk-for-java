@@ -124,9 +124,9 @@ class EventHubPartitionAsyncConsumerTest {
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
         final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, 15L,
-            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004), 3L);
+            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004), 3);
         final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, 154L,
-            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200), 10L);
+            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200), 10);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message1), eq(LastEnqueuedEventProperties.class))).thenReturn(last1);

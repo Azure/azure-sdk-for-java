@@ -30,7 +30,7 @@ final class SystemProperties implements Map<String, Object> {
     private final Instant enqueuedTime;
     private final Long sequenceNumber;
     private final AmqpAnnotatedMessage message;
-    private final Long replicationSegment;
+    private final Integer replicationSegment;
 
     /**
      * Creates an empty set of system properties. This is the case where a message was not received.
@@ -45,7 +45,7 @@ final class SystemProperties implements Map<String, Object> {
     }
 
     SystemProperties(final AmqpAnnotatedMessage message, long offset, Instant enqueuedTime, long sequenceNumber,
-        String partitionKey, Long replicationSegment) {
+        String partitionKey, Integer replicationSegment) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
         this.offset = offset;
         this.enqueuedTime = enqueuedTime;
@@ -100,7 +100,7 @@ final class SystemProperties implements Map<String, Object> {
      *
      * @return The replication segment for this event. -1 or null of geo-disaster recovery is not enabled.
      */
-    Long getReplicationSegment() {
+    Integer getReplicationSegment() {
         return replicationSegment;
     }
 

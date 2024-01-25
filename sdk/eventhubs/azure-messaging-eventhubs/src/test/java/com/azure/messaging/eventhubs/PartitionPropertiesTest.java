@@ -22,8 +22,8 @@ public class PartitionPropertiesTest {
         final String lastEnqueuedOffset = "Last-Enqueued";
         final Instant lastEnqueuedTime = Instant.ofEpochSecond(1560639208);
         final boolean isEmpty = true;
-        final Long beginningReplicationSegment = 10L;
-        final Long lastEnqueuedReplicationSegment = 100L;
+        final Integer beginningReplicationSegment = 10;
+        final Integer lastEnqueuedReplicationSegment = 100;
 
         // Act
         final PartitionProperties properties = new PartitionProperties(eventHub, id, beginningSequence, endSequence,

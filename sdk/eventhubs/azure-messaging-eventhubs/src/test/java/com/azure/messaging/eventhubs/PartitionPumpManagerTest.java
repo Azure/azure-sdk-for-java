@@ -384,12 +384,12 @@ public class PartitionPumpManagerTest {
 
         final Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
         final LastEnqueuedEventProperties lastEnqueuedProperties1 =
-            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1), 5L);
+            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1), 5);
         final EventData eventData1 = new EventData("1");
         final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
 
         final LastEnqueuedEventProperties lastEnqueuedProperties2 =
-            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2), 1L);
+            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2), 1);
         final EventData eventData2 = new EventData("2");
         final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
 
