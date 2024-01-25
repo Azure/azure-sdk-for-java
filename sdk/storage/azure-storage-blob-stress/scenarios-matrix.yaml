@@ -1,6 +1,6 @@
 matrix:
   scenarios:
-    #   this test downloads 1024 bytes, small file, no chunking
+    # this test downloads 1024 bytes, small file, no chunking
     download-small-file-test:
       testScenario: downloadtofile
       sync: true
@@ -19,7 +19,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
     download-med-file-test:
       testScenario: downloadtofile
       sync: true
@@ -29,7 +29,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
+    # this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
     download-unaligned-file-test:
       testScenario: downloadtofile
       sync: true
@@ -39,7 +39,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
     download-large-file-test:
       testScenario: downloadtofile
       sync: true
@@ -49,7 +49,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
+    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
     download-file-parallel-test:
       testScenario: downloadtofile
       sync: true
@@ -59,7 +59,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 1024 bytes, small stream, no chunking
+    # this test downloads 1024 bytes, small stream, no chunking
     download-small-stream-test:
       testScenario: downloadstream
       sync: true
@@ -78,7 +78,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 16 * 1024 * 1024 bytes, medium stream in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes, medium stream in several chunks
     download-med-stream-test:
       testScenario: downloadstream
       sync: true
@@ -88,7 +88,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
     download-large-stream-test:
       testScenario: downloadstream
       sync: true
@@ -98,7 +98,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
+    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
     download-stream-parallel-test:
       testScenario: downloadstream
       sync: true
@@ -108,7 +108,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 1024 bytes, small content, no chunking
+    # this test downloads 1024 bytes, small content, no chunking
     download-small-content-test:
       testScenario: downloadcontent
       sync: true
@@ -127,7 +127,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 16 * 1024 * 1024 bytes, medium content in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes, medium content in several chunks
     download-med-content-test:
       testScenario: downloadcontent
       sync: true
@@ -137,7 +137,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests
     download-large-content-test:
       testScenario: downloadcontent
       sync: true
@@ -147,7 +147,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests with 1000 parallel requests
+    # this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests with 1000 parallel requests
     download-content-parallel-test:
       testScenario: downloadcontent
       sync: true
@@ -157,7 +157,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 1024 bytes to open input stream, no chunking
+    # this test downloads 1024 bytes to open input stream, no chunking
     openinputstream-small-test:
       testScenario: openinputstream
       sync: true
@@ -167,7 +167,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 16 * 1024 * 1024 bytes to open input stream in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes to open input stream in several chunks
     openinputstream-med-test:
       testScenario: openinputstream
       sync: true
@@ -177,7 +177,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests
     openinputstream-large-test:
       testScenario: openinputstream
       sync: true
@@ -187,7 +187,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests with 1000 parallel requests
+    # this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests with 1000 parallel requests
     openinputstream-parallel-test:
       testScenario: openinputstream
       sync: true
@@ -197,7 +197,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 1024 bytes to seekablebytechannel, no chunking
+    # this test downloads 1024 bytes to seekablebytechannel, no chunking
     seekablebytechannel-small-test:
       testScenario: openseekablebytechannelread
       sync: true
@@ -207,7 +207,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 16 * 1024 * 1024 bytes to seekablebytechannel in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes to seekablebytechannel in several chunks
     seekablebytechannel-med-test:
       testScenario: openseekablebytechannelread
       sync: true
@@ -217,7 +217,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests
     seekablebytechannel-large-test:
       testScenario: openseekablebytechannelread
       sync: true
@@ -227,7 +227,7 @@ matrix:
       durationMin: 480
       imageBuildDir: "../../.."
 
-    #   this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests with 1000 parallel requests
+    # this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests with 1000 parallel requests
     seekablebyte-parallel-test:
       testScenario: openseekablebytechannelread
       sync: true
