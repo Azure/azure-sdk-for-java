@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for validate operation request. */
+/**
+ * Base class for validate operation request.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -17,17 +19,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ValidateOperationRequest.class)
 @JsonTypeName("ValidateOperationRequest")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ValidateRestoreOperationRequest", value = ValidateRestoreOperationRequest.class)
-})
+    @JsonSubTypes.Type(name = "ValidateRestoreOperationRequest", value = ValidateRestoreOperationRequest.class) })
 @Immutable
 public class ValidateOperationRequest {
-    /** Creates an instance of ValidateOperationRequest class. */
+    /**
+     * Creates an instance of ValidateOperationRequest class.
+     */
     public ValidateOperationRequest() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

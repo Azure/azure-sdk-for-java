@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Job resources. */
+/**
+ * List of Job resources.
+ */
 @Fluent
 public final class JobResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class JobResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<JobResourceInner> value;
 
-    /** Creates an instance of JobResourceList class. */
+    /**
+     * Creates an instance of JobResourceList class.
+     */
     public JobResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<JobResourceInner> value() {
@@ -33,7 +37,7 @@ public final class JobResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class JobResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class JobResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

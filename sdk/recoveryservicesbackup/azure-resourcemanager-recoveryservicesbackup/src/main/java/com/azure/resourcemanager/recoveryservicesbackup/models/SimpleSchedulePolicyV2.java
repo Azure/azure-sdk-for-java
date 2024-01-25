@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The V2 policy schedule for IaaS that supports hourly backups. */
+/**
+ * The V2 policy schedule for IaaS that supports hourly backups.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schedulePolicyType")
 @JsonTypeName("SimpleSchedulePolicyV2")
 @Fluent
@@ -38,13 +40,15 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
     @JsonProperty(value = "weeklySchedule")
     private WeeklySchedule weeklySchedule;
 
-    /** Creates an instance of SimpleSchedulePolicyV2 class. */
+    /**
+     * Creates an instance of SimpleSchedulePolicyV2 class.
+     */
     public SimpleSchedulePolicyV2() {
     }
 
     /**
      * Get the scheduleRunFrequency property: Frequency of the schedule operation of this policy.
-     *
+     * 
      * @return the scheduleRunFrequency value.
      */
     public ScheduleRunType scheduleRunFrequency() {
@@ -53,7 +57,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Set the scheduleRunFrequency property: Frequency of the schedule operation of this policy.
-     *
+     * 
      * @param scheduleRunFrequency the scheduleRunFrequency value to set.
      * @return the SimpleSchedulePolicyV2 object itself.
      */
@@ -64,7 +68,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Get the hourlySchedule property: hourly schedule of this policy.
-     *
+     * 
      * @return the hourlySchedule value.
      */
     public HourlySchedule hourlySchedule() {
@@ -73,7 +77,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Set the hourlySchedule property: hourly schedule of this policy.
-     *
+     * 
      * @param hourlySchedule the hourlySchedule value to set.
      * @return the SimpleSchedulePolicyV2 object itself.
      */
@@ -84,7 +88,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Get the dailySchedule property: Daily schedule of this policy.
-     *
+     * 
      * @return the dailySchedule value.
      */
     public DailySchedule dailySchedule() {
@@ -93,7 +97,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Set the dailySchedule property: Daily schedule of this policy.
-     *
+     * 
      * @param dailySchedule the dailySchedule value to set.
      * @return the SimpleSchedulePolicyV2 object itself.
      */
@@ -104,7 +108,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Get the weeklySchedule property: Weekly schedule of this policy.
-     *
+     * 
      * @return the weeklySchedule value.
      */
     public WeeklySchedule weeklySchedule() {
@@ -113,7 +117,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Set the weeklySchedule property: Weekly schedule of this policy.
-     *
+     * 
      * @param weeklySchedule the weeklySchedule value to set.
      * @return the SimpleSchedulePolicyV2 object itself.
      */
@@ -124,7 +128,7 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

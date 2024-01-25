@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Elastic San update properties. */
+/**
+ * Elastic San update properties.
+ */
 @Fluent
 public final class ElasticSanUpdateProperties {
     /*
@@ -30,13 +32,15 @@ public final class ElasticSanUpdateProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of ElasticSanUpdateProperties class. */
+    /**
+     * Creates an instance of ElasticSanUpdateProperties class.
+     */
     public ElasticSanUpdateProperties() {
     }
 
     /**
      * Get the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the baseSizeTiB value.
      */
     public Long baseSizeTiB() {
@@ -45,7 +49,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Set the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanUpdateProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Get the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the extendedCapacitySizeTiB value.
      */
     public Long extendedCapacitySizeTiB() {
@@ -65,7 +69,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Set the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanUpdateProperties object itself.
      */
@@ -77,7 +81,7 @@ public final class ElasticSanUpdateProperties {
     /**
      * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -87,7 +91,7 @@ public final class ElasticSanUpdateProperties {
     /**
      * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ElasticSanUpdateProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

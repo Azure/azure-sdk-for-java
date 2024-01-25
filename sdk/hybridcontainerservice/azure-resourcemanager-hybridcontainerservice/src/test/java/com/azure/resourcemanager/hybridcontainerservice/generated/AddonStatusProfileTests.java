@@ -12,24 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AddonStatusProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddonStatusProfile model = BinaryData.fromString(
-            "{\"name\":\"czwlokjyem\",\"phase\":\"provisioning {MSICertificateDownloaded}\",\"ready\":true,\"errorMessage\":\"joxzjnchgejspodm\"}")
-            .toObject(AddonStatusProfile.class);
-        Assertions.assertEquals("czwlokjyem", model.name());
-        Assertions.assertEquals(AddonPhase.PROVISIONING_MSICERTIFICATE_DOWNLOADED, model.phase());
-        Assertions.assertEquals(true, model.ready());
-        Assertions.assertEquals("joxzjnchgejspodm", model.errorMessage());
+        AddonStatusProfile model
+            = BinaryData.fromString("{\"name\":\"h\",\"phase\":\"upgrading\",\"ready\":false,\"errorMessage\":\"j\"}")
+                .toObject(AddonStatusProfile.class);
+        Assertions.assertEquals("h", model.name());
+        Assertions.assertEquals(AddonPhase.UPGRADING, model.phase());
+        Assertions.assertEquals(false, model.ready());
+        Assertions.assertEquals("j", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonStatusProfile model = new AddonStatusProfile().withName("czwlokjyem")
-            .withPhase(AddonPhase.PROVISIONING_MSICERTIFICATE_DOWNLOADED).withReady(true)
-            .withErrorMessage("joxzjnchgejspodm");
+        AddonStatusProfile model = new AddonStatusProfile().withName("h").withPhase(AddonPhase.UPGRADING)
+            .withReady(false).withErrorMessage("j");
         model = BinaryData.fromObject(model).toObject(AddonStatusProfile.class);
-        Assertions.assertEquals("czwlokjyem", model.name());
-        Assertions.assertEquals(AddonPhase.PROVISIONING_MSICERTIFICATE_DOWNLOADED, model.phase());
-        Assertions.assertEquals(true, model.ready());
-        Assertions.assertEquals("joxzjnchgejspodm", model.errorMessage());
+        Assertions.assertEquals("h", model.name());
+        Assertions.assertEquals(AddonPhase.UPGRADING, model.phase());
+        Assertions.assertEquals(false, model.ready());
+        Assertions.assertEquals("j", model.errorMessage());
     }
 }

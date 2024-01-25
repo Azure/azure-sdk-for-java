@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Azure IaaS VM workload-specific job object. */
+/**
+ * Azure IaaS VM workload-specific job object.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("AzureIaaSVMJob")
 @Fluent
@@ -59,13 +61,15 @@ public final class AzureIaaSvmJob extends Job {
     @JsonProperty(value = "isUserTriggered")
     private Boolean isUserTriggered;
 
-    /** Creates an instance of AzureIaaSvmJob class. */
+    /**
+     * Creates an instance of AzureIaaSvmJob class.
+     */
     public AzureIaaSvmJob() {
     }
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -74,7 +78,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -85,7 +89,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -94,7 +98,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -105,7 +109,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Get the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<AzureIaaSvmErrorInfo> errorDetails() {
@@ -114,7 +118,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -126,7 +130,7 @@ public final class AzureIaaSvmJob extends Job {
     /**
      * Get the virtualMachineVersion property: Specifies whether the backup item is a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @return the virtualMachineVersion value.
      */
     public String virtualMachineVersion() {
@@ -136,7 +140,7 @@ public final class AzureIaaSvmJob extends Job {
     /**
      * Set the virtualMachineVersion property: Specifies whether the backup item is a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @param virtualMachineVersion the virtualMachineVersion value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -147,7 +151,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureIaaSvmJobExtendedInfo extendedInfo() {
@@ -156,7 +160,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -167,7 +171,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Get the containerName property: Container name of the entity on which the current job is executing.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -176,7 +180,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the containerName property: Container name of the entity on which the current job is executing.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -187,7 +191,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Get the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
-     *
+     * 
      * @return the isUserTriggered value.
      */
     public Boolean isUserTriggered() {
@@ -196,7 +200,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Set the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
-     *
+     * 
      * @param isUserTriggered the isUserTriggered value to set.
      * @return the AzureIaaSvmJob object itself.
      */
@@ -205,49 +209,63 @@ public final class AzureIaaSvmJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -256,7 +274,7 @@ public final class AzureIaaSvmJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

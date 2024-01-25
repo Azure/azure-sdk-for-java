@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupStatusRequest model =
-            BinaryData
-                .fromString("{\"resourceType\":\"VM\",\"resourceId\":\"dkfo\",\"poLogicalName\":\"nygj\"}")
+        BackupStatusRequest model
+            = BinaryData.fromString("{\"resourceType\":\"VM\",\"resourceId\":\"dkfo\",\"poLogicalName\":\"nygj\"}")
                 .toObject(BackupStatusRequest.class);
         Assertions.assertEquals(DataSourceType.VM, model.resourceType());
         Assertions.assertEquals("dkfo", model.resourceId());
@@ -23,11 +22,8 @@ public final class BackupStatusRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupStatusRequest model =
-            new BackupStatusRequest()
-                .withResourceType(DataSourceType.VM)
-                .withResourceId("dkfo")
-                .withPoLogicalName("nygj");
+        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.VM).withResourceId("dkfo")
+            .withPoLogicalName("nygj");
         model = BinaryData.fromObject(model).toObject(BackupStatusRequest.class);
         Assertions.assertEquals(DataSourceType.VM, model.resourceType());
         Assertions.assertEquals("dkfo", model.resourceId());
