@@ -13,7 +13,7 @@ public final class ProvisionedClusterPoolUpgradeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedClusterPoolUpgradeProfile model = BinaryData.fromString(
-            "{\"kubernetesVersion\":\"w\",\"name\":\"lryplwckbasyy\",\"osType\":\"Linux\",\"upgrades\":[{\"kubernetesVersion\":\"gcbacphejkot\",\"isPreview\":false},{\"kubernetesVersion\":\"oulzndlikwyq\",\"isPreview\":true},{\"kubernetesVersion\":\"ibmadgakeqsrxy\",\"isPreview\":true},{\"kubernetesVersion\":\"e\",\"isPreview\":false}]}")
+            "{\"kubernetesVersion\":\"xqeofjaeqjhqjba\",\"osType\":\"Linux\",\"upgrades\":[{\"kubernetesVersion\":\"qulngsntnbybkzgc\",\"isPreview\":false},{\"kubernetesVersion\":\"lxxwrljdouskc\",\"isPreview\":true},{\"kubernetesVersion\":\"cr\",\"isPreview\":false}]}")
             .toObject(ProvisionedClusterPoolUpgradeProfile.class);
     }
 
@@ -21,7 +21,6 @@ public final class ProvisionedClusterPoolUpgradeProfileTests {
     public void testSerialize() throws Exception {
         ProvisionedClusterPoolUpgradeProfile model = new ProvisionedClusterPoolUpgradeProfile()
             .withUpgrades(Arrays.asList(new ProvisionedClusterPoolUpgradeProfileProperties(),
-                new ProvisionedClusterPoolUpgradeProfileProperties(),
                 new ProvisionedClusterPoolUpgradeProfileProperties(),
                 new ProvisionedClusterPoolUpgradeProfileProperties()));
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterPoolUpgradeProfile.class);

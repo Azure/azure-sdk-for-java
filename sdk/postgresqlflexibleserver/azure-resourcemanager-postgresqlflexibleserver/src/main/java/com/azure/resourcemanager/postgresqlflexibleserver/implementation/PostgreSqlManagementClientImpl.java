@@ -57,375 +57,439 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the PostgreSqlManagementClientImpl type. */
+/**
+ * Initializes a new instance of the PostgreSqlManagementClientImpl type.
+ */
 @ServiceClient(builder = PostgreSqlManagementClientBuilder.class)
 public final class PostgreSqlManagementClientImpl implements PostgreSqlManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AdministratorsClient object to access its operations. */
+    /**
+     * The AdministratorsClient object to access its operations.
+     */
     private final AdministratorsClient administrators;
 
     /**
      * Gets the AdministratorsClient object to access its operations.
-     *
+     * 
      * @return the AdministratorsClient object.
      */
     public AdministratorsClient getAdministrators() {
         return this.administrators;
     }
 
-    /** The BackupsClient object to access its operations. */
+    /**
+     * The BackupsClient object to access its operations.
+     */
     private final BackupsClient backups;
 
     /**
      * Gets the BackupsClient object to access its operations.
-     *
+     * 
      * @return the BackupsClient object.
      */
     public BackupsClient getBackups() {
         return this.backups;
     }
 
-    /** The LocationBasedCapabilitiesClient object to access its operations. */
+    /**
+     * The LocationBasedCapabilitiesClient object to access its operations.
+     */
     private final LocationBasedCapabilitiesClient locationBasedCapabilities;
 
     /**
      * Gets the LocationBasedCapabilitiesClient object to access its operations.
-     *
+     * 
      * @return the LocationBasedCapabilitiesClient object.
      */
     public LocationBasedCapabilitiesClient getLocationBasedCapabilities() {
         return this.locationBasedCapabilities;
     }
 
-    /** The ServerCapabilitiesClient object to access its operations. */
+    /**
+     * The ServerCapabilitiesClient object to access its operations.
+     */
     private final ServerCapabilitiesClient serverCapabilities;
 
     /**
      * Gets the ServerCapabilitiesClient object to access its operations.
-     *
+     * 
      * @return the ServerCapabilitiesClient object.
      */
     public ServerCapabilitiesClient getServerCapabilities() {
         return this.serverCapabilities;
     }
 
-    /** The CheckNameAvailabilitiesClient object to access its operations. */
+    /**
+     * The CheckNameAvailabilitiesClient object to access its operations.
+     */
     private final CheckNameAvailabilitiesClient checkNameAvailabilities;
 
     /**
      * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
+     * 
      * @return the CheckNameAvailabilitiesClient object.
      */
     public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
         return this.checkNameAvailabilities;
     }
 
-    /** The CheckNameAvailabilityWithLocationsClient object to access its operations. */
+    /**
+     * The CheckNameAvailabilityWithLocationsClient object to access its operations.
+     */
     private final CheckNameAvailabilityWithLocationsClient checkNameAvailabilityWithLocations;
 
     /**
      * Gets the CheckNameAvailabilityWithLocationsClient object to access its operations.
-     *
+     * 
      * @return the CheckNameAvailabilityWithLocationsClient object.
      */
     public CheckNameAvailabilityWithLocationsClient getCheckNameAvailabilityWithLocations() {
         return this.checkNameAvailabilityWithLocations;
     }
 
-    /** The ConfigurationsClient object to access its operations. */
+    /**
+     * The ConfigurationsClient object to access its operations.
+     */
     private final ConfigurationsClient configurations;
 
     /**
      * Gets the ConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ConfigurationsClient object.
      */
     public ConfigurationsClient getConfigurations() {
         return this.configurations;
     }
 
-    /** The DatabasesClient object to access its operations. */
+    /**
+     * The DatabasesClient object to access its operations.
+     */
     private final DatabasesClient databases;
 
     /**
      * Gets the DatabasesClient object to access its operations.
-     *
+     * 
      * @return the DatabasesClient object.
      */
     public DatabasesClient getDatabases() {
         return this.databases;
     }
 
-    /** The FirewallRulesClient object to access its operations. */
+    /**
+     * The FirewallRulesClient object to access its operations.
+     */
     private final FirewallRulesClient firewallRules;
 
     /**
      * Gets the FirewallRulesClient object to access its operations.
-     *
+     * 
      * @return the FirewallRulesClient object.
      */
     public FirewallRulesClient getFirewallRules() {
         return this.firewallRules;
     }
 
-    /** The ServersClient object to access its operations. */
+    /**
+     * The ServersClient object to access its operations.
+     */
     private final ServersClient servers;
 
     /**
      * Gets the ServersClient object to access its operations.
-     *
+     * 
      * @return the ServersClient object.
      */
     public ServersClient getServers() {
         return this.servers;
     }
 
-    /** The FlexibleServersClient object to access its operations. */
+    /**
+     * The FlexibleServersClient object to access its operations.
+     */
     private final FlexibleServersClient flexibleServers;
 
     /**
      * Gets the FlexibleServersClient object to access its operations.
-     *
+     * 
      * @return the FlexibleServersClient object.
      */
     public FlexibleServersClient getFlexibleServers() {
         return this.flexibleServers;
     }
 
-    /** The LtrBackupOperationsClient object to access its operations. */
+    /**
+     * The LtrBackupOperationsClient object to access its operations.
+     */
     private final LtrBackupOperationsClient ltrBackupOperations;
 
     /**
      * Gets the LtrBackupOperationsClient object to access its operations.
-     *
+     * 
      * @return the LtrBackupOperationsClient object.
      */
     public LtrBackupOperationsClient getLtrBackupOperations() {
         return this.ltrBackupOperations;
     }
 
-    /** The MigrationsClient object to access its operations. */
+    /**
+     * The MigrationsClient object to access its operations.
+     */
     private final MigrationsClient migrations;
 
     /**
      * Gets the MigrationsClient object to access its operations.
-     *
+     * 
      * @return the MigrationsClient object.
      */
     public MigrationsClient getMigrations() {
         return this.migrations;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The GetPrivateDnsZoneSuffixesClient object to access its operations. */
+    /**
+     * The GetPrivateDnsZoneSuffixesClient object to access its operations.
+     */
     private final GetPrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes;
 
     /**
      * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
-     *
+     * 
      * @return the GetPrivateDnsZoneSuffixesClient object.
      */
     public GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes() {
         return this.getPrivateDnsZoneSuffixes;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateEndpointConnectionOperationsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionOperationsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionOperationsClient privateEndpointConnectionOperations;
 
     /**
      * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionOperationsClient object.
      */
     public PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations() {
         return this.privateEndpointConnectionOperations;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The QuotaUsagesClient object to access its operations. */
+    /**
+     * The QuotaUsagesClient object to access its operations.
+     */
     private final QuotaUsagesClient quotaUsages;
 
     /**
      * Gets the QuotaUsagesClient object to access its operations.
-     *
+     * 
      * @return the QuotaUsagesClient object.
      */
     public QuotaUsagesClient getQuotaUsages() {
         return this.quotaUsages;
     }
 
-    /** The ReplicasClient object to access its operations. */
+    /**
+     * The ReplicasClient object to access its operations.
+     */
     private final ReplicasClient replicas;
 
     /**
      * Gets the ReplicasClient object to access its operations.
-     *
+     * 
      * @return the ReplicasClient object.
      */
     public ReplicasClient getReplicas() {
         return this.replicas;
     }
 
-    /** The LogFilesClient object to access its operations. */
+    /**
+     * The LogFilesClient object to access its operations.
+     */
     private final LogFilesClient logFiles;
 
     /**
      * Gets the LogFilesClient object to access its operations.
-     *
+     * 
      * @return the LogFilesClient object.
      */
     public LogFilesClient getLogFiles() {
         return this.logFiles;
     }
 
-    /** The ServerThreatProtectionSettingsClient object to access its operations. */
+    /**
+     * The ServerThreatProtectionSettingsClient object to access its operations.
+     */
     private final ServerThreatProtectionSettingsClient serverThreatProtectionSettings;
 
     /**
      * Gets the ServerThreatProtectionSettingsClient object to access its operations.
-     *
+     * 
      * @return the ServerThreatProtectionSettingsClient object.
      */
     public ServerThreatProtectionSettingsClient getServerThreatProtectionSettings() {
         return this.serverThreatProtectionSettings;
     }
 
-    /** The VirtualEndpointsClient object to access its operations. */
+    /**
+     * The VirtualEndpointsClient object to access its operations.
+     */
     private final VirtualEndpointsClient virtualEndpoints;
 
     /**
      * Gets the VirtualEndpointsClient object to access its operations.
-     *
+     * 
      * @return the VirtualEndpointsClient object.
      */
     public VirtualEndpointsClient getVirtualEndpoints() {
         return this.virtualEndpoints;
     }
 
-    /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
+    /**
+     * The VirtualNetworkSubnetUsagesClient object to access its operations.
+     */
     private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
 
     /**
      * Gets the VirtualNetworkSubnetUsagesClient object to access its operations.
-     *
+     * 
      * @return the VirtualNetworkSubnetUsagesClient object.
      */
     public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
@@ -434,7 +498,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
 
     /**
      * Initializes an instance of PostgreSqlManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -442,13 +506,8 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    PostgreSqlManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    PostgreSqlManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -484,7 +543,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -493,7 +552,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -503,7 +562,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -513,26 +572,15 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -545,19 +593,16 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

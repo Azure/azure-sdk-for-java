@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Vault Job for CMK - has CMK specific info. */
+/**
+ * Vault Job for CMK - has CMK specific info.
+ */
 @Fluent
 public final class VaultJobExtendedInfo {
     /*
@@ -19,13 +21,15 @@ public final class VaultJobExtendedInfo {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
-    /** Creates an instance of VaultJobExtendedInfo class. */
+    /**
+     * Creates an instance of VaultJobExtendedInfo class.
+     */
     public VaultJobExtendedInfo() {
     }
 
     /**
      * Get the propertyBag property: Job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -34,7 +38,7 @@ public final class VaultJobExtendedInfo {
 
     /**
      * Set the propertyBag property: Job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the VaultJobExtendedInfo object itself.
      */
@@ -45,7 +49,7 @@ public final class VaultJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

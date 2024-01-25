@@ -7,12 +7,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectionIntents. */
+/**
+ * Resource collection API of ProtectionIntents.
+ */
 public interface ProtectionIntents {
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @param context The context to associate with this operation.
@@ -21,13 +25,15 @@ public interface ProtectionIntents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response contract for enable backup validation request along with {@link Response}.
      */
-    Response<PreValidateEnableBackupResponse> validateWithResponse(
-        String azureRegion, PreValidateEnableBackupRequest parameters, Context context);
+    Response<PreValidateEnableBackupResponse> validateWithResponse(String azureRegion,
+        PreValidateEnableBackupRequest parameters, Context context);
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,8 +45,9 @@ public interface ProtectionIntents {
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -51,13 +58,14 @@ public interface ProtectionIntents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup ProtectionIntent along with {@link Response}.
      */
-    Response<ProtectionIntentResource> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
+    Response<ProtectionIntentResource> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, Context context);
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -67,12 +75,12 @@ public interface ProtectionIntents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup ProtectionIntent.
      */
-    ProtectionIntentResource get(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
+    ProtectionIntentResource get(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName);
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -83,12 +91,12 @@ public interface ProtectionIntents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
+    Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, Context context);
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -101,8 +109,9 @@ public interface ProtectionIntents {
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,8 +122,9 @@ public interface ProtectionIntents {
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +136,7 @@ public interface ProtectionIntents {
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,7 +146,7 @@ public interface ProtectionIntents {
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +158,7 @@ public interface ProtectionIntents {
 
     /**
      * Begins definition for a new ProtectionIntentResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProtectionIntentResource definition.
      */

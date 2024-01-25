@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.NameProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Quota usage for flexible servers. */
+/**
+ * Quota usage for flexible servers.
+ */
 @Fluent
 public final class QuotaUsageInner {
     /*
@@ -41,13 +43,15 @@ public final class QuotaUsageInner {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of QuotaUsageInner class. */
+    /**
+     * Creates an instance of QuotaUsageInner class.
+     */
     public QuotaUsageInner() {
     }
 
     /**
      * Get the name property: Name of quota usage for flexible servers.
-     *
+     * 
      * @return the name value.
      */
     public NameProperty name() {
@@ -56,7 +60,7 @@ public final class QuotaUsageInner {
 
     /**
      * Set the name property: Name of quota usage for flexible servers.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaUsageInner object itself.
      */
@@ -67,7 +71,7 @@ public final class QuotaUsageInner {
 
     /**
      * Get the limit property: Quota limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -76,7 +80,7 @@ public final class QuotaUsageInner {
 
     /**
      * Set the limit property: Quota limit.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaUsageInner object itself.
      */
@@ -87,7 +91,7 @@ public final class QuotaUsageInner {
 
     /**
      * Get the unit property: Quota unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -96,7 +100,7 @@ public final class QuotaUsageInner {
 
     /**
      * Set the unit property: Quota unit.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaUsageInner object itself.
      */
@@ -107,7 +111,7 @@ public final class QuotaUsageInner {
 
     /**
      * Get the currentValue property: Current Quota usage value.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -116,7 +120,7 @@ public final class QuotaUsageInner {
 
     /**
      * Set the currentValue property: Current Quota usage value.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the QuotaUsageInner object itself.
      */
@@ -127,7 +131,7 @@ public final class QuotaUsageInner {
 
     /**
      * Get the id property: Fully qualified ARM resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -136,7 +140,7 @@ public final class QuotaUsageInner {
 
     /**
      * Set the id property: Fully qualified ARM resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the QuotaUsageInner object itself.
      */
@@ -147,7 +151,7 @@ public final class QuotaUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

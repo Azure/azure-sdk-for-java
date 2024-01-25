@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Additional information on backup engine. */
+/**
+ * Additional information on backup engine.
+ */
 @Fluent
 public final class BackupEngineExtendedInfo {
     /*
@@ -59,13 +61,15 @@ public final class BackupEngineExtendedInfo {
     @JsonProperty(value = "azureProtectedInstances")
     private Integer azureProtectedInstances;
 
-    /** Creates an instance of BackupEngineExtendedInfo class. */
+    /**
+     * Creates an instance of BackupEngineExtendedInfo class.
+     */
     public BackupEngineExtendedInfo() {
     }
 
     /**
      * Get the databaseName property: Database name of backup engine.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -74,7 +78,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the databaseName property: Database name of backup engine.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -85,7 +89,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the protectedItemsCount property: Number of protected items in the backup engine.
-     *
+     * 
      * @return the protectedItemsCount value.
      */
     public Integer protectedItemsCount() {
@@ -94,7 +98,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the protectedItemsCount property: Number of protected items in the backup engine.
-     *
+     * 
      * @param protectedItemsCount the protectedItemsCount value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -105,7 +109,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the protectedServersCount property: Number of protected servers in the backup engine.
-     *
+     * 
      * @return the protectedServersCount value.
      */
     public Integer protectedServersCount() {
@@ -114,7 +118,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the protectedServersCount property: Number of protected servers in the backup engine.
-     *
+     * 
      * @param protectedServersCount the protectedServersCount value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -125,7 +129,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the diskCount property: Number of disks in the backup engine.
-     *
+     * 
      * @return the diskCount value.
      */
     public Integer diskCount() {
@@ -134,7 +138,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the diskCount property: Number of disks in the backup engine.
-     *
+     * 
      * @param diskCount the diskCount value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -145,7 +149,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the usedDiskSpace property: Disk space used in the backup engine.
-     *
+     * 
      * @return the usedDiskSpace value.
      */
     public Double usedDiskSpace() {
@@ -154,7 +158,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the usedDiskSpace property: Disk space used in the backup engine.
-     *
+     * 
      * @param usedDiskSpace the usedDiskSpace value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -165,7 +169,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the availableDiskSpace property: Disk space currently available in the backup engine.
-     *
+     * 
      * @return the availableDiskSpace value.
      */
     public Double availableDiskSpace() {
@@ -174,7 +178,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the availableDiskSpace property: Disk space currently available in the backup engine.
-     *
+     * 
      * @param availableDiskSpace the availableDiskSpace value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -185,7 +189,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the refreshedAt property: Last refresh time in the backup engine.
-     *
+     * 
      * @return the refreshedAt value.
      */
     public OffsetDateTime refreshedAt() {
@@ -194,7 +198,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the refreshedAt property: Last refresh time in the backup engine.
-     *
+     * 
      * @param refreshedAt the refreshedAt value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -205,7 +209,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Get the azureProtectedInstances property: Protected instances in the backup engine.
-     *
+     * 
      * @return the azureProtectedInstances value.
      */
     public Integer azureProtectedInstances() {
@@ -214,7 +218,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Set the azureProtectedInstances property: Protected instances in the backup engine.
-     *
+     * 
      * @param azureProtectedInstances the azureProtectedInstances value to set.
      * @return the BackupEngineExtendedInfo object itself.
      */
@@ -225,7 +229,7 @@ public final class BackupEngineExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

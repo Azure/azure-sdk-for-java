@@ -5,6 +5,7 @@
 ### Features Added
 
 - Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
 
 ### Other Changes
 

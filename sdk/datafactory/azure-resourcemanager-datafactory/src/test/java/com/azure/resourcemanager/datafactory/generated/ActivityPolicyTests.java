@@ -14,22 +14,22 @@ public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityPolicy model = BinaryData.fromString(
-            "{\"timeout\":\"dataebafiq\",\"retry\":\"datam\",\"retryIntervalInSeconds\":1492607187,\"secureInput\":false,\"secureOutput\":false,\"\":{\"toai\":\"datancxtnbut\",\"hzqgbaqvqeyla\":\"dataign\",\"yfnbxw\":\"datakobkrg\",\"szhxothfyifjufzl\":\"datalh\"}}")
+            "{\"timeout\":\"datajsaoggd\",\"retry\":\"datajkoxlccjdooy\",\"retryIntervalInSeconds\":975110556,\"secureInput\":false,\"secureOutput\":true,\"\":{\"bwidsbdftbxruuu\":\"datajhqq\",\"wnpwgchl\":\"dataaarrrgjnqkuca\",\"hflnlutacsslel\":\"databttxfittheaxq\"}}")
             .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1492607187, model.retryIntervalInSeconds());
+        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
         Assertions.assertEquals(false, model.secureInput());
-        Assertions.assertEquals(false, model.secureOutput());
+        Assertions.assertEquals(true, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model
-            = new ActivityPolicy().withTimeout("dataebafiq").withRetry("datam").withRetryIntervalInSeconds(1492607187)
-                .withSecureInput(false).withSecureOutput(false).withAdditionalProperties(mapOf());
+        ActivityPolicy model = new ActivityPolicy().withTimeout("datajsaoggd").withRetry("datajkoxlccjdooy")
+            .withRetryIntervalInSeconds(975110556).withSecureInput(false).withSecureOutput(true)
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1492607187, model.retryIntervalInSeconds());
+        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
         Assertions.assertEquals(false, model.secureInput());
-        Assertions.assertEquals(false, model.secureOutput());
+        Assertions.assertEquals(true, model.secureOutput());
     }
 
     // Use "Map.of" if available

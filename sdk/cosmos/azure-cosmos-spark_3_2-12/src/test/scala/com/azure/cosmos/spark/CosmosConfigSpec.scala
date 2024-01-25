@@ -309,12 +309,17 @@ class CosmosConfigSpec extends UnitSpec {
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
     config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe null
+    config.runtimeFilteringEnabled shouldBe true
+    config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
+    config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1000",
-      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000"
+      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000",
+      "spark.cosmos.read.runtimeFiltering.enabled" -> "false",
+      "spark.cosmos.read.readManyFiltering.enabled" -> "true"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -325,6 +330,9 @@ class CosmosConfigSpec extends UnitSpec {
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
     config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
+    config.runtimeFilteringEnabled shouldBe false
+    config.readManyFilteringConfig.readManyFilteringEnabled shouldBe true
+    config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
