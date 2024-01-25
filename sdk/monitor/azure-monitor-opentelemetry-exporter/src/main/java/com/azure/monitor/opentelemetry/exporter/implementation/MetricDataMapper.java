@@ -154,7 +154,7 @@ public class MetricDataMapper {
         }
 
         // new http semconv metrics use seconds, but we want to send milliseconds to Breeze
-        if (metricData.getName().equals("http.server.request.duration") || metricData.getName().equals("http.client.request.duration")) {
+        if (isPreAggregatedStandardMetric && (metricData.getName().equals("http.server.request.duration") || metricData.getName().equals("http.client.request.duration"))) {
             pointDataValue = pointDataValue * 1000;
         }
 
