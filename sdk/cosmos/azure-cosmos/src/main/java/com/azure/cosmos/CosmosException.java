@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcqu
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -153,6 +154,16 @@ public class CosmosException extends AzureException {
     private List<String> faultInjectionEvaluationResults;
 
     /**
+     * Item id
+     */
+    private String itemId;
+
+    /**
+     * Partition Key
+     */
+    private PartitionKey partitionKey;
+
+    /**
      * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
@@ -168,6 +179,33 @@ public class CosmosException extends AzureException {
         //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
             for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
+                if (entry.getKey() != null && entry.getValue() != null) {
+                    this.responseHeaders.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a new instance of the CosmosException class. This Cosmos Exception class is only used for throwing
+     * BulkOperationFailedException in BulkWriter.
+     *
+     * @param statusCode      the http status code of the response.
+     * @param message         the string message.
+     * @param responseHeaders the response headers.
+     * @param cause           the inner exception
+     */
+    protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause,
+                              String itemId, PartitionKey partitionKey) {
+        super(message, cause);
+        this.statusCode = statusCode;
+        this.itemId = itemId;
+        this.partitionKey = partitionKey;
+        this.responseHeaders = new ConcurrentHashMap<>();
+
+        //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
+        if (responseHeaders != null) {
+            for (Map.Entry<String, String> entry : responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
                     this.responseHeaders.put(entry.getKey(), entry.getValue());
                 }
@@ -408,6 +446,32 @@ public class CosmosException extends AzureException {
     }
 
     /**
+     * Gets the itemId linked to the item that encountered the failed operation.
+     *
+     * @return itemId linked to the item that encountered the failed operation.
+     */
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    /**
+     * Gets the partitionKey linked to the item that encountered the failed operation.
+     *
+     * @return partitionKey linked to the item that encountered the failed operation.
+     */
+    public PartitionKey getPartitionKey() {
+        return partitionKey;
+    }
+
+    public void setPartitionKey(PartitionKey partitionKey) {
+        this.partitionKey = partitionKey;
+    }
+
+    /**
      * Gets the request charge as request units (RU) consumed by the operation.
      * <p>
      * For more information about the RU and factors that can impact the effective charges please visit
@@ -451,6 +515,13 @@ public class CosmosException extends AzureException {
             exceptionMessageNode.put("causeInfo", causeInfo());
             if (responseHeaders != null) {
                 exceptionMessageNode.put("responseHeaders", responseHeaders.toString());
+            }
+            if (StringUtils.isNotEmpty(itemId)) {
+                exceptionMessageNode.put("itemId", itemId);
+            }
+
+            if (partitionKey != null) {
+                exceptionMessageNode.put("partitionKey", partitionKey.toString());
             }
 
             List<Map.Entry<String, String>> filterRequestHeaders = filterSensitiveData(requestHeaders);

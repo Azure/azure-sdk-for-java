@@ -1613,6 +1613,160 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         updatedItem.get("family").get("numberNode").asInt shouldEqual 12345
   }
 
+    "Bulk Writer" can "upsert item with unique key violations throws 409 bulkOperationFailedException with itemId and " +
+        "partitiionKey " in {
+        val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+        val containerProperties = new CosmosContainerProperties(cosmosContainer + "withUK", "/pk")
+        val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+        val uniqueKeys = new java.util.ArrayList[UniqueKey]()
+        val paths = new java.util.ArrayList[String]()
+        paths.add("/LogicalPartitionScopeUniqueColumn")
+        uniqueKeys.add(new UniqueKey(paths))
+        val uniqueKeyPolicy = new UniqueKeyPolicy()
+            .setUniqueKeys(uniqueKeys)
+        containerProperties.setUniqueKeyPolicy(uniqueKeyPolicy)
+        val containerCreationResponse = cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainerIfNotExists(containerProperties, throughputProperties).block()
+        val container =
+            cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
+
+        try {
+            val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+
+            val bulkWriter = new BulkWriter(
+                container,
+                partitionKeyDefinition,
+                writeConfig,
+                DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+                new TestOutputMetricsPublisher)
+
+            val onlyOnePartitionKeyValue = UUID.randomUUID().toString
+            val duplicateUniqueKeyValue = UUID.randomUUID().toString
+            val items = mutable.Map[String, ObjectNode]()
+            val item1 = getItem(UUID.randomUUID().toString)
+            item1.put("pk", onlyOnePartitionKeyValue)
+            item1.put("LogicalPartitionScopeUniqueColumn", duplicateUniqueKeyValue)
+            val id1 = item1.get("id").textValue()
+            items += (id1 -> item1)
+
+            val item2 = getItem(UUID.randomUUID().toString)
+            item2.put("pk", onlyOnePartitionKeyValue)
+            item2.put("LogicalPartitionScopeUniqueColumn", duplicateUniqueKeyValue)
+            val id2 = item2.get("id").textValue()
+            items += (id2 -> item2)
+
+            val thrown = intercept[CosmosException] {
+                bulkWriter.scheduleWrite(new PartitionKey(onlyOnePartitionKeyValue), item1)
+                bulkWriter.scheduleWrite(new PartitionKey(onlyOnePartitionKeyValue), item2)
+
+                bulkWriter.flushAndClose()
+            }
+
+            thrown should not be null
+            thrown.getStatusCode shouldEqual 409
+            thrown.getSubStatusCode shouldEqual 0
+            thrown.getItemId should not be null
+            thrown.getItemId shouldEqual item2.get("id").textValue()
+            thrown.getPartitionKey should not be null
+            thrown.getPartitionKey.toString.equals(item2.get("pk").textValue())
+
+            val allItems = container
+                .queryItems("SELECT * FROM r", classOf[ObjectNode])
+                .toIterable
+                .asScala
+                .toList
+
+            allItems.size < 2 shouldEqual true
+        } finally {
+            container.delete().block()
+        }
+    }
+
+    "Bulk Writer" can "patch item with an always false condition throws 412 bulkOperationFailedException with itemId and " +
+        "partitiionKey " in {
+        val container = getContainer
+        val containerProperties = container.read().block().getProperties
+        val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+        val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
+        val writeConfig = CosmosWriteConfig(
+            ItemWriteStrategy.ItemOverwrite,
+            5,
+            bulkEnabled = true,
+            bulkMaxPendingOperations = Some(900)
+        )
+
+        val bulkWriter = new BulkWriter(
+            container,
+            partitionKeyDefinition,
+            writeConfig,
+            DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+            new TestOutputMetricsPublisher)
+
+        // First create one item, as patch can only operate on existing items
+        val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+        val id = itemWithFullSchema.get("id").textValue()
+        val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+
+        bulkWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+        bulkWriter.flushAndClose()
+        // make sure the item exists
+        val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+
+        // Cosmos patch does not support for system properties
+        // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+        // so the test is to make sure we have skipped these properties and the request can succeed for other properties
+        val partialUpdateSchema = StructType(Seq(
+            StructField("propInt", IntegerType)
+        ))
+
+        val patchPartialUpdateItem =
+            CosmosPatchTestHelper.getPatchItemWithSchema(
+                strippedPartitionKeyPath,
+                partialUpdateSchema,
+                originalItem)
+
+        val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+        patchPartialUpdateItem.fields().asScala.foreach(field => {
+            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+                field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
+        })
+
+        val bulkWriterForPatch =
+            CosmosPatchTestHelper.getBulkWriterForPatch(
+                columnConfigsMap,
+                container,
+                partitionKeyDefinition,
+                Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
+
+        //    try {
+        //      bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+        //      bulkWriterForPatch.flushAndClose()
+        //      fail("Test should fail with 412 since the condition is false")
+        //    } catch {
+        //      case e: CosmosException =>
+        //        e.getMessage.contains("All retries exhausted for 'PATCH' bulk operation - statusCode=[412:0]") shouldEqual true
+        //    }
+
+        val thrown = intercept[CosmosException] {
+            bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+            bulkWriterForPatch.flushAndClose()
+        }
+
+        thrown should not be null
+        thrown.getStatusCode shouldEqual 412
+        thrown.getSubStatusCode shouldEqual 0
+        thrown.getItemId should not be null
+        thrown.getItemId shouldEqual id
+        thrown.getPartitionKey should not be null
+        thrown.getPartitionKey.equals(partitionKey)
+
+        val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+
+        // since the condition is always false, so the item should not be updated
+        objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
+    }
+
   private def getItem(id: String): ObjectNode = {
     val objectNode = objectMapper.createObjectNode()
     objectNode.put("id", id)

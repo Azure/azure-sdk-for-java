@@ -1215,7 +1215,7 @@ private object BulkWriter {
 
   private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable,
                                              itemId: String, partitionKey: PartitionKey)
-    extends CosmosException(statusCode, message, null, cause) {
+    extends CosmosException(statusCode, message, null, cause, itemId, partitionKey) {
       BridgeInternal.setSubStatusCode(this, subStatusCode)
   }
 }
