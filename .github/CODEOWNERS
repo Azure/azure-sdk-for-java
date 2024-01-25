@@ -150,7 +150,7 @@
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
 
-# PRLabel: %Open AI
+# PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Image Analysis
