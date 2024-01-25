@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner;
 
 /**
- * An immutable client-side representation of ProvisionedClusters.
+ * An immutable client-side representation of ProvisionedCluster.
  */
-public interface ProvisionedClusters {
+public interface ProvisionedCluster {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -33,14 +33,14 @@ public interface ProvisionedClusters {
     String type();
 
     /**
-     * Gets the properties property: All properties of the provisioned cluster.
+     * Gets the properties property: Properties of the provisioned cluster.
      * 
      * @return the properties value.
      */
     ProvisionedClusterProperties properties();
 
     /**
-     * Gets the extendedLocation property: Extended Location definition.
+     * Gets the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -54,9 +54,9 @@ public interface ProvisionedClusters {
     SystemData systemData();
 
     /**
-     * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner object.
+     * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner object.
      * 
      * @return the inner object.
      */
-    ProvisionedClustersInner innerModel();
+    ProvisionedClusterInner innerModel();
 }

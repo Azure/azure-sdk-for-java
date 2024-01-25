@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The extended location type.
+ * The extended location type. Allowed value: 'CustomLocation'.
  */
 public final class ExtendedLocationTypes extends ExpandableStringEnum<ExtendedLocationTypes> {
     /**

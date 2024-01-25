@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolName model = BinaryData.fromString("{\"name\":\"deupewnwrei\"}").toObject(AgentPoolName.class);
-        Assertions.assertEquals("deupewnwrei", model.name());
+        AgentPoolName model = BinaryData.fromString("{\"name\":\"glzufc\"}").toObject(AgentPoolName.class);
+        Assertions.assertEquals("glzufc", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolName model = new AgentPoolName().withName("deupewnwrei");
+        AgentPoolName model = new AgentPoolName().withName("glzufc");
         model = BinaryData.fromObject(model).toObject(AgentPoolName.class);
-        Assertions.assertEquals("deupewnwrei", model.name());
+        Assertions.assertEquals("glzufc", model.name());
     }
 }
