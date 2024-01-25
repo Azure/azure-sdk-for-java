@@ -95,11 +95,10 @@ public class TelemetryHelper {
             return OpenTelemetry.noop();
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
-        }
+
+        new AzureMonitorExporterBuilder()
+            .connectionString(applicationInsightsConnectionString)
+            .install(sdkBuilder);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
@@ -136,7 +135,7 @@ public class TelemetryHelper {
      * Re-initializes logging to otel - necessary in spring applications
      */
     public void initLogging() {
-        // needs to re-init logging after Spring starts :(
+        // need to re-init logging after Spring starts :(
         OpenTelemetryAppender.install(OTEL);
     }
 
