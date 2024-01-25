@@ -147,6 +147,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
+        <artifactId>azure-cosmos-encryption</artifactId>
+        <version>2.7.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
         <artifactId>azure-data-appconfiguration</artifactId>
         <version>1.5.1</version>
       </dependency>
