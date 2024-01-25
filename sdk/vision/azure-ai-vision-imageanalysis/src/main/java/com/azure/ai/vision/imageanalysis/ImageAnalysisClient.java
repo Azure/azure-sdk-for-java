@@ -28,6 +28,18 @@ import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
+ *
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create a synchronous Image Analysis client.
+ * &#47;&#47;
+ * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {
@@ -564,7 +576,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     *
+     * 
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      * <pre>
      * &#47;&#47;
@@ -620,7 +632,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     *
+     * 
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
      * <pre>
      * &#47;&#47;
