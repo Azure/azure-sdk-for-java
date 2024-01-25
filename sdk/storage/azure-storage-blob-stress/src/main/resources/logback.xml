@@ -15,8 +15,7 @@
   </root>
 
   # this is the category used by HTTP logging policy, add more/adjust as needed
-  <logger name="com.azure.storage.blob.implementation.BlobsImpl" level="INFO">
+  <logger name="com.azure.storage.blob.implementation.BlobsImpl" level="WARN">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="OpenTelemetry"/>
   </logger>
 </configuration>

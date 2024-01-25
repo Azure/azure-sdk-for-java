@@ -9,15 +9,18 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.stress.ContentInfo;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.toFluxByteBuffer;
 
 public class OriginalContent {
     private final static ClientLogger LOGGER = new ClientLogger(OriginalContent.class);
@@ -43,7 +46,10 @@ public class OriginalContent {
         return Mono.using(
                 () -> new CrcInputStream(BLOB_CONTENT_HEAD, blobSize),
                 data -> blobClient
-                        .upload(BinaryData.fromStream(data, blobSize))
+                        .upload(toFluxByteBuffer(data, 8192),
+                                new ParallelTransferOptions()
+                                        .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)
+                                        .setMaxConcurrency(1))
                         .then(data.getContentInfo()),
                 CrcInputStream::close)
             .map(info -> dataChecksum = info.getCrc())

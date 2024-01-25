@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -31,7 +33,14 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        return asyncClient.downloadContent().flatMap(response -> originalContent.checkMatch(response, span));
+        // TODO return downloadContent once it stops buffering
+
+        return asyncClient.downloadWithResponse(null, null, null, false)
+                .flatMap(response ->  {
+                    long contentLength = Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+                    return BinaryData.fromFlux(response.getValue(), contentLength, false);
+                })
+                .flatMap(bd -> originalContent.checkMatch(bd, span));
     }
 
     @Override
@@ -44,7 +53,7 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.deleteIfExists()
                 .then(super.cleanupAsync());
     }
 }

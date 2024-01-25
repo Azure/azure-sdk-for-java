@@ -60,7 +60,7 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.deleteIfExists()
                 .then(super.cleanupAsync());
     }
 }
