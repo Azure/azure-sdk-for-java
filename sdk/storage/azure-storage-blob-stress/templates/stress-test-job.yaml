@@ -10,7 +10,7 @@ spec:
   shareProcessNamespace: true
   containers:
     - name: fault-injector
-      image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-streaming
+      image: azsdkengsys.azurecr.io/stress/httpfaultinjector
       imagePullPolicy: Always
       resources:
         limits:
