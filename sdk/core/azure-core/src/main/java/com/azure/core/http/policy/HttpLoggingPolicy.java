@@ -237,7 +237,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
+                addHeadersToLogMessage(httpLogDetailLevel, allowedHeaderNames, request.getHeaders(), logBuilder);
             }
 
             if (request.getBody() == null) {
@@ -326,7 +326,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
+                addHeadersToLogMessage(httpLogDetailLevel, allowedHeaderNames, response.getHeaders(), logBuilder);
             }
         }
 
@@ -412,11 +412,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
+    private static void addHeadersToLogMessage(HttpLogDetailLevel detailLevel, Set<String> allowedHeaderNames, HttpHeaders headers,
         LoggingEventBuilder logBuilder) {
         // The raw header map uses keys that are already lower-cased.
-        HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> logBuilder.addKeyValue(value.getName(),
-            allowedHeaderNames.contains(key) ? value.getValue() : REDACTED_PLACEHOLDER));
+        HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> {
+            boolean isAllowed = allowedHeaderNames.contains(key);
+            if (isAllowed || detailLevel != HttpLogDetailLevel.ALLOWED_HEADERS) {
+                logBuilder.addKeyValue(key, isAllowed ? value : REDACTED_PLACEHOLDER);
+            }
+        });
     }
 
     /*

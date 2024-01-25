@@ -49,6 +49,24 @@ public class HttpLogDetailLevelTests {
             // bAsIc turns into BASIC
             Arguments.of(makeConfiguration("bAsIc"), HttpLogDetailLevel.BASIC),
 
+            // allowed_headers turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration(HttpLogDetailLevel.ALLOWED_HEADERS_VALUE), HttpLogDetailLevel.ALLOWED_HEADERS),
+
+            // ALLOWED_HEADERS turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration(HttpLogDetailLevel.ALLOWED_HEADERS.name()), HttpLogDetailLevel.ALLOWED_HEADERS),
+
+            // aLlOwEd_hEaDeRs turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration("aLlOwEd_hEaDeRs"), HttpLogDetailLevel.ALLOWED_HEADERS),
+
+            // allowedheaders turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration(HttpLogDetailLevel.ALLOWED_HEADERS_VALUE), HttpLogDetailLevel.ALLOWED_HEADERS),
+
+            // ALLOWEDHEADERS turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration("ALLOWEDHEADERS"), HttpLogDetailLevel.ALLOWED_HEADERS),
+
+            // aLlOwEd_hEaDeRs turns into ALLOWED_HEADERS
+            Arguments.of(makeConfiguration("aLlOwEdhEaDeRs"), HttpLogDetailLevel.ALLOWED_HEADERS),
+
             // headers turns into HEADERS
             Arguments.of(makeConfiguration(HttpLogDetailLevel.HEADERS_VALUE), HttpLogDetailLevel.HEADERS),
 

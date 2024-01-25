@@ -22,7 +22,13 @@ public enum HttpLogDetailLevel {
     BASIC,
 
     /**
+     * Logs everything in BASIC, plus allowed request and response headers.
+     */
+    ALLOWED_HEADERS,
+
+    /**
      * Logs everything in BASIC, plus all the request and response headers.
+     * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
      */
     HEADERS,
 
@@ -40,6 +46,8 @@ public enum HttpLogDetailLevel {
 
     static final String BASIC_VALUE = "basic";
     static final String HEADERS_VALUE = "headers";
+    static final String ALLOWED_HEADERS_VALUE = "allowed_headers";
+    static final String ALLOWEDHEADERS_VALUE = "allowedheaders";
     static final String BODY_VALUE = "body";
     static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
     static final String BODYANDHEADERS_VALUE = "bodyandheaders";
@@ -52,6 +60,8 @@ public enum HttpLogDetailLevel {
         HttpLogDetailLevel logDetailLevel;
         if (BASIC_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = BASIC;
+        } else if (ALLOWED_HEADERS_VALUE.equalsIgnoreCase(detailLevel) || ALLOWEDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
+            logDetailLevel = ALLOWED_HEADERS;
         } else if (HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = HEADERS;
         } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
@@ -81,7 +91,7 @@ public enum HttpLogDetailLevel {
      * @return Whether headers should be logged.
      */
     public boolean shouldLogHeaders() {
-        return this == HEADERS || this == BODY_AND_HEADERS;
+        return this == ALLOWED_HEADERS || this == HEADERS || this == BODY_AND_HEADERS;
     }
 
     /**
