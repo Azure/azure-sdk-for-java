@@ -176,13 +176,12 @@ public class TaskManager {
      * @param jobId The ID of the job to which the tasks will be added.
      * @param taskList The list of tasks to be submitted.
      * @param batchClientParallelOptions Options for configuring the parallelism of task submissions.
-     * @throws InterruptedException if the thread is interrupted while waiting.
      */
     public static Mono<Void> createTasks(
         TaskSubmitter taskSubmitter,
         String jobId,
         List<BatchTaskCreateParameters> taskList,
-        BatchClientParallelOptions batchClientParallelOptions) throws InterruptedException {
+        BatchClientParallelOptions batchClientParallelOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 

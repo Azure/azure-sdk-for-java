@@ -163,12 +163,9 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the job to which to add the task.
      * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
-     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
-     * network exception.
-     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList) throws InterruptedException {
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         return createTasks(jobId, taskList, null);
     }
 
@@ -190,13 +187,10 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the job to which to add the task.
      * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      * @param batchClientParallelOptions Option that configure the parallelization of the method.
-     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
-     * network exception.
-     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
-        BatchClientParallelOptions batchClientParallelOptions) throws InterruptedException {
+        BatchClientParallelOptions batchClientParallelOptions) {
         TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
         return TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
     }
