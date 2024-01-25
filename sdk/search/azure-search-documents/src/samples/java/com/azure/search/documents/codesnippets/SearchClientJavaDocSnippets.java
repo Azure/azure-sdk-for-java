@@ -21,9 +21,9 @@ import java.util.Map;
 
 public class SearchClientJavaDocSnippets {
 
-    public static SearchClient SEARCH_CLIENT;
+    public static SearchClient SEARCH_CLIENT = createSearchClientWithSearcClientBuilder();
 
-    public void createSearchClientWithSearcClientBuilder() {
+    public static SearchClient createSearchClientWithSearcClientBuilder() {
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder
         SearchClient searchClient = new SearchClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
@@ -31,6 +31,7 @@ public class SearchClientJavaDocSnippets {
             .indexName("{indexName}")
             .buildClient();
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder
+        return searchClient;
     }
 
     /**
