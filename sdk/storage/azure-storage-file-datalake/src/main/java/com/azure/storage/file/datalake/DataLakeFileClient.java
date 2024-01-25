@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1139,18 +1140,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         Context newContext;
-        if (options.isUpn()) {
-            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+        options = options == null ? new DataLakeFileInputStreamOptions() : options;
+        if (options.isUpn() != null){
             HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "true");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else if (!options.isUpn()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "false");
+            headers.set("x-ms-upn", options.isUpn()?"true":"false");
             if (context == null) {
                 newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
             } else {
@@ -1392,7 +1385,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
                     .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
-            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
 
@@ -1430,18 +1423,10 @@ public class DataLakeFileClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
         Context newContext;
-        if (options.isUpn()) {
-            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+        options = options == null ? new ReadToFileOptions() : options;
+        if (options.isUpn() != null){
             HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "true");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else if (!options.isUpn()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "false");
+            headers.set("x-ms-upn", options.isUpn()?"true":"false");
             if (context == null) {
                 newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
             } else {
@@ -1451,15 +1436,16 @@ public class DataLakeFileClient extends DataLakePathClient {
             newContext = null;
         }
 
+        ReadToFileOptions finalOptions = options;
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                new BlobDownloadToFileOptions(options.getFilePath())
-                    .setRange(Transforms.toBlobRange(options.getRange()))
-                    .setParallelTransferOptions(options.getParallelTransferOptions())
-                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
-                    .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
-                    .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                    .setOpenOptions(options.getOpenOptions()), timeout, newContext);
+                new BlobDownloadToFileOptions(finalOptions.getFilePath())
+                    .setRange(Transforms.toBlobRange(finalOptions.getRange()))
+                    .setParallelTransferOptions(finalOptions.getParallelTransferOptions())
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(finalOptions.getDownloadRetryOptions()))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(finalOptions.getDataLakeRequestConditions()))
+                    .setRetrieveContentRangeMd5(finalOptions.isRangeGetContentMd5())
+                    .setOpenOptions(finalOptions.getOpenOptions()), timeout, newContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, LOGGER);
     }

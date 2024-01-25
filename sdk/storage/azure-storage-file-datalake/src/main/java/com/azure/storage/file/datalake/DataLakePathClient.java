@@ -14,6 +14,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -1239,18 +1240,10 @@ public class DataLakePathClient {
     public Response<PathProperties> getPropertiesWithResponse(PathGetPropertiesOptions options, Duration timeout,
                                                               Context context) {
         Context newContext;
-        if (options.isUpn()){
-            //context is immutable, when you use context.add it returns a new context that you'll use from that point on
+        options = options == null ? new PathGetPropertiesOptions() : options;
+        if (options.isUpn() != null){
             HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "true");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else if (!options.isUpn()){
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", "false");
+            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
             if (context == null) {
                 newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
             } else {
@@ -1260,9 +1253,10 @@ public class DataLakePathClient {
             newContext = null;
         }
 
+        PathGetPropertiesOptions finalOptions = options;
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-                Transforms.toBlobRequestConditions(options.getRequestConditions()), timeout, newContext);
+                Transforms.toBlobRequestConditions(finalOptions.getRequestConditions()), timeout, newContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

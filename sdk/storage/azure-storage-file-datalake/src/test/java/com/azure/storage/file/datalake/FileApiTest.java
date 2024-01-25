@@ -25,6 +25,7 @@ import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttp
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -55,12 +56,15 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
@@ -3406,4 +3410,103 @@ public class FileApiTest extends DataLakeTestBase {
 
         assertTrue(aadFileClient.exists());
     }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
+    @Test
+    public void aclHeaderTests() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
+        dataLakeFileSystemClient.create();
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        fc = dataLakeFileSystemClient.getFileClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        fc.createWithResponse(options, null, Context.NONE);
+
+        PathProperties getPropertiesResponse = fc.getProperties();
+
+        FileReadResponse readWithResponse = fc.readWithResponse(new ByteArrayOutputStream(), null,
+            null, null, false, null, Context.NONE);
+
+        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        Response<PathProperties> readToFileResponse = fc.readToFileWithResponse(outFile.getPath(), null,
+            null, null, null, false, null, null,
+            null);
+
+        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(getPropertiesResponse.getAccessControlList()));
+
+        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
+
+        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readToFileResponse.getValue().getAccessControlList()));
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("upnHeaderTestSupplier")
+    public void upnHeaderTest(Boolean upnHeader) {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
+        dataLakeFileSystemClient.create();
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        fc = dataLakeFileSystemClient.getFileClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        fc.createWithResponse(options, null, Context.NONE);
+
+        /**
+         * When true:
+         * When false: x-ms-acl: user::rwx,group::r--,mask::rwx,other::---
+         * When null: x-ms-acl: user::rwx,group::r--,mask::rwx,other::---
+         */
+
+        //getProperties
+        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUpn(true);
+
+        PathProperties getPropertiesResponse = fc.getProperties(propertiesOptions);
+        Response<PathProperties> getPropertiesWithResponse = fc.getPropertiesWithResponse(propertiesOptions, null, null);
+
+        //readToFile
+        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        ReadToFileOptions readToFileOptions = new ReadToFileOptions();
+        readToFileOptions.setUpn(upnHeader).setFilePath(outFile.getPath()).setRange(null)
+            .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
+            .setRangeGetContentMd5(false).setOpenOptions(null);
+
+        PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
+        PathProperties readToFileBoolResponse1 = fc.readToFile(readToFileOptions, true);
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        PathProperties readToFileBoolResponse2 = fc.readToFile(readToFileOptions, false);
+        Response<PathProperties> readToFileWithResponse = fc.readToFileWithResponse(readToFileOptions, null, null);
+
+       //openInputStream
+        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUpn(upnHeader);
+        DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
+
+
+    }
+
+    private static Stream<Arguments> upnHeaderTestSupplier() {
+        return Stream.of(
+            Arguments.of(false));
+            //Arguments.of(false),
+            //Arguments.of((Boolean) null));
+    }
+
+
 }
