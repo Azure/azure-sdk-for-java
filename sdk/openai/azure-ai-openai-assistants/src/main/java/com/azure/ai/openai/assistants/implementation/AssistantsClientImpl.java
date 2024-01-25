@@ -58,7 +58,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets An OpenAI endpoint supporting assistants functionality.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -86,7 +86,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -95,7 +95,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
@@ -106,7 +106,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
@@ -117,7 +117,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
@@ -4369,8 +4369,8 @@ public final class AssistantsClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+    public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions, String contentType) {
+//        final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.uploadFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
                 contentType, accept, request, requestOptions, Context.NONE);

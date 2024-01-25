@@ -11,6 +11,8 @@ import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -18,8 +20,11 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -27,10 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
+    private static final String RESOURCE_FOLDER_ROOT = "src/test/resources";
+
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
     }
 
@@ -38,12 +46,14 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false), serviceVersion)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
     }
 
     AssistantsClient getAssistantsClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
     }
 
@@ -51,6 +61,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                         interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
                 serviceVersion)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
     }
 
@@ -123,6 +134,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
+    void uploadFileRunner(Runnable testRunner) {
+        testRunner.run();
+    }
+
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
         AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
                 .skipRequest((ignored1, ignored2) -> false);
@@ -144,5 +159,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertNotNull(object);
         assertInstanceOf(clazz, object);
         return object;
+    }
+
+    protected static Path openResourceFile(String fileName) {
+        return Paths.get("src", "test", "resources", fileName);
     }
 }

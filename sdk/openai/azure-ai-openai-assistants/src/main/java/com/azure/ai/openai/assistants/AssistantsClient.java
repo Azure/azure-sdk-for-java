@@ -4,6 +4,8 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
+import com.azure.ai.openai.assistants.implementation.multipart.MultipartDataHelper;
+import com.azure.ai.openai.assistants.implementation.multipart.MultipartDataSerializationResult;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -43,6 +45,11 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -2669,10 +2676,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions, String contentType) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
-        return this.serviceClient.uploadFileWithResponse(request, requestOptions);
+        return this.serviceClient.uploadFileWithResponse(request, requestOptions, contentType);
     }
 
     /**
@@ -2899,12 +2906,23 @@ public final class AssistantsClient {
         return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
     }
 
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public OpenAIFile uploadFile(Path localFile, FilePurpose filePurpose) {
+//        byte[] file = BinaryData.fromFile(localFile).toBytes();
+//        try {
+//            String mimeType = Files.probeContentType(localFile);
+//            return uploadFile(file, filePurpose, localFile.getFileName().toString(), mimeType);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
     /**
      * Uploads a file for use by other operations.
      *
      * @param file The file data (not filename) to upload.
      * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
+//     * @param filename A filename to associate with the uploaded data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2913,17 +2931,24 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(byte[] file, FilePurpose purpose, String filename) {
+    public OpenAIFile uploadFile(Path file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
+//        requestObj.put("file", file);
         requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        requestObj.put("filename", filename);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+//        requestObj.put("filename", file.getFileName());
+
+        // Multipart serialization logic
+        final MultipartDataHelper helper = new MultipartDataHelper();
+        final MultipartDataSerializationResult result = helper.serializeRequest(file, requestObj);
+        final BinaryData data = result.getData();
+
+
+        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+        String contentType = "multipart/form-data;" + " boundary=" + helper.getBoundary();
+        return uploadFileWithResponse(data, requestOptions, contentType).getValue().toObject(OpenAIFile.class);
     }
 
     /**
@@ -2939,16 +2964,15 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(byte[] file, FilePurpose purpose) {
+    private OpenAIFile uploadFile(byte[] file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Map<String, Object> requestObj = new HashMap<>();
         requestObj.put("file", file);
         requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
         BinaryData request = BinaryData.fromObject(requestObj);
-        return uploadFileWithResponse(request, requestOptions).getValue().toObject(OpenAIFile.class);
+        return uploadFileWithResponse(request, requestOptions, "").getValue().toObject(OpenAIFile.class);
     }
 
     /**
