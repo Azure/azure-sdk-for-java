@@ -52,7 +52,7 @@
               "allowCustom": true
             },
             "value": {
-              "durationMs": 1800000
+              "durationMs": 43200000
             }
           },
           {
@@ -61,13 +61,14 @@
             "name": "runId",
             "type": 2,
             "isRequired": true,
-            "query": "traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where sdkVersion contains \"java\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| summarize start=min(timestamp) by runId \r\n| order by start asc\r\n| project-away start",
+            "query": "dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp) by runId, cloud_RoleInstance \r\n| order by start desc\r\n| project runId, pod=cloud_RoleInstance",
             "typeSettings": {
-              "additionalResourceOptions": []
+              "additionalResourceOptions": [],
+              "showDefault": false
             },
             "queryType": 0,
             "resourceType": "microsoft.insights/components",
-            "value": ""
+            "value": null
           }
         ],
         "style": "pills",
@@ -84,7 +85,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runs = traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where sdkVersion contains \"java\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId, cloud_RoleInstance;\r\nlet azSdkLogs = traces\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"storage-\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[1])\r\n| where sdkVersion contains \"java\" and message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, azSdkContext=parse_json(message), runId, cloud_RoleInstance\r\n| evaluate bag_unpack(azSdkContext)\r\n| where [\"az.sdk.message\"] == \"starting test\"\r\n| project storageBlobPackageVersion, scenarioName, sync, concurrency, blobSize, runId, cloud_RoleInstance;\r\nruns \r\n| join kind = innerunique azSdkLogs on runId\r\n| order by start desc\r\n| project-away runId1, cloud_RoleInstance1\r\n| project runId, start, end, storageBlobPackageVersion, scenarioName, sync, concurrency, blobSize\r\n",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| extend packageVersion=coalesce(customDimensions[\"storageBlobPackageVersion\"], \"null\")\r\n| extend scenarioName=tostring(split(coalesce(customDimensions[\"scenarioName\"], \"null\"), \".\")[-1])\r\n| extend sync=coalesce(customDimensions[\"sync\"], \"null\")\r\n| extend concurrency=coalesce(customDimensions[\"concurrency\"], \"null\")\r\n| extend blobSize=coalesce(customDimensions[\"blobSize\"], \"null\")\r\n| extend pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| project runId, start, duration, scenarioName, concurrency, blobSize, sync, pod, packageVersion\r\n",
         "size": 0,
         "title": "Runs in {timeRange:label}",
         "noDataMessageStyle": 5,
@@ -94,14 +95,14 @@
           "sortBy": [
             {
               "itemKey": "start",
-              "sortOrder": 1
+              "sortOrder": 2
             }
           ]
         },
         "sortBy": [
           {
             "itemKey": "start",
-            "sortOrder": 1
+            "sortOrder": 2
           }
         ]
       },
@@ -115,17 +116,44 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\ndependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| extend status =  case(isempty(customDimensions[\"error.type\"]), \"ok\", customDimensions[\"error.type\"])\r\n| summarize downloads=count() by bin(timestamp, 1m), status\r\n| render timechart",
+        "query": "let runId = \"{runId}\";\r\nlet runDuration = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"]);\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = runDuration\r\n| summarize error_by_type=toint(sum(valueCount)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runCounter = runDuration\r\n| where errorType == \"\"\r\n| summarize successful_runs=sum(valueCount)\r\n| evaluate narrow();\r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize actual_test_duration_in_sec = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| evaluate narrow();\r\nlet avgThroughput = runDuration\r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtput_per_sec=round(avg(throughputPerMin/60), 2)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" \r\n| project parameters=bag_remove_keys(customDimensions, dynamic(['duration', 'sample.in', 'blobName',  'jreVendor']))\r\n| evaluate narrow();\r\nparameters \r\n| union runCounter, actualDuration, errors, avgThroughput\r\n| project Property = Column, Value\r\n",
         "size": 0,
+        "title": "Test summary",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Property",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Property",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "name": "query - 11"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\" and cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize successful_runs=sum(valueCount) by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
         "title": "Download rate (per minute)",
         "noDataMessageStyle": 5,
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
-      "customWidth": "50",
+      "customWidth": "30",
       "name": "query - 3",
       "styleSettings": {
-        "maxWidth": "50",
+        "maxWidth": "30",
         "showBorder": true
       }
     },
@@ -133,27 +161,113 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\ndependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| where isempty(customDimensions[\"error.type\"])\r\n| summarize duration_avg_ms=avg(duration) by bin(timestamp, 1m)\r\n| render timechart",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\"\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize avg_duration = avg(valueSum/valueCount) * 1000 by bin(timestamp, 1m)\r\n| render timechart",
         "size": 0,
+        "aggregation": 3,
         "title": "Duration (ms), average per minute, successful only",
         "noDataMessageStyle": 5,
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
-      "customWidth": "50",
+      "customWidth": "30",
       "name": "query - 5",
       "styleSettings": {
-        "maxWidth": "50"
+        "maxWidth": "30"
       }
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\nlet downloads=dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| project timestamp, duration, name, traceId=operation_Id, status=tostring(customDimensions[\"error.type\"]), success;\r\nlet faultInjections=traces \r\n| where cloud_RoleName == role_name\r\n| where message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, logger=customDimensions[\"LoggerName\"], level=customDimensions[\"LoggingLevel\"], thread=customDimensions[\"ThreadName\"], azSdkContext=parse_json(message)\r\n| extend fault = coalesce(azSdkContext[\"x-ms-faultinjector-response-option\"], \"none\")\r\n| extend traceId=tostring(split(azSdkContext[\"traceparent\"], \"-\")[1])\r\n| where azSdkContext[\"az.sdk.message\"] == \"HTTP response with fault injection\"\r\n| project fault, traceId;\r\ndownloads \r\n| join kind=leftouter faultInjections on traceId\r\n| where success == False\r\n| summarize faults = make_list(fault) by timestamp, status, duration, traceId\r\n",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"test.run.duration\"\r\n| extend status = tostring(customDimensions[\"error.type\"])\r\n| where status != \"\"\r\n| summarize test_errors = sum(valueCount) by status, bin(timestamp, 1m)\r\n| render timechart",
         "size": 0,
-        "title": "Failed operations",
-        "noDataMessage": "No failed operations!",
+        "aggregation": 3,
+        "title": "Error rate  (per minute)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 10",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.memory.usage\" and customDimensions[\"type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 2,
+        "title": "Heap memory used (MB)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.cpu.utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "CPU %",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.threads.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Thread count",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-blobstorage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"gc\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by gc_type, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "% of time spent in GC",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-blobstorage-\", runId);\r\nlet downloads=dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| project timestamp, duration, name, traceId=operation_Id, status=tostring(customDimensions[\"error.type\"]), success;\r\nlet faultInjections=traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, logger=customDimensions[\"LoggerName\"], level=customDimensions[\"LoggingLevel\"], thread=customDimensions[\"ThreadName\"], azSdkContext=parse_json(message)\r\n| where azSdkContext[\"az.sdk.message\"] == \"HTTP request\"\r\n| extend fault = coalesce(azSdkContext[\"x-ms-faultinjector-response-option\"], \"none\")\r\n| extend traceId=tostring(split(azSdkContext[\"traceparent\"], \"-\")[1])\r\n| project fault, traceId;\r\ndownloads \r\n| join kind=leftouter faultInjections on traceId\r\n| where success == False\r\n| summarize faults = make_list(fault) by timestamp, status, duration, traceId\r\n",
+        "size": 0,
+        "title": "Examples of failed operations (survived after sampling)",
+        "noDataMessage": "so empty",
         "queryType": 0,
         "resourceType": "microsoft.insights/components",
         "sortBy": []
@@ -163,74 +277,7 @@
       "styleSettings": {
         "maxWidth": "100"
       }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where sdkVersion contains \"java\";\r\nmetrics\r\n| where name == \"Heap Memory Used (MB)\"\r\n| summarize avg_memory = avg(value) by cloud_RoleInstance, bin(timestamp, 1m)\r\n| render areachart",
-        "size": 0,
-        "title": "Heap memory used (MB)",
-        "queryType": 0,
-        "resourceType": "microsoft.insights/components"
-      },
-      "customWidth": "50",
-      "name": "query - 8",
-      "styleSettings": {
-        "maxWidth": "50"
-      }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\nlet metrics = performanceCounters\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where sdkVersion contains \"java\";\r\nmetrics\r\n| where name == \"% Processor Time Normalized\"\r\n| summarize avg_cpu = avg(value) by cloud_RoleInstance, bin(timestamp, 1m)\r\n| render timechart",
-        "size": 0,
-        "title": "CPU %",
-        "queryType": 0,
-        "resourceType": "microsoft.insights/components"
-      },
-      "customWidth": "50",
-      "name": "query - 9",
-      "styleSettings": {
-        "maxWidth": "50"
-      }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"storage-\", runId);\r\nlet downloads = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| where isnotempty(customDimensions[\"error.type\"])\r\n| summarize download_errors = count() by bin(timestamp, 1m), tostring(customDimensions[\"error.type\"]);\r\nlet logs = traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and severityLevel > 1\r\n| summarize errors_in_logs = count() by bin(timestamp, 1m);\r\ndownloads \r\n| join kind = fullouter (logs) on timestamp\r\n| project timestamp = coalesce(timestamp, timestamp1), download_errors, errors_in_logs\r\n| render timechart\r\n",
-        "size": 0,
-        "title": "Errors by time",
-        "queryType": 0,
-        "resourceType": "microsoft.insights/components"
-      },
-      "customWidth": "40",
-      "name": "query - 10",
-      "styleSettings": {
-        "maxWidth": "40"
-      }
-    },
-    {
-      "type": 3,
-      "content": {
-        "version": "KqlItem/1.0",
-        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == \"storage-{runId}\" and severityLevel > 1\r\n| extend category = tostring(customDimensions[\"LoggerName\"]), message=substring(coalesce(message, outerMessage), 0, 48)\r\n| project timestamp, category, message, severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", severityLevel == 1, \"Info\", \"\"), cloud_RoleName\r\n| summarize occurences = count() by severity, category, message, cloud_RoleName\r\n| order by occurences desc\r\n",
-        "size": 0,
-        "title": "Warnings and errors in logs",
-        "queryType": 0,
-        "resourceType": "microsoft.insights/components",
-        "sortBy": []
-      },
-      "customWidth": "60",
-      "name": "query - 6",
-      "styleSettings": {
-        "maxWidth": "60",
-        "showBorder": true
-      }
     }
   ],
-  "fallbackResourceIds": [],
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }

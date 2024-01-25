@@ -29,14 +29,11 @@ RUN --mount=type=cache,target=/root/.m2 \
 FROM mcr.microsoft.com/openjdk/jdk:21-mariner
 
 RUN yum -y update
+RUN yum install -y procps
 
 # Copy target files from builder image
 WORKDIR /app
 COPY --from=builder /stress/sdk/storage/azure-storage-blob-stress/target .
-
-# Configure monitoring
-ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.17/applicationinsights-agent-3.4.17.jar
-ADD ${AGENT_URL} ./BOOT-INF/classes/
 
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]

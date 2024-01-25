@@ -3,13 +3,10 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
-import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.CrcOutputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
@@ -17,44 +14,45 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 
 public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(DownloadStream.class);
-    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(DownloadStream.class);
-    private static final OriginalContent ORIGINAL_CONTENT = new OriginalContent();
+    private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
     public DownloadStream(StorageStressOptions options) {
-        super(options, TELEMETRY_HELPER);
-        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(options.getBlobName());
-        this.syncClient = getSyncContainerClient().getBlobClient(options.getBlobName());
-        this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(options.getBlobName());
+        super(options);
+        String blobName = generateBlobName();
+        this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
+        this.syncClient = getSyncContainerClient().getBlobClient(blobName);
+        this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
     }
 
     @Override
-    protected boolean runInternal(Context span) throws IOException {
+    protected void runInternal(Context span) throws IOException {
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
             syncClient.downloadStreamWithResponse(outputStream, null, null, null, false, null, span);
             outputStream.close();
-            return ORIGINAL_CONTENT.checkMatch(outputStream.getContentInfo(), span).block();
+            originalContent.checkMatch(outputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
-    protected Mono<Boolean> runInternalAsync(Context span) {
+    protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadStreamWithResponse(null, null, null, false)
-            .flatMap(response -> ORIGINAL_CONTENT.checkMatch(response.getValue(), span));
+            .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(ORIGINAL_CONTENT.setupBlob(asyncNoFaultClient, options.getSize()));
+    public Mono<Void> setupAsync() {
+        // setup is called for each instance of scenario. Number of instances equals options.getParallel()
+        // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
+        return super.setupAsync()
+                .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override
-    public Mono<Void> globalCleanupAsync() {
-        return asyncNoFaultClient.delete()
-            .then(super.globalCleanupAsync());
+    public Mono<Void> cleanupAsync() {
+        return asyncNoFaultClient.deleteIfExists()
+                .then(super.cleanupAsync());
     }
 }
