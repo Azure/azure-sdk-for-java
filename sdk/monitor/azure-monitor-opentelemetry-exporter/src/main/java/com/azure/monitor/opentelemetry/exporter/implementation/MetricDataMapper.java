@@ -153,7 +153,12 @@ public class MetricDataMapper {
                 throw new IllegalArgumentException("metric data type '" + type + "' is not supported yet");
         }
 
-        pointBuilder.setValue(pointDataValue * 1000); // upstream changes millis to seconds and we need to send millis back to breeze
+        // new http semconv metrics use seconds, but we want to send milliseconds to Breeze
+        if (metricData.getName().equals("http.server.request.duration") || metricData.getName().equals("http.client.request.duration")) {
+            pointDataValue = pointDataValue * 1000;
+        }
+
+        pointBuilder.setValue(pointDataValue);
 
         // We emit some metrics via OpenTelemetry that have names which use characters that aren't
         // supported in OpenTelemetry metric names, and so we put the real metric names into an attribute
