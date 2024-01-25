@@ -16,8 +16,8 @@ public final class PartitionProperties {
     private final String id;
     private final long beginningSequenceNumber;
     private final long lastEnqueuedSequenceNumber;
-    private final Long beginningReplicationSegment;
-    private final Long lastEnqueuedReplicationSegment;
+    private final Integer beginningReplicationSegment;
+    private final Integer lastEnqueuedReplicationSegment;
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTime;
     private final boolean isEmpty;
@@ -30,8 +30,8 @@ public final class PartitionProperties {
         final String lastEnqueuedOffset,
         final Instant lastEnqueuedTime,
         final boolean isEmpty,
-        final Long beginningReplicationSegment,
-        final Long lastEnqueuedReplicationSegment) {
+        final Integer beginningReplicationSegment,
+        final Integer lastEnqueuedReplicationSegment) {
         this.eventHubName = eventHubName;
         this.id = id;
         this.beginningSequenceNumber = beginningSequenceNumber;
@@ -66,7 +66,7 @@ public final class PartitionProperties {
      *
      * @return The first replication segment or null if geo-disaster recovery is not enabled.
      */
-    public Long getBeginningReplicationSegment() {
+    public Integer getBeginningReplicationSegment() {
         return beginningReplicationSegment;
     }
 
@@ -84,7 +84,7 @@ public final class PartitionProperties {
      *
      * @return The last replication segment or null if geo-disaster recovery is not enabled.
      */
-    public Long getLastEnqueuedReplicationSegment() {
+    public Integer getLastEnqueuedReplicationSegment() {
         return this.lastEnqueuedReplicationSegment;
     }
 

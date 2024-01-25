@@ -119,7 +119,7 @@ public class EventHubReactorSessionTest {
         final Long sequenceNumber = 10L;
         final String offset = "test-offset";
         final Instant instant = Instant.ofEpochSecond(1704836768);
-        final Long replicationSegment = 201L;
+        final Integer replicationSegment = 201;
 
         // -1 because replication segment is null.
         final String includesDisplay = isInclusive ? ">=" : ">";
@@ -162,25 +162,25 @@ public class EventHubReactorSessionTest {
 
     public static Stream<Arguments> getExpression() {
         final long position = 2501;
-        final long replicationSegment = 19;
+        final int replicationSegment = 19;
         final Instant enqueuedTime = Instant.ofEpochMilli(1705519331970L);
 
         return Stream.of(
             Arguments.of(EventPosition.fromOffset(position), "amqp.annotation.x-opt-offset > '2501'"),
-            
-            Arguments.of(EventPosition.fromEnqueuedTime(enqueuedTime), 
+
+            Arguments.of(EventPosition.fromEnqueuedTime(enqueuedTime),
                 "amqp.annotation.x-opt-enqueued-time > '1705519331970'"),
 
             // -1 because replication segment is null.
-            Arguments.of(EventPosition.fromSequenceNumber(position), 
+            Arguments.of(EventPosition.fromSequenceNumber(position),
                 "amqp.annotation.x-opt-sequence-number > '-1:2501'"),
-            Arguments.of(EventPosition.fromSequenceNumber(position, true), 
+            Arguments.of(EventPosition.fromSequenceNumber(position, true),
                 "amqp.annotation.x-opt-sequence-number >= '-1:2501'"),
 
             // Passing in a replication segment.
-            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment), 
+            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment),
                 "amqp.annotation.x-opt-sequence-number > '19:2501'"),
-            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment, true), 
+            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment, true),
                 "amqp.annotation.x-opt-sequence-number >= '19:2501'")
         );
     }
@@ -202,7 +202,7 @@ public class EventHubReactorSessionTest {
         when(eventPosition.getSequenceNumber()).thenReturn(null);
         when(eventPosition.getEnqueuedDateTime()).thenReturn(null);
 
-        when(eventPosition.getReplicationSegment()).thenReturn(3L);
+        when(eventPosition.getReplicationSegment()).thenReturn(3);
 
         assertThrows(IllegalArgumentException.class, () -> EventHubReactorSession.getExpression(eventPosition));
     }

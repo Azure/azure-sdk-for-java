@@ -39,7 +39,7 @@ public class SystemPropertiesTest {
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
     private final long offset = 102L;
     private final long sequenceNumber = 12345L;
-    private final Long replicationSegment = 110L;
+    private final Integer replicationSegment = 110;
 
     private AmqpAnnotatedMessage message;
 
