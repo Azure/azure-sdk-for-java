@@ -1739,15 +1739,6 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
                 partitionKeyDefinition,
                 Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
 
-        //    try {
-        //      bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-        //      bulkWriterForPatch.flushAndClose()
-        //      fail("Test should fail with 412 since the condition is false")
-        //    } catch {
-        //      case e: CosmosException =>
-        //        e.getMessage.contains("All retries exhausted for 'PATCH' bulk operation - statusCode=[412:0]") shouldEqual true
-        //    }
-
         val thrown = intercept[CosmosException] {
             bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
             bulkWriterForPatch.flushAndClose()
