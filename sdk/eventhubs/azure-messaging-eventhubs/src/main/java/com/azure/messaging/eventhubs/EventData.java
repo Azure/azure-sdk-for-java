@@ -424,7 +424,7 @@ public class EventData extends MessageContent {
      *
      * @return The replication segment.  -1 or null if geo-disaster recovery is not enabled.
      */
-    public Long getReplicationSegment() {
+    public Integer getReplicationSegment() {
         return systemProperties.getReplicationSegment();
     }
 

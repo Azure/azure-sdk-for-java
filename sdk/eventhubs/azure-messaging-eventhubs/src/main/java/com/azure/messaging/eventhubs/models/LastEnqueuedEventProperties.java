@@ -16,7 +16,7 @@ public class LastEnqueuedEventProperties {
     private final Long lastOffset;
     private final Instant lastEnqueuedTime;
     private final Instant retrievalTime;
-    private final Long lastEnqueuedReplicationSegment;
+    private final Integer lastEnqueuedReplicationSegment;
 
     /**
      * Creates an instance with the last enqueued event information set.
@@ -33,7 +33,7 @@ public class LastEnqueuedEventProperties {
      *     geo-disaster recovery is not enabled.
      */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
-                                       Instant retrievalTime, Long lastEnqueuedReplicationSegment) {
+                                       Instant retrievalTime, Integer lastEnqueuedReplicationSegment) {
         this.lastSequenceNumber = lastSequenceNumber;
         this.lastOffset = lastOffset;
         this.lastEnqueuedTime = lastEnqueuedTime;
@@ -87,7 +87,7 @@ public class LastEnqueuedEventProperties {
      * @return The replication segment for the last enqueued event.  {@code null} or -1 is returned if geo-disaster
      *     recovery is not enabled in the Event Hub namespace.
      */
-    public Long getReplicationSegment() {
+    public Integer getReplicationSegment() {
         return lastEnqueuedReplicationSegment;
     }
 }

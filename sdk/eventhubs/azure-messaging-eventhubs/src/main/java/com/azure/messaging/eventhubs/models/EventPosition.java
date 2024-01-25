@@ -38,7 +38,7 @@ public final class EventPosition {
     private final String offset;
     private final Long sequenceNumber;
     private final Instant enqueuedDateTime;
-    private final Long replicationSegment;
+    private final Integer replicationSegment;
 
     private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
                           final Instant enqueuedDateTime) {
@@ -46,7 +46,7 @@ public final class EventPosition {
     }
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
-                          final Instant enqueuedDateTime, final Long replicationSegment) {
+                          final Instant enqueuedDateTime, final Integer replicationSegment) {
         this.offset = offset;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
@@ -150,7 +150,7 @@ public final class EventPosition {
      * @param replicationSegment the replication segment.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromSequenceNumber(long sequenceNumber, long replicationSegment) {
+    public static EventPosition fromSequenceNumber(long sequenceNumber, int replicationSegment) {
         return fromSequenceNumber(sequenceNumber, replicationSegment, false);
     }
 
@@ -165,7 +165,7 @@ public final class EventPosition {
      * @param replicationSegment the replication segment.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromSequenceNumber(long sequenceNumber, long replicationSegment, boolean isInclusive) {
+    public static EventPosition fromSequenceNumber(long sequenceNumber, int replicationSegment, boolean isInclusive) {
         return new EventPosition(isInclusive, null, sequenceNumber, null, replicationSegment);
     }
 
@@ -215,7 +215,7 @@ public final class EventPosition {
      * @return The replication segment or {@code null} if geo-disaster recovery is not enabled or there is no
      * replication segment.
      */
-    public Long getReplicationSegment() {
+    public Integer getReplicationSegment() {
         return this.replicationSegment;
     }
 
