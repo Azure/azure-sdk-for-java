@@ -24,7 +24,7 @@ class ReadManyFilterAnalyzerSpec extends UnitSpec {
 
   it should "use id as the effective readMany filtering property when id is the partitionKey" in {
     val filters = Array[Filter](
-      In("_itemIdentity", Array("id(1).pk(\"1pk\")", "id(2).pk(\"2pk\")")),
+      In("_itemIdentity", Array("id(1).pk([\"1pk\"])", "id(2).pk([\"2pk\"])")),
       In("id", Array("3", "4")),
       In("random", Array("5", "6")),
       EqualTo("physicist", "Schrodinger")
@@ -45,15 +45,15 @@ class ReadManyFilterAnalyzerSpec extends UnitSpec {
     analyzedFilters.readManyFiltersOpt.get should have size 2
 
     val expectedReadManyFilters = Array(
-      ReadManyFilter(new PartitionKey("3"), "id(3).pk(\"3\")"),
-      ReadManyFilter(new PartitionKey("4"), "id(4).pk(\"4\")"),
+      ReadManyFilter(new PartitionKey("3"), "id(3).pk([\"3\"])"),
+      ReadManyFilter(new PartitionKey("4"), "id(4).pk([\"4\"])"),
     )
     analyzedFilters.readManyFiltersOpt.get should contain allElementsOf expectedReadManyFilters
   }
 
   it should "use _itemIdentity as the effective readMany filtering property when id is not the partitionKey" in {
     val filters = Array[Filter](
-      In("_itemIdentity", Array("id(1).pk(\"1pk\")", "id(2).pk(\"2pk\")")),
+      In("_itemIdentity", Array("id(1).pk([\"1pk\"])", "id(2).pk([\"2pk\"])")),
       In("id", Array("3", "4")),
       In("random", Array("5", "6")),
       EqualTo("physicist", "Schrodinger")
@@ -74,8 +74,8 @@ class ReadManyFilterAnalyzerSpec extends UnitSpec {
     analyzedFilters.readManyFiltersOpt.get should have size 2
 
     val expectedReadManyFilters = Array(
-      ReadManyFilter(new PartitionKey("1pk"), "id(1).pk(\"1pk\")"),
-      ReadManyFilter(new PartitionKey("2pk"), "id(2).pk(\"2pk\")"),
+      ReadManyFilter(new PartitionKey("1pk"), "id(1).pk([\"1pk\"])"),
+      ReadManyFilter(new PartitionKey("2pk"), "id(2).pk([\"2pk\"])"),
     )
     analyzedFilters.readManyFiltersOpt.get should contain allElementsOf expectedReadManyFilters
   }

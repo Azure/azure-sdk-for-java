@@ -118,4 +118,9 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     public IPartitionKeyComponent truncate() {
         return this;
     }
+
+    @Override
+    public Object toObject() {
+        return this.value;
+    }
 }

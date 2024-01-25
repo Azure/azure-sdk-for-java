@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 
 import java.util
-import scala.collection.mutable
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -24,14 +23,8 @@ private[spark] object CosmosItemIdentityHelper {
   private val cosmosItemIdentityStringRegx = """(?i)id[(](.*?)[)][.]pk[(](.*)[)]""".r
   private val objectMapper = Utils.getSimpleObjectMapper
 
-  def getCosmosItemIdentityValueString(id: String, partitionKeyValue: Object): String = {
-    partitionKeyValue match {
-      // for subpartitions case
-      case wrappedArray: mutable.WrappedArray[Any] =>
-        s"id($id).pk(${objectMapper.writeValueAsString(wrappedArray.toList.asJava)})"
-
-      case _ => s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue)})"
-    }
+  def getCosmosItemIdentityValueString(id: String, partitionKeyValue: List[Object]): String = {
+    s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {
@@ -51,9 +44,7 @@ private[spark] object CosmosItemIdentityHelper {
       ImplementationBridgeHelpers
         .PartitionKeyHelper
         .getPartitionKeyAccessor
-        .toPartitionKey(
-          com.azure.cosmos.implementation.PartitionKeyHelper.getPartitionKeyObjectKey(pkValuesArray),
-          PartitionKeyInternal.fromObjectArray(pkValuesArray, false))
+        .toPartitionKey(PartitionKeyInternal.fromObjectArray(pkValuesArray, false))
 
     new CosmosItemIdentity(partitionKey, idValue)
   }

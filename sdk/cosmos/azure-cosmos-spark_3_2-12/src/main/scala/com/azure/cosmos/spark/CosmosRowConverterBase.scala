@@ -865,6 +865,8 @@ private[cosmos] class CosmosRowConverterBase(
                     .map(element => (
                         element.getKey,
                         convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode))).toMap
+            case (jsonNode: ObjectNode, string: StringType) =>
+              jsonNode.toString
             case (arrayNode: ArrayNode, array: ArrayType) =>
                 arrayNode.elements().asScala
                     .map(convertToSparkDataType(array.elementType, _, schemaConversionMode)).toArray
