@@ -303,12 +303,20 @@ class EventHubMessageSerializer implements MessageSerializer {
     }
 
     private static <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz, boolean isRequired) {
-        if (isRequired && !amqpBody.containsKey(key)) {
+        boolean containsString = amqpBody.containsKey(key);
+        boolean containsSymbol = amqpBody.containsKey(Symbol.valueOf(key));
+
+        if (isRequired && !containsString && !containsSymbol) {
             throw LOGGER.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
-        return getValue(amqpBody.get(key), key, clazz, isRequired);
+        if (containsString) {
+            return getValue(amqpBody.get(key), key, clazz, isRequired);
+        } else {
+            return getValue(amqpBody.get(Symbol.valueOf(key)), key, clazz, isRequired);
+        }
+
     }
 
     @SuppressWarnings("unchecked")
