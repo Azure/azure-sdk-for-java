@@ -33,7 +33,7 @@ public final class VMSkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"maehvbbxurip\"},\"properties\":{\"provisioningState\":\"Updating\",\"values\":[{\"resourceType\":\"axkgx\",\"capabilities\":[{}],\"name\":\"kpyklyhp\",\"tier\":\"odpvruudlgzib\",\"size\":\"ostgkts\"},{\"resourceType\":\"dxeclzedqbcvh\",\"capabilities\":[{}],\"name\":\"lodqkdlwwqfbu\",\"tier\":\"kxtrq\",\"size\":\"smlmbtxhwgfwsrta\"}]},\"id\":\"oezbrhubsk\",\"name\":\"udygooo\",\"type\":\"kqfqjbvl\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"curdoiwiitht\"},\"properties\":{\"provisioningState\":\"Upgrading\",\"values\":[{\"resourceType\":\"ihwqknfdntwjchr\",\"capabilities\":[{},{},{},{}],\"name\":\"hxumwctondzj\",\"tier\":\"udfdlwgg\",\"size\":\"sb\"},{\"resourceType\":\"ovvtgseinqfiu\",\"capabilities\":[{}],\"name\":\"npirgnepttw\",\"tier\":\"sniffc\",\"size\":\"qnrojlpijnkrxfrd\"}]},\"id\":\"c\",\"name\":\"atiz\",\"type\":\"ronasxift\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class VMSkusListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VmSkuProfile> response = manager.vMSkus().list("ydbsd", com.azure.core.util.Context.NONE);
+        PagedIterable<VmSkuProfile> response = manager.vMSkus().list("y", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("maehvbbxurip", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("curdoiwiitht", response.iterator().next().extendedLocation().name());
     }
 }

@@ -20,41 +20,28 @@ public final class PrivateEndpointsImpl implements PrivateEndpoints {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public PrivateEndpointsImpl(
-        PrivateEndpointsClient innerClient,
+    public PrivateEndpointsImpl(PrivateEndpointsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getOperationStatusWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        String operationId,
-        Context context) {
-        Response<OperationStatusInner> inner =
-            this
-                .serviceClient()
-                .getOperationStatusWithResponse(
-                    vaultName, resourceGroupName, privateEndpointConnectionName, operationId, context);
+    public Response<OperationStatus> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, String operationId, Context context) {
+        Response<OperationStatusInner> inner = this.serviceClient().getOperationStatusWithResponse(vaultName,
+            resourceGroupName, privateEndpointConnectionName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationStatus getOperationStatus(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
-        OperationStatusInner inner =
-            this
-                .serviceClient()
-                .getOperationStatus(vaultName, resourceGroupName, privateEndpointConnectionName, operationId);
+    public OperationStatus getOperationStatus(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, String operationId) {
+        OperationStatusInner inner = this.serviceClient().getOperationStatus(vaultName, resourceGroupName,
+            privateEndpointConnectionName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

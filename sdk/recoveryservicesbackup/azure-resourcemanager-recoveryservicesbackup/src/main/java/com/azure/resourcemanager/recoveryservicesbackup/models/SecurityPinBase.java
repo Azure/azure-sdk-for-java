@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Base class for get security pin request body. */
+/**
+ * Base class for get security pin request body.
+ */
 @Fluent
 public final class SecurityPinBase {
     /*
@@ -17,13 +19,15 @@ public final class SecurityPinBase {
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
-    /** Creates an instance of SecurityPinBase class. */
+    /**
+     * Creates an instance of SecurityPinBase class.
+     */
     public SecurityPinBase() {
     }
 
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @return the resourceGuardOperationRequests value.
      */
     public List<String> resourceGuardOperationRequests() {
@@ -32,7 +36,7 @@ public final class SecurityPinBase {
 
     /**
      * Set the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
      * @return the SecurityPinBase object itself.
      */
@@ -43,7 +47,7 @@ public final class SecurityPinBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

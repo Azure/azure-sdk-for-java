@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for backup schedule. */
+/**
+ * Base class for backup schedule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,17 +22,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "LogSchedulePolicy", value = LogSchedulePolicy.class),
     @JsonSubTypes.Type(name = "LongTermSchedulePolicy", value = LongTermSchedulePolicy.class),
     @JsonSubTypes.Type(name = "SimpleSchedulePolicy", value = SimpleSchedulePolicy.class),
-    @JsonSubTypes.Type(name = "SimpleSchedulePolicyV2", value = SimpleSchedulePolicyV2.class)
-})
+    @JsonSubTypes.Type(name = "SimpleSchedulePolicyV2", value = SimpleSchedulePolicyV2.class) })
 @Immutable
 public class SchedulePolicy {
-    /** Creates an instance of SchedulePolicy class. */
+    /**
+     * Creates an instance of SchedulePolicy class.
+     */
     public SchedulePolicy() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

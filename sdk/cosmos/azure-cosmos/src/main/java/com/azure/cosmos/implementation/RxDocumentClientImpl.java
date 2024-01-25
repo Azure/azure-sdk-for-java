@@ -42,6 +42,7 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -77,6 +78,7 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -2982,7 +2984,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
 
                             // create point reads
-                            Flux<FeedResponse<Document>> pointReads = pointReadsForReadMany(
+                            Flux<FeedResponse<T>> pointReads = pointReadsForReadMany(
                                 diagnosticsFactory,
                                 partitionRangeItemKeyMap,
                                 resourceLink,
@@ -2990,12 +2992,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 klass);
 
                             // create the executable query
-                            Flux<FeedResponse<Document>> queries = queryForReadMany(
+                            Flux<FeedResponse<T>> queries = queryForReadMany(
                                 diagnosticsFactory,
                                 resourceLink,
                                 new SqlQuerySpec(DUMMY_SQL_QUERY),
                                 state.getQueryOptions(),
-                                Document.class,
+                                klass,
                                 ResourceType.Document,
                                 collection,
                                 Collections.unmodifiableMap(rangeQueryMap));
@@ -3010,7 +3012,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                            ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
                                            Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
                                            double requestCharge = 0;
-                                           for (FeedResponse<Document> page : feedList) {
+                                           for (FeedResponse<T> page : feedList) {
                                                ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
                                                    ModelBridgeInternal.queryMetrics(page);
                                                if (pageQueryMetrics != null) {
@@ -3019,9 +3021,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                }
 
                                                requestCharge += page.getRequestCharge();
-                                               // TODO: this does double serialization: FIXME
-                                               finalList.addAll(page.getResults().stream().map(document ->
-                                                   ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                               finalList.addAll(page.getResults());
                                                aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                                            }
 
@@ -3254,7 +3254,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .collect(Collectors.joining());
     }
 
-    private <T extends Resource> Flux<FeedResponse<T>> queryForReadMany(
+    private <T> Flux<FeedResponse<T>> queryForReadMany(
         ScopedDiagnosticsFactory diagnosticsFactory,
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
@@ -3310,12 +3310,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return feedResponseFlux;
     }
 
-    private <T> Flux<FeedResponse<Document>> pointReadsForReadMany(
+    private <T> Flux<FeedResponse<T>> pointReadsForReadMany(
         ScopedDiagnosticsFactory diagnosticsFactory,
-        Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
+        Map<PartitionKeyRange,
+        List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
         Class<T> klass) {
+
+        // if there is any factory method being passed in, use the factory method to deserializ the object
+        // else fallback to use the original way
+        // typically used by spark trying to convert into SparkRowItem
+        ItemDeserializer effectiveItemDeserializer = getEffectiveItemDeserializer(queryRequestOptions, klass);
 
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
@@ -3354,7 +3360,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getLeft();
                 CosmosException cosmosException = resourceResponseToExceptionPair.getRight();
-                FeedResponse<Document> feedResponse;
+                FeedResponse<T> feedResponse;
 
                 if (cosmosException != null) {
                     feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
@@ -3364,10 +3370,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
                 } else {
                     CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, effectiveItemDeserializer);
                     feedResponse = ModelBridgeInternal.createFeedResponse(
-                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                        cosmosItemResponse.getResponseHeaders());
+                            Arrays.asList(cosmosItemResponse.getItem()),
+                            cosmosItemResponse.getResponseHeaders());
 
                     diagnosticsAccessor.addClientSideDiagnosticsToFeed(
                         feedResponse.getCosmosDiagnostics(),
@@ -3384,6 +3390,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionLink, String query, QueryFeedOperationState state, Class<T> classOfT) {
 
         return queryDocuments(collectionLink, new SqlQuerySpec(query), state, classOfT);
+    }
+
+    private <T> ItemDeserializer getEffectiveItemDeserializer(
+            CosmosQueryRequestOptions queryRequestOptions,
+            Class<T> klass) {
+
+        Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
+                null :
+                ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .getItemFactoryMethod(queryRequestOptions, klass);
+
+        if (factoryMethod == null) {
+            return this.itemDeserializer; // using default itemDeserializer
+        }
+
+        return new ItemDeserializer.JsonDeserializer(factoryMethod);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {

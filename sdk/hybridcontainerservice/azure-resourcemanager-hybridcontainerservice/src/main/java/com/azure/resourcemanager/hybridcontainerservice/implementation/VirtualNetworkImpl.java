@@ -128,8 +128,8 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworks");
     }
 
     public VirtualNetwork refresh() {

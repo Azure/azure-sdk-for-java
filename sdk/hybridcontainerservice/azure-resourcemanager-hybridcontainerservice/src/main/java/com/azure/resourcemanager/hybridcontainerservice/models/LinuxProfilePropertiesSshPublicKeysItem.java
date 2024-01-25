@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LinuxProfilePropertiesSshPublicKeysItem {
     /*
-     * KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM
-     * format with or without headers.
+     * Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or
+     * without headers.
      */
     @JsonProperty(value = "keyData")
     private String keyData;
@@ -26,8 +26,8 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
     }
 
     /**
-     * Get the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
-     * certificate must be in PEM format with or without headers.
+     * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
      * 
      * @return the keyData value.
      */
@@ -36,8 +36,8 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
     }
 
     /**
-     * Set the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
-     * certificate must be in PEM format with or without headers.
+     * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
      * 
      * @param keyData the keyData value to set.
      * @return the LinuxProfilePropertiesSshPublicKeysItem object itself.
