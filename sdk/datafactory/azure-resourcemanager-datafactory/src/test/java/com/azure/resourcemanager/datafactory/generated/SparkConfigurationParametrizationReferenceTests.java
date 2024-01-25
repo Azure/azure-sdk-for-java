@@ -13,7 +13,7 @@ public final class SparkConfigurationParametrizationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkConfigurationParametrizationReference model
-            = BinaryData.fromString("{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datadd\"}")
+            = BinaryData.fromString("{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datalvea\"}")
                 .toObject(SparkConfigurationParametrizationReference.class);
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE, model.type());
     }
@@ -21,7 +21,7 @@ public final class SparkConfigurationParametrizationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SparkConfigurationParametrizationReference model = new SparkConfigurationParametrizationReference()
-            .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE).withReferenceName("datadd");
+            .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE).withReferenceName("datalvea");
         model = BinaryData.fromObject(model).toObject(SparkConfigurationParametrizationReference.class);
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE, model.type());
     }

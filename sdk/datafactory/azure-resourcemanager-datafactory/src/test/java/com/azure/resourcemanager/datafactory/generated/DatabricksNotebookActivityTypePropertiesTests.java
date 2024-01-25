@@ -14,17 +14,16 @@ public final class DatabricksNotebookActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksNotebookActivityTypeProperties model = BinaryData.fromString(
-            "{\"notebookPath\":\"dataswytnoirie\",\"baseParameters\":{\"q\":\"datam\",\"svweu\":\"dataimnfgfsjptb\",\"fnhmrawmchcdegw\":\"datatoe\"},\"libraries\":[{\"thpg\":\"dataiewfjwfkw\",\"xf\":\"datamtahnimkndujyw\"},{\"slytmttjducosxc\":\"dataymuwa\",\"wpmpapwmpdsvkiwj\":\"datahtovtn\"},{\"lkj\":\"datafz\"}]}")
+            "{\"notebookPath\":\"datagfyjwxwpoywymt\",\"baseParameters\":{\"x\":\"datadgbg\",\"gia\":\"datazrzhkhmw\",\"nlzalsuj\":\"datarftpgqxnyoakd\"},\"libraries\":[{\"bmfejtdboa\":\"datasekbce\"}]}")
             .toObject(DatabricksNotebookActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabricksNotebookActivityTypeProperties model
-            = new DatabricksNotebookActivityTypeProperties().withNotebookPath("dataswytnoirie")
-                .withBaseParameters(mapOf("q", "datam", "svweu", "dataimnfgfsjptb", "fnhmrawmchcdegw", "datatoe"))
-                .withLibraries(Arrays.asList(mapOf("thpg", "dataiewfjwfkw", "xf", "datamtahnimkndujyw"),
-                    mapOf("slytmttjducosxc", "dataymuwa", "wpmpapwmpdsvkiwj", "datahtovtn"), mapOf("lkj", "datafz")));
+            = new DatabricksNotebookActivityTypeProperties().withNotebookPath("datagfyjwxwpoywymt")
+                .withBaseParameters(mapOf("x", "datadgbg", "gia", "datazrzhkhmw", "nlzalsuj", "datarftpgqxnyoakd"))
+                .withLibraries(Arrays.asList(mapOf("bmfejtdboa", "datasekbce")));
         model = BinaryData.fromObject(model).toObject(DatabricksNotebookActivityTypeProperties.class);
     }
 

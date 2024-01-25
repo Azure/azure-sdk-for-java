@@ -176,6 +176,7 @@
 ```java
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Samples for ActivityRuns QueryByPipelineRun.
@@ -2080,6 +2081,7 @@ import com.azure.resourcemanager.datafactory.models.RunQueryFilter;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilterOperand;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilterOperator;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -2408,6 +2410,7 @@ import com.azure.resourcemanager.datafactory.models.RunQueryFilter;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilterOperand;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilterOperator;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -2463,6 +2466,7 @@ import com.azure.resourcemanager.datafactory.models.TriggerPipelineReference;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Extended Properties for Azure IaasVM Backup. */
+/**
+ * Extended Properties for Azure IaasVM Backup.
+ */
 @Fluent
 public final class ExtendedProperties {
     /*
@@ -22,13 +24,15 @@ public final class ExtendedProperties {
     @JsonProperty(value = "linuxVmApplicationName")
     private String linuxVmApplicationName;
 
-    /** Creates an instance of ExtendedProperties class. */
+    /**
+     * Creates an instance of ExtendedProperties class.
+     */
     public ExtendedProperties() {
     }
 
     /**
      * Get the diskExclusionProperties property: Extended Properties for Disk Exclusion.
-     *
+     * 
      * @return the diskExclusionProperties value.
      */
     public DiskExclusionProperties diskExclusionProperties() {
@@ -37,7 +41,7 @@ public final class ExtendedProperties {
 
     /**
      * Set the diskExclusionProperties property: Extended Properties for Disk Exclusion.
-     *
+     * 
      * @param diskExclusionProperties the diskExclusionProperties value to set.
      * @return the ExtendedProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class ExtendedProperties {
 
     /**
      * Get the linuxVmApplicationName property: Linux VM name.
-     *
+     * 
      * @return the linuxVmApplicationName value.
      */
     public String linuxVmApplicationName() {
@@ -57,7 +61,7 @@ public final class ExtendedProperties {
 
     /**
      * Set the linuxVmApplicationName property: Linux VM name.
-     *
+     * 
      * @param linuxVmApplicationName the linuxVmApplicationName value to set.
      * @return the ExtendedProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class ExtendedProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -33,51 +33,32 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"kldmaxxijv\",\"location\":\"kwsdgkj\",\"tags\":{\"wefcvoinw\":\"cwrase\",\"qicladv\":\"qartwy\"},\"id\":\"tdavuqmcbymsfobj\",\"name\":\"quvjez\",\"type\":\"j\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"zabwmvog\",\"location\":\"jsvlpg\",\"tags\":{\"iomqoqpepiaea\":\"wcehaqidoyzlt\",\"eqwbpqqncjubkhj\":\"fsergdtpeqnacy\",\"qiipsejb\":\"zfymcwmbupyvqyvl\",\"ieswhddzydisn\":\"vsi\"},\"id\":\"epywyjlnldpxottd\",\"name\":\"i\",\"type\":\"ocqibz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RecoveryPointResource> response =
-            manager
-                .recoveryPointsRecommendedForMoves()
-                .list(
-                    "rbf",
-                    "xyxz",
-                    "bcip",
-                    "msexroqr",
-                    "dktxfv",
-                    new ListRecoveryPointsRecommendedForMoveRequest()
-                        .withObjectType("feeqgpkrietbgnix")
-                        .withExcludedRPList(Arrays.asList("wzkyf", "nwpiwxeiicrm")),
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<RecoveryPointResource> response
+            = manager.recoveryPointsRecommendedForMoves().list("quxweyslandkd", "djhunhghcgawnr", "nquoxsotireimse",
+                "bfsx", "tcyilbvz", new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("xcjzlquze")
+                    .withExcludedRPList(Arrays.asList("jxebj", "b")),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kwsdgkj", response.iterator().next().location());
-        Assertions.assertEquals("cwrase", response.iterator().next().tags().get("wefcvoinw"));
-        Assertions.assertEquals("kldmaxxijv", response.iterator().next().etag());
+        Assertions.assertEquals("jsvlpg", response.iterator().next().location());
+        Assertions.assertEquals("wcehaqidoyzlt", response.iterator().next().tags().get("iomqoqpepiaea"));
+        Assertions.assertEquals("zabwmvog", response.iterator().next().etag());
     }
 }

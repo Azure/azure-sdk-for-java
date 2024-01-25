@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.JavaScriptFunctionBindingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The binding to a JavaScript function. */
+/**
+ * The binding to a JavaScript function.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.StreamAnalytics/JavascriptUdf")
 @Fluent
 public final class JavaScriptFunctionBinding extends FunctionBinding {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JavaScriptFunctionBinding.class);
-
     /*
      * The binding properties associated with a JavaScript function.
      */
@@ -26,8 +24,14 @@ public final class JavaScriptFunctionBinding extends FunctionBinding {
     private JavaScriptFunctionBindingProperties innerProperties;
 
     /**
+     * Creates an instance of JavaScriptFunctionBinding class.
+     */
+    public JavaScriptFunctionBinding() {
+    }
+
+    /**
      * Get the innerProperties property: The binding properties associated with a JavaScript function.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JavaScriptFunctionBindingProperties innerProperties() {
@@ -37,7 +41,7 @@ public final class JavaScriptFunctionBinding extends FunctionBinding {
     /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -47,7 +51,7 @@ public final class JavaScriptFunctionBinding extends FunctionBinding {
     /**
      * Set the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @param script the script value to set.
      * @return the JavaScriptFunctionBinding object itself.
      */
@@ -61,7 +65,7 @@ public final class JavaScriptFunctionBinding extends FunctionBinding {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

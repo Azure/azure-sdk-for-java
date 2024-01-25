@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point. */
+/**
+ * AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest")
 @Fluent
@@ -23,13 +25,15 @@ public final class AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest class.
+     */
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest() {
     }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -38,69 +42,113 @@ public final class AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest object itself.
      */
-    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withPointInTime(OffsetDateTime pointInTime) {
         super.withPointInTime(pointInTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withTargetVirtualMachineId(
-        String targetVirtualMachineId) {
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
+        withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
+        withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

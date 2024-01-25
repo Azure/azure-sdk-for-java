@@ -4,34 +4,38 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Inputs ListByStreamingJob. */
+/**
+ * Samples for Inputs ListByStreamingJob.
+ */
 public final class InputsListByStreamingJobSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_ListByStreamingJob.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_ListByStreamingJob.json
      */
     /**
      * Sample code: List all inputs in a streaming job.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void listAllInputsInAStreamingJob(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().listByStreamingJob("sjrg8440", "sj9597", null, Context.NONE);
+    public static void
+        listAllInputsInAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.inputs().listByStreamingJob("sjrg8440", "sj9597", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_ListByStreamingJob_Diagnostics.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Input_ListByStreamingJob_Diagnostics.json
      */
     /**
      * Sample code: List all inputs in a streaming job and include diagnostic information using the $select OData query
      * parameter.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void listAllInputsInAStreamingJobAndIncludeDiagnosticInformationUsingTheSelectODataQueryParameter(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.inputs().listByStreamingJob("sjrg3276", "sj7804", "*", Context.NONE);
+        manager.inputs().listByStreamingJob("sjrg3276", "sj7804", "*", com.azure.core.util.Context.NONE);
     }
 }

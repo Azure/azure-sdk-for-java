@@ -33,7 +33,7 @@ public final class DatasetsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"mhewdfualgkfo\",\"structure\":\"dataqm\",\"schema\":\"datauyim\",\"linkedServiceName\":{\"referenceName\":\"oprkpdghqsatbebx\",\"parameters\":{\"xxvlss\":\"datayyengnhoxbpqzqaa\",\"vqtogkxdevkn\":\"dataptxdrajihqwfrt\"}},\"parameters\":{\"uizvvwyhs\":{\"type\":\"Bool\",\"defaultValue\":\"datasqobrentjyamijg\"},\"ibwkiwyt\":{\"type\":\"Bool\",\"defaultValue\":\"datahzaiu\"},\"xlhdindcttiq\":{\"type\":\"Array\",\"defaultValue\":\"databrejvwwbx\"}},\"annotations\":[\"datay\",\"datajli\"],\"folder\":{\"name\":\"xrevw\"},\"\":{\"ufzna\":\"datatfohcylvj\",\"dphyxlxvo\":\"datadzyuxrufwdbimj\",\"aufabtpcbnt\":\"datacuwdesytt\"}},\"name\":\"nkvsnsi\",\"type\":\"llwcedzodv\",\"etag\":\"xtzgxdxq\",\"id\":\"uzubntuimi\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"xvsyl\",\"structure\":\"datameendocqa\",\"schema\":\"datawk\",\"linkedServiceName\":{\"referenceName\":\"ismonwhazalftta\",\"parameters\":{\"srduqhrlltfec\":\"datasve\",\"pjdbz\":\"dataxzhbfibzvxqh\",\"sydjr\":\"datalchv\",\"roohppupucybtra\":\"dataxjawfujvgvrpe\"}},\"parameters\":{\"rho\":{\"type\":\"Array\",\"defaultValue\":\"datam\"}},\"annotations\":[\"dataxeaexwee\",\"datafogv\",\"datamqdnfonncnfjygg\"],\"folder\":{\"name\":\"gv\"},\"\":{\"jw\":\"dataxlrtmjygnixkpadj\",\"xnkmaezxldmzhwuz\":\"datahqeibucmfvuizjr\"}},\"name\":\"dsvgonkomuapys\",\"type\":\"iytgfqvules\",\"etag\":\"dbcypvsvxfyqsf\",\"id\":\"afhbfpzf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,14 +51,14 @@ public final class DatasetsListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatasetResource> response
-            = manager.datasets().listByFactory("ahe", "lmiuprfqyrwtdnr", com.azure.core.util.Context.NONE);
+            = manager.datasets().listByFactory("yqqoswkshtgfewfl", "byyvau", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uzubntuimi", response.iterator().next().id());
-        Assertions.assertEquals("mhewdfualgkfo", response.iterator().next().properties().description());
-        Assertions.assertEquals("oprkpdghqsatbebx",
+        Assertions.assertEquals("afhbfpzf", response.iterator().next().id());
+        Assertions.assertEquals("xvsyl", response.iterator().next().properties().description());
+        Assertions.assertEquals("ismonwhazalftta",
             response.iterator().next().properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL,
-            response.iterator().next().properties().parameters().get("uizvvwyhs").type());
-        Assertions.assertEquals("xrevw", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals(ParameterType.ARRAY,
+            response.iterator().next().properties().parameters().get("rho").type());
+        Assertions.assertEquals("gv", response.iterator().next().properties().folder().name());
     }
 }

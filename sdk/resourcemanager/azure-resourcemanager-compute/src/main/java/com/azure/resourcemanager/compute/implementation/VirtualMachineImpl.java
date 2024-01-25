@@ -2916,6 +2916,12 @@ class VirtualMachineImpl
         return uefiSettings;
     }
 
+    @Override
+    public VirtualMachineImpl withEncryptionAtHost() {
+        ensureSecurityProfile().withEncryptionAtHost(true);
+        return this;
+    }
+
     /** Class to manage Data disk collection. */
     private class ManagedDataDiskCollection {
         private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();

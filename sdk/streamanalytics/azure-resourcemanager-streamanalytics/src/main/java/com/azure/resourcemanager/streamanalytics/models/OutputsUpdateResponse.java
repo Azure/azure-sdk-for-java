@@ -9,23 +9,29 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 
-/** Contains all response data for the update operation. */
+/**
+ * Contains all response data for the update operation.
+ */
 public final class OutputsUpdateResponse extends ResponseBase<OutputsUpdateHeaders, OutputInner> {
     /**
      * Creates an instance of OutputsUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this OutputsUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public OutputsUpdateResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, OutputInner value, OutputsUpdateHeaders headers) {
+    public OutputsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, OutputInner value,
+        OutputsUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     * 
+     * @return the deserialized response body.
+     */
     @Override
     public OutputInner getValue() {
         return super.getValue();

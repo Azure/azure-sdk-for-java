@@ -7,20 +7,27 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The API entity reference. */
+/**
+ * The API entity reference.
+ */
 @Fluent
 public final class ApiEntityReference {
     /*
-     * The ARM resource id in the form of
-     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
+     * Creates an instance of ApiEntityReference class.
+     */
+    public ApiEntityReference() {
+    }
+
+    /**
      * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -30,7 +37,7 @@ public final class ApiEntityReference {
     /**
      * Set the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-     *
+     * 
      * @param id the id value to set.
      * @return the ApiEntityReference object itself.
      */
@@ -41,7 +48,7 @@ public final class ApiEntityReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

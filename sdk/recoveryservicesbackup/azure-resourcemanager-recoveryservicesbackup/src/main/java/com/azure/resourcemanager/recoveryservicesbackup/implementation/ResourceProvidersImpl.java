@@ -23,22 +23,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getOperationStatusWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, context);
+    public Response<OperationStatus> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,8 +54,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceClient().bmsPrepareDataMove(vaultName, resourceGroupName, parameters);
     }
 
-    public void bmsPrepareDataMove(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+        Context context) {
         this.serviceClient().bmsPrepareDataMove(vaultName, resourceGroupName, parameters, context);
     }
 
@@ -67,51 +63,21 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceClient().bmsTriggerDataMove(vaultName, resourceGroupName, parameters);
     }
 
-    public void bmsTriggerDataMove(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+        Context context) {
         this.serviceClient().bmsTriggerDataMove(vaultName, resourceGroupName, parameters, context);
     }
 
-    public void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters) {
-        this
-            .serviceClient()
-            .moveRecoveryPoint(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
+    public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
+        this.serviceClient().moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters);
     }
 
-    public void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context) {
-        this
-            .serviceClient()
-            .moveRecoveryPoint(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context);
+    public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context) {
+        this.serviceClient().moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters, context);
     }
 
     private ResourceProvidersClient serviceClient() {

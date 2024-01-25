@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** REST API operation definition. */
+/**
+ * REST API operation definition.
+ */
 @Fluent
 public final class Operation {
     /*
@@ -43,13 +45,15 @@ public final class Operation {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class Operation {
 
     /**
      * Get the display property: The localized display information for this particular operation or action.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -67,7 +71,7 @@ public final class Operation {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -76,7 +80,7 @@ public final class Operation {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the Operation object itself.
      */
@@ -87,7 +91,7 @@ public final class Operation {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -96,7 +100,7 @@ public final class Operation {
 
     /**
      * Get the properties property: Additional descriptions for the operation.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -105,7 +109,7 @@ public final class Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

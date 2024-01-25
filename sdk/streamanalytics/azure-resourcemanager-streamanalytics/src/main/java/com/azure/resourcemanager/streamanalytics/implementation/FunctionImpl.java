@@ -33,6 +33,10 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
         return this.innerModel().type();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public FunctionInner innerModel() {
         return this.innerObject;
     }
@@ -60,36 +64,14 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public Function create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .createOrReplaceWithResponse(
-                    resourceGroupName,
-                    jobName,
-                    functionName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions().createOrReplaceWithResponse(resourceGroupName,
+            jobName, functionName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
         return this;
     }
 
     public Function create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .createOrReplaceWithResponse(
-                    resourceGroupName,
-                    jobName,
-                    functionName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions().createOrReplaceWithResponse(resourceGroupName,
+            jobName, functionName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
         return this;
     }
 
@@ -107,57 +89,37 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public Function apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .updateWithResponse(
-                    resourceGroupName, jobName, functionName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions().updateWithResponse(resourceGroupName, jobName,
+            functionName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public Function apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .updateWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions()
+            .updateWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    FunctionImpl(
-        FunctionInner innerObject, com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
+    FunctionImpl(FunctionInner innerObject,
+        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.jobName = Utils.getValueFromIdByName(innerObject.id(), "streamingjobs");
-        this.functionName = Utils.getValueFromIdByName(innerObject.id(), "functions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "streamingjobs");
+        this.functionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "functions");
     }
 
     public Function refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .getWithResponse(resourceGroupName, jobName, functionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions()
+            .getWithResponse(resourceGroupName, jobName, functionName, Context.NONE).getValue();
         return this;
     }
 
     public Function refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFunctions()
-                .getWithResponse(resourceGroupName, jobName, functionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFunctions()
+            .getWithResponse(resourceGroupName, jobName, functionName, context).getValue();
         return this;
-    }
-
-    public ResourceTestStatus test(FunctionInner function) {
-        return serviceManager.functions().test(resourceGroupName, jobName, functionName, function);
     }
 
     public ResourceTestStatus test() {
@@ -168,16 +130,14 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
         return serviceManager.functions().test(resourceGroupName, jobName, functionName, function, context);
     }
 
-    public Function retrieveDefaultDefinition() {
-        return serviceManager.functions().retrieveDefaultDefinition(resourceGroupName, jobName, functionName);
-    }
-
     public Response<Function> retrieveDefaultDefinitionWithResponse(
         FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context) {
-        return serviceManager
-            .functions()
-            .retrieveDefaultDefinitionWithResponse(
-                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters, context);
+        return serviceManager.functions().retrieveDefaultDefinitionWithResponse(resourceGroupName, jobName,
+            functionName, functionRetrieveDefaultDefinitionParameters, context);
+    }
+
+    public Function retrieveDefaultDefinition() {
+        return serviceManager.functions().retrieveDefaultDefinition(resourceGroupName, jobName, functionName);
     }
 
     public FunctionImpl withProperties(FunctionProperties properties) {

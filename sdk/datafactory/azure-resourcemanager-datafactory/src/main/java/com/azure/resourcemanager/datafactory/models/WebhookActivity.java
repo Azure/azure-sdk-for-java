@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * WebHook activity.
@@ -202,7 +203,7 @@ public final class WebhookActivity extends ControlActivity {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, String> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -214,7 +215,7 @@ public final class WebhookActivity extends ControlActivity {
      * @param headers the headers value to set.
      * @return the WebhookActivity object itself.
      */
-    public WebhookActivity withHeaders(Object headers) {
+    public WebhookActivity withHeaders(Map<String, String> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new WebhookActivityTypeProperties();
         }

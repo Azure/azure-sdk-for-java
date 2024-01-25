@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of BackupEngineBase resources. */
+/**
+ * List of BackupEngineBase resources.
+ */
 @Fluent
 public final class BackupEngineBaseResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class BackupEngineBaseResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<BackupEngineBaseResourceInner> value;
 
-    /** Creates an instance of BackupEngineBaseResourceList class. */
+    /**
+     * Creates an instance of BackupEngineBaseResourceList class.
+     */
     public BackupEngineBaseResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupEngineBaseResourceInner> value() {
@@ -33,7 +37,7 @@ public final class BackupEngineBaseResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupEngineBaseResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class BackupEngineBaseResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupEngineBaseResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class BackupEngineBaseResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

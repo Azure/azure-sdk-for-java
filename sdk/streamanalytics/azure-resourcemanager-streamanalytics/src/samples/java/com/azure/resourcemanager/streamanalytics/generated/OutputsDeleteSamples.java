@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Outputs Delete. */
+/**
+ * Samples for Outputs Delete.
+ */
 public final class OutputsDeleteSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Delete.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Delete.json
      */
     /**
      * Sample code: Delete an output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void deleteAnOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.outputs().deleteWithResponse("sjrg2157", "sj6458", "output1755", Context.NONE);
+        manager.outputs().deleteWithResponse("sjrg2157", "sj6458", "output1755", com.azure.core.util.Context.NONE);
     }
 }
