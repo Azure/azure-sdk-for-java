@@ -143,7 +143,9 @@ private[spark] case class ItemsPartitionReaderWithReadMany
             val computedColumnsMap = Map(
               readConfig.readManyFilteringConfig.readManyFilterProperty ->
                 ((_: ObjectNode) => {
-                  CosmosItemIdentityHelper.getCosmosItemIdentityValueString(idValue, ModelBridgeInternal.getPartitionKeyObject(partitionKey))
+                  CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
+                    idValue,
+                    ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray.toList)
                 })
             )
 
