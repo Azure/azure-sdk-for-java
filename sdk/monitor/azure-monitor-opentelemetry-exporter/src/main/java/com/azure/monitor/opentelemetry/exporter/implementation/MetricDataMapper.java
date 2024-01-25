@@ -153,7 +153,7 @@ public class MetricDataMapper {
                 throw new IllegalArgumentException("metric data type '" + type + "' is not supported yet");
         }
 
-        pointBuilder.setValue(pointDataValue);
+        pointBuilder.setValue(pointDataValue * 1000); // upstream changes millis to seconds and we need to send millis back to breeze
 
         // We emit some metrics via OpenTelemetry that have names which use characters that aren't
         // supported in OpenTelemetry metric names, and so we put the real metric names into an attribute
