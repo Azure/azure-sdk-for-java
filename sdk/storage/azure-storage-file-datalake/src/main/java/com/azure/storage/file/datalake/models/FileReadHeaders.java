@@ -47,7 +47,7 @@ public final class FileReadHeaders {
     private String errorCode;
     private OffsetDateTime creationTime;
     private String encryptionContext;
-    private List<PathAccessControlEntry> AccessControlList;
+    private List<PathAccessControlEntry> accessControlList;
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -863,7 +863,7 @@ public final class FileReadHeaders {
      * @return the access control list.
      */
     public List<PathAccessControlEntry> getAccessControlList() {
-        return AccessControlList;
+        return accessControlList;
     }
 
     /**
@@ -873,7 +873,7 @@ public final class FileReadHeaders {
      * @return the FileReadHeaders object itself.
      */
     public FileReadHeaders setAccessControlList(List<PathAccessControlEntry> accessControlList) {
-        this.AccessControlList = accessControlList;
+        this.accessControlList = accessControlList;
         return this;
     }
 }

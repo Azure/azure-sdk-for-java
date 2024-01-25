@@ -54,7 +54,6 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
-import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1141,9 +1140,9 @@ public class DataLakeFileClient extends DataLakePathClient {
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         Context newContext;
         options = options == null ? new DataLakeFileInputStreamOptions() : options;
-        if (options.isUpn() != null){
+        if (options.isUpn() != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", options.isUpn()?"true":"false");
+            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
             if (context == null) {
                 newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
             } else {
@@ -1424,9 +1423,9 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
         Context newContext;
         options = options == null ? new ReadToFileOptions() : options;
-        if (options.isUpn() != null){
+        if (options.isUpn() != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", options.isUpn()?"true":"false");
+            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
             if (context == null) {
                 newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
             } else {

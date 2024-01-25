@@ -14,7 +14,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -1241,7 +1240,7 @@ public class DataLakePathClient {
                                                               Context context) {
         Context newContext;
         options = options == null ? new PathGetPropertiesOptions() : options;
-        if (options.isUpn() != null){
+        if (options.isUpn() != null) {
             HttpHeaders headers = new HttpHeaders();
             headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
             if (context == null) {

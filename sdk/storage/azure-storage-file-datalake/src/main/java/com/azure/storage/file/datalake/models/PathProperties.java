@@ -48,7 +48,7 @@ public class PathProperties {
     private String owner;
     private String group;
     private String permissions;
-    private List<PathAccessControlEntry> AccessControlList;
+    private List<PathAccessControlEntry> accessControlList;
 
     static {
         AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
@@ -57,7 +57,7 @@ public class PathProperties {
             properties.owner = owner;
             properties.group = group;
             properties.permissions = permissions;
-            properties.AccessControlList = PathAccessControlEntry.parseList(AccessControlList);
+            properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
 
             return properties;
         });
@@ -435,7 +435,7 @@ public class PathProperties {
      * @return the access control list.
      */
     public List<PathAccessControlEntry> getAccessControlList() {
-        return AccessControlList;
+        return accessControlList;
     }
 
 }
