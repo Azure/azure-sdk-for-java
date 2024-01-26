@@ -3423,11 +3423,16 @@ public class FileApiTest extends DataLakeTestBase {
             .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
         fc.createWithResponse(options, null, Context.NONE);
 
+        //getProperties
         PathProperties getPropertiesResponse = fc.getProperties();
+        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(getPropertiesResponse.getAccessControlList()));
 
+        //readWithResponse
         FileReadResponse readWithResponse = fc.readWithResponse(new ByteArrayOutputStream(), null,
             null, null, false, null, Context.NONE);
+        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
 
+        //readToFileWithResponse
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();
         createdFiles.add(outFile);
@@ -3439,11 +3444,6 @@ public class FileApiTest extends DataLakeTestBase {
         Response<PathProperties> readToFileResponse = fc.readToFileWithResponse(outFile.getPath(), null,
             null, null, null, false, null, null,
             null);
-
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(getPropertiesResponse.getAccessControlList()));
-
-        assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readWithResponse.getDeserializedHeaders().getAccessControlList()));
-
         assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(readToFileResponse.getValue().getAccessControlList()));
     }
 
@@ -3451,6 +3451,8 @@ public class FileApiTest extends DataLakeTestBase {
     @ParameterizedTest
     @MethodSource("upnHeaderTestSupplier")
     public void upnHeaderTest(Boolean upnHeader) {
+        //feature currently doesn't work in preprod - test uses methods that send the request header. verified in fiddler
+        //that the header is being sent and is properly assigned.
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
         dataLakeFileSystemClient.create();
         dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
@@ -3460,17 +3462,14 @@ public class FileApiTest extends DataLakeTestBase {
             .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
         fc.createWithResponse(options, null, Context.NONE);
 
-        /**
-         * When true:
-         * When false: x-ms-acl: user::rwx,group::r--,mask::rwx,other::---
-         * When null: x-ms-acl: user::rwx,group::r--,mask::rwx,other::---
-         */
-
         //getProperties
-        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUpn(true);
+        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUpn(upnHeader);
 
         PathProperties getPropertiesResponse = fc.getProperties(propertiesOptions);
+        assertNotNull(getPropertiesResponse.getAccessControlList());
+
         Response<PathProperties> getPropertiesWithResponse = fc.getPropertiesWithResponse(propertiesOptions, null, null);
+        assertNotNull(getPropertiesWithResponse.getValue().getAccessControlList());
 
         //readToFile
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
@@ -3480,32 +3479,42 @@ public class FileApiTest extends DataLakeTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
-
         ReadToFileOptions readToFileOptions = new ReadToFileOptions();
         readToFileOptions.setUpn(upnHeader).setFilePath(outFile.getPath()).setRange(null)
             .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
             .setRangeGetContentMd5(false).setOpenOptions(null);
 
-        PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
-        PathProperties readToFileBoolResponse1 = fc.readToFile(readToFileOptions, true);
+        PathProperties readToFileResponse1 = fc.readToFile(readToFileOptions);
+        assertNotNull(readToFileResponse1.getAccessControlList());
+
+        PathProperties readToFileBoolResponse2 = fc.readToFile(readToFileOptions, true);
+        assertNotNull(readToFileBoolResponse2.getAccessControlList());
+
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
-        PathProperties readToFileBoolResponse2 = fc.readToFile(readToFileOptions, false);
+        PathProperties readToFileBoolResponse3 = fc.readToFile(readToFileOptions, false);
+        assertNotNull(readToFileBoolResponse3.getAccessControlList());
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
         Response<PathProperties> readToFileWithResponse = fc.readToFileWithResponse(readToFileOptions, null, null);
+        assertNotNull(readToFileWithResponse.getValue().getAccessControlList());
 
-       //openInputStream
+        //openInputStream
         DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUpn(upnHeader);
+
         DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
-
-
+        //no way to pull acl from properties in openInputStream
+        //assertNotNull(openInputStreamResponse.getProperties().getAccessControlList());
     }
 
     private static Stream<Arguments> upnHeaderTestSupplier() {
         return Stream.of(
-            Arguments.of(false));
-            //Arguments.of(false),
-            //Arguments.of((Boolean) null));
+            Arguments.of(false),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
     }
 
 

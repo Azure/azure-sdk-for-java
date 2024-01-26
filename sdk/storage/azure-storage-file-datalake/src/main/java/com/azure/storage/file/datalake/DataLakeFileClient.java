@@ -1445,7 +1445,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRequestConditions(Transforms.toBlobRequestConditions(finalOptions.getDataLakeRequestConditions()))
                     .setRetrieveContentRangeMd5(finalOptions.isRangeGetContentMd5())
                     .setOpenOptions(finalOptions.getOpenOptions()), timeout, newContext);
-            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
 
