@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure storage specific error information. */
+/**
+ * Azure storage specific error information.
+ */
 @Fluent
 public final class AzureWorkloadErrorInfo {
     /*
@@ -41,13 +43,15 @@ public final class AzureWorkloadErrorInfo {
     @JsonProperty(value = "additionalDetails")
     private String additionalDetails;
 
-    /** Creates an instance of AzureWorkloadErrorInfo class. */
+    /**
+     * Creates an instance of AzureWorkloadErrorInfo class.
+     */
     public AzureWorkloadErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -56,7 +60,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -67,7 +71,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -76,7 +80,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -87,7 +91,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the errorTitle property: Title: Typically, the entity that the error pertains to.
-     *
+     * 
      * @return the errorTitle value.
      */
     public String errorTitle() {
@@ -96,7 +100,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorTitle property: Title: Typically, the entity that the error pertains to.
-     *
+     * 
      * @param errorTitle the errorTitle value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -107,7 +111,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -116,7 +120,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -127,7 +131,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the additionalDetails property: Additional details for above error code.
-     *
+     * 
      * @return the additionalDetails value.
      */
     public String additionalDetails() {
@@ -136,7 +140,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the additionalDetails property: Additional details for above error code.
-     *
+     * 
      * @param additionalDetails the additionalDetails value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -147,7 +151,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

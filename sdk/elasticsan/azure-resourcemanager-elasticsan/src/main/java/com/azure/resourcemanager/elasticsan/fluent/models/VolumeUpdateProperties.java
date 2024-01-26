@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume response properties. */
+/**
+ * Volume response properties.
+ */
 @Fluent
 public final class VolumeUpdateProperties {
     /*
@@ -23,13 +25,15 @@ public final class VolumeUpdateProperties {
     @JsonProperty(value = "managedBy")
     private ManagedByInfo managedBy;
 
-    /** Creates an instance of VolumeUpdateProperties class. */
+    /**
+     * Creates an instance of VolumeUpdateProperties class.
+     */
     public VolumeUpdateProperties() {
     }
 
     /**
      * Get the sizeGiB property: Volume size.
-     *
+     * 
      * @return the sizeGiB value.
      */
     public Long sizeGiB() {
@@ -38,7 +42,7 @@ public final class VolumeUpdateProperties {
 
     /**
      * Set the sizeGiB property: Volume size.
-     *
+     * 
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeUpdateProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class VolumeUpdateProperties {
 
     /**
      * Get the managedBy property: Parent resource information.
-     *
+     * 
      * @return the managedBy value.
      */
     public ManagedByInfo managedBy() {
@@ -58,7 +62,7 @@ public final class VolumeUpdateProperties {
 
     /**
      * Set the managedBy property: Parent resource information.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeUpdateProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class VolumeUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

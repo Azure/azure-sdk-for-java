@@ -32,16 +32,22 @@
   </scm>
 
   <properties>
-     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+    <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
-      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
+    </javadoc.excludePackageNames>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.34.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -59,14 +65,14 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.34.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.34.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -100,6 +106,20 @@
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
+    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-core</artifactId>
@@ -121,7 +141,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-otlp</artifactId>
-      <version>1.32.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+      <version>1.34.1</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -136,11 +156,11 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.34.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.34.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.34.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.34.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.34.1]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupEngines. */
+/**
+ * Resource collection API of BackupEngines.
+ */
 public interface BackupEngines {
     /**
      * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface BackupEngines {
 
     /**
      * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -35,12 +37,12 @@ public interface BackupEngines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BackupEngineBaseResource> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<BackupEngineBaseResource> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context);
 
     /**
      * Returns backup management server registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.
@@ -52,17 +54,12 @@ public interface BackupEngines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the base backup engine class along with {@link Response}.
      */
-    Response<BackupEngineBaseResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String backupEngineName,
-        String filter,
-        String skipToken,
-        Context context);
+    Response<BackupEngineBaseResource> getWithResponse(String vaultName, String resourceGroupName,
+        String backupEngineName, String filter, String skipToken, Context context);
 
     /**
      * Returns backup management server registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.

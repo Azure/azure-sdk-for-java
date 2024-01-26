@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
 
@@ -264,16 +265,39 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      *
      * @param entity the target object from which to get the field
      * @return partition key field
+     * @throws RuntimeException thrown if field is not found
      */
     public Object getPartitionKeyFieldValue(T entity) {
-        return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
+        if (partitionKeyField == null && partitionKeyPath != null) {
+            List<String> parts = Arrays.stream(partitionKeyPath.split("/")).collect(Collectors.toList());
+            final Object[] currentObject = {entity};
+            parts.forEach(part -> {
+                if (!part.isEmpty()) {
+                    Field f = null;
+                    try {
+                        f = currentObject[0].getClass().getDeclaredField(part);
+                    } catch (NoSuchFieldException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ReflectionUtils.makeAccessible(f);
+                    currentObject[0] = ReflectionUtils.getField(f, currentObject[0]);
+                }
+            });
+            return currentObject[0];
+        } else {
+            return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
+        }
     }
 
     /**
      * @return the partition key field name
      */
     public String getPartitionKeyFieldName() {
-        return partitionKeyField == null ? null : partitionKeyField.getName();
+        if (partitionKeyField == null && partitionKeyPath != null) {
+            return partitionKeyPath.substring(1).replace("/", ".");
+        } else {
+            return partitionKeyField == null ? null : partitionKeyField.getName();
+        }
     }
 
     /**

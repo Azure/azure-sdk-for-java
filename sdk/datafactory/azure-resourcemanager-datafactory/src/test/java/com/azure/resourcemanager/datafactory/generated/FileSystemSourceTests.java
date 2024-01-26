@@ -11,15 +11,15 @@ public final class FileSystemSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemSource model = BinaryData.fromString(
-            "{\"type\":\"FileSystemSource\",\"recursive\":\"datadmtfnbv\",\"additionalColumns\":\"dataqqlb\",\"sourceRetryCount\":\"dataqbdiahjxcdhp\",\"sourceRetryWait\":\"dataxwsfddy\",\"maxConcurrentConnections\":\"datafyntow\",\"disableMetricsCollection\":\"datasur\",\"\":{\"izqvga\":\"datajzsjhhru\",\"epnglzjhaqx\":\"datao\"}}")
+            "{\"type\":\"FileSystemSource\",\"recursive\":\"datawjcozb\",\"additionalColumns\":\"datat\",\"sourceRetryCount\":\"datacmxqdexnkp\",\"sourceRetryWait\":\"dataxc\",\"maxConcurrentConnections\":\"datamzykp\",\"disableMetricsCollection\":\"datagiumuztb\",\"\":{\"tozrveehmvrv\":\"datafmcnrgwgc\",\"efdhchkkwahaxy\":\"dataurpzry\",\"cktkbgxteehyh\":\"datadlvbomhfqsjz\",\"jytl\":\"datagnl\"}}")
             .toObject(FileSystemSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSource model = new FileSystemSource().withSourceRetryCount("dataqbdiahjxcdhp")
-            .withSourceRetryWait("dataxwsfddy").withMaxConcurrentConnections("datafyntow")
-            .withDisableMetricsCollection("datasur").withRecursive("datadmtfnbv").withAdditionalColumns("dataqqlb");
+        FileSystemSource model = new FileSystemSource().withSourceRetryCount("datacmxqdexnkp")
+            .withSourceRetryWait("dataxc").withMaxConcurrentConnections("datamzykp")
+            .withDisableMetricsCollection("datagiumuztb").withRecursive("datawjcozb").withAdditionalColumns("datat");
         model = BinaryData.fromObject(model).toObject(FileSystemSource.class);
     }
 }

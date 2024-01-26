@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * OS configurations of Linux agent nodes.
  *
- * <p>See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more
+ * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more
  * details.
  */
 @Fluent
@@ -47,7 +47,9 @@ public final class LinuxOSConfig {
     @JsonProperty(value = "swapFileSizeMB")
     private Integer swapFileSizeMB;
 
-    /** Creates an instance of LinuxOSConfig class. */
+    /**
+     * Creates an instance of LinuxOSConfig class.
+     */
     public LinuxOSConfig() {
     }
 
@@ -74,7 +76,7 @@ public final class LinuxOSConfig {
     /**
      * Get the transparentHugePageEnabled property: Whether transparent hugepages are enabled.
      *
-     * <p>Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
+     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
      * [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      *
@@ -87,7 +89,7 @@ public final class LinuxOSConfig {
     /**
      * Set the transparentHugePageEnabled property: Whether transparent hugepages are enabled.
      *
-     * <p>Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
+     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
      * [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      *
@@ -100,10 +102,10 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Get the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction to
-     * make more hugepages available.
+     * Get the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction
+     * to make more hugepages available.
      *
-     * <p>Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
+     * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
      * information see [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      *
@@ -114,10 +116,10 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Set the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction to
-     * make more hugepages available.
+     * Set the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction
+     * to make more hugepages available.
      *
-     * <p>Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
+     * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
      * information see [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      *

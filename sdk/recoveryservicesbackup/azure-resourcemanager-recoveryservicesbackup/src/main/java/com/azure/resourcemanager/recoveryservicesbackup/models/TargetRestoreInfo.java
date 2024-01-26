@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details about target workload during restore operation. */
+/**
+ * Details about target workload during restore operation.
+ */
 @Fluent
 public final class TargetRestoreInfo {
     /*
@@ -34,13 +36,15 @@ public final class TargetRestoreInfo {
     @JsonProperty(value = "targetDirectoryForFileRestore")
     private String targetDirectoryForFileRestore;
 
-    /** Creates an instance of TargetRestoreInfo class. */
+    /**
+     * Creates an instance of TargetRestoreInfo class.
+     */
     public TargetRestoreInfo() {
     }
 
     /**
      * Get the overwriteOption property: Can Overwrite if Target DataBase already exists.
-     *
+     * 
      * @return the overwriteOption value.
      */
     public OverwriteOptions overwriteOption() {
@@ -49,7 +53,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Set the overwriteOption property: Can Overwrite if Target DataBase already exists.
-     *
+     * 
      * @param overwriteOption the overwriteOption value to set.
      * @return the TargetRestoreInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Get the containerId property: Resource Id name of the container in which Target DataBase resides.
-     *
+     * 
      * @return the containerId value.
      */
     public String containerId() {
@@ -69,7 +73,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Set the containerId property: Resource Id name of the container in which Target DataBase resides.
-     *
+     * 
      * @param containerId the containerId value to set.
      * @return the TargetRestoreInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Get the databaseName property: Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -89,7 +93,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Set the databaseName property: Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the TargetRestoreInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Get the targetDirectoryForFileRestore property: Target directory location for restore as files.
-     *
+     * 
      * @return the targetDirectoryForFileRestore value.
      */
     public String targetDirectoryForFileRestore() {
@@ -109,7 +113,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Set the targetDirectoryForFileRestore property: Target directory location for restore as files.
-     *
+     * 
      * @param targetDirectoryForFileRestore the targetDirectoryForFileRestore value to set.
      * @return the TargetRestoreInfo object itself.
      */
@@ -120,7 +124,7 @@ public final class TargetRestoreInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOperationsResponseInner;
 
-/** An instance of this class provides access to all the operations defined in ValidateOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidateOperationResultsClient.
+ */
 public interface ValidateOperationResultsClient {
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -25,12 +27,12 @@ public interface ValidateOperationResultsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateOperationsResponseInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<ValidateOperationsResponseInner> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.

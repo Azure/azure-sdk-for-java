@@ -4,6 +4,7 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +50,8 @@ public final class Providers<TProvider, TInstance> {
             defaultProvider = it.next();
             defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
-            LOGGER.verbose("Using {} as the default {}.", defaultProviderName, providerClass.getName());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Using " + defaultProviderName + " as the default " + providerClass.getName() + ".");
         } else {
             defaultProvider = null;
             defaultProviderName = null;
@@ -59,7 +61,7 @@ public final class Providers<TProvider, TInstance> {
             TProvider additionalProvider = it.next();
             String additionalProviderName = additionalProvider.getClass().getName();
             availableProviders.put(additionalProviderName, additionalProvider);
-            LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Additional provider found on the classpath: " + additionalProviderName);
         }
 
         defaultImplementation = defaultImplementationName;
@@ -68,12 +70,11 @@ public final class Providers<TProvider, TInstance> {
     }
 
     private String formatNoSpecificProviderErrorMessage(String selectedImplementation) {
-        return String.format("A request was made to use a specific "
-                + "%s but it wasn't found on the classpath. If you're using a dependency manager ensure you're "
-                + "including the dependency that provides the specific implementation. If you're including the "
-                + "specific implementation ensure that the %s service it supplies is being included in the "
-                + "'META-INF/services' file '%s'. The requested provider was: %s.",
-                providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
+        return "A request was made to use a specific " + providerClass.getSimpleName() + " but it wasn't found on the "
+            + "classpath. If you're using a dependency manager ensure you're including the dependency that provides "
+            + "the specific implementation. If you're including the specific implementation ensure that the "
+            + providerClass.getSimpleName() + " service it supplies is being included in the 'META-INF/services' file "
+            + "'" + providerClass.getName() + "'. The requested provider was: " + selectedImplementation + ".";
     }
 
     /**
@@ -81,14 +82,15 @@ public final class Providers<TProvider, TInstance> {
      *
      * @param createInstance callback that creates service instance with resolved provider.
      * @param fallbackInstance service instance to return if provider is not found. Usually a no-op implementation.
-     *                         If null and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}
-     * @param selectedImplementation Explicit provider implementation class. It still must be registered in META-INF/services.
+     * If null and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}
+     * @param selectedImplementation Explicit provider implementation class. It still must be registered in
+     * META-INF/services.
      * @return created service instance.
      *
      * @throws IllegalStateException when requested provider cannot be found and fallback instance is null.
      */
-    public TInstance create(Function<TProvider, TInstance> createInstance,
-                                TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
+    public TInstance create(Function<TProvider, TInstance> createInstance, TInstance fallbackInstance,
+        Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         String implementationName;
         if (selectedImplementation == null && noDefaultImplementation) {
@@ -102,18 +104,21 @@ public final class Providers<TProvider, TInstance> {
                 return fallbackInstance;
             }
         } else {
-            implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
+            implementationName = selectedImplementation == null
+                ? defaultImplementation : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
             if (provider == null) {
                 // no fallback here - user requested specific implementation, and it was not found
-                throw LOGGER.logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
             }
         }
 
         try {
             return createInstance.apply(provider);
         } catch (ClassCastException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
         }
     }
 }

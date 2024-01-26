@@ -29,23 +29,23 @@ public final class DataProductsCatalogsImpl implements DataProductsCatalogs {
 
     public PagedIterable<DataProductsCatalog> list() {
         PagedIterable<DataProductsCatalogInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProductsCatalog> list(Context context) {
         PagedIterable<DataProductsCatalogInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProductsCatalog> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DataProductsCatalogInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProductsCatalog> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<DataProductsCatalogInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductsCatalogImpl(inner1, this.manager()));
     }
 
     public Response<DataProductsCatalog> getByResourceGroupWithResponse(String resourceGroupName, Context context) {

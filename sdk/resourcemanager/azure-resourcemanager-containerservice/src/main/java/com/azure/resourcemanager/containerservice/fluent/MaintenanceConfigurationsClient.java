@@ -13,7 +13,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient.
+ */
 public interface MaintenanceConfigurationsClient {
     /**
      * Gets a list of maintenance configurations in the specified managed cluster.
@@ -23,8 +25,8 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(String resourceGroupName, String resourceName);
@@ -37,8 +39,8 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(String resourceGroupName, String resourceName);
@@ -52,12 +54,12 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets the specified maintenance configuration of a managed cluster.
@@ -69,11 +71,11 @@ public interface MaintenanceConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified maintenance configuration of a managed cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName);
+    Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String configName);
 
     /**
      * Gets the specified maintenance configuration of a managed cluster.
@@ -102,8 +104,8 @@ public interface MaintenanceConfigurationsClient {
      * @return the specified maintenance configuration of a managed cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String configName, Context context);
+    Response<MaintenanceConfigurationInner> getWithResponse(String resourceGroupName, String resourceName,
+        String configName, Context context);
 
     /**
      * Gets the specified maintenance configuration of a managed cluster.
@@ -130,11 +132,11 @@ public interface MaintenanceConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters);
+    Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String configName, MaintenanceConfigurationInner parameters);
 
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
@@ -147,11 +149,11 @@ public interface MaintenanceConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters);
+    Mono<MaintenanceConfigurationInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String configName, MaintenanceConfigurationInner parameters);
 
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
@@ -165,15 +167,11 @@ public interface MaintenanceConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configName,
-        MaintenanceConfigurationInner parameters,
-        Context context);
+    Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        String configName, MaintenanceConfigurationInner parameters, Context context);
 
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
@@ -188,8 +186,8 @@ public interface MaintenanceConfigurationsClient {
      * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MaintenanceConfigurationInner createOrUpdate(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters);
+    MaintenanceConfigurationInner createOrUpdate(String resourceGroupName, String resourceName, String configName,
+        MaintenanceConfigurationInner parameters);
 
     /**
      * Deletes a maintenance configuration.
@@ -232,8 +230,8 @@ public interface MaintenanceConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String configName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String configName,
+        Context context);
 
     /**
      * Deletes a maintenance configuration.

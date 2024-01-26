@@ -33,22 +33,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectionPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectionPoliciesClient.
+ */
 public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectionPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectionPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectionPoliciesClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(ProtectionPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProtectionPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,57 +65,42 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectionPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionPolicyResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ProtectionPolicyResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policyName") String policyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionPolicyResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ProtectionPolicyResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
             @BodyParam("application/json") ProtectionPolicyResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policyName") String policyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
      * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
@@ -119,13 +110,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName) {
+    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -135,35 +124,23 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            policyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), policyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
      * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
@@ -174,13 +151,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
+    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -190,32 +165,22 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                policyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), policyName, accept, context);
     }
 
     /**
      * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
      * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
@@ -225,8 +190,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionPolicyResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String policyName) {
+    private Mono<ProtectionPolicyResourceInner> getAsync(String vaultName, String resourceGroupName,
+        String policyName) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -234,7 +199,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     /**
      * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
      * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
@@ -245,15 +210,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionPolicyResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
+    public Response<ProtectionPolicyResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String policyName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, context).block();
     }
 
     /**
      * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
      * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
@@ -270,7 +235,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
      * using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
@@ -281,13 +246,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
+    private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -297,10 +260,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
@@ -312,26 +273,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            policyName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), policyName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
      * using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
@@ -343,17 +293,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String policyName,
-        ProtectionPolicyResourceInner parameters,
-        Context context) {
+    private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -363,10 +307,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
@@ -378,23 +320,14 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                policyName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), policyName, parameters, accept, context);
     }
 
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
      * using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
@@ -405,8 +338,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionPolicyResourceInner> createOrUpdateAsync(
-        String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
+    private Mono<ProtectionPolicyResourceInner> createOrUpdateAsync(String vaultName, String resourceGroupName,
+        String policyName, ProtectionPolicyResourceInner parameters) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -414,7 +347,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
      * using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
@@ -426,19 +359,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String policyName,
-        ProtectionPolicyResourceInner parameters,
-        Context context) {
+    public Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(String vaultName,
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters, context).block();
     }
 
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
      * using GetPolicyOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
@@ -449,16 +378,17 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return base class for backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
+    public ProtectionPolicyResourceInner createOrUpdate(String vaultName, String resourceGroupName, String policyName,
+        ProtectionPolicyResourceInner parameters) {
         return createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -468,13 +398,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vaultName, String resourceGroupName,
+        String policyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -484,35 +412,24 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            policyName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), policyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -523,13 +440,11 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vaultName, String resourceGroupName,
+        String policyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -539,32 +454,23 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                policyName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), policyName, accept, context);
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -574,19 +480,18 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String vaultName, String resourceGroupName, String policyName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vaultName, String resourceGroupName,
+        String policyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vaultName, resourceGroupName, policyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -597,20 +502,20 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vaultName, String resourceGroupName,
+        String policyName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(vaultName, resourceGroupName, policyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(vaultName, resourceGroupName, policyName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -620,15 +525,16 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String vaultName, String resourceGroupName, String policyName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
+        String policyName) {
         return this.beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -639,15 +545,16 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName, String policyName,
+        Context context) {
         return this.beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -658,15 +565,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String policyName) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName)
-            .last()
+        return beginDeleteAsync(vaultName, resourceGroupName, policyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -678,15 +585,15 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName, context)
-            .last()
+        return beginDeleteAsync(vaultName, resourceGroupName, policyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.
@@ -701,8 +608,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
 
     /**
      * Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of
-     * the operation can be fetched using GetProtectionPolicyOperationResult API.
-     *
+     * the
+     * operation can be fetched using GetProtectionPolicyOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be deleted.

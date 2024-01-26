@@ -61,6 +61,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.createUrl;
+import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,7 +76,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ResourceLock(Resources.SYSTEM_OUT)
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     private static String initialLogLevel;
     private static PrintStream originalSystemOut;
@@ -455,10 +455,11 @@ public class HttpLoggingPolicyTests {
             .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
-        expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
-        expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+        assertEquals("HTTP FAILED", messages.get(1).getMessage());
+        expectedRetry2.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+        expectedResponse.assertEqual(messages.get(3), logLevel, LogLevel.INFORMATIONAL);
 
-        assertEquals(3, messages.size());
+        assertEquals(4, messages.size());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -543,11 +544,16 @@ public class HttpLoggingPolicyTests {
             List<HttpLogMessage> messages = HttpLogMessage.fromString(logString).stream()
                 .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
 
-            assertEquals(3, messages.size(), logString);
+            assertEquals(4, messages.size(), logString);
 
             expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
-            expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
-            expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+
+            assertEquals("HTTP FAILED", messages.get(1).getMessage());
+            assertEquals("client-request-id", messages.get(1).getHeaders().get("x-ms-client-request-id"));
+            assertEquals("Try again!", messages.get(1).getHeaders().get("exception"));
+
+            expectedRetry2.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+            expectedResponse.assertEqual(messages.get(3), logLevel, LogLevel.INFORMATIONAL);
 
             assertArraysEqual(responseBody, content.toBytes());
         }

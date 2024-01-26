@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProperties;
 import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocation;
-import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
-import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
 /**
  * The agentPool resource definition.
  */
 @Fluent
-public final class AgentPoolInner extends Resource {
+public final class AgentPoolInner extends ProxyResource {
     /*
-     * The properties property.
+     * Properties of the agent pool resource
      */
     @JsonProperty(value = "properties")
-    private AgentPoolProperties innerProperties;
+    private AgentPoolProperties properties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Resource tags
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
-     * Extended Location definition
+     * Extended location pointing to the underlying infrastructure
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Creates an instance of AgentPoolInner class.
@@ -46,25 +50,47 @@ public final class AgentPoolInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the properties property: Properties of the agent pool resource.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private AgentPoolProperties innerProperties() {
-        return this.innerProperties;
+    public AgentPoolProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Set the properties property: Properties of the agent pool resource.
      * 
-     * @return the systemData value.
+     * @param properties the properties value to set.
+     * @return the AgentPoolInner object itself.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public AgentPoolInner withProperties(AgentPoolProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
-     * Get the extendedLocation property: Extended Location definition.
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -73,7 +99,7 @@ public final class AgentPoolInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: Extended Location definition.
+     * Set the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the AgentPoolInner object itself.
@@ -84,197 +110,12 @@ public final class AgentPoolInner extends Resource {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AgentPoolInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AgentPoolInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /**
-     * Get the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the count value.
+     * @return the systemData value.
      */
-    public Integer count() {
-        return this.innerProperties() == null ? null : this.innerProperties().count();
-    }
-
-    /**
-     * Set the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
-     * 
-     * @param count the count value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withCount(Integer count) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withCount(count);
-        return this;
-    }
-
-    /**
-     * Get the vmSize property: VmSize - The size of the agent pool VMs.
-     * 
-     * @return the vmSize value.
-     */
-    public String vmSize() {
-        return this.innerProperties() == null ? null : this.innerProperties().vmSize();
-    }
-
-    /**
-     * Set the vmSize property: VmSize - The size of the agent pool VMs.
-     * 
-     * @param vmSize the vmSize value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withVmSize(String vmSize) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withVmSize(vmSize);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    public ResourceProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the status property: Defines the observed state of the agent pool.
-     * 
-     * @return the status value.
-     */
-    public AgentPoolProvisioningStatusStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: Defines the observed state of the agent pool.
-     * 
-     * @param status the status value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withStatus(AgentPoolProvisioningStatusStatus status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the availabilityZones property: AvailabilityZones - The list of Availability zones to use for nodes.
-     * Datacenter racks modelled as zones.
-     * 
-     * @return the availabilityZones value.
-     */
-    public List<String> availabilityZones() {
-        return this.innerProperties() == null ? null : this.innerProperties().availabilityZones();
-    }
-
-    /**
-     * Set the availabilityZones property: AvailabilityZones - The list of Availability zones to use for nodes.
-     * Datacenter racks modelled as zones.
-     * 
-     * @param availabilityZones the availabilityZones value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withAvailabilityZones(List<String> availabilityZones) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /**
-     * Get the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
-     * 
-     * @return the osType value.
-     */
-    public OsType osType() {
-        return this.innerProperties() == null ? null : this.innerProperties().osType();
-    }
-
-    /**
-     * Set the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
-     * 
-     * @param osType the osType value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withOsType(OsType osType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withOsType(osType);
-        return this;
-    }
-
-    /**
-     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is
-     * Linux. The default is Windows2019 when OSType is Windows.
-     * 
-     * @return the osSku value.
-     */
-    public Ossku osSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().osSku();
-    }
-
-    /**
-     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is
-     * Linux. The default is Windows2019 when OSType is Windows.
-     * 
-     * @param osSku the osSku value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withOsSku(Ossku osSku) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withOsSku(osSku);
-        return this;
-    }
-
-    /**
-     * Get the nodeImageVersion property: The version of node image.
-     * 
-     * @return the nodeImageVersion value.
-     */
-    public String nodeImageVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().nodeImageVersion();
-    }
-
-    /**
-     * Set the nodeImageVersion property: The version of node image.
-     * 
-     * @param nodeImageVersion the nodeImageVersion value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolProperties();
-        }
-        this.innerProperties().withNodeImageVersion(nodeImageVersion);
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -283,8 +124,8 @@ public final class AgentPoolInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();

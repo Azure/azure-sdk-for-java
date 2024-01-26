@@ -79,8 +79,8 @@ public final class ProtectionIntentResourceImpl
 
     private String intentObjectName;
 
-    public ProtectionIntentResourceImpl withExistingBackupFabric(
-        String vaultName, String resourceGroupName, String fabricName) {
+    public ProtectionIntentResourceImpl withExistingBackupFabric(String vaultName, String resourceGroupName,
+        String fabricName) {
         this.vaultName = vaultName;
         this.resourceGroupName = resourceGroupName;
         this.fabricName = fabricName;
@@ -88,29 +88,19 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public ProtectionIntentResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, intentObjectName, this.innerModel(), context).getValue();
         return this;
     }
 
-    ProtectionIntentResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    ProtectionIntentResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new ProtectionIntentResourceInner();
         this.serviceManager = serviceManager;
         this.intentObjectName = name;
@@ -121,55 +111,36 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public ProtectionIntentResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .createOrUpdateWithResponse(
-                    vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, intentObjectName, this.innerModel(), context).getValue();
         return this;
     }
 
-    ProtectionIntentResourceImpl(
-        ProtectionIntentResourceInner innerObject,
+    ProtectionIntentResourceImpl(ProtectionIntentResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = Utils.getValueFromIdByName(innerObject.id(), "backupFabrics");
-        this.intentObjectName = Utils.getValueFromIdByName(innerObject.id(), "backupProtectionIntent");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupFabrics");
+        this.intentObjectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupProtectionIntent");
     }
 
     public ProtectionIntentResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE).getValue();
         return this;
     }
 
     public ProtectionIntentResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionIntents()
-                .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionIntents()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context).getValue();
         return this;
     }
 

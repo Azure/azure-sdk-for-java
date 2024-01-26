@@ -10,7 +10,9 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -19,13 +21,14 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CallAutomationLiveTestBase extends TestBase {
+public class CallAutomationLiveTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -58,7 +61,7 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_PHONE_NUMBER", "+16471234567");
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
-        .get("ACS_MEDIA_SOURCE", "https://acstestapp1.azurewebsites.net/audio/bot-hold-music-2.wav");
+        .get("ACS_MEDIA_SOURCE", "https://contoso.com/music.wav");
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
@@ -66,7 +69,9 @@ public class CallAutomationLiveTestBase extends TestBase {
         .add("id")
         .add("callbackUri")
         .add("botAppId")
-        .add("ivrContext");
+        .add("ivrContext")
+        .add("incomingCallContext")
+        .add("serverCallId");
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
@@ -81,11 +86,17 @@ public class CallAutomationLiveTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
+
         return builder;
     }
 
     protected CallAutomationClientBuilder getCallAutomationClientUsingConnectionString(HttpClient httpClient) {
-
         CallAutomationClientBuilder builder;
         if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED) {
             builder = new CallAutomationClientBuilder()
@@ -103,6 +114,13 @@ public class CallAutomationLiveTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
+
         return builder;
     }
 
@@ -119,6 +137,13 @@ public class CallAutomationLiveTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
+
         return builder;
     }
 
@@ -135,6 +160,13 @@ public class CallAutomationLiveTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
+
+        if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+        }
+
         return builder;
     }
 
@@ -142,11 +174,6 @@ public class CallAutomationLiveTestBase extends TestBase {
         return next.process()
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
-
-                /* Should sanitize printed response url */
-                System.out.println("Chain-ID header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl()
-                    + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
     }

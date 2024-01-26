@@ -8,9 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of a snapshot. The default is NodePool. */
+/**
+ * The type of a snapshot. The default is NodePool.
+ */
 public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
-    /** Static value NodePool for SnapshotType. */
+    /**
+     * Static value NodePool for SnapshotType.
+     */
     public static final SnapshotType NODE_POOL = fromString("NodePool");
 
     /**

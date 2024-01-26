@@ -5,35 +5,41 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of common properties of all chat events. */
+/**
+ * Schema of common properties of all chat events.
+ */
 @Fluent
-public class AcsChatEventBaseProperties {
+public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEventBaseProperties> {
     /*
      * The communication identifier of the target user
      */
-    @JsonProperty(value = "recipientCommunicationIdentifier")
     private CommunicationIdentifierModel recipientCommunicationIdentifier;
 
     /*
      * The transaction id will be used as co-relation vector
      */
-    @JsonProperty(value = "transactionId")
     private String transactionId;
 
     /*
      * The chat thread id
      */
-    @JsonProperty(value = "threadId")
     private String threadId;
 
-    /** Creates an instance of AcsChatEventBaseProperties class. */
-    public AcsChatEventBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatEventBaseProperties class.
+     */
+    public AcsChatEventBaseProperties() {
+    }
 
     /**
      * Get the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @return the recipientCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getRecipientCommunicationIdentifier() {
@@ -42,19 +48,19 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    public AcsChatEventBaseProperties setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatEventBaseProperties
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @return the transactionId value.
      */
     public String getTransactionId() {
@@ -63,7 +69,7 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
@@ -74,7 +80,7 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Get the threadId property: The chat thread id.
-     *
+     * 
      * @return the threadId value.
      */
     public String getThreadId() {
@@ -83,12 +89,52 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the threadId property: The chat thread id.
-     *
+     * 
      * @param threadId the threadId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
     public AcsChatEventBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recipientCommunicationIdentifier", this.recipientCommunicationIdentifier);
+        jsonWriter.writeStringField("transactionId", this.transactionId);
+        jsonWriter.writeStringField("threadId", this.threadId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatEventBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatEventBaseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatEventBaseProperties.
+     */
+    public static AcsChatEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatEventBaseProperties deserializedAcsChatEventBaseProperties = new AcsChatEventBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatEventBaseProperties.recipientCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatEventBaseProperties.transactionId = reader.getString();
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatEventBaseProperties.threadId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatEventBaseProperties;
+        });
     }
 }

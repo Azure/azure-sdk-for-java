@@ -30,7 +30,7 @@ public final class ProvisionedClusterInstancesGetUpgradeProfileWithResponseMockT
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Created\",\"controlPlaneProfile\":{\"kubernetesVersion\":\"uvglsbjjcanvx\",\"name\":\"t\",\"osType\":\"Windows\",\"upgrades\":[{\"kubernetesVersion\":\"cormr\",\"isPreview\":true},{\"kubernetesVersion\":\"vcofudfl\",\"isPreview\":false},{\"kubernetesVersion\":\"u\",\"isPreview\":true},{\"kubernetesVersion\":\"nnqvsa\",\"isPreview\":true}]},\"agentPoolProfiles\":[{\"kubernetesVersion\":\"orudsgsa\",\"name\":\"kycgrauwj\",\"osType\":\"Linux\",\"upgrades\":[{},{}]}]},\"id\":\"uruv\",\"name\":\"movsmzlxwabmqoe\",\"type\":\"kif\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"controlPlaneProfile\":{\"kubernetesVersion\":\"itsmypyyn\",\"osType\":\"Linux\",\"upgrades\":[{\"kubernetesVersion\":\"nzgmwznmabik\",\"isPreview\":true},{\"kubernetesVersion\":\"gj\",\"isPreview\":false},{\"kubernetesVersion\":\"dtlwwrlkd\",\"isPreview\":true},{\"kubernetesVersion\":\"vokotllxdyh\",\"isPreview\":false}]}},\"id\":\"cogjltdtbn\",\"name\":\"hadoocrk\",\"type\":\"cikhnv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,7 +48,7 @@ public final class ProvisionedClusterInstancesGetUpgradeProfileWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProvisionedClusterUpgradeProfile response = manager.provisionedClusterInstances()
-            .getUpgradeProfileWithResponse("csdbnwdcfhuc", com.azure.core.util.Context.NONE).getValue();
+            .getUpgradeProfileWithResponse("nkedyatrwyhqmib", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

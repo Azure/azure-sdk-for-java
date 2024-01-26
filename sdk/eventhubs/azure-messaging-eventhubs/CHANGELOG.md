@@ -1,6 +1,6 @@
 # Release History
 
-## 5.17.0-beta.1 (Unreleased)
+## 5.19.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.18.0 (2024-01-19)
+
+### Bugs Fixed
+
+- Removed timeout from blocking wait in `EventHubProducerClient` in `createBatch`, `getEventHubProperties`, and `getPartitionProperties`. ([#38229](https://github.com/Azure/azure-sdk-for-java/pull/38229))
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.14` to version `2.9.0`.
 
 ## 5.17.1 (2023-12-07)
 

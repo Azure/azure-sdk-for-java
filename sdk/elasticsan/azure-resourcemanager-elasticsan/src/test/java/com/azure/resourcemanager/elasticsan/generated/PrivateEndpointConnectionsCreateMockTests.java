@@ -34,52 +34,33 @@ public final class PrivateEndpointConnectionsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"irgzp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zszrnwoiindfpw\",\"actionsRequired\":\"ylwbtlhflsjcdhsz\"},\"groupIds\":[\"fbgofeljagrqmqh\",\"dvriiiojnal\",\"hfkvtvsexsowuel\",\"qhhahhxvrhmzkwpj\"]},\"id\":\"wspughftqsxhqx\",\"name\":\"j\",\"type\":\"ukndxdigrjgu\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"irgzp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zszrnwoiindfpw\",\"actionsRequired\":\"ylwbtlhflsjcdhsz\"},\"groupIds\":[\"fbgofeljagrqmqh\",\"dvriiiojnal\",\"hfkvtvsexsowuel\",\"qhhahhxvrhmzkwpj\"]},\"id\":\"wspughftqsxhqx\",\"name\":\"j\",\"type\":\"ukndxdigrjgu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("bjbsybb")
-                .withExistingElasticSan("mouwqlgzrfzeey", "bizikayuhq")
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("haq")
-                        .withActionsRequired("ss"))
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withGroupIds(Arrays.asList("twbdsrezpdrhn"))
-                .create();
+        PrivateEndpointConnection response = manager.privateEndpointConnections().define("bjbsybb")
+            .withExistingElasticSan("mouwqlgzrfzeey", "bizikayuhq")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("haq").withActionsRequired("ss"))
+            .withPrivateEndpoint(new PrivateEndpoint()).withGroupIds(Arrays.asList("twbdsrezpdrhn")).create();
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            response.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("zszrnwoiindfpw", response.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("ylwbtlhflsjcdhsz", response.privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals("fbgofeljagrqmqh", response.groupIds().get(0));

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for operation result info. */
+/**
+ * Base class for operation result info.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OperationResultInfoBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ExportJobsOperationResultInfo", value = ExportJobsOperationResultInfo.class),
-    @JsonSubTypes.Type(name = "OperationResultInfo", value = OperationResultInfo.class)
-})
+    @JsonSubTypes.Type(name = "OperationResultInfo", value = OperationResultInfo.class) })
 @Immutable
 public class OperationResultInfoBase {
-    /** Creates an instance of OperationResultInfoBase class. */
+    /**
+     * Creates an instance of OperationResultInfoBase class.
+     */
     public OperationResultInfoBase() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

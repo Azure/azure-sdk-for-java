@@ -491,10 +491,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private volatile Instant transitTimeoutStartingTime;
         private volatile int cancellationCount;
         public Timestamps() {
-            lastPingUpdater.set(this, Instant.now());
-            lastReadUpdater.set(this, Instant.now());
-            lastWriteUpdater.set(this, Instant.now());
-            lastWriteAttemptUpdater.set(this, Instant.now());
+            Instant nowSnapshot = Instant.now();
+            lastPingUpdater.set(this, nowSnapshot);
+            lastReadUpdater.set(this, nowSnapshot);
+            lastWriteUpdater.set(this, nowSnapshot);
+            lastWriteAttemptUpdater.set(this, nowSnapshot);
         }
 
         @SuppressWarnings("CopyConstructorMissesField")

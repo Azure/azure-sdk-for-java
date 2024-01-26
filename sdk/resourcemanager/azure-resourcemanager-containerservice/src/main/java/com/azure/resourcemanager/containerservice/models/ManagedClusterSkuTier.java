@@ -11,17 +11,23 @@ import java.util.Collection;
 /**
  * The tier of a managed cluster SKU.
  *
- * <p>If not specified, the default is 'Free'. See [AKS Pricing
+ * If not specified, the default is 'Free'. See [AKS Pricing
  * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
  */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {
-    /** Static value Premium for ManagedClusterSkuTier. */
+    /**
+     * Static value Premium for ManagedClusterSkuTier.
+     */
     public static final ManagedClusterSkuTier PREMIUM = fromString("Premium");
 
-    /** Static value Standard for ManagedClusterSkuTier. */
+    /**
+     * Static value Standard for ManagedClusterSkuTier.
+     */
     public static final ManagedClusterSkuTier STANDARD = fromString("Standard");
 
-    /** Static value Free for ManagedClusterSkuTier. */
+    /**
+     * Static value Free for ManagedClusterSkuTier.
+     */
     public static final ManagedClusterSkuTier FREE = fromString("Free");
 
     /**

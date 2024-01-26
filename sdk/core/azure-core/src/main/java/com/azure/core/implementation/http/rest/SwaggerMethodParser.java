@@ -583,8 +583,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else if (value instanceof ExpandableStringEnum<?> || value.getClass().isEnum()) {
             // Enum and ExpandableStringEnum need special handling as these could be wrapping a null String which would
-            // be "null" is serialized with JacksonAdapter.
-            String stringValue = String.valueOf(value);
+            // be "null" if serialized with JacksonAdapter.
+            String stringValue = value.toString();
             return (stringValue == null) ? "null" : stringValue;
         } else {
             return serializer.serializeRaw(value);
@@ -745,6 +745,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return spanName;
     }
 
+    /**
+     * Whether the provided type is a type that can be decoded from a response body.
+     *
+     * @param unwrappedReturnType The unwrapped return type.
+     * @return Whether the provided type is a type that can be decoded from a response body.
+     */
     public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
@@ -758,6 +764,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
+    /**
+     * Whether the provided type is a type that can be ignored from a response body.
+     *
+     * @param unwrappedReturnType The unwrapped return type.
+     * @return Whether the provided type is a type that can be ignored from a response body.
+     */
     public static boolean isResponseBodyIgnored(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
@@ -767,6 +779,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
+    /**
+     * Whether the provided type is a type that can be eagerly read from a response body.
+     *
+     * @param unwrappedReturnType The unwrapped return type.
+     * @return Whether the provided type is a type that can be eagerly read from a response body.
+     */
     public static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
         if (unwrappedReturnType == null) {
             return false;
@@ -775,6 +793,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return isReturnTypeDecodeable(unwrappedReturnType);
     }
 
+    /**
+     * Unwraps the provided return type until it is a type that can be decoded from a response body.
+     *
+     * @param returnType The return type to unwrap.
+     * @return The unwrapped return type.
+     */
     public static Type unwrapReturnType(Type returnType) {
         if (returnType == null) {
             return null;

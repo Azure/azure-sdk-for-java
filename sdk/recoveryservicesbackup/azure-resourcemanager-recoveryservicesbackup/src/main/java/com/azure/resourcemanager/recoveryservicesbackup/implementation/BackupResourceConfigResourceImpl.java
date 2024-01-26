@@ -15,8 +15,7 @@ public final class BackupResourceConfigResourceImpl implements BackupResourceCon
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupResourceConfigResourceImpl(
-        BackupResourceConfigResourceInner innerObject,
+    BackupResourceConfigResourceImpl(BackupResourceConfigResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

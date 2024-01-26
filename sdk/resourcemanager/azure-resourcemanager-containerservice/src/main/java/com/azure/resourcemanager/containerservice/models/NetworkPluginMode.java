@@ -8,9 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The mode the network plugin should use. */
+/**
+ * The mode the network plugin should use.
+ */
 public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginMode> {
-    /** Static value overlay for NetworkPluginMode. */
+    /**
+     * Static value overlay for NetworkPluginMode.
+     */
     public static final NetworkPluginMode OVERLAY = fromString("overlay");
 
     /**

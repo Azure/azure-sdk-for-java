@@ -11,14 +11,18 @@ import java.util.Collection;
 /**
  * The Virtual Machine Scale Set eviction policy.
  *
- * <p>The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more
- * information about eviction see [spot VMs](https://docs.microsoft.com/azure/virtual-machines/spot-vms).
+ * The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information
+ * about eviction see [spot VMs](https://docs.microsoft.com/azure/virtual-machines/spot-vms).
  */
 public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetEvictionPolicy> {
-    /** Static value Delete for ScaleSetEvictionPolicy. */
+    /**
+     * Static value Delete for ScaleSetEvictionPolicy.
+     */
     public static final ScaleSetEvictionPolicy DELETE = fromString("Delete");
 
-    /** Static value Deallocate for ScaleSetEvictionPolicy. */
+    /**
+     * Static value Deallocate for ScaleSetEvictionPolicy.
+     */
     public static final ScaleSetEvictionPolicy DEALLOCATE = fromString("Deallocate");
 
     /**
