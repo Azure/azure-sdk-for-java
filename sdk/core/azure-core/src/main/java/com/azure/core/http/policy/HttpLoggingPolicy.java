@@ -418,7 +418,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> {
             boolean isAllowed = allowedHeaderNames.contains(key);
             if (isAllowed || detailLevel != HttpLogDetailLevel.ALLOWED_HEADERS) {
-                logBuilder.addKeyValue(key, isAllowed ? value : REDACTED_PLACEHOLDER);
+                logBuilder.addKeyValue(key, isAllowed ? value.getValue() : REDACTED_PLACEHOLDER);
             }
         });
     }

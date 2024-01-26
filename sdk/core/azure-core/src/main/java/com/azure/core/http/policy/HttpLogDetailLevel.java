@@ -22,11 +22,6 @@ public enum HttpLogDetailLevel {
     BASIC,
 
     /**
-     * Logs everything in BASIC, plus allowed request and response headers.
-     */
-    ALLOWED_HEADERS,
-
-    /**
      * Logs everything in BASIC, plus all the request and response headers.
      * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
      */
@@ -42,7 +37,12 @@ public enum HttpLogDetailLevel {
     /**
      * Logs everything in HEADERS and BODY.
      */
-    BODY_AND_HEADERS;
+    BODY_AND_HEADERS,
+
+    /**
+     * Logs everything in BASIC, plus allowed request and response headers.
+     */
+    ALLOWED_HEADERS;
 
     static final String BASIC_VALUE = "basic";
     static final String HEADERS_VALUE = "headers";
