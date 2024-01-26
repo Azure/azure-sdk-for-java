@@ -21,6 +21,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
@@ -41,7 +44,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
     }
 
@@ -49,14 +51,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false), serviceVersion)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
     }
 
     AssistantsClient getAssistantsClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
     }
 
@@ -64,7 +64,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                         interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
                 serviceVersion)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
     }
 
@@ -87,6 +86,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                     .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
+
+        if (getTestMode() != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+        }
+
         return builder;
     }
 
@@ -103,7 +108,26 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         } else {
             builder.credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
+
+        if (getTestMode() != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+        }
+
         return builder;
+    }
+
+    private void addTestRecordCustomSanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
+        ));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
