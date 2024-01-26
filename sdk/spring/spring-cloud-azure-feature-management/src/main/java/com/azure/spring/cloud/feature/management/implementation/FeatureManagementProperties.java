@@ -26,8 +26,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
-    private static final String FEATURE_FLAG_PASCAL_CASE = "FeatureFlag";
-    private static final String FEATURE_FLAG_KEBAB_CASE = "feature-flag";
+    private static final String FEATURE_FLAG_PASCAL_CASE = "FeatureFlags";
+    private static final String FEATURE_FLAG_KEBAB_CASE = "feature-flags";
 
     /**
      * Map of all Feature Flags that use Feature Filters.
