@@ -30,7 +30,7 @@ public final class OpenShiftManagedClustersCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create/Update OpenShift Managed Cluster.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateOpenShiftManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {

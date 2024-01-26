@@ -26,7 +26,7 @@ public final class ClusterUpgradeSettings {
 
     /**
      * Get the overrideSettings property: Settings for overrides.
-     *
+     * 
      * @return the overrideSettings value.
      */
     public UpgradeOverrideSettings overrideSettings() {
@@ -35,7 +35,7 @@ public final class ClusterUpgradeSettings {
 
     /**
      * Set the overrideSettings property: Settings for overrides.
-     *
+     * 
      * @param overrideSettings the overrideSettings value to set.
      * @return the ClusterUpgradeSettings object itself.
      */
@@ -46,7 +46,7 @@ public final class ClusterUpgradeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
