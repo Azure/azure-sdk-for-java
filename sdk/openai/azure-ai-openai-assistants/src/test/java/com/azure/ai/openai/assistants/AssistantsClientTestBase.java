@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
@@ -19,6 +20,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,7 +99,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
-                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less."));
+                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+                .setTools(Arrays.asList(new CodeInterpreterToolDefinition()))
+        );
+    }
+
+    void createAssistantsFileRunner(BiConsumer<AssistantCreationOptions, String> testRunner) {
+        String fileId = "file-TYRl7zf7ecXsqYcBUDofznbA";
+
+        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                        .setName("Math Tutor")
+                        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition()))
+                , fileId);
     }
 
     void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
