@@ -56,6 +56,6 @@ public class Exceptions {
     }
 
     public static String getInternalServerErrorMessage(String prefix) {
-        return prefix + "-" + RMResources.InternalServerError;
+        return prefix + " - " + RMResources.InternalServerError;
     }
 }
