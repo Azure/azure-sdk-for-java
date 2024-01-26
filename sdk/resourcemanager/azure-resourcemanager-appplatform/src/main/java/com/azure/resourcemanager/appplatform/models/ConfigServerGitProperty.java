@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Property of git. */
+/**
+ * Property of git.
+ */
 @Fluent
 public final class ConfigServerGitProperty {
     /*
@@ -73,8 +75,14 @@ public final class ConfigServerGitProperty {
     private Boolean strictHostKeyChecking;
 
     /**
+     * Creates an instance of ConfigServerGitProperty class.
+     */
+    public ConfigServerGitProperty() {
+    }
+
+    /**
      * Get the repositories property: Repositories of git.
-     *
+     * 
      * @return the repositories value.
      */
     public List<GitPatternRepository> repositories() {
@@ -83,7 +91,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the repositories property: Repositories of git.
-     *
+     * 
      * @param repositories the repositories value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -94,7 +102,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the uri property: URI of the repository.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -103,7 +111,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the uri property: URI of the repository.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -114,7 +122,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the label property: Label of the repository.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -123,7 +131,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the label property: Label of the repository.
-     *
+     * 
      * @param label the label value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -134,7 +142,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the searchPaths property: Searching path of the repository.
-     *
+     * 
      * @return the searchPaths value.
      */
     public List<String> searchPaths() {
@@ -143,7 +151,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the searchPaths property: Searching path of the repository.
-     *
+     * 
      * @param searchPaths the searchPaths value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -154,7 +162,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the username property: Username of git repository basic auth.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -163,7 +171,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the username property: Username of git repository basic auth.
-     *
+     * 
      * @param username the username value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -174,7 +182,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the password property: Password of git repository basic auth.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -183,7 +191,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the password property: Password of git repository basic auth.
-     *
+     * 
      * @param password the password value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -194,7 +202,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the hostKey property: Public sshKey of git repository.
-     *
+     * 
      * @return the hostKey value.
      */
     public String hostKey() {
@@ -203,7 +211,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the hostKey property: Public sshKey of git repository.
-     *
+     * 
      * @param hostKey the hostKey value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -214,7 +222,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the hostKeyAlgorithm property: SshKey algorithm of git repository.
-     *
+     * 
      * @return the hostKeyAlgorithm value.
      */
     public String hostKeyAlgorithm() {
@@ -223,7 +231,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the hostKeyAlgorithm property: SshKey algorithm of git repository.
-     *
+     * 
      * @param hostKeyAlgorithm the hostKeyAlgorithm value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -234,7 +242,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the privateKey property: Private sshKey algorithm of git repository.
-     *
+     * 
      * @return the privateKey value.
      */
     public String privateKey() {
@@ -243,7 +251,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the privateKey property: Private sshKey algorithm of git repository.
-     *
+     * 
      * @param privateKey the privateKey value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -254,7 +262,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Get the strictHostKeyChecking property: Strict host key checking or not.
-     *
+     * 
      * @return the strictHostKeyChecking value.
      */
     public Boolean strictHostKeyChecking() {
@@ -263,7 +271,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Set the strictHostKeyChecking property: Strict host key checking or not.
-     *
+     * 
      * @param strictHostKeyChecking the strictHostKeyChecking value to set.
      * @return the ConfigServerGitProperty object itself.
      */
@@ -274,7 +282,7 @@ public final class ConfigServerGitProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -282,9 +290,8 @@ public final class ConfigServerGitProperty {
             repositories().forEach(e -> e.validate());
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model ConfigServerGitProperty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uri in model ConfigServerGitProperty"));
         }
     }
 

@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.SupportedStackResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported stack resource payload. */
+/**
+ * Supported stack resource payload.
+ */
 @Fluent
 public final class SupportedStackResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class SupportedStackResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of SupportedStackResourceInner class.
+     */
+    public SupportedStackResourceInner() {
+    }
+
+    /**
      * Get the properties property: Supported stack resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public SupportedStackResourceProperties properties() {
@@ -36,7 +44,7 @@ public final class SupportedStackResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Supported stack resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SupportedStackResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class SupportedStackResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class SupportedStackResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

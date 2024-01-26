@@ -26,7 +26,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
 
     /**
      * Get the enabled property: Whether to enable VPA. Default value is false.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
 
     /**
      * Set the enabled property: Whether to enable VPA. Default value is false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

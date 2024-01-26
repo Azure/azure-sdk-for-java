@@ -33,7 +33,7 @@ public final class CredentialResult {
 
     /**
      * Get the name property: The name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -42,7 +42,7 @@ public final class CredentialResult {
 
     /**
      * Get the value property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the value value.
      */
     public byte[] value() {
@@ -51,7 +51,7 @@ public final class CredentialResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

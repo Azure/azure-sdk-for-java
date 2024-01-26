@@ -24,7 +24,7 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
 
     /**
      * Creates a new instance of WorkloadRuntime value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
 
     /**
      * Creates or finds a WorkloadRuntime from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadRuntime.
      */
@@ -44,7 +44,7 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
 
     /**
      * Gets known WorkloadRuntime values.
-     *
+     * 
      * @return known WorkloadRuntime values.
      */
     public static Collection<WorkloadRuntime> values() {

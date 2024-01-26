@@ -14,12 +14,12 @@ import com.azure.resourcemanager.containerservice.models.PrivateLinkServiceConne
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * PrivateEndpointConnectionsUpdate.json
      */
     /**
      * Sample code: Update Private Endpoint Connection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatePrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {

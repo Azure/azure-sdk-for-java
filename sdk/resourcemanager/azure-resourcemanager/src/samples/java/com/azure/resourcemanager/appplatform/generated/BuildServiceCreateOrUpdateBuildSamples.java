@@ -4,48 +4,49 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
+import com.azure.resourcemanager.appplatform.models.ApmReference;
 import com.azure.resourcemanager.appplatform.models.BuildProperties;
 import com.azure.resourcemanager.appplatform.models.BuildResourceRequests;
+import com.azure.resourcemanager.appplatform.models.CertificateReference;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BuildService CreateOrUpdateBuild. */
+/**
+ * Samples for BuildService CreateOrUpdateBuild.
+ */
 public final class BuildServiceCreateOrUpdateBuildSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_CreateOrUpdateBuild.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * BuildService_CreateOrUpdateBuild.json
      */
     /**
      * Sample code: BuildService_CreateOrUpdateBuild.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceCreateOrUpdateBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getBuildServices()
-            .createOrUpdateBuildWithResponse(
-                "myResourceGroup",
-                "myservice",
-                "default",
-                "mybuild",
-                new BuildInner()
-                    .withProperties(
-                        new BuildProperties()
-                            .withRelativePath(
-                                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-20210601-3ed9f4a2-986b-4bbd-b833-a42dccb2f777")
-                            .withBuilder(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/builders/default")
-                            .withAgentPool(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/agentPools/default")
-                            .withEnv(mapOf("environmentVariable", "test"))
-                            .withResourceRequests(new BuildResourceRequests().withCpu("1").withMemory("2Gi"))),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getBuildServices().createOrUpdateBuildWithResponse(
+            "myResourceGroup", "myservice", "default", "mybuild",
+            new BuildInner().withProperties(new BuildProperties().withRelativePath(
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-20210601-3ed9f4a2-986b-4bbd-b833-a42dccb2f777")
+                .withBuilder(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/builders/default")
+                .withAgentPool(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/agentPools/default")
+                .withEnv(mapOf("environmentVariable", "test"))
+                .withApms(Arrays.asList(new ApmReference().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights")))
+                .withCertificates(Arrays.asList(new CertificateReference().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1"),
+                    new CertificateReference().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2")))
+                .withResourceRequests(new BuildResourceRequests().withCpu("1").withMemory("2Gi"))),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -8,23 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedRuntimeValue. */
+/**
+ * The raw value which could be passed to deployment CRUD operations.
+ */
 public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedRuntimeValue> {
-    /** Static value Java_8 for SupportedRuntimeValue. */
+    /**
+     * Static value Java_8 for SupportedRuntimeValue.
+     */
     public static final SupportedRuntimeValue JAVA_8 = fromString("Java_8");
 
-    /** Static value Java_11 for SupportedRuntimeValue. */
+    /**
+     * Static value Java_11 for SupportedRuntimeValue.
+     */
     public static final SupportedRuntimeValue JAVA_11 = fromString("Java_11");
 
-    /** Static value Java_17 for SupportedRuntimeValue. */
+    /**
+     * Static value Java_17 for SupportedRuntimeValue.
+     */
     public static final SupportedRuntimeValue JAVA_17 = fromString("Java_17");
 
-    /** Static value NetCore_31 for SupportedRuntimeValue. */
+    /**
+     * Static value NetCore_31 for SupportedRuntimeValue.
+     */
     public static final SupportedRuntimeValue NET_CORE_31 = fromString("NetCore_31");
 
     /**
+     * Creates a new instance of SupportedRuntimeValue value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportedRuntimeValue() {
+    }
+
+    /**
      * Creates or finds a SupportedRuntimeValue from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SupportedRuntimeValue.
      */
@@ -35,7 +54,7 @@ public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedR
 
     /**
      * Gets known SupportedRuntimeValue values.
-     *
+     * 
      * @return known SupportedRuntimeValue values.
      */
     public static Collection<SupportedRuntimeValue> values() {

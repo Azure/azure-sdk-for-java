@@ -39,7 +39,7 @@ public final class AgentPoolNetworkProfile {
 
     /**
      * Get the nodePublicIpTags property: IPTags of instance-level public IPs.
-     *
+     * 
      * @return the nodePublicIpTags value.
      */
     public List<IpTag> nodePublicIpTags() {
@@ -48,7 +48,7 @@ public final class AgentPoolNetworkProfile {
 
     /**
      * Set the nodePublicIpTags property: IPTags of instance-level public IPs.
-     *
+     * 
      * @param nodePublicIpTags the nodePublicIpTags value to set.
      * @return the AgentPoolNetworkProfile object itself.
      */
@@ -60,7 +60,7 @@ public final class AgentPoolNetworkProfile {
     /**
      * Get the allowedHostPorts property: The port ranges that are allowed to access. The specified ranges are allowed
      * to overlap.
-     *
+     * 
      * @return the allowedHostPorts value.
      */
     public List<PortRange> allowedHostPorts() {
@@ -70,7 +70,7 @@ public final class AgentPoolNetworkProfile {
     /**
      * Set the allowedHostPorts property: The port ranges that are allowed to access. The specified ranges are allowed
      * to overlap.
-     *
+     * 
      * @param allowedHostPorts the allowedHostPorts value to set.
      * @return the AgentPoolNetworkProfile object itself.
      */
@@ -82,7 +82,7 @@ public final class AgentPoolNetworkProfile {
     /**
      * Get the applicationSecurityGroups property: The IDs of the application security groups which agent pool will
      * associate when created.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<String> applicationSecurityGroups() {
@@ -92,7 +92,7 @@ public final class AgentPoolNetworkProfile {
     /**
      * Set the applicationSecurityGroups property: The IDs of the application security groups which agent pool will
      * associate when created.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the AgentPoolNetworkProfile object itself.
      */
@@ -103,7 +103,7 @@ public final class AgentPoolNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

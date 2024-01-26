@@ -19,13 +19,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BuildServiceBuildersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BuildServiceBuildersClient.
+ */
 public interface BuildServiceBuildersClient {
     /**
      * Get a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -35,14 +37,14 @@ public interface BuildServiceBuildersClient {
      * @return a KPack builder along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BuilderResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    Mono<Response<BuilderResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Get a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -52,14 +54,32 @@ public interface BuildServiceBuildersClient {
      * @return a KPack builder on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BuilderResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    Mono<BuilderResourceInner> getAsync(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName);
 
     /**
      * Get a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a KPack builder along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BuilderResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context);
+
+    /**
+     * Get a KPack builder.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -72,28 +92,10 @@ public interface BuildServiceBuildersClient {
     BuilderResourceInner get(String resourceGroupName, String serviceName, String buildServiceName, String builderName);
 
     /**
-     * Get a KPack builder.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPack builder along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BuilderResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
-
-    /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -104,18 +106,14 @@ public interface BuildServiceBuildersClient {
      * @return kPack Builder resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, BuilderResourceInner builderResource);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -127,17 +125,14 @@ public interface BuildServiceBuildersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BuilderResourceInner>, BuilderResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         BuilderResourceInner builderResource);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -148,18 +143,14 @@ public interface BuildServiceBuildersClient {
      * @return the {@link SyncPoller} for polling of kPack Builder resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BuilderResourceInner>, BuilderResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource);
+    SyncPoller<PollResult<BuilderResourceInner>, BuilderResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, BuilderResourceInner builderResource);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -171,19 +162,15 @@ public interface BuildServiceBuildersClient {
      * @return the {@link SyncPoller} for polling of kPack Builder resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BuilderResourceInner>, BuilderResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource,
+    SyncPoller<PollResult<BuilderResourceInner>, BuilderResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, BuilderResourceInner builderResource,
         Context context);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -194,18 +181,14 @@ public interface BuildServiceBuildersClient {
      * @return kPack Builder resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BuilderResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource);
+    Mono<BuilderResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, BuilderResourceInner builderResource);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -216,18 +199,14 @@ public interface BuildServiceBuildersClient {
      * @return kPack Builder resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BuilderResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource);
+    BuilderResourceInner createOrUpdate(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, BuilderResourceInner builderResource);
 
     /**
      * Create or update a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -239,19 +218,14 @@ public interface BuildServiceBuildersClient {
      * @return kPack Builder resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BuilderResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        BuilderResourceInner builderResource,
-        Context context);
+    BuilderResourceInner createOrUpdate(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, BuilderResourceInner builderResource, Context context);
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -261,14 +235,14 @@ public interface BuildServiceBuildersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -278,14 +252,14 @@ public interface BuildServiceBuildersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -295,14 +269,14 @@ public interface BuildServiceBuildersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -313,14 +287,14 @@ public interface BuildServiceBuildersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context);
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -334,9 +308,9 @@ public interface BuildServiceBuildersClient {
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -349,9 +323,9 @@ public interface BuildServiceBuildersClient {
 
     /**
      * Delete a KPack builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -361,46 +335,46 @@ public interface BuildServiceBuildersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+    void delete(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        Context context);
 
     /**
      * List KPack builders result.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Builder resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BuilderResourceInner> listAsync(String resourceGroupName, String serviceName, String buildServiceName);
 
     /**
      * List KPack builders result.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Builder resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BuilderResourceInner> list(String resourceGroupName, String serviceName, String buildServiceName);
 
     /**
      * List KPack builders result.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param context The context to associate with this operation.
@@ -408,17 +382,17 @@ public interface BuildServiceBuildersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Builder resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BuilderResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, Context context);
+    PagedIterable<BuilderResourceInner> list(String resourceGroupName, String serviceName, String buildServiceName,
+        Context context);
 
     /**
      * List deployments that are using the builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -428,14 +402,14 @@ public interface BuildServiceBuildersClient {
      * @return a list of deployments resource ids along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentListInner>> listDeploymentsWithResponseAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    Mono<Response<DeploymentListInner>> listDeploymentsWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * List deployments that are using the builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -445,31 +419,14 @@ public interface BuildServiceBuildersClient {
      * @return a list of deployments resource ids on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentListInner> listDeploymentsAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    Mono<DeploymentListInner> listDeploymentsAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * List deployments that are using the builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deployments resource ids.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentListInner listDeployments(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
-
-    /**
-     * List deployments that are using the builder.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -480,6 +437,23 @@ public interface BuildServiceBuildersClient {
      * @return a list of deployments resource ids along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentListInner> listDeploymentsWithResponse(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+    Response<DeploymentListInner> listDeploymentsWithResponse(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context);
+
+    /**
+     * List deployments that are using the builder.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentListInner listDeployments(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName);
 }
