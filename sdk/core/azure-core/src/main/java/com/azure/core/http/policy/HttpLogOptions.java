@@ -301,7 +301,7 @@ public class HttpLogOptions {
      *
      * @return true if header names with redacted values are not be logged.
      */
-    public boolean isRedactedHeaderLoggingDisabled() {
-        return disableRedactedHeaderLogging;
+    public boolean isRedactedHeaderLoggingEnabled() {
+        return !disableRedactedHeaderLogging;
     }
 }

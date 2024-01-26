@@ -817,7 +817,7 @@ public class HttpLoggingPolicyTests {
                 int expectedHeaders = 0;
                 for (Map.Entry<String, String> kvp : this.headers.entrySet()) {
                     boolean isAllowed = logOptions.getAllowedHeaderNames().contains(kvp.getKey());
-                    if (isAllowed || !logOptions.isRedactedHeaderLoggingDisabled()) {
+                    if (isAllowed || logOptions.isRedactedHeaderLoggingEnabled()) {
                         expectedHeaders++;
                         assertEquals(isAllowed ? kvp.getValue() : REDACTED, other.headers.get(kvp.getKey()));
                     } else {

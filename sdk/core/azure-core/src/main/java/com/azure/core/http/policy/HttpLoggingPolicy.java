@@ -118,7 +118,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
-            this.enableRedactedHeaderLogging = !httpLogOptions.isRedactedHeaderLoggingDisabled();
+            this.enableRedactedHeaderLogging = httpLogOptions.isRedactedHeaderLoggingEnabled();
 
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
