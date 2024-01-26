@@ -118,6 +118,7 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
+              # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
               - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
                 parameters:
                   PackageName: ${{artifact.name}}
