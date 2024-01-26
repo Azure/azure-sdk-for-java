@@ -159,7 +159,7 @@ dependencies {
 }
 ```
 
-You can also use the  `io.spring.dependency-management` plugin and import the BOMs in `dependencyManagement`:
+You can also use the `io.spring.dependency-management` plugin and import the BOM in `dependencyManagement`:
 
 ```kotlin
 plugins {
