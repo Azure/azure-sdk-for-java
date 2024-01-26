@@ -225,12 +225,16 @@ public class AddressResolver implements IAddressResolver {
                 !(request.getResourceType() == ResourceType.StoredProcedure && request.getOperationType() == OperationType.ExecuteJavaScript) &&
                 // Collection head is sent internally for strong consistency given routing hints from original requst, which is for partitioned resource.
                 !(request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Head)) {
-                logger.error(
+
+                String errorMessage = String.format(
                     "Shouldn't come here for non partitioned resources. resourceType : {}, operationtype:{}, resourceaddress:{}",
                     request.getResourceType(),
                     request.getOperationType(),
                     request.getResourceAddress());
-                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.requestContext.resourcePhysicalAddress));
+
+                logger.error(errorMessage);
+                return Mono.error(
+                        BridgeInternal.setResourceAddress(new InternalServerErrorException(errorMessage), request.requestContext.resourcePhysicalAddress));
             }
 
             PartitionKeyRange range;

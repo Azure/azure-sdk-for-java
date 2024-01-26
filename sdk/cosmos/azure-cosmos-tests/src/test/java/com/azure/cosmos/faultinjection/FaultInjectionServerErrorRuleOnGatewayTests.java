@@ -117,7 +117,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, HttpConstants.SubStatusCodes.SERVER_GENERATED_500 },
             { FaultInjectionServerErrorType.RETRY_WITH, false, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },

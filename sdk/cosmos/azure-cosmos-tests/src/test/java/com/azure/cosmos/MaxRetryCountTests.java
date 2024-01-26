@@ -84,7 +84,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsInternalServerError =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_500);
         };
 
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =

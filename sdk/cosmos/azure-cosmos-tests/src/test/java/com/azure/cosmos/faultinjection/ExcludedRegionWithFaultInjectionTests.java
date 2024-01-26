@@ -328,12 +328,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
@@ -349,12 +349,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withPerRegionDuplicateCount(3)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -454,12 +454,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -617,12 +617,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -723,12 +723,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -1728,12 +1728,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
@@ -1749,12 +1749,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withPerRegionDuplicateCount(3)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -1859,12 +1859,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
@@ -1881,12 +1881,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                             new CosmosBatchRequestOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -2094,12 +2094,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
@@ -2115,12 +2115,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withPerRegionDuplicateCount(3)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 }
@@ -2220,12 +2220,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
@@ -2242,12 +2242,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                             new CosmosBulkExecutionOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_500,
                             this.chooseSecondRegion.apply(this.preferredRegions)
                     ))
                 }

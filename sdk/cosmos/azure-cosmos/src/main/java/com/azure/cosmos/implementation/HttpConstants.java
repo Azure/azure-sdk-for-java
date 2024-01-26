@@ -447,7 +447,7 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_503 = 21008;
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
-
+        public static final int SERVER_GENERATED_500 = 21011;
     }
 
     public static class HeaderValues {

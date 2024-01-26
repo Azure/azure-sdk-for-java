@@ -6,13 +6,13 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MutableVolatile;
 import com.azure.cosmos.implementation.Quadruple;
@@ -236,8 +236,9 @@ public class QuorumReader {
                                 );
 
                             default:
-                                logger.error("Unknown ReadQuorum result {}", secondaryQuorumReadResult.quorumResult.toString());
-                                return Flux.error(new InternalServerErrorException(RMResources.InternalServerError));
+                                String errorMessage = "Unknown ReadQuorum result " + secondaryQuorumReadResult.quorumResult;
+                                logger.error(errorMessage);
+                                return Flux.error(new InternalServerErrorException(errorMessage));
                         }
 
                     });
@@ -745,8 +746,9 @@ public class QuorumReader {
 
         public StoreResponse getResponse() {
             if (!this.isValidResult()) {
-                logger.error("getResponse called for invalid result");
-                throw new InternalServerErrorException(RMResources.InternalServerError);
+                String errorMessage = "getResponse called for invalid result";
+                logger.error(errorMessage);
+                throw new InternalServerErrorException(errorMessage);
             }
 
             return this.response.toResponse(requestChargeTracker);

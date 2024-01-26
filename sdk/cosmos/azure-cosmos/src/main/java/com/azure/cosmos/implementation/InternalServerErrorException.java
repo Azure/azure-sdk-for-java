@@ -35,10 +35,12 @@ public class InternalServerErrorException extends CosmosException {
     public InternalServerErrorException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
-                                        Map<String, String> responseHeaders) {
+                                        Map<String, String> responseHeaders,
+                                        int subStatusCode) {
         super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 
     /**

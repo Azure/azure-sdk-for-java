@@ -126,8 +126,13 @@ public class HttpTransportClient extends TransportClient {
                 Map<String, String> errorResponseHeaders = new HashMap<>();
                 errorResponseHeaders.put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
 
-                logger.error("Received Recreate request on Http client");
-                throw new InternalServerErrorException(RMResources.InternalServerError, null, errorResponseHeaders, null);
+                String errorMessage = "Received Recreate request on Http client";
+                logger.error(errorMessage);
+                throw new InternalServerErrorException(
+                    errorMessage,
+                    null,
+                    errorResponseHeaders,
+                    null);
             }
 
             HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddressUri, resourceOperation, request);
@@ -1006,6 +1011,7 @@ public class HttpTransportClient extends TransportClient {
                                             Strings.isNullOrEmpty(errorMessage) ? RMResources.InternalServerError : errorMessage),
                                     response.headers(),
                                     request.uri());
+                            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.SERVER_GENERATED_500);
                             break;
 
                         default:

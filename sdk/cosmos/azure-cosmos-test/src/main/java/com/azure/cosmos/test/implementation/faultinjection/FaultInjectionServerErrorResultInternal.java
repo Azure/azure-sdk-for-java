@@ -112,7 +112,13 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case INTERNAL_SERVER_ERROR:
-                cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
+                cosmosException =
+                    new InternalServerErrorException(
+                        null,
+                        lsn,
+                        partitionKeyRangeId,
+                        responseHeaders,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_500);
                 break;
 
             case READ_SESSION_NOT_AVAILABLE:

@@ -1089,7 +1089,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.INTERNAL_SERVER_ERROR:
-                    cause = new InternalServerErrorException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new InternalServerErrorException(
+                            error,
+                            lsn,
+                            partitionKeyRangeId,
+                            responseHeaders,
+                            SubStatusCodes.SERVER_GENERATED_500);
                     break;
 
                 case StatusCodes.LOCKED:
