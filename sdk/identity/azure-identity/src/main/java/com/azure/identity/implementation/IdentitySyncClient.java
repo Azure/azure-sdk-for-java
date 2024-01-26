@@ -166,7 +166,13 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
     }
 
-
+    /**
+     * Acquire a token from the confidential client.
+     *
+     * @param request the details of the token request
+     * @return An access token, or null if no token exists in the cache.
+     */
+    @SuppressWarnings("deprecation")
     public AccessToken authenticateWithConfidentialClientCache(TokenRequestContext request) {
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(new HashSet<>(request.getScopes()))
@@ -189,17 +195,23 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            // Cache misses should not throw an exception, but should log.
+            if (e.getMessage().contains("Token not found in the cache")) {
+                LOGGER.info("Token not found in the MSAL cache.");
+                return null;
+            } else {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            }
         }
     }
 
 
     /**
-     * Asynchronously acquire a token from the currently logged in client.
+     * Acquire a token from the currently logged in client.
      *
      * @param request the details of the token request
      * @param account the account used to log in to acquire the last token
-     * @return a Publisher that emits an AccessToken
+     * @return An access token, or null if no token exists in the cache.
      */
     @SuppressWarnings("deprecation")
     public MsalToken authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
@@ -226,7 +238,13 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            // Cache misses should not throw an exception, but should log.
+            if (e.getMessage().contains("Token not found in the cache")) {
+                LOGGER.info("Token not found in the MSAL cache.");
+                return null;
+            } else {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            }
         }
 
         SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
@@ -248,7 +266,13 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            // Cache misses should not throw an exception, but should log.
+            if (e.getMessage().contains("Token not found in the cache")) {
+                LOGGER.info("Token not found in the MSAL cache.");
+                return null;
+            } else {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            }
         }
     }
 
