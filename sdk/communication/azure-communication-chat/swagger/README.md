@@ -35,9 +35,9 @@ To update generated files for chat service, run the following command
 ### Code generation settings
 
 ```yaml
-tag: package-chat-2023-11-07
+tag: package-2024-03-07
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/731138d0505c02fcee05d7b5a1417fd10ef5efc3/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f579ddcd291d55b0a2a32ee81995432458db3da9/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\

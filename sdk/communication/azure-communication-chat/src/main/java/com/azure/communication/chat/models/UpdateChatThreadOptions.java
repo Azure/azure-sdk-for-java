@@ -7,12 +7,10 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request payload for updating a chat thread.
- */
+/** Request payload for updating a chat thread. */
 @Fluent
 public final class UpdateChatThreadOptions {
-    /**
+    /*
      * Chat thread topic.
      */
     @JsonProperty(value = "topic")

@@ -8,18 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Request payload for updating a chat message.
- */
+/** Request payload for updating a chat message. */
 @Fluent
 public final class UpdateChatMessageOptions {
-    /**
+    /*
      * Chat message content.
      */
     @JsonProperty(value = "content")
     private String content;
 
-    /**
+    /*
      * Message metadata.
      */
     @JsonProperty(value = "metadata")
