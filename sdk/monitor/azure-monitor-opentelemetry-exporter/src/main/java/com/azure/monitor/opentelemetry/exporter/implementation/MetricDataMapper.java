@@ -153,6 +153,11 @@ public class MetricDataMapper {
                 throw new IllegalArgumentException("metric data type '" + type + "' is not supported yet");
         }
 
+        // new http semconv metrics use seconds, but we want to send milliseconds to Breeze
+        if (isPreAggregatedStandardMetric && (metricData.getName().equals("http.server.request.duration") || metricData.getName().equals("http.client.request.duration"))) {
+            pointDataValue = pointDataValue * 1000;
+        }
+
         pointBuilder.setValue(pointDataValue);
 
         // We emit some metrics via OpenTelemetry that have names which use characters that aren't

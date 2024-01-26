@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment resource payload. */
+/**
+ * Deployment resource payload.
+ */
 @Fluent
 public final class DeploymentResourceInner extends ProxyResource {
     /*
@@ -33,8 +35,14 @@ public final class DeploymentResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of DeploymentResourceInner class.
+     */
+    public DeploymentResourceInner() {
+    }
+
+    /**
      * Get the properties property: Properties of the Deployment resource.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentResourceProperties properties() {
@@ -43,7 +51,7 @@ public final class DeploymentResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the Deployment resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentResourceInner object itself.
      */
@@ -54,7 +62,7 @@ public final class DeploymentResourceInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku of the Deployment resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -63,7 +71,7 @@ public final class DeploymentResourceInner extends ProxyResource {
 
     /**
      * Set the sku property: Sku of the Deployment resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DeploymentResourceInner object itself.
      */
@@ -74,7 +82,7 @@ public final class DeploymentResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -83,7 +91,7 @@ public final class DeploymentResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

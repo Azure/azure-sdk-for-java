@@ -57,4 +57,13 @@ class MaxStringPartitionKeyComponent implements IPartitionKeyComponent {
         return this;
     }
 
+    @Override
+    public Object toObject() {
+        return MaxString.VALUE;
+    }
+
+    private static class MaxString
+    {
+        public final static MaxString VALUE = new MaxString();
+    }
 }

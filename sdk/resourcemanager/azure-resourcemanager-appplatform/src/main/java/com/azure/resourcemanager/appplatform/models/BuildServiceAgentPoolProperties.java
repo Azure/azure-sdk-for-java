@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Build service agent pool properties. */
+/**
+ * Build service agent pool properties.
+ */
 @Fluent
 public final class BuildServiceAgentPoolProperties {
     /*
@@ -23,8 +25,14 @@ public final class BuildServiceAgentPoolProperties {
     private BuildServiceAgentPoolSizeProperties poolSize;
 
     /**
+     * Creates an instance of BuildServiceAgentPoolProperties class.
+     */
+    public BuildServiceAgentPoolProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the build service agent pool.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -33,7 +41,7 @@ public final class BuildServiceAgentPoolProperties {
 
     /**
      * Get the poolSize property: build service agent pool size properties.
-     *
+     * 
      * @return the poolSize value.
      */
     public BuildServiceAgentPoolSizeProperties poolSize() {
@@ -42,7 +50,7 @@ public final class BuildServiceAgentPoolProperties {
 
     /**
      * Set the poolSize property: build service agent pool size properties.
-     *
+     * 
      * @param poolSize the poolSize value to set.
      * @return the BuildServiceAgentPoolProperties object itself.
      */
@@ -53,7 +61,7 @@ public final class BuildServiceAgentPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,9 +17,9 @@ import reactor.core.publisher.Mono;
 public interface PrivateLinkResourcesClient {
     /**
      * Gets a list of private link resources in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +33,9 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,9 +48,9 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -65,9 +65,9 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Gets a list of private link resources in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

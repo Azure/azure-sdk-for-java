@@ -27,7 +27,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Get the publicIPs property: A list of public IP resources.
-     *
+     * 
      * @return the publicIPs value.
      */
     public List<ResourceReference> publicIPs() {
@@ -36,7 +36,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Set the publicIPs property: A list of public IP resources.
-     *
+     * 
      * @param publicIPs the publicIPs value to set.
      * @return the ManagedClusterLoadBalancerProfileOutboundIPs object itself.
      */
@@ -47,7 +47,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

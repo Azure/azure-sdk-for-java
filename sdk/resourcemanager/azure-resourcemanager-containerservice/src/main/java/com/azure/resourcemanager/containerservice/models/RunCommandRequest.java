@@ -39,7 +39,7 @@ public final class RunCommandRequest {
 
     /**
      * Get the command property: The command to run.
-     *
+     * 
      * @return the command value.
      */
     public String command() {
@@ -48,7 +48,7 @@ public final class RunCommandRequest {
 
     /**
      * Set the command property: The command to run.
-     *
+     * 
      * @param command the command value to set.
      * @return the RunCommandRequest object itself.
      */
@@ -59,7 +59,7 @@ public final class RunCommandRequest {
 
     /**
      * Get the context property: A base64 encoded zip file containing the files required by the command.
-     *
+     * 
      * @return the context value.
      */
     public String context() {
@@ -68,7 +68,7 @@ public final class RunCommandRequest {
 
     /**
      * Set the context property: A base64 encoded zip file containing the files required by the command.
-     *
+     * 
      * @param context the context value to set.
      * @return the RunCommandRequest object itself.
      */
@@ -79,7 +79,7 @@ public final class RunCommandRequest {
 
     /**
      * Get the clusterToken property: AuthToken issued for AKS AAD Server App.
-     *
+     * 
      * @return the clusterToken value.
      */
     public String clusterToken() {
@@ -88,7 +88,7 @@ public final class RunCommandRequest {
 
     /**
      * Set the clusterToken property: AuthToken issued for AKS AAD Server App.
-     *
+     * 
      * @param clusterToken the clusterToken value to set.
      * @return the RunCommandRequest object itself.
      */
@@ -99,7 +99,7 @@ public final class RunCommandRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

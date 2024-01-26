@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Client-Certification Authentication. */
+/**
+ * Client-Certification Authentication.
+ */
 @Fluent
 public final class IngressSettingsClientAuth {
     /*
@@ -18,8 +20,14 @@ public final class IngressSettingsClientAuth {
     private List<String> certificates;
 
     /**
+     * Creates an instance of IngressSettingsClientAuth class.
+     */
+    public IngressSettingsClientAuth() {
+    }
+
+    /**
      * Get the certificates property: Collection of certificate resource id.
-     *
+     * 
      * @return the certificates value.
      */
     public List<String> certificates() {
@@ -28,7 +36,7 @@ public final class IngressSettingsClientAuth {
 
     /**
      * Set the certificates property: Collection of certificate resource id.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the IngressSettingsClientAuth object itself.
      */
@@ -39,7 +47,7 @@ public final class IngressSettingsClientAuth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
