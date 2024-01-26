@@ -192,12 +192,6 @@ public final class AudioTranslationOptions {
         return this;
     }
 
-    /*
-     * The filename for file
-     */
-    @Generated
-    private String fileFilename = "file";
-
     /**
      * Creates an instance of AudioTranslationOptions class.
      *
@@ -205,25 +199,5 @@ public final class AudioTranslationOptions {
      */
     public AudioTranslationOptions(byte[] file) {
         this.file = file;
-    }
-
-    /**
-     * Get the fileFilename property: The filename for file.
-     *
-     * @return the fileFilename value.
-     */
-    String getFileFilename() {
-        return this.fileFilename;
-    }
-
-    /**
-     * Set the fileFilename property: The filename for file.
-     *
-     * @param fileFilename the fileFilename value to set.
-     * @return the AudioTranslationOptions object itself.
-     */
-    AudioTranslationOptions setFileFilename(String fileFilename) {
-        this.fileFilename = fileFilename;
-        return this;
     }
 }
