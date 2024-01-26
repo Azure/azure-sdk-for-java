@@ -13,22 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProfile model = BinaryData.fromString(
-            "{\"loadBalancerProfile\":{\"count\":1199777759},\"networkPolicy\":\"calico\",\"podCidr\":\"hfpmrqobmtukknr\"}")
+        NetworkProfile model = BinaryData
+            .fromString(
+                "{\"loadBalancerProfile\":{\"count\":1372882397},\"networkPolicy\":\"calico\",\"podCidr\":\"k\"}")
             .toObject(NetworkProfile.class);
-        Assertions.assertEquals(1199777759, model.loadBalancerProfile().count());
+        Assertions.assertEquals(1372882397, model.loadBalancerProfile().count());
         Assertions.assertEquals(NetworkPolicy.CALICO, model.networkPolicy());
-        Assertions.assertEquals("hfpmrqobmtukknr", model.podCidr());
+        Assertions.assertEquals("k", model.podCidr());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkProfile model = new NetworkProfile()
-            .withLoadBalancerProfile(new NetworkProfileLoadBalancerProfile().withCount(1199777759))
-            .withNetworkPolicy(NetworkPolicy.CALICO).withPodCidr("hfpmrqobmtukknr");
+            .withLoadBalancerProfile(new NetworkProfileLoadBalancerProfile().withCount(1372882397))
+            .withNetworkPolicy(NetworkPolicy.CALICO).withPodCidr("k");
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals(1199777759, model.loadBalancerProfile().count());
+        Assertions.assertEquals(1372882397, model.loadBalancerProfile().count());
         Assertions.assertEquals(NetworkPolicy.CALICO, model.networkPolicy());
-        Assertions.assertEquals("hfpmrqobmtukknr", model.podCidr());
+        Assertions.assertEquals("k", model.podCidr());
     }
 }

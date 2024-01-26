@@ -10,12 +10,12 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class AgentPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * AgentPoolsGet.json
      */
     /**
      * Sample code: Get Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {

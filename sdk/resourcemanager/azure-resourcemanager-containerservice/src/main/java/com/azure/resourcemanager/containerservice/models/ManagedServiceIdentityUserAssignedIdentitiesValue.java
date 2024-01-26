@@ -32,7 +32,7 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -41,7 +41,7 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -50,7 +50,7 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
