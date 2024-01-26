@@ -3513,7 +3513,7 @@ public class FileApiTest extends DataLakeTestBase {
     private static Stream<Arguments> upnHeaderTestSupplier() {
         return Stream.of(
             Arguments.of(false),
-            Arguments.of(false),
+            Arguments.of(true),
             Arguments.of((Boolean) null));
     }
 

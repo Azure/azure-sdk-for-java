@@ -23,6 +23,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,6 +47,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
@@ -235,5 +237,21 @@ public final class BuilderHelper {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, STORAGE_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
+
+    public static Context addUpnHeader(Supplier<Boolean> upnHeaderValue, Context context) {
+        Boolean value = upnHeaderValue.get();
+        if (value == null) {
+            return context;
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-ms-upn", Boolean.toString(value));
+        if (context == null) {
+            return new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        } else {
+            return context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        }
+
     }
 }

@@ -6,9 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,6 +19,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
@@ -1238,24 +1237,13 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> getPropertiesWithResponse(PathGetPropertiesOptions options, Duration timeout,
                                                               Context context) {
-        Context newContext;
-        options = options == null ? new PathGetPropertiesOptions() : options;
-        if (options.isUpn() != null) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else {
-            newContext = null;
-        }
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        Context finalContext = context;
 
         PathGetPropertiesOptions finalOptions = options;
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
-                Transforms.toBlobRequestConditions(finalOptions.getRequestConditions()), timeout, newContext);
+                Transforms.toBlobRequestConditions(finalOptions.getRequestConditions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

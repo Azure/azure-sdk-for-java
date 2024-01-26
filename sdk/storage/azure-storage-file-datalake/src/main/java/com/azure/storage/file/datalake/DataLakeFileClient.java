@@ -32,6 +32,7 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
@@ -1138,22 +1139,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
-        Context newContext;
-        options = options == null ? new DataLakeFileInputStreamOptions() : options;
-        if (options.isUpn() != null) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else {
-            newContext = null;
-        }
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        Context finalContext = context;
 
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
-        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, newContext);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, finalContext);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
     }
@@ -1421,19 +1411,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
-        Context newContext;
-        options = options == null ? new ReadToFileOptions() : options;
-        if (options.isUpn() != null) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("x-ms-upn", options.isUpn() ? "true" : "false");
-            if (context == null) {
-                newContext = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            } else {
-                newContext = context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
-            }
-        } else {
-            newContext = null;
-        }
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        Context finalContext = context;
 
         ReadToFileOptions finalOptions = options;
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -1444,7 +1423,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(finalOptions.getDownloadRetryOptions()))
                     .setRequestConditions(Transforms.toBlobRequestConditions(finalOptions.getDataLakeRequestConditions()))
                     .setRetrieveContentRangeMd5(finalOptions.isRangeGetContentMd5())
-                    .setOpenOptions(finalOptions.getOpenOptions()), timeout, newContext);
+                    .setOpenOptions(finalOptions.getOpenOptions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
