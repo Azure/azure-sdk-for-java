@@ -6,8 +6,11 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.FileDetails;
+import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -24,7 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -134,8 +136,25 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
-    void uploadFileRunner(Runnable testRunner) {
-        testRunner.run();
+    void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
+        , FilePurpose.ASSISTANTS);
+        testRunner.accept(uploadFileRequest);
+    }
+
+    void uploadAssistantImageFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png")))
+            , FilePurpose.ASSISTANTS);
+        testRunner.accept(uploadFileRequest);
+    }
+
+    void uploadFineTuningJsonFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json")))
+            , FilePurpose.FINE_TUNE);
+        testRunner.accept(uploadFileRequest);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
