@@ -2,6 +2,10 @@
 
 ## 2.35.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed `withKPackVersion` from `BuildServiceProperties`.
+
 ### Other Changes
 
 #### Dependency Updates
