@@ -56,8 +56,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         AssistantsClientBuilder builder = new AssistantsClientBuilder()
-                .httpClient(httpClient)
-                .serviceVersion(serviceVersion);
+                .httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
