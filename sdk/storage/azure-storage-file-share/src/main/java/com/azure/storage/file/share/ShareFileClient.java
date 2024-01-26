@@ -2159,7 +2159,7 @@ public class ShareFileClient {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
-            options.getRequestConditions(), options.getPreviousSnapshot(), options.isSupportRename(), context);
+            options.getRequestConditions(), options.getPreviousSnapshot(), options.isRenameSupported(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

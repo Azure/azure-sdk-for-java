@@ -2285,7 +2285,7 @@ class FileApiTests extends FileShareTestBase {
 
         //setup options
         ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
-        options.setSupportRename(renameSupport);
+        options.setRenameSupported(renameSupport);
 
         //call
         if (renameSupport == null || !renameSupport) {
