@@ -371,6 +371,27 @@ public final class ImplUtils {
         }
     }
 
+    /**
+     * Converts the {@link RetryOptions} into a {@link RetryPolicy.RetryStrategy} so it can be more easily consumed.
+     *
+     * @param retryOptions The retry options.
+     * @return The retry strategy based on the retry options.
+     * @throws NullPointerException If {@code retryOptions} is null.
+     * @throws IllegalArgumentException If {@code retryOptions} doesn't define any retry strategy options.
+     */
+    public static RetryPolicy.RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+
+        if (retryOptions.getBaseDelay() != null && retryOptions.getMaxDelay() != null) {
+            return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay());
+        } else if (retryOptions.getFixedDelay() != null) {
+            return new FixedDelay(retryOptions.getFixedDelay());
+        } else {
+            // This should never happen.
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy");
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
         throw (E) e;
