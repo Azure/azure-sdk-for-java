@@ -36,7 +36,6 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,12 +48,10 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -417,11 +414,10 @@ public class HttpLoggingPolicyTests {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
-    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
-        names = {"BASIC", "ALLOWED_HEADERS", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel) {
+    @MethodSource("logOptionsSupplier")
+    public void loggingIncludesRetryCount(HttpLogOptions logOptions) {
         AtomicInteger requestCount = new AtomicInteger();
-        String url = "https://test.com/loggingIncludesRetryCount/" + logLevel;
+        String url = "https://test.com/loggingIncludesRetryCount/" + logOptions.getLogLevel();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url)
             .setHeader(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, "client-request-id");
 
@@ -430,7 +426,6 @@ public class HttpLoggingPolicyTests {
             .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(responseBody.length))
             .set(X_MS_REQUEST_ID, "server-request-id");
 
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(logLevel);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(), new HttpLoggingPolicy(logOptions))
             .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
@@ -469,13 +464,12 @@ public class HttpLoggingPolicyTests {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
-    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
-        names = {"BASIC", "ALLOWED_HEADERS", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingHeadersAndBodyVerbose(HttpLogDetailLevel logLevel) {
+    @MethodSource("logOptionsSupplier")
+    public void loggingHeadersAndBodyVerbose(HttpLogOptions logOptions) {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};
-        String url = "https://test.com/loggingHeadersAndBodyVerbose/" + logLevel;
+        String url = "https://test.com/loggingHeadersAndBodyVerbose/" + logOptions.getLogLevel();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url)
             .setBody(requestBody)
             .setHeader(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
@@ -486,7 +480,6 @@ public class HttpLoggingPolicyTests {
             .set(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
             .set(X_MS_REQUEST_ID, "server-request-id");
 
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(logLevel);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(), new HttpLoggingPolicy(logOptions))
             .httpClient(r -> Mono.just(new com.azure.core.http.MockHttpResponse(r, 200, responseHeaders, responseBody)))
@@ -513,11 +506,10 @@ public class HttpLoggingPolicyTests {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
-    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
-        names = {"BASIC", "ALLOWED_HEADERS", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingIncludesRetryCountSync(HttpLogDetailLevel logLevel) {
+    @MethodSource("logOptionsSupplier")
+    public void loggingIncludesRetryCountSync(HttpLogOptions logOptions) {
         AtomicInteger requestCount = new AtomicInteger();
-        String url = "https://test.com/loggingIncludesRetryCountSync/" + logLevel;
+        String url = "https://test.com/loggingIncludesRetryCountSync/" + logOptions.getLogLevel();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url)
             .setHeader(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
             .setHeader(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, "client-request-id");
@@ -528,7 +520,6 @@ public class HttpLoggingPolicyTests {
             .set(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
             .set(X_MS_REQUEST_ID, "server-request-id");
 
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(logLevel);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(), new HttpLoggingPolicy(logOptions))
             .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
@@ -572,13 +563,12 @@ public class HttpLoggingPolicyTests {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
-    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
-        names = {"BASIC", "ALLOWED_HEADERS", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) {
+    @MethodSource("logOptionsSupplier")
+    public void loggingHeadersAndBodyVerboseSync(HttpLogOptions logOptions) {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};
-        String url = "https://test.com/loggingHeadersAndBodyVerboseSync/" + logLevel;
+        String url = "https://test.com/loggingHeadersAndBodyVerboseSync/" + logOptions.getLogLevel();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url)
             .setBody(requestBody)
             .setHeader(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
@@ -589,7 +579,6 @@ public class HttpLoggingPolicyTests {
             .set(HttpHeaderName.AUTHORIZATION, "not-allowed-value")
             .set(X_MS_REQUEST_ID, "server-request-id");
 
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(logLevel);
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(), new HttpLoggingPolicy(logOptions))
             .httpClient(r -> Mono.just(new com.azure.core.http.MockHttpResponse(r, 200, responseHeaders, responseBody)))
@@ -617,6 +606,16 @@ public class HttpLoggingPolicyTests {
             expectedRequest.assertEqual(messages.get(0), logOptions, LogLevel.VERBOSE);
             expectedResponse.assertEqual(messages.get(1), logOptions, LogLevel.VERBOSE);
         }
+    }
+
+    private static Stream<HttpLogOptions> logOptionsSupplier() {
+        return Stream.of(
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).disableRedactedHeaderLogging(true),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(true),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
     }
 
     private static Context getCallerMethodContext(String testMethodName) {
@@ -768,13 +767,13 @@ public class HttpLoggingPolicyTests {
 
         @JsonAnySetter
         public HttpLogMessage addHeader(String name, String value) {
-            headers.put(name.toLowerCase(Locale.ROOT), value);
+            headers.put(name, value);
             return this;
         }
 
         public HttpLogMessage setHeaders(HttpHeaders headers) {
             for (HttpHeader h : headers) {
-                this.headers.put(h.getName().toLowerCase(Locale.ROOT), h.getValue());
+                this.headers.put(h.getName(), h.getValue());
             }
 
             return this;
@@ -817,8 +816,8 @@ public class HttpLoggingPolicyTests {
             if (logOptions.getLogLevel().shouldLogHeaders() && LogLevel.INFORMATIONAL.compareTo(logLevel) >= 0) {
                 int expectedHeaders = 0;
                 for (Map.Entry<String, String> kvp : this.headers.entrySet()) {
-                    boolean isAllowed = allowedHeadersContain(logOptions.getAllowedHeaderNames(), kvp.getKey());
-                    if (isAllowed || logOptions.getLogLevel() != HttpLogDetailLevel.ALLOWED_HEADERS) {
+                    boolean isAllowed = logOptions.getAllowedHeaderNames().contains(kvp.getKey());
+                    if (isAllowed || !logOptions.isRedactedHeaderLoggingDisabled()) {
                         expectedHeaders++;
                         assertEquals(isAllowed ? kvp.getValue() : REDACTED, other.headers.get(kvp.getKey()));
                     } else {
@@ -828,10 +827,6 @@ public class HttpLoggingPolicyTests {
 
                 assertEquals(expectedHeaders, other.headers.size());
             }
-        }
-
-        private static boolean allowedHeadersContain(Collection<String> allowedHeaders, String headerName) {
-            return allowedHeaders.stream().anyMatch(allowedHeader -> allowedHeader.equalsIgnoreCase(headerName));
         }
     }
 }

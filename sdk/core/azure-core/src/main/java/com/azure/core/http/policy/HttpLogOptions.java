@@ -23,6 +23,7 @@ public class HttpLogOptions {
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
+    private boolean disableRedactedHeaderLogging;
 
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
@@ -278,5 +279,29 @@ public class HttpLogOptions {
     public HttpLogOptions setResponseLogger(HttpResponseLogger responseLogger) {
         this.responseLogger = responseLogger;
         return this;
+    }
+
+    /**
+     * Sets the flag that controls if header names which value is redacted should be logged.
+     * <p>
+     * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
+     * Defaults to `false` - redacted header names are logged.
+     *
+     * @param disableRedactedHeaderLogging If true, redacted headers are not logged.
+     * Otherwise, headers with redacted values are logged with `REDACTED` value.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions disableRedactedHeaderLogging(boolean disableRedactedHeaderLogging) {
+        this.disableRedactedHeaderLogging = disableRedactedHeaderLogging;
+        return this;
+    }
+
+    /**
+     * Gets the flag that controls if header names with redacted values should be logged.
+     *
+     * @return true if header names with redacted values are not be logged.
+     */
+    public boolean isRedactedHeaderLoggingDisabled() {
+        return disableRedactedHeaderLogging;
     }
 }

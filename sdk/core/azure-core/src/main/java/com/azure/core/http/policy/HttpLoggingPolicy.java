@@ -73,6 +73,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
+    private final boolean enableRedactedHeaderLogging;
 
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -102,6 +103,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = false;
+            this.enableRedactedHeaderLogging = true;
 
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -116,6 +118,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
+            this.enableRedactedHeaderLogging = !httpLogOptions.isRedactedHeaderLoggingDisabled();
 
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
@@ -237,7 +240,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(httpLogDetailLevel, allowedHeaderNames, request.getHeaders(), logBuilder);
+                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder, enableRedactedHeaderLogging);
             }
 
             if (request.getBody() == null) {
@@ -326,7 +329,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(httpLogDetailLevel, allowedHeaderNames, response.getHeaders(), logBuilder);
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder, enableRedactedHeaderLogging);
             }
         }
 
@@ -411,13 +414,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers on the request or response.
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
+     * @param disableRedactedHeaderLogging Flag indicating if redacted headers should be logged.
      */
-    private static void addHeadersToLogMessage(HttpLogDetailLevel detailLevel, Set<String> allowedHeaderNames, HttpHeaders headers,
-        LoggingEventBuilder logBuilder) {
+    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
+        LoggingEventBuilder logBuilder, boolean enableRedactedHeaderLogging) {
         // The raw header map uses keys that are already lower-cased.
         HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> {
             boolean isAllowed = allowedHeaderNames.contains(key);
-            if (isAllowed || detailLevel != HttpLogDetailLevel.ALLOWED_HEADERS) {
+            if (isAllowed || enableRedactedHeaderLogging) {
                 logBuilder.addKeyValue(value.getName(), isAllowed ? value.getValue() : REDACTED_PLACEHOLDER);
             }
         });
