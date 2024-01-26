@@ -7,12 +7,15 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/translation/
+      - sdk/translation/ci.yml
+      - sdk/translation/azure-ai-documenttranslator/
+      - sdk/translation/azure-ai-translation-text/
+      - sdk/translation/azure-ai-translator-document/
     exclude:
       - sdk/translation/pom.xml
       - sdk/translation/azure-ai-documenttranslator/pom.xml
       - sdk/translation/azure-ai-translation-text/pom.xml
-      - sdk/translation/azure-ai-translation-document/pom.xml
+      - sdk/translation/azure-ai-translator-document/pom.xml
 
 pr:
   branches:
@@ -23,12 +26,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/translation/
+      - sdk/translation/ci.yml
+      - sdk/translation/azure-ai-documenttranslator/
+      - sdk/translation/azure-ai-translation-text/
+      - sdk/translation/azure-ai-translator-document/
     exclude:
       - sdk/translation/pom.xml
       - sdk/translation/azure-ai-documenttranslator/pom.xml
       - sdk/translation/azure-ai-translation-text/pom.xml
-      - sdk/translation/azure-ai-translation-document/pom.xml
+      - sdk/translation/azure-ai-translator-document/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -41,6 +47,6 @@ extends:
       - name: azure-ai-translation-text
         groupId: com.azure
         safeName: azureaitranslationtext
-      - name: azure-ai-translation-document
+      - name: azure-ai-translator-document
         groupId: com.azure
-        safeName: azureaitranslationdocument
+        safeName: azureaitranslatordocument

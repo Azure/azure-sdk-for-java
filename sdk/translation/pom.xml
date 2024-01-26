@@ -11,6 +11,6 @@
   <modules>
       <module>azure-ai-documenttranslator</module>
       <module>azure-ai-translation-text</module>
-      <module>azure-ai-translation-document</module>
+      <module>azure-ai-translator-document</module>
   </modules>
 </project>
