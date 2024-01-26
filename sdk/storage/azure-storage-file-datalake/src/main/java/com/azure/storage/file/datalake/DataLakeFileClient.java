@@ -1138,10 +1138,9 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
-        Context finalContext = context;
 
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
-        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, finalContext);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
     }
@@ -1412,16 +1411,15 @@ public class DataLakeFileClient extends DataLakePathClient {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
         Context finalContext = context;
 
-        ReadToFileOptions finalOptions = options;
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                new BlobDownloadToFileOptions(finalOptions.getFilePath())
-                    .setRange(Transforms.toBlobRange(finalOptions.getRange()))
-                    .setParallelTransferOptions(finalOptions.getParallelTransferOptions())
-                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(finalOptions.getDownloadRetryOptions()))
-                    .setRequestConditions(Transforms.toBlobRequestConditions(finalOptions.getDataLakeRequestConditions()))
-                    .setRetrieveContentRangeMd5(finalOptions.isRangeGetContentMd5())
-                    .setOpenOptions(finalOptions.getOpenOptions()), timeout, finalContext);
+                new BlobDownloadToFileOptions(options.getFilePath())
+                    .setRange(Transforms.toBlobRange(options.getRange()))
+                    .setParallelTransferOptions(options.getParallelTransferOptions())
+                    .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+                    .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
+                    .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
+                    .setOpenOptions(options.getOpenOptions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

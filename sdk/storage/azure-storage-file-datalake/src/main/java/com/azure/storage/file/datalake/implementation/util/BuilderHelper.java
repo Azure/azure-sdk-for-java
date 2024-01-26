@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -59,6 +60,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public final class BuilderHelper {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final HttpHeaderName X_MS_UPN = HttpHeaderName.fromString("x-ms-upn");
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-file-datalake.properties");
@@ -246,7 +248,7 @@ public final class BuilderHelper {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("x-ms-upn", Boolean.toString(value));
+        headers.set(X_MS_UPN, Boolean.toString(value));
         if (context == null) {
             return new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
         } else {
