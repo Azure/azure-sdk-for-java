@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
@@ -178,6 +179,14 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertNotNull(object);
         assertInstanceOf(clazz, object);
         return object;
+    }
+
+    protected static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getFilename(), actual.getFilename());
+        assertEquals(expected.getBytes(), actual.getBytes());
+        assertEquals(expected.getPurpose(), actual.getPurpose());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
     }
 
     protected static Path openResourceFile(String fileName) {

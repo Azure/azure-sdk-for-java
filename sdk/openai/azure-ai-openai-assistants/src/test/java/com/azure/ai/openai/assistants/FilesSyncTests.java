@@ -1,5 +1,6 @@
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
@@ -38,7 +39,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            client.deleteFile(file.getId());
+            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
     }
 
@@ -61,7 +64,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            client.deleteFile(file.getId());
+            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
     }
 
@@ -84,7 +89,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            client.deleteFile(file.getId());
+            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
     }
 
@@ -120,6 +127,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
+            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
     }
 
@@ -155,6 +165,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
+            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
     }
 
@@ -190,14 +203,9 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
+            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
         });
-    }
-
-    private static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getFilename(), actual.getFilename());
-        assertEquals(expected.getBytes(), actual.getBytes());
-        assertEquals(expected.getPurpose(), actual.getPurpose());
-        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
     }
 }
