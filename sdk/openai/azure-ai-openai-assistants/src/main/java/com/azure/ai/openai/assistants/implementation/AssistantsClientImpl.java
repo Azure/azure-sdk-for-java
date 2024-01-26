@@ -1461,7 +1461,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createAssistantFileSync(this.getEndpoint(), assistantId, accept, request, requestOptions,
+        return service.createAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                assistantId, accept, request, requestOptions,
             Context.NONE);
     }
 
@@ -1544,7 +1545,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listAssistantFiles(this.getEndpoint(), assistantId, accept, requestOptions, context));
+            context -> service.listAssistantFiles(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    assistantId, accept, requestOptions, context));
     }
 
     /**
@@ -1624,7 +1626,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listAssistantFilesSync(this.getEndpoint(), assistantId, accept, requestOptions, Context.NONE);
+        return service.listAssistantFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1655,8 +1658,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getAssistantFileWithResponseAsync(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(), assistantId, fileId, accept,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(),
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1687,8 +1690,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+        return service.getAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1719,8 +1722,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteAssistantFileWithResponseAsync(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(), assistantId, fileId,
-            accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(),
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1750,8 +1753,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+        return service.deleteAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1805,8 +1808,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createThreadWithResponseAsync(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(), accept,
-            assistantThreadCreationOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(),
+                this.serviceVersion.getVersion(), accept, assistantThreadCreationOptions, requestOptions, context));
     }
 
     /**
@@ -1859,8 +1862,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createThreadSync(this.getEndpoint(), accept, assistantThreadCreationOptions, requestOptions,
-            Context.NONE);
+        return service.createThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                accept, assistantThreadCreationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1892,7 +1895,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getThread(this.getEndpoint(), threadId, accept, requestOptions, context));
+            .withContext(context -> service.getThread(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, requestOptions, context));
     }
 
     /**
@@ -1922,7 +1926,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getThreadSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+        return service.getThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1966,7 +1971,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.updateThread(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+            context -> service.updateThread(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2008,7 +2014,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateThreadSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+        return service.updateThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2037,7 +2044,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteThread(this.getEndpoint(), threadId, accept, requestOptions, context));
+            context -> service.deleteThread(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, requestOptions, context));
     }
 
     /**
@@ -2064,7 +2072,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteThreadSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+        return service.deleteThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2124,7 +2133,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.createMessage(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+            context -> service.createMessage(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2182,7 +2192,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createMessageSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+        return service.createMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2276,7 +2287,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listMessagesWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listMessages(this.getEndpoint(), threadId, accept, requestOptions, context));
+            context -> service.listMessages(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, requestOptions, context));
     }
 
     /**
@@ -2368,7 +2380,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listMessagesSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+        return service.listMessagesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2413,7 +2426,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getMessage(this.getEndpoint(), threadId, messageId, accept, requestOptions, context));
+            context -> service.getMessage(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -2456,7 +2470,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getMessageWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getMessageSync(this.getEndpoint(), threadId, messageId, accept, requestOptions, Context.NONE);
+        return service.getMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, messageId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2511,8 +2526,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId, accept,
-            request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(),
+                this.serviceVersion.getVersion(), threadId, messageId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2566,8 +2581,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, accept, request, requestOptions,
-            Context.NONE);
+        return service.updateMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, messageId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2649,8 +2664,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(), threadId, messageId, accept,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(),
+                this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -2731,8 +2746,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listMessageFilesSync(this.getEndpoint(), threadId, messageId, accept, requestOptions,
-            Context.NONE);
+        return service.listMessageFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, messageId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2764,8 +2779,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getMessageFileWithResponseAsync(String threadId, String messageId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(), threadId, messageId, fileId,
-            accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(),
+                this.serviceVersion.getVersion(), threadId, messageId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2796,8 +2811,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getMessageFileSync(this.getEndpoint(), threadId, messageId, fileId, accept, requestOptions,
-            Context.NONE);
+        return service.getMessageFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, messageId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2871,8 +2886,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createRunWithResponseAsync(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), threadId, accept, createRunOptions,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, createRunOptions, requestOptions, context));
     }
 
     /**
@@ -2945,8 +2960,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createRunSync(this.getEndpoint(), threadId, accept, createRunOptions, requestOptions,
-            Context.NONE);
+        return service.createRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, createRunOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3052,7 +3067,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listRunsWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRuns(this.getEndpoint(), threadId, accept, requestOptions, context));
+            .withContext(context -> service.listRuns(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, accept, requestOptions, context));
     }
 
     /**
@@ -3156,7 +3172,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRunsSync(this.getEndpoint(), threadId, accept, requestOptions, Context.NONE);
+        return service.listRunsSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3213,7 +3230,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getRun(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+            context -> service.getRun(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -3267,7 +3285,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+        return service.getRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3334,8 +3353,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, accept, request,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3401,8 +3420,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.updateRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3473,8 +3492,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), threadId, runId,
-            accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(),
+                this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3544,8 +3563,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3602,7 +3621,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.cancelRun(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+            context -> service.cancelRun(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -3656,7 +3676,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelRunSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+        return service.cancelRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3745,8 +3766,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createThreadAndRunWithResponseAsync(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(), accept,
-            createAndRunThreadOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(),
+                this.serviceVersion.getVersion(), accept, createAndRunThreadOptions, requestOptions, context));
     }
 
     /**
@@ -3834,8 +3855,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createThreadAndRunSync(this.getEndpoint(), accept, createAndRunThreadOptions, requestOptions,
-            Context.NONE);
+        return service.createThreadAndRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                accept, createAndRunThreadOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3883,8 +3904,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getRunStepWithResponseAsync(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(), threadId, runId, stepId, accept,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
+                this.serviceVersion.getVersion(), threadId, runId, stepId, accept, requestOptions, context));
     }
 
     /**
@@ -3932,8 +3953,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunStepSync(this.getEndpoint(), threadId, runId, stepId, accept, requestOptions,
-            Context.NONE);
+        return service.getRunStepSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, stepId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4033,7 +4054,8 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listRunSteps(this.getEndpoint(), threadId, runId, accept, requestOptions, context));
+            context -> service.listRunSteps(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -4130,7 +4152,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRunStepsSync(this.getEndpoint(), threadId, runId, accept, requestOptions, Context.NONE);
+        return service.listRunStepsSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4184,7 +4207,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(),
+                this.serviceVersion.getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4238,7 +4262,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return service.listFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4271,7 +4296,8 @@ public final class AssistantsClientImpl {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.uploadFile(this.getEndpoint(), contentType, accept, request, requestOptions, context));
+            context -> service.uploadFile(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    contentType, accept, request, requestOptions, context));
     }
 
     /**
@@ -4302,7 +4328,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.getEndpoint(), contentType, accept, request, requestOptions, Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                contentType, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -4331,7 +4358,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+            .withContext(context -> service.deleteFile(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    fileId, accept, requestOptions, context));
     }
 
     /**
@@ -4358,7 +4386,8 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+        return service.deleteFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4390,7 +4419,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+            .withContext(context -> service.getFile(this.getEndpoint(), this.serviceVersion.getVersion(),
+                    fileId, accept, requestOptions, context));
     }
 
     /**
@@ -4420,6 +4450,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+        return service.getFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                fileId, accept, requestOptions, Context.NONE);
     }
 }

@@ -107,6 +107,6 @@ public class MathTutorAssistant {
         // Unlike creating a completion in the Chat Completions API, creating a Run is an asynchronous operation.
         // It will return immediately with the Run's metadata, which includes a status that will initially be set to
         // queued. The status will be updated as the Assistant performs operations (like using tools and adding messages).
-        return client.createRun(threadId, new CreateRunOptions(assistantId, null));
+        return client.createRun(threadId, new CreateRunOptions(assistantId));
     }
 }
