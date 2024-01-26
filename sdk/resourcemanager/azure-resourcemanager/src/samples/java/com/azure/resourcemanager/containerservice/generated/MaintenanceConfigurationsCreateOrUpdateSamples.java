@@ -23,12 +23,12 @@ import java.util.Arrays;
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * MaintenanceConfigurationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateMaintenanceConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -43,12 +43,12 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateMaintenanceConfigurationWithMaintenanceWindow(

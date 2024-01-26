@@ -68,7 +68,9 @@ public enum Feature {
     PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
     PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
     PREVIEW_ADDITIONAL_PROPAGATORS(56), // track additionalPropagators
-    GRAAL_VM_NATIVE(57);
+    GRAAL_VM_NATIVE(57),
+    PEKKO_DISABLED(58) // preview instrumentation
+    ;
 
     private static final Map<String, Feature> javaVendorFeatureMap;
 

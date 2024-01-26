@@ -33,7 +33,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Get the clientId property: The ID for the service principal.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -42,7 +42,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Set the clientId property: The ID for the service principal.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -53,7 +53,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Get the secret property: The secret password associated with the service principal in plain text.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -62,7 +62,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Set the secret property: The secret password associated with the service principal in plain text.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -73,7 +73,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

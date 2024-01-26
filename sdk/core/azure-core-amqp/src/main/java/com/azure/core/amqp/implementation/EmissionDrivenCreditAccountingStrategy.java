@@ -37,7 +37,7 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
     /**
      * Update the credit accounting based on the latest view of the downstream request and messages emitted by
      * the emitter-loop in the last drain-loop iteration.
-     * <br/>
+     * <br>
      * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
      * the thread-safety and memory visibility the drain-loop provides.
      *

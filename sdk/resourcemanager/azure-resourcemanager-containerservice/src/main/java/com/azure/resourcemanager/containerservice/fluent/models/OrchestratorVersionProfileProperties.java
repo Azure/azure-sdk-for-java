@@ -29,7 +29,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -38,7 +38,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileProperties object itself.
      */
@@ -49,7 +49,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
