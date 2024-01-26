@@ -19,7 +19,7 @@ class FeatureManagementConfiguration {
 
     /**
      * Creates Feature Manager
-     * 
+     *
      * @param context ApplicationContext
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties Feature Management configuration properties

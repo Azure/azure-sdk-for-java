@@ -139,7 +139,7 @@ public class FeatureManagerTest {
             () -> featureManager.isEnabledAsync("Off").block());
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
-    
+
     @Test
     public void allOn() {
         HashMap<String, Feature> features = new HashMap<>();
@@ -211,7 +211,7 @@ public class FeatureManagerTest {
         }
 
     }
-    
+
     class AlwaysOffFilter implements FeatureFilter {
 
         @Override

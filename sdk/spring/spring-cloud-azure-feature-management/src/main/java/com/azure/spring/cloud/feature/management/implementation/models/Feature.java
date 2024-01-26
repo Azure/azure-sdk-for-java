@@ -26,7 +26,7 @@ public class Feature {
     private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
 
     @JsonProperty("requirement-type")
-    private String requirementType = DEFAULT_REQUIREMENT_TYPE;;
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     /**
      * @return the key

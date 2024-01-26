@@ -38,7 +38,7 @@ public class FeatureManager {
 
     /**
      * Can be called to check if a feature is enabled or disabled.
-     * 
+     *
      * @param context ApplicationContext
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
