@@ -90,13 +90,12 @@ public final class CryptographyUtils {
         return null;
     }
 
-    public static LocalKeyCryptographyClient retrieveJwkAndInitializeLocalClient(JsonWebKey jsonWebKey,
-                                                                                 CryptographyClientImpl implClient) {
+    public static LocalKeyCryptographyClient retrieveJwkAndInitializeLocalClient(CryptographyClientImpl implClient) {
         // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
         if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
             // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
             // default to using service-side cryptography.
-            jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+            JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
                 ? implClient.getSecretKey()
                 : implClient.getKey(Context.NONE).getValue().getKey();
 

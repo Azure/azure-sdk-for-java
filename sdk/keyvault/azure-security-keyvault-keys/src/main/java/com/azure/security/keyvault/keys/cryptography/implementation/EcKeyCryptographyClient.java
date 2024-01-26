@@ -31,75 +31,61 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private final Provider provider;
 
-    private KeyPair keyPair;
+    private KeyPair ecKeyPair;
 
-    EcKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl implClient) {
-        super(implClient);
+    EcKeyCryptographyClient(JsonWebKey jsonWebKey, CryptographyClientImpl implClient) {
+        super(jsonWebKey, implClient);
 
         this.provider = Security.getProvider("SunEC");
-        this.keyPair = key.toEc(key.hasPrivateKey(), provider);
-    }
-
-    private KeyPair getKeyPair(JsonWebKey key) {
-        if (keyPair == null) {
-            keyPair = key.toEc(key.hasPrivateKey());
-        }
-
-        return keyPair;
+        this.ecKeyPair = jsonWebKey.toEc(jsonWebKey.hasPrivateKey(), provider);
     }
 
     @Override
-    public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm,
-        byte[] plaintext,
-        JsonWebKey key,
-        Context context) {
+    public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         return Mono.error(new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey key, Context context) {
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<EncryptResult> encryptAsync(EncryptParameters options, JsonWebKey key, Context context) {
+    public Mono<EncryptResult> encryptAsync(EncryptParameters options, Context context) {
         return Mono.error(new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public EncryptResult encrypt(EncryptParameters options, JsonWebKey key, Context context) {
+    public EncryptResult encrypt(EncryptParameters options, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm,
-        byte[] plaintext,
-        JsonWebKey key,
-        Context context) {
+    public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         return Mono.error(new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey key, Context context) {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<DecryptResult> decryptAsync(DecryptParameters options, JsonWebKey key, Context context) {
+    public Mono<DecryptResult> decryptAsync(DecryptParameters options, Context context) {
         return Mono.error(new UnsupportedOperationException("Decrypt operation is not supported for EC key"));
     }
 
     @Override
-    public DecryptResult decrypt(DecryptParameters options, JsonWebKey key, Context context) {
+    public DecryptResult decrypt(DecryptParameters options, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Decrypt operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context) {
+    public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         if (algorithm == null) {
             return Mono.error(new NullPointerException("Signature algorithm cannot be null."));
         }
@@ -108,13 +94,11 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(new NullPointerException("Digest content cannot be null."));
         }
 
-        keyPair = getKeyPair(key);
-
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.signAsync(algorithm, digest, context);
             }
 
@@ -123,8 +107,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
+        if (ecKeyPair.getPrivate() == null) {
+            if (implClient != null) {
                 return implClient.signAsync(algorithm, digest, context);
             }
 
@@ -133,29 +117,28 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         Ecdsa algo;
+
         if (baseAlgorithm instanceof Ecdsa) {
             algo = (Ecdsa) baseAlgorithm;
         } else {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
+        ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
 
-        return Mono.fromCallable(() -> new SignResult(signer.sign(digest), algorithm, key.getId()));
+        return Mono.fromCallable(() -> new SignResult(signer.sign(digest), algorithm, jsonWebKey.getId()));
     }
 
     @Override
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context) {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
-
-        keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.sign(algorithm, digest, context);
             }
 
@@ -164,8 +147,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
         }
 
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
+        if (ecKeyPair.getPrivate() == null) {
+            if (implClient != null) {
                 return implClient.sign(algorithm, digest, context);
             }
 
@@ -174,16 +157,17 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         Ecdsa algo;
+
         if (baseAlgorithm instanceof Ecdsa) {
             algo = (Ecdsa) baseAlgorithm;
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
         }
 
-        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
+        ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
 
         try {
-            return new SignResult(signer.sign(digest), algorithm, key.getId());
+            return new SignResult(signer.sign(digest), algorithm, jsonWebKey.getId());
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
@@ -194,11 +178,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm,
-        byte[] digest,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
+                                          Context context) {
         if (algorithm == null) {
             return Mono.error(new NullPointerException("Signature algorithm cannot be null."));
         }
@@ -211,13 +192,11 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(new NullPointerException("Signature to be verified cannot be null."));
         }
 
-        keyPair = getKeyPair(key);
-
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.verifyAsync(algorithm, digest, signature, context);
             }
 
@@ -226,8 +205,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
+        if (ecKeyPair.getPublic() == null) {
+            if (implClient != null) {
                 return implClient.verifyAsync(algorithm, digest, signature, context);
             }
 
@@ -243,28 +222,23 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
+        ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
 
-        return Mono.fromCallable(() -> new VerifyResult(signer.verify(digest, signature), algorithm, key.getId()));
+        return Mono.fromCallable(() ->
+            new VerifyResult(signer.verify(digest, signature), algorithm, jsonWebKey.getId()));
     }
 
     @Override
-    public VerifyResult verify(SignatureAlgorithm algorithm,
-        byte[] digest,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
-
-        keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.verify(algorithm, digest, signature, context);
             }
 
@@ -273,8 +247,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
         }
 
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
+        if (ecKeyPair.getPublic() == null) {
+            if (implClient != null) {
                 return implClient.verify(algorithm, digest, signature, context);
             }
 
@@ -289,10 +263,10 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
         }
 
-        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
+        ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
 
         try {
-            return new VerifyResult(signer.verify(digest, signature), algorithm, key.getId());
+            return new VerifyResult(signer.verify(digest, signature), algorithm, jsonWebKey.getId());
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
@@ -303,69 +277,59 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey webKey, Context context) {
+    public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
         return Mono.error(new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
     @Override
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey webKey, Context context) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Wrap key operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm,
-        byte[] encryptedKey,
-        JsonWebKey key,
-        Context context) {
+    public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         return Mono.error(new UnsupportedOperationException("Unwrap key operation is not supported for EC key"));
     }
 
     @Override
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, JsonWebKey key, Context context) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("Unwrap key operation is not supported for EC key"));
     }
 
     @Override
-    public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context) {
+    public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {
         try {
-            return signAsync(algorithm, calculateDigest(algorithm, data), key, context);
+            return signAsync(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
             return Mono.error(e);
         }
     }
 
     @Override
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context) {
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         try {
-            return sign(algorithm, calculateDigest(algorithm, data), key, context);
+            return sign(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
     @Override
-    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm,
-        byte[] data,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
+                                              Context context) {
         try {
-            return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, key, context);
+            return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
             return Mono.error(e);
         }
     }
 
     @Override
-    public VerifyResult verifyData(SignatureAlgorithm algorithm,
-        byte[] data,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         try {
-            return verify(algorithm, calculateDigest(algorithm, data), signature, key, context);
+            return verify(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -378,9 +342,5 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         md.update(data);
 
         return md.digest();
-    }
-
-    private boolean serviceClientAvailable() {
-        return implClient != null;
     }
 }

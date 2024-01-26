@@ -142,12 +142,11 @@ public class CryptographyAsyncClient {
 
     private final HttpPipeline pipeline;
 
-    private LocalKeyCryptographyClient localKeyCryptographyClient = null;
+    private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
+    final JsonWebKey jsonWebKey;
     final String keyId;
-
-    volatile JsonWebKey jsonWebKey;
 
     /**
      * Creates a {@link CryptographyAsyncClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -157,15 +156,21 @@ public class CryptographyAsyncClient {
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        this.jsonWebKey = null;
         this.keyId = keyId;
         this.pipeline = pipeline;
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
 
         try {
-            this.localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient(this.jsonWebKey, this.implClient);
+            this.localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient(this.implClient);
         } catch (RuntimeException e) {
-            LOGGER.info("Cannot perform cryptographic operations locally. Defaulting to service-side cryptography.", e);
+            LOGGER.info(
+                "Cannot perform cryptographic operations locally. Defaulting to service-side cryptography.", e);
+        }
+
+        if (this.localKeyCryptographyClient != null) {
+            this.jsonWebKey = this.localKeyCryptographyClient.getJsonWebKey();
+        } else {            
+            this.jsonWebKey = null;
         }
     }
 
@@ -190,9 +195,9 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
+        this.implClient = null;
         this.jsonWebKey = jsonWebKey;
         this.keyId = jsonWebKey.getId();
-        this.implClient = null;
         this.pipeline = null;
 
         try {
@@ -319,8 +324,8 @@ public class CryptographyAsyncClient {
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      *
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
-     * contains the encrypted content.
+     * @return A {@link Mono} containing a {@link EncryptResult} whose
+     * {@link EncryptResult#getCipherText() cipher text} contains the encrypted content.
      *
      * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
@@ -332,14 +337,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.ENCRYPT)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The encrypt operation is missing permission/not supported for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The encrypt operation is missing permission/not supported for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.encryptAsync(algorithm, plaintext, context);
+                    return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context);
                 }
-
-                return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, this.jsonWebKey, context);
+                
+                return implClient.encryptAsync(algorithm, plaintext, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -394,8 +401,8 @@ public class CryptographyAsyncClient {
      *
      * @param encryptParameters The parameters to use in the encryption operation.
      *
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
-     * contains the encrypted content.
+     * @return A {@link Mono} containing a {@link EncryptResult} whose
+     * {@link EncryptResult#getCipherText() cipher text} contains the encrypted content.
      *
      * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
@@ -407,14 +414,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.ENCRYPT)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The encrypt operation is missing permission/not supported for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The encrypt operation is missing permission/not supported for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.encryptAsync(encryptParameters, context);
+                    return localKeyCryptographyClient.encryptAsync(encryptParameters, context);
                 }
-
-                return localKeyCryptographyClient.encryptAsync(encryptParameters, this.jsonWebKey, context);
+                
+                return implClient.encryptAsync(encryptParameters, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -461,8 +470,8 @@ public class CryptographyAsyncClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
      * integrity of the ciphertext using an HMAC, for example.
-     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
-     * with CBC-mode symmetric decryption using padding</a> for more information.
+     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing
+     * vulnerabilities with CBC-mode symmetric decryption using padding</a> for more information.
      *
      * @return A {@link Mono} containing the decrypted blob.
      *
@@ -476,14 +485,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.DECRYPT)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The decrypt operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The decrypt operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.decryptAsync(algorithm, ciphertext, context);
+                    return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, context);
                 }
-
-                return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, this.jsonWebKey, context);
+                
+                return implClient.decryptAsync(algorithm, ciphertext, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -549,14 +560,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.DECRYPT)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The decrypt operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The decrypt operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.decryptAsync(decryptParameters, context);
+                    return localKeyCryptographyClient.decryptAsync(decryptParameters, context);
                 }
-
-                return localKeyCryptographyClient.decryptAsync(decryptParameters, this.jsonWebKey, context);
+                
+                return implClient.decryptAsync(decryptParameters, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -599,8 +612,8 @@ public class CryptographyAsyncClient {
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      *
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     * the created signature.
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature}
+     * contains the created signature.
      *
      * @throws NullPointerException If {@code algorithm} or {@code digest} is {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for signing.
@@ -612,14 +625,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.SIGN)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The sign operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The sign operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.signAsync(algorithm, digest, context);
+                    return localKeyCryptographyClient.signAsync(algorithm, digest, context);
                 }
-
-                return localKeyCryptographyClient.signAsync(algorithm, digest, this.jsonWebKey, context);
+                
+                return implClient.signAsync(algorithm, digest, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -678,14 +693,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.VERIFY)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The verify operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The verify operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.verifyAsync(algorithm, digest, signature, context);
+                    return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context);
                 }
-
-                return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, this.jsonWebKey, context);
+                
+                return implClient.verifyAsync(algorithm, digest, signature, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -739,15 +756,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.WRAP_KEY)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The wrap Key operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The wrap Key operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.wrapKeyAsync(algorithm, key, context);
-
+                    return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context);                    
                 }
 
-                return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, this.jsonWebKey, context);
+                return implClient.wrapKeyAsync(algorithm, key, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -804,14 +822,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The unwrap key operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The unwrap key operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+                    return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context);
                 }
-
-                return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, this.jsonWebKey, context);
+                
+                return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -852,8 +872,8 @@ public class CryptographyAsyncClient {
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      *
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     * the created signature.
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature}
+     * contains the created signature.
      *
      * @throws NullPointerException If {@code algorithm} or {@code data} is {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for signing.
@@ -865,14 +885,16 @@ public class CryptographyAsyncClient {
             return withContext(context -> {
                 if(localKeyCryptographyClient != null) {
                     if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.SIGN)) {
-                        return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                            "The sign operation is not allowed for key with id: %s", this.jsonWebKey.getId()))));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new UnsupportedOperationException(String.format(
+                                "The sign operation is not allowed for key with id: %s",
+                                this.jsonWebKey.getId()))));
                     }
 
-                    return implClient.signDataAsync(algorithm, data, context);
+                    return localKeyCryptographyClient.signDataAsync(algorithm, data, context);
                 }
-
-                return localKeyCryptographyClient.signDataAsync(algorithm, data, this.jsonWebKey, context);
+                
+                return implClient.signDataAsync(algorithm, data, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -934,10 +956,10 @@ public class CryptographyAsyncClient {
                             "The verify operation is not allowed for key with id: " + this.jsonWebKey.getId())));
                     }
 
-                    return implClient.verifyDataAsync(algorithm, data, signature, context);
+                    return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context);
                 }
-
-                return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, this.jsonWebKey, context);
+                
+                return implClient.verifyDataAsync(algorithm, data, signature, context);
             });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
