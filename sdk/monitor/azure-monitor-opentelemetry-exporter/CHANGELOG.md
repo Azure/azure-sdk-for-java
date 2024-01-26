@@ -3,8 +3,6 @@
 ## 1.0.0-beta.17 (2024-01-25)
 -[Fix pre-aggregated metrics with stable http semantic convention](https://github.com/Azure/azure-sdk-for-java/pull/38497)
 
-### Other Changes
-
 ## 1.0.0-beta.16 (2024-01-23)
 
 ### Features Added
