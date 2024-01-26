@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Removed `withKPackVersion` from `BuildServiceProperties`.
+- Removed `withKPackVersion` from `BuildServiceProperties` as it's never functional in the backend.
 
 ### Other Changes
 
