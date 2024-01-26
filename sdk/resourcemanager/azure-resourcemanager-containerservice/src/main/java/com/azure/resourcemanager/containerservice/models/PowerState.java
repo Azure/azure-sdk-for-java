@@ -26,7 +26,7 @@ public final class PowerState {
 
     /**
      * Get the code property: Tells whether the cluster is Running or Stopped.
-     *
+     * 
      * @return the code value.
      */
     public Code code() {
@@ -35,7 +35,7 @@ public final class PowerState {
 
     /**
      * Set the code property: Tells whether the cluster is Running or Stopped.
-     *
+     * 
      * @param code the code value to set.
      * @return the PowerState object itself.
      */
@@ -46,7 +46,7 @@ public final class PowerState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

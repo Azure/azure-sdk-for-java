@@ -33,7 +33,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Get the mode property: Mode of the service mesh.
-     *
+     * 
      * @return the mode value.
      */
     public ServiceMeshMode mode() {
@@ -42,7 +42,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Set the mode property: Mode of the service mesh.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the ServiceMeshProfile object itself.
      */
@@ -53,7 +53,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Get the istio property: Istio service mesh configuration.
-     *
+     * 
      * @return the istio value.
      */
     public IstioServiceMesh istio() {
@@ -62,7 +62,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Set the istio property: Istio service mesh configuration.
-     *
+     * 
      * @param istio the istio value to set.
      * @return the ServiceMeshProfile object itself.
      */
@@ -73,7 +73,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

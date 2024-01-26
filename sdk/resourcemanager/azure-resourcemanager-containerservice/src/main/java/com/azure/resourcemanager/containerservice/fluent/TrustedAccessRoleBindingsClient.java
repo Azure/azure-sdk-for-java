@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public interface TrustedAccessRoleBindingsClient {
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +37,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +50,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -64,7 +64,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -79,7 +79,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -94,7 +94,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -110,7 +110,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -125,7 +125,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -142,7 +142,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -159,7 +159,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -176,7 +176,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -194,7 +194,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -210,7 +210,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -226,7 +226,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -243,7 +243,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -258,7 +258,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -273,7 +273,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -288,7 +288,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -304,7 +304,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -318,7 +318,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -331,7 +331,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.

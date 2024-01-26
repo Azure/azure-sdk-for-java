@@ -32,7 +32,7 @@ public final class IpTag {
 
     /**
      * Get the ipTagType property: The IP tag type. Example: RoutingPreference.
-     *
+     * 
      * @return the ipTagType value.
      */
     public String ipTagType() {
@@ -41,7 +41,7 @@ public final class IpTag {
 
     /**
      * Set the ipTagType property: The IP tag type. Example: RoutingPreference.
-     *
+     * 
      * @param ipTagType the ipTagType value to set.
      * @return the IpTag object itself.
      */
@@ -52,7 +52,7 @@ public final class IpTag {
 
     /**
      * Get the tag property: The value of the IP tag associated with the public IP. Example: Internet.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -61,7 +61,7 @@ public final class IpTag {
 
     /**
      * Set the tag property: The value of the IP tag associated with the public IP. Example: Internet.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the IpTag object itself.
      */
@@ -72,7 +72,7 @@ public final class IpTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

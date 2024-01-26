@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * Node OS Upgrade Channel
- *
+ * 
  * Manner in which the OS on your nodes is updated. The default is NodeImage.
  */
 public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgradeChannel> {
@@ -31,7 +31,7 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
 
     /**
      * Creates a new instance of NodeOSUpgradeChannel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +40,7 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
 
     /**
      * Creates or finds a NodeOSUpgradeChannel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NodeOSUpgradeChannel.
      */
@@ -51,7 +51,7 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
 
     /**
      * Gets known NodeOSUpgradeChannel values.
-     *
+     * 
      * @return known NodeOSUpgradeChannel values.
      */
     public static Collection<NodeOSUpgradeChannel> values() {

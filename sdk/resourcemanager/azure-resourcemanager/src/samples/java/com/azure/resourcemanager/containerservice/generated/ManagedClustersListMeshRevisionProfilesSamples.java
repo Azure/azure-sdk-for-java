@@ -10,12 +10,12 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersListMeshRevisionProfilesSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * ManagedClustersList_MeshRevisionProfiles.json
      */
     /**
      * Sample code: List mesh revision profiles in a location.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listMeshRevisionProfilesInALocation(com.azure.resourcemanager.AzureResourceManager azure) {
