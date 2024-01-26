@@ -10,7 +10,20 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * A type that invokes next policy in the pipeline.
+ * <p>A class that invokes the next policy in the HTTP pipeline.</p>
+ *
+ * <p>This class encapsulates the state of the HTTP pipeline call and provides a method to process the next policy in
+ * the pipeline.</p>
+ *
+ * <p>It provides methods to process the next policy and clone the current instance of the next pipeline policy.</p>
+ *
+ * <p>This class is useful when you want to send an HTTP request through the HTTP pipeline and need to process the
+ * next policy in the pipeline.</p>
+ *
+ * <p>Note: This class is final and cannot be subclassed.</p>
+ *
+ * @see HttpPipelinePolicy
+ * @see HttpPipelineCallState
  */
 public class HttpPipelineNextPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);

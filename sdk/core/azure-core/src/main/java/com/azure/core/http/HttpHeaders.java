@@ -17,6 +17,20 @@ import java.util.stream.Stream;
 /**
  * A collection of headers on an HTTP request or response.
  */
+
+/**
+ * <p>Represents a collection of headers on an HTTP request or response.</p>
+ *
+ * <p>This class encapsulates the headers of an HTTP request or response. It provides methods to add, set, get, and
+ * remove headers. It also provides methods to convert the headers to a Map, and to get a Stream representation of the
+ * headers.</p>
+ *
+ * <p>Each header is represented by an {@link HttpHeader} instance, which encapsulates the name and value(s) of a header.
+ * If multiple values are associated with the same header name, they are stored in a single HttpHeader instance,
+ * with values separated by commas.</p>
+ *
+ * <p>Note: Header names are case-insensitive.</p>
+ */
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;

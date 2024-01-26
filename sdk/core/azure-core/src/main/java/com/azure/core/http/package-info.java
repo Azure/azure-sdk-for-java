@@ -21,11 +21,9 @@
  * Here's a code sample:</p>
  *
  * <pre>
- * {@code
  * HttpPipeline pipeline = new HttpPipelineBuilder()
  *     .policies(new UserAgentPolicy(), new RetryPolicy())
  *     .build();
- * }
  * </pre>
  *
  * <p>This package is crucial for the communication between Azure SDK client libraries and Azure services.

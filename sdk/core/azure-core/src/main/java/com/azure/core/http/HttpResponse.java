@@ -21,8 +21,31 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+
 /**
- * The response of an {@link HttpRequest}.
+ * <p>Represents an incoming HTTP response.</p>
+ *
+ * <p>This class encapsulates an HTTP response, including the HTTP status code, headers, and body. It provides methods
+ * to get these properties.</p>
+ *
+ * <p>For example, you can use {@link #getStatusCode()} to get the HTTP status code, {@link #getHeaders()} to get the headers,
+ * and {@link #getBody()}, {@link #getBodyAsBinaryData()}, {@link #getBodyAsByteArray()}, {@link #getBodyAsString()},
+ * {@link #getBodyAsString(Charset)}, or {@link #getBodyAsInputStream()} to get the body.</p>
+ *
+ * <p>This class also provides a {@link #buffer()} method to create a buffered version of the HTTP response, and a
+ * {@link #writeBodyToAsync(AsynchronousByteChannel)} or {@link #writeBodyTo(WritableByteChannel)} method to write the body
+ * to a channel.</p>
+ *
+ * <p>This class is useful when you want to process an HTTP response received from a server. For example, you can use it to
+ * get the status code to check if the request was successful, get the headers to check for any additional information,
+ * and get the body to process the content of the response.</p>
+ *
+ * <p>Note: This class implements {@link Closeable}, so you should call the {@link #close()} method when you're done
+ * with the HTTP response to free any resources associated with it.</p>
+ *
+ * @see HttpRequest
+ * @see HttpHeaders
+ * @see HttpHeader
  */
 public abstract class HttpResponse implements Closeable {
     private final HttpRequest request;

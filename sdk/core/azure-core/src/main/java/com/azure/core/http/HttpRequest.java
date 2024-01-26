@@ -14,9 +14,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
+
 /**
- * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
- * {@link HttpHeader} and request body.
+ * Represents an outgoing HTTP request.
+ *
+ * <p>This class encapsulates an HTTP request, including the HTTP method, URL, headers, and body. It provides methods
+ * to set and get these properties.</p>
+ *
+ * <p>For example, you can use {@link #setHttpMethod(HttpMethod)} to set the HTTP method, {@link #setUrl(URL)} or
+ * {@link #setUrl(String)} to set the URL, {@link #setHeaders(HttpHeaders)} to set the headers, and {@link #setBody(String)},
+ * {@link #setBody(byte[])}, {@link #setBody(Flux<ByteBuffer>)}, or {@link #setBody(BinaryData)} to set the body.</p>
+ *
+ * <p>You can also use {@link #getHttpMethod()} to get the HTTP method, {@link #getUrl()} to get the URL,
+ * {@link #getHeaders()} to get the headers, and {@link #getBody()} or {@link #getBodyAsBinaryData()} to get the body.</p>
+ *
+ * <p>This class is useful when you want to create an HTTP request to send to a server. For example, you can use it to
+ * create a GET request to retrieve a resource, a POST request to create a resource, a PUT request to update a resource,
+ * or a DELETE request to delete a resource.</p>
+ *
+ * <p>Note: This class provides a {@link #copy()} method to create a copy of the HTTP request. This is useful when you
+ * want to modify the HTTP request without affecting the original request.</p>
  */
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.

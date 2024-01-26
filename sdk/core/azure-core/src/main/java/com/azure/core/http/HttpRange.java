@@ -8,13 +8,21 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
+
 /**
- * Represents a range of bytes within an HTTP resource.
- * <p>
- * The range starts at the {@link #getOffset() offset} inclusively and ends at {@link #getOffset() offset} + {@link
- * #getLength() length} exclusively, or offset + length - 1.
- * <p>
- * If {@link #getLength() length} is unspecified, null, then the range extends to the end of the HTTP resource.
+ * <p>Represents a range of bytes within an HTTP resource.</p>
+ *
+ * <p>This class encapsulates a range of bytes that can be requested from an HTTP resource. The range starts at the
+ * {@link #getOffset()} inclusively and ends at {@link #getOffset()} + {@link #getLength()} exclusively, or offset + length - 1.</p>
+ *
+ * <p>If {@link #getLength()} is unspecified, null, then the range extends to the end of the HTTP resource.</p>
+ *
+ * <p>This class is useful when you want to request a specific range of bytes from an HTTP resource, such as a part of a file.
+ * For example, you can use it to download a part of a file, to resume a download, or to stream a video from a specific point.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
+ *
+ * @see HttpRequest
  */
 @Immutable
 public final class HttpRange {

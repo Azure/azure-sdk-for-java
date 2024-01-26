@@ -6,7 +6,21 @@ package com.azure.core.http;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Specifies HTTP options for conditional requests.
+ * <p>Specifies HTTP options for conditional requests based on ETag matching.</p>
+ *
+ * <p>This class encapsulates the ETag conditions that can be used in a request, such as If-Match and If-None-Match.</p>
+ *
+ * <p>It provides methods to set and get these properties. For example, you can use {@link #setIfMatch(String)} to set the
+ * If-Match ETag, {@link #setIfNoneMatch(String)} to set the If-None-Match ETag, {@link #getIfMatch()} to get the If-Match ETag,
+ * and {@link #getIfNoneMatch()} to get the If-None-Match ETag.</p>
+ *
+ * <p>This class is useful when you want to create an HTTP request with conditional headers based on ETag matching. For example,
+ * you can use it to create a GET request that only retrieves the resource if it has not been modified (based on the ETag), or a
+ * PUT request that only updates the resource if it has not been modified by another client (based on the ETag).</p>
+ *
+ * <p>Note: This class is fluent, so you can chain the setter methods.</p>
+ *
+ * @see HttpRequest
  */
 @Fluent
 public class MatchConditions {

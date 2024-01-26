@@ -12,13 +12,23 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
- * The HTTP pipeline that HTTP requests and responses will flow through.
- * <p>
- * The HTTP pipeline may apply a set of {@link HttpPipelinePolicy HttpPipelinePolicies} to the request before it is
- * sent and on the response as it is being returned.
+ * <p>The HTTP pipeline through which HTTP requests and responses flow.</p>
+ *
+ * <p>This class encapsulates the HTTP pipeline that applies a set of {@link HttpPipelinePolicy HttpPipelinePolicies}
+ * to the request before it is sent and on the response as it is being returned.</p>
+ *
+ * <p>It provides methods to get the policy at a specific index in the pipeline, get the count of policies in the
+ * pipeline, get the associated {@link HttpClient}, and send the HTTP request through the pipeline.</p>
+ *
+ * <p>This class is useful when you want to send an HTTP request and apply a set of policies to the request and
+ * response.</p>
+ *
+ * <p>Note: This class is final and cannot be subclassed.</p>
  *
  * @see HttpPipelinePolicy
+ * @see HttpClient
  */
 public final class HttpPipeline {
     private final HttpClient httpClient;

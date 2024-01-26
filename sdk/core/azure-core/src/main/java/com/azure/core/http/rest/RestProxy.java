@@ -22,10 +22,17 @@ import java.lang.reflect.Proxy;
 
 
 /**
- * Type to create a proxy implementation for an interface describing REST API methods.
- * <p>
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
+ * <p>RestProxy is a type that creates a proxy implementation for an interface describing REST API methods.
+ * It can create proxy implementations for interfaces with methods that return deserialized Java objects as well
+ * as asynchronous Single objects that resolve to a deserialized Java object.</p>
+ *
+ * <p>RestProxy uses the provided HttpPipeline and SerializerAdapter to send HTTP requests and convert response bodies
+ * to POJOs.</p>
+ *
+ * <p>It also provides methods to send the provided request asynchronously, applying any request policies provided to
+ * the HttpClient instance.</p>
+ *
+ * <p>RestProxy is useful when you want to create a proxy implementation for an interface describing REST API methods.</p>
  */
 public final class RestProxy implements InvocationHandler {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.azure.core.http.restproxy.syncproxy.enable";
