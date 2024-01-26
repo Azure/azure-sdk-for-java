@@ -1541,6 +1541,45 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void directDiagnosticsWithCancelledException() throws Exception {
+        FaultInjectionRule responseDelayRule =
+                new FaultInjectionRuleBuilder("responseDelay-directDiagnosticsWithCancelledException")
+                        .condition(new FaultInjectionConditionBuilder().build())
+                        .result(
+                                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                                        .delay(Duration.ofSeconds(3))
+                                        .build()
+                        )
+                        .build();
+        CosmosAsyncClient testClient = null;
+        try {
+            String userAgentSuffix = "testForChannelAcquisitionContext";
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build();
+
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .userAgentSuffix(userAgentSuffix)
+                .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = testClient.getDatabase(cosmosAsyncDatabase.getId()).getContainer(cosmosAsyncContainer.getId());
+            container.createItem(TestItem.createNewItem())
+                .onErrorResume(throwable -> {
+                    CosmosException cosmosException = (CosmosException) throwable;
+                    System.out.println(cosmosException.getDiagnostics());
+                    return Mono.empty();
+                })
+                .block();
+        } finally {
+            safeClose(testClient);
+            responseDelayRule.disable();
+        }
+    }
+
     private InternalObjectNode getInternalObjectNode() {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
