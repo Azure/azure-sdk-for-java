@@ -69,7 +69,7 @@ public class InternalServerErrorException extends CosmosException {
             requestUri != null ? requestUri.toString() : null);
         BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
-    
+
     // used in test
     InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,

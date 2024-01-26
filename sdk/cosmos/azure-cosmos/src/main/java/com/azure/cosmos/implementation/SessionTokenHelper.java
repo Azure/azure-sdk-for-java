@@ -43,7 +43,7 @@ public class SessionTokenHelper {
             // In this case it is a bug.
             throw new InternalServerErrorException(
                 Exceptions.getInternalServerErrorMessage(RMResources.PartitionKeyRangeIdAbsentInContext),
-                HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_ID_ABSENT_IN_CONTEXT);
+                HttpConstants.SubStatusCodes.MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT);
         }
 
         if (StringUtils.isNotEmpty(originalSessionToken)) {

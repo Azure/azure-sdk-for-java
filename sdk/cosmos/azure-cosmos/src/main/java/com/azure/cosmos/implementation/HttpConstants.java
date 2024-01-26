@@ -448,8 +448,8 @@ public class HttpConstants {
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
 
-        // Client generated 500
-        public static final int PARTITION_KEY_RANGE_ID_ABSENT_IN_CONTEXT = 21011;
+        // SubStatusCodes for Client generated 500
+        public static final int MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT = 21011;
         public static final int INVALID_REGIONS_IN_SESSION_TOKEN = 21012;
         public static final int NON_PARTITIONED_RESOURCES = 21013;
         public static final int PARTITION_KEY_IS_NULL = 21014;
