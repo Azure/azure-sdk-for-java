@@ -38,7 +38,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeyEncryptionAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeySignatureAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapWrapAlgorithm;
@@ -64,7 +63,6 @@ public final class CryptographyClientImpl {
     public CryptographyClientImpl(String keyId, HttpPipeline pipeline, CryptographyServiceVersion serviceVersion) {
         Objects.requireNonNull(keyId);
 
-        //Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
         List<String> data = unpackAndValidateId(keyId, LOGGER);
 
         this.vaultUrl = data.get(0);
@@ -102,15 +100,7 @@ public final class CryptographyClientImpl {
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
 
-    public Mono<JsonWebKey> getSecretKeyAsync() {
-        return withContext(context -> secretClient.getSecretWithResponseAsync(vaultUrl, keyName, keyVersion, context))
-            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
-            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
-            .doOnError(error -> LOGGER.warning("Failed to get key - {}", keyName, error))
-            .map(response -> transformSecretKey(response.getValue()));
-    }
-
-    public JsonWebKey getSecretKey() {
+    JsonWebKey getSecretKey() {
         return transformSecretKey(secretClient.getSecretWithResponse(vaultUrl, keyName, keyVersion, Context.NONE)
             .getValue());
     }
@@ -182,7 +172,6 @@ public final class CryptographyClientImpl {
         return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
             result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
     }
-
 
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
@@ -322,7 +311,6 @@ public final class CryptographyClientImpl {
 
         return new UnwrapResult(result.getResult(), algorithm, keyId);
     }
-
 
     public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
