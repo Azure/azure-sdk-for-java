@@ -107,13 +107,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             OpenAIFile file = client.uploadFile(uploadFileRequest);
             assertNotNull(file);
             assertNotNull(file.getId());
-//            Response<BinaryData> uploadResponse = client.uploadFileWithResponse(BinaryData.fromObject(uploadFileRequest), new RequestOptions());
-//            assertEquals(200, uploadResponse.getStatusCode());
-//            OpenAIFile file = uploadResponse.getValue().toObject(OpenAIFile.class);
-//            assertNotNull(file);
-//            assertNotNull(file.getId());
 
-            // Get single file
             Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, getFileResponse.getStatusCode());
             OpenAIFile fileFromBackend = getFileResponse.getValue().toObject(OpenAIFile.class);
@@ -145,11 +139,6 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             OpenAIFile file = client.uploadFile(uploadFileRequest);
             assertNotNull(file);
             assertNotNull(file.getId());
-//            Response<BinaryData> uploadResponse = client.uploadFileWithResponse(BinaryData.fromObject(uploadFileRequest), new RequestOptions());
-//            assertEquals(200, uploadResponse.getStatusCode());
-//            OpenAIFile file = uploadResponse.getValue().toObject(OpenAIFile.class);
-//            assertNotNull(file);
-//            assertNotNull(file.getId());
 
             // Get single file
             Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
@@ -183,13 +172,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             OpenAIFile file = client.uploadFile(uploadFileRequest);
             assertNotNull(file);
             assertNotNull(file.getId());
-//            Response<BinaryData> uploadResponse = client.uploadFileWithResponse(BinaryData.fromObject(uploadFileRequest), new RequestOptions());
-//            assertEquals(200, uploadResponse.getStatusCode());
-//            OpenAIFile file = uploadResponse.getValue().toObject(OpenAIFile.class);
-//            assertNotNull(file);
-//            assertNotNull(file.getId());
 
-            // Get single file
             Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, getFileResponse.getStatusCode());
             OpenAIFile fileFromBackend = getFileResponse.getValue().toObject(OpenAIFile.class);

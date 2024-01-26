@@ -166,7 +166,7 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         uploadAssistantTextFileRunner(uploadFileRequest -> {
             StepVerifier.create(
-                    client.uploadFile(uploadFileRequest) // replace with uploadFileWithResponse when support for mp/fd is added for protocol method
+                    client.uploadFile(uploadFileRequest)
                         // Upload file
                         .flatMap(uploadedFile -> {
                             assertNotNull(uploadedFile);
@@ -221,7 +221,7 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         uploadAssistantImageFileRunner(uploadFileRequest -> {
             StepVerifier.create(
-                    client.uploadFile(uploadFileRequest) // replace with uploadFileWithResponse when support for mp/fd is added for protocol method
+                    client.uploadFile(uploadFileRequest)
                         // Upload file
                         .flatMap(uploadedFile -> {
                             assertNotNull(uploadedFile);
@@ -276,8 +276,7 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         uploadFineTuningJsonFileRunner(uploadFileRequest -> {
             StepVerifier.create(
-                    client.uploadFile(uploadFileRequest) // replace with uploadFileWithResponse when support for mp/fd is added for protocol method
-                        // Upload file
+                    client.uploadFile(uploadFileRequest)
                         .flatMap(uploadedFile -> {
                             assertNotNull(uploadedFile);
                             assertNotNull(uploadedFile.getId());
