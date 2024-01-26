@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** API route config of the Spring Cloud Gateway. */
+/**
+ * API route config of the Spring Cloud Gateway.
+ */
 @Fluent
 public final class GatewayRouteConfigProperties {
     /*
@@ -18,8 +20,7 @@ public final class GatewayRouteConfigProperties {
     private GatewayProvisioningState provisioningState;
 
     /*
-     * The resource Id of the Azure Spring Apps app, required unless route
-     * defines `uri`.
+     * The resource Id of the Azure Spring Apps app, required unless route defines `uri`.
      */
     @JsonProperty(value = "appResourceId")
     private String appResourceId;
@@ -37,15 +38,41 @@ public final class GatewayRouteConfigProperties {
     private GatewayRouteConfigProtocol protocol;
 
     /*
-     * Array of API routes, each route contains properties such as `title`,
-     * `uri`, `ssoEnabled`, `predicates`, `filters`.
+     * Array of API routes, each route contains properties such as `title`, `uri`, `ssoEnabled`, `predicates`,
+     * `filters`.
      */
     @JsonProperty(value = "routes")
     private List<GatewayApiRoute> routes;
 
+    /*
+     * Enable Single Sign-On in app level.
+     */
+    @JsonProperty(value = "ssoEnabled")
+    private Boolean ssoEnabled;
+
+    /*
+     * A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated
+     * against request headers and parameter values. All of the predicates associated with a route must evaluate to
+     * true for the route to be matched to the request.
+     */
+    @JsonProperty(value = "predicates")
+    private List<String> predicates;
+
+    /*
+     * To modify the request before sending it to the target endpoint, or the received response in app level.
+     */
+    @JsonProperty(value = "filters")
+    private List<String> filters;
+
+    /**
+     * Creates an instance of GatewayRouteConfigProperties class.
+     */
+    public GatewayRouteConfigProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the Spring Cloud Gateway route config.
-     *
+     * 
      * @return the provisioningState value.
      */
     public GatewayProvisioningState provisioningState() {
@@ -55,7 +82,7 @@ public final class GatewayRouteConfigProperties {
     /**
      * Get the appResourceId property: The resource Id of the Azure Spring Apps app, required unless route defines
      * `uri`.
-     *
+     * 
      * @return the appResourceId value.
      */
     public String appResourceId() {
@@ -65,7 +92,7 @@ public final class GatewayRouteConfigProperties {
     /**
      * Set the appResourceId property: The resource Id of the Azure Spring Apps app, required unless route defines
      * `uri`.
-     *
+     * 
      * @param appResourceId the appResourceId value to set.
      * @return the GatewayRouteConfigProperties object itself.
      */
@@ -76,7 +103,7 @@ public final class GatewayRouteConfigProperties {
 
     /**
      * Get the openApi property: OpenAPI properties of Spring Cloud Gateway route config.
-     *
+     * 
      * @return the openApi value.
      */
     public GatewayRouteConfigOpenApiProperties openApi() {
@@ -85,7 +112,7 @@ public final class GatewayRouteConfigProperties {
 
     /**
      * Set the openApi property: OpenAPI properties of Spring Cloud Gateway route config.
-     *
+     * 
      * @param openApi the openApi value to set.
      * @return the GatewayRouteConfigProperties object itself.
      */
@@ -96,7 +123,7 @@ public final class GatewayRouteConfigProperties {
 
     /**
      * Get the protocol property: Protocol of routed Azure Spring Apps applications.
-     *
+     * 
      * @return the protocol value.
      */
     public GatewayRouteConfigProtocol protocol() {
@@ -105,7 +132,7 @@ public final class GatewayRouteConfigProperties {
 
     /**
      * Set the protocol property: Protocol of routed Azure Spring Apps applications.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the GatewayRouteConfigProperties object itself.
      */
@@ -117,7 +144,7 @@ public final class GatewayRouteConfigProperties {
     /**
      * Get the routes property: Array of API routes, each route contains properties such as `title`, `uri`,
      * `ssoEnabled`, `predicates`, `filters`.
-     *
+     * 
      * @return the routes value.
      */
     public List<GatewayApiRoute> routes() {
@@ -127,7 +154,7 @@ public final class GatewayRouteConfigProperties {
     /**
      * Set the routes property: Array of API routes, each route contains properties such as `title`, `uri`,
      * `ssoEnabled`, `predicates`, `filters`.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the GatewayRouteConfigProperties object itself.
      */
@@ -137,8 +164,74 @@ public final class GatewayRouteConfigProperties {
     }
 
     /**
+     * Get the ssoEnabled property: Enable Single Sign-On in app level.
+     * 
+     * @return the ssoEnabled value.
+     */
+    public Boolean ssoEnabled() {
+        return this.ssoEnabled;
+    }
+
+    /**
+     * Set the ssoEnabled property: Enable Single Sign-On in app level.
+     * 
+     * @param ssoEnabled the ssoEnabled value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withSsoEnabled(Boolean ssoEnabled) {
+        this.ssoEnabled = ssoEnabled;
+        return this;
+    }
+
+    /**
+     * Get the predicates property: A number of conditions to evaluate a route for each request in app level. Each
+     * predicate may be evaluated against request headers and parameter values. All of the predicates associated with a
+     * route must evaluate to true for the route to be matched to the request.
+     * 
+     * @return the predicates value.
+     */
+    public List<String> predicates() {
+        return this.predicates;
+    }
+
+    /**
+     * Set the predicates property: A number of conditions to evaluate a route for each request in app level. Each
+     * predicate may be evaluated against request headers and parameter values. All of the predicates associated with a
+     * route must evaluate to true for the route to be matched to the request.
+     * 
+     * @param predicates the predicates value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withPredicates(List<String> predicates) {
+        this.predicates = predicates;
+        return this;
+    }
+
+    /**
+     * Get the filters property: To modify the request before sending it to the target endpoint, or the received
+     * response in app level.
+     * 
+     * @return the filters value.
+     */
+    public List<String> filters() {
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: To modify the request before sending it to the target endpoint, or the received
+     * response in app level.
+     * 
+     * @param filters the filters value to set.
+     * @return the GatewayRouteConfigProperties object itself.
+     */
+    public GatewayRouteConfigProperties withFilters(List<String> filters) {
+        this.filters = filters;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

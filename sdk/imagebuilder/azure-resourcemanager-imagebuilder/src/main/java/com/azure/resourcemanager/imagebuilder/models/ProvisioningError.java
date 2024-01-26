@@ -7,7 +7,9 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the error happened when create or update an image template. */
+/**
+ * Describes the error happened when create or update an image template.
+ */
 @Fluent
 public final class ProvisioningError {
     /*
@@ -22,13 +24,15 @@ public final class ProvisioningError {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ProvisioningError class. */
+    /**
+     * Creates an instance of ProvisioningError class.
+     */
     public ProvisioningError() {
     }
 
     /**
      * Get the provisioningErrorCode property: Error code of the provisioning failure.
-     *
+     * 
      * @return the provisioningErrorCode value.
      */
     public ProvisioningErrorCode provisioningErrorCode() {
@@ -37,7 +41,7 @@ public final class ProvisioningError {
 
     /**
      * Set the provisioningErrorCode property: Error code of the provisioning failure.
-     *
+     * 
      * @param provisioningErrorCode the provisioningErrorCode value to set.
      * @return the ProvisioningError object itself.
      */
@@ -48,7 +52,7 @@ public final class ProvisioningError {
 
     /**
      * Get the message property: Verbose error message about the provisioning failure.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class ProvisioningError {
 
     /**
      * Set the message property: Verbose error message about the provisioning failure.
-     *
+     * 
      * @param message the message value to set.
      * @return the ProvisioningError object itself.
      */
@@ -68,7 +72,7 @@ public final class ProvisioningError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

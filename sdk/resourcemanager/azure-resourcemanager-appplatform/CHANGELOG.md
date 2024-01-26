@@ -1,14 +1,16 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.35.0 (2024-01-26)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `withKPackVersion` from `BuildServiceProperties` as it's never functional in the backend.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-12-01`.
 
 ## 2.34.0 (2023-12-22)
 

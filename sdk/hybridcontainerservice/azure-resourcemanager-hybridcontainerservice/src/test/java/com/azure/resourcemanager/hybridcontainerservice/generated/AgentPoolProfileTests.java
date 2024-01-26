@@ -9,29 +9,52 @@ import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
 import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class AgentPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentPoolProfile model = BinaryData.fromString(
-            "{\"availabilityZones\":[\"gdf\",\"glzlhjxrifkwmrv\",\"tsizntocipaoua\"],\"osType\":\"Windows\",\"osSKU\":\"Windows2022\",\"nodeImageVersion\":\"mpoyfd\"}")
+            "{\"osType\":\"Linux\",\"osSKU\":\"Windows2019\",\"nodeLabels\":{\"usarhmofc\":\"zyf\",\"yurkdtmlxhekuksj\":\"hs\"},\"nodeTaints\":[\"kc\",\"mparcryuanzw\",\"xzdxtayrlhmwh\",\"pmrqobm\"],\"maxCount\":400628348,\"minCount\":1941399376,\"enableAutoScaling\":false,\"maxPods\":1077251222}")
             .toObject(AgentPoolProfile.class);
-        Assertions.assertEquals("gdf", model.availabilityZones().get(0));
-        Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals(Ossku.WINDOWS2022, model.osSku());
-        Assertions.assertEquals("mpoyfd", model.nodeImageVersion());
+        Assertions.assertEquals(OsType.LINUX, model.osType());
+        Assertions.assertEquals(Ossku.WINDOWS2019, model.osSku());
+        Assertions.assertEquals("zyf", model.nodeLabels().get("usarhmofc"));
+        Assertions.assertEquals("kc", model.nodeTaints().get(0));
+        Assertions.assertEquals(400628348, model.maxCount());
+        Assertions.assertEquals(1941399376, model.minCount());
+        Assertions.assertEquals(false, model.enableAutoScaling());
+        Assertions.assertEquals(1077251222, model.maxPods());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolProfile model
-            = new AgentPoolProfile().withAvailabilityZones(Arrays.asList("gdf", "glzlhjxrifkwmrv", "tsizntocipaoua"))
-                .withOsType(OsType.WINDOWS).withOsSku(Ossku.WINDOWS2022).withNodeImageVersion("mpoyfd");
+        AgentPoolProfile model = new AgentPoolProfile().withOsType(OsType.LINUX).withOsSku(Ossku.WINDOWS2019)
+            .withNodeLabels(mapOf("usarhmofc", "zyf", "yurkdtmlxhekuksj", "hs"))
+            .withNodeTaints(Arrays.asList("kc", "mparcryuanzw", "xzdxtayrlhmwh", "pmrqobm")).withMaxCount(400628348)
+            .withMinCount(1941399376).withEnableAutoScaling(false).withMaxPods(1077251222);
         model = BinaryData.fromObject(model).toObject(AgentPoolProfile.class);
-        Assertions.assertEquals("gdf", model.availabilityZones().get(0));
-        Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals(Ossku.WINDOWS2022, model.osSku());
-        Assertions.assertEquals("mpoyfd", model.nodeImageVersion());
+        Assertions.assertEquals(OsType.LINUX, model.osType());
+        Assertions.assertEquals(Ossku.WINDOWS2019, model.osSku());
+        Assertions.assertEquals("zyf", model.nodeLabels().get("usarhmofc"));
+        Assertions.assertEquals("kc", model.nodeTaints().get(0));
+        Assertions.assertEquals(400628348, model.maxCount());
+        Assertions.assertEquals(1941399376, model.minCount());
+        Assertions.assertEquals(false, model.enableAutoScaling());
+        Assertions.assertEquals(1077251222, model.maxPods());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

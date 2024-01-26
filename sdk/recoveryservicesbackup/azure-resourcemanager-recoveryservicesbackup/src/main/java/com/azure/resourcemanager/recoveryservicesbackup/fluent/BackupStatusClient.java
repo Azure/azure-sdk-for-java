@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStatusResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 
-/** An instance of this class provides access to all the operations defined in BackupStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupStatusClient.
+ */
 public interface BackupStatusClient {
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @param context The context to associate with this operation.
@@ -25,12 +27,12 @@ public interface BackupStatusClient {
      * @return the container backup status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupStatusResponseInner> getWithResponse(
-        String azureRegion, BackupStatusRequest parameters, Context context);
+    Response<BackupStatusResponseInner> getWithResponse(String azureRegion, BackupStatusRequest parameters,
+        Context context);
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -490,6 +490,7 @@ service
 <summary> datafactory </summary>
 
 * [package-2018-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager#tag-package-2018-06)
+    * [1.0.0-beta.25](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.25)
     * [1.0.0-beta.24](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.24)
     * [1.0.0-beta.23](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.23)
     * [1.0.0-beta.22](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.22)
@@ -751,6 +752,7 @@ service
 * [package-preview-2022-12](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/elasticsan/resource-manager#tag-package-preview-2022-12)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-elasticsan/1.0.0-beta.2)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/elasticsan/resource-manager#tag-package-2023-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-elasticsan/1.0.0)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-elasticsan/1.0.0-beta.3)
 * [package-2021-11-20-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/elasticsan/resource-manager#tag-package-2021-11-20-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-elasticsan/1.0.0-beta.1)
@@ -837,6 +839,8 @@ service
 <details>
 <summary> hardwaresecuritymodules </summary>
 
+* [package-2023-12-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager#tag-package-2023-12-preview)
+    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hardwaresecuritymodules/1.0.0-beta.2)
 * [package-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hardwaresecuritymodules/resource-manager#tag-package-2021-11)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hardwaresecuritymodules/1.0.0-beta.1)
 </details>
@@ -914,6 +918,8 @@ service
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0-beta.3)
 * [package-preview-2022-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridaks/resource-manager#tag-package-preview-2022-09)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0-beta.2)
+* [package-2024-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridaks/resource-manager#tag-package-2024-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0)
 * [package-2022-05-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridaks/resource-manager#tag-package-2022-05-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0-beta.1)
 </details>
@@ -944,6 +950,8 @@ service
 <details>
 <summary> imagebuilder </summary>
 
+* [package-2023-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2023-07)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-imagebuilder/1.0.0)
 * [package-2022-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2022-07)
     * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-imagebuilder/1.0.0-beta.4)
 * [package-2022-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2022-02)
@@ -1290,6 +1298,7 @@ service
 <summary> networkanalytics </summary>
 
 * [package-2023-11-15](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkanalytics/resource-manager#tag-package-2023-11-15)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkanalytics/1.0.0)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkanalytics/1.0.0-beta.1)
 </details>
 
@@ -1431,6 +1440,7 @@ service
 <summary> postgresqlflexibleserver </summary>
 
 * [package-flexibleserver-2023-06-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager#tag-package-flexibleserver-2023-06-01-preview)
+    * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-postgresqlflexibleserver/1.1.0-beta.2)
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-postgresqlflexibleserver/1.1.0-beta.1)
 * [package-flexibleserver-2023-03-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager#tag-package-flexibleserver-2023-03-01-preview)
     * [1.0.0-beta.7](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-postgresqlflexibleserver/1.0.0-beta.7)
@@ -1528,6 +1538,8 @@ service
 <details>
 <summary> recoveryservicesbackup </summary>
 
+* [package-2023-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager#tag-package-2023-06)
+    * [1.3.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservicesbackup/1.3.0)
 * [package-2023-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager#tag-package-2023-04)
     * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservicesbackup/1.2.0)
 * [package-2023-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager#tag-package-2023-02)
@@ -1769,6 +1781,14 @@ service
 
 <br/>
 <details>
+<summary> springappdiscovery </summary>
+
+* [package-2023-01-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/offazurespringboot/resource-manager#tag-package-2023-01-01-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-springappdiscovery/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> sqlvirtualmachine </summary>
 
 * [package-preview-2022-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager#tag-package-preview-2022-08)
@@ -1843,6 +1863,8 @@ service
 
 * [package-pure-2020-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager#tag-package-pure-2020-03)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-streamanalytics/1.0.0-beta.2)
+* [package-2021-10-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager#tag-package-2021-10-preview)
+    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-streamanalytics/1.0.0-beta.3)
 * [package-2020-03-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager#tag-package-2020-03-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-streamanalytics/1.0.0-beta.1)
 </details>

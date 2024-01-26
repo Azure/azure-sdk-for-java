@@ -14,22 +14,22 @@ public final class PipelineExternalComputeScalePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PipelineExternalComputeScaleProperties model = BinaryData.fromString(
-            "{\"timeToLive\":2028663269,\"numberOfPipelineNodes\":1101264876,\"numberOfExternalNodes\":944211003,\"\":{\"ajkvwkoc\":\"dataupzpexzbhg\"}}")
+            "{\"timeToLive\":672832981,\"numberOfPipelineNodes\":929027209,\"numberOfExternalNodes\":964675941,\"\":{\"urp\":\"datakyncyzjndfeemx\",\"ajpcroxpp\":\"dataivypmwd\",\"yufdmzucxvzvwlx\":\"dataqimyhxnpdggllyd\",\"ur\":\"datajnstz\"}}")
             .toObject(PipelineExternalComputeScaleProperties.class);
-        Assertions.assertEquals(2028663269, model.timeToLive());
-        Assertions.assertEquals(1101264876, model.numberOfPipelineNodes());
-        Assertions.assertEquals(944211003, model.numberOfExternalNodes());
+        Assertions.assertEquals(672832981, model.timeToLive());
+        Assertions.assertEquals(929027209, model.numberOfPipelineNodes());
+        Assertions.assertEquals(964675941, model.numberOfExternalNodes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PipelineExternalComputeScaleProperties model = new PipelineExternalComputeScaleProperties()
-            .withTimeToLive(2028663269).withNumberOfPipelineNodes(1101264876).withNumberOfExternalNodes(944211003)
+            .withTimeToLive(672832981).withNumberOfPipelineNodes(929027209).withNumberOfExternalNodes(964675941)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(PipelineExternalComputeScaleProperties.class);
-        Assertions.assertEquals(2028663269, model.timeToLive());
-        Assertions.assertEquals(1101264876, model.numberOfPipelineNodes());
-        Assertions.assertEquals(944211003, model.numberOfExternalNodes());
+        Assertions.assertEquals(672832981, model.timeToLive());
+        Assertions.assertEquals(929027209, model.numberOfPipelineNodes());
+        Assertions.assertEquals(964675941, model.numberOfExternalNodes());
     }
 
     // Use "Map.of" if available

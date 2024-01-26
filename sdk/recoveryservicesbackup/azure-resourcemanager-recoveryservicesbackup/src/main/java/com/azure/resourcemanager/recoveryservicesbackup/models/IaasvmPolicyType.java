@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IaasvmPolicyType. */
+/**
+ * Defines values for IaasvmPolicyType.
+ */
 public final class IaasvmPolicyType extends ExpandableStringEnum<IaasvmPolicyType> {
-    /** Static value Invalid for IaasvmPolicyType. */
+    /**
+     * Static value Invalid for IaasvmPolicyType.
+     */
     public static final IaasvmPolicyType INVALID = fromString("Invalid");
 
-    /** Static value V1 for IaasvmPolicyType. */
+    /**
+     * Static value V1 for IaasvmPolicyType.
+     */
     public static final IaasvmPolicyType V1 = fromString("V1");
 
-    /** Static value V2 for IaasvmPolicyType. */
+    /**
+     * Static value V2 for IaasvmPolicyType.
+     */
     public static final IaasvmPolicyType V2 = fromString("V2");
 
     /**
      * Creates a new instance of IaasvmPolicyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class IaasvmPolicyType extends ExpandableStringEnum<IaasvmPolicyTyp
 
     /**
      * Creates or finds a IaasvmPolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IaasvmPolicyType.
      */
@@ -41,7 +49,7 @@ public final class IaasvmPolicyType extends ExpandableStringEnum<IaasvmPolicyTyp
 
     /**
      * Gets known IaasvmPolicyType values.
-     *
+     * 
      * @return known IaasvmPolicyType values.
      */
     public static Collection<IaasvmPolicyType> values() {

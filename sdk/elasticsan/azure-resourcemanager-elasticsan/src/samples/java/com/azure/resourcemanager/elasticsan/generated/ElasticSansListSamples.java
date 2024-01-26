@@ -4,31 +4,35 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-/** Samples for ElasticSans List. */
+/**
+ * Samples for ElasticSans List.
+ */
 public final class ElasticSansListSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/ElasticSans_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * ElasticSans_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ElasticSans_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansListBySubscriptionMaximumSetGen(
-        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void
+        elasticSansListBySubscriptionMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.elasticSans().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/ElasticSans_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * ElasticSans_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: ElasticSans_ListBySubscription_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
-    public static void elasticSansListBySubscriptionMinimumSetGen(
-        com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
+    public static void
+        elasticSansListBySubscriptionMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
         manager.elasticSans().list(com.azure.core.util.Context.NONE);
     }
 }

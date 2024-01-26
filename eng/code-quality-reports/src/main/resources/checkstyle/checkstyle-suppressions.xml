@@ -248,19 +248,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Empty while loop waiting for Reactor stream completion -->
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
 
-  <!-- Azure Search test models -->
-  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier"
-            files="com.azure.search.documents.test.environment.models.*.java"/>
-
-  <!-- Suppress checks for AutoRest generated Search code -->
-  <!-- Hand-written classes should be specified here to be checked -->
-  <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](converters|models)[/\\]"/>
-  <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\]models[/\\]"/>
-  <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(IndexBatch|ValueFacetResult|RangeFacetResult|SearchableField|SimpleField|IndexBatchException|ScoringParameter)).*)"/>
-
   <suppress checks="."
             files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
   <suppress checks="."
@@ -412,14 +399,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress DigitalTwins for now -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\](DigitalTwinsClient|DigitalTwinsAsyncClient).java"/>
 
-  <!-- Suppress non-conforming service builder and service clients -->
-  <!-- The clients don't end with 'Client' but instead with 'Sender' -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
-            files="com.azure.search.documents.SearchClientBuilder"
-            lines="511,545,559,572"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
-
   <!-- Allow Attestation Service use of OpenTelemetry -->
   <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\](AttestationClientTestBase|AttestationTest).java"/>
 
@@ -451,9 +430,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
-  <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
-  <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
-
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>
 
@@ -471,6 +447,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
 
+  <!-- Suppress checks for stress packages. -->
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-template-stress[/\\].*\.java"/>
+  <suppress checks="IllegalImport" files="com.azure.*.stress"/>
+  <suppress checks="ThrowFromClientLogger" files="com.azure.*.stress"/>
+
   <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
 
@@ -485,8 +466,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|WorkloadIdentityCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
-
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
   <!-- The build tool plugin checkstyle exceptions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"

@@ -48,7 +48,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -57,7 +57,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
      */
@@ -68,7 +68,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -77,7 +77,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Get the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades() {
@@ -97,7 +97,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Set the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
      */
@@ -109,7 +109,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Get the latestNodeImageVersion property: The latest AKS supported node image version.
-     *
+     * 
      * @return the latestNodeImageVersion value.
      */
     public String latestNodeImageVersion() {
@@ -118,7 +118,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Set the latestNodeImageVersion property: The latest AKS supported node image version.
-     *
+     * 
      * @param latestNodeImageVersion the latestNodeImageVersion value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
      */
@@ -129,7 +129,7 @@ public final class AgentPoolUpgradeProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

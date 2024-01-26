@@ -29,7 +29,7 @@ public final class TriggersUnsubscribeFromEventsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"triggerName\":\"patodfyrf\",\"status\":\"Unknown\"}";
+        String responseStr = "{\"triggerName\":\"ofdmlrtlhpfucfi\",\"status\":\"Disabled\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -46,8 +46,8 @@ public final class TriggersUnsubscribeFromEventsMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TriggerSubscriptionOperationStatus response = manager.triggers().unsubscribeFromEvents("zzhlnhgngqciiopo",
-            "mgheamxidjdpt", "uiegrauyphugwa", com.azure.core.util.Context.NONE);
+        TriggerSubscriptionOperationStatus response = manager.triggers().unsubscribeFromEvents("utsabuvuuweq",
+            "eygnetu", "sqvgjvumdznb", com.azure.core.util.Context.NONE);
 
     }
 }

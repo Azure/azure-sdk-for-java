@@ -7,20 +7,34 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional Service settings in vnet injection instance. */
+/**
+ * Additional Service settings in vnet injection instance.
+ */
 @Fluent
 public final class ServiceVNetAddons {
     /*
-     * Indicates whether the log stream in vnet injection instance could be
-     * accessed from internet.
+     * Indicates whether the log stream in vnet injection instance could be accessed from internet.
      */
     @JsonProperty(value = "logStreamPublicEndpoint")
     private Boolean logStreamPublicEndpoint;
 
+    /*
+     * Indicates whether the data plane components(log stream, app connect, remote debugging) in vnet injection
+     * instance could be accessed from internet.
+     */
+    @JsonProperty(value = "dataPlanePublicEndpoint")
+    private Boolean dataPlanePublicEndpoint;
+
+    /**
+     * Creates an instance of ServiceVNetAddons class.
+     */
+    public ServiceVNetAddons() {
+    }
+
     /**
      * Get the logStreamPublicEndpoint property: Indicates whether the log stream in vnet injection instance could be
      * accessed from internet.
-     *
+     * 
      * @return the logStreamPublicEndpoint value.
      */
     public Boolean logStreamPublicEndpoint() {
@@ -30,7 +44,7 @@ public final class ServiceVNetAddons {
     /**
      * Set the logStreamPublicEndpoint property: Indicates whether the log stream in vnet injection instance could be
      * accessed from internet.
-     *
+     * 
      * @param logStreamPublicEndpoint the logStreamPublicEndpoint value to set.
      * @return the ServiceVNetAddons object itself.
      */
@@ -40,8 +54,30 @@ public final class ServiceVNetAddons {
     }
 
     /**
+     * Get the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     * 
+     * @return the dataPlanePublicEndpoint value.
+     */
+    public Boolean dataPlanePublicEndpoint() {
+        return this.dataPlanePublicEndpoint;
+    }
+
+    /**
+     * Set the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     * 
+     * @param dataPlanePublicEndpoint the dataPlanePublicEndpoint value to set.
+     * @return the ServiceVNetAddons object itself.
+     */
+    public ServiceVNetAddons withDataPlanePublicEndpoint(Boolean dataPlanePublicEndpoint) {
+        this.dataPlanePublicEndpoint = dataPlanePublicEndpoint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -1177,21 +1177,6 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1243,21 +1228,6 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1284,20 +1254,6 @@ public final class OpenAIClient {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -1349,20 +1305,6 @@ public final class OpenAIClient {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
