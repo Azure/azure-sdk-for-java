@@ -425,7 +425,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         ShareCreateOptions options = new ShareCreateOptions();
         ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
         options.setProtocols(protocols);
-        options.setEnableSnapshotVirtualDirectoryAccess(true);
+        options.setSnapshotVirtualDirectoryAccessEnabled(true);
 
         ShareClient shareClient = primaryFileServiceClient.getShareClient(generateShareName());
         shareClient.createWithResponse(options, null, null);

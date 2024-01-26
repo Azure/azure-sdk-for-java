@@ -1247,7 +1247,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareCreateOptions options = new ShareCreateOptions();
         ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
         options.setProtocols(protocols);
-        options.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+        options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
 
         primaryShareClient.createWithResponse(options, null, null);
 
@@ -1278,7 +1278,7 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.createWithResponse(options, null, null);
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
-        setPropertiesOptions.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+        setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
         setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
         primaryShareClient.setProperties(setPropertiesOptions);

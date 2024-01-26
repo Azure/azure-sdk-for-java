@@ -806,7 +806,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareCreateOptions options = new ShareCreateOptions();
         ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
         options.setProtocols(protocols);
-        options.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+        options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
 
         primaryShareAsyncClient.createWithResponse(options).block();
 
@@ -840,7 +840,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         primaryShareAsyncClient.createWithResponse(options).block();
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
-        setPropertiesOptions.setEnableSnapshotVirtualDirectoryAccess(enableSnapshotVirtualDirectoryAccess);
+        setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
         setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
         primaryShareAsyncClient.setProperties(setPropertiesOptions).block();

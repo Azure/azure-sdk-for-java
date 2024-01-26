@@ -111,7 +111,7 @@ public class ShareCreateOptions {
      * If not specified, the default is true.
      * @return the enableSnapshotVirtualDirectoryAccess value.
      */
-    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+    public Boolean isSnapshotVirtualDirectoryAccessEnabled() {
         return enableSnapshotVirtualDirectoryAccess;
     }
 
@@ -120,12 +120,12 @@ public class ShareCreateOptions {
      * Optional. Supported in version 2023-08-03 and above.
      * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
      * If not specified, the default is true.
-     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareCreateOptions object itself.
      */
-    public ShareCreateOptions setEnableSnapshotVirtualDirectoryAccess(
-        Boolean enableSnapshotVirtualDirectoryAccess) {
-        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+    public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(
+        Boolean snapshotVirtualDirectoryAccessEnabled) {
+        this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
         return this;
     }
 }

@@ -376,7 +376,7 @@ public class ShareAsyncClient {
         return azureFileStorageClient.getShares()
             .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
-                options.isEnableSnapshotVirtualDirectoryAccess(), context)
+                options.isSnapshotVirtualDirectoryAccessEnabled(), context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -935,7 +935,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
-            options.isEnableSnapshotVirtualDirectoryAccess(), context)
+            options.isSnapshotVirtualDirectoryAccessEnabled(), context)
             .map(this::mapToShareInfoResponse);
     }
 
