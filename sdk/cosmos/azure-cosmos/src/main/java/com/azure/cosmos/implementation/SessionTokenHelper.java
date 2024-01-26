@@ -41,7 +41,9 @@ public class SessionTokenHelper {
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
-            throw new InternalServerErrorException(RMResources.PartitionKeyRangeIdAbsentInContext);
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage(RMResources.PartitionKeyRangeIdAbsentInContext),
+                HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_ID_ABSENT_IN_CONTEXT);
         }
 
         if (StringUtils.isNotEmpty(originalSessionToken)) {

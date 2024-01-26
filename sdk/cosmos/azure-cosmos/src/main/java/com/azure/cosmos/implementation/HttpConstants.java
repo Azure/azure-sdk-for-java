@@ -448,6 +448,17 @@ public class HttpConstants {
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
 
+        // Client generated 500
+        public static final int PARTITION_KEY_RANGE_ID_ABSENT_IN_CONTEXT = 21011;
+        public static final int INVALID_REGIONS_IN_SESSION_TOKEN = 21012;
+        public static final int NON_PARTITIONED_RESOURCES = 21013;
+        public static final int PARTITION_KEY_IS_NULL = 21014;
+        public static final int UNKNOWN_AUTHORIZATION_TOKEN_KIND= 21015;
+        public static final int RECREATE_REQUEST_ON_HTTP_CLIENT = 21016;
+        public static final int INVALID_BACKEND_RESPONSE = 21017;
+        public static final int UNKNOWN_QUORUM_RESULT = 21018;
+        public static final int INVALID_RESULT = 21019;
+
     }
 
     public static class HeaderValues {
