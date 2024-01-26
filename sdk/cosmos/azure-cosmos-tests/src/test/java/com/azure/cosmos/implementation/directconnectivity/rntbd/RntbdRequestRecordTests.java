@@ -20,7 +20,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
