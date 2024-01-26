@@ -45,7 +45,7 @@ public final class TriggersStopMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.triggers().stop("x", "tkehfoephipho", "gmcuqjouk", com.azure.core.util.Context.NONE);
+        manager.triggers().stop("qxxy", "rrixkobmrrnkdmn", "qhkju", com.azure.core.util.Context.NONE);
 
     }
 }

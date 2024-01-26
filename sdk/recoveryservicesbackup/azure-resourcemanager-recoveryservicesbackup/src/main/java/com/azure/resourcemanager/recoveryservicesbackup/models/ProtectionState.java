@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Backup state of this backup item. */
+/**
+ * Backup state of this backup item.
+ */
 public final class ProtectionState extends ExpandableStringEnum<ProtectionState> {
-    /** Static value Invalid for ProtectionState. */
+    /**
+     * Static value Invalid for ProtectionState.
+     */
     public static final ProtectionState INVALID = fromString("Invalid");
 
-    /** Static value IRPending for ProtectionState. */
+    /**
+     * Static value IRPending for ProtectionState.
+     */
     public static final ProtectionState IRPENDING = fromString("IRPending");
 
-    /** Static value Protected for ProtectionState. */
+    /**
+     * Static value Protected for ProtectionState.
+     */
     public static final ProtectionState PROTECTED = fromString("Protected");
 
-    /** Static value ProtectionError for ProtectionState. */
+    /**
+     * Static value ProtectionError for ProtectionState.
+     */
     public static final ProtectionState PROTECTION_ERROR = fromString("ProtectionError");
 
-    /** Static value ProtectionStopped for ProtectionState. */
+    /**
+     * Static value ProtectionStopped for ProtectionState.
+     */
     public static final ProtectionState PROTECTION_STOPPED = fromString("ProtectionStopped");
 
-    /** Static value ProtectionPaused for ProtectionState. */
+    /**
+     * Static value ProtectionPaused for ProtectionState.
+     */
     public static final ProtectionState PROTECTION_PAUSED = fromString("ProtectionPaused");
 
-    /** Static value BackupsSuspended for ProtectionState. */
+    /**
+     * Static value BackupsSuspended for ProtectionState.
+     */
     public static final ProtectionState BACKUPS_SUSPENDED = fromString("BackupsSuspended");
 
     /**
      * Creates a new instance of ProtectionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
 
     /**
      * Creates or finds a ProtectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectionState.
      */
@@ -53,7 +69,7 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
 
     /**
      * Gets known ProtectionState values.
-     *
+     * 
      * @return known ProtectionState values.
      */
     public static Collection<ProtectionState> values() {

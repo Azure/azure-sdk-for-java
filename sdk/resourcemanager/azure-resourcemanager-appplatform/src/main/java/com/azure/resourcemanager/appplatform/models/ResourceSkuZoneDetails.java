@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of capabilities available to a SKU in specific zones. */
+/**
+ * Details of capabilities available to a SKU in specific zones.
+ */
 @Fluent
 public final class ResourceSkuZoneDetails {
     /*
@@ -26,8 +28,15 @@ public final class ResourceSkuZoneDetails {
     private List<ResourceSkuCapabilities> capabilities;
 
     /**
-     * Get the name property: Gets the set of zones that the SKU is available in with the specified capabilities.
-     *
+     * Creates an instance of ResourceSkuZoneDetails class.
+     */
+    public ResourceSkuZoneDetails() {
+    }
+
+    /**
+     * Get the name property: Gets the set of zones that the SKU is available in with the
+     * specified capabilities.
+     * 
      * @return the name value.
      */
     public List<String> name() {
@@ -35,8 +44,9 @@ public final class ResourceSkuZoneDetails {
     }
 
     /**
-     * Set the name property: Gets the set of zones that the SKU is available in with the specified capabilities.
-     *
+     * Set the name property: Gets the set of zones that the SKU is available in with the
+     * specified capabilities.
+     * 
      * @param name the name value to set.
      * @return the ResourceSkuZoneDetails object itself.
      */
@@ -46,9 +56,9 @@ public final class ResourceSkuZoneDetails {
     }
 
     /**
-     * Get the capabilities property: Gets a list of capabilities that are available for the SKU in the specified list
-     * of zones.
-     *
+     * Get the capabilities property: Gets a list of capabilities that are available for the SKU in the
+     * specified list of zones.
+     * 
      * @return the capabilities value.
      */
     public List<ResourceSkuCapabilities> capabilities() {
@@ -56,9 +66,9 @@ public final class ResourceSkuZoneDetails {
     }
 
     /**
-     * Set the capabilities property: Gets a list of capabilities that are available for the SKU in the specified list
-     * of zones.
-     *
+     * Set the capabilities property: Gets a list of capabilities that are available for the SKU in the
+     * specified list of zones.
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceSkuZoneDetails object itself.
      */
@@ -69,7 +79,7 @@ public final class ResourceSkuZoneDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,8 +4,7 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
-import com.azure.ai.openai.assistants.implementation.multipart.MultipartDataHelper;
-import com.azure.ai.openai.assistants.implementation.multipart.MultipartDataSerializationResult;
+import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -34,6 +33,7 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -45,14 +45,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Initializes a new instance of the synchronous AssistantsClient type.
@@ -499,7 +495,7 @@ public final class AssistantsClient {
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      *
      * @param assistantId The ID of the assistant to attach the file to.
-     * @param fileId The ID of the file to attach to the specified assistant.
+     * @param fileId The ID of the previously uploaded file to attach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -508,12 +504,15 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a file attached to an assistant, as used by tools that can read files.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssistantFile createAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        // TODO: manually added the String fileId but will need to fix it when generating from TypeSpec.
-        return createAssistantFileWithResponse(assistantId, BinaryData.fromObject(fileId), requestOptions).getValue()
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("file_id", fileId);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return createAssistantFileWithResponse(assistantId, request, requestOptions).getValue()
             .toObject(AssistantFile.class);
     }
 
@@ -1112,7 +1111,7 @@ public final class AssistantsClient {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2462,7 +2461,7 @@ public final class AssistantsClient {
      * }</pre>
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2642,17 +2641,6 @@ public final class AssistantsClient {
     /**
      * Uploads a file for use by other operations.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -2676,10 +2664,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions, String contentType) {
+    Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
-        return this.serviceClient.uploadFileWithResponse(request, requestOptions, contentType);
+        return this.serviceClient.uploadFileWithResponse(request, requestOptions);
     }
 
     /**
@@ -2716,7 +2704,7 @@ public final class AssistantsClient {
      * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2906,75 +2894,6 @@ public final class AssistantsClient {
         return updateRunWithResponse(threadId, runId, request, requestOptions).getValue().toObject(ThreadRun.class);
     }
 
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public OpenAIFile uploadFile(Path localFile, FilePurpose filePurpose) {
-//        byte[] file = BinaryData.fromFile(localFile).toBytes();
-//        try {
-//            String mimeType = Files.probeContentType(localFile);
-//            return uploadFile(file, filePurpose, localFile.getFileName().toString(), mimeType);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-//     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(Path file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-//        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-//        requestObj.put("filename", file.getFileName());
-
-        // Multipart serialization logic
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(file, requestObj);
-        final BinaryData data = result.getData();
-
-
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-        String contentType = "multipart/form-data;" + " boundary=" + helper.getBoundary();
-        return uploadFileWithResponse(data, requestOptions, contentType).getValue().toObject(OpenAIFile.class);
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private OpenAIFile uploadFile(byte[] file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return uploadFileWithResponse(request, requestOptions, "").getValue().toObject(OpenAIFile.class);
-    }
-
     /**
      * Returns information about a specific file. Does not retrieve file content.
      *
@@ -2993,5 +2912,30 @@ public final class AssistantsClient {
         // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileWithResponse(fileId, requestOptions).getValue().toObject(OpenAIFile.class);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     *
+     * @param request The request parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIFile uploadFile(UploadFileRequest request) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", request.getFile().getContent(), request.getFile().getContentType(),
+                request.getFile().getFilename())
+            .serializeTextField("purpose", Objects.toString(request.getPurpose()))
+            .serializeTextField("filename", request.getFilename()).end().getRequestBody(), requestOptions).getValue()
+                .toObject(OpenAIFile.class);
     }
 }

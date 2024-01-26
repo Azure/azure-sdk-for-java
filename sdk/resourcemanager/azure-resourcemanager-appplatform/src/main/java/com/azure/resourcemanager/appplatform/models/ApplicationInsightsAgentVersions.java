@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Insights agent versions properties payload. */
+/**
+ * Application Insights agent versions properties payload.
+ */
 @Immutable
 public final class ApplicationInsightsAgentVersions {
     /*
@@ -17,8 +19,14 @@ public final class ApplicationInsightsAgentVersions {
     private String java;
 
     /**
+     * Creates an instance of ApplicationInsightsAgentVersions class.
+     */
+    public ApplicationInsightsAgentVersions() {
+    }
+
+    /**
      * Get the java property: Indicates the version of application insight java agent.
-     *
+     * 
      * @return the java value.
      */
     public String java() {
@@ -27,7 +35,7 @@ public final class ApplicationInsightsAgentVersions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

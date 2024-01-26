@@ -17,7 +17,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPoint
 public interface RecoveryPointsRecommendedForMovesClient {
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -30,17 +30,12 @@ public interface RecoveryPointsRecommendedForMovesClient {
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters);
+    PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters);
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -54,12 +49,7 @@ public interface RecoveryPointsRecommendedForMovesClient {
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters,
+    PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters,
         Context context);
 }

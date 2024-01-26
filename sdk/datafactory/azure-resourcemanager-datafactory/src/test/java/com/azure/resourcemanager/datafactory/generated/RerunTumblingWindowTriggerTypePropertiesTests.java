@@ -13,21 +13,21 @@ public final class RerunTumblingWindowTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RerunTumblingWindowTriggerTypeProperties model = BinaryData.fromString(
-            "{\"parentTrigger\":\"datawrqywaagzaxqh\",\"requestedStartTime\":\"2021-07-31T01:48:53Z\",\"requestedEndTime\":\"2021-04-25T14:25:18Z\",\"rerunConcurrency\":370253583}")
+            "{\"parentTrigger\":\"datafjwajsbqytfv\",\"requestedStartTime\":\"2021-04-12T06:16:03Z\",\"requestedEndTime\":\"2021-01-30T03:23:45Z\",\"rerunConcurrency\":1573229736}")
             .toObject(RerunTumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T01:48:53Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T14:25:18Z"), model.requestedEndTime());
-        Assertions.assertEquals(370253583, model.rerunConcurrency());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T06:16:03Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T03:23:45Z"), model.requestedEndTime());
+        Assertions.assertEquals(1573229736, model.rerunConcurrency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RerunTumblingWindowTriggerTypeProperties model = new RerunTumblingWindowTriggerTypeProperties()
-            .withParentTrigger("datawrqywaagzaxqh").withRequestedStartTime(OffsetDateTime.parse("2021-07-31T01:48:53Z"))
-            .withRequestedEndTime(OffsetDateTime.parse("2021-04-25T14:25:18Z")).withRerunConcurrency(370253583);
+            .withParentTrigger("datafjwajsbqytfv").withRequestedStartTime(OffsetDateTime.parse("2021-04-12T06:16:03Z"))
+            .withRequestedEndTime(OffsetDateTime.parse("2021-01-30T03:23:45Z")).withRerunConcurrency(1573229736);
         model = BinaryData.fromObject(model).toObject(RerunTumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T01:48:53Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T14:25:18Z"), model.requestedEndTime());
-        Assertions.assertEquals(370253583, model.rerunConcurrency());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T06:16:03Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T03:23:45Z"), model.requestedEndTime());
+        Assertions.assertEquals(1573229736, model.rerunConcurrency());
     }
 }

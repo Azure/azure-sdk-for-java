@@ -7,19 +7,21 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
 import java.util.List;
 
-/** An immutable client-side representation of OutboundEnvironmentEndpoint. */
+/**
+ * An immutable client-side representation of OutboundEnvironmentEndpoint.
+ */
 public interface OutboundEnvironmentEndpoint {
     /**
      * Gets the category property: The category of endpoints accessed by the dedicated hsm service, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @return the category value.
      */
     String category();
 
     /**
      * Gets the endpoints property: The endpoints that dedicated hsm service connects to.
-     *
+     * 
      * @return the endpoints value.
      */
     List<EndpointDependency> endpoints();
@@ -27,7 +29,7 @@ public interface OutboundEnvironmentEndpoint {
     /**
      * Gets the inner com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     OutboundEnvironmentEndpointInner innerModel();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Buildpack group properties of the Builder. */
+/**
+ * Buildpack group properties of the Builder.
+ */
 @Fluent
 public final class BuildpacksGroupProperties {
     /*
@@ -24,8 +26,14 @@ public final class BuildpacksGroupProperties {
     private List<BuildpackProperties> buildpacks;
 
     /**
+     * Creates an instance of BuildpacksGroupProperties class.
+     */
+    public BuildpacksGroupProperties() {
+    }
+
+    /**
      * Get the name property: Buildpack group name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +42,7 @@ public final class BuildpacksGroupProperties {
 
     /**
      * Set the name property: Buildpack group name.
-     *
+     * 
      * @param name the name value to set.
      * @return the BuildpacksGroupProperties object itself.
      */
@@ -45,7 +53,7 @@ public final class BuildpacksGroupProperties {
 
     /**
      * Get the buildpacks property: Buildpacks in the buildpack group.
-     *
+     * 
      * @return the buildpacks value.
      */
     public List<BuildpackProperties> buildpacks() {
@@ -54,7 +62,7 @@ public final class BuildpacksGroupProperties {
 
     /**
      * Set the buildpacks property: Buildpacks in the buildpack group.
-     *
+     * 
      * @param buildpacks the buildpacks value to set.
      * @return the BuildpacksGroupProperties object itself.
      */
@@ -65,7 +73,7 @@ public final class BuildpacksGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

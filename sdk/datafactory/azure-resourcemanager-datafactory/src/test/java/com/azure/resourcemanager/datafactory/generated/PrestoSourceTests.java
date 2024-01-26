@@ -11,16 +11,15 @@ public final class PrestoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoSource model = BinaryData.fromString(
-            "{\"type\":\"PrestoSource\",\"query\":\"dataqpifzavct\",\"queryTimeout\":\"dataappaczprz\",\"additionalColumns\":\"dataq\",\"sourceRetryCount\":\"datagvnpgsqlanuh\",\"sourceRetryWait\":\"datarnpsoagho\",\"maxConcurrentConnections\":\"dataiwpdx\",\"disableMetricsCollection\":\"datalsoaj\",\"\":{\"bwl\":\"dataplhstopy\",\"gqjdoglec\":\"datasvpi\"}}")
+            "{\"type\":\"PrestoSource\",\"query\":\"datauyx\",\"queryTimeout\":\"datayjas\",\"additionalColumns\":\"datahbfttptsdee\",\"sourceRetryCount\":\"dataovanag\",\"sourceRetryWait\":\"dataacsfbmb\",\"maxConcurrentConnections\":\"dataefqku\",\"disableMetricsCollection\":\"datayumoamqxwluslxyt\",\"\":{\"bknfpdi\":\"datajledjxbl\",\"eomctbgoccypx\":\"datahzgj\",\"nuflfz\":\"datarhbql\",\"bpyo\":\"datawkkzex\"}}")
             .toObject(PrestoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoSource model
-            = new PrestoSource().withSourceRetryCount("datagvnpgsqlanuh").withSourceRetryWait("datarnpsoagho")
-                .withMaxConcurrentConnections("dataiwpdx").withDisableMetricsCollection("datalsoaj")
-                .withQueryTimeout("dataappaczprz").withAdditionalColumns("dataq").withQuery("dataqpifzavct");
+        PrestoSource model = new PrestoSource().withSourceRetryCount("dataovanag").withSourceRetryWait("dataacsfbmb")
+            .withMaxConcurrentConnections("dataefqku").withDisableMetricsCollection("datayumoamqxwluslxyt")
+            .withQueryTimeout("datayjas").withAdditionalColumns("datahbfttptsdee").withQuery("datauyx");
         model = BinaryData.fromObject(model).toObject(PrestoSource.class);
     }
 }

@@ -5,65 +5,70 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with a DocumentDB output. */
+/**
+ * The properties that are associated with a DocumentDB output.
+ */
 @Fluent
 public final class DocumentDbOutputDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbOutputDataSourceProperties.class);
-
     /*
-     * The DocumentDB account name or ID. Required on PUT (CreateOrReplace)
-     * requests.
+     * The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
-     * The account key for the DocumentDB account. Required on PUT
-     * (CreateOrReplace) requests.
+     * The account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
-     * The name of the DocumentDB database. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "database")
     private String database;
 
     /*
-     * The collection name pattern for the collections to be used. The
-     * collection name format can be constructed using the optional {partition}
-     * token, where partitions start from 0. See the DocumentDB section of
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
-     * for more information. Required on PUT (CreateOrReplace) requests.
+     * The collection name pattern for the collections to be used. The collection name format can be constructed using
+     * the optional {partition} token, where partitions start from 0. See the DocumentDB section of
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required
+     * on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "collectionNamePattern")
     private String collectionNamePattern;
 
     /*
-     * The name of the field in output events used to specify the key for
-     * partitioning output across collections. If 'collectionNamePattern'
-     * contains the {partition} token, this property is required to be
-     * specified.
+     * The name of the field in output events used to specify the key for partitioning output across collections. If
+     * 'collectionNamePattern' contains the {partition} token, this property is required to be specified.
      */
     @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
     /*
-     * The name of the field in output events used to specify the primary key
-     * which insert or update operations are based on.
+     * The name of the field in output events used to specify the primary key which insert or update operations are
+     * based on.
      */
     @JsonProperty(value = "documentId")
     private String documentId;
 
+    /*
+     * Authentication Mode.
+     */
+    @JsonProperty(value = "authenticationMode")
+    private AuthenticationMode authenticationMode;
+
+    /**
+     * Creates an instance of DocumentDbOutputDataSourceProperties class.
+     */
+    public DocumentDbOutputDataSourceProperties() {
+    }
+
     /**
      * Get the accountId property: The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -72,7 +77,7 @@ public final class DocumentDbOutputDataSourceProperties {
 
     /**
      * Set the accountId property: The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -84,7 +89,7 @@ public final class DocumentDbOutputDataSourceProperties {
     /**
      * Get the accountKey property: The account key for the DocumentDB account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -94,7 +99,7 @@ public final class DocumentDbOutputDataSourceProperties {
     /**
      * Set the accountKey property: The account key for the DocumentDB account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -105,7 +110,7 @@ public final class DocumentDbOutputDataSourceProperties {
 
     /**
      * Get the database property: The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -114,7 +119,7 @@ public final class DocumentDbOutputDataSourceProperties {
 
     /**
      * Set the database property: The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param database the database value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -128,7 +133,7 @@ public final class DocumentDbOutputDataSourceProperties {
      * collection name format can be constructed using the optional {partition} token, where partitions start from 0.
      * See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
      * for more information. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the collectionNamePattern value.
      */
     public String collectionNamePattern() {
@@ -140,7 +145,7 @@ public final class DocumentDbOutputDataSourceProperties {
      * collection name format can be constructed using the optional {partition} token, where partitions start from 0.
      * See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
      * for more information. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param collectionNamePattern the collectionNamePattern value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -153,7 +158,7 @@ public final class DocumentDbOutputDataSourceProperties {
      * Get the partitionKey property: The name of the field in output events used to specify the key for partitioning
      * output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required
      * to be specified.
-     *
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -164,7 +169,7 @@ public final class DocumentDbOutputDataSourceProperties {
      * Set the partitionKey property: The name of the field in output events used to specify the key for partitioning
      * output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required
      * to be specified.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -176,7 +181,7 @@ public final class DocumentDbOutputDataSourceProperties {
     /**
      * Get the documentId property: The name of the field in output events used to specify the primary key which insert
      * or update operations are based on.
-     *
+     * 
      * @return the documentId value.
      */
     public String documentId() {
@@ -186,7 +191,7 @@ public final class DocumentDbOutputDataSourceProperties {
     /**
      * Set the documentId property: The name of the field in output events used to specify the primary key which insert
      * or update operations are based on.
-     *
+     * 
      * @param documentId the documentId value to set.
      * @return the DocumentDbOutputDataSourceProperties object itself.
      */
@@ -196,8 +201,28 @@ public final class DocumentDbOutputDataSourceProperties {
     }
 
     /**
+     * Get the authenticationMode property: Authentication Mode.
+     * 
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.authenticationMode;
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     * 
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the DocumentDbOutputDataSourceProperties object itself.
+     */
+    public DocumentDbOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
+        this.authenticationMode = authenticationMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

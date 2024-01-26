@@ -4,6 +4,7 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
+import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -32,6 +33,7 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -47,6 +49,7 @@ import com.azure.core.util.FluxUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
@@ -1126,7 +1129,7 @@ public final class AssistantsAsyncClient {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2507,7 +2510,7 @@ public final class AssistantsAsyncClient {
      * }</pre>
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2691,17 +2694,6 @@ public final class AssistantsAsyncClient {
     /**
      * Uploads a file for use by other operations.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -2767,7 +2759,7 @@ public final class AssistantsAsyncClient {
      * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2965,60 +2957,6 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(byte[] file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        requestObj.put("filename", filename);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(byte[] file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file", file);
-        requestObj.put("purpose", (purpose == null ? null : purpose.toString()));
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
-    }
-
-    /**
      * Returns information about a specific file. Does not retrieve file content.
      *
      * @param fileId The ID of the file to retrieve.
@@ -3037,5 +2975,30 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     *
+     * @param request The request parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OpenAIFile> uploadFile(UploadFileRequest request) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", request.getFile().getContent(), request.getFile().getContentType(),
+                request.getFile().getFilename())
+            .serializeTextField("purpose", Objects.toString(request.getPurpose()))
+            .serializeTextField("filename", request.getFilename()).end().getRequestBody(), requestOptions)
+                .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
     }
 }

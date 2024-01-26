@@ -47,7 +47,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the version property: major.minor version of Kubernetes release.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -56,7 +56,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the version property: major.minor version of Kubernetes release.
-     *
+     * 
      * @param version the version value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -67,7 +67,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the capabilities property: Capabilities on this Kubernetes version.
-     *
+     * 
      * @return the capabilities value.
      */
     public KubernetesVersionCapabilities capabilities() {
@@ -76,7 +76,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the capabilities property: Capabilities on this Kubernetes version.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -87,7 +87,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the isPreview property: Whether this version is in preview mode.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -96,7 +96,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the isPreview property: Whether this version is in preview mode.
-     *
+     * 
      * @param isPreview the isPreview value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -107,7 +107,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the patchVersions property: Patch versions of Kubernetes release.
-     *
+     * 
      * @return the patchVersions value.
      */
     public Map<String, KubernetesPatchVersion> patchVersions() {
@@ -116,7 +116,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the patchVersions property: Patch versions of Kubernetes release.
-     *
+     * 
      * @param patchVersions the patchVersions value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -127,7 +127,7 @@ public final class KubernetesVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

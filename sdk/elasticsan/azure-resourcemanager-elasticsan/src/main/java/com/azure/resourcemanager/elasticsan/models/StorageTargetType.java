@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage Target type. */
+/**
+ * Storage Target type.
+ */
 public final class StorageTargetType extends ExpandableStringEnum<StorageTargetType> {
-    /** Static value Iscsi for StorageTargetType. */
+    /**
+     * Static value Iscsi for StorageTargetType.
+     */
     public static final StorageTargetType ISCSI = fromString("Iscsi");
 
-    /** Static value None for StorageTargetType. */
+    /**
+     * Static value None for StorageTargetType.
+     */
     public static final StorageTargetType NONE = fromString("None");
 
     /**
      * Creates a new instance of StorageTargetType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
 
     /**
      * Creates or finds a StorageTargetType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageTargetType.
      */
@@ -38,7 +44,7 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
 
     /**
      * Gets known StorageTargetType values.
-     *
+     * 
      * @return known StorageTargetType values.
      */
     public static Collection<StorageTargetType> values() {

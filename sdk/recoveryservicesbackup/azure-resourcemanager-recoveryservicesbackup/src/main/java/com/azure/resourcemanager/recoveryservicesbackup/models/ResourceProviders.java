@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -21,12 +23,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status along with {@link Response}.
      */
-    Response<OperationStatus> getOperationStatusWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<OperationStatus> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -39,7 +41,7 @@ public interface ResourceProviders {
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -51,7 +53,7 @@ public interface ResourceProviders {
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -60,12 +62,12 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void bmsPrepareDataMove(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context);
+    void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+        Context context);
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -77,7 +79,7 @@ public interface ResourceProviders {
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -86,12 +88,12 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void bmsTriggerDataMove(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context);
+    void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+        Context context);
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -103,18 +105,12 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters);
+    void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters);
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -127,13 +123,6 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context);
+    void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context);
 }

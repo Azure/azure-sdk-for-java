@@ -1,5 +1,5 @@
 [ {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -29,6 +29,41 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ControlPlaneProfileControlPlaneEndpoint",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkProfileLoadBalancerProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.StorageProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.StorageProfileSmbCsiDriver",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.StorageProfileNfsCsiDriver",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ClusterVMAccessProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NamedAgentPoolProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -45,31 +80,6 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolName",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ControlPlaneEndpointProfile",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ControlPlaneEndpointProfileControlPlaneEndpoint",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.LinuxProfile",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkProfile",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkProfileLoadBalancerProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -94,17 +104,12 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPropertiesStatusOperationStatus",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPropertiesStatusOperationStatusError",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterLicenseProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPropertiesAutoScalerProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -114,7 +119,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClustersListResult",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -124,7 +129,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileProperties",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfileProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -144,7 +149,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataProperties",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadataProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -159,7 +164,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolProperties",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -174,22 +179,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusOperationStatus",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusOperationStatusError",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolPatch",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner",
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -225,11 +215,6 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.KubernetesVersionProperties",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.KubernetesVersionCapabilities",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -309,11 +294,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfileVmware",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesVipPoolItem",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -354,17 +334,17 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkPolicy",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.OsType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.Ossku",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.NetworkPolicy",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -380,6 +360,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.hybridcontainerservice.models.AzureHybridBenefit",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.hybridcontainerservice.models.Expander",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

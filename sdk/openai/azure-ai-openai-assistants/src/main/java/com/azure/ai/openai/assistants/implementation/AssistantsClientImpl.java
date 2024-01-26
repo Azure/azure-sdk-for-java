@@ -837,7 +837,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -903,7 +903,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1091,7 +1091,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1132,7 +1132,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1176,7 +1176,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1239,9 +1239,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1306,9 +1306,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1337,7 +1337,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1368,7 +1368,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1405,7 +1405,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1446,7 +1446,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1530,7 +1530,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1613,7 +1613,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1643,7 +1643,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1659,8 +1659,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1676,7 +1675,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1692,8 +1691,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1709,7 +1707,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1725,8 +1723,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId,
-            accept, requestOptions, context));
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1742,7 +1739,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1757,8 +1754,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1798,7 +1794,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1813,8 +1809,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept,
-            assistantThreadCreationOptions, requestOptions, context));
+                this.serviceVersion.getVersion(), accept, assistantThreadCreationOptions, requestOptions, context));
     }
 
     /**
@@ -1854,7 +1849,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1868,8 +1863,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, assistantThreadCreationOptions, requestOptions,
-            Context.NONE);
+                accept, assistantThreadCreationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1887,7 +1881,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1920,7 +1914,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1961,7 +1955,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2006,7 +2000,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2036,7 +2030,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2066,7 +2060,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2123,7 +2117,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2184,7 +2178,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2279,7 +2273,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2374,7 +2368,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2416,7 +2410,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2462,7 +2456,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2516,7 +2510,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2533,8 +2527,7 @@ public final class AssistantsClientImpl {
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept,
-            request, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2573,7 +2566,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2589,8 +2582,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, messageId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2657,7 +2649,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2673,8 +2665,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -2741,7 +2732,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2756,8 +2747,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.listMessageFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, requestOptions,
-            Context.NONE);
+                threadId, messageId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2773,7 +2763,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2790,8 +2780,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, fileId,
-            accept, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2807,7 +2796,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2823,8 +2812,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getMessageFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, fileId, accept, requestOptions,
-            Context.NONE);
+                threadId, messageId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2837,7 +2825,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2883,7 +2871,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2899,8 +2887,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions,
-            requestOptions, context));
+                threadId, accept, createRunOptions, requestOptions, context));
     }
 
     /**
@@ -2913,7 +2900,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2959,7 +2946,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2974,8 +2961,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions, requestOptions,
-            Context.NONE);
+                threadId, accept, createRunOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3067,7 +3053,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3174,7 +3160,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3228,7 +3214,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3286,7 +3272,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3351,7 +3337,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3368,8 +3354,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request,
-            requestOptions, context));
+                threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3420,7 +3405,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3436,8 +3421,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3492,7 +3476,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3509,8 +3493,7 @@ public final class AssistantsClientImpl {
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId,
-            accept, request, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3565,7 +3548,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3581,8 +3564,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.submitToolOutputsToRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3623,7 +3605,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3681,7 +3663,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3770,7 +3752,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3785,8 +3767,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept,
-            createAndRunThreadOptions, requestOptions, context));
+                this.serviceVersion.getVersion(), accept, createAndRunThreadOptions, requestOptions, context));
     }
 
     /**
@@ -3861,7 +3842,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3875,8 +3856,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createThreadAndRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, createAndRunThreadOptions, requestOptions,
-            Context.NONE);
+                accept, createAndRunThreadOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3909,7 +3889,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3925,8 +3905,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId, stepId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, runId, stepId, accept, requestOptions, context));
     }
 
     /**
@@ -3959,7 +3938,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3975,8 +3954,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getRunStepSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, stepId, accept, requestOptions,
-            Context.NONE);
+                threadId, runId, stepId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4060,7 +4038,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4161,7 +4139,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4218,7 +4196,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4273,7 +4251,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4291,17 +4269,6 @@ public final class AssistantsClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -4314,7 +4281,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4336,17 +4303,6 @@ public final class AssistantsClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -4359,7 +4315,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4388,7 +4344,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4418,7 +4374,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4449,7 +4405,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4482,7 +4438,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

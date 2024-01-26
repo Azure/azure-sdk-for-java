@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateFileCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateFileCustomizer model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"File\",\"sourceUri\":\"qn\",\"sha256Checksum\":\"oczvy\",\"destination\":\"qrvkdv\",\"name\":\"llr\"}")
-                .toObject(ImageTemplateFileCustomizer.class);
-        Assertions.assertEquals("llr", model.name());
-        Assertions.assertEquals("qn", model.sourceUri());
-        Assertions.assertEquals("oczvy", model.sha256Checksum());
-        Assertions.assertEquals("qrvkdv", model.destination());
+        ImageTemplateFileCustomizer model = BinaryData.fromString(
+            "{\"type\":\"File\",\"sourceUri\":\"imjm\",\"sha256Checksum\":\"ied\",\"destination\":\"gidyjrrf\",\"name\":\"aos\"}")
+            .toObject(ImageTemplateFileCustomizer.class);
+        Assertions.assertEquals("aos", model.name());
+        Assertions.assertEquals("imjm", model.sourceUri());
+        Assertions.assertEquals("ied", model.sha256Checksum());
+        Assertions.assertEquals("gidyjrrf", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateFileCustomizer model =
-            new ImageTemplateFileCustomizer()
-                .withName("llr")
-                .withSourceUri("qn")
-                .withSha256Checksum("oczvy")
-                .withDestination("qrvkdv");
+        ImageTemplateFileCustomizer model = new ImageTemplateFileCustomizer().withName("aos").withSourceUri("imjm")
+            .withSha256Checksum("ied").withDestination("gidyjrrf");
         model = BinaryData.fromObject(model).toObject(ImageTemplateFileCustomizer.class);
-        Assertions.assertEquals("llr", model.name());
-        Assertions.assertEquals("qn", model.sourceUri());
-        Assertions.assertEquals("oczvy", model.sha256Checksum());
-        Assertions.assertEquals("qrvkdv", model.destination());
+        Assertions.assertEquals("aos", model.name());
+        Assertions.assertEquals("imjm", model.sourceUri());
+        Assertions.assertEquals("ied", model.sha256Checksum());
+        Assertions.assertEquals("gidyjrrf", model.destination());
     }
 }

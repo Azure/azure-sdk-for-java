@@ -9,9 +9,12 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SnapshotBackupAdditionalDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SubProtectionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringPolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedIdentityProperties;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedManagedIdentityDetails;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -19,36 +22,59 @@ import org.junit.jupiter.api.Assertions;
 public final class SubProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubProtectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"Incremental\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"czheyd\":{\"tieringMode\":\"TierRecommended\",\"duration\":201456733,\"durationType\":\"Days\"}}}")
-                .toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("czheyd").tieringMode());
-        Assertions.assertEquals(201456733, model.tieringPolicy().get("czheyd").duration());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("czheyd").durationType());
+        SubProtectionPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"slbi\":{\"tieringMode\":\"TierAfter\",\"duration\":1069475083,\"durationType\":\"Invalid\"},\"ztsfmznbaeqp\":{\"tieringMode\":\"TierRecommended\",\"duration\":1225451286,\"durationType\":\"Invalid\"},\"rpxeh\":{\"tieringMode\":\"TierRecommended\",\"duration\":1311384548,\"durationType\":\"Days\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":550390162,\"instantRPDetails\":\"qgaifmviklbydv\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"ejd\",\"identityName\":\"xcv\",\"userAssignedIdentityProperties\":{\"clientId\":\"hnjivo\",\"principalId\":\"tnovqfzgemjdftul\"}}}}")
+            .toObject(SubProtectionPolicy.class);
+        Assertions.assertEquals(PolicyType.SNAPSHOT_COPY_ONLY_FULL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("slbi").tieringMode());
+        Assertions.assertEquals(1069475083, model.tieringPolicy().get("slbi").duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.tieringPolicy().get("slbi").durationType());
+        Assertions.assertEquals(550390162, model.snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
+        Assertions.assertEquals("qgaifmviklbydv", model.snapshotBackupAdditionalDetails().instantRPDetails());
+        Assertions.assertEquals("ejd",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("xcv",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("hnjivo", model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails()
+            .userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("tnovqfzgemjdftul", model.snapshotBackupAdditionalDetails()
+            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubProtectionPolicy model =
-            new SubProtectionPolicy()
-                .withPolicyType(PolicyType.INCREMENTAL)
-                .withSchedulePolicy(new SchedulePolicy())
-                .withRetentionPolicy(new RetentionPolicy())
-                .withTieringPolicy(
-                    mapOf(
-                        "czheyd",
-                        new TieringPolicy()
-                            .withTieringMode(TieringMode.TIER_RECOMMENDED)
-                            .withDuration(201456733)
-                            .withDurationType(RetentionDurationType.DAYS)));
+        SubProtectionPolicy model = new SubProtectionPolicy().withPolicyType(PolicyType.SNAPSHOT_COPY_ONLY_FULL)
+            .withSchedulePolicy(new SchedulePolicy()).withRetentionPolicy(new RetentionPolicy())
+            .withTieringPolicy(mapOf("slbi",
+                new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER).withDuration(1069475083)
+                    .withDurationType(RetentionDurationType.INVALID),
+                "ztsfmznbaeqp",
+                new TieringPolicy().withTieringMode(TieringMode.TIER_RECOMMENDED).withDuration(1225451286)
+                    .withDurationType(RetentionDurationType.INVALID),
+                "rpxeh",
+                new TieringPolicy().withTieringMode(TieringMode.TIER_RECOMMENDED).withDuration(1311384548)
+                    .withDurationType(RetentionDurationType.DAYS)))
+            .withSnapshotBackupAdditionalDetails(
+                new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(550390162)
+                    .withInstantRPDetails("qgaifmviklbydv").withUserAssignedManagedIdentityDetails(
+                        new UserAssignedManagedIdentityDetails().withIdentityArmId("ejd").withIdentityName("xcv")
+                            .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties()
+                                .withClientId("hnjivo").withPrincipalId("tnovqfzgemjdftul"))));
         model = BinaryData.fromObject(model).toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("czheyd").tieringMode());
-        Assertions.assertEquals(201456733, model.tieringPolicy().get("czheyd").duration());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("czheyd").durationType());
+        Assertions.assertEquals(PolicyType.SNAPSHOT_COPY_ONLY_FULL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("slbi").tieringMode());
+        Assertions.assertEquals(1069475083, model.tieringPolicy().get("slbi").duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.tieringPolicy().get("slbi").durationType());
+        Assertions.assertEquals(550390162, model.snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
+        Assertions.assertEquals("qgaifmviklbydv", model.snapshotBackupAdditionalDetails().instantRPDetails());
+        Assertions.assertEquals("ejd",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("xcv",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("hnjivo", model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails()
+            .userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("tnovqfzgemjdftul", model.snapshotBackupAdditionalDetails()
+            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
     }
 
     // Use "Map.of" if available

@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Backup management type to execute the current job. */
+/**
+ * Backup management type to execute the current job.
+ */
 public final class BackupManagementType extends ExpandableStringEnum<BackupManagementType> {
-    /** Static value Invalid for BackupManagementType. */
+    /**
+     * Static value Invalid for BackupManagementType.
+     */
     public static final BackupManagementType INVALID = fromString("Invalid");
 
-    /** Static value AzureIaasVM for BackupManagementType. */
+    /**
+     * Static value AzureIaasVM for BackupManagementType.
+     */
     public static final BackupManagementType AZURE_IAAS_VM = fromString("AzureIaasVM");
 
-    /** Static value MAB for BackupManagementType. */
+    /**
+     * Static value MAB for BackupManagementType.
+     */
     public static final BackupManagementType MAB = fromString("MAB");
 
-    /** Static value DPM for BackupManagementType. */
+    /**
+     * Static value DPM for BackupManagementType.
+     */
     public static final BackupManagementType DPM = fromString("DPM");
 
-    /** Static value AzureBackupServer for BackupManagementType. */
+    /**
+     * Static value AzureBackupServer for BackupManagementType.
+     */
     public static final BackupManagementType AZURE_BACKUP_SERVER = fromString("AzureBackupServer");
 
-    /** Static value AzureSql for BackupManagementType. */
+    /**
+     * Static value AzureSql for BackupManagementType.
+     */
     public static final BackupManagementType AZURE_SQL = fromString("AzureSql");
 
-    /** Static value AzureStorage for BackupManagementType. */
+    /**
+     * Static value AzureStorage for BackupManagementType.
+     */
     public static final BackupManagementType AZURE_STORAGE = fromString("AzureStorage");
 
-    /** Static value AzureWorkload for BackupManagementType. */
+    /**
+     * Static value AzureWorkload for BackupManagementType.
+     */
     public static final BackupManagementType AZURE_WORKLOAD = fromString("AzureWorkload");
 
-    /** Static value DefaultBackup for BackupManagementType. */
+    /**
+     * Static value DefaultBackup for BackupManagementType.
+     */
     public static final BackupManagementType DEFAULT_BACKUP = fromString("DefaultBackup");
 
     /**
      * Creates a new instance of BackupManagementType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
 
     /**
      * Creates or finds a BackupManagementType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupManagementType.
      */
@@ -59,7 +79,7 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
 
     /**
      * Gets known BackupManagementType values.
-     *
+     * 
      * @return known BackupManagementType values.
      */
     public static Collection<BackupManagementType> values() {

@@ -29,7 +29,7 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
 
     /**
      * Creates a new instance of NetworkPlugin value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +38,7 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
 
     /**
      * Creates or finds a NetworkPlugin from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPlugin.
      */
@@ -49,7 +49,7 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
 
     /**
      * Gets known NetworkPlugin values.
-     *
+     * 
      * @return known NetworkPlugin values.
      */
     public static Collection<NetworkPlugin> values() {

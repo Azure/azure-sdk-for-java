@@ -30,7 +30,7 @@ public final class ExposureControlsGetFeatureValueWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"featureName\":\"gmyjmcwnkpbrr\",\"value\":\"zvinkktebl\"}";
+        String responseStr = "{\"featureName\":\"gcvqhvbcz\",\"value\":\"spnfxwkjhz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,8 @@ public final class ExposureControlsGetFeatureValueWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlResponse response = manager.exposureControls()
-            .getFeatureValueWithResponse("naeefzlwohobaac",
-                new ExposureControlRequest().withFeatureName("lvixf").withFeatureType("noeiqhbr"),
+            .getFeatureValueWithResponse("jcqqv",
+                new ExposureControlRequest().withFeatureName("nyaeckzcbrxsq").withFeatureType("esddjpeeqy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

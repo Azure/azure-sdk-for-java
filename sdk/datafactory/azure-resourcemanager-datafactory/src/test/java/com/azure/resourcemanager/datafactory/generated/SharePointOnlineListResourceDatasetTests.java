@@ -19,32 +19,34 @@ public final class SharePointOnlineListResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharePointOnlineListResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"SharePointOnlineListResource\",\"typeProperties\":{\"listName\":\"datazgi\"},\"description\":\"kjkngzfsulaybhoz\",\"structure\":\"databuf\",\"schema\":\"databvcntpoeeytrsl\",\"linkedServiceName\":{\"referenceName\":\"zmzuicsggsxznbp\",\"parameters\":{\"njl\":\"dataqbylb\",\"nitvkyahfoyfzo\":\"dataicqomanefwl\"}},\"parameters\":{\"jukfalwceechcayv\":{\"type\":\"Float\",\"defaultValue\":\"dataprev\"},\"iybfbyd\":{\"type\":\"Float\",\"defaultValue\":\"dataqpucnusnylfhicrj\"},\"brhxgiknrlugs\":{\"type\":\"String\",\"defaultValue\":\"datallbofsnqoc\"}},\"annotations\":[\"databro\",\"datajf\",\"dataamzkuxdgpksgotbu\",\"datavnjql\"],\"folder\":{\"name\":\"qvcugusqlxlx\"},\"\":{\"nlmpuyypaggpaih\":\"datahfwlnvqacbyfisb\",\"ymipvlxty\":\"dataaeyzwloqrmgd\"}}")
+            "{\"type\":\"SharePointOnlineListResource\",\"typeProperties\":{\"listName\":\"datad\"},\"description\":\"mipvlxtyw\",\"structure\":\"datahj\",\"schema\":\"datapllitx\",\"linkedServiceName\":{\"referenceName\":\"rgkwiyoy\",\"parameters\":{\"sizfuewlf\":\"dataivxcodwkwoytcach\",\"gne\":\"datafiikqcdnzsfiu\",\"mcrxlyzoaho\":\"datao\",\"rnlsyiaanistc\":\"dataufakrxjjwnbrmdwt\"}},\"parameters\":{\"fa\":{\"type\":\"Float\",\"defaultValue\":\"datalpphcstmrycpana\"},\"pxngzzxqbgq\":{\"type\":\"Object\",\"defaultValue\":\"datarin\"},\"vbdozwbskueaf\":{\"type\":\"SecureString\",\"defaultValue\":\"datazctbxzjkpifpu\"}},\"annotations\":[\"datambinpxmiwt\",\"dataqi\",\"datapvrd\"],\"folder\":{\"name\":\"d\"},\"\":{\"abux\":\"datax\"}}")
             .toObject(SharePointOnlineListResourceDataset.class);
-        Assertions.assertEquals("kjkngzfsulaybhoz", model.description());
-        Assertions.assertEquals("zmzuicsggsxznbp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jukfalwceechcayv").type());
-        Assertions.assertEquals("qvcugusqlxlx", model.folder().name());
+        Assertions.assertEquals("mipvlxtyw", model.description());
+        Assertions.assertEquals("rgkwiyoy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fa").type());
+        Assertions.assertEquals("d", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharePointOnlineListResourceDataset model = new SharePointOnlineListResourceDataset()
-            .withDescription("kjkngzfsulaybhoz").withStructure("databuf").withSchema("databvcntpoeeytrsl")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zmzuicsggsxznbp")
-                .withParameters(mapOf("njl", "dataqbylb", "nitvkyahfoyfzo", "dataicqomanefwl")))
-            .withParameters(mapOf("jukfalwceechcayv",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataprev"), "iybfbyd",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqpucnusnylfhicrj"),
-                "brhxgiknrlugs",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datallbofsnqoc")))
-            .withAnnotations(Arrays.asList("databro", "datajf", "dataamzkuxdgpksgotbu", "datavnjql"))
-            .withFolder(new DatasetFolder().withName("qvcugusqlxlx")).withListName("datazgi");
+            .withDescription("mipvlxtyw").withStructure("datahj").withSchema("datapllitx")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rgkwiyoy")
+                .withParameters(mapOf("sizfuewlf", "dataivxcodwkwoytcach", "gne", "datafiikqcdnzsfiu", "mcrxlyzoaho",
+                    "datao", "rnlsyiaanistc", "dataufakrxjjwnbrmdwt")))
+            .withParameters(mapOf("fa",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datalpphcstmrycpana"),
+                "pxngzzxqbgq", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datarin"),
+                "vbdozwbskueaf",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("datazctbxzjkpifpu")))
+            .withAnnotations(Arrays.asList("datambinpxmiwt", "dataqi", "datapvrd"))
+            .withFolder(new DatasetFolder().withName("d")).withListName("datad");
         model = BinaryData.fromObject(model).toObject(SharePointOnlineListResourceDataset.class);
-        Assertions.assertEquals("kjkngzfsulaybhoz", model.description());
-        Assertions.assertEquals("zmzuicsggsxznbp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jukfalwceechcayv").type());
-        Assertions.assertEquals("qvcugusqlxlx", model.folder().name());
+        Assertions.assertEquals("mipvlxtyw", model.description());
+        Assertions.assertEquals("rgkwiyoy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fa").type());
+        Assertions.assertEquals("d", model.folder().name());
     }
 
     // Use "Map.of" if available

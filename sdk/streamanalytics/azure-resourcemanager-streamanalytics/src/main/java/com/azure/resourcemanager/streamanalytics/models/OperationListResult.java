@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list Stream Analytics operations. It contains a list of operations and a URL link to get the
- * next set of results.
+ * Result of the request to list Stream Analytics operations. It contains a list of operations and a URL link to get
+ * the next set of results.
  */
 @Immutable
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * List of Stream Analytics operations supported by the
-     * Microsoft.StreamAnalytics resource provider.
+     * List of Stream Analytics operations supported by the Microsoft.StreamAnalytics resource provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
@@ -33,9 +28,15 @@ public final class OperationListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of OperationListResult class.
+     */
+    public OperationListResult() {
+    }
+
+    /**
      * Get the value property: List of Stream Analytics operations supported by the Microsoft.StreamAnalytics resource
      * provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -44,7 +45,7 @@ public final class OperationListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,7 +54,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -31,7 +31,7 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"category\":\"usicnckdxflgjibt\",\"endpoints\":[{\"domainName\":\"l\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"palxmr\",\"endpoints\":[{\"domainName\":\"juhzfjmnabyv\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"kwlmittpbivhkdxh\",\"endpointDetails\":[{},{}]},{\"domainName\":\"xplbdazsjbg\",\"endpointDetails\":[{},{}]}]}]}";
+            = "{\"value\":[{\"category\":\"grsvyjrq\",\"endpoints\":[{\"domainName\":\"vmxibpcnmps\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"entiprriqwf\",\"endpointDetails\":[{},{}]}]},{\"category\":\"yingr\",\"endpoints\":[{\"domainName\":\"cqndgbxtzyt\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"hntchigub\",\"endpoints\":[{\"domainName\":\"gyazppefsdoo\",\"endpointDetails\":[{}]}]},{\"category\":\"fiey\",\"endpoints\":[{\"domainName\":\"qtwohfhs\",\"endpointDetails\":[{}]},{\"domainName\":\"umevgoaxtw\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"uirskoaxs\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"qliyxzeniiu\",\"endpointDetails\":[{},{},{}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse response
-            = manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("qugnqsclr",
-                "quwhmncewcfi", "soimxxsybtpqgxz", com.azure.core.util.Context.NONE).getValue();
+            = manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("whjfuoips",
+                "vcqhzejbro", "h", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("usicnckdxflgjibt", response.value().get(0).category());
-        Assertions.assertEquals("l", response.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("grsvyjrq", response.value().get(0).category());
+        Assertions.assertEquals("vmxibpcnmps", response.value().get(0).endpoints().get(0).domainName());
     }
 }

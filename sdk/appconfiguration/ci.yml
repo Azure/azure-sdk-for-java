@@ -51,6 +51,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
       - name: azure-data-appconfiguration

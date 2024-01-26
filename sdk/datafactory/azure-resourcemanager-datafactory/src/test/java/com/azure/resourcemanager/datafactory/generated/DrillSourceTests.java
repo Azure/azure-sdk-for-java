@@ -11,16 +11,16 @@ public final class DrillSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillSource model = BinaryData.fromString(
-            "{\"type\":\"DrillSource\",\"query\":\"datacrnpscfke\",\"queryTimeout\":\"dataltxefamimgjuvjv\",\"additionalColumns\":\"dataec\",\"sourceRetryCount\":\"dataennledhoukfj\",\"sourceRetryWait\":\"datactdnnqokqeuzs\",\"maxConcurrentConnections\":\"datayj\",\"disableMetricsCollection\":\"dataywijnlpeczqb\",\"\":{\"vphr\":\"datakqydthfcwycm\",\"sqlekchjdh\":\"dataufnfovyl\",\"fwqtcownx\":\"dataske\"}}")
+            "{\"type\":\"DrillSource\",\"query\":\"datazdoblpdtcyv\",\"queryTimeout\":\"datahboplavgfbvro\",\"additionalColumns\":\"datauexqweyslwlppoh\",\"sourceRetryCount\":\"datafgalexy\",\"sourceRetryWait\":\"datagkadtwd\",\"maxConcurrentConnections\":\"databjx\",\"disableMetricsCollection\":\"datavxcjdobsgv\",\"\":{\"ihsclpnbidnlodkq\":\"datakwltnsnhuvmo\",\"oyzgaevrygggcc\":\"dataqnkptixa\",\"sbymnfc\":\"datazmhoplqtzgt\",\"qzbqy\":\"datao\"}}")
             .toObject(DrillSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillSource model
-            = new DrillSource().withSourceRetryCount("dataennledhoukfj").withSourceRetryWait("datactdnnqokqeuzs")
-                .withMaxConcurrentConnections("datayj").withDisableMetricsCollection("dataywijnlpeczqb")
-                .withQueryTimeout("dataltxefamimgjuvjv").withAdditionalColumns("dataec").withQuery("datacrnpscfke");
+        DrillSource model = new DrillSource().withSourceRetryCount("datafgalexy").withSourceRetryWait("datagkadtwd")
+            .withMaxConcurrentConnections("databjx").withDisableMetricsCollection("datavxcjdobsgv")
+            .withQueryTimeout("datahboplavgfbvro").withAdditionalColumns("datauexqweyslwlppoh")
+            .withQuery("datazdoblpdtcyv");
         model = BinaryData.fromObject(model).toObject(DrillSource.class);
     }
 }

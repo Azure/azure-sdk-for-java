@@ -4,26 +4,22 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.jdk.httpclient.implementation.AzureJdkHttpRequest;
+import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
+import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.util.Context;
-import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
 import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
 import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
@@ -117,38 +113,7 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
-        final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
-        try {
-            builder.uri(request.getUrl().toURI());
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-        }
-        final HttpHeaders headers = request.getHeaders();
-        if (headers != null) {
-            for (HttpHeader header : headers) {
-                final String headerName = header.getName();
-                if (!restrictedHeaders.contains(headerName)) {
-                    header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
-                } else {
-                    LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                        + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
-                        + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
-                        + ".allowRestrictedHeaders' and a comma separated list of header names.");
-                }
-            }
-        }
-        switch (request.getHttpMethod()) {
-            case GET:
-                return builder.GET().build();
-            case HEAD:
-                return builder.method("HEAD", noBody()).build();
-            default:
-                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request,
-                    progressReporter);
-                return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
-        }
+        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER);
     }
 
     /**
@@ -156,7 +121,7 @@ class JdkHttpClient implements HttpClient {
      *
      * @return the java major version
      */
-    private int getJavaVersion() {
+    private static int getJavaVersion() {
         // java.version format:
         // 8 and lower: 1.7, 1.8.0
         // 9 and above: 12, 14.1.1
@@ -185,26 +150,5 @@ class JdkHttpClient implements HttpClient {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
             }
         }
-    }
-
-    /**
-     * Converts the given JDK Http headers to azure-core Http header.
-     *
-     * @param headers the JDK Http headers
-     * @return the azure-core Http headers
-     */
-    @SuppressWarnings("deprecation")
-    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
-        final HttpHeaders httpHeaders = new HttpHeaders();
-
-        for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
-            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
-                continue;
-            }
-
-            httpHeaders.set(kvp.getKey(), kvp.getValue());
-        }
-
-        return httpHeaders;
     }
 }

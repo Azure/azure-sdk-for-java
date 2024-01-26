@@ -18,28 +18,29 @@ public final class AzureSynapseArtifactsLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSynapseArtifactsLinkedService model = BinaryData.fromString(
-            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"dataqrmx\",\"authentication\":\"datahz\",\"workspaceResourceId\":\"datanvdumi\"},\"connectVia\":{\"referenceName\":\"xmrntphy\",\"parameters\":{\"pysmalpjabzssbu\":\"dataddt\",\"c\":\"dataaxmkuthooaicms\"}},\"description\":\"vbxv\",\"parameters\":{\"e\":{\"type\":\"Float\",\"defaultValue\":\"datajryppmmtqxqiq\"}},\"annotations\":[\"dataqfcorajdb\",\"datalkffgyfehjs\"],\"\":{\"xfyzq\":\"datauvynhmbzcu\"}}")
+            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"datarjuingnfunh\",\"authentication\":\"datagxsyiwmopkud\",\"workspaceResourceId\":\"dataztbwzjbqzq\"},\"connectVia\":{\"referenceName\":\"hznh\",\"parameters\":{\"kwp\":\"databzlkdsbekvp\"}},\"description\":\"ieqcnvgzshfaf\",\"parameters\":{\"eplpfrecri\":{\"type\":\"Int\",\"defaultValue\":\"dataeiuexkpgrmwdwlr\"},\"gpdbh\":{\"type\":\"Bool\",\"defaultValue\":\"databafdlsizaob\"}},\"annotations\":[\"datasjsoxuuwuungdvvd\",\"datarcpq\",\"datayinlg\",\"datatvonw\"],\"\":{\"xsupevthuvupds\":\"dataliemitmtkcqixg\",\"ianjmvv\":\"datafqaghwqumecq\"}}")
             .toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("xmrntphy", model.connectVia().referenceName());
-        Assertions.assertEquals("vbxv", model.description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("e").type());
+        Assertions.assertEquals("hznh", model.connectVia().referenceName());
+        Assertions.assertEquals("ieqcnvgzshfaf", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("eplpfrecri").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSynapseArtifactsLinkedService model
-            = new AzureSynapseArtifactsLinkedService()
-                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("xmrntphy")
-                    .withParameters(mapOf("pysmalpjabzssbu", "dataddt", "c", "dataaxmkuthooaicms")))
-                .withDescription("vbxv")
-                .withParameters(mapOf("e",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datajryppmmtqxqiq")))
-                .withAnnotations(Arrays.asList("dataqfcorajdb", "datalkffgyfehjs")).withEndpoint("dataqrmx")
-                .withAuthentication("datahz").withWorkspaceResourceId("datanvdumi");
+        AzureSynapseArtifactsLinkedService model = new AzureSynapseArtifactsLinkedService()
+            .withConnectVia(new IntegrationRuntimeReference()
+                .withReferenceName("hznh").withParameters(mapOf("kwp", "databzlkdsbekvp")))
+            .withDescription("ieqcnvgzshfaf")
+            .withParameters(mapOf("eplpfrecri",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataeiuexkpgrmwdwlr"),
+                "gpdbh", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databafdlsizaob")))
+            .withAnnotations(Arrays.asList("datasjsoxuuwuungdvvd", "datarcpq", "datayinlg", "datatvonw"))
+            .withEndpoint("datarjuingnfunh").withAuthentication("datagxsyiwmopkud")
+            .withWorkspaceResourceId("dataztbwzjbqzq");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("xmrntphy", model.connectVia().referenceName());
-        Assertions.assertEquals("vbxv", model.description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("e").type());
+        Assertions.assertEquals("hznh", model.connectVia().referenceName());
+        Assertions.assertEquals("ieqcnvgzshfaf", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("eplpfrecri").type());
     }
 
     // Use "Map.of" if available

@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.ErrorResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the status of the test operation along with error information, if applicable. */
+/**
+ * Describes the status of the test operation along with error information, if applicable.
+ */
 @Immutable
 public final class ResourceTestStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceTestStatusInner.class);
-
     /*
      * The status of the test operation.
      */
@@ -28,8 +26,14 @@ public final class ResourceTestStatusInner {
     private ErrorResponse error;
 
     /**
+     * Creates an instance of ResourceTestStatusInner class.
+     */
+    public ResourceTestStatusInner() {
+    }
+
+    /**
      * Get the status property: The status of the test operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -38,7 +42,7 @@ public final class ResourceTestStatusInner {
 
     /**
      * Get the error property: Describes the error that occurred.
-     *
+     * 
      * @return the error value.
      */
     public ErrorResponse error() {
@@ -47,7 +51,7 @@ public final class ResourceTestStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
