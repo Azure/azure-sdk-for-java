@@ -3,6 +3,10 @@
 
 package com.generic.core.implementation.util;
 
+import com.generic.core.http.models.RetryOptions;
+import com.generic.core.http.policy.RetryPolicy;
+import com.generic.core.implementation.http.policy.ExponentialBackoffDelay;
+import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
