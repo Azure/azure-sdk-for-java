@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -16,7 +17,23 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a geometric line.
+ * <p>Represents a geometric line string.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPosition} instances that form a line string. A line string is a
+ * curve with linear interpolation between points.</p>
+ *
+ * <p>It provides methods to access these positions. For example, you can use {@link #getCoordinates()} to get the
+ * list of positions forming the line string.</p>
+ *
+ * <p>This class is useful when you want to work with a line string in a geographic context. For example, you can use
+ * it to represent a route on a map or the shape of a geographic feature.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a line string
+ * requires at least 2 coordinates.</p>
+ *
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoLineString extends GeoObject {

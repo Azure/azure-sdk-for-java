@@ -17,7 +17,23 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
+ * <p>Represents a heterogeneous collection of {@link GeoObject GeoObjects}.</p>
+ *
+ * <p>This class encapsulates a list of geometry objects and provides methods to access these objects.
+ * The objects can be of any type that extends {@link GeoObject}.</p>
+ *
+ * <p>It provides methods to get the list of geometry objects {@link #getGeometries()} and to get the type of the geo
+ * object {@link #getType()}. Note that this class does not support mutation operations, so the list of geometry
+ * objects cannot be modified after the GeoCollection is created.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of geometry objects in a read-only manner. For
+ * example, you can use it to represent a complex geographic feature that is composed of multiple simple geographic
+ * features.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
+ *
+ * @see GeoObject
+ * @see GeoBoundingBox
  */
 @Immutable
 public final class GeoCollection extends GeoObject {

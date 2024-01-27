@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -14,7 +15,25 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a geometric point.
+ * <p>Represents a geometric point in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a point defined by a {@link GeoPosition} which includes the longitude, latitude, and
+ * optionally the altitude of the point.</p>
+ *
+ * <p>It provides methods to access these properties. For example, you can use {@link #getCoordinates()} to get
+ * the {@link GeoPosition} of the point.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric point to JSON, and
+ * a {@link #fromJson(JsonReader)} method to deserialize a geometric point from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a point in a geographic context. For example, you can use it
+ * to represent a location on a map.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
+ *
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPoint extends GeoObject {

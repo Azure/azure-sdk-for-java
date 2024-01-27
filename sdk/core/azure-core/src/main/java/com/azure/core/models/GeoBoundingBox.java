@@ -16,6 +16,21 @@ import java.util.Objects;
 
 /**
  * Represents a geometric bounding box.
+ *
+ * <p>This class encapsulates a bounding box defined by west, south, east, and north coordinates, and optionally
+ * minimum and maximum altitude. It provides methods to access these properties.</p>
+ *
+ * <p>For example, you can use {@link #getWest()} to get the west longitudinal boundary, {@link #getSouth()} to get
+ * the south latitudinal boundary, {@link #getEast()} to get the east longitudinal boundary, {@link #getNorth()} to
+ * get the north latitudinal boundary, {@link #getMinAltitude()} to get the minimum altitude boundary, and
+ * {@link #getMaxAltitude()} to get the maximum altitude boundary.</p>
+ *
+ * <p>This class is useful when you want to work with a bounding box in a geographic context. For example, you can use
+ * it to define the area of interest for a map view, or to specify the spatial extent of a geographic dataset.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
+ *
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {

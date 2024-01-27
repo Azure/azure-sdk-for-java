@@ -15,7 +15,20 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * A read-only list of geometry coordinates.
+ * <p>Represents a read-only list of geometry coordinates.</p>
+ *
+ * <p>This class encapsulates a list of geometry coordinates and provides methods to access these coordinates.
+ * The coordinates can be of any type {@code T}.</p>
+ *
+ * <p>It provides methods to get the coordinate at a specific index {@link #get(int)} and to get the size of
+ * the list {@link #size()}. Note that this class does not support mutation operations, so methods like
+ * {@link #remove(Object)}, {@link #removeAll(Collection)}, {@link #retainAll(Collection)},
+ * {@link #replaceAll(UnaryOperator)}, {@link #sort(Comparator)}, {@link #removeIf(Predicate)}, and
+ * {@link #subList(int, int)} will throw an {@link UnsupportedOperationException}.</p>
+ *
+ * <p>This class is useful when you want to work with a list of geometry coordinates in a read-only manner.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
  *
  * @param <T> The type of geometry coordinates.
  */

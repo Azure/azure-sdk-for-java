@@ -15,7 +15,23 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a linear ring that is part of a {@link GeoPolygon}.
+ * <p>Represents a linear ring that is part of a {@link GeoPolygon}.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPosition} instances that form a closed loop, which is a component
+ * of a {@link GeoPolygon}. The first and last positions of the loop are the same, forming a closed ring.</p>
+ *
+ * <p>It provides methods to access these positions. For example, you can use {@link #getCoordinates()} to get the
+ * list of positions forming the ring.</p>
+ *
+ * <p>This class is useful when you want to work with a linear ring in a geographic context. For example, you can
+ * use it to define the boundary of a geographic area in a {@link GeoPolygon}.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a linear ring
+ * requires at least 4 coordinates, and the first and last coordinates must be the same.</p>
+ *
+ * @see GeoPosition
+ * @see GeoPolygon
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {

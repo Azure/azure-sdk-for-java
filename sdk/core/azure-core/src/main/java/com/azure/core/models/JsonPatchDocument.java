@@ -21,7 +21,33 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a JSON Patch document.
+ * <p>Represents a JSON Patch document.</p>
+ *
+ * <p>This class encapsulates a list of {@link JsonPatchOperation} instances that form a JSON Patch document.
+ * It provides methods to add various types of operations (add, replace, copy, move, remove, test) to the document.</p>
+ *
+ * <p>Each operation in the document is represented by a {@link JsonPatchOperation} instance, which encapsulates the
+ * operation kind, path, and optional from and value.</p>
+ *
+ * <p>This class provides methods to add operations to the document. For example, you can use
+ * {@link #appendAdd(String, Object)} to add an "add" operation,
+ * {@link #appendReplace(String, Object)} to add a "replace" operation,
+ * {@link #appendCopy(String, String)} to add a "copy" operation,
+ * {@link #appendMove(String, String)} to add a "move" operation,
+ * {@link #appendRemove(String)} to add a "remove" operation, and
+ * {@link #appendTest(String, Object)} to add a "test" operation.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the JSON Patch document to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a JSON Patch document from JSON.</p>
+ *
+ * <p>This class is useful when you want to create a JSON Patch document to express a sequence of operations to
+ * apply to a JSON document.</p>
+ *
+ * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
+ *
+ * @see JsonPatchOperation
+ * @see JsonPatchOperationKind
+ * @see JsonSerializable
  */
 public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocument> {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
