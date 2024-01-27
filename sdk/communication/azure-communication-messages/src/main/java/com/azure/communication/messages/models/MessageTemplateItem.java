@@ -4,6 +4,7 @@
 
 package com.azure.communication.messages.models;
 
+import com.azure.communication.messages.models.whatsapp.WhatsAppMessageTemplateItem;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;

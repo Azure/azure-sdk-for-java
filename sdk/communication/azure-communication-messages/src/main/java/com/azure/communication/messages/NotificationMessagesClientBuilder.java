@@ -31,7 +31,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -313,7 +312,7 @@ public final class NotificationMessagesClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(createHttpPipelineAuthPolicy()); // Added manually
+        policies.add(createHttpPipelineAuthPolicy());
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -321,17 +320,6 @@ public final class NotificationMessagesClientBuilder
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
-    }
-
-    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);
-        } else if (keyCredential != null) {
-            return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));
-        } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Missing credential information while building a client."));
-        }
     }
 
     /**
@@ -355,16 +343,27 @@ public final class NotificationMessagesClientBuilder
     }
 
     /**
-     * Set a connection string for authorization
-     *
-     * @param connectionString valid connectionString as a string
-     * @return the updated NotificationMessagesClientBuilder object
+     * Set a connection string for authorization.
+     * 
+     * @param connectionString valid connectionString as a string.
+     * @return the updated NotificationMessagesClientBuilder object.
      */
     public NotificationMessagesClientBuilder connectionString(String connectionString) {
         CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);
         this.credential(new KeyCredential(connection.getAccessKey()));
         this.endpoint(connection.getEndpoint());
         return this;
+    }
+
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (tokenCredential != null) {
+            return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);
+        } else if (keyCredential != null) {
+            return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));
+        } else {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Missing credential information while building a client."));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NotificationMessagesClientBuilder.class);

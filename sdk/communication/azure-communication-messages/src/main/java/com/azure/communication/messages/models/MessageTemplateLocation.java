@@ -6,6 +6,7 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPosition;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -50,16 +51,14 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
      * Creates an instance of MessageTemplateLocation class.
      * 
      * @param name the name value to set.
-     * @param latitude the latitude value to set.
-     * @param longitude the longitude value to set.
+     * @param geoPosition the geoPosition value to set.
      */
     @Generated
     @JsonCreator
-    public MessageTemplateLocation(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "latitude") double latitude, @JsonProperty(value = "longitude") double longitude) {
+    public MessageTemplateLocation(String name, GeoPosition geoPosition) {
         super(name);
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = geoPosition.getLatitude();
+        this.longitude = geoPosition.getLongitude();
     }
 
     /**

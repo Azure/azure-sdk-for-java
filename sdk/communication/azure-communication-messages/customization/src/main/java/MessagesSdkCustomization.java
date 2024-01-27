@@ -1,11 +1,10 @@
-import com.azure.autorest.customization.ClassCustomization;
-import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.*;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 public class MessagesSdkCustomization extends Customization {
 
@@ -16,9 +15,34 @@ public class MessagesSdkCustomization extends Customization {
 
         ClassCustomization notificationMessagesClientBuilderCustomization = packageCustomization.getClass("NotificationMessagesClientBuilder");
         addAuthTrait(notificationMessagesClientBuilderCustomization);
+        addConnectionStringClientMethod(notificationMessagesClientBuilderCustomization, "NotificationMessagesClientBuilder");
+        addHttpPipelineAuthPolicyMethod(notificationMessagesClientBuilderCustomization);
+        updateHttpPipelineMethod(notificationMessagesClientBuilderCustomization);
 
         ClassCustomization messageTemplateClientBuilderCustomization = packageCustomization.getClass("MessageTemplateClientBuilder");
         addAuthTrait(messageTemplateClientBuilderCustomization);
+        addConnectionStringClientMethod(messageTemplateClientBuilderCustomization, "MessageTemplateClientBuilder");
+        addHttpPipelineAuthPolicyMethod(messageTemplateClientBuilderCustomization);
+        updateHttpPipelineMethod(messageTemplateClientBuilderCustomization);
+
+        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
+            .getPackage("com.azure.communication.messages.models")
+            .getClass("MessageTemplateLocation");
+        messageTemplateLocationCustomization.getConstructor("MessageTemplateLocation")
+            .replaceParameters(
+                "String name, GeoPosition geoPosition",
+                List.of("com.azure.core.models.GeoPosition")
+            )
+            .replaceBody( "super(name);" +
+                "this.latitude = geoPosition.getLatitude();" +
+                "this.longitude = geoPosition.getLongitude();"
+            );
+        messageTemplateLocationCustomization
+            .getConstructor("MessageTemplateLocation")
+            .getJavadoc()
+            .removeParam("longitude")
+            .removeParam("latitude")
+            .setParam("geoPosition", "the geoPosition value to set.");
     }
 
     private void addAuthTrait(ClassCustomization classCustomization) {
@@ -51,5 +75,77 @@ public class MessagesSdkCustomization extends Customization {
                 }
             });
         });
+    }
+
+    private void addConnectionStringClientMethod(ClassCustomization classCustomization, String methodReturnType) {
+        classCustomization.addMethod(
+            "public "+methodReturnType+" connectionString(String connectionString) {" +
+                "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);"+
+                "this.credential(new KeyCredential(connection.getAccessKey()));"+
+                "this.endpoint(connection.getEndpoint());"+
+                "return this;"+
+                "}",
+            List.of(
+                "com.azure.communication.common.implementation.CommunicationConnectionString"
+            ));
+
+        classCustomization
+            .getMethod("connectionString")
+            .getJavadoc()
+            .setDescription("Set a connection string for authorization.\n" +
+                "@param connectionString valid connectionString as a string.\n" +
+                "@return the updated NotificationMessagesClientBuilder object.");
+    }
+
+    private void addHttpPipelineAuthPolicyMethod(ClassCustomization classCustomization) {
+        classCustomization.addImports("com.azure.core.credential.AzureKeyCredential");
+        classCustomization.addMethod(
+            "private HttpPipelinePolicy createHttpPipelineAuthPolicy() {" +
+                "        if (tokenCredential != null) {" +
+                "            return new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES);" +
+                "        } else if (keyCredential != null) {" +
+                "            return new HmacAuthenticationPolicy(new AzureKeyCredential(keyCredential.getKey()));" +
+                "        } else {" +
+                "            throw LOGGER.logExceptionAsError(" +
+                "                new IllegalStateException(\"Missing credential information while building a client.\"));" +
+                "        }" +
+                "    }",
+            List.of(
+                "com.azure.communication.common.implementation.HmacAuthenticationPolicy"
+            ));
+    }
+
+    private void updateHttpPipelineMethod(ClassCustomization classCustomization) {
+        MethodCustomization methodCustomization = classCustomization.getMethod("createHttpPipeline");
+        methodCustomization.replaceBody("Configuration buildConfiguration" +
+            "            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;" +
+            "        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;" +
+            "        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;" +
+            "        List<HttpPipelinePolicy> policies = new ArrayList<>();" +
+            "        String clientName = PROPERTIES.getOrDefault(SDK_NAME, \"UnknownName\");" +
+            "        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, \"UnknownVersion\");" +
+            "        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);" +
+            "        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));" +
+            "        policies.add(new RequestIdPolicy());" +
+            "        policies.add(new AddHeadersFromContextPolicy());" +
+            "        HttpHeaders headers = new HttpHeaders();" +
+            "        localClientOptions.getHeaders()" +
+            "            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));" +
+            "        if (headers.getSize() > 0) {" +
+            "            policies.add(new AddHeadersPolicy(headers));" +
+            "        }" +
+            "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)" +
+            "            .forEach(p -> policies.add(p));" +
+            "        HttpPolicyProviders.addBeforeRetryPolicies(policies);" +
+            "        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));" +
+            "        policies.add(new AddDatePolicy());" +
+            "        policies.add(createHttpPipelineAuthPolicy());" +
+            "        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)" +
+            "            .forEach(p -> policies.add(p));" +
+            "        HttpPolicyProviders.addAfterRetryPolicies(policies);" +
+            "        policies.add(new HttpLoggingPolicy(localHttpLogOptions));" +
+            "        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))" +
+            "            .httpClient(httpClient).clientOptions(localClientOptions).build();" +
+            "        return httpPipeline;");
     }
 }
