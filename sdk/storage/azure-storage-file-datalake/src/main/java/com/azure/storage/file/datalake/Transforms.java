@@ -88,6 +88,7 @@ import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -126,6 +127,7 @@ class Transforms {
     public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
     public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
     public static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+    public static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -338,9 +340,10 @@ class Transforms {
                 String owner = r.getHeaders().getValue(X_MS_OWNER);
                 String group = r.getHeaders().getValue(X_MS_GROUP);
                 String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
+                String acl = r.getHeaders().getValue(X_MS_ACL);
 
                 return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties,
-                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions);
+                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions, acl);
             }
         }
     }
@@ -452,10 +455,11 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT)));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT),
+            r.getHeaders().getValue(X_MS_ACL)));
     }
 
-    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext, String acl) {
         if (h == null) {
             return null;
         }
@@ -491,7 +495,8 @@ class Transforms {
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode())
             .setCreationTime(h.getCreationTime())
-            .setEncryptionContext(encryptionContext);
+            .setEncryptionContext(encryptionContext)
+            .setAccessControlList(PathAccessControlEntry.parseList(acl));
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {

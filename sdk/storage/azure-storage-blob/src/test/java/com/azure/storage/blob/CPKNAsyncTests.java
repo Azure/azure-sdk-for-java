@@ -368,7 +368,6 @@ public class CPKNAsyncTests extends BlobTestBase {
             .buildPageBlobAsyncClient());
     }
 
-    //todo isbr getEncryptionScope is protected **
     @Test
     public void getEncryptionScopeClient() {
         String newEncryptionScope = "newtestscope";

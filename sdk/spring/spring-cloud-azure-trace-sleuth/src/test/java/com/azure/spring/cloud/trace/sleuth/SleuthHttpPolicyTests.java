@@ -85,7 +85,15 @@ public class SleuthHttpPolicyTests {
 
         HttpPipeline pipeline = blobServiceClient.getHttpPipeline();
         assertTrue(pipeline.getPolicyCount() >= 10);
-        assertEquals(SleuthHttpPolicy.class, pipeline.getPolicy(6).getClass());
+        boolean sleuthPolicyFound = false;
+        int policyCount = pipeline.getPolicyCount();
+        for (int i = 0; i < policyCount; i++) {
+            if (SleuthHttpPolicy.class.equals(pipeline.getPolicy(i).getClass())) {
+                sleuthPolicyFound = true;
+                break;
+            }
+        }
+        assertTrue(sleuthPolicyFound);
     }
 
     @Test

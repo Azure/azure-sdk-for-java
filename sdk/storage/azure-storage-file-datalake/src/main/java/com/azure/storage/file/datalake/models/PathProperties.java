@@ -8,6 +8,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,15 +48,16 @@ public class PathProperties {
     private String owner;
     private String group;
     private String permissions;
-
+    private List<PathAccessControlEntry> accessControlList;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions) -> {
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
             properties.encryptionScope = encryptionScope;
             properties.encryptionContext = encryptionContext;
             properties.owner = owner;
             properties.group = group;
             properties.permissions = permissions;
+            properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
 
             return properties;
         });
@@ -426,4 +428,14 @@ public class PathProperties {
     public String getPermissions() {
         return permissions;
     }
+
+    /**
+     * Optional. The POSIX access control list for the file or directory.
+     *
+     * @return the access control list.
+     */
+    public List<PathAccessControlEntry> getAccessControlList() {
+        return accessControlList;
+    }
+
 }

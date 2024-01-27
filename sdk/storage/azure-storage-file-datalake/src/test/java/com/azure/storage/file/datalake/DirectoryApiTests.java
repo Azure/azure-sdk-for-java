@@ -198,7 +198,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentType(contentType);
         dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
         dc.createWithResponse(null, null, headers, null, null, null, null);
-        Response<PathProperties> response = dc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -437,7 +437,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         dc.createWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders), null, null);
 
-        validatePathProperties(dc.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
+        validatePathProperties(dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null), cacheControl, contentDisposition,
             contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
@@ -543,7 +543,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
 
         dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null);
-        Response<PathProperties> response = dc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -621,7 +621,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dc.deleteWithResponse(false, null, null, null);
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> dc.getPropertiesWithResponse(null, null, null));
+            () -> dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
         assertEquals(404, e.getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
@@ -718,7 +718,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         Response<?> response = dc.deleteIfExistsWithResponse(null, null, null);
         assertEquals(200, response.getStatusCode());
 
-        assertThrows(DataLakeStorageException.class, () -> dc.getPropertiesWithResponse(null, null, null));
+        assertThrows(DataLakeStorageException.class, () -> dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
     }
 
     @Test
@@ -2124,7 +2124,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         Response<DataLakeDirectoryClient> resp = dc.renameWithResponse(null, generatePathName(), null, null, null, null);
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 
@@ -2136,7 +2136,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 
@@ -2228,7 +2228,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesDefault() {
-        Response<PathProperties> response = dc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
         HttpHeaders headers = response.getHeaders();
         PathProperties properties = response.getValue();
 
@@ -2265,13 +2265,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertEquals(200, dc.getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-06-12")
     @Test
     public void getPropertiesOwnerGroupPermissions() {
-        PathProperties properties = dc.getPropertiesWithResponse(null, null, null).getValue();
+        PathProperties properties = dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getValue();
 
         assertNotNull(properties.getOwner());
         assertNotNull(properties.getGroup());
@@ -2352,7 +2352,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         dc.setHttpHeaders(putHeaders);
 
-        validatePathProperties(dc.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
+        validatePathProperties(dc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null), cacheControl, contentDisposition,
             contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
@@ -2507,7 +2507,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentType(contentType);
 
         Response<PathProperties> response = dc.createFileWithResponse(generatePathName(), null, null, headers, null,
-            null, null, null).getValue().getPropertiesWithResponse(null, null, null);
+            null, null, null).getValue().getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2608,7 +2608,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers);
 
         Response<PathProperties> response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
-            .getValue().getPropertiesWithResponse(null, null, null);
+            .getValue().getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2660,7 +2660,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dc.deleteFileWithResponse(pathName, null, null, null);
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> client.getPropertiesWithResponse(null, null, null));
+            () -> client.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
 
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
@@ -2816,7 +2816,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         Response<PathProperties> response = dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers,
             null, null, null, null).getValue()
-            .getPropertiesWithResponse(null, null, null);
+            .getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2934,7 +2934,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         Response<PathProperties> response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
             new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null).getValue()
-            .getPropertiesWithResponse(null, null, null);
+            .getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2999,7 +2999,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null);
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> client.getPropertiesWithResponse(null, null, null));
+            () -> client.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
@@ -3190,13 +3190,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // Check that service created underlying directory
         DataLakeDirectoryClient dirClient = dataLakeFileSystemClient.getDirectoryClient("dir");
 
-        assertEquals(200, dirClient.getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, dirClient.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
 
         // Delete file
         assertEquals(200, fileClient.deleteWithResponse(null, null, null).getStatusCode());
 
         // Directory should still exist
-        assertEquals(200, dirClient.getPropertiesWithResponse(null, null, null).getStatusCode());
+        assertEquals(200, dirClient.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
     }
 
     @Test
@@ -3229,7 +3229,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .buildDirectoryClient();
 
         // blob endpoint
-        Response<?> response = directoryClient.getPropertiesWithResponse(null, null, null);
+        Response<?> response = directoryClient.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
 

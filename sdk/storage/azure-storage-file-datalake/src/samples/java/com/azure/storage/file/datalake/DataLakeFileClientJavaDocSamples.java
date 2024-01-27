@@ -27,6 +27,7 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -129,8 +130,12 @@ public class DataLakeFileClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileClient#readToFile(String)} and
+     * {@link DataLakeFileClient#readToFile(ReadToFileOptions)} and
+     * {@link DataLakeFileClient#readToFile(String, boolean)} and
+     * {@link DataLakeFileClient#readToFile(ReadToFileOptions, boolean)} and
      * {@link DataLakeFileClient#readToFileWithResponse(String, FileRange, ParallelTransferOptions, DownloadRetryOptions, DataLakeRequestConditions,
-     * boolean, Set, Duration, Context)}
+     * boolean, Set, Duration, Context)} and
+     * {@link DataLakeFileClient#readToFileWithResponse(ReadToFileOptions, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String
@@ -138,11 +143,22 @@ public class DataLakeFileClientJavaDocSamples {
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String
 
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions
+        client.readToFile(new ReadToFileOptions().setFilePath(file));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions
+
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String-boolean
         boolean overwrite = false; // Default value
         client.readToFile(file, overwrite);
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String-boolean
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean
+        boolean overwrite1 = false; // Default value
+        client.readToFile(new ReadToFileOptions().setFilePath(file), overwrite1);
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
         FileRange fileRange = new FileRange(1024, 2048L);
@@ -154,6 +170,22 @@ public class DataLakeFileClientJavaDocSamples {
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context
+        ReadToFileOptions options = new ReadToFileOptions();
+        options.setRange(new FileRange(1024, 2048L));
+        options.setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(5));
+        options.setOpenOptions(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.READ))); //Default options
+        options.setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB));
+        options.setDataLakeRequestConditions(null);
+        options.setRangeGetContentMd5(false);
+
+        client.readToFileWithResponse(options, timeout, new Context(key2, value2));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context
+
+
     }
 
     /**
