@@ -1193,9 +1193,9 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(CosmosMetricName.fromString("cosmos.client.op.REGIONScontacted"))
             .isSameAs(CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
 
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.reqPayloDSIZE"))
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.reqPaylOADSize"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
-        assertThat(CosmosMetricName.fromString("cosmos.client.REQ.RspPayloDSIZE"))
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rspPayloadSIZE"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
 
         assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.backendLatency"))
