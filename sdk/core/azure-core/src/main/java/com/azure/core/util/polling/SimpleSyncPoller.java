@@ -15,8 +15,25 @@ import java.util.function.Function;
 /**
  * Simple implementation of {@link SyncPoller}.
  *
+ * <p>This class provides a simple implementation of the {@link SyncPoller} interface for long-running operations.
+ * It provides synchronous polling with a regular interval.</p>
+ *
+ * <p>Long-running operations are operations such as the creation or deletion of a resource, which take a significant
+ * amount of time to complete. These operations are typically handled asynchronously, with the client initiating the
+ * operation and then polling the service at intervals to determine whether the operation has completed.</p>
+ *
+ * <p><strong>Code Sample: Using a SimpleSyncPoller to poll until the operation is successfully completed</strong></p>
+ *
+ * <!-- src_embed com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ * <!-- end com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
+ *
+ * @see com.azure.core.util.polling
+ * @see SyncPoller
+ * @see PollResponse
+ * @see LongRunningOperationStatus
  */
 final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SimpleSyncPoller.class);

@@ -27,6 +27,11 @@ public final class PollerJavaDocCodeSnippets {
         (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
         (context) -> Mono.just("Final Output"));
 
+    private final SimpleSyncPoller<String, String> syncPoller = new SimpleSyncPoller<>(Duration.ofMillis(100),
+        context -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, "Completed"),
+        context -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, "Operation in progress."),
+        (context, response) -> "Cancellation is not supported", context -> "Final result.");
+
     /**
      * Instantiating and subscribing to PollerFlux.
      */
@@ -249,5 +254,20 @@ public final class PollerJavaDocCodeSnippets {
         // Do something else
 
         // END: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
+    }
+
+    /**
+     * Instantiating and polling using {@link SimpleSyncPoller}
+     */
+    @SuppressWarnings("deprecation")
+    public void initializeAndPollUsingSimpleSyncPoller() {
+        // BEGIN: com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll
+        LongRunningOperationStatus operationStatus = syncPoller.poll().getStatus();
+        while (operationStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println("Polling status: " + operationStatus.toString());
+            System.out.println("Polling response: " + operationStatus.toString());
+            operationStatus = syncPoller.poll().getStatus();
+        }
+        // END: com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll
     }
 }
