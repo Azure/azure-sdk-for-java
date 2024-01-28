@@ -511,11 +511,11 @@ public final class AssistantsAsyncClient {
      * @return information about a file attached to an assistant, as used by tools that can read files on successful
      * completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AssistantFile> createAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        // TODO: manually added the String fileId but will need to fix it when generating from TypeSpec.
         return createAssistantFileWithResponse(assistantId, BinaryData.fromObject(fileId), requestOptions)
             .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
     }

@@ -916,7 +916,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, assistantCreationOptions, requestOptions,
+        return service.createAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(),
+                accept, assistantCreationOptions, requestOptions,
             Context.NONE);
     }
 

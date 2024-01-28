@@ -50,15 +50,25 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void createThread(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void threadCRUD(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createThreadRunner(threadCreationOptions -> {
             // Create a thread
             AssistantThread assistantThread = client.createThread(threadCreationOptions);
-
-            assertNotNull(assistantThread.getId());
+            String threadId = assistantThread.getId();
+            assertNotNull(threadId);
             assertNotNull(assistantThread.getCreatedAt());
             assertEquals("thread", assistantThread.getObject());
+
+            // Get a thread
+            AssistantThread retrievedThread = client.getThread(threadId);
+            assertEquals(threadId, retrievedThread.getId());
+            assertNotNull(retrievedThread.getCreatedAt());
+            assertEquals("thread", retrievedThread.getObject());
+
+            // Update a thread
+            // TODO: what is the purpose of updating a thread by only providing the thread ID?
+            AssistantThread updatedThread = client.updateThread(assistantThread.getId());
 
             // Delete the created thread
             client.deleteThread(assistantThread.getId());
@@ -67,16 +77,29 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void createThreadWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void threadCRUDWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createThreadRunner(threadCreationOptions -> {
             // Create a thread
-            Response<BinaryData> response = client.createThreadWithResponse(BinaryData.fromObject(threadCreationOptions), new RequestOptions());
+            Response<BinaryData> response = client.createThreadWithResponse(
+                    BinaryData.fromObject(threadCreationOptions), new RequestOptions());
             AssistantThread assistantThread = assertAndGetValueFromResponse(response, AssistantThread.class, 200);
-
-            assertNotNull(assistantThread.getId());
+            String threadId = assistantThread.getId();
+            assertNotNull(threadId);
             assertNotNull(assistantThread.getCreatedAt());
             assertEquals("thread", assistantThread.getObject());
+
+            // Get a thread
+            Response<BinaryData> response1 = client.getThreadWithResponse(threadId, new RequestOptions());
+            AssistantThread retrievedThread = assertAndGetValueFromResponse(response1, AssistantThread.class, 200);
+
+            assertEquals(threadId, retrievedThread.getId());
+            assertNotNull(retrievedThread.getCreatedAt());
+            assertEquals("thread", retrievedThread.getObject());
+
+            // Update a thread
+            // TODO: what is the purpose of updating a thread by only providing the thread ID?
+            AssistantThread updatedThread = client.updateThread(assistantThread.getId());
 
             // Delete the created thread
             client.deleteThread(assistantThread.getId());

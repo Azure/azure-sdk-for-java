@@ -263,30 +263,12 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
             List<Assistant> dataAscending = assistantsAscending.getData();
             assertTrue(dataAscending.size() >= 2);
 
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-        });
-
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        createAssistantsRunner(assistantCreationOptions -> {
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-
             Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            OpenAIPageableListOfAssistant assistantsAscending = assertAndGetValueFromResponse(response,
+            OpenAIPageableListOfAssistant assistantsAscendingResponse = assertAndGetValueFromResponse(response,
                     OpenAIPageableListOfAssistant.class, 200);
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertTrue(dataAscending.size() >= 2);
-            // Delete the created assistants
+            List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
+            assertTrue(dataAscendingResponse.size() >= 2);
+
             AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
             assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
             assertTrue(assistantDeletionStatus.isDeleted());

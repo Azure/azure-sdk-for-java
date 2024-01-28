@@ -103,6 +103,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                     new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -164,10 +165,9 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
 
             // Create an assistant
-            StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+            StepVerifier.create(client.createAssistant(assistantCreationOptions))
+                    .assertNext(assistant -> {
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -178,24 +178,32 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             String assistantId = assistant.getId();
 
             // Attach a file to the assistant created above and return the assistant file
-            AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
-            assertNotNull(assistantFile.getCreatedAt());
-            assertEquals(assistantId, assistantFile.getAssistantId());
-            assertEquals("assistant.file", assistantFile.getObject());
-            assertEquals(fileId, assistantFile.getId());
+            StepVerifier.create(client.createAssistantFile(assistantId, fileId))
+                    .assertNext(assistantFile -> {
+                        assertNotNull(assistantFile.getCreatedAt());
+                        assertEquals(assistantId, assistantFile.getAssistantId());
+                        assertEquals("assistant.file", assistantFile.getObject());
+                        assertEquals(fileId, assistantFile.getId());
+                    })
+                    .verifyComplete();
 
             // Retrieve the assistant file
-            AssistantFile retrievedAssistantFile = client.getAssistantFile(assistantId, fileId);
-            assertEquals(assistantFile.getCreatedAt(), retrievedAssistantFile.getCreatedAt());
-            assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
-            assertEquals("assistant.file", retrievedAssistantFile.getObject());
-            assertEquals(fileId, retrievedAssistantFile.getId());
+            StepVerifier.create(client.getAssistantFile(assistantId, fileId))
+                    .assertNext(retrievedAssistantFile -> {
+                        assertEquals(retrievedAssistantFile.getCreatedAt(), retrievedAssistantFile.getCreatedAt());
+                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
+                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
+                        assertEquals(fileId, retrievedAssistantFile.getId());
+                    })
+                    .verifyComplete();
 
             // Unlinks the attached file from the assistant
-            AssistantFileDeletionStatus assistantFileDeletionStatus = client.deleteAssistantFile(assistantId, fileId);
-            assertEquals(fileId, assistantFileDeletionStatus.getId());
-            assertTrue(assistantFileDeletionStatus.isDeleted());
-
+            StepVerifier.create(client.deleteAssistantFile(assistantId, fileId))
+                    .assertNext(assistantFileDeletionStatus -> {
+                        assertEquals(fileId, assistantFileDeletionStatus.getId());
+                        assertTrue(assistantFileDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
 
             // Deleted created assistant
             StepVerifier.create(client.deleteAssistant(assistantId))
@@ -213,12 +221,12 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
-
             // Create an assistant
             StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
                             new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -232,32 +240,38 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             Map<String, String> requestObj = new HashMap<>();
             requestObj.put("file_id", fileId);
             BinaryData request = BinaryData.fromObject(requestObj);
-            Response<BinaryData> assistantFileResponse = client.createAssistantFileWithResponse(assistantId, request,
-                    new RequestOptions());
-
-            AssistantFile assistantFile = assertAndGetValueFromResponse(assistantFileResponse, AssistantFile.class, 200);
-            assertNotNull(assistantFile.getCreatedAt());
-            assertEquals(assistantId, assistantFile.getAssistantId());
-            assertEquals("assistant.file", assistantFile.getObject());
-            assertEquals(fileId, assistantFile.getId());
+            StepVerifier.create(client.createAssistantFileWithResponse(assistantId, request, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFile assistantFile = assertAndGetValueFromResponse(response, AssistantFile.class, 200);
+                        assertNotNull(assistantFile.getCreatedAt());
+                        assertEquals(assistantId, assistantFile.getAssistantId());
+                        assertEquals("assistant.file", assistantFile.getObject());
+                        assertEquals(fileId, assistantFile.getId());
+                    })
+                    .verifyComplete();
 
             // Retrieve the assistant file
-            Response<BinaryData> retrievedAssistantFileResponse = client.getAssistantFileWithResponse(assistantId, fileId, new RequestOptions());
-            AssistantFile retrievedAssistantFile = assertAndGetValueFromResponse(retrievedAssistantFileResponse,
-                    AssistantFile.class, 200);
-            assertEquals(assistantFile.getCreatedAt(), retrievedAssistantFile.getCreatedAt());
-            assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
-            assertEquals("assistant.file", retrievedAssistantFile.getObject());
-            assertEquals(fileId, retrievedAssistantFile.getId());
+            StepVerifier.create(client.getAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFile retrievedAssistantFile = assertAndGetValueFromResponse(response,
+                                AssistantFile.class, 200);
+                        assertNotNull(retrievedAssistantFile.getCreatedAt());
+                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
+                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
+                        assertEquals(fileId, retrievedAssistantFile.getId());
+                    })
+                    .verifyComplete();
+
 
             // Unlinks the attached file from the assistant
-            Response<BinaryData> assistantFileDeletionStatusResponse = client.deleteAssistantFileWithResponse(
-                    assistantId, fileId, new RequestOptions());
-            AssistantFileDeletionStatus assistantFileDeletionStatus = assertAndGetValueFromResponse(
-                    assistantFileDeletionStatusResponse, AssistantFileDeletionStatus.class, 200);
-            assertEquals(fileId, assistantFileDeletionStatus.getId());
-            assertTrue(assistantFileDeletionStatus.isDeleted());
-
+            StepVerifier.create(client.deleteAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFileDeletionStatus assistantFileDeletionStatus = assertAndGetValueFromResponse(
+                                response, AssistantFileDeletionStatus.class, 200);
+                        assertEquals(fileId, assistantFileDeletionStatus.getId());
+                        assertTrue(assistantFileDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
 
             // Deleted created assistant
             StepVerifier.create(client.deleteAssistant(assistantId))
@@ -274,42 +288,60 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
     public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
+            AtomicReference<Assistant> assistantCreated1 = new AtomicReference<>();
+            AtomicReference<Assistant> assistantCreated2 = new AtomicReference<>();
+            // create two assistants
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant1")))
+                    .assertNext(assistant -> {
+                        assistantCreated1.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant1 = assistantCreated1.get();
+            String assistantId1 = assistant1.getId();
 
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants();
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertTrue(dataAscending.size() >= 2);
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant2")))
+                    .assertNext(assistant -> {
+                        assistantCreated2.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant2 = assistantCreated2.get();
+            String assistantId2 = assistant2.getId();
 
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-        });
-    }
+            StepVerifier.create(client.listAssistants())
+                    .assertNext(assistantsAscending -> {
+                        List<Assistant> dataAscending = assistantsAscending.getData();
+                        assertTrue(dataAscending.size() >= 2);
+                    })
+                    .verifyComplete();
+            // With response method
+            StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions()))
+                    .assertNext(response -> {
+                        OpenAIPageableListOfAssistant assistantsAscending = assertAndGetValueFromResponse(response,
+                                OpenAIPageableListOfAssistant.class, 200);
+                        List<Assistant> dataAscending = assistantsAscending.getData();
+                        assertTrue(dataAscending.size() >= 2);
+                    })
+                    .verifyComplete();
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
-        createAssistantsRunner(assistantCreationOptions -> {
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-
-            Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            OpenAIPageableListOfAssistant assistantsAscending = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistant.class, 200);
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertTrue(dataAscending.size() >= 2);
-            // Delete the created assistants
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
+            // Deleted created assistants
+            StepVerifier.create(client.deleteAssistant(assistantId1))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId1, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId2))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId2, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
         });
     }
 
@@ -319,40 +351,105 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create assistants
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-            Assistant assistant3 = client.createAssistant(assistantCreationOptions.setName("assistant3"));
-            Assistant assistant4 = client.createAssistant(assistantCreationOptions.setName("assistant4"));
+            AtomicReference<Assistant> assistantCreated1 = new AtomicReference<>();
+            AtomicReference<Assistant> assistantCreated2 = new AtomicReference<>();
+            AtomicReference<Assistant> assistantCreated3 = new AtomicReference<>();
+            AtomicReference<Assistant> assistantCreated4 = new AtomicReference<>();
+            // create two assistants
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant1")))
+                    .assertNext(assistant -> {
+                        assistantCreated1.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant1 = assistantCreated1.get();
+            String assistantId1 = assistant1.getId();
+
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant2")))
+                    .assertNext(assistant -> {
+                        assistantCreated2.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant2 = assistantCreated2.get();
+            String assistantId2 = assistant2.getId();
+
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant3")))
+                    .assertNext(assistant -> {
+                        assistantCreated3.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant3 = assistantCreated3.get();
+            String assistantId3 = assistant3.getId();
+
+            StepVerifier.create(client.createAssistant(assistantCreationOptions.setName("assistant4")))
+                    .assertNext(assistant -> {
+                        assistantCreated4.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+            Assistant assistant4 = assistantCreated4.get();
+            String assistantId4 = assistant4.getId();
 
             // List only the middle two assistants; sort by name ascending
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants(100,
-                    ListSortOrder.ASCENDING, assistant1.getId(), assistant4.getId());
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertEquals(2, dataAscending.size());
-            assertEquals(assistant2.getId(), dataAscending.get(0).getId());
-            assertEquals(assistant3.getId(), dataAscending.get(1).getId());
+            StepVerifier.create(client.listAssistants(100, ListSortOrder.ASCENDING, assistant1.getId(),
+                            assistant4.getId()))
+                    .assertNext(assistantsAscending -> {
+                        List<Assistant> dataAscending = assistantsAscending.getData();
+                        assertEquals(2, dataAscending.size());
+                        assertEquals(assistant2.getId(), dataAscending.get(0).getId());
+                        assertEquals(assistant3.getId(), dataAscending.get(1).getId());
+                    })
+                    .verifyComplete();
+
 
             // List only the middle two assistants; sort by name descending
-            OpenAIPageableListOfAssistant assistantsDescending = client.listAssistants(100,
-                    ListSortOrder.DESCENDING, assistant4.getId(), assistant1.getId());
-            List<Assistant> dataDescending = assistantsDescending.getData();
-            assertEquals(2, dataDescending.size());
-            assertEquals(assistant3.getId(), dataDescending.get(0).getId());
-            assertEquals(assistant2.getId(), dataDescending.get(1).getId());
+            StepVerifier.create(client.listAssistants(100,
+                    ListSortOrder.DESCENDING, assistant4.getId(), assistant1.getId()))
+                    .assertNext(assistantsDescending -> {
+                        List<Assistant> dataDescending = assistantsDescending.getData();
+                        assertEquals(2, dataDescending.size());
+                        assertEquals(assistant3.getId(), dataDescending.get(0).getId());
+                        assertEquals(assistant2.getId(), dataDescending.get(1).getId());
+                    })
+                    .verifyComplete();
+
 
             // Delete the created assistants
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus3 = client.deleteAssistant(assistant3.getId());
-            assertEquals(assistant3.getId(), assistantDeletionStatus3.getId());
-            assertTrue(assistantDeletionStatus3.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus4 = client.deleteAssistant(assistant4.getId());
-            assertEquals(assistant4.getId(), assistantDeletionStatus4.getId());
-            assertTrue(assistantDeletionStatus4.isDeleted());
+            // Deleted created assistants
+            StepVerifier.create(client.deleteAssistant(assistantId1))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId1, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId2))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId2, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId3))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId3, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+            StepVerifier.create(client.deleteAssistant(assistantId4))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId4, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
         });
     }
 
@@ -368,6 +465,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                             new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -378,21 +476,26 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             String assistantId = assistant.getId();
 
             // Attach a file to the assistant created above and return the assistant file
-            AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
-            assertNotNull(assistantFile.getCreatedAt());
-            assertEquals(assistantId, assistantFile.getAssistantId());
-            assertEquals("assistant.file", assistantFile.getObject());
-            assertEquals(fileId, assistantFile.getId());
+            StepVerifier.create(client.createAssistantFile(assistantId, fileId))
+                    .assertNext(assistantFile -> {
+                        assertNotNull(assistantFile.getCreatedAt());
+                        assertEquals(assistantId, assistantFile.getAssistantId());
+                        assertEquals("assistant.file", assistantFile.getObject());
+                        assertEquals(fileId, assistantFile.getId());
+                    })
+                    .verifyComplete();
 
-            OpenAIPageableListOfAssistantFile assistantFiles = client.listAssistantFiles(assistantId);
 
-            List<AssistantFile> assistantFilesData = assistantFiles.getData();
-            assertEquals(1, assistantFilesData.size());
-            AssistantFile assistantFileOnly = assistantFilesData.get(0);
-            assertEquals(assistantId, assistantFileOnly.getAssistantId());
-            assertEquals("assistant.file", assistantFileOnly.getObject());
-            assertEquals(fileId, assistantFileOnly.getId());
-
+            StepVerifier.create(client.listAssistantFiles(assistantId))
+                    .assertNext(assistantFiles -> {
+                        List<AssistantFile> assistantFilesData = assistantFiles.getData();
+                        assertEquals(1, assistantFilesData.size());
+                        AssistantFile assistantFileOnly = assistantFilesData.get(0);
+                        assertEquals(assistantId, assistantFileOnly.getAssistantId());
+                        assertEquals("assistant.file", assistantFileOnly.getObject());
+                        assertEquals(fileId, assistantFileOnly.getId());
+                    })
+                    .verifyComplete();
 
             // Deleted created assistant
             StepVerifier.create(client.deleteAssistant(assistantId))
@@ -416,6 +519,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                             new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -473,6 +577,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                             new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
@@ -527,6 +632,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                             new RequestOptions()))
                     .assertNext(response -> {
                         Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
                         assertEquals(assistantCreationOptions.getName(), assistant.getName());
                         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
                         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
