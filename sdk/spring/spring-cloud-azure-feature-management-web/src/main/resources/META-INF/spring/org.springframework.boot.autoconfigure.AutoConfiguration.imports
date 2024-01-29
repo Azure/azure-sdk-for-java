@@ -1,1 +1,1 @@
-com.azure.spring.cloud.feature.management.web.FeatureManagementWebConfiguration
+com.azure.spring.cloud.feature.management.web.implementation.FeatureManagementWebConfiguration
