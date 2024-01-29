@@ -47,7 +47,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
     }
 
