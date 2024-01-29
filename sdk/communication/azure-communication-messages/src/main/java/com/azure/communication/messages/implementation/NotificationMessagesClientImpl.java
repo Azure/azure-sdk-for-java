@@ -182,7 +182,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> downloadMedia(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
@@ -192,7 +192,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> downloadMediaSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
     }
 
@@ -371,7 +371,7 @@ public final class NotificationMessagesClientImpl {
      * BinaryData
      * }</pre>
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -380,10 +380,10 @@ public final class NotificationMessagesClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadMediaWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadMediaWithResponseAsync(String mediaId, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(context -> service.downloadMedia(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), mediaId, accept, requestOptions, context));
     }
 
     /**
@@ -395,7 +395,7 @@ public final class NotificationMessagesClientImpl {
      * BinaryData
      * }</pre>
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -404,9 +404,9 @@ public final class NotificationMessagesClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadMediaWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> downloadMediaWithResponse(String mediaId, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return service.downloadMediaSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept,
+        return service.downloadMediaSync(this.getEndpoint(), this.getServiceVersion().getVersion(), mediaId, accept,
             requestOptions, Context.NONE);
     }
 }

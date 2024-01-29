@@ -23,7 +23,8 @@ public final class MessageTemplate {
     private String name;
 
     /*
-     * The codes for the supported languages for templates.
+     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional
+     * two-letter country code, e.g., 'en' or 'en_US'.
      */
     @Generated
     @JsonProperty(value = "language")
@@ -68,7 +69,8 @@ public final class MessageTemplate {
     }
 
     /**
-     * Get the language property: The codes for the supported languages for templates.
+     * Get the language property: The template's language, in the ISO 639 format, consist of a two-letter language code
+     * followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
      * 
      * @return the language value.
      */

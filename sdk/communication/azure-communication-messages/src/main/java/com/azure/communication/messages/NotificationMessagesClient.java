@@ -112,7 +112,7 @@ public final class NotificationMessagesClient {
      * BinaryData
      * }</pre>
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -122,8 +122,8 @@ public final class NotificationMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadMediaWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.downloadMediaWithResponse(id, requestOptions);
+    public Response<BinaryData> downloadMediaWithResponse(String mediaId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadMediaWithResponse(mediaId, requestOptions);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class NotificationMessagesClient {
     /**
      * Download the Media payload from a User to Business message.
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -161,9 +161,9 @@ public final class NotificationMessagesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadMedia(String id) {
+    public BinaryData downloadMedia(String mediaId) {
         // Generated convenience method for downloadMediaWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadMediaWithResponse(id, requestOptions).getValue();
+        return downloadMediaWithResponse(mediaId, requestOptions).getValue();
     }
 }

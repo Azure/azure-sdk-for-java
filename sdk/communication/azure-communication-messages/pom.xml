@@ -17,8 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Azure Communication Messaging Service</name>
-  <description>This package contains Microsoft Azure Communication Messaging client library.</description>
+  <name>Microsoft Azure SDK for Messages</name>
+  <description>This package contains Microsoft Azure Messages client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -42,6 +42,7 @@
     </developer>
   </developers>
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.6</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.6</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
@@ -72,12 +73,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

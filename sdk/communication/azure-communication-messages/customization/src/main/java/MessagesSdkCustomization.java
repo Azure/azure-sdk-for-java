@@ -25,24 +25,8 @@ public class MessagesSdkCustomization extends Customization {
         addHttpPipelineAuthPolicyMethod(messageTemplateClientBuilderCustomization);
         updateHttpPipelineMethod(messageTemplateClientBuilderCustomization);
 
-        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
-            .getPackage("com.azure.communication.messages.models")
-            .getClass("MessageTemplateLocation");
-        messageTemplateLocationCustomization.getConstructor("MessageTemplateLocation")
-            .replaceParameters(
-                "String name, GeoPosition geoPosition",
-                List.of("com.azure.core.models.GeoPosition")
-            )
-            .replaceBody( "super(name);" +
-                "this.latitude = geoPosition.getLatitude();" +
-                "this.longitude = geoPosition.getLongitude();"
-            );
-        messageTemplateLocationCustomization
-            .getConstructor("MessageTemplateLocation")
-            .getJavadoc()
-            .removeParam("longitude")
-            .removeParam("latitude")
-            .setParam("geoPosition", "the geoPosition value to set.");
+        updateTemplateLocationConstructorWithGeoPositionParameter(libraryCustomization);
+        updateWhatsAppMessageTemplateItemWithBinaryDataContent(libraryCustomization);
     }
 
     private void addAuthTrait(ClassCustomization classCustomization) {
@@ -147,5 +131,37 @@ public class MessagesSdkCustomization extends Customization {
             "        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))" +
             "            .httpClient(httpClient).clientOptions(localClientOptions).build();" +
             "        return httpPipeline;");
+    }
+
+    private void updateTemplateLocationConstructorWithGeoPositionParameter(LibraryCustomization libraryCustomization) {
+        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
+            .getPackage("com.azure.communication.messages.models")
+            .getClass("MessageTemplateLocation");
+        messageTemplateLocationCustomization.getConstructor("MessageTemplateLocation")
+            .replaceParameters(
+                "String name, GeoPosition geoPosition",
+                List.of("com.azure.core.models.GeoPosition")
+            )
+            .replaceBody( "super(name);" +
+                "this.latitude = geoPosition.getLatitude();" +
+                "this.longitude = geoPosition.getLongitude();"
+            );
+        messageTemplateLocationCustomization
+            .getConstructor("MessageTemplateLocation")
+            .getJavadoc()
+            .removeParam("longitude")
+            .removeParam("latitude")
+            .setParam("geoPosition", "the geoPosition value to set.");
+    }
+
+    private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(LibraryCustomization libraryCustomization) {
+        ClassCustomization whatsAppMessageTemplateItemCustomization = libraryCustomization
+            .getPackage("com.azure.communication.messages.models.whatsapp")
+            .getClass("WhatsAppMessageTemplateItem");
+
+        whatsAppMessageTemplateItemCustomization
+            .addImports("com.azure.core.util.BinaryData")
+            .getMethod("getContent")
+            .setReturnType("BinaryData", "return BinaryData.fromObject(returnValue);", true);
     }
 }

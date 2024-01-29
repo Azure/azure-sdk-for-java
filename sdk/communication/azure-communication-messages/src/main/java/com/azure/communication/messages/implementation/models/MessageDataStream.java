@@ -20,7 +20,7 @@ public final class MessageDataStream {
      */
     @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private String mediaId;
 
     /*
      * The stream body.
@@ -41,13 +41,13 @@ public final class MessageDataStream {
     }
 
     /**
-     * Get the id property: The stream ID.
+     * Get the mediaId property: The stream ID.
      * 
-     * @return the id value.
+     * @return the mediaId value.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public String getMediaId() {
+        return this.mediaId;
     }
 
     /**

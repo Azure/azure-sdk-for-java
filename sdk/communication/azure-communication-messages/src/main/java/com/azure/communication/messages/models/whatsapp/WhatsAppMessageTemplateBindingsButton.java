@@ -4,15 +4,15 @@
 
 package com.azure.communication.messages.models.whatsapp;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The template bindings component button for WhatsApp.
  */
-@Fluent
+@Immutable
 public final class WhatsAppMessageTemplateBindingsButton {
     /*
      * The WhatsApp button sub type
@@ -31,11 +31,14 @@ public final class WhatsAppMessageTemplateBindingsButton {
     /**
      * Creates an instance of WhatsAppMessageTemplateBindingsButton class.
      * 
+     * @param subType the subType value to set.
      * @param refValue the refValue value to set.
      */
     @Generated
     @JsonCreator
-    public WhatsAppMessageTemplateBindingsButton(@JsonProperty(value = "refValue") String refValue) {
+    public WhatsAppMessageTemplateBindingsButton(@JsonProperty(value = "subType") WhatsAppMessageButtonSubType subType,
+        @JsonProperty(value = "refValue") String refValue) {
+        this.subType = subType;
         this.refValue = refValue;
     }
 
@@ -47,18 +50,6 @@ public final class WhatsAppMessageTemplateBindingsButton {
     @Generated
     public WhatsAppMessageButtonSubType getSubType() {
         return this.subType;
-    }
-
-    /**
-     * Set the subType property: The WhatsApp button sub type.
-     * 
-     * @param subType the subType value to set.
-     * @return the WhatsAppMessageTemplateBindingsButton object itself.
-     */
-    @Generated
-    public WhatsAppMessageTemplateBindingsButton setSubType(WhatsAppMessageButtonSubType subType) {
-        this.subType = subType;
-        return this;
     }
 
     /**

@@ -27,8 +27,7 @@ public final class MediaNotificationContent extends NotificationContent {
     private String content;
 
     /*
-     * A media url for the file. Required if the type is one of the supported media
-     * types, e.g. image
+     * A media url for the file. Required if the type is one of the supported media types, e.g. image
      */
     @Generated
     @JsonProperty(value = "mediaUri")
@@ -72,8 +71,8 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the mediaUri property: A media url for the file. Required if the type is one of the supported media
-     * types, e.g. image.
+     * Get the mediaUri property: A media url for the file. Required if the type is one of the supported media types,
+     * e.g. image.
      * 
      * @return the mediaUri value.
      */

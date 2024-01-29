@@ -115,7 +115,7 @@ public final class NotificationMessagesAsyncClient {
      * BinaryData
      * }</pre>
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -125,8 +125,8 @@ public final class NotificationMessagesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadMediaWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.downloadMediaWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> downloadMediaWithResponse(String mediaId, RequestOptions requestOptions) {
+        return this.serviceClient.downloadMediaWithResponseAsync(mediaId, requestOptions);
     }
 
     /**
@@ -153,7 +153,7 @@ public final class NotificationMessagesAsyncClient {
     /**
      * Download the Media payload from a User to Business message.
      * 
-     * @param id The stream ID.
+     * @param mediaId The stream ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -164,9 +164,9 @@ public final class NotificationMessagesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadMedia(String id) {
+    public Mono<BinaryData> downloadMedia(String mediaId) {
         // Generated convenience method for downloadMediaWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadMediaWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
+        return downloadMediaWithResponse(mediaId, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

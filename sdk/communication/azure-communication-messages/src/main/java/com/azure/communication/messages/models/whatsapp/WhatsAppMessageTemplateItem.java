@@ -8,6 +8,7 @@ import com.azure.communication.messages.models.MessageTemplateItem;
 import com.azure.communication.messages.models.MessageTemplateStatus;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,9 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
     /*
-     * WhatsApp platform's template content
-     * This is the payload returned from WhatsApp
-     * API.
+     * WhatsApp platform's template content. This is the payload returned from WhatsApp API.
      */
     @Generated
     @JsonProperty(value = "content")
@@ -43,14 +42,13 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
     }
 
     /**
-     * Get the content property: WhatsApp platform's template content
-     * This is the payload returned from WhatsApp
-     * API.
+     * Get the content property: WhatsApp platform's template content. This is the payload returned from WhatsApp API.
      * 
      * @return the content value.
      */
     @Generated
-    public Object getContent() {
-        return this.content;
+    public BinaryData getContent() {
+        Object returnValue = this.content;
+        return BinaryData.fromObject(returnValue);
     }
 }
