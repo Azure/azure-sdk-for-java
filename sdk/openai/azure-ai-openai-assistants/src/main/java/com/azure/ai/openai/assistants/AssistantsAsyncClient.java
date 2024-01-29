@@ -501,7 +501,7 @@ public final class AssistantsAsyncClient {
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      *
      * @param assistantId The ID of the assistant to attach the file to.
-     * @param fileId The ID of the file to attach to the specified assistant.
+     * @param fileId The ID of the previously uploaded file to attach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -516,8 +516,11 @@ public final class AssistantsAsyncClient {
     public Mono<AssistantFile> createAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantFileWithResponse(assistantId, BinaryData.fromObject(fileId), requestOptions)
-            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
+        Map<String, Object> requestObj = new HashMap<>();
+        requestObj.put("file_id", fileId);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return createAssistantFileWithResponse(assistantId, request, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
     }
 
     /**
