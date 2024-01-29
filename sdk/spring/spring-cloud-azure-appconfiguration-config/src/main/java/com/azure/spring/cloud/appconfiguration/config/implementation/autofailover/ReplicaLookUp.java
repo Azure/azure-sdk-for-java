@@ -34,7 +34,7 @@ public class ReplicaLookUp {
 
     private static final String SRC_RECORD = "SRV";
 
-    private static final List<String> TRUSTED_DOMAIN_LABELS = List.of("azconfig", "appconfig");
+    private static final String[] TRUSTED_DOMAIN_LABELS = { "azconfig", "appconfig" };
 
     InitialDirContext context;
 
@@ -170,11 +170,13 @@ public class ReplicaLookUp {
     }
 
     private String getKnownDomain(String knownHost) {
-        return TRUSTED_DOMAIN_LABELS.stream().filter(label -> {
+        for (String label : TRUSTED_DOMAIN_LABELS) {
             int index = knownHost.toLowerCase().indexOf("." + label + ".");
-            System.out.println(index);
-            return index > 0;
-        }).findAny().orElse("");
+            if (index > 0) {
+                return knownHost.substring(index);
+            }
+        }
+        return "";
     }
 
 }
