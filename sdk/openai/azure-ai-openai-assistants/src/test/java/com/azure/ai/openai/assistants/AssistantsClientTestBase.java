@@ -20,7 +20,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -101,23 +100,21 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                .setTools(List.of(new CodeInterpreterToolDefinition()))
-        );
+                .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
     void createAssistantsFileRunner(BiConsumer<AssistantCreationOptions, String> testRunner) {
         String fileId = "file-TYRl7zf7ecXsqYcBUDofznbA";
-
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                         .setName("Math Tutor")
                         .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                        .setTools(List.of(new CodeInterpreterToolDefinition()))
-                , fileId);
+                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())),
+                fileId);
     }
 
     void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
-                .setMessages(List.of(new ThreadInitializationMessage(MessageRole.USER,
+                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
     }
 
@@ -133,7 +130,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(
                 new CreateAndRunThreadOptions(assistantId)
                         .setThread(new AssistantThreadCreationOptions()
-                                .setMessages(List.of(new ThreadInitializationMessage(MessageRole.USER,
+                                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                                         "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
     }

@@ -4,17 +4,14 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
-import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
-import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
