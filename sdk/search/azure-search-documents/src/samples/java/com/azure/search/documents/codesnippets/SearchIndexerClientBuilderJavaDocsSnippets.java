@@ -8,7 +8,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-
+@SuppressWarnings("unused")
 public class SearchIndexerClientBuilderJavaDocsSnippets {
 
     /**

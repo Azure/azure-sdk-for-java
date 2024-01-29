@@ -21,11 +21,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class SearchAsyncClientJavaDocSnippets {
 
-    public static SearchAsyncClient searchAsyncClient;
+    private static SearchAsyncClient searchAsyncClient;
 
-    public SearchAsyncClient createSearchAsyncClientWithSearchClientBuilder() {
+    private static SearchAsyncClient createSearchAsyncClientWithSearchClientBuilder() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.instantiationWithSearchClientBuilder
         SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
@@ -39,7 +40,7 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Uploading a document to a SearchAsyncClient index.
      */
-    public void uploadDocument() {
+    private static void uploadDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean
         List<Hotel> hotels = new ArrayList<>();
@@ -53,7 +54,7 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Merge a document in a SearchAsyncClient index.
      */
-    public void mergeDocument() {
+    private static void mergeDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map
         List<Hotel> hotels = new ArrayList<>();
@@ -66,7 +67,7 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Delete a document in a SearchAsyncClient index.
      */
-    public void deleteDocument() {
+    private static void deleteDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String
         SearchDocument documentId = new SearchDocument();
@@ -78,18 +79,20 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Retrieve a document from a SearchAsyncClient index.
      */
-    public void getDocument() {
+    private static void getDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
         Hotel hotel = searchAsyncClient.getDocument("100", Hotel.class).block();
-        System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
+        if (hotel != null) {
+            System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
+        }
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
     }
 
     /**
      * Search documents in a SearchAsyncClient index.
      */
-    public void searchDocuments() {
+    private static void searchDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String
         SearchDocument searchDocument = new SearchDocument();
@@ -115,7 +118,7 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Make a suggestion query to a SearchAsyncClient index.
      */
-    public void suggestDocuments() {
+    private static void suggestDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String
         SuggestPagedFlux results = searchAsyncClient.suggest("searchText", "sg");
@@ -128,7 +131,7 @@ public class SearchAsyncClientJavaDocSnippets {
     /**
      * Autocomplete a query in a SearchAsyncClient index.
      */
-    public void autocompleteDocuments() {
+    private static void autocompleteDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String
         AutocompletePagedFlux results = searchAsyncClient.autocomplete("searchText", "sg");

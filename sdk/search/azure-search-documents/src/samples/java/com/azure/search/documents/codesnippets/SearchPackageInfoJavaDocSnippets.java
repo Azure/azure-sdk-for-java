@@ -29,7 +29,7 @@ import com.azure.search.documents.util.SearchPagedIterable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@SuppressWarnings("unused")
 public class SearchPackageInfoJavaDocSnippets {
 
     /**

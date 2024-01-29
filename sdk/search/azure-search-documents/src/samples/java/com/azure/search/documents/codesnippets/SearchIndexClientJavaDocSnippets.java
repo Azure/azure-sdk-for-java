@@ -12,7 +12,7 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
-
+@SuppressWarnings("unused")
 public class SearchIndexClientJavaDocSnippets {
 
     public static SearchIndexClient SEARCH_INDEX_CLIENT;

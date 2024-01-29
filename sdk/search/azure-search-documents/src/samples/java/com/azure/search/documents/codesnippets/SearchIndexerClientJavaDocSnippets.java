@@ -16,7 +16,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+@SuppressWarnings("unused")
 public class SearchIndexerClientJavaDocSnippets {
 
 

@@ -11,7 +11,7 @@ import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
 
-
+@SuppressWarnings("unused")
 public class SearchClientBuilderJavaDocSnippets {
 
     /**
