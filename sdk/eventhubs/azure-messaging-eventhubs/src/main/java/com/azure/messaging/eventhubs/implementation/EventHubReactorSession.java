@@ -40,6 +40,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 
 /**
  * An AMQP session for Event Hubs.
@@ -49,10 +50,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
     private static final Symbol GEO_REPLICATION = Symbol.valueOf(VENDOR + ":georeplication");
-    /**
-     * Default value when geo-replication is not enabled for that Event Hub namespace.
-     */
-    private static final String DEFAULT_REPLICATION_SEGMENT = "-1";
+
+    private static final String DEFAULT_REPLICATION_SEGMENT_STRING = String.valueOf(DEFAULT_REPLICATION_SEGMENT);
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
     private final boolean isV2;
@@ -144,7 +143,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         if (eventPosition.getSequenceNumber() != null) {
             final String replicationSegment = eventPosition.getReplicationSegment() != null
                 ? eventPosition.getReplicationSegment().toString()
-                : DEFAULT_REPLICATION_SEGMENT;
+                : DEFAULT_REPLICATION_SEGMENT_STRING;
             final String position = replicationSegment + ":" + eventPosition.getSequenceNumber();
 
             return String.format(
