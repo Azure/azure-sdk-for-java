@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Parameters to Provision ILR API. */
+/**
+ * Parameters to Provision ILR API.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("IlrRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureFileShareProvisionILRRequest", value = AzureFileShareProvisionIlrRequest.class),
-    @JsonSubTypes.Type(name = "IaasVMILRRegistrationRequest", value = IaasVmilrRegistrationRequest.class)
-})
+    @JsonSubTypes.Type(name = "IaasVMILRRegistrationRequest", value = IaasVmilrRegistrationRequest.class) })
 @Immutable
 public class IlrRequest {
-    /** Creates an instance of IlrRequest class. */
+    /**
+     * Creates an instance of IlrRequest class.
+     */
     public IlrRequest() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

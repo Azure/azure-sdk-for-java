@@ -13,13 +13,6 @@
 # /doc/
 # /samples/
 
-################
-# Automation
-################
-
-# Git Hub integration and bot rules
-/.github/                                            @jsquire @ronniegeraghty
-
 ###########
 # SDK
 ###########
@@ -76,7 +69,7 @@
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/          @DimaKolomiiets @ozgurcivi-msft @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
+/sdk/communication/azure-communication-sms/          @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/
@@ -157,8 +150,12 @@
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
 
-# PRLabel: %Open AI
+# PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %Image Analysis
+# ServiceLabel: %Image Analysis %Service Attention
+/sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
@@ -460,7 +457,7 @@
 #/<NotInRepo>/          @jfggdl
 
 # ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04 @saglodha
+#/<NotInRepo>/          @kasun04
 
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
@@ -592,7 +589,7 @@
 #/<NotInRepo>/          @sunilagarwal @lfittl-msft @sr-msft @niklarin
 
 # ServiceLabel: %Recovery Services Backup %Service Attention
-#/<NotInRepo>/          @pvrk @adityabalaji-msft @Daya-Patil
+#/<NotInRepo>/          @Daya-Patil
 
 # ServiceLabel: %Recovery Services Site-Recovery %Service Attention
 #/<NotInRepo>/          @Sharmistha-Rai
@@ -625,7 +622,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @EldertGrootenboer @saglodha
+#/<NotInRepo>/          @EldertGrootenboer
 
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

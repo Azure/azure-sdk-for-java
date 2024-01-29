@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Binding resource payload. */
+/**
+ * Binding resource payload.
+ */
 @Fluent
 public final class BindingResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class BindingResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of BindingResourceInner class.
+     */
+    public BindingResourceInner() {
+    }
+
+    /**
      * Get the properties property: Properties of the Binding resource.
-     *
+     * 
      * @return the properties value.
      */
     public BindingResourceProperties properties() {
@@ -36,7 +44,7 @@ public final class BindingResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the Binding resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BindingResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class BindingResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class BindingResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

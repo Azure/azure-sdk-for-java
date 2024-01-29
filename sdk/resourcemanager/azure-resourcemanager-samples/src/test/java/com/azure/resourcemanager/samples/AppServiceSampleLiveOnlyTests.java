@@ -11,12 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.samples.ManageFunctionAppLogs;
-import com.azure.resourcemanager.appservice.samples.ManageFunctionAppSourceControl;
-import com.azure.resourcemanager.appservice.samples.ManageFunctionAppWithAuthentication;
 import com.azure.resourcemanager.appservice.samples.ManageFunctionAppWithDomainSsl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxFunctionAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppCosmosDbByMsi;
-import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithContainerRegistry;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithDomainSsl;
@@ -24,11 +21,9 @@ import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithTraffic
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbByMsi;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbThroughKeyVault;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppLogs;
-import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithDomainSsl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithTrafficManager;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,22 +31,11 @@ import java.io.IOException;
 import java.time.Duration;
 
 public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
-    @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testManageWebAppSourceControl() throws GitAPIException {
-        Assertions.assertTrue(ManageWebAppSourceControl.runSample(azureResourceManager));
-    }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppStorageAccountConnection() {
         Assertions.assertTrue(ManageWebAppStorageAccountConnection.runSample(azureResourceManager));
-    }
-
-    @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testManageLinuxWebAppSourceControl() throws GitAPIException {
-        Assertions.assertTrue(ManageLinuxWebAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test
@@ -64,18 +48,6 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppWithContainerRegistry() throws IOException, InterruptedException {
         Assertions.assertTrue(ManageLinuxWebAppWithContainerRegistry.runSample(azureResourceManager));
-    }
-
-    @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testManageFunctionAppWithAuthentication() throws GitAPIException {
-        Assertions.assertTrue(ManageFunctionAppWithAuthentication.runSample(azureResourceManager));
-    }
-
-    @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testManageFunctionAppSourceControl() throws GitAPIException {
-        Assertions.assertTrue(ManageFunctionAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration db state of an individual database. */
+/**
+ * Migration db state of an individual database.
+ */
 public final class MigrationDbState extends ExpandableStringEnum<MigrationDbState> {
-    /** Static value InProgress for MigrationDbState. */
+    /**
+     * Static value InProgress for MigrationDbState.
+     */
     public static final MigrationDbState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value WaitingForCutoverTrigger for MigrationDbState. */
+    /**
+     * Static value WaitingForCutoverTrigger for MigrationDbState.
+     */
     public static final MigrationDbState WAITING_FOR_CUTOVER_TRIGGER = fromString("WaitingForCutoverTrigger");
 
-    /** Static value Failed for MigrationDbState. */
+    /**
+     * Static value Failed for MigrationDbState.
+     */
     public static final MigrationDbState FAILED = fromString("Failed");
 
-    /** Static value Canceled for MigrationDbState. */
+    /**
+     * Static value Canceled for MigrationDbState.
+     */
     public static final MigrationDbState CANCELED = fromString("Canceled");
 
-    /** Static value Succeeded for MigrationDbState. */
+    /**
+     * Static value Succeeded for MigrationDbState.
+     */
     public static final MigrationDbState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceling for MigrationDbState. */
+    /**
+     * Static value Canceling for MigrationDbState.
+     */
     public static final MigrationDbState CANCELING = fromString("Canceling");
 
     /**
      * Creates a new instance of MigrationDbState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class MigrationDbState extends ExpandableStringEnum<MigrationDbStat
 
     /**
      * Creates or finds a MigrationDbState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationDbState.
      */
@@ -50,7 +64,7 @@ public final class MigrationDbState extends ExpandableStringEnum<MigrationDbStat
 
     /**
      * Gets known MigrationDbState values.
-     *
+     * 
      * @return known MigrationDbState values.
      */
     public static Collection<MigrationDbState> values() {

@@ -11,8 +11,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
@@ -31,9 +32,8 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +41,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link AmqpChannelProcessor}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 class AmqpChannelProcessorTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private final TestObject connection1 = new TestObject();
@@ -181,7 +182,6 @@ class AmqpChannelProcessorTest {
      */
     @MethodSource
     @ParameterizedTest
-    @Disabled("Disable test until fixed. https://github.com/Azure/azure-sdk-for-java/issues/29239")
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
@@ -190,7 +190,9 @@ class AmqpChannelProcessorTest {
         final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
         final long request = 1;
 
-        when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
+        when(retryPolicy.calculateRetryDelay(same(exception), eq(0))).thenReturn(Duration.ofMillis(1));
+        // we expect only one try
+        when(retryPolicy.calculateRetryDelay(same(exception), eq(1))).thenReturn(VERIFY_TIMEOUT.plusSeconds(10));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
 
         // Act & Assert
@@ -240,7 +242,7 @@ class AmqpChannelProcessorTest {
         /*
          * Beginning in Mockito 3.4.0+ the default value for duration changed from null to Duration.ZERO
          */
-        when(retryPolicy.calculateRetryDelay(any(), anyInt())).thenReturn(null);
+        when(retryPolicy.calculateRetryDelay(same(exception), eq(0))).thenReturn(null);
 
         // Act & Assert
         // Verify that we get the first connection.

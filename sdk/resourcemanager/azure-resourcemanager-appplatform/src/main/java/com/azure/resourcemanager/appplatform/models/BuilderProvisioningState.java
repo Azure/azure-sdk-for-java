@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuilderProvisioningState. */
+/**
+ * Builder provision status.
+ */
 public final class BuilderProvisioningState extends ExpandableStringEnum<BuilderProvisioningState> {
-    /** Static value Creating for BuilderProvisioningState. */
+    /**
+     * Static value Creating for BuilderProvisioningState.
+     */
     public static final BuilderProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for BuilderProvisioningState. */
+    /**
+     * Static value Updating for BuilderProvisioningState.
+     */
     public static final BuilderProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for BuilderProvisioningState. */
+    /**
+     * Static value Succeeded for BuilderProvisioningState.
+     */
     public static final BuilderProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for BuilderProvisioningState. */
+    /**
+     * Static value Failed for BuilderProvisioningState.
+     */
     public static final BuilderProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for BuilderProvisioningState. */
+    /**
+     * Static value Deleting for BuilderProvisioningState.
+     */
     public static final BuilderProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of BuilderProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuilderProvisioningState() {
+    }
+
+    /**
      * Creates or finds a BuilderProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BuilderProvisioningState.
      */
@@ -38,7 +59,7 @@ public final class BuilderProvisioningState extends ExpandableStringEnum<Builder
 
     /**
      * Gets known BuilderProvisioningState values.
-     *
+     * 
      * @return known BuilderProvisioningState values.
      */
     public static Collection<BuilderProvisioningState> values() {

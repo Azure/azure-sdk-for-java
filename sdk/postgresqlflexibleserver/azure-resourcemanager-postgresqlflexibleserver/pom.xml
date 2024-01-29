@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-postgresqlflexibleserver</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for PostgreSql Management</name>
@@ -89,6 +89,18 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
@@ -97,7 +109,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.34.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.35.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

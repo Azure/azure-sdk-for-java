@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.34.0</version>
+  <version>2.35.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -303,7 +303,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.34.0</version>
+  <version>2.35.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -334,7 +334,7 @@ Azure SDKs for Java offer a consistent logging story to help aid in troubleshoot
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [configure logging][logging] for guidance on package required and its configuration.
 
-Sample code to enable logging in Azure Management Libraries for Java.
+Sample code to enable logging in Azure Management Libraries for Java. If you want to troubleshoot HTTP request and response details, you can use `.withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)`.
 
 ```java readme-sample-configureWithLogging
 AzureResourceManager azure = AzureResourceManager

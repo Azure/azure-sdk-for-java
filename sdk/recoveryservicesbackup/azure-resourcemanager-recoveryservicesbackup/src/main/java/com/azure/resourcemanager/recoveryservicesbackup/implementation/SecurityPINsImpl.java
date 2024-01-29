@@ -21,22 +21,18 @@ public final class SecurityPINsImpl implements SecurityPINs {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public SecurityPINsImpl(
-        SecurityPINsClient innerClient,
+    public SecurityPINsImpl(SecurityPINsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<TokenInformation> getWithResponse(
-        String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context) {
-        Response<TokenInformationInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, parameters, context);
+    public Response<TokenInformation> getWithResponse(String vaultName, String resourceGroupName,
+        SecurityPinBase parameters, Context context) {
+        Response<TokenInformationInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TokenInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

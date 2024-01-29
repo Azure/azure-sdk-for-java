@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-/** Samples for Snapshots List. */
+/**
+ * Samples for Snapshots List.
+ */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsList.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * SnapshotsList.json
      */
     /**
      * Sample code: List Snapshots.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listSnapshots(com.azure.resourcemanager.AzureResourceManager azure) {

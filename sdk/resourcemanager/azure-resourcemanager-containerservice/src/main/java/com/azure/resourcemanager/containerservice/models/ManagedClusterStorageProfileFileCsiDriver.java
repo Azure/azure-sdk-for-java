@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureFile CSI Driver settings for the storage profile. */
+/**
+ * AzureFile CSI Driver settings for the storage profile.
+ */
 @Fluent
 public final class ManagedClusterStorageProfileFileCsiDriver {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterStorageProfileFileCsiDriver {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterStorageProfileFileCsiDriver class. */
+    /**
+     * Creates an instance of ManagedClusterStorageProfileFileCsiDriver class.
+     */
     public ManagedClusterStorageProfileFileCsiDriver() {
     }
 
     /**
      * Get the enabled property: Whether to enable AzureFile CSI Driver. The default value is true.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterStorageProfileFileCsiDriver {
 
     /**
      * Set the enabled property: Whether to enable AzureFile CSI Driver. The default value is true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStorageProfileFileCsiDriver object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterStorageProfileFileCsiDriver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

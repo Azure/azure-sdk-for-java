@@ -108,9 +108,9 @@ public final class GlobalParameterResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.globalParameterName = Utils.getValueFromIdByName(innerObject.id(), "globalParameters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.globalParameterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "globalParameters");
     }
 
     public GlobalParameterResource refresh() {

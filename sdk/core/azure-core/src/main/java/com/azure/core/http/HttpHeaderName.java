@@ -413,4 +413,14 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code x-ms-client-request-id}
      */
     public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
+
+    /**
+     * {@code x-ms-request-id}
+     */
+    public static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    /**
+     * {@code traceparent}
+     */
+    public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");
 }

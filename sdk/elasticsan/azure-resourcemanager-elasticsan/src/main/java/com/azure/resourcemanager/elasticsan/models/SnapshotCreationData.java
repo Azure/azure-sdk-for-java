@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data used when creating a volume snapshot. */
+/**
+ * Data used when creating a volume snapshot.
+ */
 @Fluent
 public final class SnapshotCreationData {
     /*
@@ -18,14 +20,16 @@ public final class SnapshotCreationData {
     @JsonProperty(value = "sourceId", required = true)
     private String sourceId;
 
-    /** Creates an instance of SnapshotCreationData class. */
+    /**
+     * Creates an instance of SnapshotCreationData class.
+     */
     public SnapshotCreationData() {
     }
 
     /**
      * Get the sourceId property: Fully qualified resource ID of the volume. E.g.
      * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}".
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -35,7 +39,7 @@ public final class SnapshotCreationData {
     /**
      * Set the sourceId property: Fully qualified resource ID of the volume. E.g.
      * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}".
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the SnapshotCreationData object itself.
      */
@@ -46,14 +50,13 @@ public final class SnapshotCreationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sourceId in model SnapshotCreationData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceId in model SnapshotCreationData"));
         }
     }
 

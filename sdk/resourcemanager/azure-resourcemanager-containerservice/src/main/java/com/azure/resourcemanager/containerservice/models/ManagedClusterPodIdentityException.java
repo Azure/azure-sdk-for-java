@@ -13,8 +13,8 @@ import java.util.Map;
 /**
  * A pod identity exception, which allows pods with certain labels to access the Azure Instance Metadata Service (IMDS)
  * endpoint without being intercepted by the node-managed identity (NMI) server.
- *
- * <p>See [disable AAD Pod Identity for a specific
+ * 
+ * See [disable AAD Pod Identity for a specific
  * Pod/Application](https://azure.github.io/aad-pod-identity/docs/configure/application_exception/) for more details.
  */
 @Fluent
@@ -38,13 +38,15 @@ public final class ManagedClusterPodIdentityException {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> podLabels;
 
-    /** Creates an instance of ManagedClusterPodIdentityException class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentityException class.
+     */
     public ManagedClusterPodIdentityException() {
     }
 
     /**
      * Get the name property: The name of the pod identity exception.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +55,7 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Set the name property: The name of the pod identity exception.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -64,7 +66,7 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Get the namespace property: The namespace of the pod identity exception.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -73,7 +75,7 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Set the namespace property: The namespace of the pod identity exception.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -84,7 +86,7 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Get the podLabels property: The pod labels to match.
-     *
+     * 
      * @return the podLabels value.
      */
     public Map<String, String> podLabels() {
@@ -93,7 +95,7 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Set the podLabels property: The pod labels to match.
-     *
+     * 
      * @param podLabels the podLabels value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -104,27 +106,21 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ManagedClusterPodIdentityException"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model ManagedClusterPodIdentityException"));
         }
         if (namespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespace in model ManagedClusterPodIdentityException"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property namespace in model ManagedClusterPodIdentityException"));
         }
         if (podLabels() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property podLabels in model ManagedClusterPodIdentityException"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property podLabels in model ManagedClusterPodIdentityException"));
         }
     }
 

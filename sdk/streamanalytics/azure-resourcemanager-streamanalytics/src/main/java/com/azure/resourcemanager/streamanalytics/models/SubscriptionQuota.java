@@ -6,16 +6,14 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotaProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the current quota for the subscription. */
+/**
+ * Describes the current quota for the subscription.
+ */
 @Fluent
 public final class SubscriptionQuota extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuota.class);
-
     /*
      * Describes the properties of the quota.
      */
@@ -35,8 +33,14 @@ public final class SubscriptionQuota extends SubResource {
     private String type;
 
     /**
+     * Creates an instance of SubscriptionQuota class.
+     */
+    public SubscriptionQuota() {
+    }
+
+    /**
      * Get the innerProperties property: Describes the properties of the quota.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionQuotaProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SubscriptionQuota object itself.
      */
@@ -65,14 +69,16 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubscriptionQuota withId(String id) {
         super.withId(id);
@@ -81,7 +87,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the maxCount property: The max permitted usage of this resource.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -90,7 +96,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the currentCount property: The current usage of this resource.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -99,7 +105,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

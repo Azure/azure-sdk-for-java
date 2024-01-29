@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes how to generate new x.y.z version number for distribution. */
+/**
+ * Describes how to generate new x.y.z version number for distribution.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DistributeVersioner")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Latest", value = DistributeVersionerLatest.class),
-    @JsonSubTypes.Type(name = "Source", value = DistributeVersionerSource.class)
-})
+    @JsonSubTypes.Type(name = "Source", value = DistributeVersionerSource.class) })
 @Immutable
 public class DistributeVersioner {
-    /** Creates an instance of DistributeVersioner class. */
+    /**
+     * Creates an instance of DistributeVersioner class.
+     */
     public DistributeVersioner() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

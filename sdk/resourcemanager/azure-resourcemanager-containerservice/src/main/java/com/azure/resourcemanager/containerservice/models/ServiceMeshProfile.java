@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service mesh profile for a managed cluster. */
+/**
+ * Service mesh profile for a managed cluster.
+ */
 @Fluent
 public final class ServiceMeshProfile {
     /*
@@ -23,13 +25,15 @@ public final class ServiceMeshProfile {
     @JsonProperty(value = "istio")
     private IstioServiceMesh istio;
 
-    /** Creates an instance of ServiceMeshProfile class. */
+    /**
+     * Creates an instance of ServiceMeshProfile class.
+     */
     public ServiceMeshProfile() {
     }
 
     /**
      * Get the mode property: Mode of the service mesh.
-     *
+     * 
      * @return the mode value.
      */
     public ServiceMeshMode mode() {
@@ -38,7 +42,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Set the mode property: Mode of the service mesh.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the ServiceMeshProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Get the istio property: Istio service mesh configuration.
-     *
+     * 
      * @return the istio value.
      */
     public IstioServiceMesh istio() {
@@ -58,7 +62,7 @@ public final class ServiceMeshProfile {
 
     /**
      * Set the istio property: Istio service mesh configuration.
-     *
+     * 
      * @param istio the istio value to set.
      * @return the ServiceMeshProfile object itself.
      */
@@ -69,14 +73,13 @@ public final class ServiceMeshProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
         }
         if (istio() != null) {
             istio().validate();

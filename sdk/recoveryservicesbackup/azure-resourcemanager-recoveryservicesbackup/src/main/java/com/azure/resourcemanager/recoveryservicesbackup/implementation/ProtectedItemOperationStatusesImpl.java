@@ -20,48 +20,28 @@ public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOp
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectedItemOperationStatusesImpl(
-        ProtectedItemOperationStatusesClient innerClient,
+    public ProtectedItemOperationStatusesImpl(ProtectedItemOperationStatusesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context) {
-        Response<OperationStatusInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId, Context context) {
+        Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationStatus get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        OperationStatusInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
+    public OperationStatus get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String operationId) {
+        OperationStatusInner inner = this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

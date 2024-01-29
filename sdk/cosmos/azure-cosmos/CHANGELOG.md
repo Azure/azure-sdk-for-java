@@ -1,17 +1,34 @@
 ## Release History
 
-### 4.54.0-beta.1 (Unreleased)
+### 4.55.0-beta.1 (Unreleased)
+* Added option to override the Http Connection Pool size in Gateway mode. Increasing the connection pool size beyond 1000 can be useful when the number of concurrent requests in Gateway mode is very high and you see a `reactor.netty.internal.shaded.reactor.pool.PoolAcquirePendingLimitException: Pending acquire queue has reached its maximum size of 2000` error. - See [PR 38305](https://github.com/Azure/azure-sdk-for-java/pull/38305)
+
+#### Features Added
+* Added payload size metrics for Gateway mode. - See [PR 38517](https://github.com/Azure/azure-sdk-for-java/pull/38517)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232)
+* Changed to add `transportRequestChannelAcquisitionContext` in CosmosDiagnostics based on duration in `channelAcquisitionStarted` stage. By default, if `channelAcquisitionStarted` took more than 1s, `transportRequestChannelAcquisitionContext` will be added. - See [PR 38416](https://github.com/Azure/azure-sdk-for-java/pull/38416)
+* Added information about the path when it is invalid in RxDocumentService ctor. - See [PR 38482](https://github.com/Azure/azure-sdk-for-java/pull/38482)
+* Removed `CancellationException` callstack from `RntbdRequestRecord.toString`. - See [PR 38504](https://github.com/Azure/azure-sdk-for-java/pull/38504)
+* Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
+
+### 4.54.0 (2024-01-03)
 
 #### Features Added
 * Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed issue where AAD/Entra ID related exceptions are not fully propagated to the caller when CosmosAsyncClient is created, causing ambiguity for user on the root cause of the error - See [PR 37977](https://github.com/Azure/azure-sdk-for-java/pull/37977) 
 * Fixed a `NullPointerException` issue in `MetadataRequestRetryPolicy` when `locationEndpointToRoute` is not set. - See [PR 38094](https://github.com/Azure/azure-sdk-for-java/pull/38094)
 
 #### Other Changes
+* Reset `transitTimeoutCount` and `cancellationCount` in `RntbdClientChannelHealthChecker` when CPU load is above threshold. - See [PR 38157](https://github.com/Azure/azure-sdk-for-java/pull/38157)
+* Perf-improvement avoiding extra-buffer copy for query and point operations - See [PR 38072](https://github.com/Azure/azure-sdk-for-java/pull/38072)
 
 ### 4.53.1 (2023-12-06)
 

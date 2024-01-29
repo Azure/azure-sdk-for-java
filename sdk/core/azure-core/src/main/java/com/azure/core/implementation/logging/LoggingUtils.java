@@ -17,7 +17,7 @@ public final class LoggingUtils {
     private LoggingUtils() {
     }
 
-    /*
+    /**
      * Removes CR, LF or CRLF pattern in the {@code logMessage}.
      *
      * @param logMessage The log message to sanitize.
@@ -51,7 +51,7 @@ public final class LoggingUtils {
         return sb.toString();
     }
 
-    /*
+    /**
      * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
      * element in the argument list.
      *
@@ -66,7 +66,7 @@ public final class LoggingUtils {
         return args[args.length - 1] instanceof Throwable;
     }
 
-    /*
+    /**
      * Removes the last element from the arguments as it is a throwable.
      *
      * @param args The arguments passed to format the log message.

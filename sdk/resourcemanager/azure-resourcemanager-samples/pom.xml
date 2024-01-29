@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.35.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+      <version>2.36.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -86,12 +86,6 @@
       <artifactId>commons-net</artifactId>
       <version>3.9.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
     </dependency>
-    <!-- Important!!! jgit has gzip error above 4.5 with app services -->
-    <dependency>
-      <groupId>org.eclipse.jgit</groupId>
-      <artifactId>org.eclipse.jgit</artifactId>
-      <version>4.5.7.201904151645-r</version> <!-- {x-version-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
-    </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
       <artifactId>docker-java</artifactId>
@@ -120,7 +114,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.53.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.54.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -130,7 +124,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.14.7</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.15.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -157,7 +151,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -207,9 +201,8 @@
                 <include>com.google.guava:guava:[32.0.1-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
-                <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
                 <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
-                <include>com.github.spotbugs:spotbugs-annotations:[4.8.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

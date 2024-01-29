@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpoints. */
+/**
+ * Resource collection API of PrivateEndpoints.
+ */
 public interface PrivateEndpoints {
     /**
      * Gets the operation status for a private endpoint connection.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -22,16 +24,12 @@ public interface PrivateEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status for a private endpoint connection along with {@link Response}.
      */
-    Response<OperationStatus> getOperationStatusWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        String operationId,
-        Context context);
+    Response<OperationStatus> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, String operationId, Context context);
 
     /**
      * Gets the operation status for a private endpoint connection.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -41,6 +39,6 @@ public interface PrivateEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status for a private endpoint connection.
      */
-    OperationStatus getOperationStatus(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId);
+    OperationStatus getOperationStatus(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
+        String operationId);
 }

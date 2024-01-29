@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure Storage Account workload-specific container. */
+/**
+ * Azure Storage Account workload-specific container.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("StorageContainer")
 @Fluent
@@ -44,13 +46,15 @@ public final class AzureStorageContainer extends ProtectionContainer {
     @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
 
-    /** Creates an instance of AzureStorageContainer class. */
+    /**
+     * Creates an instance of AzureStorageContainer class.
+     */
     public AzureStorageContainer() {
     }
 
     /**
      * Get the sourceResourceId property: Fully qualified ARM url.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -59,7 +63,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the sourceResourceId property: Fully qualified ARM url.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -70,7 +74,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the storageAccountVersion property: Storage account version.
-     *
+     * 
      * @return the storageAccountVersion value.
      */
     public String storageAccountVersion() {
@@ -79,7 +83,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the storageAccountVersion property: Storage account version.
-     *
+     * 
      * @param storageAccountVersion the storageAccountVersion value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -90,7 +94,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -99,7 +103,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -110,7 +114,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the protectedItemCount property: Number of items backed up in this container.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Long protectedItemCount() {
@@ -119,7 +123,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the protectedItemCount property: Number of items backed up in this container.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -131,7 +135,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
     /**
      * Get the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
      * not.
-     *
+     * 
      * @return the acquireStorageAccountLock value.
      */
     public AcquireStorageAccountLock acquireStorageAccountLock() {
@@ -141,7 +145,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
     /**
      * Set the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
      * not.
-     *
+     * 
      * @param acquireStorageAccountLock the acquireStorageAccountLock value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -150,35 +154,45 @@ public final class AzureStorageContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -187,7 +201,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

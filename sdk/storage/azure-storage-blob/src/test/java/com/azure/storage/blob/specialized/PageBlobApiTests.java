@@ -13,6 +13,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -29,18 +30,20 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.PageRangeItem;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -156,7 +159,7 @@ public class PageBlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createTagsSupplier")
     public void createTags(String key1, String value1, String key2, String value2) {
@@ -184,7 +187,7 @@ public class PageBlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -333,7 +336,7 @@ public class PageBlobApiTests extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createIfNotExistsTagsSupplier")
     public void createIfNotExistsTags(String key1, String value1, String key2, String value2) {
@@ -420,7 +423,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void uploadPageAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -504,9 +507,8 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageRetryOnTransientFailure() {
-        PageBlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getPageBlobClient();
+        PageBlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getPageBlobClient();
 
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
         clientWithFailure.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -519,15 +521,17 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLMin() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         destURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
 
-        Response<PageBlobItem> response = bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl(), null, null,
-            null, null, null, null);
+        String sas = destURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<PageBlobItem> response = bc.uploadPagesFromUrlWithResponse(pageRange,
+            destURL.getBlobUrl() + "?" + sas, null, null, null,
+            null, null, null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
@@ -535,8 +539,6 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLRange() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
-
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4);
 
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -547,13 +549,15 @@ public class PageBlobApiTests extends BlobTestBase {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES * 2);
 
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
         destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            sourceURL.getBlobUrl(), PageBlobClient.PAGE_BYTES * 2L);
+            sourceURL.getBlobUrl() + "?" + sas, PageBlobClient.PAGE_BYTES * 2L);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         destURL.downloadStream(outputStream);
-        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(), 0,
-            PageBlobClient.PAGE_BYTES * 2);
+        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(),
+            0, PageBlobClient.PAGE_BYTES * 2);
     }
 
     @Test
@@ -564,41 +568,43 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         bc.uploadPages(pageRange, new ByteArrayInputStream(data));
 
-        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest(data), null, null, null, null));
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(data), null,
+            null, null, null));
     }
 
     @Test
     public void uploadPageFromURLMD5Fail() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
 
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
         assertThrows(BlobStorageException.class, () -> destURL.uploadPagesFromUrlWithResponse(pageRange,
-            bc.getBlobUrl(), null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null,
-            null));
+            bc.getBlobUrl() + "?" + sas, null, MessageDigest.getInstance("MD5")
+            .digest("garbage".getBytes()), null, null, null, null));
 
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void uploadPageFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-        String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
-        String tags) {
+                                               String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+                                               String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -615,17 +621,18 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, pac,
-            null, null, null), 201);
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
+            null, null, pac, null, null, null),
+            201);
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageACFailSupplier")
     public void uploadPageFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-        String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
-        String tags) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
-
+                                                   String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+                                                   String tags) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -643,15 +650,17 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
             .setTagsConditions(tags);
 
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
         assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl(), null, null, pac, null, null, null));
+            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null, pac,
+            null, null, null));
     }
 
     @ParameterizedTest
     @MethodSource("uploadPageFromURLSourceACSupplier")
     public void uploadPageFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-        String sourceIfMatch, String sourceIfNoneMatch) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+                                          String sourceIfMatch, String sourceIfNoneMatch) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -664,8 +673,11 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(sourceIfNoneMatch);
 
-        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl(), null, null, null,
-            smac, null, null), 201);
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
+            null, null, null, smac, null, null),
+            201);
     }
 
     private static Stream<Arguments> uploadPageFromURLSourceACSupplier() {
@@ -679,8 +691,7 @@ public class PageBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("uploadPageFromURLSourceACFailSupplier")
     public void uploadPageFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
-        OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+                                              OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
         PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         sourceURL.create(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -692,8 +703,11 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
         assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
-            pageRange, sourceURL.getBlobUrl(), null, null, null, smac, null, null));
+            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null,
+            null, smac, null, null));
     }
 
     private static Stream<Arguments> uploadPageFromURLSourceACFailSupplier() {
@@ -723,7 +737,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertNotNull(bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void clearPagesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -799,7 +813,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> bc.getPageRanges(null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -843,7 +857,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.getPageRanges(null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPageRanges() {
         bc.create(4 * Constants.KB, true);
@@ -866,7 +880,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterable.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesPageSize() {
         bc.create(4 * Constants.KB, true);
@@ -902,7 +916,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesContinuationToken() {
         bc.create(4 * Constants.KB, true);
@@ -925,7 +939,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRange() {
         bc.create(4 * Constants.KB, true);
@@ -946,7 +960,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals(size, 1);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPagesRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -968,7 +982,7 @@ public class PageBlobApiTests extends BlobTestBase {
             (long) PageBlobClient.PAGE_BYTES)).setRequestConditions(bac), null, null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1073,7 +1087,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> bc.getPageRangesDiff(null, snapId).getPageRange());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1153,7 +1167,7 @@ public class PageBlobApiTests extends BlobTestBase {
             Integer.parseInt(response.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiff() {
         bc.create(4 * Constants.KB, true);
@@ -1193,7 +1207,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterable.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiffPageSize() {
         bc.create(4 * Constants.KB, true);
@@ -1233,7 +1247,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffContinuationToken() {
         bc.create(4 * Constants.KB, true);
@@ -1261,7 +1275,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertFalse(iterator.hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffRange() {
         bc.create(4 * Constants.KB, true);
@@ -1287,7 +1301,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals(size, 2);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPageRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1315,7 +1329,7 @@ public class PageBlobApiTests extends BlobTestBase {
             .stream().count());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -1365,7 +1379,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null, null, null),  200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void resizeAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1430,7 +1444,7 @@ public class PageBlobApiTests extends BlobTestBase {
             null, null, null, null), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void sequenceNumberAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1474,11 +1488,13 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void startIncrementalCopy() {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
         PageBlobClient bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapId = bc.createSnapshot().getSnapshotId();
 
-        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapId, null, null,
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapId, null, null,
             null);
 
         CopyStatusType status = copyResponse.getValue();
@@ -1502,23 +1518,29 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void startIncrementalCopyMin() {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
         PageBlobClient bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
 
-        assertResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null), 202);
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot, null, null, null), 202);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-        String noneMatch, String tags) {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
+                                       String noneMatch, String tags) {
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
-        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null,
-            null);
+
+        sleepIfRunningAgainstService(10 * 1000);
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas,
+            snapshot, null, null, null);
 
         CopyStatusType status = copyResponse.getValue();
         OffsetDateTime start = testResourceNamer.now();
@@ -1543,8 +1565,9 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(),
-            snapshot).setRequestConditions(mac), null, null),  202);
+        assertResponseStatusCode(bu2.copyIncrementalWithResponse(
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, snapshot).setRequestConditions(mac),
+            null, null),  202);
     }
 
     private static Stream<Arguments> startIncrementalCopyACSupplier() {
@@ -1560,11 +1583,13 @@ public class PageBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("startIncrementalCopyACFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
-        String noneMatch, String tags) {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
+                                           String noneMatch, String tags) {
+
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
-        bu2.copyIncremental(bc.getBlobUrl(), snapshot);
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        bu2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapshot);
         String finalSnapshot = bc.createSnapshot().getSnapshotId();
         noneMatch = setupBlobMatchCondition(bu2, noneMatch);
         PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
@@ -1575,7 +1600,8 @@ public class PageBlobApiTests extends BlobTestBase {
             .setTagsConditions(tags);
 
         assertThrows(BlobStorageException.class, () -> bu2.copyIncrementalWithResponse(
-            new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), finalSnapshot).setRequestConditions(mac), null, null));
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, finalSnapshot)
+            .setRequestConditions(mac), null, null));
     }
 
     private static Stream<Arguments> startIncrementalCopyACFailSupplier() {

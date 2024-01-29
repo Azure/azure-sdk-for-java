@@ -8,19 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of key used to encrypt the data of the disk. */
+/**
+ * The type of key used to encrypt the data of the disk.
+ */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
-    /** Static value EncryptionAtRestWithPlatformKey for EncryptionType. */
-    public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY =
-        fromString("EncryptionAtRestWithPlatformKey");
+    /**
+     * Static value EncryptionAtRestWithPlatformKey for EncryptionType.
+     */
+    public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY
+        = fromString("EncryptionAtRestWithPlatformKey");
 
-    /** Static value EncryptionAtRestWithCustomerManagedKey for EncryptionType. */
-    public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY =
-        fromString("EncryptionAtRestWithCustomerManagedKey");
+    /**
+     * Static value EncryptionAtRestWithCustomerManagedKey for EncryptionType.
+     */
+    public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY
+        = fromString("EncryptionAtRestWithCustomerManagedKey");
 
     /**
      * Creates a new instance of EncryptionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +35,7 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
 
     /**
      * Creates or finds a EncryptionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionType.
      */
@@ -40,7 +46,7 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
 
     /**
      * Gets known EncryptionType values.
-     *
+     * 
      * @return known EncryptionType values.
      */
     public static Collection<EncryptionType> values() {

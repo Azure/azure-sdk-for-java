@@ -59,6 +59,11 @@
      <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>
@@ -121,13 +126,6 @@
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <profiles>
@@ -188,7 +186,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -197,7 +195,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

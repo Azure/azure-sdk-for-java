@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.imagebuilder.generated;
 
-/** Samples for Triggers Get. */
+/**
+ * Samples for Triggers Get.
+ */
 public final class TriggersGetSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/GetTrigger.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetTrigger.
+     * json
      */
     /**
      * Sample code: Get a trigger resource.
-     *
+     * 
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void getATriggerResource(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager
-            .triggers()
-            .getWithResponse("myResourceGroup", "myImageTemplate", "source", com.azure.core.util.Context.NONE);
+        manager.triggers().getWithResponse("myResourceGroup", "myImageTemplate", "source",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -10,8 +10,8 @@ import java.time.OffsetDateTime;
 
 /**
  * A time range.
- *
- * <p>For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
+ * 
+ * For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
  */
 @Fluent
 public final class TimeSpan {
@@ -27,13 +27,15 @@ public final class TimeSpan {
     @JsonProperty(value = "end")
     private OffsetDateTime end;
 
-    /** Creates an instance of TimeSpan class. */
+    /**
+     * Creates an instance of TimeSpan class.
+     */
     public TimeSpan() {
     }
 
     /**
      * Get the start property: The start of a time span.
-     *
+     * 
      * @return the start value.
      */
     public OffsetDateTime start() {
@@ -42,7 +44,7 @@ public final class TimeSpan {
 
     /**
      * Set the start property: The start of a time span.
-     *
+     * 
      * @param start the start value to set.
      * @return the TimeSpan object itself.
      */
@@ -53,7 +55,7 @@ public final class TimeSpan {
 
     /**
      * Get the end property: The end of a time span.
-     *
+     * 
      * @return the end value.
      */
     public OffsetDateTime end() {
@@ -62,7 +64,7 @@ public final class TimeSpan {
 
     /**
      * Set the end property: The end of a time span.
-     *
+     * 
      * @param end the end value to set.
      * @return the TimeSpan object itself.
      */
@@ -73,7 +75,7 @@ public final class TimeSpan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

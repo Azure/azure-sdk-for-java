@@ -215,7 +215,8 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
@@ -1217,7 +1218,8 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
     }
 
@@ -1956,7 +1958,8 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
+        return RouterWorkerConstructorProxy
+            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
     }
 
     /**

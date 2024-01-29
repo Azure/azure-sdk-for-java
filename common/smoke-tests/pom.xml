@@ -112,13 +112,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.8.14</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.9.0</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.53.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.54.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
 
     <dependency>
@@ -136,13 +136,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.17.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.18.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     </dependency>
 
     <dependency>
