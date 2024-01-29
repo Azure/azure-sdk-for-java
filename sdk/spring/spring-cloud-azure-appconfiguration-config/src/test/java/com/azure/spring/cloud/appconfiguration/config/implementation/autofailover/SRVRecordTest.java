@@ -17,7 +17,6 @@ public class SRVRecordTest {
         assertEquals(3, srvRecord.getPort());
         assertEquals("fake-uri", srvRecord.getTarget());
         assertEquals("https://fake-uri", srvRecord.getEndpoint());
-        assertEquals("Priority: 1, Weight: 2, Port: 3, Target: fake-uri", srvRecord.toString());
     }
     
     @Test

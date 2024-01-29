@@ -42,6 +42,8 @@ public final class ConfigStore {
 
     private List<String> trimKeyPrefix;
 
+    private boolean replicaDiscoveryEnabled = true;
+
     /**
      * @return the endpoint
      */
@@ -183,11 +185,24 @@ public final class ConfigStore {
     }
 
     /**
-     * @param trimKeyPrefix the values to be trimmed from key names before being set to
-     *        `@ConfigurationProperties`
+     * @param trimKeyPrefix the values to be trimmed from key names before being set to `@ConfigurationProperties`
      */
     public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
         this.trimKeyPrefix = trimKeyPrefix;
+    }
+
+    /**
+     * @return the replicaDiscoveryEnabled
+     */
+    public boolean isReplicaDiscoveryEnabled() {
+        return replicaDiscoveryEnabled;
+    }
+
+    /**
+     * @param replicaDiscoveryEnabled the replicaDiscoveryEnabled to set
+     */
+    public void setReplicaDiscoveryEnabled(boolean replicaDiscoveryEnabled) {
+        this.replicaDiscoveryEnabled = replicaDiscoveryEnabled;
     }
 
     /**

@@ -31,131 +31,131 @@ public class ReplicaLookUpTest {
 
     @Mock
     private InitialDirContext contextMock;
-    
+
     @Mock
     private Attributes srvOriginMock;
-    
+
     @Mock
     private Attributes srvReplicaMock;
-    
+
     @Mock
     private Attribute srvAttrOriginMock;
-    
+
     @Mock
     private Attribute srvAttrReplicaMock;
-    
+
     @Mock
     private NamingEnumeration<?> namingOriginMock;
-    
+
     @Mock
     private NamingEnumeration<?> namingReplicaMock;
-    
+
     private ConfigStore configStore;
-    
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        
+
         properties = new AppConfigurationProperties();
         configStore = new ConfigStore();
-        configStore.setEndpoint("https://fake.endpoint");
+        configStore.setEndpoint("https://fake.endpoint.azconfig.test");
     }
 
     @Test
     public void updateAutoFailoverEndpointsUnconfiguredTest() throws NamingException {
         properties.setStores(List.of());
         replicaLookUp = new ReplicaLookUp(properties);
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("test.endpoint").size());
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("test.endpoint.azconfig.test").size());
         replicaLookUp.context = contextMock;
 
         replicaLookUp.updateAutoFailoverEndpoints();
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("test.endpoint").size());
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("test.endpoint.azconfig.test").size());
     }
-    
+
     @Test
     public void updateAutoFailoverEndpointsNoReplicasTest() throws NamingException {
-        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock).thenThrow(new NameNotFoundException());
+        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock)
+            .thenThrow(new NameNotFoundException());
         when(srvOriginMock.get(Mockito.anyString())).thenReturn(srvAttrOriginMock);
         Mockito.doReturn(namingOriginMock).when(srvAttrOriginMock).getAll();
         when(namingOriginMock.hasMore()).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.").when(namingOriginMock).next();
-        
+        Mockito.doReturn("1 1 1 fake.endpoint.azconfig.test.").when(namingOriginMock).next();
+
         ConfigStore configStore = new ConfigStore();
-        configStore.setEndpoint("https://fake.endpoint");
+        configStore.setEndpoint("https://fake.endpoint.azconfig.test");
         properties.setStores(List.of(configStore));
         replicaLookUp = new ReplicaLookUp(properties);
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
         replicaLookUp.context = contextMock;
 
         replicaLookUp.updateAutoFailoverEndpoints();
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
     }
-    
+
     @Test
     public void updateAutoFailoverEndpointsAReplicasTest() throws NamingException {
-        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock).thenReturn(srvReplicaMock).thenThrow(new NameNotFoundException());
-        when(srvOriginMock.get(Mockito.anyString())).thenReturn(srvAttrOriginMock);
-        Mockito.doReturn(namingOriginMock).when(srvAttrOriginMock).getAll();
-        when(namingOriginMock.hasMore()).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.").when(namingOriginMock).next();
-        
-        when(srvReplicaMock.get(Mockito.anyString())).thenReturn(srvAttrReplicaMock);
-        Mockito.doReturn(namingReplicaMock).when(srvAttrReplicaMock).getAll();
+        setupMock();
         when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.replica.").when(namingReplicaMock).next();
-        
-        properties.setStores(List.of(configStore));
-        replicaLookUp = new ReplicaLookUp(properties);
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
-        replicaLookUp.context = contextMock;
+        Mockito.doReturn("1 1 1 fake.endpoint.replica.azconfig.test.").when(namingReplicaMock).next();
+
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
 
         replicaLookUp.updateAutoFailoverEndpoints();
-        assertEquals(1, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
+        assertEquals(1, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
     }
-    
+
     @Test
     public void updateAutoFailoverEndpointsMuplipleReplicasTest() throws NamingException {
-        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock).thenReturn(srvReplicaMock).thenThrow(new NameNotFoundException());
-        when(srvOriginMock.get(Mockito.anyString())).thenReturn(srvAttrOriginMock);
-        Mockito.doReturn(namingOriginMock).when(srvAttrOriginMock).getAll();
-        when(namingOriginMock.hasMore()).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.").when(namingOriginMock).next();
-        
-        when(srvReplicaMock.get(Mockito.anyString())).thenReturn(srvAttrReplicaMock);
-        Mockito.doReturn(namingReplicaMock).when(srvAttrReplicaMock).getAll();
+        setupMock();
         when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.replica.").doReturn("1 1 1 fake.endpoint.replica2.").when(namingReplicaMock).next();
-        
-        properties.setStores(List.of(configStore));
-        replicaLookUp = new ReplicaLookUp(properties);
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
-        replicaLookUp.context = contextMock;
+        Mockito.doReturn("1 1 1 fake.endpoint.replica.azconfig.test.")
+            .doReturn("1 1 1 fake.endpoint.replica2.azconfig.test.").when(namingReplicaMock).next();
+
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
 
         replicaLookUp.updateAutoFailoverEndpoints();
-        assertEquals(2, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
+        assertEquals(2, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
     }
-    
-    
+
     @Test
     public void updateAutoFailoverEndpointsConnectionStringTest() throws NamingException {
-        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock).thenReturn(srvReplicaMock).thenThrow(new NameNotFoundException());
+        configStore.setConnectionStrings(List.of("Endpoint=https://fake.endpoint.azconfig.test;Id=0;Secret=0="));
+        setupMock();
+        when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(false);
+        Mockito.doReturn("1 1 1 fake.endpoint.replica.azconfig.test.").when(namingReplicaMock).next();
+        
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
+
+        replicaLookUp.updateAutoFailoverEndpoints();
+        assertEquals(1, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
+    }
+    
+    @Test
+    public void updateAutoFailoverEndpointsInvalidReplicaTest() throws NamingException {
+        setupMock();
+        when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(false);
+        Mockito.doReturn("1 1 1 fake.endpoint.replica.invalid.test.").when(namingReplicaMock).next();
+
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
+
+        replicaLookUp.updateAutoFailoverEndpoints();
+        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
+    }
+
+    private void setupMock() throws NamingException {
+        when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock)
+            .thenReturn(srvReplicaMock).thenThrow(new NameNotFoundException());
         when(srvOriginMock.get(Mockito.anyString())).thenReturn(srvAttrOriginMock);
         Mockito.doReturn(namingOriginMock).when(srvAttrOriginMock).getAll();
         when(namingOriginMock.hasMore()).thenReturn(true).thenReturn(false);
         Mockito.doReturn("1 1 1 fake.endpoint.").when(namingOriginMock).next();
-        
+
         when(srvReplicaMock.get(Mockito.anyString())).thenReturn(srvAttrReplicaMock);
         Mockito.doReturn(namingReplicaMock).when(srvAttrReplicaMock).getAll();
-        when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(false);
-        Mockito.doReturn("1 1 1 fake.endpoint.replica.").when(namingReplicaMock).next();
         
-        configStore.setConnectionStrings(List.of("Endpoint=https://fake.endpoint;Id=0;Secret=0="));
         properties.setStores(List.of(configStore));
         replicaLookUp = new ReplicaLookUp(properties);
-        assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
+        
         replicaLookUp.context = contextMock;
-
-        replicaLookUp.updateAutoFailoverEndpoints();
-        assertEquals(1, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint").size());
     }
 }

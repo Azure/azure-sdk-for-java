@@ -17,6 +17,7 @@ import javax.naming.directory.InitialDirContext;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
@@ -33,6 +34,8 @@ public class ReplicaLookUp {
 
     private static final String SRC_RECORD = "SRV";
 
+    private static final List<String> TRUSTED_DOMAIN_LABELS = List.of("azconfig", "appconfig");
+
     InitialDirContext context;
 
     private Map<String, List<SRVRecord>> records = new HashMap<String, List<SRVRecord>>();
@@ -47,6 +50,9 @@ public class ReplicaLookUp {
     @Async
     public void updateAutoFailoverEndpoints() {
         for (ConfigStore configStore : properties.getStores()) {
+            if (!configStore.isEnabled()) {
+                continue;
+            }
             String mainEndpoint = configStore.getEndpoint();
 
             List<String> providedEndpoints = new ArrayList<>();
@@ -90,12 +96,13 @@ public class ReplicaLookUp {
 
         SRVRecord origin = getOriginRecord(host);
         List<SRVRecord> replicas = getReplicaRecords(origin);
+        String knownDomain = getKnownDomain(endpoint);
 
-        if (!providedEndpoints.contains(origin.getEndpoint())) {
+        if (!providedEndpoints.contains(origin.getEndpoint()) && validate(knownDomain, origin.getEndpoint())) {
             records.add(origin);
         }
         replicas.stream().forEach(replica -> {
-            if (!providedEndpoints.contains(replica.getEndpoint())) {
+            if (!providedEndpoints.contains(replica.getEndpoint()) && validate(knownDomain, replica.getEndpoint())) {
                 records.add(replica);
             }
         });
@@ -129,7 +136,7 @@ public class ReplicaLookUp {
 
     private Attribute requestRecord(String name) {
         try {
-            return context.getAttributes(name, new String[] { SRC_RECORD }).get("SRV");
+            return context.getAttributes(name, new String[] { SRC_RECORD }).get(SRC_RECORD);
         } catch (NameNotFoundException e) {
             // Found Last Record, should be the case that no SRV Record exists.
             return null;
@@ -149,6 +156,25 @@ public class ReplicaLookUp {
         }
 
         return hosts;
+    }
+
+    private boolean validate(String knownDomain, String endpoint) {
+        if (!StringUtils.hasText(endpoint)) {
+            return false;
+        }
+
+        if (!StringUtils.hasText(knownDomain)) {
+            return false;
+        }
+        return endpoint.endsWith(knownDomain);
+    }
+
+    private String getKnownDomain(String knownHost) {
+        return TRUSTED_DOMAIN_LABELS.stream().filter(label -> {
+            int index = knownHost.toLowerCase().indexOf("." + label + ".");
+            System.out.println(index);
+            return index > 0;
+        }).findAny().orElse("");
     }
 
 }

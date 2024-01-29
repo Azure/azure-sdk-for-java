@@ -11,6 +11,8 @@ public class SRVRecord {
     private final int port;
 
     private final String target;
+    
+    private static final String PROTOCAL = "https://";
 
     public SRVRecord(String[] record) {
         this.priority = Integer.valueOf(record[0]);
@@ -36,12 +38,7 @@ public class SRVRecord {
     }
 
     public String getEndpoint() {
-        return "https://" + target;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Priority: %s, Weight: %s, Port: %s, Target: %s", priority, weight, port, target);
+        return PROTOCAL + target;
     }
 
     public int compareTo(SRVRecord record) {
