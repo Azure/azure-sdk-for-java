@@ -13,6 +13,7 @@ import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -139,134 +140,6 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
                         assertEquals(updatedDescription, updatedAssistant.getDescription());
                         assertEquals(updatedInstructions, updatedAssistant.getInstructions());
                         assertEquals(assistant.getTools().get(0).getClass(), updatedAssistant.getTools().get(0).getClass());
-                    })
-                    .verifyComplete();
-
-            // Deleted created assistant
-            StepVerifier.create(client.deleteAssistant(assistantId))
-                    .assertNext(assistantDeletionStatus -> {
-                        assertEquals(assistantId, assistantDeletionStatus.getId());
-                        assertTrue(assistantDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCrd(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient, serviceVersion);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
-
-            // Create an assistant
-            StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                    })
-                    .verifyComplete();
-
-            Assistant assistant = assistantCreated.get();
-            String assistantId = assistant.getId();
-
-            // Attach a file to the assistant created above and return the assistant file
-            StepVerifier.create(client.createAssistantFile(assistantId, fileId))
-                    .assertNext(assistantFile -> {
-                        assertNotNull(assistantFile.getCreatedAt());
-                        assertEquals(assistantId, assistantFile.getAssistantId());
-                        assertEquals("assistant.file", assistantFile.getObject());
-                        assertEquals(fileId, assistantFile.getId());
-                    })
-                    .verifyComplete();
-
-            // Retrieve the assistant file
-            StepVerifier.create(client.getAssistantFile(assistantId, fileId))
-                    .assertNext(retrievedAssistantFile -> {
-                        assertEquals(retrievedAssistantFile.getCreatedAt(), retrievedAssistantFile.getCreatedAt());
-                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
-                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
-                        assertEquals(fileId, retrievedAssistantFile.getId());
-                    })
-                    .verifyComplete();
-
-            // Unlinks the attached file from the assistant
-            StepVerifier.create(client.deleteAssistantFile(assistantId, fileId))
-                    .assertNext(assistantFileDeletionStatus -> {
-                        assertEquals(fileId, assistantFileDeletionStatus.getId());
-                        assertTrue(assistantFileDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
-
-            // Deleted created assistant
-            StepVerifier.create(client.deleteAssistant(assistantId))
-                    .assertNext(assistantDeletionStatus -> {
-                        assertEquals(assistantId, assistantDeletionStatus.getId());
-                        assertTrue(assistantDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCrdWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient, serviceVersion);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
-            // Create an assistant
-            StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                    })
-                    .verifyComplete();
-
-            Assistant assistant = assistantCreated.get();
-            String assistantId = assistant.getId();
-
-            // Attach a file to the assistant created above and return the assistant file
-            Map<String, String> requestObj = new HashMap<>();
-            requestObj.put("file_id", fileId);
-            BinaryData request = BinaryData.fromObject(requestObj);
-            StepVerifier.create(client.createAssistantFileWithResponse(assistantId, request, new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantFile assistantFile = assertAndGetValueFromResponse(response, AssistantFile.class, 200);
-                        assertNotNull(assistantFile.getCreatedAt());
-                        assertEquals(assistantId, assistantFile.getAssistantId());
-                        assertEquals("assistant.file", assistantFile.getObject());
-                        assertEquals(fileId, assistantFile.getId());
-                    })
-                    .verifyComplete();
-
-            // Retrieve the assistant file
-            StepVerifier.create(client.getAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantFile retrievedAssistantFile = assertAndGetValueFromResponse(response,
-                                AssistantFile.class, 200);
-                        assertNotNull(retrievedAssistantFile.getCreatedAt());
-                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
-                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
-                        assertEquals(fileId, retrievedAssistantFile.getId());
-                    })
-                    .verifyComplete();
-
-
-            // Unlinks the attached file from the assistant
-            StepVerifier.create(client.deleteAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantFileDeletionStatus assistantFileDeletionStatus = assertAndGetValueFromResponse(
-                                response, AssistantFileDeletionStatus.class, 200);
-                        assertEquals(fileId, assistantFileDeletionStatus.getId());
-                        assertTrue(assistantFileDeletionStatus.isDeleted());
                     })
                     .verifyComplete();
 
@@ -450,6 +323,137 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void assistantFileCrd(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
+            AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
+
+            // Create an assistant
+            StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
+                            new RequestOptions()))
+                    .assertNext(response -> {
+                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+
+            Assistant assistant = assistantCreated.get();
+            String assistantId = assistant.getId();
+
+            // Attach a file to the assistant created above and return the assistant file
+            StepVerifier.create(client.createAssistantFile(assistantId, fileId))
+                    .assertNext(assistantFile -> {
+                        assertNotNull(assistantFile.getCreatedAt());
+                        assertEquals(assistantId, assistantFile.getAssistantId());
+                        assertEquals("assistant.file", assistantFile.getObject());
+                        assertEquals(fileId, assistantFile.getId());
+                    })
+                    .verifyComplete();
+
+            // Retrieve the assistant file
+            StepVerifier.create(client.getAssistantFile(assistantId, fileId))
+                    .assertNext(retrievedAssistantFile -> {
+                        assertEquals(retrievedAssistantFile.getCreatedAt(), retrievedAssistantFile.getCreatedAt());
+                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
+                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
+                        assertEquals(fileId, retrievedAssistantFile.getId());
+                    })
+                    .verifyComplete();
+
+            // Unlinks the attached file from the assistant
+            StepVerifier.create(client.deleteAssistantFile(assistantId, fileId))
+                    .assertNext(assistantFileDeletionStatus -> {
+                        assertEquals(fileId, assistantFileDeletionStatus.getId());
+                        assertTrue(assistantFileDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+
+            // Deleted created assistant
+            StepVerifier.create(client.deleteAssistant(assistantId))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @Disabled("Cannot use the hard-coded file id in the test")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void assistantFileCrdWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
+            AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
+            // Create an assistant
+            StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions),
+                            new RequestOptions()))
+                    .assertNext(response -> {
+                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
+                        assistantCreated.set(assistant);
+                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                    })
+                    .verifyComplete();
+
+            Assistant assistant = assistantCreated.get();
+            String assistantId = assistant.getId();
+
+            // Attach a file to the assistant created above and return the assistant file
+            Map<String, String> requestObj = new HashMap<>();
+            requestObj.put("file_id", fileId);
+            BinaryData request = BinaryData.fromObject(requestObj);
+            StepVerifier.create(client.createAssistantFileWithResponse(assistantId, request, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFile assistantFile = assertAndGetValueFromResponse(response, AssistantFile.class, 200);
+                        assertNotNull(assistantFile.getCreatedAt());
+                        assertEquals(assistantId, assistantFile.getAssistantId());
+                        assertEquals("assistant.file", assistantFile.getObject());
+                        assertEquals(fileId, assistantFile.getId());
+                    })
+                    .verifyComplete();
+
+            // Retrieve the assistant file
+            StepVerifier.create(client.getAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFile retrievedAssistantFile = assertAndGetValueFromResponse(response,
+                                AssistantFile.class, 200);
+                        assertNotNull(retrievedAssistantFile.getCreatedAt());
+                        assertEquals(assistantId, retrievedAssistantFile.getAssistantId());
+                        assertEquals("assistant.file", retrievedAssistantFile.getObject());
+                        assertEquals(fileId, retrievedAssistantFile.getId());
+                    })
+                    .verifyComplete();
+
+
+            // Unlinks the attached file from the assistant
+            StepVerifier.create(client.deleteAssistantFileWithResponse(assistantId, fileId, new RequestOptions()))
+                    .assertNext(response -> {
+                        AssistantFileDeletionStatus assistantFileDeletionStatus = assertAndGetValueFromResponse(
+                                response, AssistantFileDeletionStatus.class, 200);
+                        assertEquals(fileId, assistantFileDeletionStatus.getId());
+                        assertTrue(assistantFileDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+
+            // Deleted created assistant
+            StepVerifier.create(client.deleteAssistant(assistantId))
+                    .assertNext(assistantDeletionStatus -> {
+                        assertEquals(assistantId, assistantDeletionStatus.getId());
+                        assertTrue(assistantDeletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -494,6 +498,20 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
                     })
                     .verifyComplete();
 
+            StepVerifier.create(client.listAssistantFilesWithResponse(assistantId,
+                            new RequestOptions()))
+                    .assertNext(response -> {
+                        OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
+                                OpenAIPageableListOfAssistantFile.class, 200);
+                        List<AssistantFile> assistantFilesData = assistantFileList.getData();
+                        assertEquals(1, assistantFilesData.size());
+                        AssistantFile assistantFileOnly = assistantFilesData.get(0);
+                        assertEquals(assistantId, assistantFileOnly.getAssistantId());
+                        assertEquals("assistant.file", assistantFileOnly.getObject());
+                        assertEquals(fileId, assistantFileOnly.getId());
+                    })
+                    .verifyComplete();
+
             // Deleted created assistant
             StepVerifier.create(client.deleteAssistant(assistantId))
                     .assertNext(assistantDeletionStatus -> {
@@ -504,6 +522,7 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesAddSameFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -562,62 +581,7 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFilesWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient, serviceVersion);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
-
-            // Create an assistant
-            StepVerifier.create(client.createAssistantWithResponse(
-                    BinaryData.fromObject(assistantCreationOptions),
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        Assistant assistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
-                        assistantCreated.set(assistant);
-                        assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                    })
-                    .verifyComplete();
-
-            Assistant assistant = assistantCreated.get();
-            String assistantId = assistant.getId();
-
-            // Attach a file to the assistant created above and return the assistant file
-            StepVerifier.create(client.createAssistantFile(assistantId, fileId))
-                    .assertNext(assistantFile -> {
-                        assertNotNull(assistantFile.getCreatedAt());
-                        assertEquals(assistantId, assistantFile.getAssistantId());
-                        assertEquals("assistant.file", assistantFile.getObject());
-                        assertEquals(fileId, assistantFile.getId());
-                    }).verifyComplete();
-
-            StepVerifier.create(client.listAssistantFilesWithResponse(assistantId,
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
-                                OpenAIPageableListOfAssistantFile.class, 200);
-                        List<AssistantFile> assistantFilesData = assistantFileList.getData();
-                        assertEquals(1, assistantFilesData.size());
-                        AssistantFile assistantFileOnly = assistantFilesData.get(0);
-                        assertEquals(assistantId, assistantFileOnly.getAssistantId());
-                        assertEquals("assistant.file", assistantFileOnly.getObject());
-                        assertEquals(fileId, assistantFileOnly.getId());
-                    })
-                    .verifyComplete();
-
-            // Deleted created assistant
-            StepVerifier.create(client.deleteAssistant(assistantId))
-                    .assertNext(assistantDeletionStatus -> {
-                        assertEquals(assistantId, assistantDeletionStatus.getId());
-                        assertTrue(assistantDeletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
-        });
-    }
-
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {

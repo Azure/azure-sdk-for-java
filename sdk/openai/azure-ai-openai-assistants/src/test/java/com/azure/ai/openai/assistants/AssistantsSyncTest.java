@@ -125,6 +125,76 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient);
+        createAssistantsRunner(assistantCreationOptions -> {
+            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
+            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
+
+            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants();
+            List<Assistant> dataAscending = assistantsAscending.getData();
+            assertTrue(dataAscending.size() >= 2);
+
+            Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
+            OpenAIPageableListOfAssistant assistantsAscendingResponse = assertAndGetValueFromResponse(response,
+                    OpenAIPageableListOfAssistant.class, 200);
+            List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
+            assertTrue(dataAscendingResponse.size() >= 2);
+
+            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
+            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
+            assertTrue(assistantDeletionStatus.isDeleted());
+            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
+            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
+            assertTrue(assistantDeletionStatus2.isDeleted());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listAssistantsBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient);
+        createAssistantsRunner(assistantCreationOptions -> {
+            // Create assistants
+            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
+            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
+            Assistant assistant3 = client.createAssistant(assistantCreationOptions.setName("assistant3"));
+            Assistant assistant4 = client.createAssistant(assistantCreationOptions.setName("assistant4"));
+
+            // List only the middle two assistants; sort by name ascending
+            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants(100,
+                    ListSortOrder.ASCENDING, assistant1.getId(), assistant4.getId());
+            List<Assistant> dataAscending = assistantsAscending.getData();
+            assertEquals(2, dataAscending.size());
+            assertEquals(assistant2.getId(), dataAscending.get(0).getId());
+            assertEquals(assistant3.getId(), dataAscending.get(1).getId());
+
+            // List only the middle two assistants; sort by name descending
+            OpenAIPageableListOfAssistant assistantsDescending = client.listAssistants(100,
+                    ListSortOrder.DESCENDING, assistant4.getId(), assistant1.getId());
+            List<Assistant> dataDescending = assistantsDescending.getData();
+            assertEquals(2, dataDescending.size());
+            assertEquals(assistant3.getId(), dataDescending.get(0).getId());
+            assertEquals(assistant2.getId(), dataDescending.get(1).getId());
+
+            // Delete the created assistants
+            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
+            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
+            assertTrue(assistantDeletionStatus.isDeleted());
+            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
+            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
+            assertTrue(assistantDeletionStatus2.isDeleted());
+            AssistantDeletionStatus assistantDeletionStatus3 = client.deleteAssistant(assistant3.getId());
+            assertEquals(assistant3.getId(), assistantDeletionStatus3.getId());
+            assertTrue(assistantDeletionStatus3.isDeleted());
+            AssistantDeletionStatus assistantDeletionStatus4 = client.deleteAssistant(assistant4.getId());
+            assertEquals(assistant4.getId(), assistantDeletionStatus4.getId());
+            assertTrue(assistantDeletionStatus4.isDeleted());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void assistantFileCrd(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
@@ -209,76 +279,6 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistantId);
             assertEquals(assistantId, assistantDeletionStatus.getId());
             assertTrue(assistantDeletionStatus.isDeleted());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
-        createAssistantsRunner(assistantCreationOptions -> {
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants();
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertTrue(dataAscending.size() >= 2);
-
-            Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            OpenAIPageableListOfAssistant assistantsAscendingResponse = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistant.class, 200);
-            List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
-            assertTrue(dataAscendingResponse.size() >= 2);
-
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantsBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
-        createAssistantsRunner(assistantCreationOptions -> {
-            // Create assistants
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-            Assistant assistant3 = client.createAssistant(assistantCreationOptions.setName("assistant3"));
-            Assistant assistant4 = client.createAssistant(assistantCreationOptions.setName("assistant4"));
-
-            // List only the middle two assistants; sort by name ascending
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants(100,
-                    ListSortOrder.ASCENDING, assistant1.getId(), assistant4.getId());
-            List<Assistant> dataAscending = assistantsAscending.getData();
-            assertEquals(2, dataAscending.size());
-            assertEquals(assistant2.getId(), dataAscending.get(0).getId());
-            assertEquals(assistant3.getId(), dataAscending.get(1).getId());
-
-            // List only the middle two assistants; sort by name descending
-            OpenAIPageableListOfAssistant assistantsDescending = client.listAssistants(100,
-                    ListSortOrder.DESCENDING, assistant4.getId(), assistant1.getId());
-            List<Assistant> dataDescending = assistantsDescending.getData();
-            assertEquals(2, dataDescending.size());
-            assertEquals(assistant3.getId(), dataDescending.get(0).getId());
-            assertEquals(assistant2.getId(), dataDescending.get(1).getId());
-
-            // Delete the created assistants
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus3 = client.deleteAssistant(assistant3.getId());
-            assertEquals(assistant3.getId(), assistantDeletionStatus3.getId());
-            assertTrue(assistantDeletionStatus3.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus4 = client.deleteAssistant(assistant4.getId());
-            assertEquals(assistant4.getId(), assistantDeletionStatus4.getId());
-            assertTrue(assistantDeletionStatus4.isDeleted());
         });
     }
 
