@@ -47,7 +47,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  * <h2>Overview</h2>
  *
  * <p>
- *     This client encapsulates REST API calls used to to send data to a Log Analytics workspace into a set of synchronous operations.
+ *     This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of synchronous operations.
  * </p>
  *
  * <h2>Getting Started</h2>
