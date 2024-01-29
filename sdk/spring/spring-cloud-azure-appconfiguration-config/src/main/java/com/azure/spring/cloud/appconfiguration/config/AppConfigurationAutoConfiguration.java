@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPullRefresh;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 
@@ -45,9 +46,9 @@ public class AppConfigurationAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
+            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory, ReplicaLookUp replicaLookUp) {
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
-                appProperties.getDefaultMinBackoff());
+                appProperties.getDefaultMinBackoff(), replicaLookUp);
         }
     }
 }

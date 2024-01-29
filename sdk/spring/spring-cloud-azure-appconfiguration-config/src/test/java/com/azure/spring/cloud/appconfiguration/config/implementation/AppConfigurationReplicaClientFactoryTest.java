@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
 public class AppConfigurationReplicaClientFactoryTest {
@@ -22,6 +23,9 @@ public class AppConfigurationReplicaClientFactoryTest {
 
     @Mock
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;
+    
+    @Mock
+    private ReplicaLookUp replicaLookUpMock;
 
     private final String originEndpoint = "clientFactoryTest.azconfig.io";
 
@@ -50,7 +54,7 @@ public class AppConfigurationReplicaClientFactoryTest {
         storeNoReplica.setEndpoint(noReplicaEndpoint);
         stores.add(storeNoReplica);
 
-        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, stores);
+        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, stores, replicaLookUpMock);
     }
 
     @Test

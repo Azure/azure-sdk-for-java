@@ -22,6 +22,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -47,6 +48,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+    
+    private final ReplicaLookUp replicaLookUp;
 
     private Duration refreshInterval;
 
@@ -62,12 +65,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
         AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        Duration refreshInterval, List<ConfigStore> configStores) {
+        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
         this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
         this.configStores = configStores;
         this.clientFactory = clientFactory;
         this.keyVaultClientFactory = keyVaultClientFactory;
+        this.replicaLookUp = replicaLookUp;
 
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
@@ -77,6 +81,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
+        replicaLookUp.updateAutoFailoverEndpoints();
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
         boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
