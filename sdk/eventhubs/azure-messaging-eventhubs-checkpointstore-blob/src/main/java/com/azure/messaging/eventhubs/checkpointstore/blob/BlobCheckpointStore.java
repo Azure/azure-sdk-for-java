@@ -44,7 +44,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventProcessorClient
  */
 public class BlobCheckpointStore implements CheckpointStore {
-
+    static final String REPLICATION_SEGMENT = "replicationsegment";
     static final String SEQUENCE_NUMBER = "sequencenumber";
     static final String OFFSET = "offset";
     static final String OWNER_ID = "ownerid";
@@ -60,6 +60,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String SEQUENCE_NUMBER_LOG_KEY = "sequenceNumber";
     private static final String BLOB_NAME_LOG_KEY = "blobName";
     private static final String OFFSET_LOG_KEY = "offset";
+    private static final String REPLICATION_SEGMENT_LOG_KEY = "replicationSegment";
 
     /**
      * An empty string.
@@ -148,16 +149,22 @@ public class BlobCheckpointStore implements CheckpointStore {
                 .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
                 .addKeyValue(SEQUENCE_NUMBER_LOG_KEY, metadata.get(SEQUENCE_NUMBER))
                 .addKeyValue(OFFSET_LOG_KEY, metadata.get(OFFSET))
+                .addKeyValue(REPLICATION_SEGMENT_LOG_KEY, metadata.get(REPLICATION_SEGMENT))
                 .log(Messages.CHECKPOINT_INFO);
 
             Long sequenceNumber = null;
             Long offset = null;
+            Integer replicationSegment = null;
             if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
                 sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
             }
 
             if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
                 offset = Long.parseLong(metadata.get(OFFSET));
+            }
+
+            if (!CoreUtils.isNullOrEmpty(metadata.get(REPLICATION_SEGMENT))) {
+                replicationSegment = Integer.parseInt(metadata.get(OFFSET));
             }
 
             Checkpoint checkpoint = new Checkpoint()
@@ -167,7 +174,8 @@ public class BlobCheckpointStore implements CheckpointStore {
                 // names[3] is "checkpoint"
                 .setPartitionId(names[4])
                 .setSequenceNumber(sequenceNumber)
-                .setOffset(offset);
+                .setOffset(offset)
+                .setReplicationSegment(replicationSegment);
 
             return Mono.just(checkpoint);
         }
@@ -247,24 +255,33 @@ public class BlobCheckpointStore implements CheckpointStore {
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
             throw LOGGER.logExceptionAsWarning(Exceptions
-                .propagate(new IllegalStateException(
+                .propagate(new IllegalArgumentException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
 
-        String partitionId = checkpoint.getPartitionId();
-        String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+        final String partitionId = checkpoint.getPartitionId();
+        final String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
             checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH);
+
         if (!blobClients.containsKey(blobName)) {
             blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
         }
 
-        Map<String, String> metadata = new HashMap<>();
-        String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
-            : String.valueOf(checkpoint.getSequenceNumber());
+        final String sequenceNumber = checkpoint.getSequenceNumber() != null
+            ? String.valueOf(checkpoint.getSequenceNumber())
+            : null;
+        final String offset = checkpoint.getOffset() != null
+            ? String.valueOf(checkpoint.getOffset())
+            : null;
+        final String replicationSegment = checkpoint.getReplicationSegment() != null
+            ? String.valueOf(checkpoint.getReplicationSegment())
+            : null;
 
-        String offset = checkpoint.getOffset() == null ? null : String.valueOf(checkpoint.getOffset());
+        final Map<String, String> metadata = new HashMap<>();
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
         metadata.put(OFFSET, offset);
+        metadata.put(REPLICATION_SEGMENT, replicationSegment);
+
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
         Mono<Void> response = blobAsyncClient.exists().flatMap(exists -> {
@@ -275,8 +292,10 @@ public class BlobCheckpointStore implements CheckpointStore {
                     metadata, null, null, null).then();
             }
         });
+
         return reportMetrics(response, checkpoint, blobName);
     }
+
 
     private Mono<Void> reportMetrics(Mono<Void> checkpointMono, Checkpoint checkpoint, String blobName) {
         AtomicReference<Instant> startTime = metricsHelper.isCheckpointDurationEnabled() ? new AtomicReference<>() : null;
