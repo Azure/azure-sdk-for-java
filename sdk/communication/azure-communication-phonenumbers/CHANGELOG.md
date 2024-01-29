@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (2024-01-29)
 
 ### Features Added
 - Added support for API version `2023-10-01-preview`, This gives us functionality for Do Not Resell Consent Changes.
