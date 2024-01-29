@@ -89,8 +89,6 @@ public class IdentityClientTests {
                 })
                 .verifyComplete();
         });
-
-
     }
 
     @Test
