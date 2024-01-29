@@ -108,7 +108,7 @@
  *
  * <p>
  *     For synchronous and asynchronous client usage information, see {@link com.azure.monitor.ingestion.LogsIngestionClient} and
- *     {@link com.azure.monitor.ingestion.LogsIngestionAsyncClient} respectively.
+ *     {@link com.azure.monitor.ingestion.LogsIngestionAsyncClient}, respectively.
  * </p>
  *
  * @see com.azure.monitor.ingestion.LogsIngestionClient
