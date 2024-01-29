@@ -97,7 +97,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
+    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class);
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
