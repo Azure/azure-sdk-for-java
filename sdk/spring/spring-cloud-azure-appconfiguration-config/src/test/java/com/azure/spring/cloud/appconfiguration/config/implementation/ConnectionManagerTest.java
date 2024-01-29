@@ -145,7 +145,7 @@ public class ConnectionManagerTest {
         ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
 
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
-        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now());
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(1));
         clients.add(replicaClient1);
 
         when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);

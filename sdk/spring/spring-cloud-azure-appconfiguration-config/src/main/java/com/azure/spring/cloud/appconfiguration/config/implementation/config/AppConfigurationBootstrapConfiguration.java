@@ -157,8 +157,8 @@ public class AppConfigurationBootstrapConfiguration {
     }
     
     @Bean
-    ReplicaLookUp replicaLookUp() throws NamingException {
-        return new ReplicaLookUp();
+    ReplicaLookUp replicaLookUp(AppConfigurationProperties properties) throws NamingException {
+        return new ReplicaLookUp(properties);
     }
 
     private boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {

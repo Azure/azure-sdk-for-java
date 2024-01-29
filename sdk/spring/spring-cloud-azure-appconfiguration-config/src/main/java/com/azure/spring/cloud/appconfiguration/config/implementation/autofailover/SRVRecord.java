@@ -41,7 +41,7 @@ public class SRVRecord {
 
     @Override
     public String toString() {
-        return String.format("Priority: %s, Weight %s, Port %s, Target %s", priority, weight, port, target);
+        return String.format("Priority: %s, Weight: %s, Port: %s, Target: %s", priority, weight, port, target);
     }
 
     public int compareTo(SRVRecord record) {

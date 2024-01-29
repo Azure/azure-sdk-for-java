@@ -15,7 +15,6 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.InitialDirContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -34,14 +33,14 @@ public class ReplicaLookUp {
 
     private static final String SRC_RECORD = "SRV";
 
-    private InitialDirContext context;
+    InitialDirContext context;
 
     private Map<String, List<SRVRecord>> records = new HashMap<String, List<SRVRecord>>();
 
-    @Autowired
-    private AppConfigurationProperties properties;
+    private final AppConfigurationProperties properties;
 
-    public ReplicaLookUp() throws NamingException {
+    public ReplicaLookUp(AppConfigurationProperties properties) throws NamingException {
+        this.properties = properties;
         this.context = new InitialDirContext();
     }
 
@@ -71,7 +70,11 @@ public class ReplicaLookUp {
     }
 
     public List<String> getAutoFailoverEndpoints(String mainEndpoint) {
-        return records.get(mainEndpoint).stream().map(record -> record.getEndpoint()).toList();
+        List<SRVRecord> endpointRecords = records.get(mainEndpoint);
+        if (endpointRecords == null) {
+            return List.of();
+        }
+        return endpointRecords.stream().map(record -> record.getEndpoint()).toList();
     }
 
     private List<SRVRecord> findAutoFailoverEndpoints(String endpoint, List<String> providedEndpoints) {
