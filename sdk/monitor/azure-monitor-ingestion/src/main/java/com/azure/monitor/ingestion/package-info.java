@@ -33,7 +33,7 @@
  *     multiple authentication flows. See {@link com.azure.core.credential.TokenCredential TokenCredential} for multiple
  *     authentication flows. See <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
  *     <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
- *     for more information. See {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder} for more example on authenticating a client.
+ *     for more information. See {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder} for more examples on authenticating a client.
  * </p>
  *
  * <hr/>
