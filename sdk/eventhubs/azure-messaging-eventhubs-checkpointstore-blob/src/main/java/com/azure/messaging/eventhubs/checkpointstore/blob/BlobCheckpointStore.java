@@ -255,7 +255,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
             throw LOGGER.logExceptionAsWarning(Exceptions
-                .propagate(new IllegalArgumentException(
+                .propagate(new IllegalStateException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
 
