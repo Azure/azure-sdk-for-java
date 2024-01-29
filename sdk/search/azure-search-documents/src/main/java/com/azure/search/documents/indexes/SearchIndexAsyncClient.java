@@ -89,7 +89,7 @@ public final class SearchIndexAsyncClient {
      *
      * @return the pipeline.
      */
-    HttpPipeline getHttpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
