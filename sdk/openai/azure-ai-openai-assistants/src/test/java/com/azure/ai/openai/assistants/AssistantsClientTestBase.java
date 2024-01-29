@@ -47,7 +47,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
-                .buildAsyncClient();
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildAsyncClient();
     }
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -167,7 +168,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     void createRetrievalRunner(BiConsumer<UploadFileRequest, AssistantCreationOptions> testRunner) {
         UploadFileRequest uploadRequest = new UploadFileRequest(
             new FileDetails(
-                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
+                    .setFilename("java_sdk_tests_assistants.txt"),
                 FilePurpose.ASSISTANTS);
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)

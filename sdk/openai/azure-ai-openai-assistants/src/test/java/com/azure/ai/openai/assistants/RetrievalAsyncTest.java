@@ -59,18 +59,29 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
                         thread.getId(),
                         MessageRole.USER,
                         "Can you give me the documented codes for 'banana' and 'orange'?"
-                    ).flatMap(message ->
-                        client.createRun(cleanUp.thread, cleanUp.assistant).zipWith(Mono.just(cleanUp))
-                            .repeat()
-                            .delayElements(Duration.ofMillis(500))
-                            .takeUntil(tuple2 -> {
-                                ThreadRun run = tuple2.getT1();
+                    ).flatMap(_message ->
+                        client.createRun(cleanUp.thread, cleanUp.assistant)
+                            .flatMap(createdRun ->
+                                client.getRun(cleanUp.thread.getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
+                                    .repeat()
+                                    .delayElements(Duration.ofMillis(500))
+                                    .takeWhile(tuple2 -> {
+                                        ThreadRun run = tuple2.getT1();
 
-                                return run.getStatus() == RunStatus.IN_PROGRESS
-                                    || run.getStatus() == RunStatus.QUEUED;
-                            }).last()
+                                        return run.getStatus() == RunStatus.IN_PROGRESS
+                                            || run.getStatus() == RunStatus.QUEUED;
+                                    })
+                                    .last()
+                            )
                     );
                 }).flatMap(tuple -> {
+                    // we do one last request, that gets the Run with the Status that broke the above loop
+                    ThreadRun run = tuple.getT1();
+                    CleanUp cleanUp = tuple.getT2();
+
+                    return client.getRun(cleanUp.thread.getId(), run.getId()).zipWith(Mono.just(cleanUp));
+                })
+                .flatMap(tuple -> {
                     ThreadRun run = tuple.getT1();
                     CleanUp cleanUp = tuple.getT2();
 
@@ -96,8 +107,10 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
                 })
                 .flatMap(cleanUp -> client.deleteAssistant(cleanUp.assistant.getId())
                     .flatMap(_unused -> client.deleteFile(cleanUp.file.getId()))
-                    .flatMap(_unused -> client.deleteThread(cleanUp.thread.getId())))
-            ).verifyComplete();
+                    .flatMap(_unused -> client.deleteThread(cleanUp.thread.getId()))))
+                // last deletion asserted
+                .assertNext(threadDeletionStatus -> assertTrue(threadDeletionStatus.isDeleted()))
+                .verifyComplete();
         });
     }
 
