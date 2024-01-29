@@ -99,7 +99,7 @@
  *
  * <p>
  *     The logs that were uploaded using this library can be queried using the
- *     <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#readme">Azure Monitor Query client library</a>
+ *     <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#readme">Azure Monitor Query client library</a>.
  * </p>
  *
  * <hr/>
