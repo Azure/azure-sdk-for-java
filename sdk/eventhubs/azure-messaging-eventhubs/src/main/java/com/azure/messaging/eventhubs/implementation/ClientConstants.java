@@ -43,4 +43,9 @@ public final class ClientConstants {
      */
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
     public static final String AZ_TRACING_SERVICE_NAME = "EventHubs.";
+
+    /**
+     * Default value when geo-replication is not enabled for that Event Hub namespace.
+     */
+    public static final int DEFAULT_REPLICATION_SEGMENT = -1;
 }
