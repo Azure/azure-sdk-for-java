@@ -66,7 +66,7 @@ public class RetrievalToolSample {
         AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
 
         // Assign message to thread
-        ThreadMessage responseMessage = client.createMessage(
+        client.createMessage(
             thread.getId(),
             MessageRole.USER,
             "Can you give me the documented codes for 'banana' and 'orange'?");
@@ -78,7 +78,8 @@ public class RetrievalToolSample {
         do {
             Thread.sleep(500);
             run = client.getRun(thread.getId(), run.getId());
-        } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
+        } while (run.getStatus() == RunStatus.IN_PROGRESS
+            || run.getStatus() == RunStatus.QUEUED);
 
         // List messages from the thread
         var messages = client.listMessages(thread.getId());

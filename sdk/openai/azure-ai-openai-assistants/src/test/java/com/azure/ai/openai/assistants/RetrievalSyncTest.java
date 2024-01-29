@@ -1,0 +1,66 @@
+package com.azure.ai.openai.assistants;
+
+import com.azure.ai.openai.assistants.models.Assistant;
+import com.azure.ai.openai.assistants.models.AssistantThread;
+import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.RunStatus;
+import com.azure.ai.openai.assistants.models.ThreadRun;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.Arrays;
+
+import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+
+public class RetrievalSyncTest extends AssistantsClientTestBase {
+
+    AssistantsClient client;
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void basicRetrieval(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient);
+
+        createRetrievalRunner((uploadFileRequest, assistantCreationOptions) -> {
+            // Upload file for assistant
+            OpenAIFile openAIFile = client.uploadFile(uploadFileRequest);
+
+            // Create assistant
+            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+            Assistant assistant = client.createAssistant(assistantCreationOptions);
+
+            // Create thread
+            AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
+
+            // Assign message to thread
+            client.createMessage(
+                thread.getId(),
+                MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?");
+
+            // Pass the message to the assistant and start the run
+            ThreadRun run = client.createRun(thread, assistant);
+
+            do {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                run = client.getRun(thread.getId(), run.getId());
+            } while (run.getStatus() == RunStatus.IN_PROGRESS
+                || run.getStatus() == RunStatus.QUEUED);
+
+            // cleanup
+            client.deleteAssistant(assistant.getId());
+            client.deleteFile(openAIFile.getId());
+            client.deleteThread(thread.getId());
+        });
+    }
+
+
+}
