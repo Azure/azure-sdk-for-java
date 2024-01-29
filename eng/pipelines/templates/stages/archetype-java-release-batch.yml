@@ -86,7 +86,7 @@ stages:
           steps:
             - download: current
               displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-              artifact: ${{parameters.ArtifactName}}
+              artifact: ${{parameters.ArtifactName}}-signed
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
               inputs:
