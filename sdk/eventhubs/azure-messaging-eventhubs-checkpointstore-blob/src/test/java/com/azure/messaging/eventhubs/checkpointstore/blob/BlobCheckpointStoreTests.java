@@ -22,7 +22,9 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -42,15 +44,18 @@ import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointS
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OFFSET;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OWNERSHIP_PATH;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.OWNER_ID;
+import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.SEQUENCE_NUMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -66,6 +71,10 @@ public class BlobCheckpointStoreTests {
 
     @Mock
     private BlobAsyncClient blobAsyncClient;
+
+    @Captor
+    private ArgumentCaptor<Map<String, String>> metadataArgumentCaptor;
+
 
     private AutoCloseable autoCloseable;
 
@@ -223,6 +232,7 @@ public class BlobCheckpointStoreTests {
             .setEventHubName(eventHubName)
             .setConsumerGroup(consumerGroup)
             .setPartitionId(partitionId)
+            .setReplicationSegment(16)
             .setSequenceNumber(2L)
             .setOffset(100L);
 
@@ -235,15 +245,28 @@ public class BlobCheckpointStoreTests {
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
-
-        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
-            .thenReturn(Mono.empty());
+        when(blobAsyncClient.setMetadata(ArgumentMatchers.any())).thenReturn(Mono.empty());
 
         final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
 
         // Act & Assert
         StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint))
             .verifyComplete();
+
+        verify(blobAsyncClient).setMetadata(metadataArgumentCaptor.capture());
+
+        final Map<String, String> actual = metadataArgumentCaptor.getValue();
+
+        assertEquals(3, actual.size());
+
+        assertTrue(actual.containsKey(REPLICATION_SEGMENT));
+        assertEquals(String.valueOf(checkpoint.getReplicationSegment()), actual.get(REPLICATION_SEGMENT));
+
+        assertTrue(actual.containsKey(OFFSET));
+        assertEquals(String.valueOf(checkpoint.getOffset()), actual.get(OFFSET));
+
+        assertTrue(actual.containsKey(SEQUENCE_NUMBER));
+        assertEquals(String.valueOf(checkpoint.getSequenceNumber()), actual.get(SEQUENCE_NUMBER));
     }
 
     /**
