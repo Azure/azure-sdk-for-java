@@ -33,9 +33,9 @@ public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneN
         return fromString(name, PhoneNumberCapabilityType.class);
     }
 
-    /** 
-     * Gives a Collection of PhoneNumberCapabilityType
-     * 
+    /**
+     * Gets known PhoneNumberCapabilityType values.
+     *
      * @return known PhoneNumberCapabilityType values.
      */
     public static Collection<PhoneNumberCapabilityType> values() {

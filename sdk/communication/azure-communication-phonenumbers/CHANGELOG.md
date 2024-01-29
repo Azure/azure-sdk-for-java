@@ -1,14 +1,18 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2024-03-01)
 
 ### Features Added
+- Add support for number lookup
+  - Format only can be returned for no cost
+  - Additional number details can be returned for a cost
 
-### Breaking Changes
+## 1.2.0-beta.1 (2023-09-07)
 
-### Bugs Fixed
+### Features Added
+- Number Lookup API public preview
+- API version `2023-05-01-preview` is the default
 
-### Other Changes
 
 ## 1.1.9 (2023-12-04)
 

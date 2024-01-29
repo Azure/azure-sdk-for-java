@@ -4,16 +4,17 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberSearchRequest model. */
+/**
+ * Represents a phone number search request to find phone numbers. Found phone numbers are temporarily held for a
+ * following purchase.
+ */
 @Fluent
-@Generated
 public final class PhoneNumberSearchRequest {
     /*
      * The type of phone numbers to search for, e.g. geographic, or tollFree.
