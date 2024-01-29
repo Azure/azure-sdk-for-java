@@ -37,6 +37,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
@@ -346,20 +347,30 @@ class PartitionPumpManager {
         // A checkpoint indicates the last known successfully processed event.
         // So, the event position to start a new partition processing should be exclusive of the
         // offset/sequence number in the checkpoint. If no checkpoint is available, start from
-        // the position in set in the InitializationContext (either the earliest event in the partition or
+        // the position set in the InitializationContext (either the latest event in the partition or
         // the user provided initial position)
-        if (checkpoint != null && checkpoint.getOffset() != null) {
-            return EventPosition.fromOffset(checkpoint.getOffset());
-        } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+        if (checkpoint == null) {
+            if (options.getInitialEventPositionProvider() != null) {
+                final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
+
+                if (initialPosition != null) {
+                    return initialPosition;
+                }
+            }
+
+            return EventPosition.latest();
         }
 
-        if (options.getInitialEventPositionProvider() != null) {
-            final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
+        if (checkpoint.getSequenceNumber() != null) {
+            final int replicationSegment = checkpoint.getReplicationSegment() != null
+                ? checkpoint.getReplicationSegment()
+                : DEFAULT_REPLICATION_SEGMENT;
 
-            if (initialPosition != null) {
-                return initialPosition;
-            }
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), replicationSegment);
+        }
+
+        if (checkpoint.getOffset() != null) {
+            return EventPosition.fromOffset(checkpoint.getOffset());
         }
 
         return EventPosition.latest();
