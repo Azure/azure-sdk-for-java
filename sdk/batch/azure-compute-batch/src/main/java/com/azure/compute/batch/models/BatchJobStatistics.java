@@ -39,13 +39,6 @@ public final class BatchJobStatistics {
     private OffsetDateTime lastUpdateTime;
 
     /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
-     */
-    @Generated
-    @JsonProperty(value = "userCPUTime")
-    private Duration userCPUTime;
-
-    /*
      * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
      * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
      * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task
@@ -122,7 +115,7 @@ public final class BatchJobStatistics {
      * @param url the url value to set.
      * @param startTime the startTime value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCPUTime the userCPUTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
      * @param kernelCpuTime the kernelCpuTime value to set.
      * @param wallClockTime the wallClockTime value to set.
      * @param readIOps the readIOps value to set.
@@ -139,7 +132,7 @@ public final class BatchJobStatistics {
     private BatchJobStatistics(@JsonProperty(value = "url") String url,
         @JsonProperty(value = "startTime") OffsetDateTime startTime,
         @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "userCPUTime") Duration userCPUTime,
+        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
         @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
         @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
         @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
@@ -151,7 +144,7 @@ public final class BatchJobStatistics {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
-        this.userCPUTime = userCPUTime;
+        this.userCpuTime = userCpuTime;
         this.kernelCpuTime = kernelCpuTime;
         this.wallClockTime = wallClockTime;
         this.readIOps = readIOps;
@@ -193,17 +186,6 @@ public final class BatchJobStatistics {
     @Generated
     public OffsetDateTime getLastUpdateTime() {
         return this.lastUpdateTime;
-    }
-
-    /**
-     * Get the userCPUTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in the Job.
-     *
-     * @return the userCPUTime value.
-     */
-    @Generated
-    public Duration getUserCPUTime() {
-        return this.userCPUTime;
     }
 
     /**
@@ -321,5 +303,23 @@ public final class BatchJobStatistics {
     @Generated
     public Duration getKernelCpuTime() {
         return this.kernelCpuTime;
+    }
+
+    /*
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+     */
+    @Generated
+    @JsonProperty(value = "userCPUTime")
+    private Duration userCpuTime;
+
+    /**
+     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in the Job.
+     *
+     * @return the userCpuTime value.
+     */
+    @Generated
+    public Duration getUserCpuTime() {
+        return this.userCpuTime;
     }
 }
