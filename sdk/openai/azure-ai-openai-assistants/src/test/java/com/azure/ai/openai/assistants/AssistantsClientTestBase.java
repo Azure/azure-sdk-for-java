@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
@@ -10,6 +11,7 @@ import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
@@ -30,6 +32,7 @@ import com.azure.core.util.Configuration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +47,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
-                .buildAsyncClient();
+            .buildAsyncClient();
     }
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -159,6 +162,21 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                                 .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                                         "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
+    }
+
+    void createRetrievalRunner(BiConsumer<UploadFileRequest, AssistantCreationOptions> testRunner) {
+        UploadFileRequest uploadRequest = new UploadFileRequest(
+            new FileDetails(
+                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
+                    .setFilename("java_sdk_tests_assistants.txt"),
+                FilePurpose.ASSISTANTS);
+
+        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+            .setName("Java SDK Retrieval Sample")
+            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+            .setTools(Arrays.asList(new RetrievalToolDefinition()));
+
+        testRunner.accept(uploadRequest, assistantOptions);
     }
 
     void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {

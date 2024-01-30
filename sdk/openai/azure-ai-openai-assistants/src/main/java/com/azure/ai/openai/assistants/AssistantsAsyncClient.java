@@ -2903,6 +2903,25 @@ public final class AssistantsAsyncClient {
     }
 
     /**
+     * Creates a new run for an assistant thread.
+     *
+     * @param thread The thread to run.
+     * @param assistant The assistant that will run the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThreadRun> createRun(AssistantThread thread, Assistant assistant) {
+        return createRun(thread.getId(), new CreateRunOptions(assistant.getId()));
+    }
+
+    /**
      * Modifies an existing thread run.
      *
      * @param threadId The ID of the thread associated with the specified run.
