@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkSecurityGroupsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkSecurityGroupList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkSecurityGroupList.json
      */
     /**
      * Sample code: List network security groups in resource group.
