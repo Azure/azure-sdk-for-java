@@ -4,10 +4,13 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.autofailov
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
@@ -36,43 +39,61 @@ public class ReplicaLookUp {
 
     private static final String[] TRUSTED_DOMAIN_LABELS = { "azconfig", "appconfig" };
 
+    private static final Duration FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL = Duration.ofHours(1);
+
+    private static final Duration MINIMAL_CLIENT_REFRESH_INTERVAL = Duration.ofSeconds(30);
+
     InitialDirContext context;
 
     private Map<String, List<SRVRecord>> records = new HashMap<String, List<SRVRecord>>();
 
+    private Map<String, Instant> wait = new HashMap<>();
+
     private final AppConfigurationProperties properties;
+
+    private final Semaphore semaphore;
 
     public ReplicaLookUp(AppConfigurationProperties properties) throws NamingException {
         this.properties = properties;
         this.context = new InitialDirContext();
+        this.semaphore = new Semaphore(1);
     }
 
     @Async
     public void updateAutoFailoverEndpoints() {
-        for (ConfigStore configStore : properties.getStores()) {
-            if (!configStore.isEnabled()) {
-                continue;
+        if (semaphore.tryAcquire()) {
+            for (ConfigStore configStore : properties.getStores()) {
+                if (!configStore.isEnabled()) {
+                    continue;
+                }
+                String mainEndpoint = configStore.getEndpoint();
+
+                List<String> providedEndpoints = new ArrayList<>();
+                if (configStore.getConnectionStrings().size() > 0) {
+                    providedEndpoints = configStore.getConnectionStrings().stream().map(connectionString -> {
+                        return (AppConfigurationReplicaClientsBuilder
+                            .getEndpointFromConnectionString(connectionString));
+                    }).toList();
+                } else if (configStore.getEndpoints().size() > 0) {
+                    providedEndpoints = configStore.getEndpoints();
+                } else {
+                    providedEndpoints = List.of(configStore.getEndpoint());
+                }
+
+                try {
+                    List<SRVRecord> srvRecords = findAutoFailoverEndpoints(mainEndpoint, providedEndpoints);
+
+                    srvRecords.sort((SRVRecord a, SRVRecord b) -> a.compareTo(b));
+
+                    records.put(mainEndpoint, srvRecords);
+                    wait.put(mainEndpoint, Instant.now().plus(FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL));
+                } catch (AppConfigurationReplicaException e) {
+                    wait.put(mainEndpoint, Instant.now().plus(MINIMAL_CLIENT_REFRESH_INTERVAL));
+                }
+
             }
-            String mainEndpoint = configStore.getEndpoint();
-
-            List<String> providedEndpoints = new ArrayList<>();
-            if (configStore.getConnectionStrings().size() > 0) {
-                providedEndpoints = configStore.getConnectionStrings().stream().map(connectionString -> {
-                    return (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
-                }).toList();
-            } else if (configStore.getEndpoints().size() > 0) {
-                providedEndpoints = configStore.getEndpoints();
-            } else {
-                providedEndpoints = List.of(configStore.getEndpoint());
-            }
-
-            List<SRVRecord> srvRecords = findAutoFailoverEndpoints(mainEndpoint, providedEndpoints);
-
-            srvRecords.sort((SRVRecord a, SRVRecord b) -> a.compareTo(b));
-
-            records.put(mainEndpoint, srvRecords);
+            semaphore.release();
         }
-
     }
 
     public List<String> getAutoFailoverEndpoints(String mainEndpoint) {
@@ -83,7 +104,8 @@ public class ReplicaLookUp {
         return endpointRecords.stream().map(record -> record.getEndpoint()).toList();
     }
 
-    private List<SRVRecord> findAutoFailoverEndpoints(String endpoint, List<String> providedEndpoints) {
+    private List<SRVRecord> findAutoFailoverEndpoints(String endpoint, List<String> providedEndpoints)
+        throws AppConfigurationReplicaException {
         List<SRVRecord> records = new ArrayList<>();
         String host = "";
         try {
@@ -109,7 +131,7 @@ public class ReplicaLookUp {
         return records;
     }
 
-    private SRVRecord getOriginRecord(String url) {
+    private SRVRecord getOriginRecord(String url) throws AppConfigurationReplicaException {
         Attribute attribute = requestRecord(ORIGIN_PREFIX + url);
         if (attribute != null) {
             return parseHosts(attribute).get(0);
@@ -117,7 +139,7 @@ public class ReplicaLookUp {
         return null;
     }
 
-    private List<SRVRecord> getReplicaRecords(SRVRecord origin) {
+    private List<SRVRecord> getReplicaRecords(SRVRecord origin) throws AppConfigurationReplicaException {
         List<SRVRecord> replicas = new ArrayList<>();
         int i = 0;
         while (true) {
@@ -134,15 +156,19 @@ public class ReplicaLookUp {
         return replicas;
     }
 
-    private Attribute requestRecord(String name) {
-        try {
-            return context.getAttributes(name, new String[] { SRC_RECORD }).get(SRC_RECORD);
-        } catch (NameNotFoundException e) {
-            // Found Last Record, should be the case that no SRV Record exists.
-            return null;
-        } catch (NamingException e) {
-            return null;
+    private Attribute requestRecord(String name) throws AppConfigurationReplicaException {
+        Instant retryTime = Instant.now().plusSeconds(30);
+        while (retryTime.isAfter(Instant.now())) {
+            try {
+                return context.getAttributes(name, new String[] { SRC_RECORD }).get(SRC_RECORD);
+            } catch (NameNotFoundException e) {
+                // Found Last Record, should be the case that no SRV Record exists.
+                return null;
+            } catch (NamingException e) {
+                // Will retry for up to 30 seconds
+            }
         }
+        throw new AppConfigurationReplicaException();
     }
 
     private List<SRVRecord> parseHosts(Attribute attribute) {
@@ -177,6 +203,15 @@ public class ReplicaLookUp {
             }
         }
         return "";
+    }
+
+    private class AppConfigurationReplicaException extends Exception {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
     }
 
 }
