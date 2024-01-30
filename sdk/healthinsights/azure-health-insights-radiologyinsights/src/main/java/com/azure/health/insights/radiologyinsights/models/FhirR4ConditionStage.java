@@ -13,26 +13,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Based on [FHIR Condition.Stage](https://www.hl7.org/fhir/R4/condition.html).
  */
 @Fluent
-public final class ConditionStage {
+public final class FhirR4ConditionStage {
     /*
      * Simple summary (disease specific)
      */
     @Generated
     @JsonProperty(value = "summary")
-    private CodeableConcept summary;
+    private FhirR4CodeableConcept summary;
 
     /*
      * Kind of staging
      */
     @Generated
     @JsonProperty(value = "type")
-    private CodeableConcept type;
+    private FhirR4CodeableConcept type;
 
     /**
-     * Creates an instance of ConditionStage class.
+     * Creates an instance of FhirR4ConditionStage class.
      */
     @Generated
-    public ConditionStage() {
+    public FhirR4ConditionStage() {
     }
 
     /**
@@ -41,7 +41,7 @@ public final class ConditionStage {
      * @return the summary value.
      */
     @Generated
-    public CodeableConcept getSummary() {
+    public FhirR4CodeableConcept getSummary() {
         return this.summary;
     }
 
@@ -49,10 +49,10 @@ public final class ConditionStage {
      * Set the summary property: Simple summary (disease specific).
      * 
      * @param summary the summary value to set.
-     * @return the ConditionStage object itself.
+     * @return the FhirR4ConditionStage object itself.
      */
     @Generated
-    public ConditionStage setSummary(CodeableConcept summary) {
+    public FhirR4ConditionStage setSummary(FhirR4CodeableConcept summary) {
         this.summary = summary;
         return this;
     }
@@ -63,7 +63,7 @@ public final class ConditionStage {
      * @return the type value.
      */
     @Generated
-    public CodeableConcept getType() {
+    public FhirR4CodeableConcept getType() {
         return this.type;
     }
 
@@ -71,10 +71,10 @@ public final class ConditionStage {
      * Set the type property: Kind of staging.
      * 
      * @param type the type value to set.
-     * @return the ConditionStage object itself.
+     * @return the FhirR4ConditionStage object itself.
      */
     @Generated
-    public ConditionStage setType(CodeableConcept type) {
+    public FhirR4ConditionStage setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
     }

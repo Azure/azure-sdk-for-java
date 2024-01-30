@@ -17,7 +17,7 @@ import java.util.List;
  * Based on [FHIR Narrative](https://www.hl7.org/fhir/R4/narrative.html#Narrative).
  */
 @Fluent
-public final class Narrative extends Element {
+public final class FhirR4Narrative extends FhirR4Element {
     /*
      * generated, extensions, additional, empty
      */
@@ -33,14 +33,14 @@ public final class Narrative extends Element {
     private String div;
 
     /**
-     * Creates an instance of Narrative class.
+     * Creates an instance of FhirR4Narrative class.
      * 
      * @param status the status value to set.
      * @param div the div value to set.
      */
     @Generated
     @JsonCreator
-    public Narrative(@JsonProperty(value = "status") String status, @JsonProperty(value = "div") String div) {
+    public FhirR4Narrative(@JsonProperty(value = "status") String status, @JsonProperty(value = "div") String div) {
         this.status = status;
         this.div = div;
     }
@@ -70,7 +70,7 @@ public final class Narrative extends Element {
      */
     @Generated
     @Override
-    public Narrative setId(String id) {
+    public FhirR4Narrative setId(String id) {
         super.setId(id);
         return this;
     }
@@ -80,7 +80,7 @@ public final class Narrative extends Element {
      */
     @Generated
     @Override
-    public Narrative setExtension(List<Extension> extension) {
+    public FhirR4Narrative setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

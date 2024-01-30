@@ -4,13 +4,12 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
@@ -18,14 +17,14 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("finding")
-@Fluent
-public final class FindingInference extends RadiologyInsightsInference {
+@Immutable
+public final class FindingInference extends FhirR4Extendible1 {
     /*
      * Finding data : contains extensions, fields and components linked with the finding.
      */
     @Generated
     @JsonProperty(value = "finding")
-    private Observation finding;
+    private FhirR4Observation finding;
 
     /**
      * Creates an instance of FindingInference class.
@@ -34,7 +33,7 @@ public final class FindingInference extends RadiologyInsightsInference {
      */
     @Generated
     @JsonCreator
-    public FindingInference(@JsonProperty(value = "finding") Observation finding) {
+    private FindingInference(@JsonProperty(value = "finding") FhirR4Observation finding) {
         this.finding = finding;
     }
 
@@ -44,17 +43,7 @@ public final class FindingInference extends RadiologyInsightsInference {
      * @return the finding value.
      */
     @Generated
-    public Observation getFinding() {
+    public FhirR4Observation getFinding() {
         return this.finding;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public FindingInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

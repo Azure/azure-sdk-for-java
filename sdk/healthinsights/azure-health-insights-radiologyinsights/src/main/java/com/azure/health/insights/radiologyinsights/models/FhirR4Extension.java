@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Component results
- * Based on [FHIR Observation.component](https://www.hl7.org/fhir/R4/observation.html).
+ * Base for all elements
+ * Based on [FHIR Element](https://www.hl7.org/fhir/datatypes.html#Element).
  */
 @Fluent
-public final class ObservationComponent extends Element {
+public final class FhirR4Extension extends FhirR4Element {
     /*
-     * Type of component observation (code / type)
+     * Source of the definition for the extension code - a logical name or a URL.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private CodeableConcept code;
+    @JsonProperty(value = "url")
+    private String url;
 
     /*
      * Value as Quantity
      */
     @Generated
     @JsonProperty(value = "valueQuantity")
-    private Quantity valueQuantity;
+    private FhirR4Quantity valueQuantity;
 
     /*
      * Value as CodeableConcept
      */
     @Generated
     @JsonProperty(value = "valueCodeableConcept")
-    private CodeableConcept valueCodeableConcept;
+    private FhirR4CodeableConcept valueCodeableConcept;
 
     /*
      * Value as string
@@ -63,21 +63,21 @@ public final class ObservationComponent extends Element {
      */
     @Generated
     @JsonProperty(value = "valueRange")
-    private Range valueRange;
+    private FhirR4Range valueRange;
 
     /*
      * Value as Ratio.
      */
     @Generated
     @JsonProperty(value = "valueRatio")
-    private Ratio valueRatio;
+    private FhirR4Ratio valueRatio;
 
     /*
      * Value as SampledData.
      */
     @Generated
     @JsonProperty(value = "valueSampledData")
-    private SampledData valueSampledData;
+    private FhirR4SampledData valueSampledData;
 
     /*
      * Value as time (hh:mm:ss)
@@ -98,55 +98,34 @@ public final class ObservationComponent extends Element {
      */
     @Generated
     @JsonProperty(value = "valuePeriod")
-    private PeriodModel valuePeriod;
+    private FhirR4Period valuePeriod;
 
     /*
      * Value as reference.
      */
     @Generated
     @JsonProperty(value = "valueReference")
-    private Reference valueReference;
-
-    /*
-     * Why the component result is missing
-     */
-    @Generated
-    @JsonProperty(value = "dataAbsentReason")
-    private CodeableConcept dataAbsentReason;
-
-    /*
-     * High, low, normal, etc.
-     */
-    @Generated
-    @JsonProperty(value = "interpretation")
-    private List<CodeableConcept> interpretation;
-
-    /*
-     * Provides guide for interpretation of component result
-     */
-    @Generated
-    @JsonProperty(value = "referenceRange")
-    private List<ObservationReferenceRange> referenceRange;
+    private FhirR4Reference valueReference;
 
     /**
-     * Creates an instance of ObservationComponent class.
+     * Creates an instance of FhirR4Extension class.
      * 
-     * @param code the code value to set.
+     * @param url the url value to set.
      */
     @Generated
     @JsonCreator
-    public ObservationComponent(@JsonProperty(value = "code") CodeableConcept code) {
-        this.code = code;
+    public FhirR4Extension(@JsonProperty(value = "url") String url) {
+        this.url = url;
     }
 
     /**
-     * Get the code property: Type of component observation (code / type).
+     * Get the url property: Source of the definition for the extension code - a logical name or a URL.
      * 
-     * @return the code value.
+     * @return the url value.
      */
     @Generated
-    public CodeableConcept getCode() {
-        return this.code;
+    public String getUrl() {
+        return this.url;
     }
 
     /**
@@ -155,7 +134,7 @@ public final class ObservationComponent extends Element {
      * @return the valueQuantity value.
      */
     @Generated
-    public Quantity getValueQuantity() {
+    public FhirR4Quantity getValueQuantity() {
         return this.valueQuantity;
     }
 
@@ -163,10 +142,10 @@ public final class ObservationComponent extends Element {
      * Set the valueQuantity property: Value as Quantity.
      * 
      * @param valueQuantity the valueQuantity value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueQuantity(Quantity valueQuantity) {
+    public FhirR4Extension setValueQuantity(FhirR4Quantity valueQuantity) {
         this.valueQuantity = valueQuantity;
         return this;
     }
@@ -177,7 +156,7 @@ public final class ObservationComponent extends Element {
      * @return the valueCodeableConcept value.
      */
     @Generated
-    public CodeableConcept getValueCodeableConcept() {
+    public FhirR4CodeableConcept getValueCodeableConcept() {
         return this.valueCodeableConcept;
     }
 
@@ -185,10 +164,10 @@ public final class ObservationComponent extends Element {
      * Set the valueCodeableConcept property: Value as CodeableConcept.
      * 
      * @param valueCodeableConcept the valueCodeableConcept value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueCodeableConcept(CodeableConcept valueCodeableConcept) {
+    public FhirR4Extension setValueCodeableConcept(FhirR4CodeableConcept valueCodeableConcept) {
         this.valueCodeableConcept = valueCodeableConcept;
         return this;
     }
@@ -207,10 +186,10 @@ public final class ObservationComponent extends Element {
      * Set the valueString property: Value as string.
      * 
      * @param valueString the valueString value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueString(String valueString) {
+    public FhirR4Extension setValueString(String valueString) {
         this.valueString = valueString;
         return this;
     }
@@ -229,10 +208,10 @@ public final class ObservationComponent extends Element {
      * Set the valueBoolean property: Value as boolean.
      * 
      * @param valueBoolean the valueBoolean value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueBoolean(Boolean valueBoolean) {
+    public FhirR4Extension setValueBoolean(Boolean valueBoolean) {
         this.valueBoolean = valueBoolean;
         return this;
     }
@@ -251,10 +230,10 @@ public final class ObservationComponent extends Element {
      * Set the valueInteger property: Value as integer.
      * 
      * @param valueInteger the valueInteger value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueInteger(Integer valueInteger) {
+    public FhirR4Extension setValueInteger(Integer valueInteger) {
         this.valueInteger = valueInteger;
         return this;
     }
@@ -265,7 +244,7 @@ public final class ObservationComponent extends Element {
      * @return the valueRange value.
      */
     @Generated
-    public Range getValueRange() {
+    public FhirR4Range getValueRange() {
         return this.valueRange;
     }
 
@@ -273,10 +252,10 @@ public final class ObservationComponent extends Element {
      * Set the valueRange property: Value as Range.
      * 
      * @param valueRange the valueRange value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueRange(Range valueRange) {
+    public FhirR4Extension setValueRange(FhirR4Range valueRange) {
         this.valueRange = valueRange;
         return this;
     }
@@ -287,7 +266,7 @@ public final class ObservationComponent extends Element {
      * @return the valueRatio value.
      */
     @Generated
-    public Ratio getValueRatio() {
+    public FhirR4Ratio getValueRatio() {
         return this.valueRatio;
     }
 
@@ -295,10 +274,10 @@ public final class ObservationComponent extends Element {
      * Set the valueRatio property: Value as Ratio.
      * 
      * @param valueRatio the valueRatio value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueRatio(Ratio valueRatio) {
+    public FhirR4Extension setValueRatio(FhirR4Ratio valueRatio) {
         this.valueRatio = valueRatio;
         return this;
     }
@@ -309,7 +288,7 @@ public final class ObservationComponent extends Element {
      * @return the valueSampledData value.
      */
     @Generated
-    public SampledData getValueSampledData() {
+    public FhirR4SampledData getValueSampledData() {
         return this.valueSampledData;
     }
 
@@ -317,10 +296,10 @@ public final class ObservationComponent extends Element {
      * Set the valueSampledData property: Value as SampledData.
      * 
      * @param valueSampledData the valueSampledData value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueSampledData(SampledData valueSampledData) {
+    public FhirR4Extension setValueSampledData(FhirR4SampledData valueSampledData) {
         this.valueSampledData = valueSampledData;
         return this;
     }
@@ -339,10 +318,10 @@ public final class ObservationComponent extends Element {
      * Set the valueTime property: Value as time (hh:mm:ss).
      * 
      * @param valueTime the valueTime value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueTime(String valueTime) {
+    public FhirR4Extension setValueTime(String valueTime) {
         this.valueTime = valueTime;
         return this;
     }
@@ -361,10 +340,10 @@ public final class ObservationComponent extends Element {
      * Set the valueDateTime property: Value as dateTime.
      * 
      * @param valueDateTime the valueDateTime value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueDateTime(String valueDateTime) {
+    public FhirR4Extension setValueDateTime(String valueDateTime) {
         this.valueDateTime = valueDateTime;
         return this;
     }
@@ -375,7 +354,7 @@ public final class ObservationComponent extends Element {
      * @return the valuePeriod value.
      */
     @Generated
-    public PeriodModel getValuePeriod() {
+    public FhirR4Period getValuePeriod() {
         return this.valuePeriod;
     }
 
@@ -383,10 +362,10 @@ public final class ObservationComponent extends Element {
      * Set the valuePeriod property: Value as Period.
      * 
      * @param valuePeriod the valuePeriod value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValuePeriod(PeriodModel valuePeriod) {
+    public FhirR4Extension setValuePeriod(FhirR4Period valuePeriod) {
         this.valuePeriod = valuePeriod;
         return this;
     }
@@ -397,7 +376,7 @@ public final class ObservationComponent extends Element {
      * @return the valueReference value.
      */
     @Generated
-    public Reference getValueReference() {
+    public FhirR4Reference getValueReference() {
         return this.valueReference;
     }
 
@@ -405,77 +384,11 @@ public final class ObservationComponent extends Element {
      * Set the valueReference property: Value as reference.
      * 
      * @param valueReference the valueReference value to set.
-     * @return the ObservationComponent object itself.
+     * @return the FhirR4Extension object itself.
      */
     @Generated
-    public ObservationComponent setValueReference(Reference valueReference) {
+    public FhirR4Extension setValueReference(FhirR4Reference valueReference) {
         this.valueReference = valueReference;
-        return this;
-    }
-
-    /**
-     * Get the dataAbsentReason property: Why the component result is missing.
-     * 
-     * @return the dataAbsentReason value.
-     */
-    @Generated
-    public CodeableConcept getDataAbsentReason() {
-        return this.dataAbsentReason;
-    }
-
-    /**
-     * Set the dataAbsentReason property: Why the component result is missing.
-     * 
-     * @param dataAbsentReason the dataAbsentReason value to set.
-     * @return the ObservationComponent object itself.
-     */
-    @Generated
-    public ObservationComponent setDataAbsentReason(CodeableConcept dataAbsentReason) {
-        this.dataAbsentReason = dataAbsentReason;
-        return this;
-    }
-
-    /**
-     * Get the interpretation property: High, low, normal, etc.
-     * 
-     * @return the interpretation value.
-     */
-    @Generated
-    public List<CodeableConcept> getInterpretation() {
-        return this.interpretation;
-    }
-
-    /**
-     * Set the interpretation property: High, low, normal, etc.
-     * 
-     * @param interpretation the interpretation value to set.
-     * @return the ObservationComponent object itself.
-     */
-    @Generated
-    public ObservationComponent setInterpretation(List<CodeableConcept> interpretation) {
-        this.interpretation = interpretation;
-        return this;
-    }
-
-    /**
-     * Get the referenceRange property: Provides guide for interpretation of component result.
-     * 
-     * @return the referenceRange value.
-     */
-    @Generated
-    public List<ObservationReferenceRange> getReferenceRange() {
-        return this.referenceRange;
-    }
-
-    /**
-     * Set the referenceRange property: Provides guide for interpretation of component result.
-     * 
-     * @param referenceRange the referenceRange value to set.
-     * @return the ObservationComponent object itself.
-     */
-    @Generated
-    public ObservationComponent setReferenceRange(List<ObservationReferenceRange> referenceRange) {
-        this.referenceRange = referenceRange;
         return this;
     }
 
@@ -484,7 +397,7 @@ public final class ObservationComponent extends Element {
      */
     @Generated
     @Override
-    public ObservationComponent setId(String id) {
+    public FhirR4Extension setId(String id) {
         super.setId(id);
         return this;
     }
@@ -494,7 +407,7 @@ public final class ObservationComponent extends Element {
      */
     @Generated
     @Override
-    public ObservationComponent setExtension(List<Extension> extension) {
+    public FhirR4Extension setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

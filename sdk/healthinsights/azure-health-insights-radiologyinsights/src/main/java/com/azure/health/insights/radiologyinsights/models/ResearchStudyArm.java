@@ -26,7 +26,7 @@ public final class ResearchStudyArm {
      */
     @Generated
     @JsonProperty(value = "type")
-    private CodeableConcept type;
+    private FhirR4CodeableConcept type;
 
     /*
      * Short explanation of study path
@@ -62,7 +62,7 @@ public final class ResearchStudyArm {
      * @return the type value.
      */
     @Generated
-    public CodeableConcept getType() {
+    public FhirR4CodeableConcept getType() {
         return this.type;
     }
 
@@ -73,7 +73,7 @@ public final class ResearchStudyArm {
      * @return the ResearchStudyArm object itself.
      */
     @Generated
-    public ResearchStudyArm setType(CodeableConcept type) {
+    public ResearchStudyArm setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
     }

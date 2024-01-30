@@ -27,7 +27,7 @@ public final class PatientRecord {
      */
     @Generated
     @JsonProperty(value = "info")
-    private PatientInfo info;
+    private PatientDetails info;
 
     /*
      * Patient encounters/visits.
@@ -72,7 +72,7 @@ public final class PatientRecord {
      * @return the info value.
      */
     @Generated
-    public PatientInfo getInfo() {
+    public PatientDetails getInfo() {
         return this.info;
     }
 
@@ -84,7 +84,7 @@ public final class PatientRecord {
      * @return the PatientRecord object itself.
      */
     @Generated
-    public PatientRecord setInfo(PatientInfo info) {
+    public PatientRecord setInfo(PatientDetails info) {
         this.info = info;
         return this;
     }

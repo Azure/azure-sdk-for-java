@@ -14,26 +14,26 @@ import java.util.List;
  * Based on [FHIR Range](https://www.hl7.org/fhir/R4/datatypes.html#Range).
  */
 @Fluent
-public final class Range extends Element {
+public final class FhirR4Range extends FhirR4Element {
     /*
      * Low limit
      */
     @Generated
     @JsonProperty(value = "low")
-    private Quantity low;
+    private FhirR4Quantity low;
 
     /*
      * High limit
      */
     @Generated
     @JsonProperty(value = "high")
-    private Quantity high;
+    private FhirR4Quantity high;
 
     /**
-     * Creates an instance of Range class.
+     * Creates an instance of FhirR4Range class.
      */
     @Generated
-    public Range() {
+    public FhirR4Range() {
     }
 
     /**
@@ -42,7 +42,7 @@ public final class Range extends Element {
      * @return the low value.
      */
     @Generated
-    public Quantity getLow() {
+    public FhirR4Quantity getLow() {
         return this.low;
     }
 
@@ -50,10 +50,10 @@ public final class Range extends Element {
      * Set the low property: Low limit.
      * 
      * @param low the low value to set.
-     * @return the Range object itself.
+     * @return the FhirR4Range object itself.
      */
     @Generated
-    public Range setLow(Quantity low) {
+    public FhirR4Range setLow(FhirR4Quantity low) {
         this.low = low;
         return this;
     }
@@ -64,7 +64,7 @@ public final class Range extends Element {
      * @return the high value.
      */
     @Generated
-    public Quantity getHigh() {
+    public FhirR4Quantity getHigh() {
         return this.high;
     }
 
@@ -72,10 +72,10 @@ public final class Range extends Element {
      * Set the high property: High limit.
      * 
      * @param high the high value to set.
-     * @return the Range object itself.
+     * @return the FhirR4Range object itself.
      */
     @Generated
-    public Range setHigh(Quantity high) {
+    public FhirR4Range setHigh(FhirR4Quantity high) {
         this.high = high;
         return this;
     }
@@ -85,7 +85,7 @@ public final class Range extends Element {
      */
     @Generated
     @Override
-    public Range setId(String id) {
+    public FhirR4Range setId(String id) {
         super.setId(id);
         return this;
     }
@@ -95,7 +95,7 @@ public final class Range extends Element {
      */
     @Generated
     @Override
-    public Range setExtension(List<Extension> extension) {
+    public FhirR4Range setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

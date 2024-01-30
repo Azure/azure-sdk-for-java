@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,8 +19,8 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupCommunication")
-@Fluent
-public final class FollowupCommunicationInference extends RadiologyInsightsInference {
+@Immutable
+public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     /*
      * Communication date and time.
      */
@@ -49,7 +49,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
      */
     @Generated
     @JsonCreator
-    public FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
+    private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
         this.wasAcknowledged = wasAcknowledged;
     }
 
@@ -64,18 +64,6 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Set the dateTime property: Communication date and time.
-     * 
-     * @param dateTime the dateTime value to set.
-     * @return the FollowupCommunicationInference object itself.
-     */
-    @Generated
-    public FollowupCommunicationInference setDateTime(List<OffsetDateTime> dateTime) {
-        this.dateTime = dateTime;
-        return this;
-    }
-
-    /**
      * Get the recipient property: Recipient of the communication.
      * 
      * @return the recipient value.
@@ -86,18 +74,6 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Set the recipient property: Recipient of the communication.
-     * 
-     * @param recipient the recipient value to set.
-     * @return the FollowupCommunicationInference object itself.
-     */
-    @Generated
-    public FollowupCommunicationInference setRecipient(List<MedicalProfessionalType> recipient) {
-        this.recipient = recipient;
-        return this;
-    }
-
-    /**
      * Get the wasAcknowledged property: Communication was acknowledged.
      * 
      * @return the wasAcknowledged value.
@@ -105,15 +81,5 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     @Generated
     public boolean isWasAcknowledged() {
         return this.wasAcknowledged;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public FollowupCommunicationInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

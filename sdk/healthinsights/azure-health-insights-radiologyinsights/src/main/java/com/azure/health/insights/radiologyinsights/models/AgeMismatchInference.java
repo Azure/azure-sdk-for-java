@@ -4,11 +4,10 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * A notification for age mismatch is displayed when the age mentioned in a document for a specific patient does not
@@ -16,22 +15,12 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("ageMismatch")
-@Fluent
-public final class AgeMismatchInference extends RadiologyInsightsInference {
+@Immutable
+public final class AgeMismatchInference extends FhirR4Extendible1 {
     /**
      * Creates an instance of AgeMismatchInference class.
      */
     @Generated
-    public AgeMismatchInference() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public AgeMismatchInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
+    private AgeMismatchInference() {
     }
 }

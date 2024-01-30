@@ -4,15 +4,15 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Critical Result consists of two properties.
  */
-@Fluent
+@Immutable
 public final class CriticalResult {
     /*
      * Description : medical problem.
@@ -26,7 +26,7 @@ public final class CriticalResult {
      */
     @Generated
     @JsonProperty(value = "finding")
-    private Observation finding;
+    private FhirR4Observation finding;
 
     /**
      * Creates an instance of CriticalResult class.
@@ -35,7 +35,7 @@ public final class CriticalResult {
      */
     @Generated
     @JsonCreator
-    public CriticalResult(@JsonProperty(value = "description") String description) {
+    private CriticalResult(@JsonProperty(value = "description") String description) {
         this.description = description;
     }
 
@@ -55,19 +55,7 @@ public final class CriticalResult {
      * @return the finding value.
      */
     @Generated
-    public Observation getFinding() {
+    public FhirR4Observation getFinding() {
         return this.finding;
-    }
-
-    /**
-     * Set the finding property: Finding linked to the critical result.
-     * 
-     * @param finding the finding value to set.
-     * @return the CriticalResult object itself.
-     */
-    @Generated
-    public CriticalResult setFinding(Observation finding) {
-        this.finding = finding;
-        return this;
     }
 }

@@ -21,7 +21,7 @@ public final class RadiologyCodeWithTypes {
      */
     @Generated
     @JsonProperty(value = "code")
-    private CodeableConcept code;
+    private FhirR4CodeableConcept code;
 
     /*
      * The collection of types will indicate the contrast substance used in the case of contrast and, in the case of
@@ -29,7 +29,7 @@ public final class RadiologyCodeWithTypes {
      */
     @Generated
     @JsonProperty(value = "types")
-    private List<CodeableConcept> types;
+    private List<FhirR4CodeableConcept> types;
 
     /**
      * Creates an instance of RadiologyCodeWithTypes class.
@@ -39,8 +39,8 @@ public final class RadiologyCodeWithTypes {
      */
     @Generated
     @JsonCreator
-    public RadiologyCodeWithTypes(@JsonProperty(value = "code") CodeableConcept code,
-        @JsonProperty(value = "types") List<CodeableConcept> types) {
+    private RadiologyCodeWithTypes(@JsonProperty(value = "code") FhirR4CodeableConcept code,
+        @JsonProperty(value = "types") List<FhirR4CodeableConcept> types) {
         this.code = code;
         this.types = types;
     }
@@ -52,7 +52,7 @@ public final class RadiologyCodeWithTypes {
      * @return the code value.
      */
     @Generated
-    public CodeableConcept getCode() {
+    public FhirR4CodeableConcept getCode() {
         return this.code;
     }
 
@@ -63,7 +63,7 @@ public final class RadiologyCodeWithTypes {
      * @return the types value.
      */
     @Generated
-    public List<CodeableConcept> getTypes() {
+    public List<FhirR4CodeableConcept> getTypes() {
         return this.types;
     }
 }

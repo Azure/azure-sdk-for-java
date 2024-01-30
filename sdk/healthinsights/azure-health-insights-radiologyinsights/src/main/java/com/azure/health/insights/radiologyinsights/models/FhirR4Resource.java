@@ -20,7 +20,7 @@ import java.util.Map;
  * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
  */
 @Fluent
-public final class Resource {
+public class FhirR4Resource {
     /*
      * The type of resource
      */
@@ -40,7 +40,7 @@ public final class Resource {
      */
     @Generated
     @JsonProperty(value = "meta")
-    private Meta meta;
+    private FhirR4Meta meta;
 
     /*
      * A set of rules under which this content was created
@@ -57,22 +57,20 @@ public final class Resource {
     private String language;
 
     /*
-     * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary
-     * extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
+     * Additional properties
      */
     @Generated
     @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
-     * Creates an instance of Resource class.
+     * Creates an instance of FhirR4Resource class.
      * 
      * @param resourceType the resourceType value to set.
      */
     @Generated
     @JsonCreator
-    public Resource(@JsonProperty(value = "resourceType") String resourceType) {
+    public FhirR4Resource(@JsonProperty(value = "resourceType") String resourceType) {
         this.resourceType = resourceType;
     }
 
@@ -100,10 +98,10 @@ public final class Resource {
      * Set the id property: Resource Id.
      * 
      * @param id the id value to set.
-     * @return the Resource object itself.
+     * @return the FhirR4Resource object itself.
      */
     @Generated
-    public Resource setId(String id) {
+    public FhirR4Resource setId(String id) {
         this.id = id;
         return this;
     }
@@ -114,7 +112,7 @@ public final class Resource {
      * @return the meta value.
      */
     @Generated
-    public Meta getMeta() {
+    public FhirR4Meta getMeta() {
         return this.meta;
     }
 
@@ -122,10 +120,10 @@ public final class Resource {
      * Set the meta property: Metadata about the resource.
      * 
      * @param meta the meta value to set.
-     * @return the Resource object itself.
+     * @return the FhirR4Resource object itself.
      */
     @Generated
-    public Resource setMeta(Meta meta) {
+    public FhirR4Resource setMeta(FhirR4Meta meta) {
         this.meta = meta;
         return this;
     }
@@ -144,10 +142,10 @@ public final class Resource {
      * Set the implicitRules property: A set of rules under which this content was created.
      * 
      * @param implicitRules the implicitRules value to set.
-     * @return the Resource object itself.
+     * @return the FhirR4Resource object itself.
      */
     @Generated
-    public Resource setImplicitRules(String implicitRules) {
+    public FhirR4Resource setImplicitRules(String implicitRules) {
         this.implicitRules = implicitRules;
         return this;
     }
@@ -166,18 +164,16 @@ public final class Resource {
      * Set the language property: Language of the resource content.
      * 
      * @param language the language value to set.
-     * @return the Resource object itself.
+     * @return the FhirR4Resource object itself.
      */
     @Generated
-    public Resource setLanguage(String language) {
+    public FhirR4Resource setLanguage(String language) {
         this.language = language;
         return this;
     }
 
     /**
-     * Get the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
-     * derived. Bundle, Parameters, and Binary extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
+     * Get the additionalProperties property: Additional properties.
      * 
      * @return the additionalProperties value.
      */
@@ -188,15 +184,13 @@ public final class Resource {
     }
 
     /**
-     * Set the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
-     * derived. Bundle, Parameters, and Binary extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
+     * Set the additionalProperties property: Additional properties.
      * 
      * @param additionalProperties the additionalProperties value to set.
-     * @return the Resource object itself.
+     * @return the FhirR4Resource object itself.
      */
     @Generated
-    public Resource setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public FhirR4Resource setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

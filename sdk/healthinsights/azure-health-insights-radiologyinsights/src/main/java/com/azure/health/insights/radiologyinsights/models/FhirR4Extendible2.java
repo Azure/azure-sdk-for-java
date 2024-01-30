@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -13,14 +13,21 @@ import java.util.List;
 /**
  * Finding reference for recommendation.
  */
-@Fluent
-public final class RecommendationFinding extends Extendible {
+@Immutable
+public final class FhirR4Extendible2 {
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /*
      * Finding linked to a recommendation.
      */
     @Generated
     @JsonProperty(value = "finding")
-    private Observation finding;
+    private FhirR4Observation finding;
 
     /*
      * Critical result linked to a recommendation.
@@ -37,15 +44,25 @@ public final class RecommendationFinding extends Extendible {
     private RecommendationFindingStatusType recommendationFindingStatus;
 
     /**
-     * Creates an instance of RecommendationFinding class.
+     * Creates an instance of FhirR4Extendible2 class.
      * 
      * @param recommendationFindingStatus the recommendationFindingStatus value to set.
      */
     @Generated
     @JsonCreator
-    public RecommendationFinding(@JsonProperty(
+    private FhirR4Extendible2(@JsonProperty(
         value = "recommendationFindingStatus") RecommendationFindingStatusType recommendationFindingStatus) {
         this.recommendationFindingStatus = recommendationFindingStatus;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     * 
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 
     /**
@@ -54,20 +71,8 @@ public final class RecommendationFinding extends Extendible {
      * @return the finding value.
      */
     @Generated
-    public Observation getFinding() {
+    public FhirR4Observation getFinding() {
         return this.finding;
-    }
-
-    /**
-     * Set the finding property: Finding linked to a recommendation.
-     * 
-     * @param finding the finding value to set.
-     * @return the RecommendationFinding object itself.
-     */
-    @Generated
-    public RecommendationFinding setFinding(Observation finding) {
-        this.finding = finding;
-        return this;
     }
 
     /**
@@ -81,18 +86,6 @@ public final class RecommendationFinding extends Extendible {
     }
 
     /**
-     * Set the criticalFinding property: Critical result linked to a recommendation.
-     * 
-     * @param criticalFinding the criticalFinding value to set.
-     * @return the RecommendationFinding object itself.
-     */
-    @Generated
-    public RecommendationFinding setCriticalFinding(CriticalResult criticalFinding) {
-        this.criticalFinding = criticalFinding;
-        return this;
-    }
-
-    /**
      * Get the recommendationFindingStatus property: Recommendation finding status.
      * 
      * @return the recommendationFindingStatus value.
@@ -100,15 +93,5 @@ public final class RecommendationFinding extends Extendible {
     @Generated
     public RecommendationFindingStatusType getRecommendationFindingStatus() {
         return this.recommendationFindingStatus;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public RecommendationFinding setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

@@ -13,13 +13,20 @@ import java.util.List;
  * Procedure information.
  */
 @Fluent
-public final class OrderedProcedure extends Extendible {
+public final class FhirR4Extendible {
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /*
      * Procedure code
      */
     @Generated
     @JsonProperty(value = "code")
-    private CodeableConcept code;
+    private FhirR4CodeableConcept code;
 
     /*
      * Procedure description
@@ -29,10 +36,32 @@ public final class OrderedProcedure extends Extendible {
     private String description;
 
     /**
-     * Creates an instance of OrderedProcedure class.
+     * Creates an instance of FhirR4Extendible class.
      */
     @Generated
-    public OrderedProcedure() {
+    public FhirR4Extendible() {
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     * 
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * Set the extension property: Additional Content defined by implementations.
+     * 
+     * @param extension the extension value to set.
+     * @return the FhirR4Extendible object itself.
+     */
+    @Generated
+    public FhirR4Extendible setExtension(List<FhirR4Extension> extension) {
+        this.extension = extension;
+        return this;
     }
 
     /**
@@ -41,7 +70,7 @@ public final class OrderedProcedure extends Extendible {
      * @return the code value.
      */
     @Generated
-    public CodeableConcept getCode() {
+    public FhirR4CodeableConcept getCode() {
         return this.code;
     }
 
@@ -49,10 +78,10 @@ public final class OrderedProcedure extends Extendible {
      * Set the code property: Procedure code.
      * 
      * @param code the code value to set.
-     * @return the OrderedProcedure object itself.
+     * @return the FhirR4Extendible object itself.
      */
     @Generated
-    public OrderedProcedure setCode(CodeableConcept code) {
+    public FhirR4Extendible setCode(FhirR4CodeableConcept code) {
         this.code = code;
         return this;
     }
@@ -71,21 +100,11 @@ public final class OrderedProcedure extends Extendible {
      * Set the description property: Procedure description.
      * 
      * @param description the description value to set.
-     * @return the OrderedProcedure object itself.
+     * @return the FhirR4Extendible object itself.
      */
     @Generated
-    public OrderedProcedure setDescription(String description) {
+    public FhirR4Extendible setDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public OrderedProcedure setExtension(List<Extension> extension) {
-        super.setExtension(extension);
         return this;
     }
 }

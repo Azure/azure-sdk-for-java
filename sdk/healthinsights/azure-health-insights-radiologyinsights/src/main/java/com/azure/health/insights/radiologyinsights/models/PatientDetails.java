@@ -14,13 +14,13 @@ import java.util.List;
  * Patient structured information, including demographics and known structured clinical information.
  */
 @Fluent
-public final class PatientInfo {
+public final class PatientDetails {
     /*
      * The patient's sex.
      */
     @Generated
     @JsonProperty(value = "sex")
-    private PatientInfoSex sex;
+    private PatientSex sex;
 
     /*
      * The patient's date of birth.
@@ -34,13 +34,13 @@ public final class PatientInfo {
      */
     @Generated
     @JsonProperty(value = "clinicalInfo")
-    private List<Resource> clinicalInfo;
+    private List<FhirR4Resource> clinicalInfo;
 
     /**
-     * Creates an instance of PatientInfo class.
+     * Creates an instance of PatientDetails class.
      */
     @Generated
-    public PatientInfo() {
+    public PatientDetails() {
     }
 
     /**
@@ -49,7 +49,7 @@ public final class PatientInfo {
      * @return the sex value.
      */
     @Generated
-    public PatientInfoSex getSex() {
+    public PatientSex getSex() {
         return this.sex;
     }
 
@@ -57,10 +57,10 @@ public final class PatientInfo {
      * Set the sex property: The patient's sex.
      * 
      * @param sex the sex value to set.
-     * @return the PatientInfo object itself.
+     * @return the PatientDetails object itself.
      */
     @Generated
-    public PatientInfo setSex(PatientInfoSex sex) {
+    public PatientDetails setSex(PatientSex sex) {
         this.sex = sex;
         return this;
     }
@@ -79,10 +79,10 @@ public final class PatientInfo {
      * Set the birthDate property: The patient's date of birth.
      * 
      * @param birthDate the birthDate value to set.
-     * @return the PatientInfo object itself.
+     * @return the PatientDetails object itself.
      */
     @Generated
-    public PatientInfo setBirthDate(LocalDate birthDate) {
+    public PatientDetails setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
         return this;
     }
@@ -93,7 +93,7 @@ public final class PatientInfo {
      * @return the clinicalInfo value.
      */
     @Generated
-    public List<Resource> getClinicalInfo() {
+    public List<FhirR4Resource> getClinicalInfo() {
         return this.clinicalInfo;
     }
 
@@ -101,10 +101,10 @@ public final class PatientInfo {
      * Set the clinicalInfo property: Known clinical information for the patient, structured.
      * 
      * @param clinicalInfo the clinicalInfo value to set.
-     * @return the PatientInfo object itself.
+     * @return the PatientDetails object itself.
      */
     @Generated
-    public PatientInfo setClinicalInfo(List<Resource> clinicalInfo) {
+    public PatientDetails setClinicalInfo(List<FhirR4Resource> clinicalInfo) {
         this.clinicalInfo = clinicalInfo;
         return this;
     }

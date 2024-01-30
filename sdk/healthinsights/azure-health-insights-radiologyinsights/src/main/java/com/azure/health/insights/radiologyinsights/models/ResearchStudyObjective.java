@@ -26,7 +26,7 @@ public final class ResearchStudyObjective {
      */
     @Generated
     @JsonProperty(value = "type")
-    private CodeableConcept type;
+    private FhirR4CodeableConcept type;
 
     /**
      * Creates an instance of ResearchStudyObjective class.
@@ -55,7 +55,7 @@ public final class ResearchStudyObjective {
      * @return the type value.
      */
     @Generated
-    public CodeableConcept getType() {
+    public FhirR4CodeableConcept getType() {
         return this.type;
     }
 
@@ -66,7 +66,7 @@ public final class ResearchStudyObjective {
      * @return the ResearchStudyObjective object itself.
      */
     @Generated
-    public ResearchStudyObjective setType(CodeableConcept type) {
+    public ResearchStudyObjective setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
     }

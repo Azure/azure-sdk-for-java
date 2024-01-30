@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Identifier](https://www.hl7.org/fhir/R4/identifier.html).
  */
 @Fluent
-public final class Identifier extends Element {
+public final class FhirR4Identifier extends FhirR4Element {
     /*
      * usual | official | temp | secondary | old (If known)
      */
@@ -27,7 +27,7 @@ public final class Identifier extends Element {
      */
     @Generated
     @JsonProperty(value = "type")
-    private CodeableConcept type;
+    private FhirR4CodeableConcept type;
 
     /*
      * The namespace for the identifier value
@@ -48,20 +48,20 @@ public final class Identifier extends Element {
      */
     @Generated
     @JsonProperty(value = "period")
-    private PeriodModel period;
+    private FhirR4Period period;
 
     /*
      * Organization that issued id (may be just text)
      */
     @Generated
     @JsonProperty(value = "assigner")
-    private Reference assigner;
+    private FhirR4Reference assigner;
 
     /**
-     * Creates an instance of Identifier class.
+     * Creates an instance of FhirR4Identifier class.
      */
     @Generated
-    public Identifier() {
+    public FhirR4Identifier() {
     }
 
     /**
@@ -78,10 +78,10 @@ public final class Identifier extends Element {
      * Set the use property: usual | official | temp | secondary | old (If known).
      * 
      * @param use the use value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setUse(String use) {
+    public FhirR4Identifier setUse(String use) {
         this.use = use;
         return this;
     }
@@ -92,7 +92,7 @@ public final class Identifier extends Element {
      * @return the type value.
      */
     @Generated
-    public CodeableConcept getType() {
+    public FhirR4CodeableConcept getType() {
         return this.type;
     }
 
@@ -100,10 +100,10 @@ public final class Identifier extends Element {
      * Set the type property: Description of identifier.
      * 
      * @param type the type value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setType(CodeableConcept type) {
+    public FhirR4Identifier setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
     }
@@ -122,10 +122,10 @@ public final class Identifier extends Element {
      * Set the system property: The namespace for the identifier value.
      * 
      * @param system the system value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setSystem(String system) {
+    public FhirR4Identifier setSystem(String system) {
         this.system = system;
         return this;
     }
@@ -144,10 +144,10 @@ public final class Identifier extends Element {
      * Set the value property: The value that is unique.
      * 
      * @param value the value value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setValue(String value) {
+    public FhirR4Identifier setValue(String value) {
         this.value = value;
         return this;
     }
@@ -158,7 +158,7 @@ public final class Identifier extends Element {
      * @return the period value.
      */
     @Generated
-    public PeriodModel getPeriod() {
+    public FhirR4Period getPeriod() {
         return this.period;
     }
 
@@ -166,10 +166,10 @@ public final class Identifier extends Element {
      * Set the period property: Time period when id is/was valid for use.
      * 
      * @param period the period value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setPeriod(PeriodModel period) {
+    public FhirR4Identifier setPeriod(FhirR4Period period) {
         this.period = period;
         return this;
     }
@@ -180,7 +180,7 @@ public final class Identifier extends Element {
      * @return the assigner value.
      */
     @Generated
-    public Reference getAssigner() {
+    public FhirR4Reference getAssigner() {
         return this.assigner;
     }
 
@@ -188,10 +188,10 @@ public final class Identifier extends Element {
      * Set the assigner property: Organization that issued id (may be just text).
      * 
      * @param assigner the assigner value to set.
-     * @return the Identifier object itself.
+     * @return the FhirR4Identifier object itself.
      */
     @Generated
-    public Identifier setAssigner(Reference assigner) {
+    public FhirR4Identifier setAssigner(FhirR4Reference assigner) {
         this.assigner = assigner;
         return this;
     }
@@ -201,7 +201,7 @@ public final class Identifier extends Element {
      */
     @Generated
     @Override
-    public Identifier setId(String id) {
+    public FhirR4Identifier setId(String id) {
         super.setId(id);
         return this;
     }
@@ -211,7 +211,7 @@ public final class Identifier extends Element {
      */
     @Generated
     @Override
-    public Identifier setExtension(List<Extension> extension) {
+    public FhirR4Identifier setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

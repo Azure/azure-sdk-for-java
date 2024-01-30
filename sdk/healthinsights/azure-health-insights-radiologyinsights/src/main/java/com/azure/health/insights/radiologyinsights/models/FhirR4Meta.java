@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Meta](https://www.hl7.org/fhir/R4/resource.html#Meta).
  */
 @Fluent
-public final class Meta {
+public final class FhirR4Meta {
     /*
      * The version specific identifier, as it appears in the version portion of the URL. This value changes when the
      * resource is created, updated, or deleted.
@@ -54,7 +54,7 @@ public final class Meta {
      */
     @Generated
     @JsonProperty(value = "security")
-    private List<Coding> security;
+    private List<FhirR4Coding> security;
 
     /*
      * Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and
@@ -62,13 +62,13 @@ public final class Meta {
      */
     @Generated
     @JsonProperty(value = "tag")
-    private List<Coding> tag;
+    private List<FhirR4Coding> tag;
 
     /**
-     * Creates an instance of Meta class.
+     * Creates an instance of FhirR4Meta class.
      */
     @Generated
-    public Meta() {
+    public FhirR4Meta() {
     }
 
     /**
@@ -87,10 +87,10 @@ public final class Meta {
      * This value changes when the resource is created, updated, or deleted.
      * 
      * @param versionId the versionId value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setVersionId(String versionId) {
+    public FhirR4Meta setVersionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -109,10 +109,10 @@ public final class Meta {
      * Set the lastUpdated property: When the resource last changed - e.g. when the version changed.
      * 
      * @param lastUpdated the lastUpdated value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setLastUpdated(String lastUpdated) {
+    public FhirR4Meta setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
     }
@@ -135,10 +135,10 @@ public final class Meta {
      * The source may identify another FHIR server, document, message, database, etc.
      * 
      * @param source the source value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setSource(String source) {
+    public FhirR4Meta setSource(String source) {
         this.source = source;
         return this;
     }
@@ -163,10 +163,10 @@ public final class Meta {
      * [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
      * 
      * @param profile the profile value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setProfile(List<String> profile) {
+    public FhirR4Meta setProfile(List<String> profile) {
         this.profile = profile;
         return this;
     }
@@ -178,7 +178,7 @@ public final class Meta {
      * @return the security value.
      */
     @Generated
-    public List<Coding> getSecurity() {
+    public List<FhirR4Coding> getSecurity() {
         return this.security;
     }
 
@@ -187,10 +187,10 @@ public final class Meta {
      * the overall security policy and infrastructure.
      * 
      * @param security the security value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setSecurity(List<Coding> security) {
+    public FhirR4Meta setSecurity(List<FhirR4Coding> security) {
         this.security = security;
         return this;
     }
@@ -203,7 +203,7 @@ public final class Meta {
      * @return the tag value.
      */
     @Generated
-    public List<Coding> getTag() {
+    public List<FhirR4Coding> getTag() {
         return this.tag;
     }
 
@@ -213,10 +213,10 @@ public final class Meta {
      * meaning of a resource.
      * 
      * @param tag the tag value to set.
-     * @return the Meta object itself.
+     * @return the FhirR4Meta object itself.
      */
     @Generated
-    public Meta setTag(List<Coding> tag) {
+    public FhirR4Meta setTag(List<FhirR4Coding> tag) {
         this.tag = tag;
         return this;
     }

@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,28 +18,28 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("limitedOrderDiscrepancy")
-@Fluent
-public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInference {
+@Immutable
+public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     /*
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
     @JsonProperty(value = "orderType")
-    private CodeableConcept orderType;
+    private FhirR4CodeableConcept orderType;
 
     /*
      * List of body parts found in the document : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "presentBodyParts")
-    private List<CodeableConcept> presentBodyParts;
+    private List<FhirR4CodeableConcept> presentBodyParts;
 
     /*
      * List of body parts that are measured according to the document : SNOMED CT codes.
      */
     @Generated
     @JsonProperty(value = "presentBodyPartMeasurements")
-    private List<CodeableConcept> presentBodyPartMeasurements;
+    private List<FhirR4CodeableConcept> presentBodyPartMeasurements;
 
     /**
      * Creates an instance of LimitedOrderDiscrepancyInference class.
@@ -48,7 +48,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
      */
     @Generated
     @JsonCreator
-    public LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") CodeableConcept orderType) {
+    private LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
         this.orderType = orderType;
     }
 
@@ -59,7 +59,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
      * @return the orderType value.
      */
     @Generated
-    public CodeableConcept getOrderType() {
+    public FhirR4CodeableConcept getOrderType() {
         return this.orderType;
     }
 
@@ -69,20 +69,8 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
      * @return the presentBodyParts value.
      */
     @Generated
-    public List<CodeableConcept> getPresentBodyParts() {
+    public List<FhirR4CodeableConcept> getPresentBodyParts() {
         return this.presentBodyParts;
-    }
-
-    /**
-     * Set the presentBodyParts property: List of body parts found in the document : SNOMED CT codes.
-     * 
-     * @param presentBodyParts the presentBodyParts value to set.
-     * @return the LimitedOrderDiscrepancyInference object itself.
-     */
-    @Generated
-    public LimitedOrderDiscrepancyInference setPresentBodyParts(List<CodeableConcept> presentBodyParts) {
-        this.presentBodyParts = presentBodyParts;
-        return this;
     }
 
     /**
@@ -92,31 +80,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
      * @return the presentBodyPartMeasurements value.
      */
     @Generated
-    public List<CodeableConcept> getPresentBodyPartMeasurements() {
+    public List<FhirR4CodeableConcept> getPresentBodyPartMeasurements() {
         return this.presentBodyPartMeasurements;
-    }
-
-    /**
-     * Set the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
-     * SNOMED CT codes.
-     * 
-     * @param presentBodyPartMeasurements the presentBodyPartMeasurements value to set.
-     * @return the LimitedOrderDiscrepancyInference object itself.
-     */
-    @Generated
-    public LimitedOrderDiscrepancyInference
-        setPresentBodyPartMeasurements(List<CodeableConcept> presentBodyPartMeasurements) {
-        this.presentBodyPartMeasurements = presentBodyPartMeasurements;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public LimitedOrderDiscrepancyInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

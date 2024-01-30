@@ -14,26 +14,26 @@ import java.util.List;
  * Based on [FHIR Ratio](https://www.hl7.org/fhir/R4/datatypes.html#Ratio).
  */
 @Fluent
-public final class Ratio extends Element {
+public final class FhirR4Ratio extends FhirR4Element {
     /*
      * Numerator value
      */
     @Generated
     @JsonProperty(value = "numerator")
-    private Quantity numerator;
+    private FhirR4Quantity numerator;
 
     /*
      * Denominator value
      */
     @Generated
     @JsonProperty(value = "denominator")
-    private Quantity denominator;
+    private FhirR4Quantity denominator;
 
     /**
-     * Creates an instance of Ratio class.
+     * Creates an instance of FhirR4Ratio class.
      */
     @Generated
-    public Ratio() {
+    public FhirR4Ratio() {
     }
 
     /**
@@ -42,7 +42,7 @@ public final class Ratio extends Element {
      * @return the numerator value.
      */
     @Generated
-    public Quantity getNumerator() {
+    public FhirR4Quantity getNumerator() {
         return this.numerator;
     }
 
@@ -50,10 +50,10 @@ public final class Ratio extends Element {
      * Set the numerator property: Numerator value.
      * 
      * @param numerator the numerator value to set.
-     * @return the Ratio object itself.
+     * @return the FhirR4Ratio object itself.
      */
     @Generated
-    public Ratio setNumerator(Quantity numerator) {
+    public FhirR4Ratio setNumerator(FhirR4Quantity numerator) {
         this.numerator = numerator;
         return this;
     }
@@ -64,7 +64,7 @@ public final class Ratio extends Element {
      * @return the denominator value.
      */
     @Generated
-    public Quantity getDenominator() {
+    public FhirR4Quantity getDenominator() {
         return this.denominator;
     }
 
@@ -72,10 +72,10 @@ public final class Ratio extends Element {
      * Set the denominator property: Denominator value.
      * 
      * @param denominator the denominator value to set.
-     * @return the Ratio object itself.
+     * @return the FhirR4Ratio object itself.
      */
     @Generated
-    public Ratio setDenominator(Quantity denominator) {
+    public FhirR4Ratio setDenominator(FhirR4Quantity denominator) {
         this.denominator = denominator;
         return this;
     }
@@ -85,7 +85,7 @@ public final class Ratio extends Element {
      */
     @Generated
     @Override
-    public Ratio setId(String id) {
+    public FhirR4Ratio setId(String id) {
         super.setId(id);
         return this;
     }
@@ -95,7 +95,7 @@ public final class Ratio extends Element {
      */
     @Generated
     @Override
-    public Ratio setExtension(List<Extension> extension) {
+    public FhirR4Ratio setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

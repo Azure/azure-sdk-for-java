@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Period](https://www.hl7.org/fhir/R4/datatypes.html#Period).
  */
 @Fluent
-public final class PeriodModel extends Element {
+public final class FhirR4Period extends FhirR4Element {
     /*
      * Starting time with inclusive boundary
      */
@@ -30,10 +30,10 @@ public final class PeriodModel extends Element {
     private String end;
 
     /**
-     * Creates an instance of PeriodModel class.
+     * Creates an instance of FhirR4Period class.
      */
     @Generated
-    public PeriodModel() {
+    public FhirR4Period() {
     }
 
     /**
@@ -50,10 +50,10 @@ public final class PeriodModel extends Element {
      * Set the start property: Starting time with inclusive boundary.
      * 
      * @param start the start value to set.
-     * @return the PeriodModel object itself.
+     * @return the FhirR4Period object itself.
      */
     @Generated
-    public PeriodModel setStart(String start) {
+    public FhirR4Period setStart(String start) {
         this.start = start;
         return this;
     }
@@ -72,10 +72,10 @@ public final class PeriodModel extends Element {
      * Set the end property: End time with inclusive boundary, if not ongoing.
      * 
      * @param end the end value to set.
-     * @return the PeriodModel object itself.
+     * @return the FhirR4Period object itself.
      */
     @Generated
-    public PeriodModel setEnd(String end) {
+    public FhirR4Period setEnd(String end) {
         this.end = end;
         return this;
     }
@@ -85,7 +85,7 @@ public final class PeriodModel extends Element {
      */
     @Generated
     @Override
-    public PeriodModel setId(String id) {
+    public FhirR4Period setId(String id) {
         super.setId(id);
         return this;
     }
@@ -95,7 +95,7 @@ public final class PeriodModel extends Element {
      */
     @Generated
     @Override
-    public PeriodModel setExtension(List<Extension> extension) {
+    public FhirR4Period setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

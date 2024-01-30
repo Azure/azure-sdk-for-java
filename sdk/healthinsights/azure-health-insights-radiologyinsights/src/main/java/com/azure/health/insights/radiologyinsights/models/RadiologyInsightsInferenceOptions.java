@@ -17,15 +17,15 @@ public final class RadiologyInsightsInferenceOptions {
      * Follow-up recommendation options.
      */
     @Generated
-    @JsonProperty(value = "followupRecommendation")
-    private FollowupRecommendationOptions followupRecommendation;
+    @JsonProperty(value = "followupRecommendationOptions")
+    private FollowupRecommendationOptions followupRecommendationOptions;
 
     /*
      * Finding options.
      */
     @Generated
-    @JsonProperty(value = "finding")
-    private FindingOptions finding;
+    @JsonProperty(value = "findingOptions")
+    private FindingOptions findingOptions;
 
     /**
      * Creates an instance of RadiologyInsightsInferenceOptions class.
@@ -35,47 +35,47 @@ public final class RadiologyInsightsInferenceOptions {
     }
 
     /**
-     * Get the followupRecommendation property: Follow-up recommendation options.
+     * Get the followupRecommendationOptions property: Follow-up recommendation options.
      * 
-     * @return the followupRecommendation value.
+     * @return the followupRecommendationOptions value.
      */
     @Generated
-    public FollowupRecommendationOptions getFollowupRecommendation() {
-        return this.followupRecommendation;
+    public FollowupRecommendationOptions getFollowupRecommendationOptions() {
+        return this.followupRecommendationOptions;
     }
 
     /**
-     * Set the followupRecommendation property: Follow-up recommendation options.
+     * Set the followupRecommendationOptions property: Follow-up recommendation options.
      * 
-     * @param followupRecommendation the followupRecommendation value to set.
+     * @param followupRecommendationOptions the followupRecommendationOptions value to set.
      * @return the RadiologyInsightsInferenceOptions object itself.
      */
     @Generated
     public RadiologyInsightsInferenceOptions
-        setFollowupRecommendation(FollowupRecommendationOptions followupRecommendation) {
-        this.followupRecommendation = followupRecommendation;
+        setFollowupRecommendationOptions(FollowupRecommendationOptions followupRecommendationOptions) {
+        this.followupRecommendationOptions = followupRecommendationOptions;
         return this;
     }
 
     /**
-     * Get the finding property: Finding options.
+     * Get the findingOptions property: Finding options.
      * 
-     * @return the finding value.
+     * @return the findingOptions value.
      */
     @Generated
-    public FindingOptions getFinding() {
-        return this.finding;
+    public FindingOptions getFindingOptions() {
+        return this.findingOptions;
     }
 
     /**
-     * Set the finding property: Finding options.
+     * Set the findingOptions property: Finding options.
      * 
-     * @param finding the finding value to set.
+     * @param findingOptions the findingOptions value to set.
      * @return the RadiologyInsightsInferenceOptions object itself.
      */
     @Generated
-    public RadiologyInsightsInferenceOptions setFinding(FindingOptions finding) {
-        this.finding = finding;
+    public RadiologyInsightsInferenceOptions setFindingOptions(FindingOptions findingOptions) {
+        this.findingOptions = findingOptions;
         return this;
     }
 }

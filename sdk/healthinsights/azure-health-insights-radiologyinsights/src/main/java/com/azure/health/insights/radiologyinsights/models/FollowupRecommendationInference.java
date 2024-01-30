@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,8 +18,8 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupRecommendation")
-@Fluent
-public final class FollowupRecommendationInference extends RadiologyInsightsInference {
+@Immutable
+public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      */
@@ -32,14 +32,14 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      */
     @Generated
     @JsonProperty(value = "effectivePeriod")
-    private PeriodModel effectivePeriod;
+    private FhirR4Period effectivePeriod;
 
     /*
      * Findings related to the recommendation.
      */
     @Generated
     @JsonProperty(value = "findings")
-    private List<RecommendationFinding> findings;
+    private List<FhirR4Extendible2> findings;
 
     /*
      * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
@@ -91,7 +91,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      */
     @Generated
     @JsonCreator
-    public FollowupRecommendationInference(@JsonProperty(value = "isConditional") boolean isConditional,
+    private FollowupRecommendationInference(@JsonProperty(value = "isConditional") boolean isConditional,
         @JsonProperty(value = "isOption") boolean isOption, @JsonProperty(value = "isGuideline") boolean isGuideline,
         @JsonProperty(value = "isHedging") boolean isHedging,
         @JsonProperty(value = "recommendedProcedure") ProcedureRecommendation recommendedProcedure) {
@@ -114,40 +114,14 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Set the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
-     * 
-     * @param effectiveDateTime the effectiveDateTime value to set.
-     * @return the FollowupRecommendationInference object itself.
-     */
-    @Generated
-    public FollowupRecommendationInference setEffectiveDateTime(String effectiveDateTime) {
-        this.effectiveDateTime = effectiveDateTime;
-        return this;
-    }
-
-    /**
      * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
      * date-time.
      * 
      * @return the effectivePeriod value.
      */
     @Generated
-    public PeriodModel getEffectivePeriod() {
+    public FhirR4Period getEffectivePeriod() {
         return this.effectivePeriod;
-    }
-
-    /**
-     * Set the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
-     * date-time.
-     * 
-     * @param effectivePeriod the effectivePeriod value to set.
-     * @return the FollowupRecommendationInference object itself.
-     */
-    @Generated
-    public FollowupRecommendationInference setEffectivePeriod(PeriodModel effectivePeriod) {
-        this.effectivePeriod = effectivePeriod;
-        return this;
     }
 
     /**
@@ -156,20 +130,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * @return the findings value.
      */
     @Generated
-    public List<RecommendationFinding> getFindings() {
+    public List<FhirR4Extendible2> getFindings() {
         return this.findings;
-    }
-
-    /**
-     * Set the findings property: Findings related to the recommendation.
-     * 
-     * @param findings the findings value to set.
-     * @return the FollowupRecommendationInference object itself.
-     */
-    @Generated
-    public FollowupRecommendationInference setFindings(List<RecommendationFinding> findings) {
-        this.findings = findings;
-        return this;
     }
 
     /**
@@ -226,15 +188,5 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public FollowupRecommendationInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

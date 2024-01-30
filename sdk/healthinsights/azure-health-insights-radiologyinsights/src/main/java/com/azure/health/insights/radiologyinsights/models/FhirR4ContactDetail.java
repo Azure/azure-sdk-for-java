@@ -13,7 +13,7 @@ import java.util.List;
  * Contact details (See: https://www.hl7.org/fhir/R4/metadatatypes.html#ContactDetail).
  */
 @Fluent
-public final class ContactDetail extends Element {
+public final class FhirR4ContactDetail extends FhirR4Element {
     /*
      * Name of an individual to contact
      */
@@ -26,13 +26,13 @@ public final class ContactDetail extends Element {
      */
     @Generated
     @JsonProperty(value = "telecom")
-    private List<ContactPoint> telecom;
+    private List<FhirR4ContactPoint> telecom;
 
     /**
-     * Creates an instance of ContactDetail class.
+     * Creates an instance of FhirR4ContactDetail class.
      */
     @Generated
-    public ContactDetail() {
+    public FhirR4ContactDetail() {
     }
 
     /**
@@ -49,10 +49,10 @@ public final class ContactDetail extends Element {
      * Set the name property: Name of an individual to contact.
      * 
      * @param name the name value to set.
-     * @return the ContactDetail object itself.
+     * @return the FhirR4ContactDetail object itself.
      */
     @Generated
-    public ContactDetail setName(String name) {
+    public FhirR4ContactDetail setName(String name) {
         this.name = name;
         return this;
     }
@@ -63,7 +63,7 @@ public final class ContactDetail extends Element {
      * @return the telecom value.
      */
     @Generated
-    public List<ContactPoint> getTelecom() {
+    public List<FhirR4ContactPoint> getTelecom() {
         return this.telecom;
     }
 
@@ -71,10 +71,10 @@ public final class ContactDetail extends Element {
      * Set the telecom property: Contact details for individual or organization.
      * 
      * @param telecom the telecom value to set.
-     * @return the ContactDetail object itself.
+     * @return the FhirR4ContactDetail object itself.
      */
     @Generated
-    public ContactDetail setTelecom(List<ContactPoint> telecom) {
+    public FhirR4ContactDetail setTelecom(List<FhirR4ContactPoint> telecom) {
         this.telecom = telecom;
         return this;
     }
@@ -84,7 +84,7 @@ public final class ContactDetail extends Element {
      */
     @Generated
     @Override
-    public ContactDetail setId(String id) {
+    public FhirR4ContactDetail setId(String id) {
         super.setId(id);
         return this;
     }
@@ -94,7 +94,7 @@ public final class ContactDetail extends Element {
      */
     @Generated
     @Override
-    public ContactDetail setExtension(List<Extension> extension) {
+    public FhirR4ContactDetail setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

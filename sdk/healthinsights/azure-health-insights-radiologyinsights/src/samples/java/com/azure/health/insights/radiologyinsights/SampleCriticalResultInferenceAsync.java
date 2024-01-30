@@ -10,8 +10,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
-import com.azure.health.insights.radiologyinsights.models.CodeableConcept;
-import com.azure.health.insights.radiologyinsights.models.Coding;
 import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
 import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
@@ -20,15 +18,17 @@ import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceT
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
 import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
+import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
+import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
-import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
+import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
-import com.azure.health.insights.radiologyinsights.models.PatientInfo;
-import com.azure.health.insights.radiologyinsights.models.PatientInfoSex;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
+import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
@@ -122,8 +122,8 @@ public class SampleCriticalResultInferenceAsync {
     private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
-            for (RadiologyInsightsInference inference : inferences) {
+            List<FhirR4Extendible1> inferences = patientResult.getInferences();
+            for (FhirR4Extendible1 inference : inferences) {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
@@ -158,16 +158,16 @@ public class SampleCriticalResultInferenceAsync {
         // Patients
         PatientRecord patientRecord = new PatientRecord("Sharona");
 
-        PatientInfo patientInfo = new PatientInfo();
-        patientInfo.setSex(PatientInfoSex.FEMALE);
+        PatientDetails patientDetails = new PatientDetails();
+        patientDetails.setSex(PatientSex.FEMALE);
         // Define a formatter that matches the input pattern
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
-        patientInfo.setBirthDate(dateTime.toLocalDate());
+        patientDetails.setBirthDate(dateTime.toLocalDate());
         
-        patientRecord.setInfo(patientInfo);
+        patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
 
@@ -197,10 +197,10 @@ public class SampleCriticalResultInferenceAsync {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        OrderedProcedure orderedProcedure = new OrderedProcedure();
+        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
 
-        CodeableConcept procedureCode = new CodeableConcept();
-        Coding procedureCoding = new Coding();
+        FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
+        FhirR4Coding procedureCoding = new FhirR4Coding();
         procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
         procedureCoding.setCode("USPELVIS");
         procedureCoding.setDisplay("US PELVIS COMPLETE");
@@ -273,8 +273,8 @@ public class SampleCriticalResultInferenceAsync {
         followupOptions.setIncludeRecommendationsInReferences(true);
         followupOptions.setProvideFocusedSentenceEvidence(true);
         findingOptions.setProvideFocusedSentenceEvidence(true);
-        inferenceOptions.setFollowupRecommendation(followupOptions);
-        inferenceOptions.setFinding(findingOptions);
+        inferenceOptions.setFollowupRecommendationOptions(followupOptions);
+        inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
 

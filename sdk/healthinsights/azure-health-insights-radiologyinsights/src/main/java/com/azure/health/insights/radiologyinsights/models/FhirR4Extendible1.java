@@ -4,8 +4,9 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -28,8 +29,8 @@ import java.util.List;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = RadiologyInsightsInference.class)
-@JsonTypeName("RadiologyInsightsInference")
+    defaultImpl = FhirR4Extendible1.class)
+@JsonTypeName("Fhir_R4_Extendible1")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ageMismatch", value = AgeMismatchInference.class),
     @JsonSubTypes.Type(name = "sexMismatch", value = SexMismatchInference.class),
@@ -41,22 +42,29 @@ import java.util.List;
     @JsonSubTypes.Type(name = "radiologyProcedure", value = RadiologyProcedureInference.class),
     @JsonSubTypes.Type(name = "followupRecommendation", value = FollowupRecommendationInference.class),
     @JsonSubTypes.Type(name = "followupCommunication", value = FollowupCommunicationInference.class) })
-@Fluent
-public class RadiologyInsightsInference extends Extendible {
-    /**
-     * Creates an instance of RadiologyInsightsInference class.
+@Immutable
+public class FhirR4Extendible1 {
+    /*
+     * Additional Content defined by implementations
      */
     @Generated
-    public RadiologyInsightsInference() {
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Creates an instance of FhirR4Extendible1 class.
+     */
+    @Generated
+    protected FhirR4Extendible1() {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the extension property: Additional Content defined by implementations.
+     * 
+     * @return the extension value.
      */
     @Generated
-    @Override
-    public RadiologyInsightsInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 }

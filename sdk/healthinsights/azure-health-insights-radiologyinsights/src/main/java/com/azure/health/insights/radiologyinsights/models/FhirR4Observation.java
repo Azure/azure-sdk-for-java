@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Detailed information about observations
@@ -20,13 +19,13 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Observation")
 @Fluent
-public final class Observation extends DomainResource {
+public final class FhirR4Observation extends FhirR4DomainResource {
     /*
      * Business Identifier for observation
      */
     @Generated
     @JsonProperty(value = "identifier")
-    private List<Identifier> identifier;
+    private List<FhirR4Identifier> identifier;
 
     /*
      * registered | preliminary | final | amended +
@@ -40,28 +39,28 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "category")
-    private List<CodeableConcept> category;
+    private List<FhirR4CodeableConcept> category;
 
     /*
      * Type of observation (code / type)
      */
     @Generated
     @JsonProperty(value = "code")
-    private CodeableConcept code;
+    private FhirR4CodeableConcept code;
 
     /*
      * Who and/or what the observation is about
      */
     @Generated
     @JsonProperty(value = "subject")
-    private Reference subject;
+    private FhirR4Reference subject;
 
     /*
      * Healthcare event during which this observation is made
      */
     @Generated
     @JsonProperty(value = "encounter")
-    private Reference encounter;
+    private FhirR4Reference encounter;
 
     /*
      * Clinically relevant time/time-period for observation
@@ -75,7 +74,7 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "effectivePeriod")
-    private PeriodModel effectivePeriod;
+    private FhirR4Period effectivePeriod;
 
     /*
      * Clinically relevant time/time-period for observation
@@ -96,14 +95,14 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "valueQuantity")
-    private Quantity valueQuantity;
+    private FhirR4Quantity valueQuantity;
 
     /*
      * Actual result
      */
     @Generated
     @JsonProperty(value = "valueCodeableConcept")
-    private CodeableConcept valueCodeableConcept;
+    private FhirR4CodeableConcept valueCodeableConcept;
 
     /*
      * Actual result
@@ -131,21 +130,21 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "valueRange")
-    private Range valueRange;
+    private FhirR4Range valueRange;
 
     /*
      * Actual result
      */
     @Generated
     @JsonProperty(value = "valueRatio")
-    private Ratio valueRatio;
+    private FhirR4Ratio valueRatio;
 
     /*
      * Actual result
      */
     @Generated
     @JsonProperty(value = "valueSampledData")
-    private SampledData valueSampledData;
+    private FhirR4SampledData valueSampledData;
 
     /*
      * Actual result
@@ -166,81 +165,84 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "valuePeriod")
-    private PeriodModel valuePeriod;
+    private FhirR4Period valuePeriod;
 
     /*
      * Why the result is missing
      */
     @Generated
     @JsonProperty(value = "dataAbsentReason")
-    private CodeableConcept dataAbsentReason;
+    private FhirR4CodeableConcept dataAbsentReason;
 
     /*
      * High, low, normal, etc.
      */
     @Generated
     @JsonProperty(value = "interpretation")
-    private List<CodeableConcept> interpretation;
+    private List<FhirR4CodeableConcept> interpretation;
 
     /*
      * Comments about the observation
      */
     @Generated
     @JsonProperty(value = "note")
-    private List<Annotation> note;
+    private List<FhirR4Annotation> note;
 
     /*
      * Observed body part
      */
     @Generated
     @JsonProperty(value = "bodySite")
-    private CodeableConcept bodySite;
+    private FhirR4CodeableConcept bodySite;
 
     /*
      * How it was done
      */
     @Generated
     @JsonProperty(value = "method")
-    private CodeableConcept method;
+    private FhirR4CodeableConcept method;
 
     /*
      * Provides guide for interpretation
      */
     @Generated
     @JsonProperty(value = "referenceRange")
-    private List<ObservationReferenceRange> referenceRange;
+    private List<FhirR4ObservationReferenceRange> referenceRange;
 
     /*
      * Related resource that belongs to the Observation group
      */
     @Generated
     @JsonProperty(value = "hasMember")
-    private List<Reference> hasMember;
+    private List<FhirR4Reference> hasMember;
 
     /*
      * Related measurements the observation is made from
      */
     @Generated
     @JsonProperty(value = "derivedFrom")
-    private List<Reference> derivedFrom;
+    private List<FhirR4Reference> derivedFrom;
 
     /*
      * Component results
      */
     @Generated
     @JsonProperty(value = "component")
-    private List<ObservationComponent> component;
+    private List<FhirR4ObservationComponent> component;
 
     /**
-     * Creates an instance of Observation class.
+     * Creates an instance of FhirR4Observation class.
      * 
+     * @param resourceType the resourceType value to set.
      * @param status the status value to set.
      * @param code the code value to set.
      */
     @Generated
     @JsonCreator
-    public Observation(@JsonProperty(value = "status") ObservationStatusCodeType status,
-        @JsonProperty(value = "code") CodeableConcept code) {
+    public FhirR4Observation(@JsonProperty(value = "resourceType") String resourceType,
+        @JsonProperty(value = "status") ObservationStatusCodeType status,
+        @JsonProperty(value = "code") FhirR4CodeableConcept code) {
+        super(resourceType);
         this.status = status;
         this.code = code;
     }
@@ -251,7 +253,7 @@ public final class Observation extends DomainResource {
      * @return the identifier value.
      */
     @Generated
-    public List<Identifier> getIdentifier() {
+    public List<FhirR4Identifier> getIdentifier() {
         return this.identifier;
     }
 
@@ -259,10 +261,10 @@ public final class Observation extends DomainResource {
      * Set the identifier property: Business Identifier for observation.
      * 
      * @param identifier the identifier value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setIdentifier(List<Identifier> identifier) {
+    public FhirR4Observation setIdentifier(List<FhirR4Identifier> identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -283,7 +285,7 @@ public final class Observation extends DomainResource {
      * @return the category value.
      */
     @Generated
-    public List<CodeableConcept> getCategory() {
+    public List<FhirR4CodeableConcept> getCategory() {
         return this.category;
     }
 
@@ -291,10 +293,10 @@ public final class Observation extends DomainResource {
      * Set the category property: Classification of type of observation.
      * 
      * @param category the category value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setCategory(List<CodeableConcept> category) {
+    public FhirR4Observation setCategory(List<FhirR4CodeableConcept> category) {
         this.category = category;
         return this;
     }
@@ -305,7 +307,7 @@ public final class Observation extends DomainResource {
      * @return the code value.
      */
     @Generated
-    public CodeableConcept getCode() {
+    public FhirR4CodeableConcept getCode() {
         return this.code;
     }
 
@@ -315,7 +317,7 @@ public final class Observation extends DomainResource {
      * @return the subject value.
      */
     @Generated
-    public Reference getSubject() {
+    public FhirR4Reference getSubject() {
         return this.subject;
     }
 
@@ -323,10 +325,10 @@ public final class Observation extends DomainResource {
      * Set the subject property: Who and/or what the observation is about.
      * 
      * @param subject the subject value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setSubject(Reference subject) {
+    public FhirR4Observation setSubject(FhirR4Reference subject) {
         this.subject = subject;
         return this;
     }
@@ -337,7 +339,7 @@ public final class Observation extends DomainResource {
      * @return the encounter value.
      */
     @Generated
-    public Reference getEncounter() {
+    public FhirR4Reference getEncounter() {
         return this.encounter;
     }
 
@@ -345,10 +347,10 @@ public final class Observation extends DomainResource {
      * Set the encounter property: Healthcare event during which this observation is made.
      * 
      * @param encounter the encounter value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setEncounter(Reference encounter) {
+    public FhirR4Observation setEncounter(FhirR4Reference encounter) {
         this.encounter = encounter;
         return this;
     }
@@ -367,10 +369,10 @@ public final class Observation extends DomainResource {
      * Set the effectiveDateTime property: Clinically relevant time/time-period for observation.
      * 
      * @param effectiveDateTime the effectiveDateTime value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setEffectiveDateTime(String effectiveDateTime) {
+    public FhirR4Observation setEffectiveDateTime(String effectiveDateTime) {
         this.effectiveDateTime = effectiveDateTime;
         return this;
     }
@@ -381,7 +383,7 @@ public final class Observation extends DomainResource {
      * @return the effectivePeriod value.
      */
     @Generated
-    public PeriodModel getEffectivePeriod() {
+    public FhirR4Period getEffectivePeriod() {
         return this.effectivePeriod;
     }
 
@@ -389,10 +391,10 @@ public final class Observation extends DomainResource {
      * Set the effectivePeriod property: Clinically relevant time/time-period for observation.
      * 
      * @param effectivePeriod the effectivePeriod value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setEffectivePeriod(PeriodModel effectivePeriod) {
+    public FhirR4Observation setEffectivePeriod(FhirR4Period effectivePeriod) {
         this.effectivePeriod = effectivePeriod;
         return this;
     }
@@ -411,10 +413,10 @@ public final class Observation extends DomainResource {
      * Set the effectiveInstant property: Clinically relevant time/time-period for observation.
      * 
      * @param effectiveInstant the effectiveInstant value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setEffectiveInstant(String effectiveInstant) {
+    public FhirR4Observation setEffectiveInstant(String effectiveInstant) {
         this.effectiveInstant = effectiveInstant;
         return this;
     }
@@ -433,10 +435,10 @@ public final class Observation extends DomainResource {
      * Set the issued property: Date/Time this version was made available.
      * 
      * @param issued the issued value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setIssued(String issued) {
+    public FhirR4Observation setIssued(String issued) {
         this.issued = issued;
         return this;
     }
@@ -447,7 +449,7 @@ public final class Observation extends DomainResource {
      * @return the valueQuantity value.
      */
     @Generated
-    public Quantity getValueQuantity() {
+    public FhirR4Quantity getValueQuantity() {
         return this.valueQuantity;
     }
 
@@ -455,10 +457,10 @@ public final class Observation extends DomainResource {
      * Set the valueQuantity property: Actual result.
      * 
      * @param valueQuantity the valueQuantity value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueQuantity(Quantity valueQuantity) {
+    public FhirR4Observation setValueQuantity(FhirR4Quantity valueQuantity) {
         this.valueQuantity = valueQuantity;
         return this;
     }
@@ -469,7 +471,7 @@ public final class Observation extends DomainResource {
      * @return the valueCodeableConcept value.
      */
     @Generated
-    public CodeableConcept getValueCodeableConcept() {
+    public FhirR4CodeableConcept getValueCodeableConcept() {
         return this.valueCodeableConcept;
     }
 
@@ -477,10 +479,10 @@ public final class Observation extends DomainResource {
      * Set the valueCodeableConcept property: Actual result.
      * 
      * @param valueCodeableConcept the valueCodeableConcept value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueCodeableConcept(CodeableConcept valueCodeableConcept) {
+    public FhirR4Observation setValueCodeableConcept(FhirR4CodeableConcept valueCodeableConcept) {
         this.valueCodeableConcept = valueCodeableConcept;
         return this;
     }
@@ -499,10 +501,10 @@ public final class Observation extends DomainResource {
      * Set the valueString property: Actual result.
      * 
      * @param valueString the valueString value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueString(String valueString) {
+    public FhirR4Observation setValueString(String valueString) {
         this.valueString = valueString;
         return this;
     }
@@ -521,10 +523,10 @@ public final class Observation extends DomainResource {
      * Set the valueBoolean property: Actual result.
      * 
      * @param valueBoolean the valueBoolean value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueBoolean(Boolean valueBoolean) {
+    public FhirR4Observation setValueBoolean(Boolean valueBoolean) {
         this.valueBoolean = valueBoolean;
         return this;
     }
@@ -543,10 +545,10 @@ public final class Observation extends DomainResource {
      * Set the valueInteger property: Actual result.
      * 
      * @param valueInteger the valueInteger value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueInteger(Integer valueInteger) {
+    public FhirR4Observation setValueInteger(Integer valueInteger) {
         this.valueInteger = valueInteger;
         return this;
     }
@@ -557,7 +559,7 @@ public final class Observation extends DomainResource {
      * @return the valueRange value.
      */
     @Generated
-    public Range getValueRange() {
+    public FhirR4Range getValueRange() {
         return this.valueRange;
     }
 
@@ -565,10 +567,10 @@ public final class Observation extends DomainResource {
      * Set the valueRange property: Actual result.
      * 
      * @param valueRange the valueRange value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueRange(Range valueRange) {
+    public FhirR4Observation setValueRange(FhirR4Range valueRange) {
         this.valueRange = valueRange;
         return this;
     }
@@ -579,7 +581,7 @@ public final class Observation extends DomainResource {
      * @return the valueRatio value.
      */
     @Generated
-    public Ratio getValueRatio() {
+    public FhirR4Ratio getValueRatio() {
         return this.valueRatio;
     }
 
@@ -587,10 +589,10 @@ public final class Observation extends DomainResource {
      * Set the valueRatio property: Actual result.
      * 
      * @param valueRatio the valueRatio value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueRatio(Ratio valueRatio) {
+    public FhirR4Observation setValueRatio(FhirR4Ratio valueRatio) {
         this.valueRatio = valueRatio;
         return this;
     }
@@ -601,7 +603,7 @@ public final class Observation extends DomainResource {
      * @return the valueSampledData value.
      */
     @Generated
-    public SampledData getValueSampledData() {
+    public FhirR4SampledData getValueSampledData() {
         return this.valueSampledData;
     }
 
@@ -609,10 +611,10 @@ public final class Observation extends DomainResource {
      * Set the valueSampledData property: Actual result.
      * 
      * @param valueSampledData the valueSampledData value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueSampledData(SampledData valueSampledData) {
+    public FhirR4Observation setValueSampledData(FhirR4SampledData valueSampledData) {
         this.valueSampledData = valueSampledData;
         return this;
     }
@@ -631,10 +633,10 @@ public final class Observation extends DomainResource {
      * Set the valueTime property: Actual result.
      * 
      * @param valueTime the valueTime value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueTime(String valueTime) {
+    public FhirR4Observation setValueTime(String valueTime) {
         this.valueTime = valueTime;
         return this;
     }
@@ -653,10 +655,10 @@ public final class Observation extends DomainResource {
      * Set the valueDateTime property: Actual result.
      * 
      * @param valueDateTime the valueDateTime value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValueDateTime(String valueDateTime) {
+    public FhirR4Observation setValueDateTime(String valueDateTime) {
         this.valueDateTime = valueDateTime;
         return this;
     }
@@ -667,7 +669,7 @@ public final class Observation extends DomainResource {
      * @return the valuePeriod value.
      */
     @Generated
-    public PeriodModel getValuePeriod() {
+    public FhirR4Period getValuePeriod() {
         return this.valuePeriod;
     }
 
@@ -675,10 +677,10 @@ public final class Observation extends DomainResource {
      * Set the valuePeriod property: Actual result.
      * 
      * @param valuePeriod the valuePeriod value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setValuePeriod(PeriodModel valuePeriod) {
+    public FhirR4Observation setValuePeriod(FhirR4Period valuePeriod) {
         this.valuePeriod = valuePeriod;
         return this;
     }
@@ -689,7 +691,7 @@ public final class Observation extends DomainResource {
      * @return the dataAbsentReason value.
      */
     @Generated
-    public CodeableConcept getDataAbsentReason() {
+    public FhirR4CodeableConcept getDataAbsentReason() {
         return this.dataAbsentReason;
     }
 
@@ -697,10 +699,10 @@ public final class Observation extends DomainResource {
      * Set the dataAbsentReason property: Why the result is missing.
      * 
      * @param dataAbsentReason the dataAbsentReason value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setDataAbsentReason(CodeableConcept dataAbsentReason) {
+    public FhirR4Observation setDataAbsentReason(FhirR4CodeableConcept dataAbsentReason) {
         this.dataAbsentReason = dataAbsentReason;
         return this;
     }
@@ -711,7 +713,7 @@ public final class Observation extends DomainResource {
      * @return the interpretation value.
      */
     @Generated
-    public List<CodeableConcept> getInterpretation() {
+    public List<FhirR4CodeableConcept> getInterpretation() {
         return this.interpretation;
     }
 
@@ -719,10 +721,10 @@ public final class Observation extends DomainResource {
      * Set the interpretation property: High, low, normal, etc.
      * 
      * @param interpretation the interpretation value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setInterpretation(List<CodeableConcept> interpretation) {
+    public FhirR4Observation setInterpretation(List<FhirR4CodeableConcept> interpretation) {
         this.interpretation = interpretation;
         return this;
     }
@@ -733,7 +735,7 @@ public final class Observation extends DomainResource {
      * @return the note value.
      */
     @Generated
-    public List<Annotation> getNote() {
+    public List<FhirR4Annotation> getNote() {
         return this.note;
     }
 
@@ -741,10 +743,10 @@ public final class Observation extends DomainResource {
      * Set the note property: Comments about the observation.
      * 
      * @param note the note value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setNote(List<Annotation> note) {
+    public FhirR4Observation setNote(List<FhirR4Annotation> note) {
         this.note = note;
         return this;
     }
@@ -755,7 +757,7 @@ public final class Observation extends DomainResource {
      * @return the bodySite value.
      */
     @Generated
-    public CodeableConcept getBodySite() {
+    public FhirR4CodeableConcept getBodySite() {
         return this.bodySite;
     }
 
@@ -763,10 +765,10 @@ public final class Observation extends DomainResource {
      * Set the bodySite property: Observed body part.
      * 
      * @param bodySite the bodySite value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setBodySite(CodeableConcept bodySite) {
+    public FhirR4Observation setBodySite(FhirR4CodeableConcept bodySite) {
         this.bodySite = bodySite;
         return this;
     }
@@ -777,7 +779,7 @@ public final class Observation extends DomainResource {
      * @return the method value.
      */
     @Generated
-    public CodeableConcept getMethod() {
+    public FhirR4CodeableConcept getMethod() {
         return this.method;
     }
 
@@ -785,10 +787,10 @@ public final class Observation extends DomainResource {
      * Set the method property: How it was done.
      * 
      * @param method the method value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setMethod(CodeableConcept method) {
+    public FhirR4Observation setMethod(FhirR4CodeableConcept method) {
         this.method = method;
         return this;
     }
@@ -799,7 +801,7 @@ public final class Observation extends DomainResource {
      * @return the referenceRange value.
      */
     @Generated
-    public List<ObservationReferenceRange> getReferenceRange() {
+    public List<FhirR4ObservationReferenceRange> getReferenceRange() {
         return this.referenceRange;
     }
 
@@ -807,10 +809,10 @@ public final class Observation extends DomainResource {
      * Set the referenceRange property: Provides guide for interpretation.
      * 
      * @param referenceRange the referenceRange value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setReferenceRange(List<ObservationReferenceRange> referenceRange) {
+    public FhirR4Observation setReferenceRange(List<FhirR4ObservationReferenceRange> referenceRange) {
         this.referenceRange = referenceRange;
         return this;
     }
@@ -821,7 +823,7 @@ public final class Observation extends DomainResource {
      * @return the hasMember value.
      */
     @Generated
-    public List<Reference> getHasMember() {
+    public List<FhirR4Reference> getHasMember() {
         return this.hasMember;
     }
 
@@ -829,10 +831,10 @@ public final class Observation extends DomainResource {
      * Set the hasMember property: Related resource that belongs to the Observation group.
      * 
      * @param hasMember the hasMember value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setHasMember(List<Reference> hasMember) {
+    public FhirR4Observation setHasMember(List<FhirR4Reference> hasMember) {
         this.hasMember = hasMember;
         return this;
     }
@@ -843,7 +845,7 @@ public final class Observation extends DomainResource {
      * @return the derivedFrom value.
      */
     @Generated
-    public List<Reference> getDerivedFrom() {
+    public List<FhirR4Reference> getDerivedFrom() {
         return this.derivedFrom;
     }
 
@@ -851,10 +853,10 @@ public final class Observation extends DomainResource {
      * Set the derivedFrom property: Related measurements the observation is made from.
      * 
      * @param derivedFrom the derivedFrom value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setDerivedFrom(List<Reference> derivedFrom) {
+    public FhirR4Observation setDerivedFrom(List<FhirR4Reference> derivedFrom) {
         this.derivedFrom = derivedFrom;
         return this;
     }
@@ -865,7 +867,7 @@ public final class Observation extends DomainResource {
      * @return the component value.
      */
     @Generated
-    public List<ObservationComponent> getComponent() {
+    public List<FhirR4ObservationComponent> getComponent() {
         return this.component;
     }
 
@@ -873,10 +875,10 @@ public final class Observation extends DomainResource {
      * Set the component property: Component results.
      * 
      * @param component the component value to set.
-     * @return the Observation object itself.
+     * @return the FhirR4Observation object itself.
      */
     @Generated
-    public Observation setComponent(List<ObservationComponent> component) {
+    public FhirR4Observation setComponent(List<FhirR4ObservationComponent> component) {
         this.component = component;
         return this;
     }
@@ -886,7 +888,7 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @Override
-    public Observation setText(Narrative text) {
+    public FhirR4Observation setText(FhirR4Narrative text) {
         super.setText(text);
         return this;
     }
@@ -896,7 +898,7 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @Override
-    public Observation setContained(List<Map<String, Object>> contained) {
+    public FhirR4Observation setContained(List<FhirR4Resource> contained) {
         super.setContained(contained);
         return this;
     }
@@ -906,7 +908,7 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @Override
-    public Observation setExtension(List<Extension> extension) {
+    public FhirR4Observation setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }
@@ -916,8 +918,48 @@ public final class Observation extends DomainResource {
      */
     @Generated
     @Override
-    public Observation setModifierExtension(List<Extension> modifierExtension) {
+    public FhirR4Observation setModifierExtension(List<FhirR4Extension> modifierExtension) {
         super.setModifierExtension(modifierExtension);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Observation setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Observation setMeta(FhirR4Meta meta) {
+        super.setMeta(meta);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Observation setImplicitRules(String implicitRules) {
+        super.setImplicitRules(implicitRules);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Observation setLanguage(String language) {
+        super.setLanguage(language);
         return this;
     }
 }

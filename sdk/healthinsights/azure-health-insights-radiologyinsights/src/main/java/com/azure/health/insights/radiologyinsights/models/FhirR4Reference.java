@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Reference](https://www.hl7.org/fhir/R4/references.html).
  */
 @Fluent
-public final class Reference extends Element {
+public final class FhirR4Reference extends FhirR4Element {
     /*
      * Literal reference, Relative, internal or absolute URL
      */
@@ -34,7 +34,7 @@ public final class Reference extends Element {
      */
     @Generated
     @JsonProperty(value = "identifier")
-    private Identifier identifier;
+    private FhirR4Identifier identifier;
 
     /*
      * Text alternative for the resource
@@ -44,10 +44,10 @@ public final class Reference extends Element {
     private String display;
 
     /**
-     * Creates an instance of Reference class.
+     * Creates an instance of FhirR4Reference class.
      */
     @Generated
-    public Reference() {
+    public FhirR4Reference() {
     }
 
     /**
@@ -64,10 +64,10 @@ public final class Reference extends Element {
      * Set the reference property: Literal reference, Relative, internal or absolute URL.
      * 
      * @param reference the reference value to set.
-     * @return the Reference object itself.
+     * @return the FhirR4Reference object itself.
      */
     @Generated
-    public Reference setReference(String reference) {
+    public FhirR4Reference setReference(String reference) {
         this.reference = reference;
         return this;
     }
@@ -86,10 +86,10 @@ public final class Reference extends Element {
      * Set the type property: Type the reference refers to (e.g. "Patient").
      * 
      * @param type the type value to set.
-     * @return the Reference object itself.
+     * @return the FhirR4Reference object itself.
      */
     @Generated
-    public Reference setType(String type) {
+    public FhirR4Reference setType(String type) {
         this.type = type;
         return this;
     }
@@ -100,7 +100,7 @@ public final class Reference extends Element {
      * @return the identifier value.
      */
     @Generated
-    public Identifier getIdentifier() {
+    public FhirR4Identifier getIdentifier() {
         return this.identifier;
     }
 
@@ -108,10 +108,10 @@ public final class Reference extends Element {
      * Set the identifier property: Logical reference, when literal reference is not known.
      * 
      * @param identifier the identifier value to set.
-     * @return the Reference object itself.
+     * @return the FhirR4Reference object itself.
      */
     @Generated
-    public Reference setIdentifier(Identifier identifier) {
+    public FhirR4Reference setIdentifier(FhirR4Identifier identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -130,10 +130,10 @@ public final class Reference extends Element {
      * Set the display property: Text alternative for the resource.
      * 
      * @param display the display value to set.
-     * @return the Reference object itself.
+     * @return the FhirR4Reference object itself.
      */
     @Generated
-    public Reference setDisplay(String display) {
+    public FhirR4Reference setDisplay(String display) {
         this.display = display;
         return this;
     }
@@ -143,7 +143,7 @@ public final class Reference extends Element {
      */
     @Generated
     @Override
-    public Reference setId(String id) {
+    public FhirR4Reference setId(String id) {
         super.setId(id);
         return this;
     }
@@ -153,7 +153,7 @@ public final class Reference extends Element {
      */
     @Generated
     @Override
-    public Reference setExtension(List<Extension> extension) {
+    public FhirR4Reference setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

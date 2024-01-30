@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,14 +17,14 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("imagingProcedureRecommendation")
-@Fluent
+@Immutable
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
     /*
      * LOINC codes for the procedure.
      */
     @Generated
     @JsonProperty(value = "procedureCodes")
-    private List<CodeableConcept> procedureCodes;
+    private List<FhirR4CodeableConcept> procedureCodes;
 
     /*
      * Imaging procedures.
@@ -40,7 +40,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      */
     @Generated
     @JsonCreator
-    public ImagingProcedureRecommendation(
+    private ImagingProcedureRecommendation(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures) {
         this.imagingProcedures = imagingProcedures;
     }
@@ -51,20 +51,8 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      * @return the procedureCodes value.
      */
     @Generated
-    public List<CodeableConcept> getProcedureCodes() {
+    public List<FhirR4CodeableConcept> getProcedureCodes() {
         return this.procedureCodes;
-    }
-
-    /**
-     * Set the procedureCodes property: LOINC codes for the procedure.
-     * 
-     * @param procedureCodes the procedureCodes value to set.
-     * @return the ImagingProcedureRecommendation object itself.
-     */
-    @Generated
-    public ImagingProcedureRecommendation setProcedureCodes(List<CodeableConcept> procedureCodes) {
-        this.procedureCodes = procedureCodes;
-        return this;
     }
 
     /**

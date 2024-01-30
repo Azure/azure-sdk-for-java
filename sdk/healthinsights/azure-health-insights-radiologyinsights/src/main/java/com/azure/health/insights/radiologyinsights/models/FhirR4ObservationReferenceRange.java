@@ -14,41 +14,41 @@ import java.util.List;
  * Based on [FHIR Observation.referenceRange](https://www.hl7.org/fhir/R4/observation.html).
  */
 @Fluent
-public final class ObservationReferenceRange {
+public final class FhirR4ObservationReferenceRange {
     /*
      * Low Range, if relevant
      */
     @Generated
     @JsonProperty(value = "low")
-    private Quantity low;
+    private FhirR4Quantity low;
 
     /*
      * High Range, if relevant
      */
     @Generated
     @JsonProperty(value = "high")
-    private Quantity high;
+    private FhirR4Quantity high;
 
     /*
      * Reference range qualifier
      */
     @Generated
     @JsonProperty(value = "type")
-    private CodeableConcept type;
+    private FhirR4CodeableConcept type;
 
     /*
      * Reference range population
      */
     @Generated
     @JsonProperty(value = "appliesTo")
-    private List<CodeableConcept> appliesTo;
+    private List<FhirR4CodeableConcept> appliesTo;
 
     /*
      * Applicable age range, if relevant
      */
     @Generated
     @JsonProperty(value = "age")
-    private Range age;
+    private FhirR4Range age;
 
     /*
      * Text based reference range in an observation
@@ -58,10 +58,10 @@ public final class ObservationReferenceRange {
     private String text;
 
     /**
-     * Creates an instance of ObservationReferenceRange class.
+     * Creates an instance of FhirR4ObservationReferenceRange class.
      */
     @Generated
-    public ObservationReferenceRange() {
+    public FhirR4ObservationReferenceRange() {
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ObservationReferenceRange {
      * @return the low value.
      */
     @Generated
-    public Quantity getLow() {
+    public FhirR4Quantity getLow() {
         return this.low;
     }
 
@@ -78,10 +78,10 @@ public final class ObservationReferenceRange {
      * Set the low property: Low Range, if relevant.
      * 
      * @param low the low value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setLow(Quantity low) {
+    public FhirR4ObservationReferenceRange setLow(FhirR4Quantity low) {
         this.low = low;
         return this;
     }
@@ -92,7 +92,7 @@ public final class ObservationReferenceRange {
      * @return the high value.
      */
     @Generated
-    public Quantity getHigh() {
+    public FhirR4Quantity getHigh() {
         return this.high;
     }
 
@@ -100,10 +100,10 @@ public final class ObservationReferenceRange {
      * Set the high property: High Range, if relevant.
      * 
      * @param high the high value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setHigh(Quantity high) {
+    public FhirR4ObservationReferenceRange setHigh(FhirR4Quantity high) {
         this.high = high;
         return this;
     }
@@ -114,7 +114,7 @@ public final class ObservationReferenceRange {
      * @return the type value.
      */
     @Generated
-    public CodeableConcept getType() {
+    public FhirR4CodeableConcept getType() {
         return this.type;
     }
 
@@ -122,10 +122,10 @@ public final class ObservationReferenceRange {
      * Set the type property: Reference range qualifier.
      * 
      * @param type the type value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setType(CodeableConcept type) {
+    public FhirR4ObservationReferenceRange setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
     }
@@ -136,7 +136,7 @@ public final class ObservationReferenceRange {
      * @return the appliesTo value.
      */
     @Generated
-    public List<CodeableConcept> getAppliesTo() {
+    public List<FhirR4CodeableConcept> getAppliesTo() {
         return this.appliesTo;
     }
 
@@ -144,10 +144,10 @@ public final class ObservationReferenceRange {
      * Set the appliesTo property: Reference range population.
      * 
      * @param appliesTo the appliesTo value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setAppliesTo(List<CodeableConcept> appliesTo) {
+    public FhirR4ObservationReferenceRange setAppliesTo(List<FhirR4CodeableConcept> appliesTo) {
         this.appliesTo = appliesTo;
         return this;
     }
@@ -158,7 +158,7 @@ public final class ObservationReferenceRange {
      * @return the age value.
      */
     @Generated
-    public Range getAge() {
+    public FhirR4Range getAge() {
         return this.age;
     }
 
@@ -166,10 +166,10 @@ public final class ObservationReferenceRange {
      * Set the age property: Applicable age range, if relevant.
      * 
      * @param age the age value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setAge(Range age) {
+    public FhirR4ObservationReferenceRange setAge(FhirR4Range age) {
         this.age = age;
         return this;
     }
@@ -188,10 +188,10 @@ public final class ObservationReferenceRange {
      * Set the text property: Text based reference range in an observation.
      * 
      * @param text the text value to set.
-     * @return the ObservationReferenceRange object itself.
+     * @return the FhirR4ObservationReferenceRange object itself.
      */
     @Generated
-    public ObservationReferenceRange setText(String text) {
+    public FhirR4ObservationReferenceRange setText(String text) {
         this.text = text;
         return this;
     }

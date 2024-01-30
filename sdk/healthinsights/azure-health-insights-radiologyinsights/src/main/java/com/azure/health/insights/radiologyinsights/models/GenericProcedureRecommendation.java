@@ -4,8 +4,8 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("genericProcedureRecommendation")
-@Fluent
+@Immutable
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
     /*
      * Procedure modality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "code")
-    private CodeableConcept code;
+    private FhirR4CodeableConcept code;
 
     /*
      * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
@@ -39,7 +39,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      */
     @Generated
     @JsonCreator
-    public GenericProcedureRecommendation(@JsonProperty(value = "code") CodeableConcept code) {
+    private GenericProcedureRecommendation(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
         this.code = code;
     }
 
@@ -49,7 +49,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      * @return the code value.
      */
     @Generated
-    public CodeableConcept getCode() {
+    public FhirR4CodeableConcept getCode() {
         return this.code;
     }
 
@@ -62,18 +62,5 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public String getDescription() {
         return this.description;
-    }
-
-    /**
-     * Set the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION
-     * (PROCEDURE) based on SNOMED CT.
-     * 
-     * @param description the description value to set.
-     * @return the GenericProcedureRecommendation object itself.
-     */
-    @Generated
-    public GenericProcedureRecommendation setDescription(String description) {
-        this.description = description;
-        return this;
     }
 }

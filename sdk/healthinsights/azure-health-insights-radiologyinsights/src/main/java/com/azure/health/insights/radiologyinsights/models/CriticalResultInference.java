@@ -4,13 +4,12 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * Critical results refer to findings of utmost importance that may require timely attention due to their potential
@@ -18,8 +17,8 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("criticalResult")
-@Fluent
-public final class CriticalResultInference extends RadiologyInsightsInference {
+@Immutable
+public final class CriticalResultInference extends FhirR4Extendible1 {
     /*
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
      */
@@ -34,7 +33,7 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
      */
     @Generated
     @JsonCreator
-    public CriticalResultInference(@JsonProperty(value = "result") CriticalResult result) {
+    private CriticalResultInference(@JsonProperty(value = "result") CriticalResult result) {
         this.result = result;
     }
 
@@ -46,15 +45,5 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
     @Generated
     public CriticalResult getResult() {
         return this.result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public CriticalResultInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

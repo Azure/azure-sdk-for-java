@@ -15,7 +15,7 @@ import java.util.List;
  * Based on [FHIR Annotation](https://www.hl7.org/fhir/R4/datatypes.html#Annotation).
  */
 @Fluent
-public final class Annotation extends Element {
+public final class FhirR4Annotation extends FhirR4Element {
     /*
      * Individual responsible for the annotation
      */
@@ -38,13 +38,13 @@ public final class Annotation extends Element {
     private String text;
 
     /**
-     * Creates an instance of Annotation class.
+     * Creates an instance of FhirR4Annotation class.
      * 
      * @param text the text value to set.
      */
     @Generated
     @JsonCreator
-    public Annotation(@JsonProperty(value = "text") String text) {
+    public FhirR4Annotation(@JsonProperty(value = "text") String text) {
         this.text = text;
     }
 
@@ -62,10 +62,10 @@ public final class Annotation extends Element {
      * Set the authorString property: Individual responsible for the annotation.
      * 
      * @param authorString the authorString value to set.
-     * @return the Annotation object itself.
+     * @return the FhirR4Annotation object itself.
      */
     @Generated
-    public Annotation setAuthorString(String authorString) {
+    public FhirR4Annotation setAuthorString(String authorString) {
         this.authorString = authorString;
         return this;
     }
@@ -84,10 +84,10 @@ public final class Annotation extends Element {
      * Set the time property: When the annotation was made.
      * 
      * @param time the time value to set.
-     * @return the Annotation object itself.
+     * @return the FhirR4Annotation object itself.
      */
     @Generated
-    public Annotation setTime(String time) {
+    public FhirR4Annotation setTime(String time) {
         this.time = time;
         return this;
     }
@@ -107,7 +107,7 @@ public final class Annotation extends Element {
      */
     @Generated
     @Override
-    public Annotation setId(String id) {
+    public FhirR4Annotation setId(String id) {
         super.setId(id);
         return this;
     }
@@ -117,7 +117,7 @@ public final class Annotation extends Element {
      */
     @Generated
     @Override
-    public Annotation setExtension(List<Extension> extension) {
+    public FhirR4Annotation setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

@@ -6,11 +6,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Detailed information about conditions, problems or diagnoses
@@ -19,62 +19,62 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Condition")
 @Fluent
-public final class Condition extends DomainResource {
+public final class FhirR4Condition extends FhirR4DomainResource {
     /*
      * External Ids for this condition
      */
     @Generated
     @JsonProperty(value = "identifier")
-    private List<Identifier> identifier;
+    private List<FhirR4Identifier> identifier;
 
     /*
      * active | recurrence | relapse | inactive | remission | resolved
      */
     @Generated
     @JsonProperty(value = "clinicalStatus")
-    private CodeableConcept clinicalStatus;
+    private FhirR4CodeableConcept clinicalStatus;
 
     /*
      * unconfirmed | provisional | differential | confirmed | refuted | entered-in-error
      */
     @Generated
     @JsonProperty(value = "verificationStatus")
-    private CodeableConcept verificationStatus;
+    private FhirR4CodeableConcept verificationStatus;
 
     /*
      * problem-list-item | encounter-diagnosis
      */
     @Generated
     @JsonProperty(value = "category")
-    private List<CodeableConcept> category;
+    private List<FhirR4CodeableConcept> category;
 
     /*
      * Subjective severity of condition
      */
     @Generated
     @JsonProperty(value = "severity")
-    private CodeableConcept severity;
+    private FhirR4CodeableConcept severity;
 
     /*
      * Identification of the condition, problem or diagnosis
      */
     @Generated
     @JsonProperty(value = "code")
-    private CodeableConcept code;
+    private FhirR4CodeableConcept code;
 
     /*
      * Anatomical location, if relevant
      */
     @Generated
     @JsonProperty(value = "bodySite")
-    private List<CodeableConcept> bodySite;
+    private List<FhirR4CodeableConcept> bodySite;
 
     /*
      * Encounter created as part of
      */
     @Generated
     @JsonProperty(value = "encounter")
-    private Reference encounter;
+    private FhirR4Reference encounter;
 
     /*
      * Estimated or actual date, date-time, or age
@@ -88,21 +88,21 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "onsetAge")
-    private Quantity onsetAge;
+    private FhirR4Quantity onsetAge;
 
     /*
      * Estimated or actual date, date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetPeriod")
-    private PeriodModel onsetPeriod;
+    private FhirR4Period onsetPeriod;
 
     /*
      * Estimated or actual date, date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetRange")
-    private Range onsetRange;
+    private FhirR4Range onsetRange;
 
     /*
      * Estimated or actual date, date-time, or age
@@ -123,21 +123,21 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "abatementAge")
-    private Quantity abatementAge;
+    private FhirR4Quantity abatementAge;
 
     /*
      * When in resolution/remission
      */
     @Generated
     @JsonProperty(value = "abatementPeriod")
-    private PeriodModel abatementPeriod;
+    private FhirR4Period abatementPeriod;
 
     /*
      * When in resolution/remission
      */
     @Generated
     @JsonProperty(value = "abatementRange")
-    private Range abatementRange;
+    private FhirR4Range abatementRange;
 
     /*
      * When in resolution/remission
@@ -158,20 +158,24 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "stage")
-    private List<ConditionStage> stage;
+    private List<FhirR4ConditionStage> stage;
 
     /*
      * Additional information about the Condition
      */
     @Generated
     @JsonProperty(value = "note")
-    private List<Annotation> note;
+    private List<FhirR4Annotation> note;
 
     /**
-     * Creates an instance of Condition class.
+     * Creates an instance of FhirR4Condition class.
+     * 
+     * @param resourceType the resourceType value to set.
      */
     @Generated
-    public Condition() {
+    @JsonCreator
+    public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
+        super(resourceType);
     }
 
     /**
@@ -180,7 +184,7 @@ public final class Condition extends DomainResource {
      * @return the identifier value.
      */
     @Generated
-    public List<Identifier> getIdentifier() {
+    public List<FhirR4Identifier> getIdentifier() {
         return this.identifier;
     }
 
@@ -188,10 +192,10 @@ public final class Condition extends DomainResource {
      * Set the identifier property: External Ids for this condition.
      * 
      * @param identifier the identifier value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setIdentifier(List<Identifier> identifier) {
+    public FhirR4Condition setIdentifier(List<FhirR4Identifier> identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -202,7 +206,7 @@ public final class Condition extends DomainResource {
      * @return the clinicalStatus value.
      */
     @Generated
-    public CodeableConcept getClinicalStatus() {
+    public FhirR4CodeableConcept getClinicalStatus() {
         return this.clinicalStatus;
     }
 
@@ -210,10 +214,10 @@ public final class Condition extends DomainResource {
      * Set the clinicalStatus property: active | recurrence | relapse | inactive | remission | resolved.
      * 
      * @param clinicalStatus the clinicalStatus value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setClinicalStatus(CodeableConcept clinicalStatus) {
+    public FhirR4Condition setClinicalStatus(FhirR4CodeableConcept clinicalStatus) {
         this.clinicalStatus = clinicalStatus;
         return this;
     }
@@ -225,7 +229,7 @@ public final class Condition extends DomainResource {
      * @return the verificationStatus value.
      */
     @Generated
-    public CodeableConcept getVerificationStatus() {
+    public FhirR4CodeableConcept getVerificationStatus() {
         return this.verificationStatus;
     }
 
@@ -234,10 +238,10 @@ public final class Condition extends DomainResource {
      * entered-in-error.
      * 
      * @param verificationStatus the verificationStatus value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setVerificationStatus(CodeableConcept verificationStatus) {
+    public FhirR4Condition setVerificationStatus(FhirR4CodeableConcept verificationStatus) {
         this.verificationStatus = verificationStatus;
         return this;
     }
@@ -248,7 +252,7 @@ public final class Condition extends DomainResource {
      * @return the category value.
      */
     @Generated
-    public List<CodeableConcept> getCategory() {
+    public List<FhirR4CodeableConcept> getCategory() {
         return this.category;
     }
 
@@ -256,10 +260,10 @@ public final class Condition extends DomainResource {
      * Set the category property: problem-list-item | encounter-diagnosis.
      * 
      * @param category the category value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setCategory(List<CodeableConcept> category) {
+    public FhirR4Condition setCategory(List<FhirR4CodeableConcept> category) {
         this.category = category;
         return this;
     }
@@ -270,7 +274,7 @@ public final class Condition extends DomainResource {
      * @return the severity value.
      */
     @Generated
-    public CodeableConcept getSeverity() {
+    public FhirR4CodeableConcept getSeverity() {
         return this.severity;
     }
 
@@ -278,10 +282,10 @@ public final class Condition extends DomainResource {
      * Set the severity property: Subjective severity of condition.
      * 
      * @param severity the severity value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setSeverity(CodeableConcept severity) {
+    public FhirR4Condition setSeverity(FhirR4CodeableConcept severity) {
         this.severity = severity;
         return this;
     }
@@ -292,7 +296,7 @@ public final class Condition extends DomainResource {
      * @return the code value.
      */
     @Generated
-    public CodeableConcept getCode() {
+    public FhirR4CodeableConcept getCode() {
         return this.code;
     }
 
@@ -300,10 +304,10 @@ public final class Condition extends DomainResource {
      * Set the code property: Identification of the condition, problem or diagnosis.
      * 
      * @param code the code value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setCode(CodeableConcept code) {
+    public FhirR4Condition setCode(FhirR4CodeableConcept code) {
         this.code = code;
         return this;
     }
@@ -314,7 +318,7 @@ public final class Condition extends DomainResource {
      * @return the bodySite value.
      */
     @Generated
-    public List<CodeableConcept> getBodySite() {
+    public List<FhirR4CodeableConcept> getBodySite() {
         return this.bodySite;
     }
 
@@ -322,10 +326,10 @@ public final class Condition extends DomainResource {
      * Set the bodySite property: Anatomical location, if relevant.
      * 
      * @param bodySite the bodySite value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setBodySite(List<CodeableConcept> bodySite) {
+    public FhirR4Condition setBodySite(List<FhirR4CodeableConcept> bodySite) {
         this.bodySite = bodySite;
         return this;
     }
@@ -336,7 +340,7 @@ public final class Condition extends DomainResource {
      * @return the encounter value.
      */
     @Generated
-    public Reference getEncounter() {
+    public FhirR4Reference getEncounter() {
         return this.encounter;
     }
 
@@ -344,10 +348,10 @@ public final class Condition extends DomainResource {
      * Set the encounter property: Encounter created as part of.
      * 
      * @param encounter the encounter value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setEncounter(Reference encounter) {
+    public FhirR4Condition setEncounter(FhirR4Reference encounter) {
         this.encounter = encounter;
         return this;
     }
@@ -366,10 +370,10 @@ public final class Condition extends DomainResource {
      * Set the onsetDateTime property: Estimated or actual date, date-time, or age.
      * 
      * @param onsetDateTime the onsetDateTime value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setOnsetDateTime(String onsetDateTime) {
+    public FhirR4Condition setOnsetDateTime(String onsetDateTime) {
         this.onsetDateTime = onsetDateTime;
         return this;
     }
@@ -380,7 +384,7 @@ public final class Condition extends DomainResource {
      * @return the onsetAge value.
      */
     @Generated
-    public Quantity getOnsetAge() {
+    public FhirR4Quantity getOnsetAge() {
         return this.onsetAge;
     }
 
@@ -388,10 +392,10 @@ public final class Condition extends DomainResource {
      * Set the onsetAge property: Estimated or actual date, date-time, or age.
      * 
      * @param onsetAge the onsetAge value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setOnsetAge(Quantity onsetAge) {
+    public FhirR4Condition setOnsetAge(FhirR4Quantity onsetAge) {
         this.onsetAge = onsetAge;
         return this;
     }
@@ -402,7 +406,7 @@ public final class Condition extends DomainResource {
      * @return the onsetPeriod value.
      */
     @Generated
-    public PeriodModel getOnsetPeriod() {
+    public FhirR4Period getOnsetPeriod() {
         return this.onsetPeriod;
     }
 
@@ -410,10 +414,10 @@ public final class Condition extends DomainResource {
      * Set the onsetPeriod property: Estimated or actual date, date-time, or age.
      * 
      * @param onsetPeriod the onsetPeriod value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setOnsetPeriod(PeriodModel onsetPeriod) {
+    public FhirR4Condition setOnsetPeriod(FhirR4Period onsetPeriod) {
         this.onsetPeriod = onsetPeriod;
         return this;
     }
@@ -424,7 +428,7 @@ public final class Condition extends DomainResource {
      * @return the onsetRange value.
      */
     @Generated
-    public Range getOnsetRange() {
+    public FhirR4Range getOnsetRange() {
         return this.onsetRange;
     }
 
@@ -432,10 +436,10 @@ public final class Condition extends DomainResource {
      * Set the onsetRange property: Estimated or actual date, date-time, or age.
      * 
      * @param onsetRange the onsetRange value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setOnsetRange(Range onsetRange) {
+    public FhirR4Condition setOnsetRange(FhirR4Range onsetRange) {
         this.onsetRange = onsetRange;
         return this;
     }
@@ -454,10 +458,10 @@ public final class Condition extends DomainResource {
      * Set the onsetString property: Estimated or actual date, date-time, or age.
      * 
      * @param onsetString the onsetString value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setOnsetString(String onsetString) {
+    public FhirR4Condition setOnsetString(String onsetString) {
         this.onsetString = onsetString;
         return this;
     }
@@ -476,10 +480,10 @@ public final class Condition extends DomainResource {
      * Set the abatementDateTime property: When in resolution/remission.
      * 
      * @param abatementDateTime the abatementDateTime value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setAbatementDateTime(String abatementDateTime) {
+    public FhirR4Condition setAbatementDateTime(String abatementDateTime) {
         this.abatementDateTime = abatementDateTime;
         return this;
     }
@@ -490,7 +494,7 @@ public final class Condition extends DomainResource {
      * @return the abatementAge value.
      */
     @Generated
-    public Quantity getAbatementAge() {
+    public FhirR4Quantity getAbatementAge() {
         return this.abatementAge;
     }
 
@@ -498,10 +502,10 @@ public final class Condition extends DomainResource {
      * Set the abatementAge property: When in resolution/remission.
      * 
      * @param abatementAge the abatementAge value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setAbatementAge(Quantity abatementAge) {
+    public FhirR4Condition setAbatementAge(FhirR4Quantity abatementAge) {
         this.abatementAge = abatementAge;
         return this;
     }
@@ -512,7 +516,7 @@ public final class Condition extends DomainResource {
      * @return the abatementPeriod value.
      */
     @Generated
-    public PeriodModel getAbatementPeriod() {
+    public FhirR4Period getAbatementPeriod() {
         return this.abatementPeriod;
     }
 
@@ -520,10 +524,10 @@ public final class Condition extends DomainResource {
      * Set the abatementPeriod property: When in resolution/remission.
      * 
      * @param abatementPeriod the abatementPeriod value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setAbatementPeriod(PeriodModel abatementPeriod) {
+    public FhirR4Condition setAbatementPeriod(FhirR4Period abatementPeriod) {
         this.abatementPeriod = abatementPeriod;
         return this;
     }
@@ -534,7 +538,7 @@ public final class Condition extends DomainResource {
      * @return the abatementRange value.
      */
     @Generated
-    public Range getAbatementRange() {
+    public FhirR4Range getAbatementRange() {
         return this.abatementRange;
     }
 
@@ -542,10 +546,10 @@ public final class Condition extends DomainResource {
      * Set the abatementRange property: When in resolution/remission.
      * 
      * @param abatementRange the abatementRange value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setAbatementRange(Range abatementRange) {
+    public FhirR4Condition setAbatementRange(FhirR4Range abatementRange) {
         this.abatementRange = abatementRange;
         return this;
     }
@@ -564,10 +568,10 @@ public final class Condition extends DomainResource {
      * Set the abatementString property: When in resolution/remission.
      * 
      * @param abatementString the abatementString value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setAbatementString(String abatementString) {
+    public FhirR4Condition setAbatementString(String abatementString) {
         this.abatementString = abatementString;
         return this;
     }
@@ -586,10 +590,10 @@ public final class Condition extends DomainResource {
      * Set the recordedDate property: Date record was first recorded.
      * 
      * @param recordedDate the recordedDate value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setRecordedDate(String recordedDate) {
+    public FhirR4Condition setRecordedDate(String recordedDate) {
         this.recordedDate = recordedDate;
         return this;
     }
@@ -600,7 +604,7 @@ public final class Condition extends DomainResource {
      * @return the stage value.
      */
     @Generated
-    public List<ConditionStage> getStage() {
+    public List<FhirR4ConditionStage> getStage() {
         return this.stage;
     }
 
@@ -608,10 +612,10 @@ public final class Condition extends DomainResource {
      * Set the stage property: stge/grade, usually assessed formally.
      * 
      * @param stage the stage value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setStage(List<ConditionStage> stage) {
+    public FhirR4Condition setStage(List<FhirR4ConditionStage> stage) {
         this.stage = stage;
         return this;
     }
@@ -622,7 +626,7 @@ public final class Condition extends DomainResource {
      * @return the note value.
      */
     @Generated
-    public List<Annotation> getNote() {
+    public List<FhirR4Annotation> getNote() {
         return this.note;
     }
 
@@ -630,10 +634,10 @@ public final class Condition extends DomainResource {
      * Set the note property: Additional information about the Condition.
      * 
      * @param note the note value to set.
-     * @return the Condition object itself.
+     * @return the FhirR4Condition object itself.
      */
     @Generated
-    public Condition setNote(List<Annotation> note) {
+    public FhirR4Condition setNote(List<FhirR4Annotation> note) {
         this.note = note;
         return this;
     }
@@ -643,7 +647,7 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @Override
-    public Condition setText(Narrative text) {
+    public FhirR4Condition setText(FhirR4Narrative text) {
         super.setText(text);
         return this;
     }
@@ -653,7 +657,7 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @Override
-    public Condition setContained(List<Map<String, Object>> contained) {
+    public FhirR4Condition setContained(List<FhirR4Resource> contained) {
         super.setContained(contained);
         return this;
     }
@@ -663,7 +667,7 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @Override
-    public Condition setExtension(List<Extension> extension) {
+    public FhirR4Condition setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }
@@ -673,8 +677,48 @@ public final class Condition extends DomainResource {
      */
     @Generated
     @Override
-    public Condition setModifierExtension(List<Extension> modifierExtension) {
+    public FhirR4Condition setModifierExtension(List<FhirR4Extension> modifierExtension) {
         super.setModifierExtension(modifierExtension);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Condition setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Condition setMeta(FhirR4Meta meta) {
+        super.setMeta(meta);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Condition setImplicitRules(String implicitRules) {
+        super.setImplicitRules(implicitRules);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4Condition setLanguage(String language) {
+        super.setLanguage(language);
         return this;
     }
 }

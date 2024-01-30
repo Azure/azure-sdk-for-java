@@ -104,7 +104,7 @@ public final class RadiologyInsightsAsyncClient {
      *                                                 extension (Optional): [
      *                                                     (recursive schema, see above)
      *                                                 ]
-     *                                                 value: BigDecimal (Optional)
+     *                                                 value: Double (Optional)
      *                                                 comparator: String (Optional)
      *                                                 unit: String (Optional)
      *                                                 system: String (Optional)
@@ -145,10 +145,10 @@ public final class RadiologyInsightsAsyncClient {
      *                                                     (recursive schema, see above)
      *                                                 ]
      *                                                 origin (Required): (recursive schema, see origin above)
-     *                                                 period: BigDecimal (Required)
-     *                                                 factor: BigDecimal (Optional)
-     *                                                 lowerLimit: BigDecimal (Optional)
-     *                                                 upperLimit: BigDecimal (Optional)
+     *                                                 period: double (Required)
+     *                                                 factor: Double (Optional)
+     *                                                 lowerLimit: Double (Optional)
+     *                                                 upperLimit: Double (Optional)
      *                                                 dimensions: int (Required)
      *                                                 data: String (Optional)
      *                                             }
@@ -254,12 +254,12 @@ public final class RadiologyInsightsAsyncClient {
      *             String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
      *         ]
      *         inferenceOptions (Optional): {
-     *             followupRecommendation (Optional): {
+     *             followupRecommendationOptions (Optional): {
      *                 includeRecommendationsWithNoSpecifiedModality: Boolean (Optional)
      *                 includeRecommendationsInReferences: Boolean (Optional)
      *                 provideFocusedSentenceEvidence: Boolean (Optional)
      *             }
-     *             finding (Optional): {
+     *             findingOptions (Optional): {
      *                 provideFocusedSentenceEvidence: Boolean (Optional)
      *             }
      *         }

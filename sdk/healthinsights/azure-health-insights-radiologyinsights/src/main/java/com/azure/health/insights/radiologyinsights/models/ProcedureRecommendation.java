@@ -28,6 +28,6 @@ public class ProcedureRecommendation {
      * Creates an instance of ProcedureRecommendation class.
      */
     @Generated
-    public ProcedureRecommendation() {
+    protected ProcedureRecommendation() {
     }
 }

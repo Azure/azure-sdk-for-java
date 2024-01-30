@@ -4,13 +4,12 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or
@@ -19,14 +18,14 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("sexMismatch")
-@Fluent
-public final class SexMismatchInference extends RadiologyInsightsInference {
+@Immutable
+public final class SexMismatchInference extends FhirR4Extendible1 {
     /*
      * Sex indication : SNOMED CT code for gender finding.
      */
     @Generated
     @JsonProperty(value = "sexIndication")
-    private CodeableConcept sexIndication;
+    private FhirR4CodeableConcept sexIndication;
 
     /**
      * Creates an instance of SexMismatchInference class.
@@ -35,7 +34,7 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
      */
     @Generated
     @JsonCreator
-    public SexMismatchInference(@JsonProperty(value = "sexIndication") CodeableConcept sexIndication) {
+    private SexMismatchInference(@JsonProperty(value = "sexIndication") FhirR4CodeableConcept sexIndication) {
         this.sexIndication = sexIndication;
     }
 
@@ -45,17 +44,7 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
      * @return the sexIndication value.
      */
     @Generated
-    public CodeableConcept getSexIndication() {
+    public FhirR4CodeableConcept getSexIndication() {
         return this.sexIndication;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public SexMismatchInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }

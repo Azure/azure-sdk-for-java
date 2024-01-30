@@ -4,36 +4,36 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Imaging procedure.
  */
-@Fluent
+@Immutable
 public final class ImagingProcedure {
     /*
      * Modality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "modality")
-    private CodeableConcept modality;
+    private FhirR4CodeableConcept modality;
 
     /*
      * Anatomy : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "anatomy")
-    private CodeableConcept anatomy;
+    private FhirR4CodeableConcept anatomy;
 
     /*
      * Laterality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "laterality")
-    private CodeableConcept laterality;
+    private FhirR4CodeableConcept laterality;
 
     /*
      * Contrast : see RadiologyCodeWithTypes (below).
@@ -57,8 +57,8 @@ public final class ImagingProcedure {
      */
     @Generated
     @JsonCreator
-    public ImagingProcedure(@JsonProperty(value = "modality") CodeableConcept modality,
-        @JsonProperty(value = "anatomy") CodeableConcept anatomy) {
+    private ImagingProcedure(@JsonProperty(value = "modality") FhirR4CodeableConcept modality,
+        @JsonProperty(value = "anatomy") FhirR4CodeableConcept anatomy) {
         this.modality = modality;
         this.anatomy = anatomy;
     }
@@ -69,7 +69,7 @@ public final class ImagingProcedure {
      * @return the modality value.
      */
     @Generated
-    public CodeableConcept getModality() {
+    public FhirR4CodeableConcept getModality() {
         return this.modality;
     }
 
@@ -79,7 +79,7 @@ public final class ImagingProcedure {
      * @return the anatomy value.
      */
     @Generated
-    public CodeableConcept getAnatomy() {
+    public FhirR4CodeableConcept getAnatomy() {
         return this.anatomy;
     }
 
@@ -89,20 +89,8 @@ public final class ImagingProcedure {
      * @return the laterality value.
      */
     @Generated
-    public CodeableConcept getLaterality() {
+    public FhirR4CodeableConcept getLaterality() {
         return this.laterality;
-    }
-
-    /**
-     * Set the laterality property: Laterality : SNOMED CT code.
-     * 
-     * @param laterality the laterality value to set.
-     * @return the ImagingProcedure object itself.
-     */
-    @Generated
-    public ImagingProcedure setLaterality(CodeableConcept laterality) {
-        this.laterality = laterality;
-        return this;
     }
 
     /**
@@ -116,18 +104,6 @@ public final class ImagingProcedure {
     }
 
     /**
-     * Set the contrast property: Contrast : see RadiologyCodeWithTypes (below).
-     * 
-     * @param contrast the contrast value to set.
-     * @return the ImagingProcedure object itself.
-     */
-    @Generated
-    public ImagingProcedure setContrast(RadiologyCodeWithTypes contrast) {
-        this.contrast = contrast;
-        return this;
-    }
-
-    /**
      * Get the view property: View : see RadiologyCodeWithTypes (below).
      * 
      * @return the view value.
@@ -135,17 +111,5 @@ public final class ImagingProcedure {
     @Generated
     public RadiologyCodeWithTypes getView() {
         return this.view;
-    }
-
-    /**
-     * Set the view property: View : see RadiologyCodeWithTypes (below).
-     * 
-     * @param view the view value to set.
-     * @return the ImagingProcedure object itself.
-     */
-    @Generated
-    public ImagingProcedure setView(RadiologyCodeWithTypes view) {
-        this.view = view;
-        return this;
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
  * Based on [FHIR CodeableConcept](https://www.hl7.org/fhir/R4/datatypes.html#CodeableConcept).
  */
 @Fluent
-public final class CodeableConcept extends Element {
+public final class FhirR4CodeableConcept extends FhirR4Element {
     /*
      * Code defined by a terminology system
      */
     @Generated
     @JsonProperty(value = "coding")
-    private List<Coding> coding;
+    private List<FhirR4Coding> coding;
 
     /*
      * Plain text representation of the concept
@@ -30,10 +30,10 @@ public final class CodeableConcept extends Element {
     private String text;
 
     /**
-     * Creates an instance of CodeableConcept class.
+     * Creates an instance of FhirR4CodeableConcept class.
      */
     @Generated
-    public CodeableConcept() {
+    public FhirR4CodeableConcept() {
     }
 
     /**
@@ -42,7 +42,7 @@ public final class CodeableConcept extends Element {
      * @return the coding value.
      */
     @Generated
-    public List<Coding> getCoding() {
+    public List<FhirR4Coding> getCoding() {
         return this.coding;
     }
 
@@ -50,10 +50,10 @@ public final class CodeableConcept extends Element {
      * Set the coding property: Code defined by a terminology system.
      * 
      * @param coding the coding value to set.
-     * @return the CodeableConcept object itself.
+     * @return the FhirR4CodeableConcept object itself.
      */
     @Generated
-    public CodeableConcept setCoding(List<Coding> coding) {
+    public FhirR4CodeableConcept setCoding(List<FhirR4Coding> coding) {
         this.coding = coding;
         return this;
     }
@@ -72,10 +72,10 @@ public final class CodeableConcept extends Element {
      * Set the text property: Plain text representation of the concept.
      * 
      * @param text the text value to set.
-     * @return the CodeableConcept object itself.
+     * @return the FhirR4CodeableConcept object itself.
      */
     @Generated
-    public CodeableConcept setText(String text) {
+    public FhirR4CodeableConcept setText(String text) {
         this.text = text;
         return this;
     }
@@ -85,7 +85,7 @@ public final class CodeableConcept extends Element {
      */
     @Generated
     @Override
-    public CodeableConcept setId(String id) {
+    public FhirR4CodeableConcept setId(String id) {
         super.setId(id);
         return this;
     }
@@ -95,7 +95,7 @@ public final class CodeableConcept extends Element {
      */
     @Generated
     @Override
-    public CodeableConcept setExtension(List<Extension> extension) {
+    public FhirR4CodeableConcept setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,41 +15,41 @@ import java.util.List;
  * Based on [FHIR SampledData](https://www.hl7.org/fhir/R4/datatypes.html#SampledData).
  */
 @Fluent
-public final class SampledData extends Element {
+public final class FhirR4SampledData extends FhirR4Element {
     /*
      * Zero value and units
      */
     @Generated
     @JsonProperty(value = "origin")
-    private Quantity origin;
+    private FhirR4Quantity origin;
 
     /*
      * Number of milliseconds between samples
      */
     @Generated
     @JsonProperty(value = "period")
-    private BigDecimal period;
+    private double period;
 
     /*
      * Multiply data by this before adding to origin
      */
     @Generated
     @JsonProperty(value = "factor")
-    private BigDecimal factor;
+    private Double factor;
 
     /*
      * Lower limit of detection
      */
     @Generated
     @JsonProperty(value = "lowerLimit")
-    private BigDecimal lowerLimit;
+    private Double lowerLimit;
 
     /*
      * Upper limit of detection
      */
     @Generated
     @JsonProperty(value = "upperLimit")
-    private BigDecimal upperLimit;
+    private Double upperLimit;
 
     /*
      * Number of sample points at each time point
@@ -67,7 +66,7 @@ public final class SampledData extends Element {
     private String data;
 
     /**
-     * Creates an instance of SampledData class.
+     * Creates an instance of FhirR4SampledData class.
      * 
      * @param origin the origin value to set.
      * @param period the period value to set.
@@ -75,8 +74,8 @@ public final class SampledData extends Element {
      */
     @Generated
     @JsonCreator
-    public SampledData(@JsonProperty(value = "origin") Quantity origin,
-        @JsonProperty(value = "period") BigDecimal period, @JsonProperty(value = "dimensions") int dimensions) {
+    public FhirR4SampledData(@JsonProperty(value = "origin") FhirR4Quantity origin,
+        @JsonProperty(value = "period") double period, @JsonProperty(value = "dimensions") int dimensions) {
         this.origin = origin;
         this.period = period;
         this.dimensions = dimensions;
@@ -88,7 +87,7 @@ public final class SampledData extends Element {
      * @return the origin value.
      */
     @Generated
-    public Quantity getOrigin() {
+    public FhirR4Quantity getOrigin() {
         return this.origin;
     }
 
@@ -98,7 +97,7 @@ public final class SampledData extends Element {
      * @return the period value.
      */
     @Generated
-    public BigDecimal getPeriod() {
+    public double getPeriod() {
         return this.period;
     }
 
@@ -108,7 +107,7 @@ public final class SampledData extends Element {
      * @return the factor value.
      */
     @Generated
-    public BigDecimal getFactor() {
+    public Double getFactor() {
         return this.factor;
     }
 
@@ -116,10 +115,10 @@ public final class SampledData extends Element {
      * Set the factor property: Multiply data by this before adding to origin.
      * 
      * @param factor the factor value to set.
-     * @return the SampledData object itself.
+     * @return the FhirR4SampledData object itself.
      */
     @Generated
-    public SampledData setFactor(BigDecimal factor) {
+    public FhirR4SampledData setFactor(Double factor) {
         this.factor = factor;
         return this;
     }
@@ -130,7 +129,7 @@ public final class SampledData extends Element {
      * @return the lowerLimit value.
      */
     @Generated
-    public BigDecimal getLowerLimit() {
+    public Double getLowerLimit() {
         return this.lowerLimit;
     }
 
@@ -138,10 +137,10 @@ public final class SampledData extends Element {
      * Set the lowerLimit property: Lower limit of detection.
      * 
      * @param lowerLimit the lowerLimit value to set.
-     * @return the SampledData object itself.
+     * @return the FhirR4SampledData object itself.
      */
     @Generated
-    public SampledData setLowerLimit(BigDecimal lowerLimit) {
+    public FhirR4SampledData setLowerLimit(Double lowerLimit) {
         this.lowerLimit = lowerLimit;
         return this;
     }
@@ -152,7 +151,7 @@ public final class SampledData extends Element {
      * @return the upperLimit value.
      */
     @Generated
-    public BigDecimal getUpperLimit() {
+    public Double getUpperLimit() {
         return this.upperLimit;
     }
 
@@ -160,10 +159,10 @@ public final class SampledData extends Element {
      * Set the upperLimit property: Upper limit of detection.
      * 
      * @param upperLimit the upperLimit value to set.
-     * @return the SampledData object itself.
+     * @return the FhirR4SampledData object itself.
      */
     @Generated
-    public SampledData setUpperLimit(BigDecimal upperLimit) {
+    public FhirR4SampledData setUpperLimit(Double upperLimit) {
         this.upperLimit = upperLimit;
         return this;
     }
@@ -192,10 +191,10 @@ public final class SampledData extends Element {
      * Set the data property: Decimal values with spaces, or "E" | "U" | "L".
      * 
      * @param data the data value to set.
-     * @return the SampledData object itself.
+     * @return the FhirR4SampledData object itself.
      */
     @Generated
-    public SampledData setData(String data) {
+    public FhirR4SampledData setData(String data) {
         this.data = data;
         return this;
     }
@@ -205,7 +204,7 @@ public final class SampledData extends Element {
      */
     @Generated
     @Override
-    public SampledData setId(String id) {
+    public FhirR4SampledData setId(String id) {
         super.setId(id);
         return this;
     }
@@ -215,7 +214,7 @@ public final class SampledData extends Element {
      */
     @Generated
     @Override
-    public SampledData setExtension(List<Extension> extension) {
+    public FhirR4SampledData setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Element](https://www.hl7.org/fhir/R4/element.html).
  */
 @Fluent
-public class Element {
+public class FhirR4Element {
     /*
      * Unique id for inter-element referencing
      */
@@ -27,13 +27,13 @@ public class Element {
      */
     @Generated
     @JsonProperty(value = "extension")
-    private List<Extension> extension;
+    private List<FhirR4Extension> extension;
 
     /**
-     * Creates an instance of Element class.
+     * Creates an instance of FhirR4Element class.
      */
     @Generated
-    public Element() {
+    public FhirR4Element() {
     }
 
     /**
@@ -50,10 +50,10 @@ public class Element {
      * Set the id property: Unique id for inter-element referencing.
      * 
      * @param id the id value to set.
-     * @return the Element object itself.
+     * @return the FhirR4Element object itself.
      */
     @Generated
-    public Element setId(String id) {
+    public FhirR4Element setId(String id) {
         this.id = id;
         return this;
     }
@@ -64,7 +64,7 @@ public class Element {
      * @return the extension value.
      */
     @Generated
-    public List<Extension> getExtension() {
+    public List<FhirR4Extension> getExtension() {
         return this.extension;
     }
 
@@ -72,10 +72,10 @@ public class Element {
      * Set the extension property: Additional Content defined by implementations.
      * 
      * @param extension the extension value to set.
-     * @return the Element object itself.
+     * @return the FhirR4Element object itself.
      */
     @Generated
-    public Element setExtension(List<Extension> extension) {
+    public FhirR4Element setExtension(List<FhirR4Extension> extension) {
         this.extension = extension;
         return this;
     }

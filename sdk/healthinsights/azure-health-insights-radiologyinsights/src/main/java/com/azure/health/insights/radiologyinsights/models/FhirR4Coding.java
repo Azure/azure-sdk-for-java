@@ -14,7 +14,7 @@ import java.util.List;
  * Based on [FHIR Coding](https://www.hl7.org/fhir/R4/datatypes.html#Coding).
  */
 @Fluent
-public final class Coding extends Element {
+public final class FhirR4Coding extends FhirR4Element {
     /*
      * Identity of the terminology system
      */
@@ -44,10 +44,10 @@ public final class Coding extends Element {
     private String display;
 
     /**
-     * Creates an instance of Coding class.
+     * Creates an instance of FhirR4Coding class.
      */
     @Generated
-    public Coding() {
+    public FhirR4Coding() {
     }
 
     /**
@@ -64,10 +64,10 @@ public final class Coding extends Element {
      * Set the system property: Identity of the terminology system.
      * 
      * @param system the system value to set.
-     * @return the Coding object itself.
+     * @return the FhirR4Coding object itself.
      */
     @Generated
-    public Coding setSystem(String system) {
+    public FhirR4Coding setSystem(String system) {
         this.system = system;
         return this;
     }
@@ -86,10 +86,10 @@ public final class Coding extends Element {
      * Set the version property: Version of the system - if relevant.
      * 
      * @param version the version value to set.
-     * @return the Coding object itself.
+     * @return the FhirR4Coding object itself.
      */
     @Generated
-    public Coding setVersion(String version) {
+    public FhirR4Coding setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -108,10 +108,10 @@ public final class Coding extends Element {
      * Set the code property: Symbol in syntax defined by the system.
      * 
      * @param code the code value to set.
-     * @return the Coding object itself.
+     * @return the FhirR4Coding object itself.
      */
     @Generated
-    public Coding setCode(String code) {
+    public FhirR4Coding setCode(String code) {
         this.code = code;
         return this;
     }
@@ -130,10 +130,10 @@ public final class Coding extends Element {
      * Set the display property: Representation defined by the system.
      * 
      * @param display the display value to set.
-     * @return the Coding object itself.
+     * @return the FhirR4Coding object itself.
      */
     @Generated
-    public Coding setDisplay(String display) {
+    public FhirR4Coding setDisplay(String display) {
         this.display = display;
         return this;
     }
@@ -143,7 +143,7 @@ public final class Coding extends Element {
      */
     @Generated
     @Override
-    public Coding setId(String id) {
+    public FhirR4Coding setId(String id) {
         super.setId(id);
         return this;
     }
@@ -153,7 +153,7 @@ public final class Coding extends Element {
      */
     @Generated
     @Override
-    public Coding setExtension(List<Extension> extension) {
+    public FhirR4Coding setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

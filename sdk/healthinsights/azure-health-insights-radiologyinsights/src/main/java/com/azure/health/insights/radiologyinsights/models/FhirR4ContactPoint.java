@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * See https://www.hl7.org/fhir/R4/datatypes.html#ContactPoint.
  */
 @Fluent
-public final class ContactPoint {
+public final class FhirR4ContactPoint {
     /*
      * phone | fax | email | pager | url | sms | other
      */
@@ -48,13 +48,13 @@ public final class ContactPoint {
      */
     @Generated
     @JsonProperty(value = "period")
-    private PeriodModel period;
+    private FhirR4Period period;
 
     /**
-     * Creates an instance of ContactPoint class.
+     * Creates an instance of FhirR4ContactPoint class.
      */
     @Generated
-    public ContactPoint() {
+    public FhirR4ContactPoint() {
     }
 
     /**
@@ -71,10 +71,10 @@ public final class ContactPoint {
      * Set the system property: phone | fax | email | pager | url | sms | other.
      * 
      * @param system the system value to set.
-     * @return the ContactPoint object itself.
+     * @return the FhirR4ContactPoint object itself.
      */
     @Generated
-    public ContactPoint setSystem(ContactPointSystem system) {
+    public FhirR4ContactPoint setSystem(ContactPointSystem system) {
         this.system = system;
         return this;
     }
@@ -93,10 +93,10 @@ public final class ContactPoint {
      * Set the value property: The actual contact point details.
      * 
      * @param value the value value to set.
-     * @return the ContactPoint object itself.
+     * @return the FhirR4ContactPoint object itself.
      */
     @Generated
-    public ContactPoint setValue(String value) {
+    public FhirR4ContactPoint setValue(String value) {
         this.value = value;
         return this;
     }
@@ -115,10 +115,10 @@ public final class ContactPoint {
      * Set the use property: home | work | temp | old | mobile - purpose of this contact point.
      * 
      * @param use the use value to set.
-     * @return the ContactPoint object itself.
+     * @return the FhirR4ContactPoint object itself.
      */
     @Generated
-    public ContactPoint setUse(ContactPointUse use) {
+    public FhirR4ContactPoint setUse(ContactPointUse use) {
         this.use = use;
         return this;
     }
@@ -137,10 +137,10 @@ public final class ContactPoint {
      * Set the rank property: Specify preferred order of use (1 = highest).
      * 
      * @param rank the rank value to set.
-     * @return the ContactPoint object itself.
+     * @return the FhirR4ContactPoint object itself.
      */
     @Generated
-    public ContactPoint setRank(Integer rank) {
+    public FhirR4ContactPoint setRank(Integer rank) {
         this.rank = rank;
         return this;
     }
@@ -151,7 +151,7 @@ public final class ContactPoint {
      * @return the period value.
      */
     @Generated
-    public PeriodModel getPeriod() {
+    public FhirR4Period getPeriod() {
         return this.period;
     }
 
@@ -159,10 +159,10 @@ public final class ContactPoint {
      * Set the period property: Time period when the contact point was/is in use.
      * 
      * @param period the period value to set.
-     * @return the ContactPoint object itself.
+     * @return the FhirR4ContactPoint object itself.
      */
     @Generated
-    public ContactPoint setPeriod(PeriodModel period) {
+    public FhirR4ContactPoint setPeriod(FhirR4Period period) {
         this.period = period;
         return this;
     }

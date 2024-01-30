@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Detailed information about Research Study
@@ -20,13 +19,13 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("ResearchStudy")
 @Fluent
-public final class ResearchStudy extends DomainResource {
+public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     /*
      * Business Identifier for study
      */
     @Generated
     @JsonProperty(value = "identifier")
-    private List<Identifier> identifier;
+    private List<FhirR4Identifier> identifier;
 
     /*
      * Name for this study
@@ -40,14 +39,14 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "protocol")
-    private List<Reference> protocol;
+    private List<FhirR4Reference> protocol;
 
     /*
      * Part of larger study
      */
     @Generated
     @JsonProperty(value = "partOf")
-    private List<Reference> partOf;
+    private List<FhirR4Reference> partOf;
 
     /*
      * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention |
@@ -64,56 +63,56 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "primaryPurposeType")
-    private CodeableConcept primaryPurposeType;
+    private FhirR4CodeableConcept primaryPurposeType;
 
     /*
      * n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 | phase-4
      */
     @Generated
     @JsonProperty(value = "phase")
-    private CodeableConcept phase;
+    private FhirR4CodeableConcept phase;
 
     /*
      * Classifications for the study
      */
     @Generated
     @JsonProperty(value = "category")
-    private List<CodeableConcept> category;
+    private List<FhirR4CodeableConcept> category;
 
     /*
      * Drugs, devices, etc. under study
      */
     @Generated
     @JsonProperty(value = "focus")
-    private List<CodeableConcept> focus;
+    private List<FhirR4CodeableConcept> focus;
 
     /*
      * Condition being studied
      */
     @Generated
     @JsonProperty(value = "condition")
-    private List<CodeableConcept> condition;
+    private List<FhirR4CodeableConcept> condition;
 
     /*
      * Contact details for the study
      */
     @Generated
     @JsonProperty(value = "contact")
-    private List<ContactDetail> contact;
+    private List<FhirR4ContactDetail> contact;
 
     /*
      * Used to search for the study
      */
     @Generated
     @JsonProperty(value = "keyword")
-    private List<CodeableConcept> keyword;
+    private List<FhirR4CodeableConcept> keyword;
 
     /*
      * Geographic region(s) for study
      */
     @Generated
     @JsonProperty(value = "location")
-    private List<CodeableConcept> location;
+    private List<FhirR4CodeableConcept> location;
 
     /*
      * What this is study doing
@@ -127,35 +126,35 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "enrollment")
-    private List<Reference> enrollment;
+    private List<FhirR4Reference> enrollment;
 
     /*
      * When the study began and ended
      */
     @Generated
     @JsonProperty(value = "period")
-    private PeriodModel period;
+    private FhirR4Period period;
 
     /*
      * Organization that initiates and is legally responsible for the study
      */
     @Generated
     @JsonProperty(value = "sponsor")
-    private Reference sponsor;
+    private FhirR4Reference sponsor;
 
     /*
      * Researcher who oversees multiple aspects of the study
      */
     @Generated
     @JsonProperty(value = "principalInvestigator")
-    private Reference principalInvestigator;
+    private FhirR4Reference principalInvestigator;
 
     /*
      * Facility where study activities are conducted
      */
     @Generated
     @JsonProperty(value = "site")
-    private List<Reference> site;
+    private List<FhirR4Reference> site;
 
     /*
      * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress |
@@ -163,14 +162,14 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @JsonProperty(value = "reasonStopped")
-    private CodeableConcept reasonStopped;
+    private FhirR4CodeableConcept reasonStopped;
 
     /*
      * Comments made about the study
      */
     @Generated
     @JsonProperty(value = "note")
-    private List<Annotation> note;
+    private List<FhirR4Annotation> note;
 
     /*
      * Defined path through the study for a subject
@@ -187,13 +186,16 @@ public final class ResearchStudy extends DomainResource {
     private List<ResearchStudyObjective> objective;
 
     /**
-     * Creates an instance of ResearchStudy class.
+     * Creates an instance of FhirR4ResearchStudy class.
      * 
+     * @param resourceType the resourceType value to set.
      * @param status the status value to set.
      */
     @Generated
     @JsonCreator
-    public ResearchStudy(@JsonProperty(value = "status") ResearchStudyStatusCodeType status) {
+    public FhirR4ResearchStudy(@JsonProperty(value = "resourceType") String resourceType,
+        @JsonProperty(value = "status") ResearchStudyStatusCodeType status) {
+        super(resourceType);
         this.status = status;
     }
 
@@ -203,7 +205,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the identifier value.
      */
     @Generated
-    public List<Identifier> getIdentifier() {
+    public List<FhirR4Identifier> getIdentifier() {
         return this.identifier;
     }
 
@@ -211,10 +213,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the identifier property: Business Identifier for study.
      * 
      * @param identifier the identifier value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setIdentifier(List<Identifier> identifier) {
+    public FhirR4ResearchStudy setIdentifier(List<FhirR4Identifier> identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -233,10 +235,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the title property: Name for this study.
      * 
      * @param title the title value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setTitle(String title) {
+    public FhirR4ResearchStudy setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -247,7 +249,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the protocol value.
      */
     @Generated
-    public List<Reference> getProtocol() {
+    public List<FhirR4Reference> getProtocol() {
         return this.protocol;
     }
 
@@ -255,10 +257,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the protocol property: Steps followed in executing study.
      * 
      * @param protocol the protocol value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setProtocol(List<Reference> protocol) {
+    public FhirR4ResearchStudy setProtocol(List<FhirR4Reference> protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -269,7 +271,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the partOf value.
      */
     @Generated
-    public List<Reference> getPartOf() {
+    public List<FhirR4Reference> getPartOf() {
         return this.partOf;
     }
 
@@ -277,10 +279,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the partOf property: Part of larger study.
      * 
      * @param partOf the partOf value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setPartOf(List<Reference> partOf) {
+    public FhirR4ResearchStudy setPartOf(List<FhirR4Reference> partOf) {
         this.partOf = partOf;
         return this;
     }
@@ -304,7 +306,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the primaryPurposeType value.
      */
     @Generated
-    public CodeableConcept getPrimaryPurposeType() {
+    public FhirR4CodeableConcept getPrimaryPurposeType() {
         return this.primaryPurposeType;
     }
 
@@ -313,10 +315,10 @@ public final class ResearchStudy extends DomainResource {
      * health-services-research | basic-science | device-feasibility.
      * 
      * @param primaryPurposeType the primaryPurposeType value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setPrimaryPurposeType(CodeableConcept primaryPurposeType) {
+    public FhirR4ResearchStudy setPrimaryPurposeType(FhirR4CodeableConcept primaryPurposeType) {
         this.primaryPurposeType = primaryPurposeType;
         return this;
     }
@@ -328,7 +330,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the phase value.
      */
     @Generated
-    public CodeableConcept getPhase() {
+    public FhirR4CodeableConcept getPhase() {
         return this.phase;
     }
 
@@ -337,10 +339,10 @@ public final class ResearchStudy extends DomainResource {
      * phase-4.
      * 
      * @param phase the phase value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setPhase(CodeableConcept phase) {
+    public FhirR4ResearchStudy setPhase(FhirR4CodeableConcept phase) {
         this.phase = phase;
         return this;
     }
@@ -351,7 +353,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the category value.
      */
     @Generated
-    public List<CodeableConcept> getCategory() {
+    public List<FhirR4CodeableConcept> getCategory() {
         return this.category;
     }
 
@@ -359,10 +361,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the category property: Classifications for the study.
      * 
      * @param category the category value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setCategory(List<CodeableConcept> category) {
+    public FhirR4ResearchStudy setCategory(List<FhirR4CodeableConcept> category) {
         this.category = category;
         return this;
     }
@@ -373,7 +375,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the focus value.
      */
     @Generated
-    public List<CodeableConcept> getFocus() {
+    public List<FhirR4CodeableConcept> getFocus() {
         return this.focus;
     }
 
@@ -381,10 +383,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the focus property: Drugs, devices, etc. under study.
      * 
      * @param focus the focus value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setFocus(List<CodeableConcept> focus) {
+    public FhirR4ResearchStudy setFocus(List<FhirR4CodeableConcept> focus) {
         this.focus = focus;
         return this;
     }
@@ -395,7 +397,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the condition value.
      */
     @Generated
-    public List<CodeableConcept> getCondition() {
+    public List<FhirR4CodeableConcept> getCondition() {
         return this.condition;
     }
 
@@ -403,10 +405,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the condition property: Condition being studied.
      * 
      * @param condition the condition value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setCondition(List<CodeableConcept> condition) {
+    public FhirR4ResearchStudy setCondition(List<FhirR4CodeableConcept> condition) {
         this.condition = condition;
         return this;
     }
@@ -417,7 +419,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the contact value.
      */
     @Generated
-    public List<ContactDetail> getContact() {
+    public List<FhirR4ContactDetail> getContact() {
         return this.contact;
     }
 
@@ -425,10 +427,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the contact property: Contact details for the study.
      * 
      * @param contact the contact value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setContact(List<ContactDetail> contact) {
+    public FhirR4ResearchStudy setContact(List<FhirR4ContactDetail> contact) {
         this.contact = contact;
         return this;
     }
@@ -439,7 +441,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the keyword value.
      */
     @Generated
-    public List<CodeableConcept> getKeyword() {
+    public List<FhirR4CodeableConcept> getKeyword() {
         return this.keyword;
     }
 
@@ -447,10 +449,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the keyword property: Used to search for the study.
      * 
      * @param keyword the keyword value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setKeyword(List<CodeableConcept> keyword) {
+    public FhirR4ResearchStudy setKeyword(List<FhirR4CodeableConcept> keyword) {
         this.keyword = keyword;
         return this;
     }
@@ -461,7 +463,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the location value.
      */
     @Generated
-    public List<CodeableConcept> getLocation() {
+    public List<FhirR4CodeableConcept> getLocation() {
         return this.location;
     }
 
@@ -469,10 +471,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the location property: Geographic region(s) for study.
      * 
      * @param location the location value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setLocation(List<CodeableConcept> location) {
+    public FhirR4ResearchStudy setLocation(List<FhirR4CodeableConcept> location) {
         this.location = location;
         return this;
     }
@@ -491,10 +493,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the description property: What this is study doing.
      * 
      * @param description the description value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setDescription(String description) {
+    public FhirR4ResearchStudy setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -505,7 +507,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the enrollment value.
      */
     @Generated
-    public List<Reference> getEnrollment() {
+    public List<FhirR4Reference> getEnrollment() {
         return this.enrollment;
     }
 
@@ -513,10 +515,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the enrollment property: Inclusion &amp; exclusion criteria.
      * 
      * @param enrollment the enrollment value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setEnrollment(List<Reference> enrollment) {
+    public FhirR4ResearchStudy setEnrollment(List<FhirR4Reference> enrollment) {
         this.enrollment = enrollment;
         return this;
     }
@@ -527,7 +529,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the period value.
      */
     @Generated
-    public PeriodModel getPeriod() {
+    public FhirR4Period getPeriod() {
         return this.period;
     }
 
@@ -535,10 +537,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the period property: When the study began and ended.
      * 
      * @param period the period value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setPeriod(PeriodModel period) {
+    public FhirR4ResearchStudy setPeriod(FhirR4Period period) {
         this.period = period;
         return this;
     }
@@ -549,7 +551,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the sponsor value.
      */
     @Generated
-    public Reference getSponsor() {
+    public FhirR4Reference getSponsor() {
         return this.sponsor;
     }
 
@@ -557,10 +559,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the sponsor property: Organization that initiates and is legally responsible for the study.
      * 
      * @param sponsor the sponsor value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setSponsor(Reference sponsor) {
+    public FhirR4ResearchStudy setSponsor(FhirR4Reference sponsor) {
         this.sponsor = sponsor;
         return this;
     }
@@ -571,7 +573,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the principalInvestigator value.
      */
     @Generated
-    public Reference getPrincipalInvestigator() {
+    public FhirR4Reference getPrincipalInvestigator() {
         return this.principalInvestigator;
     }
 
@@ -579,10 +581,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the principalInvestigator property: Researcher who oversees multiple aspects of the study.
      * 
      * @param principalInvestigator the principalInvestigator value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setPrincipalInvestigator(Reference principalInvestigator) {
+    public FhirR4ResearchStudy setPrincipalInvestigator(FhirR4Reference principalInvestigator) {
         this.principalInvestigator = principalInvestigator;
         return this;
     }
@@ -593,7 +595,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the site value.
      */
     @Generated
-    public List<Reference> getSite() {
+    public List<FhirR4Reference> getSite() {
         return this.site;
     }
 
@@ -601,10 +603,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the site property: Facility where study activities are conducted.
      * 
      * @param site the site value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setSite(List<Reference> site) {
+    public FhirR4ResearchStudy setSite(List<FhirR4Reference> site) {
         this.site = site;
         return this;
     }
@@ -616,7 +618,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the reasonStopped value.
      */
     @Generated
-    public CodeableConcept getReasonStopped() {
+    public FhirR4CodeableConcept getReasonStopped() {
         return this.reasonStopped;
     }
 
@@ -625,10 +627,10 @@ public final class ResearchStudy extends DomainResource {
      * | temporarily-closed-per-study-design.
      * 
      * @param reasonStopped the reasonStopped value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setReasonStopped(CodeableConcept reasonStopped) {
+    public FhirR4ResearchStudy setReasonStopped(FhirR4CodeableConcept reasonStopped) {
         this.reasonStopped = reasonStopped;
         return this;
     }
@@ -639,7 +641,7 @@ public final class ResearchStudy extends DomainResource {
      * @return the note value.
      */
     @Generated
-    public List<Annotation> getNote() {
+    public List<FhirR4Annotation> getNote() {
         return this.note;
     }
 
@@ -647,10 +649,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the note property: Comments made about the study.
      * 
      * @param note the note value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setNote(List<Annotation> note) {
+    public FhirR4ResearchStudy setNote(List<FhirR4Annotation> note) {
         this.note = note;
         return this;
     }
@@ -669,10 +671,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the arm property: Defined path through the study for a subject.
      * 
      * @param arm the arm value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setArm(List<ResearchStudyArm> arm) {
+    public FhirR4ResearchStudy setArm(List<ResearchStudyArm> arm) {
         this.arm = arm;
         return this;
     }
@@ -691,10 +693,10 @@ public final class ResearchStudy extends DomainResource {
      * Set the objective property: A goal for the study.
      * 
      * @param objective the objective value to set.
-     * @return the ResearchStudy object itself.
+     * @return the FhirR4ResearchStudy object itself.
      */
     @Generated
-    public ResearchStudy setObjective(List<ResearchStudyObjective> objective) {
+    public FhirR4ResearchStudy setObjective(List<ResearchStudyObjective> objective) {
         this.objective = objective;
         return this;
     }
@@ -704,7 +706,7 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @Override
-    public ResearchStudy setText(Narrative text) {
+    public FhirR4ResearchStudy setText(FhirR4Narrative text) {
         super.setText(text);
         return this;
     }
@@ -714,7 +716,7 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @Override
-    public ResearchStudy setContained(List<Map<String, Object>> contained) {
+    public FhirR4ResearchStudy setContained(List<FhirR4Resource> contained) {
         super.setContained(contained);
         return this;
     }
@@ -724,7 +726,7 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @Override
-    public ResearchStudy setExtension(List<Extension> extension) {
+    public FhirR4ResearchStudy setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }
@@ -734,8 +736,48 @@ public final class ResearchStudy extends DomainResource {
      */
     @Generated
     @Override
-    public ResearchStudy setModifierExtension(List<Extension> modifierExtension) {
+    public FhirR4ResearchStudy setModifierExtension(List<FhirR4Extension> modifierExtension) {
         super.setModifierExtension(modifierExtension);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4ResearchStudy setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4ResearchStudy setMeta(FhirR4Meta meta) {
+        super.setMeta(meta);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4ResearchStudy setImplicitRules(String implicitRules) {
+        super.setImplicitRules(implicitRules);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4ResearchStudy setLanguage(String language) {
+        super.setLanguage(language);
         return this;
     }
 }

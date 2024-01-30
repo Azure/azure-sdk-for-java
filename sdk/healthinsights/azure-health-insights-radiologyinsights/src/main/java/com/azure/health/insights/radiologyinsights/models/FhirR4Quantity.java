@@ -7,7 +7,6 @@ package com.azure.health.insights.radiologyinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,13 +14,13 @@ import java.util.List;
  * Based on [FHIR Quantity](https://www.hl7.org/fhir/R4/datatypes.html#Quantity).
  */
 @Fluent
-public final class Quantity extends Element {
+public final class FhirR4Quantity extends FhirR4Element {
     /*
      * Numerical value (with implicit precision)
      */
     @Generated
     @JsonProperty(value = "value")
-    private BigDecimal value;
+    private Double value;
 
     /*
      * < | <= | >= | > - how to understand the value
@@ -52,10 +51,10 @@ public final class Quantity extends Element {
     private String code;
 
     /**
-     * Creates an instance of Quantity class.
+     * Creates an instance of FhirR4Quantity class.
      */
     @Generated
-    public Quantity() {
+    public FhirR4Quantity() {
     }
 
     /**
@@ -64,7 +63,7 @@ public final class Quantity extends Element {
      * @return the value value.
      */
     @Generated
-    public BigDecimal getValue() {
+    public Double getValue() {
         return this.value;
     }
 
@@ -72,10 +71,10 @@ public final class Quantity extends Element {
      * Set the value property: Numerical value (with implicit precision).
      * 
      * @param value the value value to set.
-     * @return the Quantity object itself.
+     * @return the FhirR4Quantity object itself.
      */
     @Generated
-    public Quantity setValue(BigDecimal value) {
+    public FhirR4Quantity setValue(Double value) {
         this.value = value;
         return this;
     }
@@ -94,10 +93,10 @@ public final class Quantity extends Element {
      * Set the comparator property: &lt; | &lt;= | &gt;= | &gt; - how to understand the value.
      * 
      * @param comparator the comparator value to set.
-     * @return the Quantity object itself.
+     * @return the FhirR4Quantity object itself.
      */
     @Generated
-    public Quantity setComparator(String comparator) {
+    public FhirR4Quantity setComparator(String comparator) {
         this.comparator = comparator;
         return this;
     }
@@ -116,10 +115,10 @@ public final class Quantity extends Element {
      * Set the unit property: Unit representation.
      * 
      * @param unit the unit value to set.
-     * @return the Quantity object itself.
+     * @return the FhirR4Quantity object itself.
      */
     @Generated
-    public Quantity setUnit(String unit) {
+    public FhirR4Quantity setUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -138,10 +137,10 @@ public final class Quantity extends Element {
      * Set the system property: System that defines coded unit form.
      * 
      * @param system the system value to set.
-     * @return the Quantity object itself.
+     * @return the FhirR4Quantity object itself.
      */
     @Generated
-    public Quantity setSystem(String system) {
+    public FhirR4Quantity setSystem(String system) {
         this.system = system;
         return this;
     }
@@ -160,10 +159,10 @@ public final class Quantity extends Element {
      * Set the code property: Coded form of the unit.
      * 
      * @param code the code value to set.
-     * @return the Quantity object itself.
+     * @return the FhirR4Quantity object itself.
      */
     @Generated
-    public Quantity setCode(String code) {
+    public FhirR4Quantity setCode(String code) {
         this.code = code;
         return this;
     }
@@ -173,7 +172,7 @@ public final class Quantity extends Element {
      */
     @Generated
     @Override
-    public Quantity setId(String id) {
+    public FhirR4Quantity setId(String id) {
         super.setId(id);
         return this;
     }
@@ -183,7 +182,7 @@ public final class Quantity extends Element {
      */
     @Generated
     @Override
-    public Quantity setExtension(List<Extension> extension) {
+    public FhirR4Quantity setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
     }

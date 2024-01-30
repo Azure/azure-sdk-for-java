@@ -6,16 +6,12 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A resource with narrative, extensions, and contained resources
@@ -25,56 +21,51 @@ import java.util.Map;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
-    defaultImpl = DomainResource.class)
-@JsonTypeName("DomainResource")
+    defaultImpl = FhirR4DomainResource.class)
+@JsonTypeName("Fhir_R4_DomainResource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Observation", value = Observation.class),
-    @JsonSubTypes.Type(name = "Condition", value = Condition.class),
-    @JsonSubTypes.Type(name = "ResearchStudy", value = ResearchStudy.class) })
+    @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class),
+    @JsonSubTypes.Type(name = "Condition", value = FhirR4Condition.class),
+    @JsonSubTypes.Type(name = "ResearchStudy", value = FhirR4ResearchStudy.class) })
 @Fluent
-public class DomainResource {
+public class FhirR4DomainResource extends FhirR4Resource {
     /*
      * Text summary of the resource, for human interpretation
      */
     @Generated
     @JsonProperty(value = "text")
-    private Narrative text;
+    private FhirR4Narrative text;
 
     /*
      * Contained, inline Resources
      */
     @Generated
     @JsonProperty(value = "contained")
-    private List<Map<String, Object>> contained;
+    private List<FhirR4Resource> contained;
 
     /*
      * Additional Content defined by implementations
      */
     @Generated
     @JsonProperty(value = "extension")
-    private List<Extension> extension;
+    private List<FhirR4Extension> extension;
 
     /*
      * Extensions that cannot be ignored
      */
     @Generated
     @JsonProperty(value = "modifierExtension")
-    private List<Extension> modifierExtension;
-
-    /*
-     * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary
-     * extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
-     */
-    @Generated
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    private List<FhirR4Extension> modifierExtension;
 
     /**
-     * Creates an instance of DomainResource class.
+     * Creates an instance of FhirR4DomainResource class.
+     * 
+     * @param resourceType the resourceType value to set.
      */
     @Generated
-    public DomainResource() {
+    @JsonCreator
+    public FhirR4DomainResource(@JsonProperty(value = "resourceType") String resourceType) {
+        super(resourceType);
     }
 
     /**
@@ -83,7 +74,7 @@ public class DomainResource {
      * @return the text value.
      */
     @Generated
-    public Narrative getText() {
+    public FhirR4Narrative getText() {
         return this.text;
     }
 
@@ -91,10 +82,10 @@ public class DomainResource {
      * Set the text property: Text summary of the resource, for human interpretation.
      * 
      * @param text the text value to set.
-     * @return the DomainResource object itself.
+     * @return the FhirR4DomainResource object itself.
      */
     @Generated
-    public DomainResource setText(Narrative text) {
+    public FhirR4DomainResource setText(FhirR4Narrative text) {
         this.text = text;
         return this;
     }
@@ -105,7 +96,7 @@ public class DomainResource {
      * @return the contained value.
      */
     @Generated
-    public List<Map<String, Object>> getContained() {
+    public List<FhirR4Resource> getContained() {
         return this.contained;
     }
 
@@ -113,10 +104,10 @@ public class DomainResource {
      * Set the contained property: Contained, inline Resources.
      * 
      * @param contained the contained value to set.
-     * @return the DomainResource object itself.
+     * @return the FhirR4DomainResource object itself.
      */
     @Generated
-    public DomainResource setContained(List<Map<String, Object>> contained) {
+    public FhirR4DomainResource setContained(List<FhirR4Resource> contained) {
         this.contained = contained;
         return this;
     }
@@ -127,7 +118,7 @@ public class DomainResource {
      * @return the extension value.
      */
     @Generated
-    public List<Extension> getExtension() {
+    public List<FhirR4Extension> getExtension() {
         return this.extension;
     }
 
@@ -135,10 +126,10 @@ public class DomainResource {
      * Set the extension property: Additional Content defined by implementations.
      * 
      * @param extension the extension value to set.
-     * @return the DomainResource object itself.
+     * @return the FhirR4DomainResource object itself.
      */
     @Generated
-    public DomainResource setExtension(List<Extension> extension) {
+    public FhirR4DomainResource setExtension(List<FhirR4Extension> extension) {
         this.extension = extension;
         return this;
     }
@@ -149,7 +140,7 @@ public class DomainResource {
      * @return the modifierExtension value.
      */
     @Generated
-    public List<Extension> getModifierExtension() {
+    public List<FhirR4Extension> getModifierExtension() {
         return this.modifierExtension;
     }
 
@@ -157,47 +148,51 @@ public class DomainResource {
      * Set the modifierExtension property: Extensions that cannot be ignored.
      * 
      * @param modifierExtension the modifierExtension value to set.
-     * @return the DomainResource object itself.
+     * @return the FhirR4DomainResource object itself.
      */
     @Generated
-    public DomainResource setModifierExtension(List<Extension> modifierExtension) {
+    public FhirR4DomainResource setModifierExtension(List<FhirR4Extension> modifierExtension) {
         this.modifierExtension = modifierExtension;
         return this;
     }
 
     /**
-     * Get the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
-     * derived. Bundle, Parameters, and Binary extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
-     * 
-     * @return the additionalProperties value.
+     * {@inheritDoc}
      */
     @Generated
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
-     * derived. Bundle, Parameters, and Binary extend Resource directly.
-     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
-     * 
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the DomainResource object itself.
-     */
-    @Generated
-    public DomainResource setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
+    @Override
+    public FhirR4DomainResource setId(String id) {
+        super.setId(id);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
+    @Override
+    public FhirR4DomainResource setMeta(FhirR4Meta meta) {
+        super.setMeta(meta);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4DomainResource setImplicitRules(String implicitRules) {
+        super.setImplicitRules(implicitRules);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FhirR4DomainResource setLanguage(String language) {
+        super.setLanguage(language);
+        return this;
     }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.health.insights.radiologyinsights.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered
@@ -19,14 +18,14 @@ import java.util.List;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("lateralityDiscrepancy")
-@Fluent
-public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
+@Immutable
+public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
     /*
      * Laterality indication : SNOMED CT code for laterality qualifier value.
      */
     @Generated
     @JsonProperty(value = "lateralityIndication")
-    private CodeableConcept lateralityIndication;
+    private FhirR4CodeableConcept lateralityIndication;
 
     /*
      * Mismatch type : orderLateralityMismatch, textLateralityContradiction, textLateralityMissing.
@@ -42,7 +41,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
      */
     @Generated
     @JsonCreator
-    public LateralityDiscrepancyInference(
+    private LateralityDiscrepancyInference(
         @JsonProperty(value = "discrepancyType") LateralityDiscrepancyType discrepancyType) {
         this.discrepancyType = discrepancyType;
     }
@@ -53,20 +52,8 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
      * @return the lateralityIndication value.
      */
     @Generated
-    public CodeableConcept getLateralityIndication() {
+    public FhirR4CodeableConcept getLateralityIndication() {
         return this.lateralityIndication;
-    }
-
-    /**
-     * Set the lateralityIndication property: Laterality indication : SNOMED CT code for laterality qualifier value.
-     * 
-     * @param lateralityIndication the lateralityIndication value to set.
-     * @return the LateralityDiscrepancyInference object itself.
-     */
-    @Generated
-    public LateralityDiscrepancyInference setLateralityIndication(CodeableConcept lateralityIndication) {
-        this.lateralityIndication = lateralityIndication;
-        return this;
     }
 
     /**
@@ -78,15 +65,5 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     @Generated
     public LateralityDiscrepancyType getDiscrepancyType() {
         return this.discrepancyType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public LateralityDiscrepancyInference setExtension(List<Extension> extension) {
-        super.setExtension(extension);
-        return this;
     }
 }
