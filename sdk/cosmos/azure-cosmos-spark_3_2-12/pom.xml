@@ -22,7 +22,7 @@
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <jacoco.skip>true</jacoco.skip>
+<!--    <jacoco.skip>true</jacoco.skip>-->
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
