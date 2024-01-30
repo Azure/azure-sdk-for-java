@@ -662,12 +662,18 @@ public abstract class IdentityClientBase {
             tokenExpiry = EPOCH.plusSeconds(seconds);
         } else {
             String time = objectMap.get("expiresOn");
-            String timeToSecond = time.substring(0, time.indexOf("."));
-            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                .atZone(ZoneId.systemDefault())
-                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            tokenExpiry = parseExpiresOnTime(time);
         }
+        return tokenExpiry;
+    }
+
+    private static OffsetDateTime parseExpiresOnTime(String time) {
+        OffsetDateTime tokenExpiry;
+        String timeToSecond = time.substring(0, time.indexOf("."));
+        String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+        tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            .atZone(ZoneId.systemDefault())
+            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
         return tokenExpiry;
     }
 
