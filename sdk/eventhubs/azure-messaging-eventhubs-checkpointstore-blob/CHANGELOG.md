@@ -2,6 +2,8 @@
 
 ## 1.21.0-beta.1 (Unreleased)
 
+- Added feature to persist/rehydrate replication segment field to/from Azure Storage Blobs.
+
 ### Features Added
 
 ### Breaking Changes
