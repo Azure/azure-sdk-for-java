@@ -3,16 +3,13 @@
 
 package com.azure.ai.openai.assistants;
 
-import com.azure.ai.openai.assistants.models.Assistant;
-import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
-import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -29,43 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessageAsyncTest extends AssistantsClientTestBase {
     private AssistantsAsyncClient client;
-    private Assistant mathTutorAssistant;
-    @Override
-    protected void beforeTest() {
-        client = getAssistantsAsyncClient(HttpClient.createDefault());
-
-        // Create a Math tutor assistant
-        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
-                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
-        StepVerifier.create(client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), new RequestOptions()))
-                .assertNext(response -> {
-                    mathTutorAssistant = assertAndGetValueFromResponse(response, Assistant.class, 200);
-                    assertEquals(assistantCreationOptions.getName(), mathTutorAssistant.getName());
-                    assertEquals(assistantCreationOptions.getDescription(), mathTutorAssistant.getDescription());
-                    assertEquals(assistantCreationOptions.getInstructions(), mathTutorAssistant.getInstructions());
-                })
-                .verifyComplete();
-
-    }
-
-    @Override
-    protected void afterTest() {
-        if (mathTutorAssistant != null) {
-            StepVerifier.create(client.deleteAssistantWithResponse(mathTutorAssistant.getId(), new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantDeletionStatus deletionStatus = assertAndGetValueFromResponse(response,
-                                AssistantDeletionStatus.class, 200);
-                        assertEquals(mathTutorAssistant.getId(), deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
-        }
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void createMessage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         createMessageRunner(message -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
@@ -78,12 +42,14 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                         threadIdReference.set(assistantThread.getId());
                     })
                     .verifyComplete();
-
             String threadId = threadIdReference.get();
-
+            AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
+            // Create a message
             StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
                     .assertNext(threadMessage -> {
-                        assertNotNull(threadMessage.getId());
+                        String threadMessageId = threadMessage.getId();
+                        assertNotNull(threadMessageId);
+                        threadMessageIdReference.set(threadMessageId);
                         assertNotNull(threadMessage.getCreatedAt());
                         assertEquals("thread.message", threadMessage.getObject());
                         assertEquals(MessageRole.USER, threadMessage.getRole());
@@ -91,7 +57,38 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                         assertEquals(threadId, threadMessage.getThreadId());
                     })
                     .verifyComplete();
-
+            String threadMessageId = threadMessageIdReference.get();
+            // Retrieve the message
+            StepVerifier.create(client.getMessage(threadId, threadMessageId))
+                    .assertNext(messageRetrieved -> {
+                        assertEquals(threadMessageId, messageRetrieved.getId());
+                        assertEquals(threadId, messageRetrieved.getThreadId());
+                        assertNotNull(messageRetrieved.getCreatedAt());
+                        assertEquals("thread.message", messageRetrieved.getObject());
+                        assertEquals(MessageRole.USER, messageRetrieved.getRole());
+                        assertFalse(messageRetrieved.getContent().isEmpty());
+                    })
+                    .verifyComplete();
+            // Update the message
+            Map<String, String> metadataUpdate = new HashMap<>();
+            metadataUpdate.put("role", MessageRole.ASSISTANT.toString());
+            metadataUpdate.put("content", message + " Message Updated");
+            StepVerifier.create(client.updateMessage(threadId, threadMessageId, metadataUpdate))
+                    .assertNext(updatedMessage -> {
+                        assertEquals(threadMessageId, updatedMessage.getId());
+                        assertEquals(threadId, updatedMessage.getThreadId());
+                        assertNotNull(updatedMessage.getCreatedAt());
+                        assertEquals("thread.message", updatedMessage.getObject());
+                        assertEquals(MessageRole.USER, updatedMessage.getRole());
+                        assertFalse(updatedMessage.getContent().isEmpty());
+                        Map<String, String> metaDataResponse = updatedMessage.getMetadata();
+                        assertEquals(2, metaDataResponse.size());
+                        assertTrue(metaDataResponse.containsKey("role"));
+                        assertTrue(metaDataResponse.containsKey("content"));
+                        assertEquals(metadataUpdate.get("role"), metaDataResponse.get("role"));
+                        assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
+                    })
+                    .verifyComplete();
             // Delete the created thread
             StepVerifier.create(client.deleteThread(threadId))
                     .assertNext(deletionStatus -> {
@@ -102,14 +99,12 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
         });
     }
 
-    @Disabled("No assistant found with id xxx after test ran")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void createMessageWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+    public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
         createMessageRunner(message -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
-
             // Create a simple thread without a message
             StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
                     .assertNext(assistantThread -> {
@@ -119,23 +114,129 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                         threadIdReference.set(assistantThread.getId());
                     })
                     .verifyComplete();
-
             String threadId = threadIdReference.get();
-
-            Map<String, Object> requestObj = new HashMap<>();
-            requestObj.put("role", MessageRole.USER);
-            requestObj.put("content", message);
-            BinaryData request = BinaryData.fromObject(requestObj);
-
+            AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
+            // Create a message
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("role", MessageRole.USER.toString());
+            metadata.put("content", message);
+            BinaryData request = BinaryData.fromObject(metadata);
             StepVerifier.create(client.createMessageWithResponse(threadId, request, new RequestOptions()))
                     .assertNext(response -> {
                         ThreadMessage threadMessage = assertAndGetValueFromResponse(response, ThreadMessage.class, 200);
-                        assertNotNull(threadMessage.getId());
+                        String threadMessageId = threadMessage.getId();
+                        threadMessageIdReference.set(threadMessageId);
+                        assertNotNull(threadMessageId);
                         assertNotNull(threadMessage.getCreatedAt());
                         assertEquals("thread.message", threadMessage.getObject());
                         assertEquals(MessageRole.USER, threadMessage.getRole());
                         assertFalse(threadMessage.getContent().isEmpty());
                         assertEquals(threadId, threadMessage.getThreadId());
+                        threadMessageIdReference.set(threadMessageId);
+                    })
+                    .verifyComplete();
+            String threadMessageId = threadMessageIdReference.get();
+            // Retrieve the message
+            StepVerifier.create(client.getMessageWithResponse(threadId, threadMessageId, new RequestOptions()))
+                    .assertNext(response -> {
+                        ThreadMessage messageRetrieved = assertAndGetValueFromResponse(response, ThreadMessage.class, 200);
+                        assertEquals(threadMessageId, messageRetrieved.getId());
+                        assertEquals(threadId, messageRetrieved.getThreadId());
+                        assertNotNull(messageRetrieved.getCreatedAt());
+                        assertEquals("thread.message", messageRetrieved.getObject());
+                        assertEquals(MessageRole.USER, messageRetrieved.getRole());
+                        assertFalse(messageRetrieved.getContent().isEmpty());
+                    })
+                    .verifyComplete();
+            // Update the message
+            Map<String, String> metadataUpdate = new HashMap<>();
+            metadataUpdate.put("role", MessageRole.ASSISTANT.toString());
+            metadataUpdate.put("content", message + " Message Updated");
+            Map<String, Object> requestObj = new HashMap<>();
+            requestObj.put("metadata", metadataUpdate);
+            BinaryData requestUpdate = BinaryData.fromObject(requestObj);
+            StepVerifier.create(client.updateMessageWithResponse(threadId, threadMessageId, requestUpdate, new RequestOptions()))
+                    .assertNext(response -> {
+                        ThreadMessage updatedMessage = assertAndGetValueFromResponse(response, ThreadMessage.class, 200);
+                        assertEquals(threadMessageId, updatedMessage.getId());
+                        assertEquals(threadId, updatedMessage.getThreadId());
+                        assertNotNull(updatedMessage.getCreatedAt());
+                        assertEquals("thread.message", updatedMessage.getObject());
+                        assertEquals(MessageRole.USER, updatedMessage.getRole());
+                        assertFalse(updatedMessage.getContent().isEmpty());
+                        Map<String, String> metaDataResponse = updatedMessage.getMetadata();
+                        assertEquals(2, metaDataResponse.size());
+                        assertTrue(metaDataResponse.containsKey("role"));
+                        assertTrue(metaDataResponse.containsKey("content"));
+                        assertEquals(metadataUpdate.get("role"), metaDataResponse.get("role"));
+                        assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
+                    })
+                    .verifyComplete();
+            // Delete the created thread
+            StepVerifier.create(client.deleteThread(threadId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(threadId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listMessages(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
+        createMessageRunner(message -> {
+            AtomicReference<String> threadIdReference = new AtomicReference<>();
+            // Create a simple thread without a message
+            StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
+                    .assertNext(assistantThread -> {
+                        assertNotNull(assistantThread.getId());
+                        assertNotNull(assistantThread.getCreatedAt());
+                        assertEquals("thread", assistantThread.getObject());
+                        threadIdReference.set(assistantThread.getId());
+                    })
+                    .verifyComplete();
+            String threadId = threadIdReference.get();
+            // Create two messages in user role
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
+                    .assertNext(threadMessage -> {
+                        String threadMessageId = threadMessage.getId();
+                        assertNotNull(threadMessageId);
+                        assertEquals(threadId, threadMessage.getThreadId());
+                        assertNotNull(threadMessage.getCreatedAt());
+                        assertEquals("thread.message", threadMessage.getObject());
+                        assertEquals(MessageRole.USER, threadMessage.getRole());
+                        assertFalse(threadMessage.getContent().isEmpty());
+                    })
+                    .verifyComplete();
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message + "second message"))
+                    .assertNext(threadMessage -> {
+                        String threadMessageId = threadMessage.getId();
+                        assertNotNull(threadMessageId);
+                        assertEquals(threadId, threadMessage.getThreadId());
+                        assertNotNull(threadMessage.getCreatedAt());
+                        assertEquals("thread.message", threadMessage.getObject());
+                        assertEquals(MessageRole.USER, threadMessage.getRole());
+                        assertFalse(threadMessage.getContent().isEmpty());
+                    })
+                    .verifyComplete();
+            // List messages
+            StepVerifier.create(client.listMessages(threadId))
+                    .assertNext(listedMessages -> {
+                        assertNotNull(listedMessages);
+                        assertNotNull(listedMessages.getData());
+                        assertEquals(2, listedMessages.getData().size());
+                    })
+                    .verifyComplete();
+            // List messages with response
+            StepVerifier.create(client.listMessagesWithResponse(threadId, new RequestOptions()))
+                    .assertNext(response -> {
+                        OpenAIPageableListOfThreadMessage listedMessagesWithResponse = assertAndGetValueFromResponse(
+                                response, OpenAIPageableListOfThreadMessage.class, 200);
+                        assertNotNull(listedMessagesWithResponse);
+                        assertNotNull(listedMessagesWithResponse.getData());
+                        assertEquals(2, listedMessagesWithResponse.getData().size());
                     })
                     .verifyComplete();
 
@@ -148,5 +249,4 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
         });
     }
-
 }

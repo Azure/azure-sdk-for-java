@@ -143,22 +143,107 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void submitMessageAndRunWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
+        submitMessageAndRunRunner(message -> {
+            AtomicReference<String> threadIdReference = new AtomicReference<>();
+            // Create a simple thread without a message
+            StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
+                    .assertNext(assistantThread -> {
+                        assertNotNull(assistantThread.getId());
+                        assertNotNull(assistantThread.getCreatedAt());
+                        assertEquals("thread", assistantThread.getObject());
+                        threadIdReference.set(assistantThread.getId());
+                    })
+                    .verifyComplete();
+            String threadId = threadIdReference.get();
+
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
+                    .assertNext(threadMessage -> {
+                        assertNotNull(threadMessage.getId());
+                        assertNotNull(threadMessage.getCreatedAt());
+                        assertEquals("thread.message", threadMessage.getObject());
+                        assertEquals(MessageRole.USER, threadMessage.getRole());
+                        assertFalse(threadMessage.getContent().isEmpty());
+                        assertEquals(threadId, threadMessage.getThreadId());
+                    })
+                    .verifyComplete();
+
+            // Submit the message and run
+            AtomicReference<ThreadRun> runReference = new AtomicReference<>();
+            StepVerifier.create(client.createRunWithResponse(threadId,
+                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistant.getId(), null)),
+                    new RequestOptions()))
+                    .assertNext(response -> {
+                        ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                        assertNotNull(run.getId());
+                        assertNotNull(run.getCreatedAt());
+                        assertEquals("thread.run", run.getObject());
+                        assertEquals(mathTutorAssistant.getId(), run.getAssistantId());
+                        assertEquals(threadId, run.getThreadId());
+                        assertNotNull(run.getInstructions());
+                        runReference.set(run);
+                    })
+                    .verifyComplete();
+
+            ThreadRun run = runReference.get();
+            // Wait on Run and poll the Run in a loop
+            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
+                String runId = run.getId();
+                StepVerifier.create(client.getRunWithResponse(threadId, runId, new RequestOptions()))
+                        .assertNext(response -> {
+                            ThreadRun threadRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                            assertNotNull(threadRun.getId());
+                            assertNotNull(threadRun.getCreatedAt());
+                            assertEquals("thread.run", threadRun.getObject());
+                            assertEquals(mathTutorAssistant.getId(), threadRun.getAssistantId());
+                            assertEquals(threadId, threadRun.getThreadId());
+                            assertNotNull(threadRun.getInstructions());
+                            runReference.set(threadRun);
+                        })
+                        .verifyComplete();
+                run = runReference.get();
+            }
+
+            assertSame(RunStatus.COMPLETED, run.getStatus());
+
+            // List the messages, it should contain the answer other than the question.
+            StepVerifier.create(client.listMessages(threadId))
+                    .assertNext(openAIPageableListOfThreadMessage -> {
+                        assertNotNull(openAIPageableListOfThreadMessage);
+                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+                    })
+                    .verifyComplete();
+
+            // Delete the created thread
+            StepVerifier.create(client.deleteThread(threadId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(threadId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadAndRun(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             StepVerifier.create(client.createThreadAndRun(createAndRunThreadOptions))
-                            .assertNext(run -> {
-                                assertNotNull(run.getId());
-                                assertNotNull(run.getCreatedAt());
-                                assertEquals("thread.run", run.getObject());
-                                assertEquals(mathTutorAssistant.getId(), run.getAssistantId());
-                                assertNotNull(run.getInstructions());
-                                assertNotNull(run.getThreadId());
-                                threadIdReference.set(run.getThreadId());
-                                runReference.set(run);
-                            }).verifyComplete();
+                    .assertNext(run -> {
+                        assertNotNull(run.getId());
+                        assertNotNull(run.getCreatedAt());
+                        assertEquals("thread.run", run.getObject());
+                        assertEquals(mathTutorAssistant.getId(), run.getAssistantId());
+                        assertNotNull(run.getInstructions());
+                        assertNotNull(run.getThreadId());
+                        threadIdReference.set(run.getThreadId());
+                        runReference.set(run);
+                    })
+                    .verifyComplete();
 
             ThreadRun run = runReference.get();
 
@@ -190,6 +275,67 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                     })
                     .verifyComplete();
 
+            // Delete the created thread
+            StepVerifier.create(client.deleteThread(threadId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(threadId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        }, mathTutorAssistant.getId());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createThreadAndRunWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            AtomicReference<ThreadRun> runReference = new AtomicReference<>();
+            AtomicReference<String> threadIdReference = new AtomicReference<>();
+            // Create a simple thread without a message
+            StepVerifier.create(client.createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions),
+                    new RequestOptions()))
+                    .assertNext(response -> {
+                        ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+                        assertNotNull(run.getId());
+                        assertNotNull(run.getCreatedAt());
+                        assertEquals("thread.run", run.getObject());
+                        assertEquals(mathTutorAssistant.getId(), run.getAssistantId());
+                        assertNotNull(run.getInstructions());
+                        assertNotNull(run.getThreadId());
+                        threadIdReference.set(run.getThreadId());
+                        runReference.set(run);
+                    })
+                    .verifyComplete();
+
+            ThreadRun run = runReference.get();
+
+            // Wait on Run and poll the Run in a loop
+            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
+                String runId = run.getId();
+                StepVerifier.create(client.getRun(run.getThreadId(), runId))
+                        .assertNext(threadRun -> {
+                            assertNotNull(threadRun.getId());
+                            assertNotNull(threadRun.getCreatedAt());
+                            assertEquals("thread.run", threadRun.getObject());
+                            assertEquals(mathTutorAssistant.getId(), threadRun.getAssistantId());
+                            assertNotNull(threadRun.getInstructions());
+                            runReference.set(threadRun);
+                        })
+                        .verifyComplete();
+                run = runReference.get();
+            }
+            String threadId = threadIdReference.get();
+
+            assertSame(RunStatus.COMPLETED, run.getStatus());
+
+            // List the messages, it should contain the answer other than the question.
+            StepVerifier.create(client.listMessages(threadId))
+                    .assertNext(openAIPageableListOfThreadMessage -> {
+                        assertNotNull(openAIPageableListOfThreadMessage);
+                        assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+                    })
+                    .verifyComplete();
 
             // Delete the created thread
             StepVerifier.create(client.deleteThread(threadId))
