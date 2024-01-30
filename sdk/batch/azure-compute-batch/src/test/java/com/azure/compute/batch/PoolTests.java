@@ -102,7 +102,7 @@ public class PoolTests extends BatchClientTestBase {
             batchClient.createPool(poolCreateOptions);
 
             BatchPool pool = batchClient.getPool(poolId);
-            Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
+            Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLogicalUnitNumber());
             Assertions.assertEquals(diskSizeGB, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
         } finally {
             try {

@@ -114,17 +114,17 @@ public final class DataDisk {
     }
 
     /*
-     * The logical unit number. The lun is used to uniquely identify each data disk. If attaching multiple disks, each
-     * should have a distinct lun. The value must be between 0 and 63, inclusive.
+     * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching
+     * multiple disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
      */
     @Generated
     @JsonProperty(value = "lun")
     private int logicalUnitNumber;
 
     /**
-     * Get the logicalUnitNumber property: The logical unit number. The lun is used to uniquely identify each data
-     * disk. If attaching multiple disks, each should have a distinct lun. The value must be between 0 and 63,
-     * inclusive.
+     * Get the logicalUnitNumber property: The logical unit number. The logicalUnitNumber is used to uniquely identify
+     * each data disk. If attaching multiple disks, each should have a distinct logicalUnitNumber. The value must be
+     * between 0 and 63, inclusive.
      *
      * @return the logicalUnitNumber value.
      */
