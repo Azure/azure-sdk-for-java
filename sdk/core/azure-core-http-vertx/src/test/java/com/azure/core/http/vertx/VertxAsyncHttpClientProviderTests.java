@@ -11,17 +11,15 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalProxyFilter;
@@ -31,11 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests {@link VertxAsyncHttpClientProvider}.
@@ -121,30 +114,27 @@ public class VertxAsyncHttpClientProviderTests {
         assertEquals(timeout.getSeconds(), options.getWriteIdleTimeout());
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void vertxProvider() throws Exception {
         Vertx vertx = Vertx.vertx();
 
-        ServiceLoader mockServiceLoader = mock(ServiceLoader.class);
-        VertxProvider mockVertxProvider = mock(VertxProvider.class);
+        CreateCountVertxProvider mockVertxProvider = new CreateCountVertxProvider(vertx);
 
-        try (MockedStatic<ServiceLoader> serviceLoader = mockStatic(ServiceLoader.class)) {
-            Set<VertxProvider> providers = new HashSet<>();
-            providers.add(mockVertxProvider);
+        AtomicInteger providerCount = new AtomicInteger();
+        VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder() {
+            @Override
+            Iterator<VertxProvider> getVertxProviderIterator() {
+                providerCount.incrementAndGet();
+                return Collections.singletonList((VertxProvider) mockVertxProvider).iterator();
+            }
+        };
 
-            Class<?> providerClass = VertxProvider.class;
-            serviceLoader.when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
-                .thenReturn(mockServiceLoader);
-
-            Mockito.when(mockServiceLoader.iterator()).thenReturn(providers.iterator());
-            Mockito.when(mockVertxProvider.createVertx()).thenReturn(vertx);
-
-            HttpClient httpClient = new VertxAsyncHttpClientProvider().createInstance();
+        try {
+            HttpClient httpClient = builder.build();
             assertNotNull(httpClient);
 
-            verify(mockServiceLoader, times(1)).iterator();
-            verify(mockVertxProvider, times(1)).createVertx();
+            assertEquals(1, providerCount.get());
+            assertEquals(1, mockVertxProvider.getCreateCount());
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
@@ -152,39 +142,54 @@ public class VertxAsyncHttpClientProviderTests {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void multipleVertxProviders() throws Exception {
         Vertx vertx = Vertx.vertx();
 
-        ServiceLoader mockServiceLoader = mock(ServiceLoader.class);
-        VertxProvider mockVertxProviderA = mock(VertxProvider.class);
-        VertxProvider mockVertxProviderB = mock(VertxProvider.class);
+        CreateCountVertxProvider mockVertxProviderA = new CreateCountVertxProvider(vertx);
+        CreateCountVertxProvider mockVertxProviderB = new CreateCountVertxProvider(vertx);
 
-        try (MockedStatic<ServiceLoader> serviceLoader = mockStatic(ServiceLoader.class)) {
-            Set<VertxProvider> providers = new LinkedHashSet<>();
-            providers.add(mockVertxProviderA);
-            providers.add(mockVertxProviderB);
+        AtomicInteger providerCount = new AtomicInteger();
+        VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder() {
+            @Override
+            Iterator<VertxProvider> getVertxProviderIterator() {
+                providerCount.incrementAndGet();
+                return Arrays.asList(mockVertxProviderA, (VertxProvider) mockVertxProviderB).iterator();
+            }
+        };
 
-            Class<?> providerClass = VertxProvider.class;
-            serviceLoader.when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
-                .thenReturn(mockServiceLoader);
-
-            Mockito.when(mockServiceLoader.iterator()).thenReturn(providers.iterator());
-            Mockito.when(mockVertxProviderA.createVertx()).thenReturn(vertx);
-
-            HttpClient httpClient = new VertxAsyncHttpClientProvider().createInstance();
+        try {
+            HttpClient httpClient = builder.build();
             assertNotNull(httpClient);
 
-            verify(mockServiceLoader, times(1)).iterator();
-            verify(mockVertxProviderA, times(1)).createVertx();
+            assertEquals(1, providerCount.get());
+            assertEquals(1, mockVertxProviderA.getCreateCount());
 
             // Only the first provider should have been invoked
-            verify(mockVertxProviderB, never()).createVertx();
+            assertEquals(0, mockVertxProviderB.getCreateCount());
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
             latch.await(5, TimeUnit.SECONDS);
+        }
+    }
+
+    private static final class CreateCountVertxProvider implements VertxProvider {
+        private final AtomicInteger createCount = new AtomicInteger();
+        private final Vertx vertx;
+
+        CreateCountVertxProvider(Vertx vertx) {
+            this.vertx = vertx;
+        }
+
+        @Override
+        public Vertx createVertx() {
+            createCount.incrementAndGet();
+            return vertx;
+        }
+
+        int getCreateCount() {
+            return createCount.get();
         }
     }
 }

@@ -173,9 +173,7 @@ public class VertxAsyncHttpClientBuilder {
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
         if (configuredVertx == null) {
-            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
-                VertxProvider.class.getClassLoader());
-            Iterator<VertxProvider> iterator = vertxProviders.iterator();
+            Iterator<VertxProvider> iterator = getVertxProviderIterator();
             if (iterator.hasNext()) {
                 VertxProvider provider = iterator.next();
                 configuredVertx = provider.createVertx();
@@ -262,6 +260,12 @@ public class VertxAsyncHttpClientBuilder {
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
         return new VertxAsyncHttpClient(client, configuredVertx);
+    }
+
+    Iterator<VertxProvider> getVertxProviderIterator() {
+        ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
+            VertxProvider.class.getClassLoader());
+        return vertxProviders.iterator();
     }
 
     /**
