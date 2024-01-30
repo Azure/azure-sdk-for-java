@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.18 (2024-01-26)
+## 1.0.0-beta.18 (2024-01-29)
 
 ### Bugs Fixed
 - [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
