@@ -3,7 +3,6 @@
 
 package com.azure.core.http.vertx;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -16,7 +15,6 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -120,21 +119,12 @@ public class VertxAsyncHttpClientProviderTests {
 
         CreateCountVertxProvider mockVertxProvider = new CreateCountVertxProvider(vertx);
 
-        AtomicInteger providerCount = new AtomicInteger();
-        VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder() {
-            @Override
-            Iterator<VertxProvider> getVertxProviderIterator() {
-                providerCount.incrementAndGet();
-                return Collections.singletonList((VertxProvider) mockVertxProvider).iterator();
-            }
-        };
-
         try {
-            HttpClient httpClient = builder.build();
-            assertNotNull(httpClient);
+            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder.getVertx(
+                Collections.singletonList((VertxProvider) mockVertxProvider).iterator());
 
-            assertEquals(1, providerCount.get());
             assertEquals(1, mockVertxProvider.getCreateCount());
+            assertSame(vertx, vertxSelectedByBuilder);
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
@@ -149,24 +139,15 @@ public class VertxAsyncHttpClientProviderTests {
         CreateCountVertxProvider mockVertxProviderA = new CreateCountVertxProvider(vertx);
         CreateCountVertxProvider mockVertxProviderB = new CreateCountVertxProvider(vertx);
 
-        AtomicInteger providerCount = new AtomicInteger();
-        VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder() {
-            @Override
-            Iterator<VertxProvider> getVertxProviderIterator() {
-                providerCount.incrementAndGet();
-                return Arrays.asList(mockVertxProviderA, (VertxProvider) mockVertxProviderB).iterator();
-            }
-        };
-
         try {
-            HttpClient httpClient = builder.build();
-            assertNotNull(httpClient);
-
-            assertEquals(1, providerCount.get());
-            assertEquals(1, mockVertxProviderA.getCreateCount());
+            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder.getVertx(
+                Arrays.asList((VertxProvider) mockVertxProviderA, mockVertxProviderB).iterator());
 
             // Only the first provider should have been invoked
+            assertEquals(1, mockVertxProviderA.getCreateCount());
             assertEquals(0, mockVertxProviderB.getCreateCount());
+
+            assertSame(vertx, vertxSelectedByBuilder);
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());

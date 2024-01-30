@@ -173,20 +173,9 @@ public class VertxAsyncHttpClientBuilder {
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
         if (configuredVertx == null) {
-            Iterator<VertxProvider> iterator = getVertxProviderIterator();
-            if (iterator.hasNext()) {
-                VertxProvider provider = iterator.next();
-                configuredVertx = provider.createVertx();
-                LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
-
-                while (iterator.hasNext()) {
-                    VertxProvider ignoredProvider = iterator.next();
-                    LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
-                        ignoredProvider.getClass().getName());
-                }
-            } else {
-                configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
-            }
+            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
+                VertxProvider.class.getClassLoader());
+            configuredVertx = getVertx(vertxProviders.iterator());
         }
 
         if (this.httpClientOptions == null) {
@@ -262,10 +251,23 @@ public class VertxAsyncHttpClientBuilder {
         return new VertxAsyncHttpClient(client, configuredVertx);
     }
 
-    Iterator<VertxProvider> getVertxProviderIterator() {
-        ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
-            VertxProvider.class.getClassLoader());
-        return vertxProviders.iterator();
+    static Vertx getVertx(Iterator<VertxProvider> iterator) {
+        Vertx configuredVertx;
+        if (iterator.hasNext()) {
+            VertxProvider provider = iterator.next();
+            configuredVertx = provider.createVertx();
+            LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
+
+            while (iterator.hasNext()) {
+                VertxProvider ignoredProvider = iterator.next();
+                LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
+                    ignoredProvider.getClass().getName());
+            }
+        } else {
+            configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
+        }
+
+        return configuredVertx;
     }
 
     /**
