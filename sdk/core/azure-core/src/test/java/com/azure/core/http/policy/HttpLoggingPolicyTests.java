@@ -63,7 +63,6 @@ import static com.azure.core.CoreTestUtils.createUrl;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -612,9 +611,6 @@ public class HttpLoggingPolicyTests {
         return Stream.of(
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).disableRedactedHeaderLogging(true),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(true),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
     }
 
@@ -815,17 +811,19 @@ public class HttpLoggingPolicyTests {
 
             if (logOptions.getLogLevel().shouldLogHeaders() && LogLevel.INFORMATIONAL.compareTo(logLevel) >= 0) {
                 int expectedHeaders = 0;
+                boolean expectRedactedHeaders = false;
                 for (Map.Entry<String, String> kvp : this.headers.entrySet()) {
                     boolean isAllowed = logOptions.getAllowedHeaderNames().contains(kvp.getKey());
-                    if (isAllowed || logOptions.isRedactedHeaderLoggingEnabled()) {
+                    if (isAllowed) {
                         expectedHeaders++;
                         assertEquals(isAllowed ? kvp.getValue() : REDACTED, other.headers.get(kvp.getKey()));
                     } else {
-                        assertFalse(other.headers.containsKey(kvp.getKey()));
+                        expectRedactedHeaders = true;
+                        assertTrue(other.headers.get("redactedHeaders").contains(kvp.getKey()));
                     }
                 }
 
-                assertEquals(expectedHeaders, other.headers.size());
+                assertEquals(expectedHeaders + (expectRedactedHeaders ? 1 : 0), other.headers.size());
             }
         }
     }
