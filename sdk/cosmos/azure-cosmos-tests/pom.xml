@@ -30,7 +30,7 @@ Licensed under the MIT License.
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
-<!--    <jacoco.skip>true</jacoco.skip>-->
+    <jacoco.skip>true</jacoco.skip>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <revapi.skip>true</revapi.skip>
@@ -311,6 +311,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>simple</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -332,6 +335,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>split</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -353,6 +359,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>cfp-split</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -374,6 +383,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>query</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -395,6 +407,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>long</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -416,6 +431,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>direct</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -437,6 +455,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>multi-master</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -458,6 +479,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>flaky-multi-master</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -479,6 +503,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>multi-region</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -551,6 +578,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>e2e</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
