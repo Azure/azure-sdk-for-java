@@ -58,7 +58,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets An OpenAI endpoint supporting assistants functionality.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -86,7 +86,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -95,7 +95,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
@@ -106,7 +106,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
@@ -117,7 +117,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
@@ -837,7 +837,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -903,7 +903,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1091,7 +1091,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1132,7 +1132,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1176,7 +1176,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1239,7 +1239,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1306,7 +1306,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1337,7 +1337,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1368,7 +1368,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1405,7 +1405,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1446,7 +1446,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1530,7 +1530,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1613,7 +1613,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1643,7 +1643,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1675,7 +1675,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1707,7 +1707,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1739,7 +1739,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1794,7 +1794,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1849,7 +1849,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1881,7 +1881,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1914,7 +1914,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1955,7 +1955,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2000,7 +2000,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2030,7 +2030,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2060,7 +2060,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2117,7 +2117,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2178,7 +2178,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2273,7 +2273,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2368,7 +2368,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2410,7 +2410,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2456,7 +2456,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2510,7 +2510,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2566,7 +2566,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2649,7 +2649,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2732,7 +2732,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2763,7 +2763,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2796,7 +2796,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2871,7 +2871,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2946,7 +2946,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3053,7 +3053,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3160,7 +3160,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3214,7 +3214,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3272,7 +3272,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3337,7 +3337,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3405,7 +3405,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3476,7 +3476,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3548,7 +3548,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3605,7 +3605,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3663,7 +3663,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3752,7 +3752,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3842,7 +3842,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3889,7 +3889,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3938,7 +3938,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -4038,7 +4038,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4139,7 +4139,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4196,7 +4196,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4251,7 +4251,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4281,7 +4281,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4315,7 +4315,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4344,7 +4344,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4374,7 +4374,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4405,7 +4405,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4438,7 +4438,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

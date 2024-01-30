@@ -6,8 +6,13 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.FileDetails;
+import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -15,10 +20,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +42,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return getAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false))
-                .buildAsyncClient();
+            .buildAsyncClient();
     }
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -73,6 +84,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                     .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
+
+        if (getTestMode() != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+        }
+
         return builder;
     }
 
@@ -89,7 +106,26 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         } else {
             builder.credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
+
+        if (getTestMode() != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+        }
+
         return builder;
+    }
+
+    private void addTestRecordCustomSanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
+        ));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
@@ -123,6 +159,42 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
+    void createRetrievalRunner(BiConsumer<UploadFileRequest, AssistantCreationOptions> testRunner) {
+        UploadFileRequest uploadRequest = new UploadFileRequest(
+            new FileDetails(
+                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
+                    .setFilename("java_sdk_tests_assistants.txt"),
+                FilePurpose.ASSISTANTS);
+
+        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+            .setName("Java SDK Retrieval Sample")
+            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+            .setTools(Arrays.asList(new RetrievalToolDefinition()));
+
+        testRunner.accept(uploadRequest, assistantOptions);
+    }
+
+    void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            FilePurpose.ASSISTANTS);
+        testRunner.accept(uploadFileRequest);
+    }
+
+    void uploadAssistantImageFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png"))),
+            FilePurpose.ASSISTANTS);
+        testRunner.accept(uploadFileRequest);
+    }
+
+    void uploadFineTuningJsonFileRunner(Consumer<UploadFileRequest> testRunner) {
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json"))),
+            FilePurpose.FINE_TUNE);
+        testRunner.accept(uploadFileRequest);
+    }
+
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
         AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
                 .skipRequest((ignored1, ignored2) -> false);
@@ -144,5 +216,17 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertNotNull(object);
         assertInstanceOf(clazz, object);
         return object;
+    }
+
+    protected static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getFilename(), actual.getFilename());
+        assertEquals(expected.getBytes(), actual.getBytes());
+        assertEquals(expected.getPurpose(), actual.getPurpose());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+    }
+
+    protected static Path openResourceFile(String fileName) {
+        return Paths.get("src", "test", "resources", fileName);
     }
 }
