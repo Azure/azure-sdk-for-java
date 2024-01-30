@@ -291,7 +291,7 @@ org.apache.maven.plugins:maven-clean-plugin;3.2.0
 org.apache.maven.plugins:maven-compiler-plugin;3.10.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
-org.apache.maven.plugins:maven-failsafe-plugin;3.1.0
+org.apache.maven.plugins:maven-failsafe-plugin;3.2.5
 org.apache.maven.plugins:maven-help-plugin;3.2.0
 org.apache.maven.plugins:maven-install-plugin;3.0.0-M1
 org.apache.maven.plugins:maven-jar-plugin;3.2.2
@@ -304,7 +304,7 @@ org.apache.maven.plugins:maven-resources-plugin;3.3.0
 org.apache.maven.plugins:maven-shade-plugin;3.5.1
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.2.1
-org.apache.maven.plugins:maven-surefire-plugin;3.1.0
+org.apache.maven.plugins:maven-surefire-plugin;3.2.5
 org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
 org.codehaus.mojo:build-helper-maven-plugin;3.3.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7

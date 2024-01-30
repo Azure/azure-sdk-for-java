@@ -126,8 +126,11 @@
       -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
+    <jacocoUnitTestAgent></jacocoUnitTestAgent>
+
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
+      @{jacocoUnitTestAgent}
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
@@ -140,8 +143,11 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
+    <jacocoIntegrationTestAgent></jacocoIntegrationTestAgent>
+
     <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
     <defaultFailsafeArgLine>
+      @{jacocoIntegrationTestAgent}
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultFailsafeArgLine>
@@ -429,25 +435,47 @@
         <executions>
           <execution>
             <id>prepare-agent</id>
+            <phase>process-test-classes</phase>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-unit.exec</destFile>
+              <propertyName>jacocoUnitTestAgent</propertyName>
+            </configuration>
           </execution>
           <execution>
-            <id>default-instrument</id>
+            <id>integration-prepare-agent</id>
+            <phase>pre-integration-test</phase>
             <goals>
-              <goal>instrument</goal>
+              <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+              <propertyName>jacocoIntegrationTestAgent</propertyName>
+            </configuration>
           </execution>
           <execution>
-            <id>default-restore-instrumented-classes</id>
+            <id>merge-unit-and-integration</id>
+            <phase>post-integration-test</phase>
             <goals>
-              <goal>restore-instrumented-classes</goal>
+              <goal>merge</goal>
             </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>
+                    <include>jacoco-unit.exec</include>
+                    <include>jacoco-it.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </configuration>
           </execution>
           <execution>
             <id>post-unit-test</id>
-            <phase>package</phase>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -463,6 +491,7 @@
           </execution>
           <execution>
             <id>check</id>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>check</goal>
             </goals>
@@ -828,7 +857,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -865,7 +894,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -1208,11 +1237,8 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
-              </systemPropertyVariables>
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
@@ -1227,7 +1253,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 ${defaultFailsafeArgLine}
@@ -1408,7 +1434,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1430,7 +1456,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1451,7 +1477,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1473,7 +1499,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
