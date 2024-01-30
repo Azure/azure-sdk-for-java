@@ -6,26 +6,24 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 
-/** Samples for Databases Export. */
+/**
+ * Samples for Databases Export.
+ */
 public final class DatabasesExportSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesExport.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * RedisEnterpriseDatabasesExport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesExport.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseDatabasesExport(
-        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager
-            .databases()
-            .export(
-                "rg1",
-                "cache1",
-                "default",
-                new ExportClusterParameters()
-                    .withSasUri("https://contosostorage.blob.core.window.net/urlToBlobContainer?sasKeyParameters"),
-                com.azure.core.util.Context.NONE);
+    public static void
+        redisEnterpriseDatabasesExport(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.databases().export("rg1", "cache1", "default",
+            new ExportClusterParameters()
+                .withSasUri("https://contosostorage.blob.core.window.net/urlToBlobContainer?sasKeyParameters"),
+            com.azure.core.util.Context.NONE);
     }
 }

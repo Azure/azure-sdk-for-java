@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A partial update to the RedisEnterprise cluster. */
+/**
+ * A partial update to the RedisEnterprise cluster.
+ */
 @Fluent
 public final class ClusterUpdate {
     /*
@@ -23,7 +25,7 @@ public final class ClusterUpdate {
 
     /*
      * RedisEnterprise cluster properties
-     *
+     * 
      * Other properties of the cluster.
      */
     @JsonProperty(value = "properties")
@@ -42,13 +44,15 @@ public final class ClusterUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ClusterUpdate class. */
+    /**
+     * Creates an instance of ClusterUpdate class.
+     */
     public ClusterUpdate() {
     }
 
     /**
      * Get the sku property: The SKU to create, which affects price, performance, and features.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -57,7 +61,7 @@ public final class ClusterUpdate {
 
     /**
      * Set the sku property: The SKU to create, which affects price, performance, and features.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterUpdate object itself.
      */
@@ -68,9 +72,9 @@ public final class ClusterUpdate {
 
     /**
      * Get the innerProperties property: RedisEnterprise cluster properties
-     *
-     * <p>Other properties of the cluster.
-     *
+     * 
+     * Other properties of the cluster.
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
@@ -79,7 +83,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -88,7 +92,7 @@ public final class ClusterUpdate {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ClusterUpdate object itself.
      */
@@ -99,7 +103,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -108,7 +112,7 @@ public final class ClusterUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ClusterUpdate object itself.
      */
@@ -119,7 +123,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -128,7 +132,7 @@ public final class ClusterUpdate {
 
     /**
      * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the ClusterUpdate object itself.
      */
@@ -142,7 +146,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @return the encryption value.
      */
     public ClusterPropertiesEncryption encryption() {
@@ -151,7 +155,7 @@ public final class ClusterUpdate {
 
     /**
      * Set the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the ClusterUpdate object itself.
      */
@@ -165,7 +169,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the hostname property: DNS name of the cluster endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -174,7 +178,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the provisioningState property: Current provisioning status of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -183,7 +187,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the resourceState property: Current resource status of the cluster.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -192,7 +196,7 @@ public final class ClusterUpdate {
 
     /**
      * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
-     *
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -202,7 +206,7 @@ public final class ClusterUpdate {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
      * RedisEnterprise cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -211,7 +215,7 @@ public final class ClusterUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Forcibly unlink another database from this database.
- *
- * <p>Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
+ * 
+ * Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
  */
 @Fluent
 public final class ForceUnlinkParameters {
@@ -22,13 +22,15 @@ public final class ForceUnlinkParameters {
     @JsonProperty(value = "ids", required = true)
     private List<String> ids;
 
-    /** Creates an instance of ForceUnlinkParameters class. */
+    /**
+     * Creates an instance of ForceUnlinkParameters class.
+     */
     public ForceUnlinkParameters() {
     }
 
     /**
      * Get the ids property: The resource IDs of the database resources to be unlinked.
-     *
+     * 
      * @return the ids value.
      */
     public List<String> ids() {
@@ -37,7 +39,7 @@ public final class ForceUnlinkParameters {
 
     /**
      * Set the ids property: The resource IDs of the database resources to be unlinked.
-     *
+     * 
      * @param ids the ids value to set.
      * @return the ForceUnlinkParameters object itself.
      */
@@ -48,14 +50,13 @@ public final class ForceUnlinkParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ids() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ids in model ForceUnlinkParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ids in model ForceUnlinkParameters"));
         }
     }
 

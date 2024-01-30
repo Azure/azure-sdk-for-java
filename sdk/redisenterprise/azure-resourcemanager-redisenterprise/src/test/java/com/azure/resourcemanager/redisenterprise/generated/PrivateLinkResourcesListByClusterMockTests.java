@@ -31,38 +31,27 @@ public final class PrivateLinkResourcesListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"bncblylpstdbhhx\",\"requiredMembers\":[\"dzu\",\"erscdntne\",\"fiwjmygtdssls\",\"tmweriofzpyq\"],\"requiredZoneNames\":[\"wab\",\"ets\",\"hszhedplvwiwu\",\"mwmbes\"]},\"id\":\"nkww\",\"name\":\"pp\",\"type\":\"flcxoga\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"wab\",\"requiredMembers\":[\"shhszhedplvwiw\",\"bmwmbesldnkw\",\"tppjflcx\"],\"requiredZoneNames\":[\"okonzmnsikvmkqz\",\"qqkdltfzxmhhvhgu\",\"eodkwobda\"]},\"id\":\"xtibqdxbxwakbog\",\"name\":\"xndlkzgxhu\",\"type\":\"iplbpodxunkbebxm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RedisEnterpriseManager manager =
-            RedisEnterpriseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response =
-            manager.privateLinkResources().listByCluster("bzmnvdfznud", "od", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources().listByCluster("iwjmygtdssls",
+            "tmweriofzpyq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wab", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("okonzmnsikvmkqz", response.iterator().next().requiredZoneNames().get(0));
     }
 }

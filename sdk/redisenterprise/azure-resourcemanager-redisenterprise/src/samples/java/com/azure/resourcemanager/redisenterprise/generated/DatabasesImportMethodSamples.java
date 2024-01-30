@@ -7,30 +7,25 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import java.util.Arrays;
 
-/** Samples for Databases ImportMethod. */
+/**
+ * Samples for Databases ImportMethod.
+ */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesImport.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * RedisEnterpriseDatabasesImport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesImport.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseDatabasesImport(
-        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager
-            .databases()
-            .importMethod(
-                "rg1",
-                "cache1",
-                "default",
-                new ImportClusterParameters()
-                    .withSasUris(
-                        Arrays
-                            .asList(
-                                "https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters",
-                                "https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")),
-                com.azure.core.util.Context.NONE);
+    public static void
+        redisEnterpriseDatabasesImport(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.databases().importMethod("rg1", "cache1", "default",
+            new ImportClusterParameters().withSasUris(
+                Arrays.asList("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters",
+                    "https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")),
+            com.azure.core.util.Context.NONE);
     }
 }
