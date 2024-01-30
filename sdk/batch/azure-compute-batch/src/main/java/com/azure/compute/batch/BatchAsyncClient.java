@@ -3272,9 +3272,9 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    public Mono<byte[]> getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
+    public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
         return getNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(),
             options.getIfModifiedSince(), options.getIfUnmodifiedSince(), options.getOcpRange());
     }
@@ -3291,9 +3291,9 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    public Mono<byte[]> getNodeFile(String poolId, String nodeId, String filePath) {
+    public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath) {
         return getNodeFileInternal(poolId, nodeId, filePath);
     }
 
@@ -23262,7 +23262,7 @@ public final class BatchAsyncClient {
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
-     * byte[]
+     * BinaryData
      * }</pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -23273,7 +23273,7 @@ public final class BatchAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27823,11 +27823,11 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<byte[]> getNodeFileInternal(String poolId, String nodeId, String filePath, Integer timeOutInSeconds,
+    Mono<BinaryData> getNodeFileInternal(String poolId, String nodeId, String filePath, Integer timeOutInSeconds,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ocpRange) {
         // Generated convenience method for getNodeFileInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -27845,8 +27845,7 @@ public final class BatchAsyncClient {
         if (ocpRange != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
         }
-        return getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+        return getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -27861,15 +27860,14 @@ public final class BatchAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<byte[]> getNodeFileInternal(String poolId, String nodeId, String filePath) {
+    Mono<BinaryData> getNodeFileInternal(String poolId, String nodeId, String filePath) {
         // Generated convenience method for getNodeFileInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+        return getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
