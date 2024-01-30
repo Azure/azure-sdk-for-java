@@ -3,7 +3,10 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
+import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
+import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
@@ -12,7 +15,9 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
+import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
@@ -26,16 +31,22 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import reactor.test.StepVerifier;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
@@ -239,5 +250,128 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     protected static Path openResourceFile(String fileName) {
         return Paths.get("src", "test", "resources", fileName);
+    }
+
+    String createMathTutorAssistant(AssistantsClient client, ClientLogger logger) {
+        logger.info("Creating a new Math tutor assistant.");
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                .setName("Math Tutor")
+                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
+        Assistant assistant = client.createAssistant(assistantCreationOptions);
+        // Create an assistant
+        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+        logger.info("Finished creating a new Math tutor assistant.");
+        return assistant.getId();
+    }
+
+    String createMathTutorAssistant(AssistantsAsyncClient client, ClientLogger logger) {
+        logger.info("Creating a new Math tutor assistant.");
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                .setName("Math Tutor")
+                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
+        AtomicReference<String> assistantIdRef = new AtomicReference<>();
+        // create assistant test
+        StepVerifier.create(client.createAssistant(assistantCreationOptions))
+                .assertNext(assistant -> {
+                    assistantIdRef.set(assistant.getId());
+                    assertEquals(assistantCreationOptions.getName(), assistant.getName());
+                    assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+                    assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+                })
+                .verifyComplete();
+        logger.info("Finished creating a new Math tutor assistant.");
+        return assistantIdRef.get();
+    }
+
+    void deleteMathTutorAssistant(AssistantsClient client, String assistantId, ClientLogger logger) {
+        logger.info("Cleaning up created Math tutor assistant.");
+        if (CoreUtils.isNullOrEmpty(assistantId)) {
+            return;
+        }
+        AssistantDeletionStatus deletionStatus = client.deleteAssistant(assistantId);
+        assertEquals(assistantId, deletionStatus.getId());
+        assertTrue(deletionStatus.isDeleted());
+        logger.info("Finished cleaning up Math tutor assistant.");
+    }
+
+    void deleteMathTutorAssistant(AssistantsAsyncClient client, String assistantId, ClientLogger logger) {
+        logger.info("Cleaning up created Math tutor  assistant.");
+        if (CoreUtils.isNullOrEmpty(assistantId)) {
+            return;
+        }
+        StepVerifier.create(client.deleteAssistant(assistantId))
+                .assertNext(deletionStatus -> {
+                    assertEquals(assistantId, deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                })
+                .verifyComplete();
+        logger.info("Finished cleaning up Math tutor assistant.");
+    }
+
+    String createThread(AssistantsAsyncClient client, ClientLogger logger) {
+        logger.info("Creating a new thread.");
+        AtomicReference<String> threadIdRef = new AtomicReference<>();
+        // Create a simple thread without a message
+        StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
+                .assertNext(assistantThread -> {
+                    assertNotNull(assistantThread.getId());
+                    assertNotNull(assistantThread.getCreatedAt());
+                    assertEquals("thread", assistantThread.getObject());
+                    threadIdRef.set(assistantThread.getId());
+                })
+                .verifyComplete();
+        logger.info("Finished creating a new thread.");
+        return threadIdRef.get();
+    }
+
+    String createThread(AssistantsClient client, ClientLogger logger) {
+        logger.info("Creating a new thread.");
+        // Create a simple thread without a message
+        AssistantThread assistantThread = client.createThread(new AssistantThreadCreationOptions());
+        assertNotNull(assistantThread.getId());
+        assertNotNull(assistantThread.getCreatedAt());
+        assertEquals("thread", assistantThread.getObject());
+        logger.info("Finished creating a new thread.");
+        return assistantThread.getId();
+    }
+
+    void deleteThread(AssistantsAsyncClient client, String threadId, ClientLogger logger) {
+        logger.info("Cleaning up created thread.");
+        if (CoreUtils.isNullOrEmpty(threadId)) {
+            return;
+        }
+        // Delete the created thread
+        StepVerifier.create(client.deleteThread(threadId))
+                .assertNext(deletionStatus -> {
+                    assertEquals(threadId, deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                })
+                .verifyComplete();
+        logger.info("Finished cleaning up thread.");
+    }
+
+    void deleteThread(AssistantsClient client, String threadId, ClientLogger logger) {
+        logger.info("Cleaning up created thread.");
+        if (CoreUtils.isNullOrEmpty(threadId)) {
+            return;
+        }
+        // Delete the created thread
+        ThreadDeletionStatus threadDeletionStatus = client.deleteThread(threadId);
+        assertEquals(threadId, threadDeletionStatus.getId());
+        assertTrue(threadDeletionStatus.isDeleted());
+        logger.info("Finished cleaning up thread.");
+    }
+
+
+    void validateThreadMessage(ThreadMessage threadMessage, String threadId) {
+        String threadMessageId = threadMessage.getId();
+        assertNotNull(threadMessageId);
+        assertEquals(threadId, threadMessage.getThreadId());
+        assertNotNull(threadMessage.getCreatedAt());
+        assertEquals("thread.message", threadMessage.getObject());
+        assertEquals(MessageRole.USER, threadMessage.getRole());
+        assertFalse(threadMessage.getContent().isEmpty());
     }
 }
