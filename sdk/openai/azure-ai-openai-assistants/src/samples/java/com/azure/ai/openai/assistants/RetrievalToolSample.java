@@ -85,21 +85,18 @@ public class RetrievalToolSample {
         // List messages from the thread
         OpenAIPageableListOfThreadMessage messages = client.listMessages(thread.getId());
         for (ThreadMessage message : messages.getData()) {
-           message.getContent().forEach(content -> {
-               if(content instanceof MessageTextContent) {
-                   MessageTextDetails messageTextDetails = ((MessageTextContent) content).getText();
-                   System.out.println(messageTextDetails.getValue());
-                   messageTextDetails.getAnnotations().forEach(annotation -> {
-                       System.out.println("\tAnnotation start: " + annotation.getStartIndex()
-                       + " ,end: " + annotation.getEndIndex()
-                           + " ,text: \"" + annotation.getText() + "\"");
-                   });
-               }
-               else if (content instanceof MessageImageFileContent) {
-                   System.out.print("Image file ID: ");
-                   System.out.println(((MessageImageFileContent) content).getImageFile().getFileId());
-               }
-           });
+            message.getContent().forEach(content -> {
+                if (content instanceof MessageTextContent) {
+                    MessageTextDetails messageTextDetails = ((MessageTextContent) content).getText();
+                    System.out.println(messageTextDetails.getValue());
+                    messageTextDetails.getAnnotations().forEach(annotation ->
+                        System.out.println("\tAnnotation start: " + annotation.getStartIndex()
+                            + " ,end: " + annotation.getEndIndex() + " ,text: \"" + annotation.getText() + "\""));
+                } else if (content instanceof MessageImageFileContent) {
+                    System.out.print("Image file ID: ");
+                    System.out.println(((MessageImageFileContent) content).getImageFile().getFileId());
+                }
+            });
         }
     }
 }

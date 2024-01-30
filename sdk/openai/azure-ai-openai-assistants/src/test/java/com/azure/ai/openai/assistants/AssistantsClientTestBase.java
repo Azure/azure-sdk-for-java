@@ -3,7 +3,6 @@
 
 package com.azure.ai.openai.assistants;
 
-import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
@@ -17,8 +16,6 @@ import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -40,8 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
-
-    private static final String RESOURCE_FOLDER_ROOT = "src/test/resources";
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
@@ -181,22 +176,22 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
         UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
-        , FilePurpose.ASSISTANTS);
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            FilePurpose.ASSISTANTS);
         testRunner.accept(uploadFileRequest);
     }
 
     void uploadAssistantImageFileRunner(Consumer<UploadFileRequest> testRunner) {
         UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png")))
-            , FilePurpose.ASSISTANTS);
+            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png"))),
+            FilePurpose.ASSISTANTS);
         testRunner.accept(uploadFileRequest);
     }
 
     void uploadFineTuningJsonFileRunner(Consumer<UploadFileRequest> testRunner) {
         UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json")))
-            , FilePurpose.FINE_TUNE);
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json"))),
+            FilePurpose.FINE_TUNE);
         testRunner.accept(uploadFileRequest);
     }
 
