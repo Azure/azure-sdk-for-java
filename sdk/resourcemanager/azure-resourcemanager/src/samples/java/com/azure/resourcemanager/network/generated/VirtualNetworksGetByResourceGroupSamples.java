@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * VirtualNetworkGetWithSubnetDelegation.json
      */
     /**
@@ -23,7 +23,7 @@ public final class VirtualNetworksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * VirtualNetworkGetWithServiceAssociationLink.json
      */
     /**
@@ -39,7 +39,7 @@ public final class VirtualNetworksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGet.json
      */
     /**
      * Sample code: Get virtual network.

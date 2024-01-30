@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class PrivateEndpointsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/PrivateEndpointGetWithASG.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointGetWithASG.
      * json
      */
     /**
@@ -25,7 +25,7 @@ public final class PrivateEndpointsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * PrivateEndpointGetForManualApproval.json
      */
     /**
@@ -41,7 +41,7 @@ public final class PrivateEndpointsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/PrivateEndpointGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointGet.json
      */
     /**
      * Sample code: Get private endpoint.
