@@ -72,12 +72,12 @@ public class RetrievalSyncTest extends AssistantsClientTestBase {
             OpenAIPageableListOfThreadMessage messageList = client.listMessages(thread.getId());
 
             assertEquals(2, messageList.getData().size());
-            ThreadMessage firstMessage = messageList.getData().getFirst();
+            ThreadMessage firstMessage = messageList.getData().get(0);
 
             assertEquals(MessageRole.ASSISTANT, firstMessage.getRole());
             assertFalse(firstMessage.getContent().isEmpty());
 
-            MessageTextContent firstMessageContent = (MessageTextContent) firstMessage.getContent().getFirst();
+            MessageTextContent firstMessageContent = (MessageTextContent) firstMessage.getContent().get(0);
             assertNotNull(firstMessageContent);
             assertTrue(firstMessageContent.getText().getValue().contains("232323"));
 
