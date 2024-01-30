@@ -64,6 +64,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          Location: "chinanorth3"
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
           Path: sdk/spring/pipeline/cosmos-integration-matrix.json
