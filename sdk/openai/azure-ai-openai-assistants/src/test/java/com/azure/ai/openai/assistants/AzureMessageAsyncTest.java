@@ -3,13 +3,13 @@
 
 package com.azure.ai.openai.assistants;
 
-import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -25,24 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureMessageAsyncTest extends AssistantsClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMessageAsyncTest.class);
+
     private AssistantsAsyncClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client, LOGGER);
         createMessageRunner(message -> {
-            AtomicReference<String> threadIdReference = new AtomicReference<>();
-            // Create a simple thread without a message
-            StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
-                    .assertNext(assistantThread -> {
-                        assertNotNull(assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                        threadIdReference.set(assistantThread.getId());
-                    })
-                    .verifyComplete();
-            String threadId = threadIdReference.get();
             AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
             // Create a message
             StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
@@ -89,32 +81,17 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                         assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
                     })
                     .verifyComplete();
-            // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId))
-                    .assertNext(deletionStatus -> {
-                        assertEquals(threadId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
         });
+        // Delete the created thread
+        deleteThread(client, threadId, LOGGER);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client, LOGGER);
         createMessageRunner(message -> {
-            AtomicReference<String> threadIdReference = new AtomicReference<>();
-            // Create a simple thread without a message
-            StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
-                    .assertNext(assistantThread -> {
-                        assertNotNull(assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                        threadIdReference.set(assistantThread.getId());
-                    })
-                    .verifyComplete();
-            String threadId = threadIdReference.get();
             AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
             // Create a message
             Map<String, String> metadata = new HashMap<>();
@@ -172,32 +149,17 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                         assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
                     })
                     .verifyComplete();
-            // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId))
-                    .assertNext(deletionStatus -> {
-                        assertEquals(threadId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
         });
+        // Delete the created thread
+        deleteThread(client, threadId, LOGGER);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listMessages(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client, LOGGER);
         createMessageRunner(message -> {
-            AtomicReference<String> threadIdReference = new AtomicReference<>();
-            // Create a simple thread without a message
-            StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
-                    .assertNext(assistantThread -> {
-                        assertNotNull(assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                        threadIdReference.set(assistantThread.getId());
-                    })
-                    .verifyComplete();
-            String threadId = threadIdReference.get();
             // Create two messages in user role
             StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
                     .assertNext(threadMessage -> {
@@ -239,14 +201,8 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                         assertEquals(2, listedMessagesWithResponse.getData().size());
                     })
                     .verifyComplete();
-
-            // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId))
-                    .assertNext(deletionStatus -> {
-                        assertEquals(threadId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
         });
+        // Delete the created thread
+        deleteThread(client, threadId, LOGGER);
     }
 }
