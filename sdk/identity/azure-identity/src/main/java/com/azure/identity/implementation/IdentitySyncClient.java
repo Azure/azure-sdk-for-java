@@ -197,7 +197,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.info("Token not found in the MSAL cache.");
+                LOGGER.verbose("Token not found in the MSAL cache.");
                 return null;
             } else {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
@@ -240,7 +240,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.info("Token not found in the MSAL cache.");
+                LOGGER.verbose("Token not found in the MSAL cache.");
                 return null;
             } else {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
@@ -268,7 +268,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.info("Token not found in the MSAL cache.");
+                LOGGER.verbose("Token not found in the MSAL cache.");
                 return null;
             } else {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
