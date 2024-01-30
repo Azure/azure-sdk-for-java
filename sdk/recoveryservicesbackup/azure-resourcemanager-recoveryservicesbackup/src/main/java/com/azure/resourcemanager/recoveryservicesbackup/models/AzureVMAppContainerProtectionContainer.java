@@ -9,79 +9,103 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** Container for SQL workloads under Azure Virtual Machines. */
+/**
+ * Container for SQL workloads under Azure Virtual Machines.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("VMAppContainer")
 @Fluent
 public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadContainer {
-    /** Creates an instance of AzureVMAppContainerProtectionContainer class. */
+    /**
+     * Creates an instance of AzureVMAppContainerProtectionContainer class.
+     */
     public AzureVMAppContainerProtectionContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withLastUpdatedTime(OffsetDateTime lastUpdatedTime) {
         super.withLastUpdatedTime(lastUpdatedTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withExtendedInfo(AzureWorkloadContainerExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withWorkloadType(WorkloadType workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withOperationType(OperationType operationType) {
         super.withOperationType(operationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectionContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -90,7 +114,7 @@ public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadC
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

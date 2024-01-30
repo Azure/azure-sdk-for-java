@@ -21,22 +21,18 @@ public final class CheckNameAvailabilityWithLocationsImpl implements CheckNameAv
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public CheckNameAvailabilityWithLocationsImpl(
-        CheckNameAvailabilityWithLocationsClient innerClient,
+    public CheckNameAvailabilityWithLocationsImpl(CheckNameAvailabilityWithLocationsClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NameAvailability> executeWithResponse(
-        String locationName, CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
-        Response<NameAvailabilityInner> inner =
-            this.serviceClient().executeWithResponse(locationName, nameAvailabilityRequest, context);
+    public Response<NameAvailability> executeWithResponse(String locationName,
+        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+        Response<NameAvailabilityInner> inner
+            = this.serviceClient().executeWithResponse(locationName, nameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

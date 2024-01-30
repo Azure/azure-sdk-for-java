@@ -6,14 +6,20 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** A request that is made for pre-backup. */
+/**
+ * A request that is made for pre-backup.
+ */
 @Fluent
 public final class LtrPreBackupRequest extends BackupRequestBase {
-    /** Creates an instance of LtrPreBackupRequest class. */
+    /**
+     * Creates an instance of LtrPreBackupRequest class.
+     */
     public LtrPreBackupRequest() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LtrPreBackupRequest withBackupSettings(BackupSettings backupSettings) {
         super.withBackupSettings(backupSettings);
@@ -22,7 +28,7 @@ public final class LtrPreBackupRequest extends BackupRequestBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

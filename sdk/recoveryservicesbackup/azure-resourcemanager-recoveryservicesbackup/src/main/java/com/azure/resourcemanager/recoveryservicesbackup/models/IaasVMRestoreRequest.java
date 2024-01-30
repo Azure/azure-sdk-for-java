@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** IaaS VM workload-specific restore. */
+/**
+ * IaaS VM workload-specific restore.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,9 @@ import java.util.List;
     defaultImpl = IaasVMRestoreRequest.class)
 @JsonTypeName("IaasVMRestoreRequest")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "IaasVMRestoreWithRehydrationRequest", value = IaasVMRestoreWithRehydrationRequest.class)
-})
+    @JsonSubTypes.Type(
+        name = "IaasVMRestoreWithRehydrationRequest",
+        value = IaasVMRestoreWithRehydrationRequest.class) })
 @Fluent
 public class IaasVMRestoreRequest extends RestoreRequest {
     /*
@@ -172,13 +175,15 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     @JsonProperty(value = "targetDiskNetworkAccessSettings")
     private TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings;
 
-    /** Creates an instance of IaasVMRestoreRequest class. */
+    /**
+     * Creates an instance of IaasVMRestoreRequest class.
+     */
     public IaasVMRestoreRequest() {
     }
 
     /**
      * Get the recoveryPointId property: ID of the backup copy to be recovered.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -187,7 +192,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the recoveryPointId property: ID of the backup copy to be recovered.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -198,7 +203,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the recoveryType property: Type of this recovery.
-     *
+     * 
      * @return the recoveryType value.
      */
     public RecoveryType recoveryType() {
@@ -207,7 +212,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the recoveryType property: Type of this recovery.
-     *
+     * 
      * @param recoveryType the recoveryType value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -218,7 +223,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the sourceResourceId property: Fully qualified ARM ID of the VM which is being recovered.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -227,7 +232,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the sourceResourceId property: Fully qualified ARM ID of the VM which is being recovered.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -237,9 +242,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Get the targetVirtualMachineId property: This is the complete ARM Id of the VM that will be created. For e.g.
-     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
-     *
+     * Get the targetVirtualMachineId property: This is the complete ARM Id of the VM that will be created.
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
+     * 
      * @return the targetVirtualMachineId value.
      */
     public String targetVirtualMachineId() {
@@ -247,9 +252,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Set the targetVirtualMachineId property: This is the complete ARM Id of the VM that will be created. For e.g.
-     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
-     *
+     * Set the targetVirtualMachineId property: This is the complete ARM Id of the VM that will be created.
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}.
+     * 
      * @param targetVirtualMachineId the targetVirtualMachineId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -259,9 +264,10 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Get the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for this
-     * Virtual machine and other artifacts. For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
-     *
+     * Get the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for
+     * this Virtual machine and other artifacts.
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -269,9 +275,10 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Set the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for this
-     * Virtual machine and other artifacts. For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
-     *
+     * Set the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for
+     * this Virtual machine and other artifacts.
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -283,7 +290,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the storageAccountId property: Fully qualified ARM ID of the storage account to which the VM has to be
      * restored.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -293,7 +300,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the storageAccountId property: Fully qualified ARM ID of the storage account to which the VM has to be
      * restored.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -304,8 +311,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the virtualNetworkId property: This is the virtual network Id of the vnet that will be attached to the
-     * virtual machine. User will be validated for join action permissions in the linked access.
-     *
+     * virtual machine.
+     * User will be validated for join action permissions in the linked access.
+     * 
      * @return the virtualNetworkId value.
      */
     public String virtualNetworkId() {
@@ -314,8 +322,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the virtualNetworkId property: This is the virtual network Id of the vnet that will be attached to the
-     * virtual machine. User will be validated for join action permissions in the linked access.
-     *
+     * virtual machine.
+     * User will be validated for join action permissions in the linked access.
+     * 
      * @param virtualNetworkId the virtualNetworkId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -326,9 +335,11 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the subnetId property: Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it
-     * would be {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
-     * represent the subnet.
-     *
+     * would be
+     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+     * represent
+     * the subnet.
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -337,9 +348,11 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the subnetId property: Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it
-     * would be {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
-     * represent the subnet.
-     *
+     * would be
+     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
+     * represent
+     * the subnet.
+     * 
      * @param subnetId the subnetId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -350,8 +363,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the targetDomainNameId property: Fully qualified ARM ID of the domain name to be associated to the VM being
-     * restored. This applies only to Classic Virtual Machines.
-     *
+     * restored. This applies only to Classic
+     * Virtual Machines.
+     * 
      * @return the targetDomainNameId value.
      */
     public String targetDomainNameId() {
@@ -360,8 +374,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the targetDomainNameId property: Fully qualified ARM ID of the domain name to be associated to the VM being
-     * restored. This applies only to Classic Virtual Machines.
-     *
+     * restored. This applies only to Classic
+     * Virtual Machines.
+     * 
      * @param targetDomainNameId the targetDomainNameId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -372,7 +387,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the region property: Region in which the virtual machine is restored.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -381,7 +396,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the region property: Region in which the virtual machine is restored.
-     *
+     * 
      * @param region the region value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -393,7 +408,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the affinityGroup property: Affinity group associated to VM to be restored. Used only for Classic Compute
      * Virtual Machines.
-     *
+     * 
      * @return the affinityGroup value.
      */
     public String affinityGroup() {
@@ -403,7 +418,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the affinityGroup property: Affinity group associated to VM to be restored. Used only for Classic Compute
      * Virtual Machines.
-     *
+     * 
      * @param affinityGroup the affinityGroup value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -414,8 +429,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the createNewCloudService property: Should a new cloud service be created while restoring the VM. If this is
-     * false, VM will be restored to the same cloud service as it was at the time of backup.
-     *
+     * false, VM will be restored to the same
+     * cloud service as it was at the time of backup.
+     * 
      * @return the createNewCloudService value.
      */
     public Boolean createNewCloudService() {
@@ -424,8 +440,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the createNewCloudService property: Should a new cloud service be created while restoring the VM. If this is
-     * false, VM will be restored to the same cloud service as it was at the time of backup.
-     *
+     * false, VM will be restored to the same
+     * cloud service as it was at the time of backup.
+     * 
      * @param createNewCloudService the createNewCloudService value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -436,7 +453,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the originalStorageAccountOption property: Original Storage Account Option.
-     *
+     * 
      * @return the originalStorageAccountOption value.
      */
     public Boolean originalStorageAccountOption() {
@@ -445,7 +462,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the originalStorageAccountOption property: Original Storage Account Option.
-     *
+     * 
      * @param originalStorageAccountOption the originalStorageAccountOption value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -456,7 +473,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the encryptionDetails property: Details needed if the VM was encrypted at the time of backup.
-     *
+     * 
      * @return the encryptionDetails value.
      */
     public EncryptionDetails encryptionDetails() {
@@ -465,7 +482,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the encryptionDetails property: Details needed if the VM was encrypted at the time of backup.
-     *
+     * 
      * @param encryptionDetails the encryptionDetails value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -476,7 +493,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the restoreDiskLunList property: List of Disk LUNs for partial restore.
-     *
+     * 
      * @return the restoreDiskLunList value.
      */
     public List<Integer> restoreDiskLunList() {
@@ -485,7 +502,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the restoreDiskLunList property: List of Disk LUNs for partial restore.
-     *
+     * 
      * @param restoreDiskLunList the restoreDiskLunList value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -497,7 +514,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the restoreWithManagedDisks property: Flag to denote of an Unmanaged disk VM should be restored with Managed
      * disks.
-     *
+     * 
      * @return the restoreWithManagedDisks value.
      */
     public Boolean restoreWithManagedDisks() {
@@ -507,7 +524,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the restoreWithManagedDisks property: Flag to denote of an Unmanaged disk VM should be restored with Managed
      * disks.
-     *
+     * 
      * @param restoreWithManagedDisks the restoreWithManagedDisks value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -519,7 +536,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the diskEncryptionSetId property: DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest
      * during restore with customer managed key.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -529,7 +546,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the diskEncryptionSetId property: DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest
      * during restore with customer managed key.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -540,7 +557,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the zones property: Target zone where the VM and its disks should be restored.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -549,7 +566,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the zones property: Target zone where the VM and its disks should be restored.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -560,7 +577,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the identityInfo property: Managed Identity information required to access customer storage account.
-     *
+     * 
      * @return the identityInfo value.
      */
     public IdentityInfo identityInfo() {
@@ -569,7 +586,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the identityInfo property: Managed Identity information required to access customer storage account.
-     *
+     * 
      * @param identityInfo the identityInfo value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -581,7 +598,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the identityBasedRestoreDetails property: IaaS VM workload specific restore details for restores using
      * managed identity.
-     *
+     * 
      * @return the identityBasedRestoreDetails value.
      */
     public IdentityBasedRestoreDetails identityBasedRestoreDetails() {
@@ -591,20 +608,20 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the identityBasedRestoreDetails property: IaaS VM workload specific restore details for restores using
      * managed identity.
-     *
+     * 
      * @param identityBasedRestoreDetails the identityBasedRestoreDetails value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
-    public IaasVMRestoreRequest withIdentityBasedRestoreDetails(
-        IdentityBasedRestoreDetails identityBasedRestoreDetails) {
+    public IaasVMRestoreRequest
+        withIdentityBasedRestoreDetails(IdentityBasedRestoreDetails identityBasedRestoreDetails) {
         this.identityBasedRestoreDetails = identityBasedRestoreDetails;
         return this;
     }
 
     /**
-     * Get the extendedLocation property: Target extended location where the VM should be restored, should be null if
-     * restore is to be done in public cloud.
-     *
+     * Get the extendedLocation property: Target extended location where the VM should be restored,
+     * should be null if restore is to be done in public cloud.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -612,9 +629,9 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Set the extendedLocation property: Target extended location where the VM should be restored, should be null if
-     * restore is to be done in public cloud.
-     *
+     * Set the extendedLocation property: Target extended location where the VM should be restored,
+     * should be null if restore is to be done in public cloud.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -625,7 +642,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Get the securedVMDetails property: Stores Secured VM Details.
-     *
+     * 
      * @return the securedVMDetails value.
      */
     public SecuredVMDetails securedVMDetails() {
@@ -634,7 +651,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /**
      * Set the securedVMDetails property: Stores Secured VM Details.
-     *
+     * 
      * @param securedVMDetails the securedVMDetails value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
@@ -646,7 +663,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Get the targetDiskNetworkAccessSettings property: Specifies target network access settings for disks of VM to be
      * restored,.
-     *
+     * 
      * @return the targetDiskNetworkAccessSettings value.
      */
     public TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings() {
@@ -656,19 +673,19 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     /**
      * Set the targetDiskNetworkAccessSettings property: Specifies target network access settings for disks of VM to be
      * restored,.
-     *
+     * 
      * @param targetDiskNetworkAccessSettings the targetDiskNetworkAccessSettings value to set.
      * @return the IaasVMRestoreRequest object itself.
      */
-    public IaasVMRestoreRequest withTargetDiskNetworkAccessSettings(
-        TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
+    public IaasVMRestoreRequest
+        withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
         this.targetDiskNetworkAccessSettings = targetDiskNetworkAccessSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

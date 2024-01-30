@@ -11,13 +11,13 @@ public final class WebAnonymousAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebAnonymousAuthentication model
-            = BinaryData.fromString("{\"authenticationType\":\"Anonymous\",\"url\":\"datauu\"}")
+            = BinaryData.fromString("{\"authenticationType\":\"Anonymous\",\"url\":\"datatwnqtjcem\"}")
                 .toObject(WebAnonymousAuthentication.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebAnonymousAuthentication model = new WebAnonymousAuthentication().withUrl("datauu");
+        WebAnonymousAuthentication model = new WebAnonymousAuthentication().withUrl("datatwnqtjcem");
         model = BinaryData.fromObject(model).toObject(WebAnonymousAuthentication.class);
     }
 }

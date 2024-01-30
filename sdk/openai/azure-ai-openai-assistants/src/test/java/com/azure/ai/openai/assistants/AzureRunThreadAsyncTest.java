@@ -94,7 +94,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
 
             // Submit the message and run
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
-            StepVerifier.create(client.createRun(threadId, new CreateRunOptions(mathTutorAssistant.getId(), null)))
+            StepVerifier.create(client.createRun(threadId, new CreateRunOptions(mathTutorAssistant.getId())))
                     .assertNext(run -> {
                         assertNotNull(run.getId());
                         assertNotNull(run.getCreatedAt());

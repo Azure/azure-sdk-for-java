@@ -15,57 +15,46 @@ import org.junit.jupiter.api.Assertions;
 public final class DpmContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DpmContainer model =
-            BinaryData
-                .fromString(
-                    "{\"containerType\":\"DPMContainer\",\"canReRegister\":true,\"containerId\":\"xxdtddmflh\",\"protectedItemCount\":1437567423003919586,\"dpmAgentVersion\":\"vtzn\",\"dpmServers\":[\"bannovvoxczytp\",\"wnwvroevytlyokr\",\"rouuxvnsasbcry\"],\"upgradeAvailable\":false,\"protectionStatus\":\"zrxklobd\",\"extendedInfo\":{\"lastRefreshedAt\":\"2021-09-29T05:13:20Z\"},\"friendlyName\":\"mkmlmvevfx\",\"backupManagementType\":\"AzureIaasVM\",\"registrationStatus\":\"hbzxli\",\"healthStatus\":\"rdddtfgxqbawpcb\",\"protectableObjectType\":\"zqcyknap\"}")
-                .toObject(DpmContainer.class);
-        Assertions.assertEquals("mkmlmvevfx", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("hbzxli", model.registrationStatus());
-        Assertions.assertEquals("rdddtfgxqbawpcb", model.healthStatus());
-        Assertions.assertEquals("zqcyknap", model.protectableObjectType());
-        Assertions.assertEquals(true, model.canReRegister());
-        Assertions.assertEquals("xxdtddmflh", model.containerId());
-        Assertions.assertEquals(1437567423003919586L, model.protectedItemCount());
-        Assertions.assertEquals("vtzn", model.dpmAgentVersion());
-        Assertions.assertEquals("bannovvoxczytp", model.dpmServers().get(0));
+        DpmContainer model = BinaryData.fromString(
+            "{\"containerType\":\"DPMContainer\",\"canReRegister\":false,\"containerId\":\"farfs\",\"protectedItemCount\":5892118954505267156,\"dpmAgentVersion\":\"jxnqp\",\"dpmServers\":[\"fstmhqykizmdksao\"],\"upgradeAvailable\":false,\"protectionStatus\":\"uqvoxmycjimryv\",\"extendedInfo\":{\"lastRefreshedAt\":\"2020-12-28T14:54:10Z\"},\"friendlyName\":\"pbmz\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"ydsx\",\"healthStatus\":\"fo\",\"protectableObjectType\":\"cbvopwndyqleallk\"}")
+            .toObject(DpmContainer.class);
+        Assertions.assertEquals("pbmz", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ydsx", model.registrationStatus());
+        Assertions.assertEquals("fo", model.healthStatus());
+        Assertions.assertEquals("cbvopwndyqleallk", model.protectableObjectType());
+        Assertions.assertEquals(false, model.canReRegister());
+        Assertions.assertEquals("farfs", model.containerId());
+        Assertions.assertEquals(5892118954505267156L, model.protectedItemCount());
+        Assertions.assertEquals("jxnqp", model.dpmAgentVersion());
+        Assertions.assertEquals("fstmhqykizmdksao", model.dpmServers().get(0));
         Assertions.assertEquals(false, model.upgradeAvailable());
-        Assertions.assertEquals("zrxklobd", model.protectionStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T05:13:20Z"), model.extendedInfo().lastRefreshedAt());
+        Assertions.assertEquals("uqvoxmycjimryv", model.protectionStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T14:54:10Z"), model.extendedInfo().lastRefreshedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmContainer model =
-            new DpmContainer()
-                .withFriendlyName("mkmlmvevfx")
-                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withRegistrationStatus("hbzxli")
-                .withHealthStatus("rdddtfgxqbawpcb")
-                .withProtectableObjectType("zqcyknap")
-                .withCanReRegister(true)
-                .withContainerId("xxdtddmflh")
-                .withProtectedItemCount(1437567423003919586L)
-                .withDpmAgentVersion("vtzn")
-                .withDpmServers(Arrays.asList("bannovvoxczytp", "wnwvroevytlyokr", "rouuxvnsasbcry"))
-                .withUpgradeAvailable(false)
-                .withProtectionStatus("zrxklobd")
-                .withExtendedInfo(
-                    new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-09-29T05:13:20Z")));
+        DpmContainer model
+            = new DpmContainer().withFriendlyName("pbmz").withBackupManagementType(BackupManagementType.MAB)
+                .withRegistrationStatus("ydsx").withHealthStatus("fo").withProtectableObjectType("cbvopwndyqleallk")
+                .withCanReRegister(false).withContainerId("farfs").withProtectedItemCount(5892118954505267156L)
+                .withDpmAgentVersion("jxnqp").withDpmServers(Arrays.asList("fstmhqykizmdksao"))
+                .withUpgradeAvailable(false).withProtectionStatus("uqvoxmycjimryv").withExtendedInfo(
+                    new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2020-12-28T14:54:10Z")));
         model = BinaryData.fromObject(model).toObject(DpmContainer.class);
-        Assertions.assertEquals("mkmlmvevfx", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("hbzxli", model.registrationStatus());
-        Assertions.assertEquals("rdddtfgxqbawpcb", model.healthStatus());
-        Assertions.assertEquals("zqcyknap", model.protectableObjectType());
-        Assertions.assertEquals(true, model.canReRegister());
-        Assertions.assertEquals("xxdtddmflh", model.containerId());
-        Assertions.assertEquals(1437567423003919586L, model.protectedItemCount());
-        Assertions.assertEquals("vtzn", model.dpmAgentVersion());
-        Assertions.assertEquals("bannovvoxczytp", model.dpmServers().get(0));
+        Assertions.assertEquals("pbmz", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ydsx", model.registrationStatus());
+        Assertions.assertEquals("fo", model.healthStatus());
+        Assertions.assertEquals("cbvopwndyqleallk", model.protectableObjectType());
+        Assertions.assertEquals(false, model.canReRegister());
+        Assertions.assertEquals("farfs", model.containerId());
+        Assertions.assertEquals(5892118954505267156L, model.protectedItemCount());
+        Assertions.assertEquals("jxnqp", model.dpmAgentVersion());
+        Assertions.assertEquals("fstmhqykizmdksao", model.dpmServers().get(0));
         Assertions.assertEquals(false, model.upgradeAvailable());
-        Assertions.assertEquals("zrxklobd", model.protectionStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T05:13:20Z"), model.extendedInfo().lastRefreshedAt());
+        Assertions.assertEquals("uqvoxmycjimryv", model.protectionStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T14:54:10Z"), model.extendedInfo().lastRefreshedAt());
     }
 }

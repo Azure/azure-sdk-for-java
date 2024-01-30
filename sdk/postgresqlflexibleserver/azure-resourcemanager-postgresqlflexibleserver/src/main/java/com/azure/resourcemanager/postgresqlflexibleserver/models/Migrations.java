@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Migrations. */
+/**
+ * Resource collection API of Migrations.
+ */
 public interface Migrations {
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -23,16 +25,12 @@ public interface Migrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a migration along with {@link Response}.
      */
-    Response<MigrationResource> getWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context);
+    Response<MigrationResource> getWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, Context context);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -42,12 +40,12 @@ public interface Migrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a migration.
      */
-    MigrationResource get(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    MigrationResource get(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -58,16 +56,12 @@ public interface Migrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context);
+    Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, Context context);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -80,7 +74,7 @@ public interface Migrations {
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -89,12 +83,12 @@ public interface Migrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MigrationResource> listByTargetServer(
-        String subscriptionId, String resourceGroupName, String targetDbServerName);
+    PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName);
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -105,16 +99,12 @@ public interface Migrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MigrationResource> listByTargetServer(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter,
-        Context context);
+    PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter, Context context);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +115,7 @@ public interface Migrations {
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +127,7 @@ public interface Migrations {
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,7 +137,7 @@ public interface Migrations {
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +149,7 @@ public interface Migrations {
 
     /**
      * Begins definition for a new MigrationResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MigrationResource definition.
      */

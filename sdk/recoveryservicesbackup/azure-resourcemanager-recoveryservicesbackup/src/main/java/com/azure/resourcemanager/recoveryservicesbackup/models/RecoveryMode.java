@@ -8,20 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines whether the current recovery mode is file restore or database restore. */
+/**
+ * Defines whether the current recovery mode is file restore or database restore.
+ */
 public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
-    /** Static value Invalid for RecoveryMode. */
+    /**
+     * Static value Invalid for RecoveryMode.
+     */
     public static final RecoveryMode INVALID = fromString("Invalid");
 
-    /** Static value FileRecovery for RecoveryMode. */
+    /**
+     * Static value FileRecovery for RecoveryMode.
+     */
     public static final RecoveryMode FILE_RECOVERY = fromString("FileRecovery");
 
-    /** Static value WorkloadRecovery for RecoveryMode. */
+    /**
+     * Static value WorkloadRecovery for RecoveryMode.
+     */
     public static final RecoveryMode WORKLOAD_RECOVERY = fromString("WorkloadRecovery");
 
     /**
+     * Static value SnapshotAttach for RecoveryMode.
+     */
+    public static final RecoveryMode SNAPSHOT_ATTACH = fromString("SnapshotAttach");
+
+    /**
+     * Static value RecoveryUsingSnapshot for RecoveryMode.
+     */
+    public static final RecoveryMode RECOVERY_USING_SNAPSHOT = fromString("RecoveryUsingSnapshot");
+
+    /**
+     * Static value SnapshotAttachAndRecover for RecoveryMode.
+     */
+    public static final RecoveryMode SNAPSHOT_ATTACH_AND_RECOVER = fromString("SnapshotAttachAndRecover");
+
+    /**
      * Creates a new instance of RecoveryMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +53,7 @@ public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
 
     /**
      * Creates or finds a RecoveryMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryMode.
      */
@@ -41,7 +64,7 @@ public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
 
     /**
      * Gets known RecoveryMode values.
-     *
+     * 
      * @return known RecoveryMode values.
      */
     public static Collection<RecoveryMode> values() {

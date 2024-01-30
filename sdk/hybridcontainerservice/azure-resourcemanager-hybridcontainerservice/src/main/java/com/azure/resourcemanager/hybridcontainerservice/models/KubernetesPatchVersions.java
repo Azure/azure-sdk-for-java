@@ -14,13 +14,13 @@ import java.util.List;
 @Fluent
 public final class KubernetesPatchVersions {
     /*
-     * Whether the kubernetes version variant (Linux, Windows, Windows2022) is ready or not
+     * Indicates whether the kubernetes version image is ready or not
      */
     @JsonProperty(value = "readiness")
     private List<KubernetesVersionReadiness> readiness;
 
     /*
-     * Possible upgrade path for given patch version
+     * Possible upgrade paths for given patch version
      */
     @JsonProperty(value = "upgrades")
     private List<String> upgrades;
@@ -32,8 +32,7 @@ public final class KubernetesPatchVersions {
     }
 
     /**
-     * Get the readiness property: Whether the kubernetes version variant (Linux, Windows, Windows2022) is ready or
-     * not.
+     * Get the readiness property: Indicates whether the kubernetes version image is ready or not.
      * 
      * @return the readiness value.
      */
@@ -42,8 +41,7 @@ public final class KubernetesPatchVersions {
     }
 
     /**
-     * Set the readiness property: Whether the kubernetes version variant (Linux, Windows, Windows2022) is ready or
-     * not.
+     * Set the readiness property: Indicates whether the kubernetes version image is ready or not.
      * 
      * @param readiness the readiness value to set.
      * @return the KubernetesPatchVersions object itself.
@@ -54,7 +52,7 @@ public final class KubernetesPatchVersions {
     }
 
     /**
-     * Get the upgrades property: Possible upgrade path for given patch version.
+     * Get the upgrades property: Possible upgrade paths for given patch version.
      * 
      * @return the upgrades value.
      */
@@ -63,7 +61,7 @@ public final class KubernetesPatchVersions {
     }
 
     /**
-     * Set the upgrades property: Possible upgrade path for given patch version.
+     * Set the upgrades property: Possible upgrade paths for given patch version.
      * 
      * @param upgrades the upgrades value to set.
      * @return the KubernetesPatchVersions object itself.

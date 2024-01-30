@@ -27,7 +27,7 @@ public final class IstioCertificateAuthority {
 
     /**
      * Get the plugin property: Plugin certificates information for Service Mesh.
-     *
+     * 
      * @return the plugin value.
      */
     public IstioPluginCertificateAuthority plugin() {
@@ -36,7 +36,7 @@ public final class IstioCertificateAuthority {
 
     /**
      * Set the plugin property: Plugin certificates information for Service Mesh.
-     *
+     * 
      * @param plugin the plugin value to set.
      * @return the IstioCertificateAuthority object itself.
      */
@@ -47,7 +47,7 @@ public final class IstioCertificateAuthority {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

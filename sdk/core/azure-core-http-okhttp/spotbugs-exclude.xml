@@ -10,7 +10,10 @@
         <Method name="configuration" />
       </And>
       <And>
-        <Class name="com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse" />
+        <Or>
+          <Class name="com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse" />
+          <Class name="com.azure.core.http.okhttp.implementation.BinaryDataRequestBody" />
+        </Or>
         <Method name="&lt;init&gt;" />
       </And>
     </Or>
@@ -18,10 +21,7 @@
 
   <Match>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
-    <Or>
-      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody" />
-      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody" />
-    </Or>
+    <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody" />
     <Method name="writeTo" />
   </Match>
 

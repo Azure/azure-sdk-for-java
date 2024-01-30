@@ -102,9 +102,9 @@ public final class DatasetResourceImpl implements DatasetResource, DatasetResour
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.datasetName = Utils.getValueFromIdByName(innerObject.id(), "datasets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.datasetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datasets");
     }
 
     public DatasetResource refresh() {

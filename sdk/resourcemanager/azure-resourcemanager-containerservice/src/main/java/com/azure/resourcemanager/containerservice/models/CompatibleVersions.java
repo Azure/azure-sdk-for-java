@@ -33,7 +33,7 @@ public final class CompatibleVersions {
 
     /**
      * Get the name property: The product/service name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -42,7 +42,7 @@ public final class CompatibleVersions {
 
     /**
      * Set the name property: The product/service name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CompatibleVersions object itself.
      */
@@ -53,7 +53,7 @@ public final class CompatibleVersions {
 
     /**
      * Get the versions property: Product/service versions compatible with a service mesh add-on revision.
-     *
+     * 
      * @return the versions value.
      */
     public List<String> versions() {
@@ -62,7 +62,7 @@ public final class CompatibleVersions {
 
     /**
      * Set the versions property: Product/service versions compatible with a service mesh add-on revision.
-     *
+     * 
      * @param versions the versions value to set.
      * @return the CompatibleVersions object itself.
      */
@@ -73,7 +73,7 @@ public final class CompatibleVersions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

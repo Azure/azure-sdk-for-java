@@ -27,7 +27,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
 
     /**
      * Get the publicIpPrefixes property: A list of public IP prefix resources.
-     *
+     * 
      * @return the publicIpPrefixes value.
      */
     public List<ResourceReference> publicIpPrefixes() {
@@ -36,7 +36,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
 
     /**
      * Set the publicIpPrefixes property: A list of public IP prefix resources.
-     *
+     * 
      * @param publicIpPrefixes the publicIpPrefixes value to set.
      * @return the ManagedClusterLoadBalancerProfileOutboundIpPrefixes object itself.
      */
@@ -48,7 +48,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

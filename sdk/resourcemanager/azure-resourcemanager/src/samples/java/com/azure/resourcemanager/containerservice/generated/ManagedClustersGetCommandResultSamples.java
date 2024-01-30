@@ -10,12 +10,12 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersGetCommandResultSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * RunCommandResultFailed.json
      */
     /**
      * Sample code: commandFailedResult.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void commandFailedResult(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -25,12 +25,12 @@ public final class ManagedClustersGetCommandResultSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * RunCommandResultSucceed.json
      */
     /**
      * Sample code: commandSucceedResult.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void commandSucceedResult(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -1,10 +1,11 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.35.0 (2024-01-26)
 
 ### Features Added
 
 - Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
 
 ### Other Changes
 

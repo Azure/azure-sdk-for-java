@@ -32,7 +32,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
 
     /**
      * Get the keda property: KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
-     *
+     * 
      * @return the keda value.
      */
     public ManagedClusterWorkloadAutoScalerProfileKeda keda() {
@@ -41,7 +41,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
 
     /**
      * Set the keda property: KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
-     *
+     * 
      * @param keda the keda value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
      */
@@ -53,7 +53,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     /**
      * Get the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
      * profile.
-     *
+     * 
      * @return the verticalPodAutoscaler value.
      */
     public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler() {
@@ -63,7 +63,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     /**
      * Set the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
      * profile.
-     *
+     * 
      * @param verticalPodAutoscaler the verticalPodAutoscaler value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
      */
@@ -75,7 +75,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

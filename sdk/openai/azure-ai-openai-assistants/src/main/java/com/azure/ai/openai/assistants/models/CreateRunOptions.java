@@ -63,20 +63,6 @@ public final class CreateRunOptions {
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of CreateRunOptions class.
-     *
-     * @param assistantId the assistantId value to set.
-     * @param additionalInstructions the additionalInstructions value to set.
-     */
-    @Generated
-    @JsonCreator
-    public CreateRunOptions(@JsonProperty(value = "assistant_id") String assistantId,
-        @JsonProperty(value = "additional_instructions") String additionalInstructions) {
-        this.assistantId = assistantId;
-        this.additionalInstructions = additionalInstructions;
-    }
-
-    /**
      * Get the assistantId property: The ID of the assistant that should run the thread.
      *
      * @return the assistantId value.
@@ -189,6 +175,31 @@ public final class CreateRunOptions {
     @Generated
     public CreateRunOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Creates an instance of CreateRunOptions class.
+     *
+     * @param assistantId the assistantId value to set.
+     */
+    @Generated
+    @JsonCreator
+    public CreateRunOptions(@JsonProperty(value = "assistant_id") String assistantId) {
+        this.assistantId = assistantId;
+    }
+
+    /**
+     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for
+     * the run. This is useful for modifying the behavior
+     * on a per-run basis without overriding other instructions.
+     *
+     * @param additionalInstructions the additionalInstructions value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setAdditionalInstructions(String additionalInstructions) {
+        this.additionalInstructions = additionalInstructions;
         return this;
     }
 }

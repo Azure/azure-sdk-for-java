@@ -33,7 +33,7 @@ public class Translate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-		// BEGIN: getTextTranslationMultiple
+        // BEGIN: getTextTranslationMultiple
         String from = "en";
         List<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
@@ -47,6 +47,6 @@ public class Translate {
                 System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }
-		// END: getTextTranslationMultiple
+        // END: getTextTranslationMultiple
     }
 }

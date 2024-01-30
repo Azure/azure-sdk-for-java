@@ -11,16 +11,16 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"ODataSource\",\"query\":\"datavhjkwfolpj\",\"httpRequestTimeout\":\"datapahvoiranxqnz\",\"additionalColumns\":\"datavnldtqykz\",\"sourceRetryCount\":\"datadoqrejl\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"dataicyozryoxmfrxf\",\"disableMetricsCollection\":\"datacjialvchfumlfgm\",\"\":{\"ipklfwn\":\"dataxko\",\"dkvljitbnhg\":\"datafkbqlrtffsw\",\"abgsdxtwqqukgo\":\"datarvlarozswmucr\",\"ksltunrwxsqvx\":\"datalvjgsk\"}}")
+            "{\"type\":\"ODataSource\",\"query\":\"datandijzpvckh\",\"httpRequestTimeout\":\"datatmx\",\"additionalColumns\":\"datajssytd\",\"sourceRetryCount\":\"dataljtw\",\"sourceRetryWait\":\"datawcdxymnswxqtmhf\",\"maxConcurrentConnections\":\"dataanvrdtdlgxmgg\",\"disableMetricsCollection\":\"datatlhsz\",\"\":{\"pbiuwnxhqeljmf\":\"datayogcpwne\",\"dhg\":\"datalqdikuvjcls\",\"kiw\":\"datakflwnlpbawtpw\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("datadoqrejl").withSourceRetryWait("datan")
-            .withMaxConcurrentConnections("dataicyozryoxmfrxf").withDisableMetricsCollection("datacjialvchfumlfgm")
-            .withQuery("datavhjkwfolpj").withHttpRequestTimeout("datapahvoiranxqnz")
-            .withAdditionalColumns("datavnldtqykz");
+        ODataSource model
+            = new ODataSource().withSourceRetryCount("dataljtw").withSourceRetryWait("datawcdxymnswxqtmhf")
+                .withMaxConcurrentConnections("dataanvrdtdlgxmgg").withDisableMetricsCollection("datatlhsz")
+                .withQuery("datandijzpvckh").withHttpRequestTimeout("datatmx").withAdditionalColumns("datajssytd");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }
