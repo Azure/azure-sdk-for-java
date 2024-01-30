@@ -17,14 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class DataDisk {
 
     /*
-     * The logical unit number. The lun is used to uniquely identify each data disk. If attaching multiple disks, each
-     * should have a distinct lun. The value must be between 0 and 63, inclusive.
-     */
-    @Generated
-    @JsonProperty(value = "lun")
-    private int lun;
-
-    /*
      * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For
      * information about the caching options see:
      * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
@@ -50,25 +42,15 @@ public final class DataDisk {
     /**
      * Creates an instance of DataDisk class.
      *
-     * @param lun the lun value to set.
+     * @param logicalUnitNumber the logicalUnitNumber value to set.
      * @param diskSizeGb the diskSizeGb value to set.
      */
     @Generated
     @JsonCreator
-    public DataDisk(@JsonProperty(value = "lun") int lun, @JsonProperty(value = "diskSizeGB") int diskSizeGb) {
-        this.lun = lun;
+    public DataDisk(@JsonProperty(value = "lun") int logicalUnitNumber,
+        @JsonProperty(value = "diskSizeGB") int diskSizeGb) {
+        this.logicalUnitNumber = logicalUnitNumber;
         this.diskSizeGb = diskSizeGb;
-    }
-
-    /**
-     * Get the lun property: The logical unit number. The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive.
-     *
-     * @return the lun value.
-     */
-    @Generated
-    public int getLun() {
-        return this.lun;
     }
 
     /**
@@ -129,5 +111,25 @@ public final class DataDisk {
     public DataDisk setStorageAccountType(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
+    }
+
+    /*
+     * The logical unit number. The lun is used to uniquely identify each data disk. If attaching multiple disks, each
+     * should have a distinct lun. The value must be between 0 and 63, inclusive.
+     */
+    @Generated
+    @JsonProperty(value = "lun")
+    private int logicalUnitNumber;
+
+    /**
+     * Get the logicalUnitNumber property: The logical unit number. The lun is used to uniquely identify each data
+     * disk. If attaching multiple disks, each should have a distinct lun. The value must be between 0 and 63,
+     * inclusive.
+     *
+     * @return the logicalUnitNumber value.
+     */
+    @Generated
+    public int getLogicalUnitNumber() {
+        return this.logicalUnitNumber;
     }
 }
