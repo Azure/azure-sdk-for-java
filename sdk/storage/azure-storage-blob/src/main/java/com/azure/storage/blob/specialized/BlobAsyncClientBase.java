@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -1124,7 +1125,10 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadContent() {
         return downloadWithResponse(null, null, null, false)
-            .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+            .flatMap(response ->
+                BinaryData.fromFlux(response.getValue(), 
+                Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)), false));
+
     }
 
     /**
