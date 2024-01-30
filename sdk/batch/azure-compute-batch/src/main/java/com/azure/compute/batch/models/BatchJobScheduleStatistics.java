@@ -47,14 +47,6 @@ public final class BatchJobScheduleStatistics {
     private Duration userCPUTime;
 
     /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
-     * created under the schedule.
-     */
-    @Generated
-    @JsonProperty(value = "kernelCPUTime")
-    private Duration kernelCPUTime;
-
-    /*
      * The total wall clock time of all the Tasks in all the Jobs created under the schedule. The wall clock time is
      * the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time
      * the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the
@@ -132,7 +124,7 @@ public final class BatchJobScheduleStatistics {
      * @param startTime the startTime value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      * @param userCPUTime the userCPUTime value to set.
-     * @param kernelCPUTime the kernelCPUTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
      * @param wallClockTime the wallClockTime value to set.
      * @param readIOps the readIOps value to set.
      * @param writeIOps the writeIOps value to set.
@@ -149,7 +141,7 @@ public final class BatchJobScheduleStatistics {
         @JsonProperty(value = "startTime") OffsetDateTime startTime,
         @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
         @JsonProperty(value = "userCPUTime") Duration userCPUTime,
-        @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
         @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
         @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
         @JsonProperty(value = "writeIOGiB") double writeIOGiB,
@@ -161,7 +153,7 @@ public final class BatchJobScheduleStatistics {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.userCPUTime = userCPUTime;
-        this.kernelCPUTime = kernelCPUTime;
+        this.kernelCpuTime = kernelCpuTime;
         this.wallClockTime = wallClockTime;
         this.readIOps = readIOps;
         this.writeIOps = writeIOps;
@@ -213,17 +205,6 @@ public final class BatchJobScheduleStatistics {
     @Generated
     public Duration getUserCPUTime() {
         return this.userCPUTime;
-    }
-
-    /**
-     * Get the kernelCPUTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in all Jobs created under the schedule.
-     *
-     * @return the kernelCPUTime value.
-     */
-    @Generated
-    public Duration getKernelCPUTime() {
-        return this.kernelCPUTime;
     }
 
     /**
@@ -327,5 +308,24 @@ public final class BatchJobScheduleStatistics {
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
+    }
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in all Jobs
+     * created under the schedule.
+     */
+    @Generated
+    @JsonProperty(value = "kernelCPUTime")
+    private Duration kernelCpuTime;
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in all Jobs created under the schedule.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
     }
 }
