@@ -4,6 +4,7 @@
 
 ### Bugs Fixed
 - [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
+- [Fix ai.location.ip](https://github.com/Azure/azure-sdk-for-java/pull/38542)
 
 ## 1.0.0-beta.17 (2024-01-25)
 - [Fix pre-aggregated metrics with stable http semantic convention](https://github.com/Azure/azure-sdk-for-java/pull/38497)
