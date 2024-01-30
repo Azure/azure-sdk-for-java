@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class ListBatchCertificatesOptions extends BatchBaseOptions {
     private String filter;
-    private Integer maxresults;
     private List<String> select;
 
     /**
@@ -29,26 +28,6 @@ public class ListBatchCertificatesOptions extends BatchBaseOptions {
      */
     public ListBatchCertificatesOptions setFilter(String filter) {
         this.filter = filter;
-        return this;
-    }
-
-    /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListBatchCertificatesOptions} object itself, allowing for method chaining.
-     */
-    public ListBatchCertificatesOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
         return this;
     }
 

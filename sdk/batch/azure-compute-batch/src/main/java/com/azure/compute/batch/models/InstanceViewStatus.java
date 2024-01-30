@@ -6,6 +6,7 @@ package com.azure.compute.batch.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * The instance view status.
@@ -46,7 +47,7 @@ public final class InstanceViewStatus {
      */
     @Generated
     @JsonProperty(value = "time")
-    private String time;
+    private OffsetDateTime time;
 
     /**
      * Creates an instance of InstanceViewStatus class.
@@ -101,7 +102,7 @@ public final class InstanceViewStatus {
      * @return the time value.
      */
     @Generated
-    public String getTime() {
+    public OffsetDateTime getTime() {
         return this.time;
     }
 }

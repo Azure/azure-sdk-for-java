@@ -7,7 +7,6 @@ package com.azure.compute.batch.models;
  */
 public class ListSupportedBatchImagesOptions extends BatchBaseOptions {
     private String filter;
-    private Integer maxresults;
 
     /**
      * Gets the OData $filter clause used for filtering results.
@@ -27,27 +26,6 @@ public class ListSupportedBatchImagesOptions extends BatchBaseOptions {
     public ListSupportedBatchImagesOptions setFilter(String filter) {
         this.filter = filter;
         return this;
-    }
-
-    /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListSupportedBatchImagesOptions} object itself, allowing for method chaining.
-     */
-    public ListSupportedBatchImagesOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
-        return this;
-
     }
 
 }

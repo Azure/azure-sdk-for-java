@@ -10,7 +10,6 @@ import java.util.List;
 public class ListBatchPoolsOptions extends BatchBaseOptions {
     private List<String> expand;
     private String filter;
-    private Integer maxresults;
     private List<String> select;
 
     /**
@@ -54,26 +53,6 @@ public class ListBatchPoolsOptions extends BatchBaseOptions {
      */
     public ListBatchPoolsOptions setFilter(String filter) {
         this.filter = filter;
-        return this;
-    }
-
-    /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListBatchPoolsOptions} object itself, allowing for method chaining.
-     */
-    public ListBatchPoolsOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
         return this;
     }
 

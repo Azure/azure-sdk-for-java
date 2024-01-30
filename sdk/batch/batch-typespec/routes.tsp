@@ -10,7 +10,6 @@ using TypeSpec.Rest;
 using TypeSpec.Versioning;
 using Azure.Core;
 using Azure.Core.Traits;
-using Azure.ClientGenerator.Core;
 
 namespace Azure.Batch;
 
@@ -18,8 +17,8 @@ namespace Azure.Batch;
 
 interface Ops {
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @get ListOperation<TFilter, TResponse> is Azure.Core.RpcOperation<
+  @get
+  ListOperation<TFilter, TResponse> is Azure.Core.RpcOperation<
     BatchCommonListHeaders & TFilter,
     BatchResponseHeaders & TResponse,
     NoFilter,
@@ -27,8 +26,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @get ReadOperation<
+  @get
+  ReadOperation<
     TPathParams extends TypeSpec.Reflection.Model,
     TResource
   > is Azure.Core.RpcOperation<
@@ -39,8 +38,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @delete DeleteOperation<
+  @delete
+  DeleteOperation<
     TFilter,
     TResponse extends TypeSpec.Reflection.Model
   > is Azure.Core.RpcOperation<
@@ -51,8 +50,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @post CreateOperation<TResource, TResponse> is RpcOperation<
+  @post
+  CreateOperation<TResource, TResponse> is RpcOperation<
     BatchClientRequestHeaders & MinimalMetadata & TResource,
     BatchResponseHeaders & Created<TResponse>,
     NoFilter,
@@ -60,8 +59,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @patch UpdateOperation<TResource, TResponse> is RpcOperation<
+  @patch
+  UpdateOperation<TResource, TResponse> is RpcOperation<
     BatchClientRequestHeaders & MinimalMetadata & TResource,
     BatchResponseHeaders & TResponse,
     NoFilter,
@@ -69,8 +68,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @put ReplaceOperation<TResource, TResponse> is RpcOperation<
+  @put
+  ReplaceOperation<TResource, TResponse> is RpcOperation<
     BatchClientRequestHeaders & MinimalMetadata & TResource,
     BatchResponseHeaders & TResponse,
     NoFilter,
@@ -78,8 +77,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @head ResourceInfoOperation<TResource, TResponse> is RpcOperation<
+  @head
+  ResourceInfoOperation<TResource, TResponse> is RpcOperation<
     BatchClientRequestHeaders & TResource,
     BatchResponseHeaders & TResponse,
     NoFilter,
@@ -90,8 +89,8 @@ interface Ops {
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
   @doc("New rpc operation allowing multiple repsonses")
   @Foundations.Private.needsRoute
-  @access(Access.internal, "java")
-  @head ResourceInfoOperationWithAdditionalResponse<
+  @head
+  ResourceInfoOperationWithAdditionalResponse<
     TParams extends TypeSpec.Reflection.Model,
     TResponse extends TypeSpec.Reflection.Model,
     TAdditionalResponse extends {} = {}
@@ -103,8 +102,8 @@ interface Ops {
   >;
 
   #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
-  @access(Access.internal, "java")
-  @post PostOperation<TResource, TResponse> is RpcOperation<
+  @post
+  PostOperation<TResource, TResponse> is RpcOperation<
     BatchClientRequestHeaders & TResource,
     BatchResponseHeaders & TResponse,
     NoFilter,
@@ -193,7 +192,8 @@ last aggregation interval is returned.
     start time of the last aggregation interval currently available.
     """)
       @query
-      starttime?: utcDateTime;
+      @projectedName("client", "starttime")
+      startTime?: utcDateTime;
 
       @doc("""
     The latest time from which to include metrics. This must be at least two hours
@@ -339,15 +339,7 @@ a StartTask element, then the Pool keeps the existing StartTask.
       @path
       poolId: string;
     },
-    {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied.")
-      @header("DataServiceId")
-      dataServiceId: string;
-    }
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Enables automatic scaling for a Pool.")
@@ -362,24 +354,13 @@ more than once every 30 seconds.
   @route("/pools/{poolId}/enableautoscale")
   @projectedName("java", "enablePoolAutoScaleInternal")
   enablePoolAutoScale is Ops.PostOperation<
-    BatchPoolHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
-      @doc("The options to use for enabling automatic scaling.")
-      @body
-      parameters: BatchPoolEnableAutoScaleParameters;
-    },
-    {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied.")
-      @header("DataServiceId")
-      dataServiceId: string;
-    }
+    BatchPoolHeaders &
+      MinimalMetadata & {
+        @doc("The options to use for enabling automatic scaling.")
+        @body
+        parameters: BatchPoolEnableAutoScaleParameters;
+      },
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Gets the result of evaluating an automatic scaling formula on the Pool.")
@@ -391,11 +372,7 @@ scaling enabled in order to evaluate a formula.
   @route("/pools/{poolId}/evaluateautoscale")
   @projectedName("java", "evaluatePoolAutoScaleInternal")
   evaluatePoolAutoScale is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool on which to evaluate the automatic scaling formula.")
       @path
       poolId: string;
@@ -404,15 +381,7 @@ scaling enabled in order to evaluate a formula.
       @body
       parameters: BatchPoolEvaluateAutoScaleParameters;
     },
-    AutoScaleRun & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied.")
-      @header("DataServiceId")
-      dataServiceId: string;
-    }
+    AutoScaleRun & RequestSuccesResponseHeaders
   >;
 
   @summary("Changes the number of Compute Nodes that are assigned to a Pool.")
@@ -428,15 +397,12 @@ Nodes, use the Pool remove Compute Nodes API instead.
   @route("/pools/{poolId}/resize")
   @projectedName("java", "resizePoolInternal")
   resizePool is Ops.PostOperation<
-    BatchPoolHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
-      @doc("The options to use for resizing the pool.")
-      @body
-      parameters: BatchPoolResizeParameters;
-    },
+    BatchPoolHeaders &
+      MinimalMetadata & {
+        @doc("The options to use for resizing the pool.")
+        @body
+        parameters: BatchPoolResizeParameters;
+      },
     AcceptedProcessingResponseHeaders
   >;
 
@@ -466,11 +432,7 @@ with this request, then the Batch service will remove the existing StartTask.
   @route("/pools/{poolId}/updateproperties")
   @projectedName("java", "replacePoolPropertiesInternal")
   replacePoolProperties is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool to update.")
       @path
       poolId: string;
@@ -491,15 +453,12 @@ Each request may remove up to 100 nodes.
   @route("/pools/{poolId}/removenodes")
   @projectedName("java", "removeNodesInternal")
   removeNodes is Ops.PostOperation<
-    BatchPoolHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
-      @doc("The options to use for removing the node.")
-      @body
-      parameters: BatchNodeRemoveParameters;
-    },
+    BatchPoolHeaders &
+      MinimalMetadata & {
+        @doc("The options to use for removing the node.")
+        @body
+        parameters: BatchNodeRemoveParameters;
+      },
     AcceptedProcessingResponseHeaders
   >;
 
@@ -645,19 +604,16 @@ the request fails with status code 409.
   @route("/jobs/{jobId}/disable")
   @projectedName("java", "disableJobInternal")
   disableJob is Ops.PostOperation<
-    BatchMatchHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
+    BatchMatchHeaders &
+      MinimalMetadata & {
+        @doc("The ID of the Job to disable.")
+        @path
+        jobId: string;
 
-      @doc("The ID of the Job to disable.")
-      @path
-      jobId: string;
-
-      @doc("The options to use for disabling the Job.")
-      @body
-      parameters: BatchJobDisableParameters;
-    },
+        @doc("The options to use for disabling the Job.")
+        @body
+        parameters: BatchJobDisableParameters;
+      },
     AcceptedProcessingResponseHeaders
   >;
 
@@ -693,19 +649,16 @@ Tasks cannot be added and any remaining active Tasks will not be scheduled.
   @route("/jobs/{jobId}/terminate")
   @projectedName("java", "terminateJobInternal")
   terminateJob is Ops.PostOperation<
-    BatchMatchHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
+    BatchMatchHeaders &
+      MinimalMetadata & {
+        @doc("The ID of the Job to terminate.")
+        @path
+        jobId: string;
 
-      @doc("The ID of the Job to terminate.")
-      @path
-      jobId: string;
-
-      @doc("The options to use for terminating the Job.")
-      @body
-      parameters?: BatchJobTerminateParameters;
-    },
+        @doc("The options to use for terminating the Job.")
+        @body
+        parameters?: BatchJobTerminateParameters;
+      },
     AcceptedProcessingResponseHeaders
   >;
 
@@ -1244,11 +1197,7 @@ service and left in whatever state it was in at that time.
   @route("/jobs/{jobId}/addtaskcollection")
   @projectedName("java", "createTaskCollectionInternal")
   createTaskCollection is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Job to which the Task collection is to be added.")
       @path
       jobId: string;
@@ -1319,11 +1268,7 @@ information about subtasks.
       @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchTask & {
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      dataServiceId: string;
-    }
+    BatchTask & DataServiceResponseHeaders
   >;
 
   @doc("Updates the properties of the specified Task.")
@@ -1392,11 +1337,7 @@ primary task; subtasks are then terminated asynchronously in the background.
       @path
       taskId: string;
     },
-    {
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      dataServiceId: string;
-    }
+    DataServiceResponseHeaders
   >;
 
   @summary("""
@@ -1424,11 +1365,7 @@ will fail if the Job has completed (or is terminating or deleting).
       @path
       taskId: string;
     },
-    {
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      dataServiceId: string;
-    }
+    DataServiceResponseHeaders
   >;
 
   @summary("Deletes the specified Task file from the Compute Node where the Task ran.")
@@ -1466,7 +1403,7 @@ format is bytes=startRange-endRange.
         @header
         `ocp-range`?: string;
       },
-    FileResponse & {
+    FileResponseHeders & {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/octet-stream";
@@ -1482,7 +1419,7 @@ format is bytes=startRange-endRange.
   @projectedName("java", "getTaskFilePropertiesInternal")
   getTaskFileProperties is Ops.ResourceInfoOperation<
     BatchTaskFileClientPathParameters & BatchModifiedSinceHeaders,
-    FileResponse
+    FileResponseHeders
   >;
 
   @summary("Lists the files in a Task's directory on its Compute Node.")
@@ -1630,11 +1567,7 @@ Account on a Compute Node only when it is in the idle or running state.
   @route("/pools/{poolId}/nodes/{nodeId}/reboot")
   @projectedName("java", "rebootNodeInternal")
   rebootNode is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1659,11 +1592,7 @@ cloud service configuration property.
   @route("/pools/{poolId}/nodes/{nodeId}/reimage")
   @projectedName("java", "reimageNodeInternal")
   reimageNode is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1687,11 +1616,7 @@ scheduling state is enabled.
   @route("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
   @projectedName("java", "disableNodeSchedulingInternal")
   disableNodeScheduling is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1773,6 +1698,10 @@ Protocol file.
       nodeId: string;
     },
     {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/octet-stream";
+
       @body
       @doc("A response containing the file content.")
       file: bytes;
@@ -1792,11 +1721,7 @@ support to aid in debugging issues with the Batch service.
   @route("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
   @projectedName("java", "uploadNodeLogsInternal")
   uploadNodeLogs is Ops.PostOperation<
-    {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+    MinimalMetadata & {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1932,7 +1857,7 @@ format is bytes=startRange-endRange.
         @header
         `ocp-range`?: string;
       },
-    FileResponse & {
+    FileResponseHeders & {
       @body
       @doc("A response containing the file content.")
       file: bytes;
@@ -1944,7 +1869,7 @@ format is bytes=startRange-endRange.
   @projectedName("java", "getNodeFilePropertiesInternal")
   getNodeFileProperties is Ops.ResourceInfoOperation<
     BatchNodeFileClientPathParameters & BatchModifiedSinceHeaders,
-    FileResponse
+    FileResponseHeders
   >;
 
   @summary("Lists all of the files in Task directories on the specified Compute Node.")
@@ -1984,9 +1909,7 @@ alias AcceptedProcessingResponseHeaders = {
   @statusCode
   code: "202";
 
-  @doc("The OData ID of the resource to which the request applied.")
-  @header("DataServiceId")
-  dataServiceId: string;
+  ...DataServiceResponseHeaders;
 };
 
 alias NoContentSuccesResponseHeaders = {
@@ -1994,9 +1917,7 @@ alias NoContentSuccesResponseHeaders = {
   @statusCode
   code: "204";
 
-  @doc("The OData ID of the resource to which the request applied.")
-  @header("DataServiceId")
-  dataServiceId: string;
+  ...DataServiceResponseHeaders;
 };
 
 alias RequestSuccesResponseHeaders = {
@@ -2004,12 +1925,16 @@ alias RequestSuccesResponseHeaders = {
   @statusCode
   code: "200";
 
+  ...DataServiceResponseHeaders;
+};
+
+alias DataServiceResponseHeaders = {
   @header("DataServiceId")
   @doc("The OData ID of the resource to which the request applied.")
   dataServiceId: string;
 };
 
-alias FileResponse = {
+alias FileResponseHeders = {
   @doc("A process exit code.")
   @statusCode
   code: "200";
@@ -2107,7 +2032,7 @@ alias BatchEtagResponseHeaders = {
 alias BatchClientResponseHeaders = {
   @doc("The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.")
   @header("client-request-id")
-  clientrequestid?: string;
+  clientRequestId?: string;
 
   @doc("A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report, include the value of this request ID, the approximate time that the request was made, the Batch Account against which the request was made, and the region that Account resides in.")
   @header("request-id")
@@ -2149,7 +2074,7 @@ alias DeleteResponseHeaders = {
 
   @doc("The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.")
   @header("client-request-id")
-  clientrequestid?: string;
+  clientRequestId?: string;
 
   @doc("A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report, include the value of this request ID, the approximate time that the request was made, the Batch Account against which the request was made, and the region that Account resides in.")
   @header("request-id")
@@ -2166,6 +2091,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
+  @projectedName("java", "maxPageSize")
   maxresults?: int32 = 1000;
 };
 
@@ -2211,11 +2137,11 @@ The caller-generated request identity, in the form of a GUID with no decoration
 such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
 """)
   @header("client-request-id")
-  clientrequestid?: string;
+  clientRequestId?: string;
 
   @doc("Whether the server should return the client-request-id in the response.")
   @header("return-client-request-id")
-  returnclientrequestid?: boolean = false;
+  returnClientRequestId?: boolean = false;
 
   @doc("""
 The time the request was issued. Client libraries typically set this to the

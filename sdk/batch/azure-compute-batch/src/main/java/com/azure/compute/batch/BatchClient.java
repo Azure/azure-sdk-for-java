@@ -196,7 +196,7 @@ public final class BatchClient {
      * that can be used in an Package reference. For administrator information about applications and versions that are
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @param options A group of optional parameters that includes maxresults and timeOutInSeconds.
+     * @param options A group of optional parameters that includes timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -208,7 +208,7 @@ public final class BatchClient {
      */
     public PagedIterable<BatchApplication> listApplications(ListBatchApplicationsOptions options) {
         // Delegate the call to the original function
-        return this.listApplicationsInternal(options.getMaxresults(), options.getTimeOutInSeconds());
+        return this.listApplicationsInternal(options.getTimeOutInSeconds());
     }
 
     /**
@@ -284,7 +284,7 @@ public final class BatchClient {
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
      *
-     * @param options A group of optional parameters that includes maxresults, timeOutInSeconds, starttime, endtime, and
+     * @param options A group of optional parameters that includes timeOutInSeconds, starttime, endtime, and
      * filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -296,8 +296,8 @@ public final class BatchClient {
      * PagedIterable}.
      */
     public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
-        return this.listPoolUsageMetricsInternal(options.getMaxresults(), options.getTimeOutInSeconds(),
-            options.getStartTime(), options.getEndTime(), options.getFilter());
+        return this.listPoolUsageMetricsInternal(options.getTimeOutInSeconds(), options.getStartTime(),
+            options.getEndTime(), options.getFilter());
     }
 
     /**
@@ -364,7 +364,7 @@ public final class BatchClient {
     /**
      * Lists all of the Pools in the specified Account using options provided in options.
      *
-     * @param options A group of optional parameters that includes maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group of optional parameters that includes timeOutInSeconds, filter, select, and
      * expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -375,8 +375,8 @@ public final class BatchClient {
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchPool> listPools(ListBatchPoolsOptions options) {
-        return listPoolsInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect(), options.getExpand());
+        return listPoolsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
+            options.getExpand());
     }
 
     /**
@@ -814,7 +814,7 @@ public final class BatchClient {
      * PagedIterable}.
      */
     public PagedIterable<ImageInfo> listSupportedImages(ListSupportedBatchImagesOptions options) {
-        return listSupportedImagesInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter());
+        return listSupportedImagesInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
 
     /**
@@ -848,7 +848,7 @@ public final class BatchClient {
      * PagedIterable}.
      */
     public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts(ListBatchPoolNodeCountsOptions options) {
-        return listPoolNodeCountsInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter());
+        return listPoolNodeCountsInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
 
     /**
@@ -1221,7 +1221,7 @@ public final class BatchClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param options A group of optional parameters containing maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group of optional parameters containing timeOutInSeconds, filter, select, and
      * expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1232,8 +1232,8 @@ public final class BatchClient {
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchJob> listJobs(ListBatchJobsOptions options) {
-        return listJobsInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect(), options.getExpand());
+        return listJobsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
+            options.getExpand());
     }
 
     /**
@@ -1255,7 +1255,7 @@ public final class BatchClient {
      * Lists the Jobs that have been created under the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param options A group of optional parameters containing maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group of optional parameters containing timeOutInSeconds, filter, select, and
      * expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1267,8 +1267,8 @@ public final class BatchClient {
      */
     public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId,
         ListBatchJobsFromScheduleOptions options) {
-        return listJobsFromScheduleInternal(jobScheduleId, options.getMaxresults(), options.getTimeOutInSeconds(),
-            options.getFilter(), options.getSelect(), options.getExpand());
+        return listJobsFromScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getFilter(),
+            options.getSelect(), options.getExpand());
     }
 
     /**
@@ -1298,7 +1298,7 @@ public final class BatchClient {
      * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
      * @param jobId The ID of the Job.
-     * @param options A group of optional parameters containing maxresults, timeOutInSeconds, filter, and select.
+     * @param options A group of optional parameters containing timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1310,8 +1310,8 @@ public final class BatchClient {
      */
     public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId,
         ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
-        return listJobPreparationAndReleaseTaskStatusInternal(jobId, options.getMaxresults(),
-            options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
+        return listJobPreparationAndReleaseTaskStatusInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(),
+            options.getSelect());
     }
 
     /**
@@ -1415,7 +1415,7 @@ public final class BatchClient {
     /**
      * Lists all of the Certificates that have been added to the specified Account.
      *
-     * @param options A group of optional parameters containing maxresults, timeOutInSeconds, filter, and select.
+     * @param options A group of optional parameters containing timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1425,8 +1425,7 @@ public final class BatchClient {
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchCertificate> listCertificates(ListBatchCertificatesOptions options) {
-        return listCertificatesInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect());
+        return listCertificatesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
 
     /**
@@ -1893,7 +1892,7 @@ public final class BatchClient {
     /**
      * Lists all of the Job Schedules in the specified Account.
      *
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like timeOutInSeconds, filter, select, and
      * expand.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1904,8 +1903,8 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     public PagedIterable<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
-        return listJobSchedulesInternal(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect(), options.getExpand());
+        return listJobSchedulesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
+            options.getExpand());
     }
 
     /**
@@ -1972,7 +1971,7 @@ public final class BatchClient {
      * Task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the Job.
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like timeOutInSeconds, filter, select, and
      * expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1983,8 +1982,8 @@ public final class BatchClient {
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
-        return listTasksInternal(jobId, options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect(), options.getExpand());
+        return listTasksInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
+            options.getExpand());
     }
 
     /**
@@ -2444,7 +2443,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @param options A group containing optional parameters like timeOutInSeconds, filter, and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2455,8 +2454,8 @@ public final class BatchClient {
      * as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
-        return listTaskFilesInternal(jobId, taskId, options.getMaxresults(), options.getTimeOutInSeconds(),
-            options.getFilter(), options.getRecursive());
+        return listTaskFilesInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getFilter(),
+            options.getRecursive());
     }
 
     /**
@@ -2870,9 +2869,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array.
+     * @return the response.
      */
-    public byte[] getNodeRemoteDesktopFile(String poolId, String nodeId, GetBatchNodeRemoteDesktopFileOptions options) {
+    public BinaryData getNodeRemoteDesktopFile(String poolId, String nodeId,
+        GetBatchNodeRemoteDesktopFileOptions options) {
         return getNodeRemoteDesktopFileInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
@@ -2892,9 +2892,9 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array.
+     * @return the response.
      */
-    public byte[] getNodeRemoteDesktopFile(String poolId, String nodeId) {
+    public BinaryData getNodeRemoteDesktopFile(String poolId, String nodeId) {
         return getNodeRemoteDesktopFileInternal(poolId, nodeId);
     }
 
@@ -2951,7 +2951,7 @@ public final class BatchClient {
      * Lists the Compute Nodes in the specified Pool.
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
+     * @param options A group containing optional parameters like timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2961,8 +2961,7 @@ public final class BatchClient {
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
-        return listNodesInternal(poolId, options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(),
-            options.getSelect());
+        return listNodesInternal(poolId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
 
     /**
@@ -3025,7 +3024,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, and select.
+     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3037,8 +3036,7 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId,
         ListBatchNodeExtensionsOptions options) {
-        return listNodeExtensionsInternal(poolId, nodeId, options.getMaxresults(), options.getTimeOutInSeconds(),
-            options.getSelect());
+        return listNodeExtensionsInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -3176,7 +3174,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
-     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @param options A group containing optional parameters like timeOutInSeconds, filter, and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3187,8 +3185,8 @@ public final class BatchClient {
      * as paginated response with {@link PagedIterable}.
      */
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
-        return listNodeFilesInternal(poolId, nodeId, options.getMaxresults(), options.getTimeOutInSeconds(),
-            options.getFilter(), options.getRecursive());
+        return listNodeFilesInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getFilter(),
+            options.getRecursive());
     }
 
     /**
@@ -3417,7 +3415,7 @@ public final class BatchClient {
      * applications can be returned.</td>
      * </tr>
      * <tr>
-     * <td>starttime</td>
+     * <td>startTime</td>
      * <td>OffsetDateTime</td>
      * <td>No</td>
      * <td>The earliest time from which to include metrics. This must be at least two and
@@ -22217,7 +22215,7 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
-     * byte[]
+     * BinaryData
      * }</pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -22228,7 +22226,7 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -22699,7 +22697,7 @@ public final class BatchClient {
      *                 displayStatus: String (Optional)
      *                 level: String(Error/Info/Warning) (Optional)
      *                 message: String (Optional)
-     *                 time: String (Optional)
+     *                 time: OffsetDateTime (Optional)
      *             }
      *         ]
      *         subStatuses (Optional): [
@@ -22879,7 +22877,7 @@ public final class BatchClient {
      *                 displayStatus: String (Optional)
      *                 level: String(Error/Info/Warning) (Optional)
      *                 message: String (Optional)
-     *                 time: String (Optional)
+     *                 time: OffsetDateTime (Optional)
      *             }
      *         ]
      *         subStatuses (Optional): [
@@ -23395,43 +23393,6 @@ public final class BatchClient {
      * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
      * API.
      *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the applications available in an Account as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchApplication> listApplicationsInternal(Integer timeOutInSeconds, Integer maxresults) {
-        // Generated convenience method for listApplicationsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        return serviceClient.listApplicationsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Lists all of the applications available in the specified Account.
-     *
-     * This operation returns only Applications and versions that are available for
-     * use on Compute Nodes; that is, that can be used in an Package reference. For
-     * administrator information about applications and versions that are not yet
-     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
-     * API.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -23519,63 +23480,6 @@ public final class BatchClient {
      * times of the last aggregation interval currently available; that is, only the
      * last aggregation interval is returned.
      *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param starttime The earliest time from which to include metrics. This must be at least two and
-     * a half hours before the current time. If not specified this defaults to the
-     * start time of the last aggregation interval currently available.
-     * @param endtime The latest time from which to include metrics. This must be at least two hours
-     * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a listing the usage metrics for an Account as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds, Integer maxresults,
-        OffsetDateTime starttime, OffsetDateTime endtime, String filter) {
-        // Generated convenience method for listPoolUsageMetricsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (starttime != null) {
-            requestOptions.addQueryParam("starttime", String.valueOf(starttime), false);
-        }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listPoolUsageMetricsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolUsageMetrics.class));
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals,
-     * for the specified Account.
-     *
-     * If you do not specify a $filter clause including a poolId, the response
-     * includes all Pools that existed in the Account in the time range of the
-     * returned aggregation intervals. If you do not specify a $filter clause
-     * including a startTime or endTime these filters default to the start and end
-     * times of the last aggregation interval currently available; that is, only the
-     * last aggregation interval is returned.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -23642,52 +23546,6 @@ public final class BatchClient {
         // Generated convenience method for createPoolInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         createPoolInternalWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Pools in the specified Account.
-     *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchPool> listPoolsInternal(Integer timeOutInSeconds, Integer maxresults, String filter,
-        List<String> select, List<String> expand) {
-        // Generated convenience method for listPoolsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listPoolsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPool.class));
     }
 
     /**
@@ -24475,42 +24333,6 @@ public final class BatchClient {
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the supported Virtual Machine Images as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ImageInfo> listSupportedImagesInternal(Integer timeOutInSeconds, Integer maxresults, String filter) {
-        // Generated convenience method for listSupportedImagesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listSupportedImagesInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ImageInfo.class));
-    }
-
-    /**
-     * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -24526,45 +24348,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSupportedImagesInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ImageInfo.class));
-    }
-
-    /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
-     * numbers returned may not always be up to date. If you need exact node counts,
-     * use a list query.
-     *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchPoolNodeCounts> listPoolNodeCountsInternal(Integer timeOutInSeconds, Integer maxresults,
-        String filter) {
-        // Generated convenience method for listPoolNodeCountsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listPoolNodeCountsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolNodeCounts.class));
     }
 
     /**
@@ -25114,52 +24897,6 @@ public final class BatchClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchJob> listJobsInternal(Integer timeOutInSeconds, Integer maxresults, String filter,
-        List<String> select, List<String> expand) {
-        // Generated convenience method for listJobsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listJobsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -25173,53 +24910,6 @@ public final class BatchClient {
         // Generated convenience method for listJobsInternal
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobsInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
-    }
-
-    /**
-     * Lists the Jobs that have been created under the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchJob> listJobsFromScheduleInternal(String jobScheduleId, Integer timeOutInSeconds,
-        Integer maxresults, String filter, List<String> select, List<String> expand) {
-        // Generated convenience method for listJobsFromScheduleInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listJobsFromScheduleInternal(jobScheduleId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
     }
 
@@ -25242,57 +24932,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobsFromScheduleInternal(jobScheduleId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release Task for the
-     * specified Job across the Compute Nodes where the Job has run.
-     *
-     * This API returns the Job Preparation and Job Release Task status on all Compute
-     * Nodes that have run the Job Preparation or Job Release Task. This includes
-     * Compute Nodes which have since been removed from the Pool. If this API is
-     * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
-     * service returns HTTP status code 409 (Conflict) with an error code of
-     * JobPreparationTaskNotSpecified.
-     *
-     * @param jobId The ID of the Job.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the status of the Job Preparation and Job Release Tasks
-     * for a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatusInternal(String jobId,
-        Integer timeOutInSeconds, Integer maxresults, String filter, List<String> select) {
-        // Generated convenience method for listJobPreparationAndReleaseTaskStatusInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobPreparationAndReleaseTaskStatus.class));
     }
 
     /**
@@ -25424,47 +25063,6 @@ public final class BatchClient {
         // Generated convenience method for createCertificateInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         createCertificateInternalWithResponse(BinaryData.fromObject(certificate), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchCertificate> listCertificatesInternal(Integer timeOutInSeconds, Integer maxresults,
-        String filter, List<String> select) {
-        // Generated convenience method for listCertificatesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listCertificatesInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchCertificate.class));
     }
 
     /**
@@ -26279,52 +25877,6 @@ public final class BatchClient {
     /**
      * Lists all of the Job Schedules in the specified Account.
      *
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchJobSchedule> listJobSchedulesInternal(Integer timeOutInSeconds, Integer maxresults,
-        String filter, List<String> select, List<String> expand) {
-        // Generated convenience method for listJobSchedulesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listJobSchedulesInternal(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
-    }
-
-    /**
-     * Lists all of the Job Schedules in the specified Account.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -26392,57 +25944,6 @@ public final class BatchClient {
         // Generated convenience method for createTaskInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         createTaskInternalWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Tasks that are associated with the specified Job.
-     *
-     * For multi-instance Tasks, information such as affinityId, executionInfo and
-     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
-     * information about subtasks.
-     *
-     * @param jobId The ID of the Job.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchTask> listTasksInternal(String jobId, Integer timeOutInSeconds, Integer maxresults,
-        String filter, List<String> select, List<String> expand) {
-        // Generated convenience method for listTasksInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listTasksInternal(jobId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
     }
 
     /**
@@ -27195,50 +26696,6 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
-     * @param recursive Whether to list children of the Task directory. This parameter can be used in
-     * combination with the filter parameter to list specific type of files.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with
-     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchNodeFile> listTaskFilesInternal(String jobId, String taskId, Integer timeOutInSeconds,
-        Integer maxresults, String filter, Boolean recursive) {
-        // Generated convenience method for listTaskFilesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        return serviceClient.listTaskFilesInternal(jobId, taskId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27611,18 +27068,17 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    byte[] getNodeRemoteDesktopFileInternal(String poolId, String nodeId, Integer timeOutInSeconds) {
+    BinaryData getNodeRemoteDesktopFileInternal(String poolId, String nodeId, Integer timeOutInSeconds) {
         // Generated convenience method for getNodeRemoteDesktopFileInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
-        return getNodeRemoteDesktopFileInternalWithResponse(poolId, nodeId, requestOptions).getValue()
-            .toObject(byte[].class);
+        return getNodeRemoteDesktopFileInternalWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
     /**
@@ -27642,15 +27098,14 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    byte[] getNodeRemoteDesktopFileInternal(String poolId, String nodeId) {
+    BinaryData getNodeRemoteDesktopFileInternal(String poolId, String nodeId) {
         // Generated convenience method for getNodeRemoteDesktopFileInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getNodeRemoteDesktopFileInternalWithResponse(poolId, nodeId, requestOptions).getValue()
-            .toObject(byte[].class);
+        return getNodeRemoteDesktopFileInternalWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
     /**
@@ -27718,48 +27173,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return uploadNodeLogsInternalWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
             .getValue().toObject(UploadBatchServiceLogsResult.class);
-    }
-
-    /**
-     * Lists the Compute Nodes in the specified Pool.
-     *
-     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchNode> listNodesInternal(String poolId, Integer timeOutInSeconds, Integer maxresults,
-        String filter, List<String> select) {
-        // Generated convenience method for listNodesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listNodesInternal(poolId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNode.class));
     }
 
     /**
@@ -27838,45 +27251,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions).getValue()
             .toObject(BatchNodeVMExtension.class);
-    }
-
-    /**
-     * Lists the Compute Nodes Extensions in the specified Pool.
-     *
-     * @param poolId The ID of the Pool that contains Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to list extensions.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Node extensions in a Node as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchNodeVMExtension> listNodeExtensionsInternal(String poolId, String nodeId,
-        Integer timeOutInSeconds, Integer maxresults, List<String> select) {
-        // Generated convenience method for listNodeExtensionsInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
-        }
-        return serviceClient.listNodeExtensionsInternal(poolId, nodeId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeVMExtension.class));
     }
 
     /**
@@ -28088,49 +27462,6 @@ public final class BatchClient {
         // Generated convenience method for getNodeFilePropertiesInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         getNodeFilePropertiesInternalWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the files in Task directories on the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node whose files you want to list.
-     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
-     * @param recursive Whether to list children of a directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with
-     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchNodeFile> listNodeFilesInternal(String poolId, String nodeId, Integer timeOutInSeconds,
-        Integer maxresults, String filter, Boolean recursive) {
-        // Generated convenience method for listNodeFilesInternal
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        return serviceClient.listNodeFilesInternal(poolId, nodeId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
     }
 
     /**
@@ -28997,5 +28328,594 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listSubTasksInternal(String jobId, String taskId, RequestOptions requestOptions) {
         return this.serviceClient.listSubTasksInternal(jobId, taskId, requestOptions);
+    }
+
+    /**
+     * Lists all of the applications available in the specified Account.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference. For
+     * administrator information about applications and versions that are not yet
+     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
+     * API.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the applications available in an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchApplication> listApplicationsInternal(Integer timeOutInSeconds) {
+        // Generated convenience method for listApplicationsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return serviceClient.listApplicationsInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchApplication.class));
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals,
+     * for the specified Account.
+     *
+     * If you do not specify a $filter clause including a poolId, the response
+     * includes all Pools that existed in the Account in the time range of the
+     * returned aggregation intervals. If you do not specify a $filter clause
+     * including a startTime or endTime these filters default to the start and end
+     * times of the last aggregation interval currently available; that is, only the
+     * last aggregation interval is returned.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param starttime The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.
+     * @param endtime The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a listing the usage metrics for an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds,
+        OffsetDateTime starttime, OffsetDateTime endtime, String filter) {
+        // Generated convenience method for listPoolUsageMetricsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (starttime != null) {
+            requestOptions.addQueryParam("startTime", String.valueOf(starttime), false);
+        }
+        if (endtime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listPoolUsageMetricsInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolUsageMetrics.class));
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchPool> listPoolsInternal(Integer timeOutInSeconds, String filter, List<String> select,
+        List<String> expand) {
+        // Generated convenience method for listPoolsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listPoolsInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPool.class));
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ImageInfo> listSupportedImagesInternal(Integer timeOutInSeconds, String filter) {
+        // Generated convenience method for listSupportedImagesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listSupportedImagesInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ImageInfo.class));
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
+     * numbers returned may not always be up to date. If you need exact node counts,
+     * use a list query.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchPoolNodeCounts> listPoolNodeCountsInternal(Integer timeOutInSeconds, String filter) {
+        // Generated convenience method for listPoolNodeCountsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listPoolNodeCountsInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolNodeCounts.class));
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchJob> listJobsInternal(Integer timeOutInSeconds, String filter, List<String> select,
+        List<String> expand) {
+        // Generated convenience method for listJobsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listJobsInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchJob> listJobsFromScheduleInternal(String jobScheduleId, Integer timeOutInSeconds, String filter,
+        List<String> select, List<String> expand) {
+        // Generated convenience method for listJobsFromScheduleInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listJobsFromScheduleInternal(jobScheduleId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the
+     * specified Job across the Compute Nodes where the Job has run.
+     *
+     * This API returns the Job Preparation and Job Release Task status on all Compute
+     * Nodes that have run the Job Preparation or Job Release Task. This includes
+     * Compute Nodes which have since been removed from the Pool. If this API is
+     * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
+     * service returns HTTP status code 409 (Conflict) with an error code of
+     * JobPreparationTaskNotSpecified.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks
+     * for a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatusInternal(String jobId,
+        Integer timeOutInSeconds, String filter, List<String> select) {
+        // Generated convenience method for listJobPreparationAndReleaseTaskStatusInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobPreparationAndReleaseTaskStatus.class));
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchCertificate> listCertificatesInternal(Integer timeOutInSeconds, String filter,
+        List<String> select) {
+        // Generated convenience method for listCertificatesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listCertificatesInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchCertificate.class));
+    }
+
+    /**
+     * Lists all of the Job Schedules in the specified Account.
+     *
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchJobSchedule> listJobSchedulesInternal(Integer timeOutInSeconds, String filter,
+        List<String> select, List<String> expand) {
+        // Generated convenience method for listJobSchedulesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listJobSchedulesInternal(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
+     * information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchTask> listTasksInternal(String jobId, Integer timeOutInSeconds, String filter,
+        List<String> select, List<String> expand) {
+        // Generated convenience method for listTasksInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listTasksInternal(jobId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * @param recursive Whether to list children of the Task directory. This parameter can be used in
+     * combination with the filter parameter to list specific type of files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchNodeFile> listTaskFilesInternal(String jobId, String taskId, Integer timeOutInSeconds,
+        String filter, Boolean recursive) {
+        // Generated convenience method for listTaskFilesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return serviceClient.listTaskFilesInternal(jobId, taskId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchNode> listNodesInternal(String poolId, Integer timeOutInSeconds, String filter,
+        List<String> select) {
+        // Generated convenience method for listNodesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listNodesInternal(poolId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNode.class));
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Node extensions in a Node as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchNodeVMExtension> listNodeExtensionsInternal(String poolId, String nodeId,
+        Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for listNodeExtensionsInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+        }
+        return serviceClient.listNodeExtensionsInternal(poolId, nodeId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeVMExtension.class));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * @param recursive Whether to list children of a directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BatchNodeFile> listNodeFilesInternal(String poolId, String nodeId, Integer timeOutInSeconds,
+        String filter, Boolean recursive) {
+        // Generated convenience method for listNodeFilesInternal
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return serviceClient.listNodeFilesInternal(poolId, nodeId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
     }
 }
