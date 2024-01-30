@@ -302,7 +302,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         private static final String ID = "Id=";
 
-        private static final String SECRET = "Secret=";
+        private static final String SECRET_PREFIX = "Secret=";
 
         private URL baseUri;
 
@@ -331,8 +331,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                     }
                 } else if (ID.regionMatches(true, 0, segment, 0, ID.length())) {
                     id = segment.substring(ID.length());
-                } else if (SECRET.regionMatches(true, 0, segment, 0, SECRET.length())) {
-                    secret = segment.substring(SECRET.length());
+                } else if (SECRET_PREFIX.regionMatches(true, 0, segment, 0, SECRET_PREFIX.length())) {
+                    secret = segment.substring(SECRET_PREFIX.length());
                 }
             }
             this.baseUri = baseUri;
@@ -365,7 +365,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         }
 
         public String toString() {
-            return String.format("%s%s;%s%s;%s%s", ENDPOINT, baseUri, ID, id, SECRET, secret);
+            return String.format("%s%s;%s%s;%s%s", ENDPOINT, baseUri, ID, id, SECRET_PREFIX, secret);
         }
     }
 }
