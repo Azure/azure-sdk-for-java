@@ -13,7 +13,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,16 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RunThreadSyncTest extends AssistantsClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(RunThreadSyncTest.class);
-
     private AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRun(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String mathTutorAssistantId = createMathTutorAssistant(client, LOGGER);
-        String threadId = createThread(client, LOGGER);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
             validateThreadMessage(threadMessage, threadId);
@@ -47,10 +44,14 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertNotNull(run.getInstructions());
 
             // Wait on Run and poll the Run in a loop
-            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
-                String runId = run.getId();
-                run = client.getRun(threadId, runId);
-            }
+            do {
+                run = client.getRun(run.getThreadId(), run.getId());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
@@ -60,17 +61,17 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId, LOGGER);
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRunWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String mathTutorAssistantId = createMathTutorAssistant(client, LOGGER);
-        String threadId = createThread(client, LOGGER);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
             validateThreadMessage(threadMessage, threadId);
@@ -87,10 +88,14 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertNotNull(run.getInstructions());
 
             // Wait on Run and poll the Run in a loop
-            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
-                String runId = run.getId();
-                run = client.getRun(threadId, runId);
-            }
+            do {
+                run = client.getRun(run.getThreadId(), run.getId());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
@@ -100,16 +105,16 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId, LOGGER);
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadAndRun(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String mathTutorAssistantId = createMathTutorAssistant(client, LOGGER);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             // Create a simple thread without a message
             ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
@@ -122,10 +127,14 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertNotNull(threadId);
 
             // Wait on Run and poll the Run in a loop
-            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
-                String runId = run.getId();
-                run = client.getRun(run.getThreadId(), runId);
-            }
+            do {
+                run = client.getRun(run.getThreadId(), run.getId());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
@@ -135,17 +144,17 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
 
             // Delete the created thread
-            deleteThread(client, threadId, LOGGER);
+            deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId, LOGGER);
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadAndRunWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String mathTutorAssistantId = createMathTutorAssistant(client, LOGGER);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             // Create a simple thread without a message
             Response<BinaryData> response = client.createThreadAndRunWithResponse(
@@ -160,10 +169,14 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertNotNull(threadId);
 
             // Wait on Run and poll the Run in a loop
-            while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS) {
-                String runId = run.getId();
-                run = client.getRun(run.getThreadId(), runId);
-            }
+            do {
+                run = client.getRun(run.getThreadId(), run.getId());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
@@ -173,9 +186,9 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
 
             // Delete the created thread
-            deleteThread(client, threadId, LOGGER);
+            deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId, LOGGER);
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
     }
 }

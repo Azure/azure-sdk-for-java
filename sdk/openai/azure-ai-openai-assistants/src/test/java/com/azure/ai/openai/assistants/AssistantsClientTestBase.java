@@ -32,7 +32,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.test.StepVerifier;
 
 import java.nio.file.Path;
@@ -252,8 +251,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return Paths.get("src", "test", "resources", fileName);
     }
 
-    String createMathTutorAssistant(AssistantsClient client, ClientLogger logger) {
-        logger.info("Creating a new Math tutor assistant.");
+    String createMathTutorAssistant(AssistantsClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
@@ -262,12 +260,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals(assistantCreationOptions.getName(), assistant.getName());
         assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
         assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-        logger.info("Finished creating a new Math tutor assistant.");
         return assistant.getId();
     }
 
-    String createMathTutorAssistant(AssistantsAsyncClient client, ClientLogger logger) {
-        logger.info("Creating a new Math tutor assistant.");
+    String createMathTutorAssistant(AssistantsAsyncClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
@@ -281,23 +277,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
                 })
                 .verifyComplete();
-        logger.info("Finished creating a new Math tutor assistant.");
         return assistantIdRef.get();
     }
 
-    void deleteMathTutorAssistant(AssistantsClient client, String assistantId, ClientLogger logger) {
-        logger.info("Cleaning up created Math tutor assistant.");
+    void deleteMathTutorAssistant(AssistantsClient client, String assistantId) {
         if (CoreUtils.isNullOrEmpty(assistantId)) {
             return;
         }
         AssistantDeletionStatus deletionStatus = client.deleteAssistant(assistantId);
         assertEquals(assistantId, deletionStatus.getId());
         assertTrue(deletionStatus.isDeleted());
-        logger.info("Finished cleaning up Math tutor assistant.");
     }
 
-    void deleteMathTutorAssistant(AssistantsAsyncClient client, String assistantId, ClientLogger logger) {
-        logger.info("Cleaning up created Math tutor  assistant.");
+    void deleteMathTutorAssistant(AssistantsAsyncClient client, String assistantId) {
         if (CoreUtils.isNullOrEmpty(assistantId)) {
             return;
         }
@@ -307,11 +299,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     assertTrue(deletionStatus.isDeleted());
                 })
                 .verifyComplete();
-        logger.info("Finished cleaning up Math tutor assistant.");
     }
 
-    String createThread(AssistantsAsyncClient client, ClientLogger logger) {
-        logger.info("Creating a new thread.");
+    String createThread(AssistantsAsyncClient client) {
         AtomicReference<String> threadIdRef = new AtomicReference<>();
         // Create a simple thread without a message
         StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
@@ -322,23 +312,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     threadIdRef.set(assistantThread.getId());
                 })
                 .verifyComplete();
-        logger.info("Finished creating a new thread.");
         return threadIdRef.get();
     }
 
-    String createThread(AssistantsClient client, ClientLogger logger) {
-        logger.info("Creating a new thread.");
+    String createThread(AssistantsClient client) {
         // Create a simple thread without a message
         AssistantThread assistantThread = client.createThread(new AssistantThreadCreationOptions());
         assertNotNull(assistantThread.getId());
         assertNotNull(assistantThread.getCreatedAt());
         assertEquals("thread", assistantThread.getObject());
-        logger.info("Finished creating a new thread.");
         return assistantThread.getId();
     }
 
-    void deleteThread(AssistantsAsyncClient client, String threadId, ClientLogger logger) {
-        logger.info("Cleaning up created thread.");
+    void deleteThread(AssistantsAsyncClient client, String threadId) {
         if (CoreUtils.isNullOrEmpty(threadId)) {
             return;
         }
@@ -349,11 +335,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                     assertTrue(deletionStatus.isDeleted());
                 })
                 .verifyComplete();
-        logger.info("Finished cleaning up thread.");
     }
 
-    void deleteThread(AssistantsClient client, String threadId, ClientLogger logger) {
-        logger.info("Cleaning up created thread.");
+    void deleteThread(AssistantsClient client, String threadId) {
         if (CoreUtils.isNullOrEmpty(threadId)) {
             return;
         }
@@ -361,7 +345,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         ThreadDeletionStatus threadDeletionStatus = client.deleteThread(threadId);
         assertEquals(threadId, threadDeletionStatus.getId());
         assertTrue(threadDeletionStatus.isDeleted());
-        logger.info("Finished cleaning up thread.");
     }
 
 

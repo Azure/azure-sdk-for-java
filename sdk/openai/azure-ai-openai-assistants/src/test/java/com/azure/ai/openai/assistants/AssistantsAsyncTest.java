@@ -293,7 +293,6 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
 
             // Delete the created assistants
-            // Deleted created assistants
             StepVerifier.create(client.deleteAssistant(assistantId1))
                     .assertNext(assistantDeletionStatus -> {
                         assertEquals(assistantId1, assistantDeletionStatus.getId());
@@ -327,7 +326,6 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
         client = getAssistantsAsyncClient(httpClient);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
-
             // Create an assistant
             StepVerifier.create(client.createAssistant(assistantCreationOptions))
                     .assertNext(assistant -> {
