@@ -560,8 +560,8 @@ public final class SpanDataMapper {
 
         String locationIp = getStableOrOldAttribute(attributes, SemanticAttributes.CLIENT_ADDRESS, SemanticAttributes.HTTP_CLIENT_IP);
         if (locationIp == null) {
-            // only use net.peer.ip if http.client_ip is not available
-            locationIp = attributes.get(SemanticAttributes.NET_SOCK_PEER_ADDR);
+            // only use network.peer.address if http.client_ip is not available
+            locationIp = attributes.get(SemanticAttributes.NETWORK_PEER_ADDRESS);
         }
         if (locationIp != null) {
             telemetryBuilder.addTag(ContextTagKeys.AI_LOCATION_IP.toString(), locationIp);
