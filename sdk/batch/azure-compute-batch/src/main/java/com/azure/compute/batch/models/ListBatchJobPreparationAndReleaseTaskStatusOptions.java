@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBaseOptions {
     private String filter;
-    private Integer maxresults;
     private List<String> select;
 
     /**
@@ -34,26 +33,6 @@ public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBas
     }
 
     /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListBatchJobPreparationAndReleaseTaskStatusOptions} object itself, allowing for method chaining.
-     */
-    public ListBatchJobPreparationAndReleaseTaskStatusOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
-        return this;
-    }
-
-        /**
      * Gets the OData $select clause.
      *
      * The $select clause specifies which properties should be included in the response.

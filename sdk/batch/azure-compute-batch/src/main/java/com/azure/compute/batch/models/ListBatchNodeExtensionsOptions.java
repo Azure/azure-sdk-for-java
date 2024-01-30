@@ -8,28 +8,7 @@ import java.util.List;
  * Optional parameters for listing the Compute Node Extensions in a Batch Pool.
  */
 public class ListBatchNodeExtensionsOptions extends BatchBaseOptions {
-    private Integer maxresults;
     private List<String> select;
-
-    /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListBatchNodeExtensionsOptions} object itself, allowing for method chaining.
-     */
-    public ListBatchNodeExtensionsOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
-        return this;
-    }
 
     /**
      * Gets the OData $select clause.

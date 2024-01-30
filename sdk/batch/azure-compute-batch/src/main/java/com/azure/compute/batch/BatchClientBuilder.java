@@ -207,7 +207,8 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
      * @return the credential.
      */
     public BatchClientBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential) {
-        this.azureNamedKeyCredential = Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
+        this.azureNamedKeyCredential
+            = Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
         this.tokenCredential = null;
         return this;
     }

@@ -11,7 +11,6 @@ import java.time.OffsetDateTime;
 public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
     private OffsetDateTime endtime;
     private String filter;
-    private Integer maxresults;
     private OffsetDateTime starttime;
 
     /**
@@ -59,26 +58,6 @@ public class ListBatchPoolUsageMetricsOptions extends BatchBaseOptions {
      */
     public ListBatchPoolUsageMetricsOptions setFilter(String filter) {
         this.filter = filter;
-        return this;
-    }
-
-    /**
-     * Gets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @return The maximum number of items to return in the response.
-     */
-    public Integer getMaxresults() {
-        return maxresults;
-    }
-
-    /**
-     * Sets the maximum number of items to return in the response. A maximum of 1000 applications can be returned.
-     *
-     * @param maxresults The maximum number of items to return in the response.
-     * @return The {@link ListBatchPoolUsageMetricsOptions} object itself, allowing for method chaining.
-     */
-    public ListBatchPoolUsageMetricsOptions setMaxresults(Integer maxresults) {
-        this.maxresults = maxresults;
         return this;
     }
 
