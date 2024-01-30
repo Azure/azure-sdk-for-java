@@ -16,6 +16,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AssistantsSyncTest extends AssistantsClientTestBase {
+public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
     private AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void assistantCrud(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
             // Create an assistant
@@ -75,7 +76,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void assistantCrudWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create an assistant
             Response<BinaryData> response = client.createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), new RequestOptions());
@@ -125,7 +126,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
             Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
@@ -149,10 +150,11 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantsBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create assistants
             Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
@@ -192,10 +194,11 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void assistantFileCrd(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
             // Create an assistant
@@ -231,10 +234,11 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void assistantFileCrdWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
             // Create an assistant
@@ -281,10 +285,11 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
             String assistantId = assistant.getId();
@@ -296,7 +301,6 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(fileId, assistantFile.getId());
 
             OpenAIPageableListOfAssistantFile assistantFiles = client.listAssistantFiles(assistantId);
-
             List<AssistantFile> assistantFilesData = assistantFiles.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);
@@ -304,16 +308,28 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals("assistant.file", assistantFileOnly.getObject());
             assertEquals(fileId, assistantFileOnly.getId());
 
+            Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
+                    new RequestOptions());
+            OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
+                    OpenAIPageableListOfAssistantFile.class, 200);
+            List<AssistantFile> assistantFilesDataResponse = assistantFileList.getData();
+            assertEquals(1, assistantFilesDataResponse.size());
+            AssistantFile assistantFileOnlyResponse = assistantFilesDataResponse.get(0);
+            assertEquals(assistantId, assistantFileOnlyResponse.getAssistantId());
+            assertEquals("assistant.file", assistantFileOnlyResponse.getObject());
+            assertEquals(fileId, assistantFileOnlyResponse.getId());
+
             AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistantId);
             assertEquals(assistantId, assistantDeletionStatus.getId());
             assertTrue(assistantDeletionStatus.isDeleted());
         });
     }
 
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesAddSameFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             // Create an assistant
             Assistant assistant = client.createAssistant(assistantCreationOptions);
@@ -338,44 +354,11 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFilesWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            // Create an assistant
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            String assistantId = assistant.getId();
-            // Attach a file to the assistant created above and return the assistant file
-            AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
-            assertNotNull(assistantFile.getCreatedAt());
-            assertEquals(assistantId, assistantFile.getAssistantId());
-            assertEquals("assistant.file", assistantFile.getObject());
-            assertEquals(fileId, assistantFile.getId());
-
-            Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
-                    new RequestOptions());
-
-            OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistantFile.class, 200);
-            List<AssistantFile> assistantFilesData = assistantFileList.getData();
-            assertEquals(1, assistantFilesData.size());
-            AssistantFile assistantFileOnly = assistantFilesData.get(0);
-            assertEquals(assistantId, assistantFileOnly.getAssistantId());
-            assertEquals("assistant.file", assistantFileOnly.getObject());
-            assertEquals(fileId, assistantFileOnly.getId());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant.getId());
-            assertEquals(assistant.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-        });
-    }
-
+    @Disabled("Cannot use the hard-coded file id in the test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
             // Create an assistant
             Assistant assistant = client.createAssistant(assistantCreationOptions);
