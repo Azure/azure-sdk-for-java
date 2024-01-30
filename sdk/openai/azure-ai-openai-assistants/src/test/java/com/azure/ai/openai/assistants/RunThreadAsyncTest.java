@@ -40,7 +40,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
 
             // Submit the message and run
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
-            StepVerifier.create(client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId, null)))
+            StepVerifier.create(client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId)))
                     .assertNext(run -> {
                         assertNotNull(run.getId());
                         assertNotNull(run.getCreatedAt());
@@ -100,7 +100,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             // Submit the message and run
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
             StepVerifier.create(client.createRunWithResponse(threadId,
-                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId, null)),
+                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)),
                     new RequestOptions()))
                     .assertNext(response -> {
                         ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);

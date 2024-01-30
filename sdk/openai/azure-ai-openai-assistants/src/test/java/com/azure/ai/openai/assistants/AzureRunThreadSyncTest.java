@@ -37,7 +37,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
-            ThreadRun run = client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId, null));
+            ThreadRun run = client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId));
             assertNotNull(run.getId());
             assertNotNull(run.getCreatedAt());
             assertEquals("thread.run", run.getObject());
@@ -75,7 +75,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             Response<BinaryData> runWithResponse = client.createRunWithResponse(threadId,
-                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId, null)),
+                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)),
                     new RequestOptions());
             ThreadRun run = assertAndGetValueFromResponse(runWithResponse, ThreadRun.class, 200);
             assertNotNull(run.getId());
