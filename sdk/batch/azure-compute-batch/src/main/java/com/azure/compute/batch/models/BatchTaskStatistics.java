@@ -46,13 +46,6 @@ public final class BatchTaskStatistics {
     private Duration userCPUTime;
 
     /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
-     */
-    @Generated
-    @JsonProperty(value = "kernelCPUTime")
-    private Duration kernelCPUTime;
-
-    /*
      * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started
      * running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had
      * not finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
@@ -105,7 +98,7 @@ public final class BatchTaskStatistics {
      * @param startTime the startTime value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      * @param userCPUTime the userCPUTime value to set.
-     * @param kernelCPUTime the kernelCPUTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
      * @param wallClockTime the wallClockTime value to set.
      * @param readIOps the readIOps value to set.
      * @param writeIOps the writeIOps value to set.
@@ -119,7 +112,7 @@ public final class BatchTaskStatistics {
         @JsonProperty(value = "startTime") OffsetDateTime startTime,
         @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
         @JsonProperty(value = "userCPUTime") Duration userCPUTime,
-        @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
         @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
         @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
         @JsonProperty(value = "writeIOGiB") double writeIOGiB, @JsonProperty(value = "waitTime") Duration waitTime) {
@@ -127,7 +120,7 @@ public final class BatchTaskStatistics {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.userCPUTime = userCPUTime;
-        this.kernelCPUTime = kernelCPUTime;
+        this.kernelCpuTime = kernelCpuTime;
         this.wallClockTime = wallClockTime;
         this.readIOps = readIOps;
         this.writeIOps = writeIOps;
@@ -176,17 +169,6 @@ public final class BatchTaskStatistics {
     @Generated
     public Duration getUserCPUTime() {
         return this.userCPUTime;
-    }
-
-    /**
-     * Get the kernelCPUTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
-     *
-     * @return the kernelCPUTime value.
-     */
-    @Generated
-    public Duration getKernelCPUTime() {
-        return this.kernelCPUTime;
     }
 
     /**
@@ -252,5 +234,23 @@ public final class BatchTaskStatistics {
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
+    }
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     */
+    @Generated
+    @JsonProperty(value = "kernelCPUTime")
+    private Duration kernelCpuTime;
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by the Task.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
     }
 }
