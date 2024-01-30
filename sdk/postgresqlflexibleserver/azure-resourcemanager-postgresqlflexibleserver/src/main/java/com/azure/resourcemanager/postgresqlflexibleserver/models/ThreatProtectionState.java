@@ -12,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * on the specific server.
  */
 public enum ThreatProtectionState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a ThreatProtectionState instance. */
+    /**
+     * The actual serialized value for a ThreatProtectionState instance.
+     */
     private final String value;
 
     ThreatProtectionState(String value) {
@@ -27,7 +33,7 @@ public enum ThreatProtectionState {
 
     /**
      * Parses a serialized value to a ThreatProtectionState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ThreatProtectionState object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum ThreatProtectionState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

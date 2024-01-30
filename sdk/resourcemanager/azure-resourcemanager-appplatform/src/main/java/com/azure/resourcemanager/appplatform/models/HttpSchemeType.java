@@ -8,17 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpSchemeType. */
+/**
+ * Scheme to use for connecting to the host. Defaults to HTTP.
+ * 
+ * Possible enum values:
+ * - `"HTTP"` means that the scheme used will be http://
+ * - `"HTTPS"` means that the scheme used will be https://.
+ */
 public final class HttpSchemeType extends ExpandableStringEnum<HttpSchemeType> {
-    /** Static value HTTP for HttpSchemeType. */
+    /**
+     * Static value HTTP for HttpSchemeType.
+     */
     public static final HttpSchemeType HTTP = fromString("HTTP");
 
-    /** Static value HTTPS for HttpSchemeType. */
+    /**
+     * Static value HTTPS for HttpSchemeType.
+     */
     public static final HttpSchemeType HTTPS = fromString("HTTPS");
 
     /**
+     * Creates a new instance of HttpSchemeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpSchemeType() {
+    }
+
+    /**
      * Creates or finds a HttpSchemeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HttpSchemeType.
      */
@@ -29,7 +48,7 @@ public final class HttpSchemeType extends ExpandableStringEnum<HttpSchemeType> {
 
     /**
      * Gets known HttpSchemeType values.
-     *
+     * 
      * @return known HttpSchemeType values.
      */
     public static Collection<HttpSchemeType> values() {

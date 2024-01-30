@@ -3,6 +3,8 @@
 ### 4.26.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433)
+* Added option to use custom Schema with StringType (raw json) for a nested property - See [PR 38481](https://github.com/Azure/azure-sdk-for-java/pull/38481)
 
 #### Breaking Changes
 

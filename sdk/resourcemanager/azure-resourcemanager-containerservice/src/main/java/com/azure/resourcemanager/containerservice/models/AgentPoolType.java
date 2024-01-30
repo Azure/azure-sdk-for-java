@@ -24,7 +24,7 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
 
     /**
      * Creates a new instance of AgentPoolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
 
     /**
      * Creates or finds a AgentPoolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentPoolType.
      */
@@ -44,7 +44,7 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
 
     /**
      * Gets known AgentPoolType values.
-     *
+     * 
      * @return known AgentPoolType values.
      */
     public static Collection<AgentPoolType> values() {

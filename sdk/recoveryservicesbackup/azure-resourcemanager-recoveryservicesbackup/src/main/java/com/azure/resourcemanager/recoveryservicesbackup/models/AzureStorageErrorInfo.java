@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure storage specific error information. */
+/**
+ * Azure storage specific error information.
+ */
 @Fluent
 public final class AzureStorageErrorInfo {
     /*
@@ -29,13 +31,15 @@ public final class AzureStorageErrorInfo {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
-    /** Creates an instance of AzureStorageErrorInfo class. */
+    /**
+     * Creates an instance of AzureStorageErrorInfo class.
+     */
     public AzureStorageErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -44,7 +48,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the AzureStorageErrorInfo object itself.
      */
@@ -55,7 +59,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -64,7 +68,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the AzureStorageErrorInfo object itself.
      */
@@ -75,7 +79,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -84,7 +88,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the AzureStorageErrorInfo object itself.
      */
@@ -95,7 +99,7 @@ public final class AzureStorageErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

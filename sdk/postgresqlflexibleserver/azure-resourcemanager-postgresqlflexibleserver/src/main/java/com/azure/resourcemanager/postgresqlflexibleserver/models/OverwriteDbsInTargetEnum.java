@@ -13,15 +13,19 @@ import java.util.Collection;
  * migration workflow will wait for a confirmation, if it detects that the database already exists.
  */
 public final class OverwriteDbsInTargetEnum extends ExpandableStringEnum<OverwriteDbsInTargetEnum> {
-    /** Static value True for OverwriteDbsInTargetEnum. */
+    /**
+     * Static value True for OverwriteDbsInTargetEnum.
+     */
     public static final OverwriteDbsInTargetEnum TRUE = fromString("True");
 
-    /** Static value False for OverwriteDbsInTargetEnum. */
+    /**
+     * Static value False for OverwriteDbsInTargetEnum.
+     */
     public static final OverwriteDbsInTargetEnum FALSE = fromString("False");
 
     /**
      * Creates a new instance of OverwriteDbsInTargetEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class OverwriteDbsInTargetEnum extends ExpandableStringEnum<Overwri
 
     /**
      * Creates or finds a OverwriteDbsInTargetEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OverwriteDbsInTargetEnum.
      */
@@ -41,7 +45,7 @@ public final class OverwriteDbsInTargetEnum extends ExpandableStringEnum<Overwri
 
     /**
      * Gets known OverwriteDbsInTargetEnum values.
-     *
+     * 
      * @return known OverwriteDbsInTargetEnum values.
      */
     public static Collection<OverwriteDbsInTargetEnum> values() {

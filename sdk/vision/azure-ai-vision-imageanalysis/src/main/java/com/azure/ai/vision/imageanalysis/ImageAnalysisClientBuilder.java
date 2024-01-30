@@ -42,7 +42,7 @@ import java.util.Objects;
 
 /**
  * A builder for creating a new instance of the ImageAnalysisClient type.
- * 
+ *
  * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
  * <pre>
  * &#47;&#47;
@@ -66,7 +66,7 @@ import java.util.Objects;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
- * 
+ *
  */
 @ServiceClientBuilder(serviceClients = { ImageAnalysisClient.class, ImageAnalysisAsyncClient.class })
 public final class ImageAnalysisClientBuilder

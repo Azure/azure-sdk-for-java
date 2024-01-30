@@ -6,10 +6,13 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Config Server resource. */
+/**
+ * Config Server resource.
+ */
 @Fluent
 public final class ConfigServerResourceInner extends ProxyResource {
     /*
@@ -18,9 +21,21 @@ public final class ConfigServerResourceInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ConfigServerProperties properties;
 
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ConfigServerResourceInner class.
+     */
+    public ConfigServerResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the Config Server resource.
-     *
+     * 
      * @return the properties value.
      */
     public ConfigServerProperties properties() {
@@ -29,7 +44,7 @@ public final class ConfigServerResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the Config Server resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConfigServerResourceInner object itself.
      */
@@ -39,8 +54,17 @@ public final class ConfigServerResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

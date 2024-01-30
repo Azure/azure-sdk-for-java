@@ -31,7 +31,7 @@ public final class IntegrationRuntimeObjectMetadatasRefreshMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"status\":\"inyursqf\",\"name\":\"zpyxmfipvgml\",\"properties\":\"bwfxssxarxvftlls\",\"error\":\"a\"}";
+            = "{\"status\":\"ridzqoiqonnva\",\"name\":\"o\",\"properties\":\"igzlvqmydpoj\",\"error\":\"fixdgkvlzeadq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,12 +48,12 @@ public final class IntegrationRuntimeObjectMetadatasRefreshMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SsisObjectMetadataStatusResponse response = manager.integrationRuntimeObjectMetadatas().refresh("bdjxvcxepj",
-            "xcmrhivwcmtretf", "irbvqkbxgz", com.azure.core.util.Context.NONE);
+        SsisObjectMetadataStatusResponse response = manager.integrationRuntimeObjectMetadatas()
+            .refresh("zifuovgipqgtsgov", "rk", "bhtcrxcnuy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("inyursqf", response.status());
-        Assertions.assertEquals("zpyxmfipvgml", response.name());
-        Assertions.assertEquals("bwfxssxarxvftlls", response.properties());
-        Assertions.assertEquals("a", response.error());
+        Assertions.assertEquals("ridzqoiqonnva", response.status());
+        Assertions.assertEquals("o", response.name());
+        Assertions.assertEquals("igzlvqmydpoj", response.properties());
+        Assertions.assertEquals("fixdgkvlzeadq", response.error());
     }
 }

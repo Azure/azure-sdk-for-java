@@ -6,8 +6,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
@@ -36,7 +34,7 @@ class ResourceParserTest {
 
     @Test
     void testDefaultResource() {
-        new ResourceParser().setRoleNameAndInstance(builder, Resource.create(Attributes.empty()));
+        new ResourceParser().updateRoleNameAndInstance(builder, Resource.create(Attributes.empty()));
         assertThat(builder.build().getTags())
             .contains(
                 entry(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), DEFAULT_ROLE_INSTANCE));
@@ -45,7 +43,7 @@ class ResourceParserTest {
     @Test
     void testServiceNameFromResource() {
         Resource resource = createTestResource("fake-service-name", null, null);
-        new ResourceParser().setRoleNameAndInstance(builder, resource);
+        new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("fake-service-name");
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
@@ -55,7 +53,7 @@ class ResourceParserTest {
     @Test
     void testServiceInstanceFromResource() {
         Resource resource = createTestResource(null, null, "fake-service-instance");
-        new ResourceParser().setRoleNameAndInstance(builder, resource);
+        new ResourceParser().updateRoleNameAndInstance(builder, resource);
         assertThat(builder.build().getTags())
             .contains(
                 entry(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), "fake-service-instance"));
@@ -64,7 +62,7 @@ class ResourceParserTest {
     @Test
     void testServiceNamespaceFromResource() {
         Resource resource = createTestResource(null, "fake-service-namespace", null);
-        new ResourceParser().setRoleNameAndInstance(builder, resource);
+        new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("[fake-service-namespace]");
@@ -75,7 +73,7 @@ class ResourceParserTest {
     @Test
     void testServiceNameAndInstanceFromResource() {
         Resource resource = createTestResource("fake-service-name", null, "fake-instance");
-        new ResourceParser().setRoleNameAndInstance(builder, resource);
+        new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("fake-service-name");
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
@@ -86,7 +84,7 @@ class ResourceParserTest {
     void testServiceNameAndInstanceAndNamespaceFromResource() {
         Resource resource =
             createTestResource("fake-service-name", "fake-service-namespace", "fake-instance");
-        new ResourceParser().setRoleNameAndInstance(builder, resource);
+        new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("[fake-service-namespace]/fake-service-name");
@@ -100,7 +98,7 @@ class ResourceParserTest {
         envVars.put("WEBSITE_SITE_NAME", "test_website_site_name");
         envVars.put("WEBSITE_INSTANCE_ID", "test_website_instance_id");
         Resource resource = createTestResource(null, null, null);
-        new ResourceParser(envVars).setRoleNameAndInstance(builder, resource);
+        new ResourceParser(envVars).updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("test_website_site_name");

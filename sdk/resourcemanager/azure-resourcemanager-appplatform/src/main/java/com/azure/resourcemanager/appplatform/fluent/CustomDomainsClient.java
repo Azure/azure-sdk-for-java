@@ -18,13 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomDomainsClient.
+ */
 public interface CustomDomainsClient {
     /**
      * Get the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -32,17 +34,17 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain of one lifecycle application along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName);
+    Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String domainName);
 
     /**
      * Get the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -52,14 +54,32 @@ public interface CustomDomainsClient {
      * @return the custom domain of one lifecycle application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName);
+    Mono<CustomDomainResourceInner> getAsync(String resourceGroupName, String serviceName, String appName,
+        String domainName);
 
     /**
      * Get the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the custom domain of one lifecycle application along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomDomainResourceInner> getWithResponse(String resourceGroupName, String serviceName, String appName,
+        String domainName, Context context);
+
+    /**
+     * Get the custom domain of one lifecycle application.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -72,28 +92,10 @@ public interface CustomDomainsClient {
     CustomDomainResourceInner get(String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
-     * Get the custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context);
-
-    /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -104,18 +106,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -127,17 +125,14 @@ public interface CustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
+        String resourceGroupName, String serviceName, String appName, String domainName,
         CustomDomainResourceInner domainResource);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -149,17 +144,14 @@ public interface CustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
+        String resourceGroupName, String serviceName, String appName, String domainName,
         CustomDomainResourceInner domainResource);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -172,18 +164,14 @@ public interface CustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource,
-        Context context);
+        String resourceGroupName, String serviceName, String appName, String domainName,
+        CustomDomainResourceInner domainResource, Context context);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -194,18 +182,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    Mono<CustomDomainResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName,
+        String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -216,18 +200,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    CustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Create or update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -239,19 +219,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource,
-        Context context);
+    CustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String domainName, CustomDomainResourceInner domainResource, Context context);
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -261,14 +236,14 @@ public interface CustomDomainsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -278,14 +253,14 @@ public interface CustomDomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName, String appName,
+        String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -295,14 +270,14 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String domainName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -313,14 +288,14 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String domainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String domainName, Context context);
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -334,9 +309,9 @@ public interface CustomDomainsClient {
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -349,9 +324,9 @@ public interface CustomDomainsClient {
 
     /**
      * Delete the custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -365,9 +340,9 @@ public interface CustomDomainsClient {
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -378,18 +353,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -401,17 +372,14 @@ public interface CustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
+        String resourceGroupName, String serviceName, String appName, String domainName,
         CustomDomainResourceInner domainResource);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -422,18 +390,14 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -445,19 +409,15 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource,
+    SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String domainName, CustomDomainResourceInner domainResource,
         Context context);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -468,18 +428,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource);
+    Mono<CustomDomainResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName,
+        String domainName, CustomDomainResourceInner domainResource);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -490,18 +446,14 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
+    CustomDomainResourceInner update(String resourceGroupName, String serviceName, String appName, String domainName,
         CustomDomainResourceInner domainResource);
 
     /**
      * Update custom domain of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
@@ -513,51 +465,46 @@ public interface CustomDomainsClient {
      * @return custom domain resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String domainName,
-        CustomDomainResourceInner domainResource,
-        Context context);
+    CustomDomainResourceInner update(String resourceGroupName, String serviceName, String appName, String domainName,
+        CustomDomainResourceInner domainResource, Context context);
 
     /**
      * List the custom domains of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of a custom domain resources list and a possible link for next page as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
 
     /**
      * List the custom domains of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of a custom domain resources list and a possible link for next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomDomainResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * List the custom domains of one lifecycle application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
@@ -565,9 +512,9 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of a custom domain resources list and a possible link for next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, Context context);
+    PagedIterable<CustomDomainResourceInner> list(String resourceGroupName, String serviceName, String appName,
+        Context context);
 }

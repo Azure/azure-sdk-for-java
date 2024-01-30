@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Validation summary object. */
+/**
+ * Validation summary object.
+ */
 @Fluent
 public final class ValidationSummaryItem {
     /*
@@ -29,13 +31,15 @@ public final class ValidationSummaryItem {
     @JsonProperty(value = "messages")
     private List<ValidationMessage> messages;
 
-    /** Creates an instance of ValidationSummaryItem class. */
+    /**
+     * Creates an instance of ValidationSummaryItem class.
+     */
     public ValidationSummaryItem() {
     }
 
     /**
      * Get the type property: Validation type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -44,7 +48,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Set the type property: Validation type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ValidationSummaryItem object itself.
      */
@@ -55,7 +59,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Get the state property: Validation status for migration.
-     *
+     * 
      * @return the state value.
      */
     public ValidationState state() {
@@ -64,7 +68,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Set the state property: Validation status for migration.
-     *
+     * 
      * @param state the state value to set.
      * @return the ValidationSummaryItem object itself.
      */
@@ -75,7 +79,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Get the messages property: Validation messages.
-     *
+     * 
      * @return the messages value.
      */
     public List<ValidationMessage> messages() {
@@ -84,7 +88,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Set the messages property: Validation messages.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ValidationSummaryItem object itself.
      */
@@ -95,7 +99,7 @@ public final class ValidationSummaryItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

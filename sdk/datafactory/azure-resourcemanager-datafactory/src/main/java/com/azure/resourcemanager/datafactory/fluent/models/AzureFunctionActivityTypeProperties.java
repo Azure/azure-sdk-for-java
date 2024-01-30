@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * Azure Function activity type properties.
@@ -33,7 +35,8 @@ public final class AzureFunctionActivityTypeProperties {
      * resultType string).
      */
     @JsonProperty(value = "headers")
-    private Object headers;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
@@ -97,7 +100,7 @@ public final class AzureFunctionActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, String> headers() {
         return this.headers;
     }
 
@@ -109,7 +112,7 @@ public final class AzureFunctionActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
-    public AzureFunctionActivityTypeProperties withHeaders(Object headers) {
+    public AzureFunctionActivityTypeProperties withHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }

@@ -10,9 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.streamanalytics.models.Cluster;
 import com.azure.resourcemanager.streamanalytics.models.ClusterJob;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
+import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -54,24 +53,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().etag();
     }
 
-    public OffsetDateTime createdDate() {
-        return this.innerModel().createdDate();
-    }
-
-    public String clusterId() {
-        return this.innerModel().clusterId();
-    }
-
-    public ClusterProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public Integer capacityAllocated() {
-        return this.innerModel().capacityAllocated();
-    }
-
-    public Integer capacityAssigned() {
-        return this.innerModel().capacityAssigned();
+    public ClusterProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -80,6 +63,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ClusterInner innerModel() {
@@ -106,22 +93,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusters().createOrUpdate(resourceGroupName, clusterName,
+            this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient().getClusters().createOrUpdate(resourceGroupName, clusterName,
+            this.innerModel(), createIfMatch, createIfNoneMatch, context);
         return this;
     }
 
@@ -139,48 +118,34 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, this.innerModel(), updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusters().update(resourceGroupName, clusterName,
+            this.innerModel(), updateIfMatch, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, this.innerModel(), updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient().getClusters().update(resourceGroupName, clusterName,
+            this.innerModel(), updateIfMatch, context);
         return this;
     }
 
-    ClusterImpl(
-        ClusterInner innerObject, com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject,
+        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
     }
 
     public Cluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context).getValue();
         return this;
     }
 
@@ -209,6 +174,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl withSku(ClusterSku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public ClusterImpl withProperties(ClusterProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

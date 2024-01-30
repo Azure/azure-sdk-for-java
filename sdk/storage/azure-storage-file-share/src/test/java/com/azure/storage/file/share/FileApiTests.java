@@ -2708,6 +2708,24 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(filePath, primaryFileClient.getFilePath());
     }
 
+    private static Stream<Arguments> getNonEncodedFileNameSupplier() {
+        return Stream.of(
+            Arguments.of("test%test"),
+            Arguments.of("%Россия 한국 中国!"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedFileNameSupplier")
+    public void getNonEncodedFileName(String fileName) {
+        ShareFileClient fileClient = shareClient.getFileClient(fileName);
+        assertEquals(fileName, fileClient.getFilePath());
+        fileClient.create(1024);
+        assertTrue(fileClient.exists());
+    }
+
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {

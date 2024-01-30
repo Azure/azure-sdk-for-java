@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -20,6 +19,7 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -414,11 +414,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
         LoggingEventBuilder logBuilder) {
-        for (HttpHeader header : headers) {
-            String headerName = header.getName();
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
-                ? header.getValue() : REDACTED_PLACEHOLDER);
-        }
+        // The raw header map uses keys that are already lower-cased.
+        HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> logBuilder.addKeyValue(value.getName(),
+            allowedHeaderNames.contains(key) ? value.getValue() : REDACTED_PLACEHOLDER));
     }
 
     /*

@@ -107,9 +107,9 @@ public final class LinkedServiceResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.linkedServiceName = Utils.getValueFromIdByName(innerObject.id(), "linkedservices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedservices");
     }
 
     public LinkedServiceResource refresh() {

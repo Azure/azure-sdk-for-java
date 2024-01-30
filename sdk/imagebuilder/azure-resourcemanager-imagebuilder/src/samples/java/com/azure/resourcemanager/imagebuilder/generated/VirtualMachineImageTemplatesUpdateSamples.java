@@ -10,44 +10,47 @@ import com.azure.resourcemanager.imagebuilder.models.ResourceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachineImageTemplates Update. */
+/**
+ * Samples for VirtualMachineImageTemplates Update.
+ */
 public final class VirtualMachineImageTemplatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/UpdateImageTemplateToRemoveIdentities.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * UpdateImageTemplateToRemoveIdentities.json
      */
     /**
      * Sample code: Remove identities for an Image Template.
-     *
+     * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void removeIdentitiesForAnImageTemplate(
-        com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        ImageTemplate resource =
-            manager
-                .virtualMachineImageTemplates()
-                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        removeIdentitiesForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        ImageTemplate resource = manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.NONE)).apply();
     }
 
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/UpdateImageTemplateTags.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * UpdateImageTemplateTags.json
      */
     /**
      * Sample code: Update the tags for an Image Template.
-     *
+     * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void updateTheTagsForAnImageTemplate(
-        com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        ImageTemplate resource =
-            manager
-                .virtualMachineImageTemplates()
-                .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateTheTagsForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        ImageTemplate resource = manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("new-tag", "new-value")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

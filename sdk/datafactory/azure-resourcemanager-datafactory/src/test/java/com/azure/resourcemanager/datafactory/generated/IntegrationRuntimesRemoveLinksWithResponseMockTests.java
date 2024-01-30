@@ -46,8 +46,8 @@ public final class IntegrationRuntimesRemoveLinksWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().removeLinksWithResponse("siaszqhpel", "ckwccpmsyh", "vifurgnxhoqfvuqi",
-            new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("dgkvfghcu"), com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes().removeLinksWithResponse("glljcblppnqosnv", "wjiwgakghv", "qbkzzmw",
+            new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("xaut"), com.azure.core.util.Context.NONE);
 
     }
 }

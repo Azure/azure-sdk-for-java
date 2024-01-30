@@ -4,40 +4,33 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Services Update. */
+/**
+ * Samples for Services Update.
+ */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_Update.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Services_Update.json
      */
     /**
      * Sample code: Services_Update.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .update(
-                "myResourceGroup",
-                "myservice",
-                new ServiceResourceInner()
-                    .withLocation("eastus")
-                    .withTags(mapOf("key1", "value1"))
-                    .withProperties(new ClusterResourceProperties())
-                    .withSku(new Sku().withName("S0").withTier("Standard")),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getServices().update("myResourceGroup", "myservice",
+            new ServiceResourceInner().withLocation("eastus").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withProperties(new ClusterResourceProperties()).withSku(new Sku().withName("S0").withTier("Standard")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

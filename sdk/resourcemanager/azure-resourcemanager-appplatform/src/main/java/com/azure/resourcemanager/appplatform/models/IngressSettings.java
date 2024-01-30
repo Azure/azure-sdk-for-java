@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** App ingress settings payload. */
+/**
+ * App ingress settings payload.
+ */
 @Fluent
 public final class IngressSettings {
     /*
@@ -47,8 +49,14 @@ public final class IngressSettings {
     private IngressSettingsClientAuth clientAuth;
 
     /**
+     * Creates an instance of IngressSettings class.
+     */
+    public IngressSettings() {
+    }
+
+    /**
      * Get the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @return the readTimeoutInSeconds value.
      */
     public Integer readTimeoutInSeconds() {
@@ -57,7 +65,7 @@ public final class IngressSettings {
 
     /**
      * Set the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @param readTimeoutInSeconds the readTimeoutInSeconds value to set.
      * @return the IngressSettings object itself.
      */
@@ -68,7 +76,7 @@ public final class IngressSettings {
 
     /**
      * Get the sendTimeoutInSeconds property: Ingress send time out in seconds.
-     *
+     * 
      * @return the sendTimeoutInSeconds value.
      */
     public Integer sendTimeoutInSeconds() {
@@ -77,7 +85,7 @@ public final class IngressSettings {
 
     /**
      * Set the sendTimeoutInSeconds property: Ingress send time out in seconds.
-     *
+     * 
      * @param sendTimeoutInSeconds the sendTimeoutInSeconds value to set.
      * @return the IngressSettings object itself.
      */
@@ -88,7 +96,7 @@ public final class IngressSettings {
 
     /**
      * Get the sessionAffinity property: Type of the affinity, set this to Cookie to enable session affinity.
-     *
+     * 
      * @return the sessionAffinity value.
      */
     public SessionAffinity sessionAffinity() {
@@ -97,7 +105,7 @@ public final class IngressSettings {
 
     /**
      * Set the sessionAffinity property: Type of the affinity, set this to Cookie to enable session affinity.
-     *
+     * 
      * @param sessionAffinity the sessionAffinity value to set.
      * @return the IngressSettings object itself.
      */
@@ -108,7 +116,7 @@ public final class IngressSettings {
 
     /**
      * Get the sessionCookieMaxAge property: Time in seconds until the cookie expires.
-     *
+     * 
      * @return the sessionCookieMaxAge value.
      */
     public Integer sessionCookieMaxAge() {
@@ -117,7 +125,7 @@ public final class IngressSettings {
 
     /**
      * Set the sessionCookieMaxAge property: Time in seconds until the cookie expires.
-     *
+     * 
      * @param sessionCookieMaxAge the sessionCookieMaxAge value to set.
      * @return the IngressSettings object itself.
      */
@@ -128,7 +136,7 @@ public final class IngressSettings {
 
     /**
      * Get the backendProtocol property: How ingress should communicate with this app backend service.
-     *
+     * 
      * @return the backendProtocol value.
      */
     public BackendProtocol backendProtocol() {
@@ -137,7 +145,7 @@ public final class IngressSettings {
 
     /**
      * Set the backendProtocol property: How ingress should communicate with this app backend service.
-     *
+     * 
      * @param backendProtocol the backendProtocol value to set.
      * @return the IngressSettings object itself.
      */
@@ -148,7 +156,7 @@ public final class IngressSettings {
 
     /**
      * Get the clientAuth property: Client-Certification Authentication.
-     *
+     * 
      * @return the clientAuth value.
      */
     public IngressSettingsClientAuth clientAuth() {
@@ -157,7 +165,7 @@ public final class IngressSettings {
 
     /**
      * Set the clientAuth property: Client-Certification Authentication.
-     *
+     * 
      * @param clientAuth the clientAuth value to set.
      * @return the IngressSettings object itself.
      */
@@ -168,7 +176,7 @@ public final class IngressSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
