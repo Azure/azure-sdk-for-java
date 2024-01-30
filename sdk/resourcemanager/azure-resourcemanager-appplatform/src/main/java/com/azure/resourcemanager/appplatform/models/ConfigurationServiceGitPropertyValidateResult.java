@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Validation result for configuration service settings. */
+/**
+ * Validation result for configuration service settings.
+ */
 @Fluent
 public final class ConfigurationServiceGitPropertyValidateResult {
     /*
@@ -24,8 +26,14 @@ public final class ConfigurationServiceGitPropertyValidateResult {
     private List<ValidationMessages> gitReposValidationResult;
 
     /**
+     * Creates an instance of ConfigurationServiceGitPropertyValidateResult class.
+     */
+    public ConfigurationServiceGitPropertyValidateResult() {
+    }
+
+    /**
      * Get the isValid property: Indicate if the configuration service settings are valid.
-     *
+     * 
      * @return the isValid value.
      */
     public Boolean isValid() {
@@ -34,7 +42,7 @@ public final class ConfigurationServiceGitPropertyValidateResult {
 
     /**
      * Set the isValid property: Indicate if the configuration service settings are valid.
-     *
+     * 
      * @param isValid the isValid value to set.
      * @return the ConfigurationServiceGitPropertyValidateResult object itself.
      */
@@ -45,7 +53,7 @@ public final class ConfigurationServiceGitPropertyValidateResult {
 
     /**
      * Get the gitReposValidationResult property: The detail validation results.
-     *
+     * 
      * @return the gitReposValidationResult value.
      */
     public List<ValidationMessages> gitReposValidationResult() {
@@ -54,19 +62,19 @@ public final class ConfigurationServiceGitPropertyValidateResult {
 
     /**
      * Set the gitReposValidationResult property: The detail validation results.
-     *
+     * 
      * @param gitReposValidationResult the gitReposValidationResult value to set.
      * @return the ConfigurationServiceGitPropertyValidateResult object itself.
      */
-    public ConfigurationServiceGitPropertyValidateResult withGitReposValidationResult(
-        List<ValidationMessages> gitReposValidationResult) {
+    public ConfigurationServiceGitPropertyValidateResult
+        withGitReposValidationResult(List<ValidationMessages> gitReposValidationResult) {
         this.gitReposValidationResult = gitReposValidationResult;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

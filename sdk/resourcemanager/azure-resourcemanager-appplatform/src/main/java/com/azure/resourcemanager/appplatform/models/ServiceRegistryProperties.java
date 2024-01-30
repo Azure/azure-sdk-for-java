@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Service Registry properties payload. */
+/**
+ * Service Registry properties payload.
+ */
 @Immutable
 public final class ServiceRegistryProperties {
     /*
@@ -30,8 +32,14 @@ public final class ServiceRegistryProperties {
     private List<ServiceRegistryInstance> instances;
 
     /**
+     * Creates an instance of ServiceRegistryProperties class.
+     */
+    public ServiceRegistryProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the Service Registry.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ServiceRegistryProvisioningState provisioningState() {
@@ -40,7 +48,7 @@ public final class ServiceRegistryProperties {
 
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ServiceRegistryResourceRequests resourceRequests() {
@@ -49,7 +57,7 @@ public final class ServiceRegistryProperties {
 
     /**
      * Get the instances property: Collection of instances belong to Service Registry.
-     *
+     * 
      * @return the instances value.
      */
     public List<ServiceRegistryInstance> instances() {
@@ -58,7 +66,7 @@ public final class ServiceRegistryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

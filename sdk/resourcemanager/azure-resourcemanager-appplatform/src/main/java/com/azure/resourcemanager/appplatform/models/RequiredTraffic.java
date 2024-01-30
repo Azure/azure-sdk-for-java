@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Required inbound or outbound traffic for Azure Spring Apps resource. */
+/**
+ * Required inbound or outbound traffic for Azure Spring Apps resource.
+ */
 @Immutable
 public final class RequiredTraffic {
     /*
@@ -42,8 +44,14 @@ public final class RequiredTraffic {
     private TrafficDirection direction;
 
     /**
+     * Creates an instance of RequiredTraffic class.
+     */
+    public RequiredTraffic() {
+    }
+
+    /**
      * Get the protocol property: The protocol of required traffic.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -52,7 +60,7 @@ public final class RequiredTraffic {
 
     /**
      * Get the port property: The port of required traffic.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -61,7 +69,7 @@ public final class RequiredTraffic {
 
     /**
      * Get the ips property: The ip list of required traffic.
-     *
+     * 
      * @return the ips value.
      */
     public List<String> ips() {
@@ -70,7 +78,7 @@ public final class RequiredTraffic {
 
     /**
      * Get the fqdns property: The FQDN list of required traffic.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -79,7 +87,7 @@ public final class RequiredTraffic {
 
     /**
      * Get the direction property: The direction of required traffic.
-     *
+     * 
      * @return the direction value.
      */
     public TrafficDirection direction() {
@@ -88,7 +96,7 @@ public final class RequiredTraffic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

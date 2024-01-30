@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The action of the probe. */
+/**
+ * The action of the probe.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,13 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HTTPGetAction", value = HttpGetAction.class),
     @JsonSubTypes.Type(name = "ExecAction", value = ExecAction.class),
-    @JsonSubTypes.Type(name = "TCPSocketAction", value = TcpSocketAction.class)
-})
+    @JsonSubTypes.Type(name = "TCPSocketAction", value = TcpSocketAction.class) })
 @Immutable
 public class ProbeAction {
     /**
+     * Creates an instance of ProbeAction class.
+     */
+    public ProbeAction() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

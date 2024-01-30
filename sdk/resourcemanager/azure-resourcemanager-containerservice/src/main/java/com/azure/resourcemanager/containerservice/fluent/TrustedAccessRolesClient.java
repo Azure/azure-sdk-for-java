@@ -17,7 +17,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRol
 public interface TrustedAccessRolesClient {
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface TrustedAccessRolesClient {
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +41,7 @@ public interface TrustedAccessRolesClient {
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
