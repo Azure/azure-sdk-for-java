@@ -13,13 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BatchJobTerminateParameters {
 
-    /*
-     * The text you want to appear as the Job's TerminateReason. The default is 'UserTerminate'.
-     */
-    @Generated
-    @JsonProperty(value = "terminateReason")
-    private String terminateReason;
-
     /**
      * Creates an instance of BatchJobTerminateParameters class.
      */
@@ -27,27 +20,34 @@ public final class BatchJobTerminateParameters {
     public BatchJobTerminateParameters() {
     }
 
-    /**
-     * Get the terminateReason property: The text you want to appear as the Job's TerminateReason. The default is
-     * 'UserTerminate'.
-     *
-     * @return the terminateReason value.
+    /*
+     * The text you want to appear as the Job's TerminationReason. The default is 'UserTerminate'.
      */
     @Generated
-    public String getTerminateReason() {
-        return this.terminateReason;
+    @JsonProperty(value = "terminateReason")
+    private String terminationReason;
+
+    /**
+     * Get the terminationReason property: The text you want to appear as the Job's TerminationReason. The default is
+     * 'UserTerminate'.
+     *
+     * @return the terminationReason value.
+     */
+    @Generated
+    public String getTerminationReason() {
+        return this.terminationReason;
     }
 
     /**
-     * Set the terminateReason property: The text you want to appear as the Job's TerminateReason. The default is
+     * Set the terminationReason property: The text you want to appear as the Job's TerminationReason. The default is
      * 'UserTerminate'.
      *
-     * @param terminateReason the terminateReason value to set.
+     * @param terminationReason the terminationReason value to set.
      * @return the BatchJobTerminateParameters object itself.
      */
     @Generated
-    public BatchJobTerminateParameters setTerminateReason(String terminateReason) {
-        this.terminateReason = terminateReason;
+    public BatchJobTerminateParameters setTerminationReason(String terminationReason) {
+        this.terminationReason = terminationReason;
         return this;
     }
 }

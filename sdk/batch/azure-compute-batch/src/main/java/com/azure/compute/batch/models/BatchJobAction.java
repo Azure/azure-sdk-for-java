@@ -26,7 +26,7 @@ public final class BatchJobAction extends ExpandableStringEnum<BatchJobAction> {
     public static final BatchJobAction DISABLE = fromString("disable");
 
     /**
-     * Terminate the Job. The terminateReason in the Job's executionInfo is set to "TaskFailed".
+     * Terminate the Job. The terminationReason in the Job's executionInfo is set to "TaskFailed".
      */
     @Generated
     public static final BatchJobAction TERMINATE = fromString("terminate");

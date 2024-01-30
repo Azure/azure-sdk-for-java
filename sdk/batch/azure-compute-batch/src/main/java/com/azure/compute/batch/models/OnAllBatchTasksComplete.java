@@ -20,7 +20,7 @@ public final class OnAllBatchTasksComplete extends ExpandableStringEnum<OnAllBat
     public static final OnAllBatchTasksComplete NO_ACTION = fromString("noaction");
 
     /**
-     * Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.
+     * Terminate the Job. The Job's terminationReason is set to 'AllTasksComplete'.
      */
     @Generated
     public static final OnAllBatchTasksComplete TERMINATE_JOB = fromString("terminatejob");

@@ -48,20 +48,6 @@ public final class BatchJobExecutionInfo {
     @JsonProperty(value = "schedulingError")
     private BatchJobSchedulingError schedulingError;
 
-    /*
-     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If
-     * the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task
-     * completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its
-     * maxWallClockTime constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule
-     * terminated. AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in
-     * the Job are complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and
-     * a Task in the Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is
-     * a user-defined reason specified in a call to the 'Terminate a Job' operation.
-     */
-    @Generated
-    @JsonProperty(value = "terminateReason")
-    private String terminateReason;
-
     /**
      * Creates an instance of BatchJobExecutionInfo class.
      *
@@ -119,9 +105,23 @@ public final class BatchJobExecutionInfo {
         return this.schedulingError;
     }
 
+    /*
+     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If
+     * the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task
+     * completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its
+     * maxWallClockTime constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule
+     * terminated. AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in
+     * the Job are complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and
+     * a Task in the Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is
+     * a user-defined reason specified in a call to the 'Terminate a Job' operation.
+     */
+    @Generated
+    @JsonProperty(value = "terminateReason")
+    private String terminationReason;
+
     /**
-     * Get the terminateReason property: A string describing the reason the Job ended. This property is set only if the
-     * Job is in the completed state. If the Batch service terminates the Job, it sets the reason as follows:
+     * Get the terminationReason property: A string describing the reason the Job ended. This property is set only if
+     * the Job is in the completed state. If the Batch service terminates the Job, it sets the reason as follows:
      * JMComplete - the Job Manager Task completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry -
      * the Job reached its maxWallClockTime constraint. TerminateJobSchedule - the Job ran as part of a schedule, and
      * the schedule terminated. AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and
@@ -129,10 +129,10 @@ public final class BatchJobExecutionInfo {
      * performExitOptionsJobAction, and a Task in the Job failed with an exit condition that specified a jobAction of
      * terminatejob. Any other string is a user-defined reason specified in a call to the 'Terminate a Job' operation.
      *
-     * @return the terminateReason value.
+     * @return the terminationReason value.
      */
     @Generated
-    public String getTerminateReason() {
-        return this.terminateReason;
+    public String getTerminationReason() {
+        return this.terminationReason;
     }
 }
