@@ -58,7 +58,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets An OpenAI endpoint supporting assistants functionality.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -72,7 +72,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -86,7 +86,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -95,7 +95,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
@@ -106,7 +106,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
@@ -117,7 +117,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
@@ -1242,7 +1242,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1309,7 +1309,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param updateAssistantOptions The details of the modification to perform on the specified assistant.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1660,8 +1660,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1693,8 +1692,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1726,8 +1724,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId,
-            accept, requestOptions, context));
+                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1758,8 +1755,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions,
-            Context.NONE);
+                assistantId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1814,8 +1810,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept,
-            assistantThreadCreationOptions, requestOptions, context));
+                this.serviceVersion.getVersion(), accept, assistantThreadCreationOptions, requestOptions, context));
     }
 
     /**
@@ -1869,8 +1864,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, assistantThreadCreationOptions, requestOptions,
-            Context.NONE);
+                accept, assistantThreadCreationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -2534,8 +2528,7 @@ public final class AssistantsClientImpl {
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept,
-            request, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2590,8 +2583,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, messageId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2674,8 +2666,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -2757,8 +2748,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.listMessageFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, requestOptions,
-            Context.NONE);
+                threadId, messageId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2791,8 +2781,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, fileId,
-            accept, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, messageId, fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2824,8 +2813,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getMessageFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, fileId, accept, requestOptions,
-            Context.NONE);
+                threadId, messageId, fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2838,7 +2826,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2900,8 +2888,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions,
-            requestOptions, context));
+                threadId, accept, createRunOptions, requestOptions, context));
     }
 
     /**
@@ -2914,7 +2901,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
-     *     additional_instructions: String (Required)
+     *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -2975,8 +2962,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions, requestOptions,
-            Context.NONE);
+                threadId, accept, createRunOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3369,8 +3355,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request,
-            requestOptions, context));
+                threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3437,8 +3422,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3510,8 +3494,7 @@ public final class AssistantsClientImpl {
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId,
-            accept, request, requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions, context));
     }
 
     /**
@@ -3582,8 +3565,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.submitToolOutputsToRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+                threadId, runId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -3786,8 +3768,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept,
-            createAndRunThreadOptions, requestOptions, context));
+                this.serviceVersion.getVersion(), accept, createAndRunThreadOptions, requestOptions, context));
     }
 
     /**
@@ -3876,8 +3857,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createThreadAndRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, createAndRunThreadOptions, requestOptions,
-            Context.NONE);
+                accept, createAndRunThreadOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -3926,8 +3906,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId, stepId, accept,
-            requestOptions, context));
+                this.serviceVersion.getVersion(), threadId, runId, stepId, accept, requestOptions, context));
     }
 
     /**
@@ -3976,8 +3955,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getRunStepSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, stepId, accept, requestOptions,
-            Context.NONE);
+                threadId, runId, stepId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4292,17 +4270,6 @@ public final class AssistantsClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -4336,17 +4303,6 @@ public final class AssistantsClientImpl {
 
     /**
      * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
-     *     filename: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>

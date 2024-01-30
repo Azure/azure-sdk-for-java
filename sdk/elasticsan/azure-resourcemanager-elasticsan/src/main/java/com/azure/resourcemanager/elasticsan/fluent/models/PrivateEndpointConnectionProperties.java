@@ -12,7 +12,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for PrivateEndpoint connection properties. */
+/**
+ * Response for PrivateEndpoint connection properties.
+ */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
     /*
@@ -39,13 +41,15 @@ public final class PrivateEndpointConnectionProperties {
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
-    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionProperties class.
+     */
     public PrivateEndpointConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning State of Private Endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -54,7 +58,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Get the privateEndpoint property: Private Endpoint resource.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -63,7 +67,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the privateEndpoint property: Private Endpoint resource.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Get the privateLinkServiceConnectionState property: Private Link Service Connection State.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -83,19 +87,19 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the privateLinkServiceConnectionState property: Private Link Service Connection State.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Get the groupIds property: List of resources private endpoint is mapped.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -104,7 +108,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the groupIds property: List of resources private endpoint is mapped.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -123,11 +127,8 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkServiceConnectionState in model"
-                            + " PrivateEndpointConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateLinkServiceConnectionState in model PrivateEndpointConnectionProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }

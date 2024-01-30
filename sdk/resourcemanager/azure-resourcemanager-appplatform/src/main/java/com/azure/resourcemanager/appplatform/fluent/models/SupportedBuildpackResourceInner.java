@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.SupportedBuildpackResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported buildpack resource payload. */
+/**
+ * Supported buildpack resource payload.
+ */
 @Fluent
 public final class SupportedBuildpackResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class SupportedBuildpackResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of SupportedBuildpackResourceInner class.
+     */
+    public SupportedBuildpackResourceInner() {
+    }
+
+    /**
      * Get the properties property: Supported buildpack resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public SupportedBuildpackResourceProperties properties() {
@@ -36,7 +44,7 @@ public final class SupportedBuildpackResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Supported buildpack resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SupportedBuildpackResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class SupportedBuildpackResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class SupportedBuildpackResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

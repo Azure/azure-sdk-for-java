@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about the target where the backup content will be stored. */
+/**
+ * Details about the target where the backup content will be stored.
+ */
 @Fluent
 public final class BackupStoreDetails {
     /*
@@ -18,13 +20,15 @@ public final class BackupStoreDetails {
     @JsonProperty(value = "sasUriList", required = true)
     private List<String> sasUriList;
 
-    /** Creates an instance of BackupStoreDetails class. */
+    /**
+     * Creates an instance of BackupStoreDetails class.
+     */
     public BackupStoreDetails() {
     }
 
     /**
      * Get the sasUriList property: List of SAS uri of storage containers where backup data is to be streamed/copied.
-     *
+     * 
      * @return the sasUriList value.
      */
     public List<String> sasUriList() {
@@ -33,7 +37,7 @@ public final class BackupStoreDetails {
 
     /**
      * Set the sasUriList property: List of SAS uri of storage containers where backup data is to be streamed/copied.
-     *
+     * 
      * @param sasUriList the sasUriList value to set.
      * @return the BackupStoreDetails object itself.
      */
@@ -44,14 +48,13 @@ public final class BackupStoreDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sasUriList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUriList in model BackupStoreDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sasUriList in model BackupStoreDetails"));
         }
     }
 

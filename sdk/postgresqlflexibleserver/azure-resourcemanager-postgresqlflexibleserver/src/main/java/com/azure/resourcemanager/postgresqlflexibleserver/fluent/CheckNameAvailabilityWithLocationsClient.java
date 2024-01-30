@@ -18,22 +18,22 @@ import reactor.core.publisher.Mono;
 public interface CheckNameAvailabilityWithLocationsClient {
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a resource name availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
-        String locationName, CheckNameAvailabilityRequest nameAvailabilityRequest);
+    Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(String locationName,
+        CheckNameAvailabilityRequest nameAvailabilityRequest);
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +46,7 @@ public interface CheckNameAvailabilityWithLocationsClient {
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @param context The context to associate with this operation.
@@ -56,12 +56,12 @@ public interface CheckNameAvailabilityWithLocationsClient {
      * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> executeWithResponse(
-        String locationName, CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailabilityInner> executeWithResponse(String locationName,
+        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

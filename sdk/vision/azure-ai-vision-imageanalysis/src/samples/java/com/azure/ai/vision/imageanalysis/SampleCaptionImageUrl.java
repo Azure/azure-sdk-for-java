@@ -15,13 +15,6 @@
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
 //       the caption.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleCaptionImageUrl.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleCaptionImageUrl
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
@@ -33,7 +26,7 @@ import com.azure.core.credential.KeyCredential;
 import java.net.MalformedURLException;
 
 // BEGIN: imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import java.net.URL;

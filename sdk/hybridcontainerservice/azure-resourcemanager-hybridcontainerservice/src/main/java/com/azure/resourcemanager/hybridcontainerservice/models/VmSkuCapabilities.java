@@ -8,18 +8,18 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * describes the vm sku capabilities object.
+ * Describes the VM SKU capabilities like MemoryGB, vCPUs, etc.
  */
 @Immutable
 public final class VmSkuCapabilities {
     /*
-     * An invariant to describe the feature
+     * Name of the VM SKU capability
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * An invariant if the feature is measured by quantity
+     * Value of the VM SKU capability
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
@@ -31,7 +31,7 @@ public final class VmSkuCapabilities {
     }
 
     /**
-     * Get the name property: An invariant to describe the feature.
+     * Get the name property: Name of the VM SKU capability.
      * 
      * @return the name value.
      */
@@ -40,7 +40,7 @@ public final class VmSkuCapabilities {
     }
 
     /**
-     * Get the value property: An invariant if the feature is measured by quantity.
+     * Get the value property: Value of the VM SKU capability.
      * 
      * @return the value value.
      */

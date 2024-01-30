@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.FunctionsClient;
@@ -46,24 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FunctionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FunctionsClient.
+ */
 public final class FunctionsClientImpl implements FunctionsClient {
-    private final ClientLogger logger = new ClientLogger(FunctionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FunctionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StreamAnalyticsManagementClientImpl client;
 
     /**
      * Initializes an instance of FunctionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FunctionsClientImpl(StreamAnalyticsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FunctionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FunctionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,174 +76,115 @@ public final class FunctionsClientImpl implements FunctionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StreamAnalyticsManag")
-    private interface FunctionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}")
-        @ExpectedResponses({200, 201})
+    public interface FunctionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<FunctionsCreateOrReplaceResponse> createOrReplace(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion,
+        Mono<FunctionsCreateOrReplaceResponse> createOrReplace(@HostParam("$host") String endpoint,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("functionName") String functionName, @BodyParam("application/json") FunctionInner function,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<FunctionsUpdateResponse> update(@HostParam("$host") String endpoint,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("functionName") String functionName, @BodyParam("application/json") FunctionInner function,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("functionName") String functionName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<FunctionsGetResponse> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("functionName") String functionName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FunctionListResult>> listByStreamingJob(@HostParam("$host") String endpoint,
+            @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/test")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> test(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("functionName") String functionName, @BodyParam("application/json") FunctionInner function,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/retrieveDefaultDefinition")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FunctionInner>> retrieveDefaultDefinition(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
             @PathParam("functionName") String functionName,
-            @BodyParam("application/json") FunctionInner function,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<FunctionsUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("functionName") String functionName,
-            @BodyParam("application/json") FunctionInner function,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("functionName") String functionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<FunctionsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("functionName") String functionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FunctionListResult>> listByStreamingJob(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$select") String select,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}/test")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> test(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("functionName") String functionName,
-            @BodyParam("application/json") FunctionInner function,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}/retrieveDefaultDefinition")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FunctionInner>> retrieveDefaultDefinition(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("functionName") String functionName,
-            @BodyParam("application/json")
-                FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FunctionListResult>> listByStreamingJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a function or replaces an already existing function under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
+     * one under the streaming job.
      * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new function to be created, but to prevent updating an existing
-     *     function. Other values will result in a 412 Pre-condition Failed response.
+     * function. Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<FunctionsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String jobName, String functionName, FunctionInner function, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -257,64 +201,44 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrReplace(
-                            this.client.getEndpoint(),
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            function,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, jobName, functionName, function, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a function or replaces an already existing function under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
+     * one under the streaming job.
      * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new function to be created, but to prevent updating an existing
-     *     function. Other values will result in a 412 Pre-condition Failed response.
+     * function. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        String ifNoneMatch,
+    private Mono<FunctionsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String jobName, String functionName, FunctionInner function, String ifMatch, String ifNoneMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -331,123 +255,48 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrReplace(
-                this.client.getEndpoint(),
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                function,
-                accept,
-                context);
+        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, jobName, functionName, function, accept, context);
     }
 
     /**
      * Creates a function or replaces an already existing function under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
-     * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new function to be created, but to prevent updating an existing
-     *     function. Other values will result in a 412 Pre-condition Failed response.
+     * one under the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> createOrReplaceAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createOrReplaceWithResponseAsync(
-                resourceGroupName, jobName, functionName, function, ifMatch, ifNoneMatch)
-            .flatMap(
-                (FunctionsCreateOrReplaceResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a function or replaces an already existing function under an existing streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> createOrReplaceAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
+    private Mono<FunctionInner> createOrReplaceAsync(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrReplaceWithResponseAsync(
-                resourceGroupName, jobName, functionName, function, ifMatch, ifNoneMatch)
-            .flatMap(
-                (FunctionsCreateOrReplaceResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrReplaceWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch,
+            ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a function or replaces an already existing function under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FunctionInner createOrReplace(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createOrReplaceAsync(resourceGroupName, jobName, functionName, function, ifMatch, ifNoneMatch).block();
-    }
-
-    /**
-     * Creates a function or replaces an already existing function under an existing streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function The definition of the function that will be used to create a new function or replace the existing
-     *     one under the streaming job.
+     * one under the streaming job.
      * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new function to be created, but to prevent updating an existing
-     *     function. Other values will result in a 412 Pre-condition Failed response.
+     * function. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,51 +304,63 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @return a function object, containing all information associated with the named function.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FunctionsCreateOrReplaceResponse createOrReplaceWithResponse(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createOrReplaceWithResponseAsync(
-                resourceGroupName, jobName, functionName, function, ifMatch, ifNoneMatch, context)
-            .block();
+    public FunctionsCreateOrReplaceResponse createOrReplaceWithResponse(String resourceGroupName, String jobName,
+        String functionName, FunctionInner function, String ifMatch, String ifNoneMatch, Context context) {
+        return createOrReplaceWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch,
+            ifNoneMatch, context).block();
+    }
+
+    /**
+     * Creates a function or replaces an already existing function under an existing streaming job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param function The definition of the function that will be used to create a new function or replace the existing
+     * one under the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FunctionInner createOrReplace(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createOrReplaceWithResponse(resourceGroupName, jobName, functionName, function, ifMatch, ifNoneMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
      * one or two properties) a function without affecting the rest the job or function definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
+     * the existing function (ie. Those properties will be updated). Any properties that are set to null here will mean
+     * that the corresponding property in the existing function will remain the same and not change as a result of this
+     * PATCH operation.
      * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, String ifMatch) {
+    private Mono<FunctionsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName, FunctionInner function, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -516,63 +377,44 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            function,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, jobName, functionName, function, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
      * one or two properties) a function without affecting the rest the job or function definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
+     * the existing function (ie. Those properties will be updated). Any properties that are set to null here will mean
+     * that the corresponding property in the existing function will remain the same and not change as a result of this
+     * PATCH operation.
      * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        Context context) {
+    private Mono<FunctionsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName, FunctionInner function, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -589,96 +431,74 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                function,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), ifMatch, apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, jobName, functionName, function, accept, context);
     }
 
     /**
      * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
      * one or two properties) a function without affecting the rest the job or function definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
-     * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the existing function (ie. Those properties will be updated). Any properties that are set to null here will mean
+     * that the corresponding property in the existing function will remain the same and not change as a result of this
+     * PATCH operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> updateAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, String ifMatch) {
-        return updateWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch)
-            .flatMap(
-                (FunctionsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
-     * one or two properties) a function without affecting the rest the job or function definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> updateAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
+    private Mono<FunctionInner> updateAsync(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch)
-            .flatMap(
-                (FunctionsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
      * one or two properties) a function without affecting the rest the job or function definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
+     * the existing function (ie. Those properties will be updated). Any properties that are set to null here will mean
+     * that the corresponding property in the existing function will remain the same and not change as a result of this
+     * PATCH operation.
+     * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FunctionsUpdateResponse updateWithResponse(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function, String ifMatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch, context).block();
+    }
+
+    /**
+     * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
+     * one or two properties) a function without affecting the rest the job or function definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param function A function object. The properties specified here will overwrite the corresponding properties in
+     * the existing function (ie. Those properties will be updated). Any properties that are set to null here will mean
+     * that the corresponding property in the existing function will remain the same and not change as a result of this
+     * PATCH operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -687,64 +507,30 @@ public final class FunctionsClientImpl implements FunctionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FunctionInner update(String resourceGroupName, String jobName, String functionName, FunctionInner function) {
         final String ifMatch = null;
-        return updateAsync(resourceGroupName, jobName, functionName, function, ifMatch).block();
-    }
-
-    /**
-     * Updates an existing function under an existing streaming job. This can be used to partially update (ie. update
-     * one or two properties) a function without affecting the rest the job or function definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function A function object. The properties specified here will overwrite the corresponding properties in
-     *     the existing function (ie. Those properties will be updated). Any properties that are set to null here will
-     *     mean that the corresponding property in the existing function will remain the same and not change as a result
-     *     of this PATCH operation.
-     * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FunctionsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionInner function,
-        String ifMatch,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, jobName, functionName, function, ifMatch, context).block();
+        return updateWithResponse(resourceGroupName, jobName, functionName, function, ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -756,26 +542,17 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, jobName, functionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -783,22 +560,18 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName, String functionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,40 +583,50 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            jobName, functionName, accept, context);
     }
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String jobName, String functionName) {
-        return deleteWithResponseAsync(resourceGroupName, jobName, functionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, jobName, functionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String jobName, String functionName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, jobName, functionName, context).block();
+    }
+
+    /**
+     * Deletes a function from the streaming job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -853,52 +636,30 @@ public final class FunctionsClientImpl implements FunctionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName, String functionName) {
-        deleteAsync(resourceGroupName, jobName, functionName).block();
-    }
-
-    /**
-     * Deletes a function from the streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String jobName, String functionName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, jobName, functionName, context).block();
+        deleteWithResponse(resourceGroupName, jobName, functionName, Context.NONE);
     }
 
     /**
      * Gets details about the specified function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified function.
+     * @return details about the specified function on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName) {
+    private Mono<FunctionsGetResponse> getWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -910,26 +671,17 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, jobName, functionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details about the specified function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -937,22 +689,18 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified function.
+     * @return details about the specified function on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName, Context context) {
+    private Mono<FunctionsGetResponse> getWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -964,47 +712,51 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            jobName, functionName, accept, context);
     }
 
     /**
      * Gets details about the specified function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified function.
+     * @return details about the specified function on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FunctionInner> getAsync(String resourceGroupName, String jobName, String functionName) {
         return getWithResponseAsync(resourceGroupName, jobName, functionName)
-            .flatMap(
-                (FunctionsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets details about the specified function.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified function.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FunctionsGetResponse getWithResponse(String resourceGroupName, String jobName, String functionName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, jobName, functionName, context).block();
+    }
+
+    /**
+     * Gets details about the specified function.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -1015,54 +767,33 @@ public final class FunctionsClientImpl implements FunctionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FunctionInner get(String resourceGroupName, String jobName, String functionName) {
-        return getAsync(resourceGroupName, jobName, functionName).block();
-    }
-
-    /**
-     * Gets details about the specified function.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FunctionsGetResponse getWithResponse(
-        String resourceGroupName, String jobName, String functionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, jobName, functionName, context).block();
+        return getWithResponse(resourceGroupName, jobName, functionName, Context.NONE).getValue();
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FunctionInner>> listByStreamingJobSinglePageAsync(
-        String resourceGroupName, String jobName, String select) {
+    private Mono<PagedResponse<FunctionInner>> listByStreamingJobSinglePageAsync(String resourceGroupName,
+        String jobName, String select) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1071,60 +802,41 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByStreamingJob(
-                            this.client.getEndpoint(),
-                            select,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            accept,
-                            context))
-            .<PagedResponse<FunctionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByStreamingJob(this.client.getEndpoint(), select, apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
+            .<PagedResponse<FunctionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FunctionInner>> listByStreamingJobSinglePageAsync(
-        String resourceGroupName, String jobName, String select, Context context) {
+    private Mono<PagedResponse<FunctionInner>> listByStreamingJobSinglePageAsync(String resourceGroupName,
+        String jobName, String select, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1133,98 +845,83 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByStreamingJob(
-                this.client.getEndpoint(),
-                select,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByStreamingJob(this.client.getEndpoint(), select, apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, jobName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FunctionInner> listByStreamingJobAsync(String resourceGroupName, String jobName, String select) {
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FunctionInner> listByStreamingJobAsync(String resourceGroupName, String jobName) {
         final String select = null;
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FunctionInner> listByStreamingJobAsync(
-        String resourceGroupName, String jobName, String select, Context context) {
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select, context),
+    private PagedFlux<FunctionInner> listByStreamingJobAsync(String resourceGroupName, String jobName, String select,
+        Context context) {
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select, context),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FunctionInner> listByStreamingJob(String resourceGroupName, String jobName) {
@@ -1234,55 +931,52 @@ public final class FunctionsClientImpl implements FunctionsClient {
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FunctionInner> listByStreamingJob(
-        String resourceGroupName, String jobName, String select, Context context) {
+    public PagedIterable<FunctionInner> listByStreamingJob(String resourceGroupName, String jobName, String select,
+        Context context) {
         return new PagedIterable<>(listByStreamingJobAsync(resourceGroupName, jobName, select, context));
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
+    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName, FunctionInner function) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1297,56 +991,42 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (function != null) {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .test(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            function,
-                            accept,
-                            context))
+            .withContext(context -> service.test(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, jobName, functionName, function, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(String resourceGroupName, String jobName,
+        String functionName, FunctionInner function, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1361,232 +1041,209 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (function != null) {
             function.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .test(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                function,
-                accept,
-                context);
+        return service.test(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            jobName, functionName, function, accept, context);
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            testWithResponseAsync(resourceGroupName, jobName, functionName, function);
-        return this
-            .client
-            .<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTestStatusInner.class,
-                ResourceTestStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner>
+        beginTestAsync(String resourceGroupName, String jobName, String functionName, FunctionInner function) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = testWithResponseAsync(resourceGroupName, jobName, functionName, function);
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class,
+            this.client.getContext());
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner>
+        beginTestAsync(String resourceGroupName, String jobName, String functionName) {
+        final FunctionInner function = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = testWithResponseAsync(resourceGroupName, jobName, functionName, function);
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Tests if the information provided for a function is valid. This can range from testing the connection to the
+     * underlying web service behind the function or making sure the function code provided is syntactically correct.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
         String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            testWithResponseAsync(resourceGroupName, jobName, functionName, function, context);
-        return this
-            .client
-            .<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTestStatusInner.class,
-                ResourceTestStatusInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = testWithResponseAsync(resourceGroupName, jobName, functionName, function, context);
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class, context);
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
-     * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link SyncPoller} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
-        return beginTestAsync(resourceGroupName, jobName, functionName, function).getSyncPoller();
+    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(String resourceGroupName,
+        String jobName, String functionName) {
+        final FunctionInner function = null;
+        return this.beginTestAsync(resourceGroupName, jobName, functionName, function).getSyncPoller();
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link SyncPoller} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
-        return beginTestAsync(resourceGroupName, jobName, functionName, function, context).getSyncPoller();
+    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(String resourceGroupName,
+        String jobName, String functionName, FunctionInner function, Context context) {
+        return this.beginTestAsync(resourceGroupName, jobName, functionName, function, context).getSyncPoller();
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTestStatusInner> testAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
-        return beginTestAsync(resourceGroupName, jobName, functionName, function)
-            .last()
+    private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function) {
+        return beginTestAsync(resourceGroupName, jobName, functionName, function).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String functionName) {
         final FunctionInner function = null;
-        return beginTestAsync(resourceGroupName, jobName, functionName, function)
-            .last()
+        return beginTestAsync(resourceGroupName, jobName, functionName, function).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTestStatusInner> testAsync(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
-        return beginTestAsync(resourceGroupName, jobName, functionName, function, context)
-            .last()
+    private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function, Context context) {
+        return beginTestAsync(resourceGroupName, jobName, functionName, function, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTestStatusInner test(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function) {
-        return testAsync(resourceGroupName, jobName, functionName, function).block();
-    }
-
-    /**
-     * Tests if the information provided for a function is valid. This can range from testing the connection to the
-     * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -1604,15 +1261,14 @@ public final class FunctionsClientImpl implements FunctionsClient {
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1620,41 +1276,36 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @return describes the status of the test operation along with error information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTestStatusInner test(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
+    public ResourceTestStatusInner test(String resourceGroupName, String jobName, String functionName,
+        FunctionInner function, Context context) {
         return testAsync(resourceGroupName, jobName, functionName, function, context).block();
     }
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
+     * the default definition for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FunctionInner>> retrieveDefaultDefinitionWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
+    private Mono<Response<FunctionInner>> retrieveDefaultDefinitionWithResponseAsync(String resourceGroupName,
+        String jobName, String functionName,
         FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1669,56 +1320,41 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionRetrieveDefaultDefinitionParameters != null) {
             functionRetrieveDefaultDefinitionParameters.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .retrieveDefaultDefinition(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            functionName,
-                            functionRetrieveDefaultDefinitionParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.retrieveDefaultDefinition(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, jobName, functionName,
+                functionRetrieveDefaultDefinitionParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
+     * the default definition for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FunctionInner>> retrieveDefaultDefinitionWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
-        Context context) {
+    private Mono<Response<FunctionInner>> retrieveDefaultDefinitionWithResponseAsync(String resourceGroupName,
+        String jobName, String functionName,
+        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1733,82 +1369,59 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionRetrieveDefaultDefinitionParameters != null) {
             functionRetrieveDefaultDefinitionParameters.validate();
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveDefaultDefinition(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                functionName,
-                functionRetrieveDefaultDefinitionParameters,
-                accept,
-                context);
+        return service.retrieveDefaultDefinition(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters, accept, context);
     }
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<FunctionInner> retrieveDefaultDefinitionAsync(String resourceGroupName, String jobName,
+        String functionName) {
+        final FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters = null;
+        return retrieveDefaultDefinitionWithResponseAsync(resourceGroupName, jobName, functionName,
+            functionRetrieveDefaultDefinitionParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves the default definition of a function based on the parameters specified.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
+     * the default definition for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
+     * @return a function object, containing all information associated with the named function along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> retrieveDefaultDefinitionAsync(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters) {
-        return retrieveDefaultDefinitionWithResponseAsync(
-                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters)
-            .flatMap(
-                (Response<FunctionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<FunctionInner> retrieveDefaultDefinitionWithResponse(String resourceGroupName, String jobName,
+        String functionName, FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
+        Context context) {
+        return retrieveDefaultDefinitionWithResponseAsync(resourceGroupName, jobName, functionName,
+            functionRetrieveDefaultDefinitionParameters, context).block();
     }
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FunctionInner> retrieveDefaultDefinitionAsync(
-        String resourceGroupName, String jobName, String functionName) {
-        final FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters = null;
-        return retrieveDefaultDefinitionWithResponseAsync(
-                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters)
-            .flatMap(
-                (Response<FunctionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -1820,45 +1433,21 @@ public final class FunctionsClientImpl implements FunctionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FunctionInner retrieveDefaultDefinition(String resourceGroupName, String jobName, String functionName) {
         final FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters = null;
-        return retrieveDefaultDefinitionAsync(
-                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters)
-            .block();
-    }
-
-    /**
-     * Retrieves the default definition of a function based on the parameters specified.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FunctionInner> retrieveDefaultDefinitionWithResponse(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
-        Context context) {
-        return retrieveDefaultDefinitionWithResponseAsync(
-                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters, context)
-            .block();
+        return retrieveDefaultDefinitionWithResponse(resourceGroupName, jobName, functionName,
+            functionRetrieveDefaultDefinitionParameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FunctionInner>> listByStreamingJobNextSinglePageAsync(String nextLink) {
@@ -1866,36 +1455,30 @@ public final class FunctionsClientImpl implements FunctionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FunctionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FunctionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FunctionInner>> listByStreamingJobNextSinglePageAsync(String nextLink, Context context) {
@@ -1903,23 +1486,13 @@ public final class FunctionsClientImpl implements FunctionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

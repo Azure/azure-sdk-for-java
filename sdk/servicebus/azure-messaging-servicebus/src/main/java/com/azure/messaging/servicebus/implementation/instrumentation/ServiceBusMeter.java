@@ -70,7 +70,6 @@ public final class ServiceBusMeter {
             }
 
             Map<String, Object> successMap = new HashMap<>(commonAttributesMap);
-            successMap.put(GENERIC_STATUS_KEY, "ok");
             this.sendAttributesSuccess = meter.createAttributes(successMap);
 
             Map<String, Object> failureMap = new HashMap<>(commonAttributesMap);

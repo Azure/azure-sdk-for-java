@@ -15,8 +15,7 @@ public final class OperationListResultImpl implements OperationListResult {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    OperationListResultImpl(
-        OperationListResultInner innerObject,
+    OperationListResultImpl(OperationListResultInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

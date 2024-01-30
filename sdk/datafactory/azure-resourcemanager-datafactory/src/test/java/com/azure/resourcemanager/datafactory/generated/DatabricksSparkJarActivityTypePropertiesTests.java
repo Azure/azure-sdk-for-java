@@ -14,17 +14,19 @@ public final class DatabricksSparkJarActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkJarActivityTypeProperties model = BinaryData.fromString(
-            "{\"mainClassName\":\"dataoe\",\"parameters\":[\"datart\",\"databadrcy\",\"dataxbjaktg\",\"dataw\"],\"libraries\":[{\"ragqcwcdbtopuyi\":\"datahghorgji\",\"imhjbxwr\":\"databqdsuaazkouvvgcw\",\"z\":\"datagaofwo\"},{\"bnx\":\"datap\"},{\"uxjh\":\"datalysfsh\"}]}")
+            "{\"mainClassName\":\"dataqtjacnbe\",\"parameters\":[\"datahpkaamoovrbv\",\"datauoqbclhn\",\"dataqxuxrggx\"],\"libraries\":[{\"cjawqhpijurqoi\":\"dataqpkckwaafuy\",\"m\":\"dataxibji\"},{\"a\":\"datatkvfurdjjzsijm\"},{\"jmnvukovxfkxnevc\":\"datanbluxomzg\",\"oco\":\"datawuiopgyunf\",\"pqmdii\":\"datacgdki\"},{\"ppcpwcxfn\":\"datapmfakinode\"}]}")
             .toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkJarActivityTypeProperties model = new DatabricksSparkJarActivityTypeProperties()
-            .withMainClassName("dataoe").withParameters(Arrays.asList("datart", "databadrcy", "dataxbjaktg", "dataw"))
-            .withLibraries(Arrays.asList(
-                mapOf("ragqcwcdbtopuyi", "datahghorgji", "imhjbxwr", "databqdsuaazkouvvgcw", "z", "datagaofwo"),
-                mapOf("bnx", "datap"), mapOf("uxjh", "datalysfsh")));
+        DatabricksSparkJarActivityTypeProperties model
+            = new DatabricksSparkJarActivityTypeProperties().withMainClassName("dataqtjacnbe")
+                .withParameters(Arrays.asList("datahpkaamoovrbv", "datauoqbclhn", "dataqxuxrggx"))
+                .withLibraries(Arrays.asList(mapOf("cjawqhpijurqoi", "dataqpkckwaafuy", "m", "dataxibji"),
+                    mapOf("a", "datatkvfurdjjzsijm"),
+                    mapOf("jmnvukovxfkxnevc", "datanbluxomzg", "oco", "datawuiopgyunf", "pqmdii", "datacgdki"),
+                    mapOf("ppcpwcxfn", "datapmfakinode")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 

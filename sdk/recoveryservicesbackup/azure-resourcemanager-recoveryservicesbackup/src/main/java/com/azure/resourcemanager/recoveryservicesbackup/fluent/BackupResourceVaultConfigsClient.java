@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 
-/** An instance of this class provides access to all the operations defined in BackupResourceVaultConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupResourceVaultConfigsClient.
+ */
 public interface BackupResourceVaultConfigsClient {
     /**
      * Fetches resource vault config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -24,12 +26,12 @@ public interface BackupResourceVaultConfigsClient {
      * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceVaultConfigResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, Context context);
+    Response<BackupResourceVaultConfigResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        Context context);
 
     /**
      * Fetches resource vault config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +44,7 @@ public interface BackupResourceVaultConfigsClient {
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -53,12 +55,12 @@ public interface BackupResourceVaultConfigsClient {
      * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceVaultConfigResourceInner> updateWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context);
+    Response<BackupResourceVaultConfigResourceInner> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -68,12 +70,12 @@ public interface BackupResourceVaultConfigsClient {
      * @return backup resource vault config details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupResourceVaultConfigResourceInner update(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
+    BackupResourceVaultConfigResourceInner update(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -84,12 +86,12 @@ public interface BackupResourceVaultConfigsClient {
      * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceVaultConfigResourceInner> putWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context);
+    Response<BackupResourceVaultConfigResourceInner> putWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -99,6 +101,6 @@ public interface BackupResourceVaultConfigsClient {
      * @return backup resource vault config details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupResourceVaultConfigResourceInner put(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
+    BackupResourceVaultConfigResourceInner put(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters);
 }

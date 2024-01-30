@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data encryption type to depict if it is System Managed vs Azure Key vault. */
+/**
+ * Data encryption type to depict if it is System Managed vs Azure Key vault.
+ */
 public final class ArmServerKeyType extends ExpandableStringEnum<ArmServerKeyType> {
-    /** Static value SystemManaged for ArmServerKeyType. */
+    /**
+     * Static value SystemManaged for ArmServerKeyType.
+     */
     public static final ArmServerKeyType SYSTEM_MANAGED = fromString("SystemManaged");
 
-    /** Static value AzureKeyVault for ArmServerKeyType. */
+    /**
+     * Static value AzureKeyVault for ArmServerKeyType.
+     */
     public static final ArmServerKeyType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /**
      * Creates a new instance of ArmServerKeyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ArmServerKeyType extends ExpandableStringEnum<ArmServerKeyTyp
 
     /**
      * Creates or finds a ArmServerKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ArmServerKeyType.
      */
@@ -38,7 +44,7 @@ public final class ArmServerKeyType extends ExpandableStringEnum<ArmServerKeyTyp
 
     /**
      * Gets known ArmServerKeyType values.
-     *
+     * 
      * @return known ArmServerKeyType values.
      */
     public static Collection<ArmServerKeyType> values() {

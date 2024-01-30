@@ -182,9 +182,12 @@ final class RntbdToken {
 
     private void ensureValid(final Object value) {
         checkArgument(value != null, "expected non-null value");
-        checkArgument(this.header.type().codec().isValid(value), "invalid value: %s = %s",
-            value.getClass().getName(),
-            value);
+        if (!this.header.type().codec().isValid(value)) {
+            throw new IllegalArgumentException("invalid value: "
+              + value.getClass().getName()
+              + " = "
+              + value);
+        }
     }
 
     // endregion

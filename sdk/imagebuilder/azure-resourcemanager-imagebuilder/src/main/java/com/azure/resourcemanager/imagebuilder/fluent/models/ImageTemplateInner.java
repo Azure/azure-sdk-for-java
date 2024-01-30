@@ -12,6 +12,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesErrorHandling;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesOptimize;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
@@ -22,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider. */
+/**
+ * Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
+ */
 @Fluent
 public final class ImageTemplateInner extends Resource {
     /*
@@ -43,13 +46,15 @@ public final class ImageTemplateInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ImageTemplateInner class. */
+    /**
+     * Creates an instance of ImageTemplateInner class.
+     */
     public ImageTemplateInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the image template.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageTemplateProperties innerProperties() {
@@ -58,7 +63,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public ImageTemplateIdentity identity() {
@@ -67,7 +72,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -78,21 +83,25 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -101,7 +110,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the source property: Specifies the properties used to describe the source image.
-     *
+     * 
      * @return the source value.
      */
     public ImageTemplateSource source() {
@@ -110,7 +119,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the source property: Specifies the properties used to describe the source image.
-     *
+     * 
      * @param source the source value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -125,7 +134,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Get the customize property: Specifies the properties used to describe the customization steps of the image, like
      * Image source etc.
-     *
+     * 
      * @return the customize value.
      */
     public List<ImageTemplateCustomizer> customize() {
@@ -135,7 +144,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Set the customize property: Specifies the properties used to describe the customization steps of the image, like
      * Image source etc.
-     *
+     * 
      * @param customize the customize value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -149,7 +158,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the optimize property: Specifies optimization to be performed on image.
-     *
+     * 
      * @return the optimize value.
      */
     public ImageTemplatePropertiesOptimize optimize() {
@@ -158,7 +167,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the optimize property: Specifies optimization to be performed on image.
-     *
+     * 
      * @param optimize the optimize value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -173,7 +182,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Get the validation property: Configuration options and list of validations to be performed on the resulting
      * image.
-     *
+     * 
      * @return the validation value.
      */
     public ImageTemplatePropertiesValidate validation() {
@@ -183,7 +192,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Set the validation property: Configuration options and list of validations to be performed on the resulting
      * image.
-     *
+     * 
      * @param validation the validation value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -197,7 +206,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the distribute property: The distribution targets where the image output needs to go to.
-     *
+     * 
      * @return the distribute value.
      */
     public List<ImageTemplateDistributor> distribute() {
@@ -206,7 +215,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the distribute property: The distribution targets where the image output needs to go to.
-     *
+     * 
      * @param distribute the distribute value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -219,8 +228,31 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
+     * Get the errorHandling property: Error handling options upon a build failure.
+     * 
+     * @return the errorHandling value.
+     */
+    public ImageTemplatePropertiesErrorHandling errorHandling() {
+        return this.innerProperties() == null ? null : this.innerProperties().errorHandling();
+    }
+
+    /**
+     * Set the errorHandling property: Error handling options upon a build failure.
+     * 
+     * @param errorHandling the errorHandling value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withErrorHandling(ImageTemplatePropertiesErrorHandling errorHandling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withErrorHandling(errorHandling);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -229,7 +261,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the provisioningError property: Provisioning error, if any.
-     *
+     * 
      * @return the provisioningError value.
      */
     public ProvisioningError provisioningError() {
@@ -238,7 +270,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the lastRunStatus property: State of 'run' that is currently executing or was last executed.
-     *
+     * 
      * @return the lastRunStatus value.
      */
     public ImageTemplateLastRunStatus lastRunStatus() {
@@ -248,7 +280,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
      * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
-     *
+     * 
      * @return the buildTimeoutInMinutes value.
      */
     public Integer buildTimeoutInMinutes() {
@@ -258,7 +290,7 @@ public final class ImageTemplateInner extends Resource {
     /**
      * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
      * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
-     *
+     * 
      * @param buildTimeoutInMinutes the buildTimeoutInMinutes value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -272,7 +304,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the vmProfile property: Describes how virtual machine is set up to build images.
-     *
+     * 
      * @return the vmProfile value.
      */
     public ImageTemplateVmProfile vmProfile() {
@@ -281,7 +313,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the vmProfile property: Describes how virtual machine is set up to build images.
-     *
+     * 
      * @param vmProfile the vmProfile value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -301,7 +333,7 @@ public final class ImageTemplateInner extends Resource {
      * resource group created will be deleted during template deletion if this field is empty or the resource group
      * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
      * will be deleted during template deletion and the resource group itself will remain.
-     *
+     * 
      * @return the stagingResourceGroup value.
      */
     public String stagingResourceGroup() {
@@ -316,7 +348,7 @@ public final class ImageTemplateInner extends Resource {
      * resource group created will be deleted during template deletion if this field is empty or the resource group
      * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
      * will be deleted during template deletion and the resource group itself will remain.
-     *
+     * 
      * @param stagingResourceGroup the stagingResourceGroup value to set.
      * @return the ImageTemplateInner object itself.
      */
@@ -332,7 +364,7 @@ public final class ImageTemplateInner extends Resource {
      * Get the exactStagingResourceGroup property: The staging resource group id in the same subscription as the image
      * template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if
      * the value specified in the 'stagingResourceGroup' field is empty.
-     *
+     * 
      * @return the exactStagingResourceGroup value.
      */
     public String exactStagingResourceGroup() {
@@ -341,7 +373,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -349,9 +381,8 @@ public final class ImageTemplateInner extends Resource {
             innerProperties().validate();
         }
         if (identity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property identity in model ImageTemplateInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property identity in model ImageTemplateInner"));
         } else {
             identity().validate();
         }

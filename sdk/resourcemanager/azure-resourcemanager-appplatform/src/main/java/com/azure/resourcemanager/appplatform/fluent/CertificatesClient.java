@@ -18,13 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public interface CertificatesClient {
     /**
      * Get the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,14 +35,14 @@ public interface CertificatesClient {
      * @return the certificate resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CertificateResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String certificateName);
+    Mono<Response<CertificateResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String certificateName);
 
     /**
      * Get the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,9 +55,26 @@ public interface CertificatesClient {
 
     /**
      * Get the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the certificate resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CertificateResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String certificateName, Context context);
+
+    /**
+     * Get the certificate resource.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,27 +86,10 @@ public interface CertificatesClient {
     CertificateResourceInner get(String resourceGroupName, String serviceName, String certificateName);
 
     /**
-     * Get the certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String certificateName, Context context);
-
-    /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -97,17 +99,14 @@ public interface CertificatesClient {
      * @return certificate resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
-        CertificateResourceInner certificateResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String certificateName, CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -118,16 +117,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
+        String resourceGroupName, String serviceName, String certificateName,
         CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -138,16 +135,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
+        String resourceGroupName, String serviceName, String certificateName,
         CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -159,17 +154,14 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
-        CertificateResourceInner certificateResource,
-        Context context);
+        String resourceGroupName, String serviceName, String certificateName,
+        CertificateResourceInner certificateResource, Context context);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -179,17 +171,14 @@ public interface CertificatesClient {
      * @return certificate resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CertificateResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
-        CertificateResourceInner certificateResource);
+    Mono<CertificateResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String certificateName, CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -199,17 +188,14 @@ public interface CertificatesClient {
      * @return certificate resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
+    CertificateResourceInner createOrUpdate(String resourceGroupName, String serviceName, String certificateName,
         CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param certificateResource Parameters for the create or update operation.
@@ -220,18 +206,14 @@ public interface CertificatesClient {
      * @return certificate resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String certificateName,
-        CertificateResourceInner certificateResource,
-        Context context);
+    CertificateResourceInner createOrUpdate(String resourceGroupName, String serviceName, String certificateName,
+        CertificateResourceInner certificateResource, Context context);
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,14 +222,14 @@ public interface CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String certificateName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String certificateName);
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,14 +238,14 @@ public interface CertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String certificateName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String certificateName);
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,14 +254,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String certificateName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String certificateName);
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param context The context to associate with this operation.
@@ -289,14 +271,14 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String certificateName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String certificateName,
+        Context context);
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,9 +291,9 @@ public interface CertificatesClient {
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,9 +305,9 @@ public interface CertificatesClient {
 
     /**
      * Delete the certificate resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
      * @param context The context to associate with this operation.
@@ -338,46 +320,46 @@ public interface CertificatesClient {
 
     /**
      * List all the certificates of one user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of certificate resources list and a possible link for next page as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CertificateResourceInner> listAsync(String resourceGroupName, String serviceName);
 
     /**
      * List all the certificates of one user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of certificate resources list and a possible link for next page as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateResourceInner> list(String resourceGroupName, String serviceName);
 
     /**
      * List all the certificates of one user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection compose of certificate resources list and a possible link for next page as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateResourceInner> list(String resourceGroupName, String serviceName, Context context);

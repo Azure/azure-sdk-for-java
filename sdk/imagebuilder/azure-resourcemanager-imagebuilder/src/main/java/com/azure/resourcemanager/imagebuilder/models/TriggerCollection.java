@@ -10,7 +10,9 @@ import com.azure.resourcemanager.imagebuilder.fluent.models.TriggerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of List triggers operation. */
+/**
+ * The result of List triggers operation.
+ */
 @Fluent
 public final class TriggerCollection {
     /*
@@ -25,13 +27,15 @@ public final class TriggerCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TriggerCollection class. */
+    /**
+     * Creates an instance of TriggerCollection class.
+     */
     public TriggerCollection() {
     }
 
     /**
      * Get the value property: An array of triggers.
-     *
+     * 
      * @return the value value.
      */
     public List<TriggerInner> value() {
@@ -40,7 +44,7 @@ public final class TriggerCollection {
 
     /**
      * Set the value property: An array of triggers.
-     *
+     * 
      * @param value the value value to set.
      * @return the TriggerCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class TriggerCollection {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class TriggerCollection {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TriggerCollection object itself.
      */
@@ -71,14 +75,13 @@ public final class TriggerCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TriggerCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TriggerCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

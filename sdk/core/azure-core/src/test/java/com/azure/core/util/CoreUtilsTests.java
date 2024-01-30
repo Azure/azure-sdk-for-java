@@ -544,7 +544,7 @@ public class CoreUtilsTests {
         try {
             AtomicBoolean completed = new AtomicBoolean(false);
             Future<?> future = executorService.submit(() -> {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
                 completed.set(true);
                 return null;
             });
@@ -557,7 +557,7 @@ public class CoreUtilsTests {
             }
 
             // Give time for the future to complete if cancellation didn't work.
-            Thread.sleep(1000);
+            Thread.sleep(5000);
 
             assertFalse(completed.get());
         } catch (InterruptedException | ExecutionException e) {
