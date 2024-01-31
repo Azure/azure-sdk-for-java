@@ -20,8 +20,8 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
     public static final PhoneNumberOperationType SEARCH = fromString("search");
 
     /** Static value updatePhoneNumberCapabilities for PhoneNumberOperationType. */
-    public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES = fromString(
-            "updatePhoneNumberCapabilities");
+    public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES =
+            fromString("updatePhoneNumberCapabilities");
 
     /** Static value reservationPurchase for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
