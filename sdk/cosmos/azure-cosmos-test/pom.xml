@@ -203,9 +203,6 @@ Licensed under the MIT License.
       <properties>
         <test.groups>multi-region</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
@@ -227,9 +224,6 @@ Licensed under the MIT License.
       <properties>
         <test.groups>simple</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
