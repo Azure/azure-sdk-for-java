@@ -12,7 +12,9 @@ import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a webhook. */
+/**
+ * The properties of a webhook.
+ */
 @Fluent
 public final class WebhookProperties {
     /*
@@ -41,13 +43,15 @@ public final class WebhookProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of WebhookProperties class. */
+    /**
+     * Creates an instance of WebhookProperties class.
+     */
     public WebhookProperties() {
     }
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -56,7 +60,7 @@ public final class WebhookProperties {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class WebhookProperties {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -80,7 +84,7 @@ public final class WebhookProperties {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class WebhookProperties {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -100,7 +104,7 @@ public final class WebhookProperties {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class WebhookProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the webhook at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,14 +124,13 @@ public final class WebhookProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model WebhookProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property actions in model WebhookProperties"));
         }
     }
 
