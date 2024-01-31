@@ -40,7 +40,7 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
             AssistantThread assistantThread = client.createThread(assistantThreadCreationOptions);
 
             // Send first user message
-            ThreadMessage userMessage = client.createMessage(
+            client.createMessage(
                 assistantThread.getId(),
                 MessageRole.USER,
                 "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
@@ -48,7 +48,7 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
             );
 
             // Create run thread
-            ThreadRun run = client.createRun(assistantThread.getId(), new CreateRunOptions(assistant.getId()));
+            ThreadRun run = client.createRun(assistantThread, assistant);
 
             // Poll the run
             do {
