@@ -39,8 +39,10 @@ Invoking tsp-client update
 foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
+  Push-Location
   Set-Location -Path $sdkPath
   tsp-client update
+  Pop-Location
 }
 
 Write-Host "
