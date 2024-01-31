@@ -233,6 +233,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>simple</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -254,6 +257,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>long</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -275,6 +281,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>direct</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -296,6 +305,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>multi-master</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -368,6 +380,9 @@ Licensed under the MIT License.
       <properties>
         <test.groups>e2e</test.groups>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>

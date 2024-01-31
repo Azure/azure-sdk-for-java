@@ -24,7 +24,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pdirect,fast,query,multi-master,e2e,flaky-multi-master,multi-region,long,cfp-split,split" ],
+      "ProfileFlag": "",
       "RunAggregateReports": true,
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
       "Agent": {
