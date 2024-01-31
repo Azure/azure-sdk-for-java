@@ -3,9 +3,7 @@
 
 [Health Insights][health_insights] is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
 
-[Radiology Insights][radiology_insights_docs] is a model that aims to provide quality checks as feedback on errors and inconsistencies (mismatches) and ensures critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
-
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][radiology_insights_api_documentation] | [Product Documentation][product_documentation] | [Samples][samples_location]
+Radiology Insights is a model that aims to provide quality checks as feedback on errors and inconsistencies (mismatches) and ensures critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
 
 ## Getting started
 
@@ -31,7 +29,7 @@ For more information about creating the resource or how to get the location and 
 
 ### Authenticate the client
 
-In order to interact with the Health Insights Clinical Matching service, you'll need to create an instance of the [`RadiologyInsightsClient`][radiology_insights_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Health Insights Clinical Matching service, you'll need to create an instance of the RadiologyInsightsClient class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
 
 #### Get API Key
 
@@ -61,13 +59,13 @@ RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsight
 
 ## Key concepts
 
-Radiology Insights currently supports one document from one patient. Please take a look [here][inferences] for more detailed information about the inferences this service produces.  
+Radiology Insights currently supports one document from one patient. Please take a look here for more detailed information about the inferences this service produces.  
 
 ## Examples
 
 ### Create a RadiologyInsights request and get the result using an asynchronous client
 
-For an example how to create a client, a request and get the result see the example in the [sample folder][sample_client].
+For an example how to create a client, a request and get the result see the example in the sample folder.
 
 ### Get Critical Result Inference information
 ```java
@@ -83,7 +81,7 @@ List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.ge
 		}
 	}
 ```
-For detailed conceptual information of this and other inferences please read more [here][inferences].
+For detailed conceptual information of this and other inferences please read more here.
 
 ## Troubleshooting
 
@@ -101,24 +99,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [health_insights]: https://learn.microsoft.com/azure/azure-health-insights/overview
-[radiology_insights_docs]: https://azure.microsoft.com/services/
-[source_code]: https://azure.microsoft.com/services/
-[package]: https://azure.microsoft.com/services/
-[radiology_insights_api_documentation]: https://azure.microsoft.com/services/
-[product_documentation]: https://azure.microsoft.com/services/
-[samples_location]: https://azure.microsoft.com/services/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[radiology_insights_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/main/java/com/azure/health/insights/radiologyinsights/RadiologyInsightsClient.java
-[product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-[inferences]: https://github.com/Azure/azure-rest-api-specs
 [azure_portal]: https://portal.azure.com
-[sample_client]: https://github.com/Azure/azure-rest-api-specs
 
 ![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
