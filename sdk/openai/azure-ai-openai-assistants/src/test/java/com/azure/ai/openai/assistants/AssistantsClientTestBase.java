@@ -20,7 +20,9 @@ import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
+import com.azure.ai.openai.assistants.models.ToolDefinition;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
+import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -39,6 +41,7 @@ import reactor.test.StepVerifier;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -195,6 +198,21 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             .setTools(Arrays.asList(new RetrievalToolDefinition()));
 
         testRunner.accept(uploadRequest, assistantOptions);
+    }
+
+    void createFunctionToolCallRunner(Consumer<AssistantCreationOptions> testRunner) {
+        FunctionsToolCallHelper functionsToolCallHelper = new FunctionsToolCallHelper();
+        List<ToolDefinition> toolDefinition = Arrays.asList(
+            functionsToolCallHelper.getAirlinePriceToDestinationForSeasonDefinition(),
+            functionsToolCallHelper.getFavoriteVacationDestinationDefinition(),
+            functionsToolCallHelper.getPreferredAirlineForSeasonDefinition()
+        );
+        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+            .setName("Java SDK Function Tool Call Test")
+            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+            .setTools(toolDefinition);
+
+        testRunner.accept(assistantOptions);
     }
 
     void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {

@@ -1,4 +1,4 @@
-package com.azure.ai.openai.assistants.utils;
+package com.azure.ai.openai.assistants.implementation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,4 +1,4 @@
-package com.azure.ai.openai.assistants.utils;
+package com.azure.ai.openai.assistants.implementation;
 
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;

@@ -1,6 +1,7 @@
-package com.azure.ai.openai.assistants.utils;
+package com.azure.ai.openai.assistants.implementation;
 
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
+import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,23 +12,23 @@ import java.util.Map;
 
 public class FunctionsToolCallHelper {
 
-    public FunctionDefinition getFavoriteVacationDestinationDefinition() {
-        return new FunctionDefinition("getFavoriteVacationDestination", null)
-            .setDescription("Retrieves the user's unambiguously preferred location for vacations.");
+    public FunctionToolDefinition getFavoriteVacationDestinationDefinition() {
+        return new FunctionToolDefinition(new FunctionDefinition("getFavoriteVacationDestination", null)
+            .setDescription("Retrieves the user's unambiguously preferred location for vacations."));
     }
 
-    public FunctionDefinition getPreferredAirlineForSeasonDefinition() {
-        return new FunctionDefinition(
+    public FunctionToolDefinition getPreferredAirlineForSeasonDefinition() {
+        return new FunctionToolDefinition(new FunctionDefinition(
                 "getPreferredAirlineForSeason",
                 BinaryData.fromObject(new AirlineForSeasonParameters()))
-            .setDescription("Given a season like winter or spring, retrieves the user's preferred airline carrier.");
+            .setDescription("Given a season like winter or spring, retrieves the user's preferred airline carrier."));
     }
 
-    public FunctionDefinition getAirlinePriceToDestinationForSeasonDefinition() {
-        return new FunctionDefinition(
+    public FunctionToolDefinition getAirlinePriceToDestinationForSeasonDefinition() {
+        return new FunctionToolDefinition(new FunctionDefinition(
                 "getAirlinePriceToDestinationForSeason",
                 BinaryData.fromObject(new AirlinePriceFunctionParameters()))
-            .setDescription("Given a desired location, airline, and approximate time of year, retrieves estimated prices.");
+            .setDescription("Given a desired location, airline, and approximate time of year, retrieves estimated prices."));
     }
 
     private class AirlineForSeasonParameters {

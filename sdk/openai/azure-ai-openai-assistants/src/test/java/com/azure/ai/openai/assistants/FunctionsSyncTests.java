@@ -1,5 +1,6 @@
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,8 +16,12 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
     public void parallelFunctionCallTest(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
+        createFunctionToolCallRunner(assistantCreationOptions -> {
+            Assistant assistant = client.createAssistant(assistantCreationOptions);
 
-
+            // cleanup
+            client.deleteAssistant(assistant.getId());
+        });
     }
 
 }
