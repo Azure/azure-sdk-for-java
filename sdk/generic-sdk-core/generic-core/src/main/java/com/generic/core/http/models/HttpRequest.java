@@ -148,53 +148,12 @@ public class HttpRequest {
     }
 
     /**
-     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
-     * matching name exists.
-     *
-     * @param headerName The header name.
-     * @param value The header value.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setHeader(HeaderName headerName, String value) {
-        headers.set(headerName, value);
-
-        return this;
-    }
-
-    /**
      * Get the request content.
      *
      * @return The content to be sent.
      */
     public BinaryData getBody() {
         return body;
-    }
-
-    /**
-     * Set the request content.
-     * <p>
-     * The Content-Length header will be set based on the given content's length.
-     *
-     * @param content The request content.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setBody(String content) {
-        return setBody(BinaryData.fromString(content));
-    }
-
-    /**
-     * Set the request content.
-     * <p>
-     * The Content-Length header will be set based on the given content's length.
-     *
-     * @param content The request content.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setBody(byte[] content) {
-        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
