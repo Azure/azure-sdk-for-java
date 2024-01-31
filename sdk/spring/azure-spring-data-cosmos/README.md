@@ -297,7 +297,7 @@ public CosmosConfig cosmosConfig() {
 
 - Containers will be created automatically unless you don't want them to. Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers.
 
-- Note: By default request units assigned to newly created containers is 400. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400).
+- Note: If you are using provisioned throughput, you can optionally specify different ru values to customize request units for the container created by the SDK. The minimum ru should be 400
 ```java readme-sample-User
 @Container(containerName = "myContainer", ru = "400")
 public class User {
