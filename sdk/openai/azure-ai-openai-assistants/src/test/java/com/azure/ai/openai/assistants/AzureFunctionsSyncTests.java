@@ -1,5 +1,7 @@
-package com.azure.ai.openai.assistants;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
