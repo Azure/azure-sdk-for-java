@@ -76,6 +76,7 @@ public class HttpLogOptions {
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
         applicationId = null;
+        enableRedactedHeaderLogging = true;
     }
 
     /**
@@ -285,10 +286,10 @@ public class HttpLogOptions {
      * Sets the flag that controls if header names which value is redacted should be logged.
      * <p>
      * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
-     * Defaults to `false` - redacted header names are not logged.
+     * Defaults to `true` - redacted header names are logged.
      *
-     * @param enableRedactedHeaderLogging If true, redacted header names are logged.
-     * Otherwise, headers with redacted values are logged as a comma separated list under `redactedHeaders` property.
+     * @param enableRedactedHeaderLogging If true, redacted header names are logged
+     * as a comma separated list under `redactedHeaders` property, otherwise they are not logged at all.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions enableRedactedHeaderLogging(boolean enableRedactedHeaderLogging) {

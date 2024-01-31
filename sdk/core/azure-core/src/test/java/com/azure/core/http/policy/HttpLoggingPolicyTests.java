@@ -611,9 +611,9 @@ public class HttpLoggingPolicyTests {
         return Stream.of(
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).enableRedactedHeaderLogging(true),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).enableRedactedHeaderLogging(false),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).enableRedactedHeaderLogging(true));
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).enableRedactedHeaderLogging(false));
     }
 
     private static Context getCallerMethodContext(String testMethodName) {
