@@ -193,13 +193,21 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     public AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
+
         if (StringUtils.hasText(configStore.getConnectionString())) {
             ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
             connectionString.setUri(failoverEndpoint);
             ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
+        } else if (configStore.getConnectionStrings().size() > 0) {
+            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
+            connectionString.setUri(failoverEndpoint);
+            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
+            return modifyAndBuildClient(builder, failoverEndpoint, 0);
+        } else {
+            ConfigurationClientBuilder builder = createBuilderInstance();
+            return modifyAndBuildClient(builder, failoverEndpoint, 0);
         }
-        return null;
     }
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
@@ -345,12 +353,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             }
         }
 
-        ConnectionString(URL uri, String id, String secret) {
-            this.baseUri = uri;
-            this.id = id;
-            this.secret = secret;
-        }
-
         protected ConnectionString setUri(String uri) {
             try {
                 this.baseUri = new URL(uri);
@@ -358,10 +360,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 throw new IllegalArgumentException(ex);
             }
             return this;
-        }
-
-        protected ConnectionString clone() {
-            return new ConnectionString(baseUri, id, secret);
         }
 
         public String toString() {
