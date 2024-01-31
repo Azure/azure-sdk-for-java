@@ -293,7 +293,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
@@ -434,6 +434,20 @@
         </configuration>
         <executions>
           <execution>
+            <id>instrument</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>instrument</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>restore-instrumented-classes</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>restore-instrumented-classes</goal>
+            </goals>
+          </execution>
+          <execution>
             <id>prepare-agent</id>
             <phase>process-test-classes</phase>
             <goals>
@@ -456,8 +470,15 @@
             </configuration>
           </execution>
           <execution>
-            <id>merge-unit-and-integration</id>
+            <id>integration-restore-instrumented-classes</id>
             <phase>post-integration-test</phase>
+            <goals>
+              <goal>restore-instrumented-classes</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>merge-unit-and-integration</id>
+            <phase>verify</phase>
             <goals>
               <goal>merge</goal>
             </goals>
@@ -475,7 +496,7 @@
           </execution>
           <execution>
             <id>post-unit-test</id>
-            <phase>post-integration-test</phase>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -491,12 +512,13 @@
           </execution>
           <execution>
             <id>check</id>
-            <phase>post-integration-test</phase>
+            <phase>verify</phase>
             <goals>
               <goal>check</goal>
             </goals>
             <configuration>
               <skip>${jacoco.skip}</skip>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
@@ -626,7 +648,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
@@ -1094,7 +1116,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -1150,7 +1172,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -1214,6 +1236,7 @@
                 <configuration>
                   <release>${java.vm.specification.version}</release>
                   <testRelease>${java.vm.specification.version}</testRelease>
+                  <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
 
@@ -1232,6 +1255,7 @@
                   <testExcludes>
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>
+                  <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
             </executions>
@@ -1688,7 +1712,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated

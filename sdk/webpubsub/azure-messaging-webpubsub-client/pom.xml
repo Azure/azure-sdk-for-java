@@ -36,8 +36,6 @@
     <!-- sdk uses live tests -->
     <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
-
-    <jacoco.skip>true</jacoco.skip> <!-- investigating issue with Jacoco and module-info.java in /src/test -->
   </properties>
 
   <dependencies>

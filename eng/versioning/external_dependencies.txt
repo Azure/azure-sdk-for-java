@@ -288,7 +288,7 @@ org.apache.maven.plugins:maven-antrun-plugin;3.0.0
 org.apache.maven.plugins:maven-assembly-plugin;3.3.0
 org.apache.maven.plugins:maven-checkstyle-plugin;3.3.1
 org.apache.maven.plugins:maven-clean-plugin;3.2.0
-org.apache.maven.plugins:maven-compiler-plugin;3.10.1
+org.apache.maven.plugins:maven-compiler-plugin;3.12.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;3.2.5
