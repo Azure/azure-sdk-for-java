@@ -9,7 +9,6 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -24,14 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessageAsyncTest extends AssistantsClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageAsyncTest.class);
     private AssistantsAsyncClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
             // Create a message
@@ -66,14 +64,14 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             AtomicReference<String> threadMessageIdReference = new AtomicReference<>();
             // Create a message
@@ -118,14 +116,14 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listMessages(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create two messages in user role
             StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
@@ -154,6 +152,6 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 }

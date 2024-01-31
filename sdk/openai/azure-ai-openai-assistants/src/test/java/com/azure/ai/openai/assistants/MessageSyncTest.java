@@ -10,7 +10,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,14 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessageSyncTest extends AssistantsClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSyncTest.class);
     private AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create a message
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
@@ -69,14 +67,14 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create a message
             Map<String, String> metadata = new HashMap<>();
@@ -114,14 +112,14 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             assertEquals(metadataUpdate.get("content"), metaDataResponse.get("content"));
         });
         // Delete the created thread
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listMessages(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        String threadId = createThread(client, LOGGER);
+        String threadId = createThread(client);
         createMessageRunner(message -> {
             // Create two messages in user role
             ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
@@ -142,6 +140,6 @@ public class MessageSyncTest extends AssistantsClientTestBase {
             assertEquals(2, listedMessagesWithResponse.getData().size());
             // Delete the created thread
         });
-        deleteThread(client, threadId, LOGGER);
+        deleteThread(client, threadId);
     }
 }
