@@ -12,48 +12,35 @@ public class BatchClientParallelOptions {
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchClientParallelOptions.class);
 
-    private int maxDegreeOfParallelism;
+    private Integer maxDegreeOfParallelism;
 
     /**
      * Gets the maximum number of concurrent tasks enabled by this {@link BatchClientParallelOptions} instance.
-     *
-     * The default value is 1.
-     * @return The maximum number of concurrent tasks.
+     * If not set, it returns null, indicating no specific limit is set.
+     * @return The maximum number of concurrent tasks or null if not set.
      */
-    public int maxDegreeOfParallelism() {
+    public Integer maxDegreeOfParallelism() {
         return this.maxDegreeOfParallelism;
     }
 
     /**
      * Sets the maximum number of concurrent tasks enabled by this {@link BatchClientParallelOptions} instance.
-     *
-     * @param maxDegreeOfParallelism the maximum number of concurrent tasks.
+     * Pass null to make the maximum degree of parallelism optional.
+     * @param maxDegreeOfParallelism the maximum number of concurrent tasks or null.
      * @return The instance of {@link BatchClientParallelOptions}.
-     * @throws IllegalArgumentException Exception thrown if maxDegreeOfParallelism is not a valid number.
+     * @throws IllegalArgumentException Exception thrown if maxDegreeOfParallelism is less than 1 and not null.
      */
-    public BatchClientParallelOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
-        if (maxDegreeOfParallelism > 0) {
-            this.maxDegreeOfParallelism = maxDegreeOfParallelism;
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("maxDegreeOfParallelism cannot be less than 1"));
+    public BatchClientParallelOptions setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
+        if (maxDegreeOfParallelism != null && maxDegreeOfParallelism <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("maxDegreeOfParallelism must be greater than 0 or null"));
         }
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
 
     /**
      * Initializes a new instance of the {@link BatchClientParallelOptions} class with default values.
      */
-    public BatchClientParallelOptions() {
-        this.maxDegreeOfParallelism = 1;
-    }
-
-    /**
-     * Initializes a new instance of the {@link BatchClientParallelOptions} class.
-     *
-     * @param maxDegreeOfParallelism the maximum number of concurrent tasks.
-     */
-    public BatchClientParallelOptions(int maxDegreeOfParallelism) {
-        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
-    }
+    public BatchClientParallelOptions() {}
 
 }

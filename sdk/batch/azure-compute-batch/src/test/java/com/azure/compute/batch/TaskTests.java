@@ -265,7 +265,8 @@ public class TaskTests extends BatchClientTestBase {
                 BatchTaskCreateParameters addOption = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(addOption);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            option.setMaxDegreeOfParallelism(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
 
             // LIST
@@ -305,7 +306,8 @@ public class TaskTests extends BatchClientTestBase {
                 BatchTaskCreateParameters addOption = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(addOption);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            option.setMaxDegreeOfParallelism(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
             // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
             Assert.assertTrue("Should not here", true);
@@ -384,7 +386,8 @@ public class TaskTests extends BatchClientTestBase {
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
-        BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+        BatchClientParallelOptions option = new BatchClientParallelOptions();
+        option.setMaxDegreeOfParallelism(10);
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for (int i = 0; i < 100; i++) {
@@ -443,7 +446,8 @@ public class TaskTests extends BatchClientTestBase {
                 BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(addParameter);
             }
-            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            BatchClientParallelOptions option = new BatchClientParallelOptions();
+            option.setMaxDegreeOfParallelism(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
 
             //The Waiting period is only needed in record mode.
