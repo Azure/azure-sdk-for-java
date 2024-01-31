@@ -27,12 +27,6 @@ public final class IpAddressProvisioningType extends ExpandableStringEnum<IpAddr
     public static final IpAddressProvisioningType USER_MANAGED = fromString("usermanaged");
 
     /**
-     * No public IP Address will be created.
-     */
-    @Generated
-    public static final IpAddressProvisioningType NO_PUBLIC_IPADDRESSES = fromString("nopublicipaddresses");
-
-    /**
      * Creates a new instance of IpAddressProvisioningType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -63,4 +57,10 @@ public final class IpAddressProvisioningType extends ExpandableStringEnum<IpAddr
     public static Collection<IpAddressProvisioningType> values() {
         return values(IpAddressProvisioningType.class);
     }
+
+    /**
+     * No public IP Address will be created.
+     */
+    @Generated
+    public static final IpAddressProvisioningType NO_PUBLIC_IP_ADDRESSES = fromString("nopublicipaddresses");
 }

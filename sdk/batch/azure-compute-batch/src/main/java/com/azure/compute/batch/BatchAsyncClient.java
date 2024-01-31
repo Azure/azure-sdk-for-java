@@ -3274,7 +3274,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
+    public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath,
+        GetBatchNodeFileOptions options) {
         return getNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(),
             options.getIfModifiedSince(), options.getIfUnmodifiedSince(), options.getOcpRange());
     }
