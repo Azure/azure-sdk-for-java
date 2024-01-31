@@ -47,7 +47,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous OpenAIClient type.
+ * The asynchronous OpenAI client.
  */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
