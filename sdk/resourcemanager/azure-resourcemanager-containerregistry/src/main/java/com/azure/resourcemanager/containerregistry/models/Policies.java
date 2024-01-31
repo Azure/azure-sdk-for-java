@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The policies for a container registry. */
+/**
+ * The policies for a container registry.
+ */
 @Fluent
 public final class Policies {
     /*
@@ -34,13 +36,15 @@ public final class Policies {
     @JsonProperty(value = "exportPolicy")
     private ExportPolicy exportPolicy;
 
-    /** Creates an instance of Policies class. */
+    /**
+     * Creates an instance of Policies class.
+     */
     public Policies() {
     }
 
     /**
      * Get the quarantinePolicy property: The quarantine policy for a container registry.
-     *
+     * 
      * @return the quarantinePolicy value.
      */
     public QuarantinePolicy quarantinePolicy() {
@@ -49,7 +53,7 @@ public final class Policies {
 
     /**
      * Set the quarantinePolicy property: The quarantine policy for a container registry.
-     *
+     * 
      * @param quarantinePolicy the quarantinePolicy value to set.
      * @return the Policies object itself.
      */
@@ -60,7 +64,7 @@ public final class Policies {
 
     /**
      * Get the trustPolicy property: The content trust policy for a container registry.
-     *
+     * 
      * @return the trustPolicy value.
      */
     public TrustPolicy trustPolicy() {
@@ -69,7 +73,7 @@ public final class Policies {
 
     /**
      * Set the trustPolicy property: The content trust policy for a container registry.
-     *
+     * 
      * @param trustPolicy the trustPolicy value to set.
      * @return the Policies object itself.
      */
@@ -80,7 +84,7 @@ public final class Policies {
 
     /**
      * Get the retentionPolicy property: The retention policy for a container registry.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -89,7 +93,7 @@ public final class Policies {
 
     /**
      * Set the retentionPolicy property: The retention policy for a container registry.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Policies object itself.
      */
@@ -100,7 +104,7 @@ public final class Policies {
 
     /**
      * Get the exportPolicy property: The export policy for a container registry.
-     *
+     * 
      * @return the exportPolicy value.
      */
     public ExportPolicy exportPolicy() {
@@ -109,7 +113,7 @@ public final class Policies {
 
     /**
      * Set the exportPolicy property: The export policy for a container registry.
-     *
+     * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the Policies object itself.
      */
@@ -120,7 +124,7 @@ public final class Policies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

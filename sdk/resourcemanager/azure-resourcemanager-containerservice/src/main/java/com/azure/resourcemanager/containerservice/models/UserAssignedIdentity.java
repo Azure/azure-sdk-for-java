@@ -38,7 +38,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the resourceId property: The resource ID of the user assigned identity.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -47,7 +47,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the resourceId property: The resource ID of the user assigned identity.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -58,7 +58,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the clientId property: The client ID of the user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -67,7 +67,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the clientId property: The client ID of the user assigned identity.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -78,7 +78,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the objectId property: The object ID of the user assigned identity.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -87,7 +87,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the objectId property: The object ID of the user assigned identity.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -98,7 +98,7 @@ public class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

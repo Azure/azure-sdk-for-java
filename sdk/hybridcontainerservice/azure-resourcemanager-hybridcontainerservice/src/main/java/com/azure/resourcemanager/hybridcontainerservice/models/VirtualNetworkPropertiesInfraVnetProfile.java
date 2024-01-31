@@ -13,16 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualNetworkPropertiesInfraVnetProfile {
     /*
-     * Infra network profile for HCI platform
+     * Infrastructure network profile for HCI platform
      */
     @JsonProperty(value = "hci")
     private VirtualNetworkPropertiesInfraVnetProfileHci hci;
-
-    /*
-     * Infra network profile for VMware platform
-     */
-    @JsonProperty(value = "vmware")
-    private VirtualNetworkPropertiesInfraVnetProfileVmware vmware;
 
     /**
      * Creates an instance of VirtualNetworkPropertiesInfraVnetProfile class.
@@ -31,7 +25,7 @@ public final class VirtualNetworkPropertiesInfraVnetProfile {
     }
 
     /**
-     * Get the hci property: Infra network profile for HCI platform.
+     * Get the hci property: Infrastructure network profile for HCI platform.
      * 
      * @return the hci value.
      */
@@ -40,33 +34,13 @@ public final class VirtualNetworkPropertiesInfraVnetProfile {
     }
 
     /**
-     * Set the hci property: Infra network profile for HCI platform.
+     * Set the hci property: Infrastructure network profile for HCI platform.
      * 
      * @param hci the hci value to set.
      * @return the VirtualNetworkPropertiesInfraVnetProfile object itself.
      */
     public VirtualNetworkPropertiesInfraVnetProfile withHci(VirtualNetworkPropertiesInfraVnetProfileHci hci) {
         this.hci = hci;
-        return this;
-    }
-
-    /**
-     * Get the vmware property: Infra network profile for VMware platform.
-     * 
-     * @return the vmware value.
-     */
-    public VirtualNetworkPropertiesInfraVnetProfileVmware vmware() {
-        return this.vmware;
-    }
-
-    /**
-     * Set the vmware property: Infra network profile for VMware platform.
-     * 
-     * @param vmware the vmware value to set.
-     * @return the VirtualNetworkPropertiesInfraVnetProfile object itself.
-     */
-    public VirtualNetworkPropertiesInfraVnetProfile withVmware(VirtualNetworkPropertiesInfraVnetProfileVmware vmware) {
-        this.vmware = vmware;
         return this;
     }
 
@@ -78,9 +52,6 @@ public final class VirtualNetworkPropertiesInfraVnetProfile {
     public void validate() {
         if (hci() != null) {
             hci().validate();
-        }
-        if (vmware() != null) {
-            vmware().validate();
         }
     }
 }

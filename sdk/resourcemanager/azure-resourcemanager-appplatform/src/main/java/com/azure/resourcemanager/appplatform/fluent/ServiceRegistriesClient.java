@@ -18,30 +18,32 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceRegistriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceRegistriesClient.
+ */
 public interface ServiceRegistriesClient {
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Service Registry and its properties along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,14 +52,31 @@ public interface ServiceRegistriesClient {
      * @return the Service Registry and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceRegistryResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    Mono<ServiceRegistryResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param serviceRegistryName The name of Service Registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Service Registry and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServiceRegistryResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context);
+
+    /**
+     * Get the Service Registry and its properties.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,27 +88,10 @@ public interface ServiceRegistriesClient {
     ServiceRegistryResourceInner get(String resourceGroupName, String serviceName, String serviceRegistryName);
 
     /**
-     * Get the Service Registry and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceRegistryName The name of Service Registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceRegistryResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context);
-
-    /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,14 +100,14 @@ public interface ServiceRegistriesClient {
      * @return service Registry resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,14 +116,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link PollerFlux} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    PollerFlux<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String serviceRegistryName);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,14 +132,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link SyncPoller} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String serviceRegistryName);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -147,14 +149,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link SyncPoller} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context);
+    SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String serviceRegistryName, Context context);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,14 +165,14 @@ public interface ServiceRegistriesClient {
      * @return service Registry resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceRegistryResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    Mono<ServiceRegistryResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,14 +181,14 @@ public interface ServiceRegistriesClient {
      * @return service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceRegistryResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    ServiceRegistryResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -196,14 +198,14 @@ public interface ServiceRegistriesClient {
      * @return service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceRegistryResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context);
+    ServiceRegistryResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context);
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,14 +214,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,14 +230,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,14 +246,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String serviceRegistryName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String serviceRegistryName);
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -261,14 +263,14 @@ public interface ServiceRegistriesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context);
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface ServiceRegistriesClient {
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,9 +297,9 @@ public interface ServiceRegistriesClient {
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -310,46 +312,46 @@ public interface ServiceRegistriesClient {
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServiceRegistryResourceInner> listAsync(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceRegistryResourceInner> list(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceRegistryResourceInner> list(String resourceGroupName, String serviceName, Context context);

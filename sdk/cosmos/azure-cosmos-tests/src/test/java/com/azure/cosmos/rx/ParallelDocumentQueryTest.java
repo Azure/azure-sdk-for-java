@@ -700,7 +700,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readMany() throws Exception {
+    public void readMany() {
         List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(

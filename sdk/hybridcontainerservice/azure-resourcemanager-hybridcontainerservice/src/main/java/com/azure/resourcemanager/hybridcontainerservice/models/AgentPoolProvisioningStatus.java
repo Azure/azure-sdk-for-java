@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class AgentPoolProvisioningStatus {
     /*
-     * Provisioning state of the resource
+     * The status of the latest long running operation for the agent pool.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
-     * Defines the observed state of the agent pool
+     * The observed status of the agent pool.
      */
     @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
@@ -31,7 +31,7 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
+     * Get the provisioningState property: The status of the latest long running operation for the agent pool.
      * 
      * @return the provisioningState value.
      */
@@ -40,7 +40,7 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Get the status property: Defines the observed state of the agent pool.
+     * Get the status property: The observed status of the agent pool.
      * 
      * @return the status value.
      */
@@ -49,7 +49,7 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Set the status property: Defines the observed state of the agent pool.
+     * Set the status property: The observed status of the agent pool.
      * 
      * @param status the status value to set.
      * @return the AgentPoolProvisioningStatus object itself.

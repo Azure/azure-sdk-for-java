@@ -45,7 +45,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Get the httpProxy property: The HTTP proxy server endpoint to use.
-     *
+     * 
      * @return the httpProxy value.
      */
     public String httpProxy() {
@@ -54,7 +54,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Set the httpProxy property: The HTTP proxy server endpoint to use.
-     *
+     * 
      * @param httpProxy the httpProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
      */
@@ -65,7 +65,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Get the httpsProxy property: The HTTPS proxy server endpoint to use.
-     *
+     * 
      * @return the httpsProxy value.
      */
     public String httpsProxy() {
@@ -74,7 +74,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Set the httpsProxy property: The HTTPS proxy server endpoint to use.
-     *
+     * 
      * @param httpsProxy the httpsProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
      */
@@ -85,7 +85,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Get the noProxy property: The endpoints that should not go through proxy.
-     *
+     * 
      * @return the noProxy value.
      */
     public List<String> noProxy() {
@@ -94,7 +94,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Set the noProxy property: The endpoints that should not go through proxy.
-     *
+     * 
      * @param noProxy the noProxy value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
      */
@@ -105,7 +105,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Get the trustedCa property: Alternative CA cert to use for connecting to proxy servers.
-     *
+     * 
      * @return the trustedCa value.
      */
     public String trustedCa() {
@@ -114,7 +114,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Set the trustedCa property: Alternative CA cert to use for connecting to proxy servers.
-     *
+     * 
      * @param trustedCa the trustedCa value to set.
      * @return the ManagedClusterHttpProxyConfig object itself.
      */
@@ -125,7 +125,7 @@ public final class ManagedClusterHttpProxyConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

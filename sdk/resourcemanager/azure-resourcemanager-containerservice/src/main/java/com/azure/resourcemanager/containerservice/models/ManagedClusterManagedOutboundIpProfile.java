@@ -28,7 +28,7 @@ public final class ManagedClusterManagedOutboundIpProfile {
     /**
      * Get the count property: The desired number of outbound IPs created/managed by Azure. Allowed values must be in
      * the range of 1 to 16 (inclusive). The default value is 1.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -38,7 +38,7 @@ public final class ManagedClusterManagedOutboundIpProfile {
     /**
      * Set the count property: The desired number of outbound IPs created/managed by Azure. Allowed values must be in
      * the range of 1 to 16 (inclusive). The default value is 1.
-     *
+     * 
      * @param count the count value to set.
      * @return the ManagedClusterManagedOutboundIpProfile object itself.
      */
@@ -49,7 +49,7 @@ public final class ManagedClusterManagedOutboundIpProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

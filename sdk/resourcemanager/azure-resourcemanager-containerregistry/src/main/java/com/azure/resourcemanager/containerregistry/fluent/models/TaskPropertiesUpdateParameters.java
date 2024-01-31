@@ -13,7 +13,9 @@ import com.azure.resourcemanager.containerregistry.models.TaskStepUpdateParamete
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties for updating a task. */
+/**
+ * The properties for updating a task.
+ */
 @Fluent
 public final class TaskPropertiesUpdateParameters {
     /*
@@ -70,13 +72,15 @@ public final class TaskPropertiesUpdateParameters {
     @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
-    /** Creates an instance of TaskPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of TaskPropertiesUpdateParameters class.
+     */
     public TaskPropertiesUpdateParameters() {
     }
 
     /**
      * Get the status property: The current status of task.
-     *
+     * 
      * @return the status value.
      */
     public TaskStatus status() {
@@ -85,7 +89,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the status property: The current status of task.
-     *
+     * 
      * @param status the status value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -96,7 +100,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformUpdateParameters platform() {
@@ -105,7 +109,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -116,7 +120,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -125,7 +129,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -136,7 +140,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -145,7 +149,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -156,7 +160,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -165,7 +169,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -176,7 +180,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the step property: The properties for updating a task step.
-     *
+     * 
      * @return the step value.
      */
     public TaskStepUpdateParameters step() {
@@ -185,7 +189,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the step property: The properties for updating a task step.
-     *
+     * 
      * @param step the step value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -196,7 +200,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @return the trigger value.
      */
     public TriggerUpdateParameters trigger() {
@@ -205,7 +209,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -217,7 +221,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Get the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -227,7 +231,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Set the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -239,7 +243,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Get the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @return the logTemplate value.
      */
     public String logTemplate() {
@@ -249,7 +253,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Set the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @param logTemplate the logTemplate value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -260,7 +264,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
