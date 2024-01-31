@@ -126,6 +126,8 @@
       -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
+    <jacocoUnitTestAgent></jacocoUnitTestAgent>
+
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
       @{jacocoUnitTestAgent}
@@ -140,6 +142,8 @@
     <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
+
+    <jacocoIntegrationTestAgent></jacocoIntegrationTestAgent>
 
     <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
     <defaultFailsafeArgLine>
@@ -426,7 +430,6 @@
           </dataFileIncludes>
           <excludes combine.children="append">
             <exclude>META-INF/**</exclude>
-            <exclude>module-info.class</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -884,6 +887,13 @@
               <artifactId>asm</artifactId>
               <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+            </dependency>
           </dependencies>
         </plugin>
 
@@ -920,6 +930,13 @@
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
               <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -988,17 +1005,6 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <dependencies>
-    <dependency>
-      <!-- must be on the classpath -->
-      <groupId>org.jacoco</groupId>
-      <artifactId>org.jacoco.agent</artifactId>
-      <classifier>runtime</classifier>
-      <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <reporting>
     <plugins>
@@ -1223,8 +1229,6 @@
                   </compilerArgs>
                   <release>8</release>
                   <testRelease>8</testRelease>
-                  <testSource>8</testSource>
-                  <testTarget>8</testTarget>
                   <testExcludes>
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>
