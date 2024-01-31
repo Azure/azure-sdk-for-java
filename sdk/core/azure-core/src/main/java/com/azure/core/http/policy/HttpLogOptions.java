@@ -23,7 +23,7 @@ public class HttpLogOptions {
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
-    private boolean enableRedactedHeaderLogging;
+    private boolean disableRedactedHeaderLogging;
 
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
@@ -76,7 +76,6 @@ public class HttpLogOptions {
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
         applicationId = null;
-        enableRedactedHeaderLogging = true;
     }
 
     /**
@@ -286,14 +285,14 @@ public class HttpLogOptions {
      * Sets the flag that controls if header names which value is redacted should be logged.
      * <p>
      * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
-     * Defaults to `true` - redacted header names are logged.
+     * Defaults to `false` - redacted header names are logged.
      *
-     * @param enableRedactedHeaderLogging If true, redacted header names are logged
-     * as a comma separated list under `redactedHeaders` property, otherwise they are not logged at all.
+     * @param disableRedactedHeaderLogging If true, redacted header names are not logged.
+     * Otherwise, they are logged as a comma separated list under `redactedHeaders` property.
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions enableRedactedHeaderLogging(boolean enableRedactedHeaderLogging) {
-        this.enableRedactedHeaderLogging = enableRedactedHeaderLogging;
+    public HttpLogOptions disableRedactedHeaderLogging(boolean disableRedactedHeaderLogging) {
+        this.disableRedactedHeaderLogging = disableRedactedHeaderLogging;
         return this;
     }
 
@@ -302,7 +301,7 @@ public class HttpLogOptions {
      *
      * @return true if header names with redacted values should be logged.
      */
-    public boolean isRedactedHeaderLoggingEnabled() {
-        return enableRedactedHeaderLogging;
+    public boolean isRedactedHeaderLoggingDisabled() {
+        return disableRedactedHeaderLogging;
     }
 }

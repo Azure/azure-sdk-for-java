@@ -611,9 +611,9 @@ public class HttpLoggingPolicyTests {
         return Stream.of(
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).enableRedactedHeaderLogging(false),
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).disableRedactedHeaderLogging(true),
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).enableRedactedHeaderLogging(false));
+            new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(true));
     }
 
     private static Context getCallerMethodContext(String testMethodName) {
@@ -819,7 +819,7 @@ public class HttpLoggingPolicyTests {
                     if (isAllowed) {
                         expectedHeaders++;
                         assertEquals(kvp.getValue(), other.headers.get(kvp.getKey()));
-                    } else if (logOptions.isRedactedHeaderLoggingEnabled()) {
+                    } else if (!logOptions.isRedactedHeaderLoggingDisabled()) {
                         expectRedactedHeaders = true;
                         assertTrue(other.headers.get("redactedHeaders").contains(kvp.getKey()));
                     }
