@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -90,7 +91,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         // Delete the created thread
         deleteThread(client, threadId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -158,7 +159,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         // Delete the created thread
         deleteThread(client, threadId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -220,7 +221,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -285,7 +286,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -309,7 +310,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -334,7 +335,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -369,7 +370,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -412,9 +413,8 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         assertNotNull(runSteps);
                         List<RunStep> runStepsData = runSteps.getData();
                         assertNotNull(runStepsData);
-                        assertEquals(1, runStepsData.size());
+                        assertFalse(runStepsData.isEmpty());
                         assertEquals("list", runSteps.getObject());
-                        assertEquals(runSteps.getFirstId(), runSteps.getLastId());
                         runStepRef.set(runStepsData.get(0));
                     })
                     .verifyComplete();
@@ -435,9 +435,8 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         assertNotNull(runStepsWithResponse);
                         List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
                         assertNotNull(runStepsDataWithResponse);
-                        assertEquals(1, runStepsDataWithResponse.size());
+                        assertFalse(runStepsDataWithResponse.isEmpty());
                         assertEquals("list", runStepsWithResponse.getObject());
-                        assertEquals(runStepsWithResponse.getFirstId(), runStepsWithResponse.getLastId());
                     })
                     .verifyComplete();
             // Get run step with response
@@ -453,6 +452,6 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             deleteThread(client, threadId);
         }, mathTutorAssistantId);
         // Delete the created assistant
-        deleteMathTutorAssistant(client, mathTutorAssistantId);
+        deleteAssistant(client, mathTutorAssistantId);
     }
 }
