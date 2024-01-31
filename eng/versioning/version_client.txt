@@ -253,7 +253,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.14.0;4.15.0-beta.
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.14.0;4.15.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.34.0;2.35.0
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.34.0;2.35.0
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.35.0;2.35.1
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.35.1;2.36.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.34.0;2.35.0
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.34.0;2.35.0
 com.azure.resourcemanager:azure-resourcemanager-compute;2.34.0;2.35.0
