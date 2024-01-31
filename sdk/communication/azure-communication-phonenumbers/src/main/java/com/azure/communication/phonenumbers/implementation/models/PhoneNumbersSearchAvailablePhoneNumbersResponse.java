@@ -4,12 +4,14 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the searchAvailablePhoneNumbers operation. */
+@Generated
 public final class PhoneNumbersSearchAvailablePhoneNumbersResponse
         extends ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult> {
     /**
