@@ -1,5 +1,6 @@
 package com.azure.ai.openai.assistants;
 
+
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
@@ -12,6 +13,7 @@ import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -21,14 +23,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FunctionsSyncTests extends AssistantsClientTestBase {
+public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
 
     private AssistantsClient client;
 
+    @Disabled("Support for FUNCTION tool calls is unclear in Azure at the moment")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void parallelFunctionCallTest(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
 
         createFunctionToolCallRunner((assistantCreationOptions, assistantThreadCreationOptions) -> {
             // Create the assistant
@@ -77,4 +80,5 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
             client.deleteAssistant(assistant.getId());
         });
     }
+
 }

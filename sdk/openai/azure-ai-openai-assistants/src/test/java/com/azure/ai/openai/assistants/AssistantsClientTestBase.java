@@ -200,7 +200,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(uploadRequest, assistantOptions);
     }
 
-    void createFunctionToolCallRunner(Consumer<AssistantCreationOptions> testRunner) {
+    void createFunctionToolCallRunner(BiConsumer<AssistantCreationOptions, AssistantThreadCreationOptions> testRunner) {
         FunctionsToolCallHelper functionsToolCallHelper = new FunctionsToolCallHelper();
         List<ToolDefinition> toolDefinition = Arrays.asList(
             functionsToolCallHelper.getAirlinePriceToDestinationForSeasonDefinition(),
@@ -212,7 +212,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
             .setTools(toolDefinition);
 
-        testRunner.accept(assistantOptions);
+        AssistantThreadCreationOptions threadCreationOptions = new AssistantThreadCreationOptions();
+
+        testRunner.accept(assistantOptions, threadCreationOptions);
     }
 
     void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
