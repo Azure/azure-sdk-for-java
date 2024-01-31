@@ -23,9 +23,9 @@ import reactor.core.publisher.Mono;
 public interface PrivateEndpointConnectionsClient {
     /**
      * Gets a list of private endpoint connections in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,9 +40,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a list of private endpoint connections in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +55,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a list of private endpoint connections in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -72,9 +72,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a list of private endpoint connections in the specified managed cluster.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +87,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the specified private endpoint connection.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -104,9 +104,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the specified private endpoint connection.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -121,9 +121,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the specified private endpoint connection.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -139,9 +139,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the specified private endpoint connection.
-     *
+     * 
      * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -156,7 +156,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -172,7 +172,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -188,7 +188,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -205,7 +205,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Updates a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -221,7 +221,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -236,7 +236,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -251,7 +251,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -266,7 +266,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -282,7 +282,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -296,7 +296,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -309,7 +309,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

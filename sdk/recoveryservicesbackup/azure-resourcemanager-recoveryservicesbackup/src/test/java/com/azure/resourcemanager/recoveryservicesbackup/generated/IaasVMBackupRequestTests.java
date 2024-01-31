@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IaasVMBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IaasVMBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-05-03T09:38:14Z\"}")
-                .toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T09:38:14Z"), model.recoveryPointExpiryTimeInUtc());
+        IaasVMBackupRequest model = BinaryData
+            .fromString(
+                "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-01-21T02:00:22Z\"}")
+            .toObject(IaasVMBackupRequest.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T02:00:22Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IaasVMBackupRequest model =
-            new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-05-03T09:38:14Z"));
+        IaasVMBackupRequest model
+            = new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-01-21T02:00:22Z"));
         model = BinaryData.fromObject(model).toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T09:38:14Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T02:00:22Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

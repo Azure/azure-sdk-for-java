@@ -26,7 +26,7 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
 
     /**
      * Get the enabled property: Whether to enable Defender threat detection.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
 
     /**
      * Set the enabled property: Whether to enable Defender threat detection.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileDefenderSecurityMonitoring object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

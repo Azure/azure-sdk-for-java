@@ -35,7 +35,7 @@ public final class MeshUpgradeProfileInner extends ProxyResource {
 
     /**
      * Get the properties property: Mesh upgrade profile properties for a major.minor release.
-     *
+     * 
      * @return the properties value.
      */
     public MeshUpgradeProfileProperties properties() {
@@ -44,7 +44,7 @@ public final class MeshUpgradeProfileInner extends ProxyResource {
 
     /**
      * Set the properties property: Mesh upgrade profile properties for a major.minor release.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MeshUpgradeProfileInner object itself.
      */
@@ -55,7 +55,7 @@ public final class MeshUpgradeProfileInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -64,7 +64,7 @@ public final class MeshUpgradeProfileInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

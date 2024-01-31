@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AdministratorPropertiesForAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdministratorPropertiesForAdd model =
-            BinaryData
-                .fromString(
-                    "{\"principalType\":\"Unknown\",\"principalName\":\"hmtzopbsphrup\",\"tenantId\":\"gsybbejhp\"}")
-                .toObject(AdministratorPropertiesForAdd.class);
+        AdministratorPropertiesForAdd model = BinaryData
+            .fromString(
+                "{\"principalType\":\"Unknown\",\"principalName\":\"hmtzopbsphrup\",\"tenantId\":\"gsybbejhp\"}")
+            .toObject(AdministratorPropertiesForAdd.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("hmtzopbsphrup", model.principalName());
         Assertions.assertEquals("gsybbejhp", model.tenantId());
@@ -24,11 +23,8 @@ public final class AdministratorPropertiesForAddTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdministratorPropertiesForAdd model =
-            new AdministratorPropertiesForAdd()
-                .withPrincipalType(PrincipalType.UNKNOWN)
-                .withPrincipalName("hmtzopbsphrup")
-                .withTenantId("gsybbejhp");
+        AdministratorPropertiesForAdd model = new AdministratorPropertiesForAdd()
+            .withPrincipalType(PrincipalType.UNKNOWN).withPrincipalName("hmtzopbsphrup").withTenantId("gsybbejhp");
         model = BinaryData.fromObject(model).toObject(AdministratorPropertiesForAdd.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("hmtzopbsphrup", model.principalName());

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for generic container of backup items. */
+/**
+ * Base class for generic container of backup items.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("GenericContainer")
 @Fluent
@@ -26,13 +28,15 @@ public final class GenericContainer extends ProtectionContainer {
     @JsonProperty(value = "extendedInformation")
     private GenericContainerExtendedInfo extendedInformation;
 
-    /** Creates an instance of GenericContainer class. */
+    /**
+     * Creates an instance of GenericContainer class.
+     */
     public GenericContainer() {
     }
 
     /**
      * Get the fabricName property: Name of the container's fabric.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -41,7 +45,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Set the fabricName property: Name of the container's fabric.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the GenericContainer object itself.
      */
@@ -52,7 +56,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Get the extendedInformation property: Extended information (not returned in List container API calls).
-     *
+     * 
      * @return the extendedInformation value.
      */
     public GenericContainerExtendedInfo extendedInformation() {
@@ -61,7 +65,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Set the extendedInformation property: Extended information (not returned in List container API calls).
-     *
+     * 
      * @param extendedInformation the extendedInformation value to set.
      * @return the GenericContainer object itself.
      */
@@ -70,35 +74,45 @@ public final class GenericContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -107,7 +121,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

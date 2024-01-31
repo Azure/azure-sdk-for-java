@@ -422,15 +422,46 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
-        return beginPurchasePhoneNumbers(searchId, null);
+        return beginPurchasePhoneNumbers(searchId, false);
     }
 
-    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.beginPurchase
+     * -->
+     * 
+     * <pre>
+     * AsyncPollResponse&lt;PhoneNumberOperation, PurchasePhoneNumbersResult&gt; purchaseResponse = phoneNumberAsyncClient
+     *         .beginPurchasePhoneNumbers&#40;searchId&#41;.blockFirst&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * 
+     * <!-- end com.azure.communication.phonenumbers.asyncclient.beginPurchase -->
+     *
+     * @param searchId ID of the search.
+     * @param consentToNotResellNumbers consent bring provided for not reselling PhoneNumbers.
+     * @return A {@link PollerFlux} object.
+     * @throws NullPointerException if {@code searchId} is null.
+     * @throws RuntimeException if purchase operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Boolean consentToNotResellNumbers) {
+        return beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers, null);
+    }
+
+    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
+            Boolean consentToNotResellNumbers,
             Context context) {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
-                    purchaseNumbersInitOperation(searchId, context),
+                    purchaseNumbersInitOperation(searchId, consentToNotResellNumbers, context),
                     pollOperation(),
                     (pollingContext, firstResponse) -> Mono
                             .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
@@ -441,14 +472,14 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> purchaseNumbersInitOperation(
-            String searchId, Context context) {
+            String searchId, Boolean consentToNotResellNumbers, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
                 return client
-                        .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId),
+                        .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId).setConsentToNotResellNumbers(consentToNotResellNumbers),
                                 contextValue)
                         .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                         .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {

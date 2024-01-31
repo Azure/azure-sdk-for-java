@@ -10,8 +10,8 @@ import com.azure.resourcemanager.imagebuilder.models.DistributeVersioner;
 public final class DistributeVersionerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DistributeVersioner model =
-            BinaryData.fromString("{\"scheme\":\"DistributeVersioner\"}").toObject(DistributeVersioner.class);
+        DistributeVersioner model
+            = BinaryData.fromString("{\"scheme\":\"DistributeVersioner\"}").toObject(DistributeVersioner.class);
     }
 
     @org.junit.jupiter.api.Test

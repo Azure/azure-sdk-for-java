@@ -4,13 +4,11 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for OperatorNumberType. */
-@Generated
 public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumberType> {
     /** Static value unknown for OperatorNumberType. */
     public static final OperatorNumberType UNKNOWN = fromString("unknown");

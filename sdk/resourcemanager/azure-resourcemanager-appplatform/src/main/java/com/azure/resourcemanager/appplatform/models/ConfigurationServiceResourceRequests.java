@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource request payload of Application Configuration Service. */
+/**
+ * Resource request payload of Application Configuration Service.
+ */
 @Immutable
 public final class ConfigurationServiceResourceRequests {
     /*
@@ -29,8 +31,14 @@ public final class ConfigurationServiceResourceRequests {
     private Integer instanceCount;
 
     /**
+     * Creates an instance of ConfigurationServiceResourceRequests class.
+     */
+    public ConfigurationServiceResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: Cpu allocated to each Application Configuration Service instance.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -39,7 +47,7 @@ public final class ConfigurationServiceResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to each Application Configuration Service instance.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -48,7 +56,7 @@ public final class ConfigurationServiceResourceRequests {
 
     /**
      * Get the instanceCount property: Instance count of the Application Configuration Service.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -57,7 +65,7 @@ public final class ConfigurationServiceResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

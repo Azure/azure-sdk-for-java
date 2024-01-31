@@ -40,7 +40,7 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Creates a new instance of PrivateEndpointConnectionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +49,7 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Creates or finds a PrivateEndpointConnectionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProvisioningState.
      */
@@ -60,7 +60,7 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Gets known PrivateEndpointConnectionProvisioningState values.
-     *
+     * 
      * @return known PrivateEndpointConnectionProvisioningState values.
      */
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {

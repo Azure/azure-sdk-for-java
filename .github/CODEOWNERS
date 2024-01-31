@@ -13,13 +13,6 @@
 # /doc/
 # /samples/
 
-################
-# Automation
-################
-
-# Git Hub integration and bot rules
-/.github/                                            @jsquire @ronniegeraghty
-
 ###########
 # SDK
 ###########
@@ -157,10 +150,11 @@
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
 
-# PRLabel: %Open AI
+# PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Image Analysis
+# ServiceLabel: %Image Analysis %Service Attention
 /sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
 
 # PRLabel: %Remote Rendering
@@ -463,7 +457,7 @@
 #/<NotInRepo>/          @jfggdl
 
 # ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04 @saglodha
+#/<NotInRepo>/          @kasun04
 
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
@@ -479,9 +473,6 @@
 
 # ServiceLabel: %HPC Cache %Service Attention
 #/<NotInRepo>/          @romahamu @omzevall
-
-# ServiceLabel: %Image Analysis %Service Attention
-/sdk/vision/azure-ai-vision-imageanalysis/          @dargilco @rhurey
 
 # ServiceLabel: %Import Export %Service Attention
 #/<NotInRepo>/          @madhurinms
@@ -631,7 +622,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @EldertGrootenboer @saglodha
+#/<NotInRepo>/          @EldertGrootenboer
 
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

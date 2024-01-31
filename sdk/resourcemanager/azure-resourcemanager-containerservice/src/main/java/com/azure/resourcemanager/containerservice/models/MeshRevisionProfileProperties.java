@@ -27,7 +27,7 @@ public final class MeshRevisionProfileProperties {
 
     /**
      * Get the meshRevisions property: The meshRevisions property.
-     *
+     * 
      * @return the meshRevisions value.
      */
     public List<MeshRevision> meshRevisions() {
@@ -36,7 +36,7 @@ public final class MeshRevisionProfileProperties {
 
     /**
      * Set the meshRevisions property: The meshRevisions property.
-     *
+     * 
      * @param meshRevisions the meshRevisions value to set.
      * @return the MeshRevisionProfileProperties object itself.
      */
@@ -47,7 +47,7 @@ public final class MeshRevisionProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -20,11 +20,6 @@ public class PartitionKey {
         this.internalPartitionKey = partitionKeyInternal;
     }
 
-    PartitionKey(final Object key, PartitionKeyInternal partitionKeyInternal) {
-        this.keyObject = key;
-        this.internalPartitionKey = partitionKeyInternal;
-    }
-
     /**
      * Constructor. CREATE a new instance of the PartitionKey object.
      *
@@ -34,14 +29,6 @@ public class PartitionKey {
     public PartitionKey(final Object key) {
         this.keyObject = key;
         this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new Object[] {key}, true);
-    }
-
-    /**
-     * Gets the object used to create partition key
-     * @return the partition key object
-     */
-    Object getKeyObject() {
-        return keyObject;
     }
 
     /**
@@ -69,7 +56,6 @@ public class PartitionKey {
         return this.internalPartitionKey.toJson();
     }
 
-    // TODO: make private
     PartitionKeyInternal getInternalPartitionKey() {
         return internalPartitionKey;
     }
@@ -109,11 +95,6 @@ public class PartitionKey {
                 @Override
                 public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
                     return new PartitionKey(partitionKeyInternal);
-                }
-
-                @Override
-                public PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal) {
-                    return new PartitionKey(objectKey, partitionKeyInternal);
                 }
             }
         );

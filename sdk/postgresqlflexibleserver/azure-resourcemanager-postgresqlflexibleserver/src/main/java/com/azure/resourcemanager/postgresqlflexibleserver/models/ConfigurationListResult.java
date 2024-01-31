@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Configur
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of server configurations. */
+/**
+ * A list of server configurations.
+ */
 @Fluent
 public final class ConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class ConfigurationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ConfigurationListResult class. */
+    /**
+     * Creates an instance of ConfigurationListResult class.
+     */
     public ConfigurationListResult() {
     }
 
     /**
      * Get the value property: The list of server configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the value property: The list of server configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ConfigurationListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

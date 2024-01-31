@@ -4,32 +4,39 @@
 package com.azure.cosmos.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.IOException;
+import java.util.function.Function;
 
 public interface ItemDeserializer {
-    <T> T parseFrom(Class<T> classType, byte[] bytes);
     <T> T convert(Class<T> classType, JsonNode objectNode);
 
-
     class JsonDeserializer implements ItemDeserializer {
-        public <T> T parseFrom(Class<T> classType, byte[] bytes) {
-            if (bytes == null) {
-                return null;
-            }
+        private final Function<JsonNode, ?> factoryMethod;
+        public JsonDeserializer(Function<JsonNode, ?> factoryMethod) {
+            this.factoryMethod = factoryMethod;
+        }
 
-            // TODO: does this handdle jackson ObjectNode?
-            return Utils.parse(bytes, classType);
+        public JsonDeserializer() {
+            this.factoryMethod = null;
         }
 
         @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Class<T> classType, JsonNode jsonNode) {
-            if (classType == ObjectNode.class) {
-                return (T) jsonNode;
+            if (jsonNode == null) {
+                return null;
             }
 
-            return Utils.getSimpleObjectMapper().convertValue(jsonNode, classType);
+            if (this.factoryMethod != null) {
+                return (T) this.factoryMethod.apply(jsonNode);
+            }
+
+            try {
+                return Utils.getSimpleObjectMapper().treeToValue(jsonNode, classType);
+            } catch (IOException e) {
+                throw new IllegalStateException(String.format("Unable to parse JSON %s", jsonNode), e);
+            }
         }
     }
 }

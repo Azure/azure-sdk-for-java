@@ -66,7 +66,6 @@ directive:
       $["properties"]["billingFrequency"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
 directive:
@@ -149,7 +148,6 @@ directive:
       $["properties"]["localizedName"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberLocalities properties
 ```yaml
 directive:
@@ -190,4 +188,41 @@ directive:
     transform: >
       $["properties"]["localizedName"].readOnly = true;
       $["properties"]["countryCode"].readOnly = true;
+```
+
+### Removed Property error from PhoneNumberSearchResult
+``` yaml
+directive:
+  where-model: PhoneNumberSearchResult
+  remove-property: error
+```
+
+### Removed Property errorCode from PhoneNumberSearchResult
+``` yaml
+directive:
+  where-model: PhoneNumberSearchResult
+  remove-property: errorCode
+```
+
+### Removed Property phoneNumberSource from PurchasedPhoneNumber
+``` yaml
+directive:
+  where-model: PurchasedPhoneNumber
+  remove-property: phoneNumberSource
+```
+
+# Removed Models
+``` yaml
+directive:
+  - remove-operation-match: /.*Reservation.*/i
+  - remove-operation: PhoneNumbers_BrowseAvailableNumbers
+  - remove-model: PhoneNumbersReservation
+  - remove-model: PhoneNumbersReservations
+  - remove-model: PhoneNumbersBrowseRequest
+  - remove-model: PhoneNumbersBrowseResult
+  - remove-model: PhoneNumberBrowseCapabilitiesRequest
+  - remove-model: PhoneNumbersReservationPurchaseRequest
+  - remove-model: Error
+  - remove-model: AvailablePhoneNumber
+  - remove-model: AvailablePhoneNumberCost
 ```

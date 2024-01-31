@@ -13,31 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateVmProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateVmProfile model =
-            BinaryData
-                .fromString(
-                    "{\"vmSize\":\"wjzrnfygxgisp\",\"osDiskSizeGB\":761437116,\"userAssignedIdentities\":[\"fkufublj\",\"fxqeof\",\"aeqjhqjbasvms\"],\"vnetConfig\":{\"subnetId\":\"ulngsntn\",\"proxyVmSize\":\"bkzgcwrwclx\"}}")
-                .toObject(ImageTemplateVmProfile.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.vmSize());
-        Assertions.assertEquals(761437116, model.osDiskSizeGB());
-        Assertions.assertEquals("fkufublj", model.userAssignedIdentities().get(0));
-        Assertions.assertEquals("ulngsntn", model.vnetConfig().subnetId());
-        Assertions.assertEquals("bkzgcwrwclx", model.vnetConfig().proxyVmSize());
+        ImageTemplateVmProfile model = BinaryData.fromString(
+            "{\"vmSize\":\"wclxxwrl\",\"osDiskSizeGB\":1070346714,\"userAssignedIdentities\":[\"kcqvkocrc\",\"dkwt\",\"hxbnjbiksqrg\"],\"vnetConfig\":{\"subnetId\":\"ainqpjwnzlljfm\",\"proxyVmSize\":\"eebvmgxsab\"}}")
+            .toObject(ImageTemplateVmProfile.class);
+        Assertions.assertEquals("wclxxwrl", model.vmSize());
+        Assertions.assertEquals(1070346714, model.osDiskSizeGB());
+        Assertions.assertEquals("kcqvkocrc", model.userAssignedIdentities().get(0));
+        Assertions.assertEquals("ainqpjwnzlljfm", model.vnetConfig().subnetId());
+        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().proxyVmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateVmProfile model =
-            new ImageTemplateVmProfile()
-                .withVmSize("wjzrnfygxgisp")
-                .withOsDiskSizeGB(761437116)
-                .withUserAssignedIdentities(Arrays.asList("fkufublj", "fxqeof", "aeqjhqjbasvms"))
-                .withVnetConfig(new VirtualNetworkConfig().withSubnetId("ulngsntn").withProxyVmSize("bkzgcwrwclx"));
+        ImageTemplateVmProfile model = new ImageTemplateVmProfile().withVmSize("wclxxwrl").withOsDiskSizeGB(1070346714)
+            .withUserAssignedIdentities(Arrays.asList("kcqvkocrc", "dkwt", "hxbnjbiksqrg"))
+            .withVnetConfig(new VirtualNetworkConfig().withSubnetId("ainqpjwnzlljfm").withProxyVmSize("eebvmgxsab"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateVmProfile.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.vmSize());
-        Assertions.assertEquals(761437116, model.osDiskSizeGB());
-        Assertions.assertEquals("fkufublj", model.userAssignedIdentities().get(0));
-        Assertions.assertEquals("ulngsntn", model.vnetConfig().subnetId());
-        Assertions.assertEquals("bkzgcwrwclx", model.vnetConfig().proxyVmSize());
+        Assertions.assertEquals("wclxxwrl", model.vmSize());
+        Assertions.assertEquals(1070346714, model.osDiskSizeGB());
+        Assertions.assertEquals("kcqvkocrc", model.userAssignedIdentities().get(0));
+        Assertions.assertEquals("ainqpjwnzlljfm", model.vnetConfig().subnetId());
+        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().proxyVmSize());
     }
 }

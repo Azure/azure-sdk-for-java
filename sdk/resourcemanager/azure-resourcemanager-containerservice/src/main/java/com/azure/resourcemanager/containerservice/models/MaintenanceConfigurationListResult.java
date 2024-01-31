@@ -34,7 +34,7 @@ public final class MaintenanceConfigurationListResult {
 
     /**
      * Get the value property: The list of maintenance configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<MaintenanceConfigurationInner> value() {
@@ -43,7 +43,7 @@ public final class MaintenanceConfigurationListResult {
 
     /**
      * Set the value property: The list of maintenance configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the MaintenanceConfigurationListResult object itself.
      */
@@ -54,7 +54,7 @@ public final class MaintenanceConfigurationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of maintenance configuration results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class MaintenanceConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

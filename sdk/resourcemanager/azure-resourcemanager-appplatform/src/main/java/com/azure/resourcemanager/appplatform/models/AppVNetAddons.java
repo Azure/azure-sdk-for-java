@@ -7,27 +7,33 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional App settings in vnet injection instance. */
+/**
+ * Additional App settings in vnet injection instance.
+ */
 @Fluent
 public final class AppVNetAddons {
     /*
-     * Indicates whether the App in vnet injection instance exposes endpoint
-     * which could be accessed from internet.
+     * Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
      */
     @JsonProperty(value = "publicEndpoint")
     private Boolean publicEndpoint;
 
     /*
-     * URL of the App in vnet injection instance which could be accessed from
-     * internet
+     * URL of the App in vnet injection instance which could be accessed from internet
      */
     @JsonProperty(value = "publicEndpointUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String publicEndpointUrl;
 
     /**
+     * Creates an instance of AppVNetAddons class.
+     */
+    public AppVNetAddons() {
+    }
+
+    /**
      * Get the publicEndpoint property: Indicates whether the App in vnet injection instance exposes endpoint which
      * could be accessed from internet.
-     *
+     * 
      * @return the publicEndpoint value.
      */
     public Boolean publicEndpoint() {
@@ -37,7 +43,7 @@ public final class AppVNetAddons {
     /**
      * Set the publicEndpoint property: Indicates whether the App in vnet injection instance exposes endpoint which
      * could be accessed from internet.
-     *
+     * 
      * @param publicEndpoint the publicEndpoint value to set.
      * @return the AppVNetAddons object itself.
      */
@@ -49,7 +55,7 @@ public final class AppVNetAddons {
     /**
      * Get the publicEndpointUrl property: URL of the App in vnet injection instance which could be accessed from
      * internet.
-     *
+     * 
      * @return the publicEndpointUrl value.
      */
     public String publicEndpointUrl() {
@@ -58,7 +64,7 @@ public final class AppVNetAddons {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

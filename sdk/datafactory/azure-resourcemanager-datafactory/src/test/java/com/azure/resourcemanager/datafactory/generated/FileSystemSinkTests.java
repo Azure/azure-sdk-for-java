@@ -11,16 +11,16 @@ public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemSink model = BinaryData.fromString(
-            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datahllmblls\",\"writeBatchSize\":\"datafdrimoopfr\",\"writeBatchTimeout\":\"datajjrhxornuoqpob\",\"sinkRetryCount\":\"datarsdx\",\"sinkRetryWait\":\"datamq\",\"maxConcurrentConnections\":\"dataxbqyavcxjols\",\"disableMetricsCollection\":\"datai\",\"\":{\"uwcmzpwk\":\"datanmsfqntakroxkurf\"}}")
+            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datassayrwy\",\"writeBatchSize\":\"datautezxrpxdhzwdyva\",\"writeBatchTimeout\":\"datav\",\"sinkRetryCount\":\"datawexwhosc\",\"sinkRetryWait\":\"datapmvc\",\"maxConcurrentConnections\":\"datamgqlshglympe\",\"disableMetricsCollection\":\"datazvcfh\",\"\":{\"twz\":\"dataropxeezlqwbgl\",\"orfpizyb\":\"datatkhyrwdsnpuo\",\"pqatkzghwcywrb\":\"dataj\",\"kf\":\"dataxwls\"}}")
             .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datafdrimoopfr")
-            .withWriteBatchTimeout("datajjrhxornuoqpob").withSinkRetryCount("datarsdx").withSinkRetryWait("datamq")
-            .withMaxConcurrentConnections("dataxbqyavcxjols").withDisableMetricsCollection("datai")
-            .withCopyBehavior("datahllmblls");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datautezxrpxdhzwdyva")
+            .withWriteBatchTimeout("datav").withSinkRetryCount("datawexwhosc").withSinkRetryWait("datapmvc")
+            .withMaxConcurrentConnections("datamgqlshglympe").withDisableMetricsCollection("datazvcfh")
+            .withCopyBehavior("datassayrwy");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }

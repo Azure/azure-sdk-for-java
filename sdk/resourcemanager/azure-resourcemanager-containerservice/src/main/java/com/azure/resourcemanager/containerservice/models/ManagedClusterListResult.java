@@ -34,7 +34,7 @@ public final class ManagedClusterListResult {
 
     /**
      * Get the value property: The list of managed clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedClusterInner> value() {
@@ -43,7 +43,7 @@ public final class ManagedClusterListResult {
 
     /**
      * Set the value property: The list of managed clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedClusterListResult object itself.
      */
@@ -54,7 +54,7 @@ public final class ManagedClusterListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of managed cluster results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class ManagedClusterListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

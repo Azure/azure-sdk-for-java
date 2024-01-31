@@ -325,7 +325,76 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.client.beginPurchase -->
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse =
+     *     phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchase -->
+     *
+     * @param searchId ID of the search
+     * @param consentToNotResellNumbers consent bring provided for not reselling PhoneNumbers.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Boolean consentToNotResellNumbers) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers).getSyncPoller();
+    }
+
+
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed
+     * com.azure.communication.phonenumbers.client.beginPurchaseWithContext -->
+     * 
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse = phoneNumberClient
+     *         .beginPurchasePhoneNumbers&#40;searchId, Context.NONE&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * 
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchaseWithContext
+     * -->
+     *
+     * @param searchId ID of the search
+     * @param consentToNotResellNumbers consent bring provided for not reselling PhoneNumbers.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
+            Boolean consentToNotResellNumbers,
+            Context context) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers, context).getSyncPoller();
     }
 
     /**
@@ -358,9 +427,9 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
             Context context) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false, context).getSyncPoller();
     }
 
     /**

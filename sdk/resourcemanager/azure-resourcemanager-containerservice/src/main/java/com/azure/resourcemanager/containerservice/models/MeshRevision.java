@@ -39,7 +39,7 @@ public class MeshRevision {
 
     /**
      * Get the revision property: The revision of the mesh release.
-     *
+     * 
      * @return the revision value.
      */
     public String revision() {
@@ -48,7 +48,7 @@ public class MeshRevision {
 
     /**
      * Set the revision property: The revision of the mesh release.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the MeshRevision object itself.
      */
@@ -59,7 +59,7 @@ public class MeshRevision {
 
     /**
      * Get the upgrades property: List of revisions available for upgrade of a specific mesh revision.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<String> upgrades() {
@@ -68,7 +68,7 @@ public class MeshRevision {
 
     /**
      * Set the upgrades property: List of revisions available for upgrade of a specific mesh revision.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the MeshRevision object itself.
      */
@@ -80,7 +80,7 @@ public class MeshRevision {
     /**
      * Get the compatibleWith property: List of items this revision of service mesh is compatible with, and their
      * associated versions.
-     *
+     * 
      * @return the compatibleWith value.
      */
     public List<CompatibleVersions> compatibleWith() {
@@ -90,7 +90,7 @@ public class MeshRevision {
     /**
      * Set the compatibleWith property: List of items this revision of service mesh is compatible with, and their
      * associated versions.
-     *
+     * 
      * @param compatibleWith the compatibleWith value to set.
      * @return the MeshRevision object itself.
      */
@@ -101,7 +101,7 @@ public class MeshRevision {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

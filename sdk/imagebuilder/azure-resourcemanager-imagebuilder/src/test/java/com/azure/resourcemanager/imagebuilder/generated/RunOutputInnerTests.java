@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RunOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunOutputInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"artifactId\":\"isdkfthwxmnteiw\",\"artifactUri\":\"pvkmijcmmxdcuf\",\"provisioningState\":\"Canceled\"},\"id\":\"pymzidnsezcxtbzs\",\"name\":\"fycc\",\"type\":\"newmdwzjeiachbo\"}")
-                .toObject(RunOutputInner.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.artifactId());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.artifactUri());
+        RunOutputInner model = BinaryData.fromString(
+            "{\"properties\":{\"artifactId\":\"l\",\"artifactUri\":\"majtjaod\",\"provisioningState\":\"Creating\"},\"id\":\"bdxkqpxokaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}")
+            .toObject(RunOutputInner.class);
+        Assertions.assertEquals("l", model.artifactId());
+        Assertions.assertEquals("majtjaod", model.artifactUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunOutputInner model = new RunOutputInner().withArtifactId("isdkfthwxmnteiw").withArtifactUri("pvkmijcmmxdcuf");
+        RunOutputInner model = new RunOutputInner().withArtifactId("l").withArtifactUri("majtjaod");
         model = BinaryData.fromObject(model).toObject(RunOutputInner.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.artifactId());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.artifactUri());
+        Assertions.assertEquals("l", model.artifactId());
+        Assertions.assertEquals("majtjaod", model.artifactUri());
     }
 }

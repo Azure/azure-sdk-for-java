@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Monitoring Setting properties payload. */
+/**
+ * Monitoring Setting properties payload.
+ */
 @Fluent
 public final class MonitoringSettingProperties {
     /*
@@ -23,24 +25,20 @@ public final class MonitoringSettingProperties {
     private Error error;
 
     /*
-     * Indicates whether enable the trace functionality, which will be
-     * deprecated since api version 2020-11-01-preview. Please leverage
-     * appInsightsInstrumentationKey to indicate if monitoringSettings enabled
-     * or not
+     * Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview.
+     * Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings enabled or not
      */
     @JsonProperty(value = "traceEnabled")
     private Boolean traceEnabled;
 
     /*
-     * Target application insight instrumentation key, null or whitespace
-     * include empty will disable monitoringSettings
+     * Target application insight instrumentation key, null or whitespace include empty will disable monitoringSettings
      */
     @JsonProperty(value = "appInsightsInstrumentationKey")
     private String appInsightsInstrumentationKey;
 
     /*
-     * Indicates the sampling rate of application insight agent, should be in
-     * range [0.0, 100.0]
+     * Indicates the sampling rate of application insight agent, should be in range [0.0, 100.0]
      */
     @JsonProperty(value = "appInsightsSamplingRate")
     private Double appInsightsSamplingRate;
@@ -52,8 +50,14 @@ public final class MonitoringSettingProperties {
     private ApplicationInsightsAgentVersions appInsightsAgentVersions;
 
     /**
+     * Creates an instance of MonitoringSettingProperties class.
+     */
+    public MonitoringSettingProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the Monitoring Setting.
-     *
+     * 
      * @return the provisioningState value.
      */
     public MonitoringSettingState provisioningState() {
@@ -62,7 +66,7 @@ public final class MonitoringSettingProperties {
 
     /**
      * Get the error property: Error when apply Monitoring Setting changes.
-     *
+     * 
      * @return the error value.
      */
     public Error error() {
@@ -71,7 +75,7 @@ public final class MonitoringSettingProperties {
 
     /**
      * Set the error property: Error when apply Monitoring Setting changes.
-     *
+     * 
      * @param error the error value to set.
      * @return the MonitoringSettingProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class MonitoringSettingProperties {
      * Get the traceEnabled property: Indicates whether enable the trace functionality, which will be deprecated since
      * api version 2020-11-01-preview. Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings
      * enabled or not.
-     *
+     * 
      * @return the traceEnabled value.
      */
     public Boolean traceEnabled() {
@@ -95,7 +99,7 @@ public final class MonitoringSettingProperties {
      * Set the traceEnabled property: Indicates whether enable the trace functionality, which will be deprecated since
      * api version 2020-11-01-preview. Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings
      * enabled or not.
-     *
+     * 
      * @param traceEnabled the traceEnabled value to set.
      * @return the MonitoringSettingProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class MonitoringSettingProperties {
     /**
      * Get the appInsightsInstrumentationKey property: Target application insight instrumentation key, null or
      * whitespace include empty will disable monitoringSettings.
-     *
+     * 
      * @return the appInsightsInstrumentationKey value.
      */
     public String appInsightsInstrumentationKey() {
@@ -117,7 +121,7 @@ public final class MonitoringSettingProperties {
     /**
      * Set the appInsightsInstrumentationKey property: Target application insight instrumentation key, null or
      * whitespace include empty will disable monitoringSettings.
-     *
+     * 
      * @param appInsightsInstrumentationKey the appInsightsInstrumentationKey value to set.
      * @return the MonitoringSettingProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class MonitoringSettingProperties {
     /**
      * Get the appInsightsSamplingRate property: Indicates the sampling rate of application insight agent, should be in
      * range [0.0, 100.0].
-     *
+     * 
      * @return the appInsightsSamplingRate value.
      */
     public Double appInsightsSamplingRate() {
@@ -139,7 +143,7 @@ public final class MonitoringSettingProperties {
     /**
      * Set the appInsightsSamplingRate property: Indicates the sampling rate of application insight agent, should be in
      * range [0.0, 100.0].
-     *
+     * 
      * @param appInsightsSamplingRate the appInsightsSamplingRate value to set.
      * @return the MonitoringSettingProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class MonitoringSettingProperties {
 
     /**
      * Get the appInsightsAgentVersions property: Indicates the versions of application insight agent.
-     *
+     * 
      * @return the appInsightsAgentVersions value.
      */
     public ApplicationInsightsAgentVersions appInsightsAgentVersions() {
@@ -159,19 +163,19 @@ public final class MonitoringSettingProperties {
 
     /**
      * Set the appInsightsAgentVersions property: Indicates the versions of application insight agent.
-     *
+     * 
      * @param appInsightsAgentVersions the appInsightsAgentVersions value to set.
      * @return the MonitoringSettingProperties object itself.
      */
-    public MonitoringSettingProperties withAppInsightsAgentVersions(
-        ApplicationInsightsAgentVersions appInsightsAgentVersions) {
+    public MonitoringSettingProperties
+        withAppInsightsAgentVersions(ApplicationInsightsAgentVersions appInsightsAgentVersions) {
         this.appInsightsAgentVersions = appInsightsAgentVersions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
