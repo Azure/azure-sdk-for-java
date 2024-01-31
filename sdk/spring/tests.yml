@@ -12,7 +12,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-          Location: "chinanorth3"
+          Location: "chinaeast3"
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/common
         - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
@@ -64,7 +64,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-          Location: "chinanorth3"
+          Location: "chinaeast3"
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
           Path: sdk/spring/pipeline/cosmos-integration-matrix.json
