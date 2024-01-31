@@ -26,9 +26,6 @@ public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNu
     /** Static value reservationPurchase for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
 
-    /** Static value reservationPurchase for PhoneNumberOperationType. */
-    public static final PhoneNumberOperationType RESERVATION_PURCHASE = fromString("reservationPurchase");
-
     /**
      * Creates or finds a PhoneNumberOperationType from its string representation.
      *
