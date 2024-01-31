@@ -645,6 +645,8 @@ class FunctionAppImpl
             siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
             siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
             siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
+            // TODO(xiaofei) remove after backend fix this bug
+            siteConfigInner.withAppSettings(new ArrayList<>());
             this.innerModel().withSiteConfig(siteConfigInner);
         }
     }
