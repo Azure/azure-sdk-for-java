@@ -73,8 +73,8 @@ For an example how to create a client, a request and get the result see the exam
 ```java
 List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
 	for (RadiologyInsightsPatientResult patientResult : patientResults) {
-		List<RadiologyInsightsInference> inferences = patientResult.getInferences();
-		for (RadiologyInsightsInference inference : inferences) {
+		List<FhirR4Extendible1> inferences = patientResult.getInferences();
+		for (FhirR4Extendible1 inference : inferences) {
 			if (inference instanceof CriticalResultInference) {
 				CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
 				String description = criticalResultInference.getResult().getDescription();
