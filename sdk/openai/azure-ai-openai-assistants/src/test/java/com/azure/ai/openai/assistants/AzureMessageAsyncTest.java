@@ -3,7 +3,10 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.models.ListSortOrder;
+import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
@@ -13,7 +16,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -200,6 +205,111 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
                     .verifyComplete();
         });
         // Delete the created thread
+        deleteThread(client, threadId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void getMessageFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client);
+        String fileId = uploadFile(client);
+        createMessageRunner(message -> {
+            AtomicReference<String> messageIdRef = new AtomicReference<>();
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message, Arrays.asList(fileId), null))
+                    .assertNext(threadMessage -> {
+                        validateThreadMessage(threadMessage, threadId);
+                        messageIdRef.set(threadMessage.getId());
+                    })
+                    .verifyComplete();
+            String messageId = messageIdRef.get();
+            // Retrieve the message file
+            StepVerifier.create(client.getMessageFile(threadId, messageId, fileId))
+                    .assertNext(messageFile -> validateMessageFile(messageFile, messageId, fileId))
+                    .verifyComplete();
+            // Retrieve the message file with response
+            StepVerifier.create(client.getMessageFileWithResponse(threadId, messageId, fileId, new RequestOptions()))
+                    .assertNext(response -> {
+                        MessageFile messageFileWithResponse = assertAndGetValueFromResponse(response, MessageFile.class, 200);
+                        validateMessageFile(messageFileWithResponse, messageId, fileId);
+                    })
+                    .verifyComplete();
+        });
+        deleteFile(client, fileId);
+        deleteThread(client, threadId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listMessageFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client);
+        String fileId1 = uploadFile(client);
+        String fileId2 = uploadFile(client);
+        createMessageRunner(message -> {
+            AtomicReference<String> messageIdRef = new AtomicReference<>();
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message, Arrays.asList(fileId1, fileId2),
+                            null))
+                    .assertNext(threadMessage -> {
+                        validateThreadMessage(threadMessage, threadId);
+                        messageIdRef.set(threadMessage.getId());
+                    })
+                    .verifyComplete();
+            String messageId = messageIdRef.get();
+            // List message files
+            StepVerifier.create(client.listMessageFiles(threadId, messageId))
+                    .assertNext(listMessageFiles -> validateOpenAIPageableListOfMessageFile(listMessageFiles, messageId,
+                            Arrays.asList(fileId1, fileId2)))
+                    .verifyComplete();
+            // List messages with response
+            StepVerifier.create(client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions()))
+                    .assertNext(response -> {
+                        OpenAIPageableListOfMessageFile listMessageFilesResponse = assertAndGetValueFromResponse(
+                                response, OpenAIPageableListOfMessageFile.class, 200);
+                        validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId,
+                                Arrays.asList(fileId1, fileId2));
+                    })
+                    .verifyComplete();
+        });
+        deleteFile(client, fileId1);
+        deleteFile(client, fileId2);
+        deleteThread(client, threadId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listMessageFilesBetweenTwoFileId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
+        String threadId = createThread(client);
+        String fileId1 = uploadFile(client);
+        String fileId2 = uploadFile(client);
+        String fileId3 = uploadFile(client);
+        String fileId4 = uploadFile(client);
+        createMessageRunner(message -> {
+            AtomicReference<String> messageIdRef = new AtomicReference<>();
+            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message,
+                            Arrays.asList(fileId1, fileId2, fileId3, fileId4), null))
+                    .assertNext(threadMessage -> {
+                        validateThreadMessage(threadMessage, threadId);
+                        messageIdRef.set(threadMessage.getId());
+                    })
+                    .verifyComplete();
+            String messageId = messageIdRef.get();
+            // List message files between two file ids
+            StepVerifier.create(client.listMessageFiles(threadId, messageId, 10,
+                    ListSortOrder.ASCENDING, fileId1, fileId4))
+                    .assertNext(listMessageFiles -> {
+                        List<MessageFile> dataAscending = listMessageFiles.getData();
+                        assertEquals(2, dataAscending.size());
+                        validateOpenAIPageableListOfMessageFile(listMessageFiles, messageId,
+                                Arrays.asList(fileId2, fileId3));
+                    })
+                    .verifyComplete();
+        });
+        deleteFile(client, fileId1);
+        deleteFile(client, fileId2);
+        deleteFile(client, fileId3);
+        deleteFile(client, fileId4);
         deleteThread(client, threadId);
     }
 }
