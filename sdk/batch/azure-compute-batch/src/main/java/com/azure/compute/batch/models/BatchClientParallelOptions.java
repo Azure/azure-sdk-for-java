@@ -39,7 +39,7 @@ public class BatchClientParallelOptions {
     }
 
     /**
-     * Initializes a new instance of the {@link BatchClientParallelOptions} class with default values.
+     * Initializes a new instance of the {@link BatchClientParallelOptions} class.
      */
     public BatchClientParallelOptions() {}
 
