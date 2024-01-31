@@ -15,9 +15,11 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
+import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
@@ -347,6 +349,48 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertTrue(threadDeletionStatus.isDeleted());
     }
 
+    ThreadRun createThreadAndRun(AssistantsAsyncClient client, CreateAndRunThreadOptions options) {
+        AtomicReference<ThreadRun> threadRunRef = new AtomicReference<>();
+        StepVerifier.create(client.createThreadAndRun(options))
+                .assertNext(run -> {
+                    assertNotNull(run.getId());
+                    assertNotNull(run.getCreatedAt());
+                    assertEquals("thread.run", run.getObject());
+                    assertNotNull(run.getInstructions());
+                    threadRunRef.set(run);
+                })
+                .verifyComplete();
+        return threadRunRef.get();
+    }
+
+    ThreadRun createThreadAndRun(AssistantsClient client, CreateAndRunThreadOptions options) {
+        ThreadRun run = client.createThreadAndRun(options);
+        assertNotNull(run.getId());
+        assertNotNull(run.getCreatedAt());
+        assertEquals("thread.run", run.getObject());
+        assertNotNull(run.getInstructions());
+        return run;
+    }
+
+    void validateThreadRun(ThreadRun expect, ThreadRun actual) {
+        assertEquals(expect.getId(), actual.getId());
+        assertEquals(expect.getThreadId(), actual.getThreadId());
+        assertEquals(expect.getAssistantId(), actual.getAssistantId());
+        assertEquals(expect.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expect.getCompletedAt(), actual.getCompletedAt());
+        assertEquals(expect.getInstructions(), actual.getInstructions());
+        assertEquals(expect.getObject(), actual.getObject());
+        assertEquals(expect.getModel(), actual.getModel());
+    }
+
+    void validateRunStep(RunStep expect, RunStep actual) {
+        assertEquals(expect.getId(), actual.getId());
+        assertEquals(expect.getRunId(), actual.getRunId());
+        assertEquals(expect.getThreadId(), actual.getThreadId());
+        assertEquals(expect.getAssistantId(), actual.getAssistantId());
+        assertEquals(expect.getObject(), actual.getObject());
+        assertEquals(expect.getType(), actual.getType());
+    }
 
     void validateThreadMessage(ThreadMessage threadMessage, String threadId) {
         String threadMessageId = threadMessage.getId();

@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
 import com.azure.ai.openai.assistants.models.RunStatus;
+import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
@@ -15,6 +18,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -185,6 +190,143 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             OpenAIPageableListOfThreadMessage openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
+
+            // Delete the created thread
+            deleteThread(client, threadId);
+        }, mathTutorAssistantId);
+        // Delete the created assistant
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void cancelRun(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient, serviceVersion);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            // Create a simple thread without a message
+            ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
+            String threadId = run.getThreadId();
+            ThreadRun cancelRun = client.cancelRun(threadId, run.getId());
+            RunStatus status = cancelRun.getStatus();
+            assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
+            assertEquals(threadId, cancelRun.getThreadId());
+            assertEquals(run.getId(), cancelRun.getId());
+            // Delete the created thread
+            deleteThread(client, threadId);
+        }, mathTutorAssistantId);
+        // Delete the created assistant
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void cancelRunWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient, serviceVersion);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
+            String threadId = run.getThreadId();
+            String runId = run.getId();
+            Response<BinaryData> response = client.cancelRunWithResponse(threadId, runId, new RequestOptions());
+            ThreadRun cancelRun = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
+            RunStatus status = cancelRun.getStatus();
+            assertTrue(status == RunStatus.CANCELLING || status == RunStatus.CANCELLED);
+            assertEquals(threadId, cancelRun.getThreadId());
+            assertEquals(runId, cancelRun.getId());
+            // Delete the created thread
+            deleteThread(client, threadId);
+        }, mathTutorAssistantId);
+        // Delete the created assistant
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listRuns(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient, serviceVersion);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
+            String threadId = run.getThreadId();
+            String runId = run.getId();
+            // List runs
+            OpenAIPageableListOfThreadRun runs = client.listRuns(threadId);
+            List<ThreadRun> data = runs.getData();
+            assertNotNull(data);
+            assertEquals(1, data.size());
+            validateThreadRun(run, data.get(0));
+            // List runs with response
+            Response<BinaryData> response = client.listRunsWithResponse(threadId, new RequestOptions());
+            OpenAIPageableListOfThreadRun runsWithResponse = assertAndGetValueFromResponse(response,
+                    OpenAIPageableListOfThreadRun.class, 200);
+            List<ThreadRun> dataWithResponse = runsWithResponse.getData();
+            assertNotNull(dataWithResponse);
+            assertEquals(1, dataWithResponse.size());
+            validateThreadRun(run, dataWithResponse.get(0));
+            // Delete the created thread
+            deleteThread(client, threadId);
+        }, mathTutorAssistantId);
+        // Delete the created assistant
+        deleteMathTutorAssistant(client, mathTutorAssistantId);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void listAndGetRunSteps(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient, serviceVersion);
+        String mathTutorAssistantId = createMathTutorAssistant(client);
+        createThreadAndRunRunner(createAndRunThreadOptions -> {
+            ThreadRun run = client.createThreadAndRun(createAndRunThreadOptions);
+            String threadId = run.getThreadId();
+            String runId = run.getId();
+
+            // Wait on Run and poll the Run in a loop
+            do {
+                run = client.getRun(run.getThreadId(), run.getId());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
+
+            assertSame(RunStatus.COMPLETED, run.getStatus());
+
+            // List run steps
+            OpenAIPageableListOfRunStep runSteps = client.listRunSteps(threadId, runId);
+            assertNotNull(runSteps);
+
+            List<RunStep> runStepsData = runSteps.getData();
+            assertNotNull(runStepsData);
+            assertEquals(1, runStepsData.size());
+            assertEquals("list", runSteps.getObject());
+            assertEquals(runSteps.getFirstId(), runSteps.getLastId());
+            RunStep runStep = runStepsData.get(0);
+            // Get run step by id
+            String runStepId = runStep.getId();
+            RunStep retrievedStep = client.getRunStep(threadId, runId, runStepId);
+            assertNotNull(retrievedStep);
+            validateRunStep(runStep, retrievedStep);
+
+            // WITH RESPONSE
+
+            // List run steps with response
+            Response<BinaryData> response = client.listRunStepsWithResponse(threadId, runId, new RequestOptions());
+            OpenAIPageableListOfRunStep runStepsWithResponse = assertAndGetValueFromResponse(response,
+                    OpenAIPageableListOfRunStep.class, 200);
+            assertNotNull(runStepsWithResponse);
+            List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
+            assertNotNull(runStepsDataWithResponse);
+            assertEquals(1, runStepsDataWithResponse.size());
+            assertEquals("list", runSteps.getObject());
+            assertEquals(runSteps.getFirstId(), runSteps.getLastId());
+            // Get run step with response
+            Response<BinaryData> getRunStepResponse = client.getRunStepWithResponse(threadId, run.getId(),
+                    runStepId, new RequestOptions());
+            RunStep retrievedStepResponse = assertAndGetValueFromResponse(getRunStepResponse, RunStep.class, 200);
+            assertNotNull(retrievedStepResponse);
+            validateRunStep(runStep, retrievedStep);
 
             // Delete the created thread
             deleteThread(client, threadId);
