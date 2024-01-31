@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.WebhookInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list webhooks for a container registry. */
+/**
+ * The result of a request to list webhooks for a container registry.
+ */
 @Fluent
 public final class WebhookListResult {
     /*
@@ -25,14 +27,16 @@ public final class WebhookListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WebhookListResult class. */
+    /**
+     * Creates an instance of WebhookListResult class.
+     */
     public WebhookListResult() {
     }
 
     /**
      * Get the value property: The list of webhooks. Since this list may be incomplete, the nextLink field should be
      * used to request the next list of webhooks.
-     *
+     * 
      * @return the value value.
      */
     public List<WebhookInner> value() {
@@ -42,7 +46,7 @@ public final class WebhookListResult {
     /**
      * Set the value property: The list of webhooks. Since this list may be incomplete, the nextLink field should be
      * used to request the next list of webhooks.
-     *
+     * 
      * @param value the value value to set.
      * @return the WebhookListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class WebhookListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of webhooks.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class WebhookListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of webhooks.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WebhookListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class WebhookListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
