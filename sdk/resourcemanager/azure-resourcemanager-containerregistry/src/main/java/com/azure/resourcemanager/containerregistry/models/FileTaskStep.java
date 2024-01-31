@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The properties of a task step. */
+/**
+ * The properties of a task step.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileTask")
 @Fluent
@@ -34,13 +36,15 @@ public final class FileTaskStep extends TaskStepProperties {
     @JsonProperty(value = "values")
     private List<SetValue> values;
 
-    /** Creates an instance of FileTaskStep class. */
+    /**
+     * Creates an instance of FileTaskStep class.
+     */
     public FileTaskStep() {
     }
 
     /**
      * Get the taskFilePath property: The task template/definition file path relative to the source context.
-     *
+     * 
      * @return the taskFilePath value.
      */
     public String taskFilePath() {
@@ -49,7 +53,7 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Set the taskFilePath property: The task template/definition file path relative to the source context.
-     *
+     * 
      * @param taskFilePath the taskFilePath value to set.
      * @return the FileTaskStep object itself.
      */
@@ -60,7 +64,7 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Get the valuesFilePath property: The task values/parameters file path relative to the source context.
-     *
+     * 
      * @return the valuesFilePath value.
      */
     public String valuesFilePath() {
@@ -69,7 +73,7 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Set the valuesFilePath property: The task values/parameters file path relative to the source context.
-     *
+     * 
      * @param valuesFilePath the valuesFilePath value to set.
      * @return the FileTaskStep object itself.
      */
@@ -80,7 +84,7 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -89,7 +93,7 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the FileTaskStep object itself.
      */
@@ -98,14 +102,18 @@ public final class FileTaskStep extends TaskStepProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskStep withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskStep withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
@@ -114,16 +122,15 @@ public final class FileTaskStep extends TaskStepProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (taskFilePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property taskFilePath in model FileTaskStep"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property taskFilePath in model FileTaskStep"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties for updating triggers. */
+/**
+ * The properties for updating triggers.
+ */
 @Fluent
 public final class TriggerUpdateParameters {
     /*
@@ -29,13 +31,15 @@ public final class TriggerUpdateParameters {
     @JsonProperty(value = "baseImageTrigger")
     private BaseImageTriggerUpdateParameters baseImageTrigger;
 
-    /** Creates an instance of TriggerUpdateParameters class. */
+    /**
+     * Creates an instance of TriggerUpdateParameters class.
+     */
     public TriggerUpdateParameters() {
     }
 
     /**
      * Get the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @return the timerTriggers value.
      */
     public List<TimerTriggerUpdateParameters> timerTriggers() {
@@ -44,7 +48,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @param timerTriggers the timerTriggers value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Get the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @return the sourceTriggers value.
      */
     public List<SourceTriggerUpdateParameters> sourceTriggers() {
@@ -64,7 +68,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @param sourceTriggers the sourceTriggers value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -75,7 +79,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Get the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @return the baseImageTrigger value.
      */
     public BaseImageTriggerUpdateParameters baseImageTrigger() {
@@ -84,7 +88,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @param baseImageTrigger the baseImageTrigger value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -95,7 +99,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
