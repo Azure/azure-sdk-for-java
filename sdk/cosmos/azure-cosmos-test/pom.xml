@@ -48,6 +48,8 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <jacoco.skip>true</jacoco.skip> <!-- project has no tests -->
   </properties>
 
   <dependencies>

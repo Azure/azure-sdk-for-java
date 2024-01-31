@@ -126,8 +126,6 @@
       -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
-    <jacocoUnitTestAgent></jacocoUnitTestAgent>
-
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
       @{jacocoUnitTestAgent}
@@ -142,8 +140,6 @@
     <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
-
-    <jacocoIntegrationTestAgent></jacocoIntegrationTestAgent>
 
     <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
     <defaultFailsafeArgLine>
@@ -430,6 +426,7 @@
           </dataFileIncludes>
           <excludes combine.children="append">
             <exclude>META-INF/**</exclude>
+            <exclude>module-info.class</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -1226,6 +1223,8 @@
                   </compilerArgs>
                   <release>8</release>
                   <testRelease>8</testRelease>
+                  <testSource>8</testSource>
+                  <testTarget>8</testTarget>
                   <testExcludes>
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>

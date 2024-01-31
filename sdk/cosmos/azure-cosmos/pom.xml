@@ -45,6 +45,8 @@ Licensed under the MIT License.
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
+
+    <jacoco.skip>true</jacoco.skip> <!-- tests are ran from azure-cosmos-tests -->
   </properties>
 
   <dependencies>

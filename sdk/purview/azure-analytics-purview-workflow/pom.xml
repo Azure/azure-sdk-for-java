@@ -45,6 +45,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <jacoco.skip>true</jacoco.skip> <!-- all tests are disabled -->
   </properties>
   <dependencies>
     <dependency>
