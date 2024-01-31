@@ -67,25 +67,17 @@ public class AzureRetrievalAsyncTest extends AssistantsClientTestBase {
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())
                             .flatMap(createdRun ->
                                 client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
-                                    .repeat()
-                                    .delayElements(Duration.ofMillis(500))
-                                    .takeWhile(tuple2 -> {
+                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(500)))
+                                    .takeUntil(tuple2 -> {
                                         ThreadRun run = tuple2.getT1();
 
-                                        return run.getStatus() == RunStatus.IN_PROGRESS
-                                            || run.getStatus() == RunStatus.QUEUED;
+                                        return run.getStatus() != RunStatus.IN_PROGRESS
+                                            && run.getStatus() != RunStatus.QUEUED;
                                     })
                                     .last()
                             )
                     );
                 }).flatMap(tuple -> {
-                    // we do one last request, that gets the Run with the Status that broke the above loop
-                    ThreadRun run = tuple.getT1();
-                    AsyncUtils cleanUp = tuple.getT2();
-
-                    return client.getRun(cleanUp.getThread().getId(), run.getId()).zipWith(Mono.just(cleanUp));
-                })
-                .flatMap(tuple -> {
                     ThreadRun run = tuple.getT1();
                     AsyncUtils cleanUp = tuple.getT2();
 
