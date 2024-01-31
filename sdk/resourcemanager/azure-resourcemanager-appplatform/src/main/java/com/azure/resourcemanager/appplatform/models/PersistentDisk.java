@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Persistent disk payload. */
+/**
+ * Persistent disk payload.
+ */
 @Fluent
 public final class PersistentDisk {
     /*
@@ -29,8 +31,14 @@ public final class PersistentDisk {
     private String mountPath;
 
     /**
+     * Creates an instance of PersistentDisk class.
+     */
+    public PersistentDisk() {
+    }
+
+    /**
      * Get the sizeInGB property: Size of the persistent disk in GB.
-     *
+     * 
      * @return the sizeInGB value.
      */
     public Integer sizeInGB() {
@@ -39,7 +47,7 @@ public final class PersistentDisk {
 
     /**
      * Set the sizeInGB property: Size of the persistent disk in GB.
-     *
+     * 
      * @param sizeInGB the sizeInGB value to set.
      * @return the PersistentDisk object itself.
      */
@@ -50,7 +58,7 @@ public final class PersistentDisk {
 
     /**
      * Get the usedInGB property: Size of the used persistent disk in GB.
-     *
+     * 
      * @return the usedInGB value.
      */
     public Integer usedInGB() {
@@ -59,7 +67,7 @@ public final class PersistentDisk {
 
     /**
      * Get the mountPath property: Mount path of the persistent disk.
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -68,7 +76,7 @@ public final class PersistentDisk {
 
     /**
      * Set the mountPath property: Mount path of the persistent disk.
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the PersistentDisk object itself.
      */
@@ -79,7 +87,7 @@ public final class PersistentDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

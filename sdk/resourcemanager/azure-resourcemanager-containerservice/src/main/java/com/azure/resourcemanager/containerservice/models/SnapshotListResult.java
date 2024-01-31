@@ -34,7 +34,7 @@ public final class SnapshotListResult {
 
     /**
      * Get the value property: The list of snapshots.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -43,7 +43,7 @@ public final class SnapshotListResult {
 
     /**
      * Set the value property: The list of snapshots.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotListResult object itself.
      */
@@ -54,7 +54,7 @@ public final class SnapshotListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of snapshot results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class SnapshotListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

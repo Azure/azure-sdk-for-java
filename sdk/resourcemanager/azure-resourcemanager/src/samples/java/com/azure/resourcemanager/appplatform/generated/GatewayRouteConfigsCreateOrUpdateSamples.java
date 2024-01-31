@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.GatewayRouteConfigResourceInner;
 import com.azure.resourcemanager.appplatform.models.GatewayApiRoute;
 import com.azure.resourcemanager.appplatform.models.GatewayRouteConfigOpenApiProperties;
@@ -12,45 +11,30 @@ import com.azure.resourcemanager.appplatform.models.GatewayRouteConfigProperties
 import com.azure.resourcemanager.appplatform.models.GatewayRouteConfigProtocol;
 import java.util.Arrays;
 
-/** Samples for GatewayRouteConfigs CreateOrUpdate. */
+/**
+ * Samples for GatewayRouteConfigs CreateOrUpdate.
+ */
 public final class GatewayRouteConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayRouteConfigs_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * GatewayRouteConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: GatewayRouteConfigs_CreateOrUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayRouteConfigsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getGatewayRouteConfigs()
-            .createOrUpdate(
-                "myResourceGroup",
-                "myservice",
-                "default",
-                "myRouteConfig",
-                new GatewayRouteConfigResourceInner()
-                    .withProperties(
-                        new GatewayRouteConfigProperties()
-                            .withAppResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myApp")
-                            .withOpenApi(
-                                new GatewayRouteConfigOpenApiProperties()
-                                    .withUri(
-                                        "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json"))
-                            .withProtocol(GatewayRouteConfigProtocol.HTTPS)
-                            .withRoutes(
-                                Arrays
-                                    .asList(
-                                        new GatewayApiRoute()
-                                            .withTitle("myApp route config")
-                                            .withSsoEnabled(true)
-                                            .withPredicates(Arrays.asList("Path=/api5/customer/**"))
-                                            .withFilters(Arrays.asList("StripPrefix=2", "RateLimit=1,1s"))))),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getGatewayRouteConfigs().createOrUpdate("myResourceGroup",
+            "myservice", "default", "myRouteConfig",
+            new GatewayRouteConfigResourceInner().withProperties(new GatewayRouteConfigProperties().withAppResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myApp")
+                .withOpenApi(new GatewayRouteConfigOpenApiProperties().withUri(
+                    "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json"))
+                .withProtocol(GatewayRouteConfigProtocol.HTTPS)
+                .withRoutes(Arrays.asList(new GatewayApiRoute().withTitle("myApp route config").withSsoEnabled(true)
+                    .withPredicates(Arrays.asList("Path=/api5/customer/**"))
+                    .withFilters(Arrays.asList("StripPrefix=2", "RateLimit=1,1s"))))),
+            com.azure.core.util.Context.NONE);
     }
 }

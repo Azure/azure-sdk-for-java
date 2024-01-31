@@ -8,8 +8,11 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -17,7 +20,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -63,7 +65,7 @@ public class RntbdRequestRecordTests {
     }
 
     @Test(groups = { "unit" })
-    public void cancelRecord() throws URISyntaxException, InterruptedException {
+    public void cancelRecord() throws URISyntaxException, InterruptedException, JsonProcessingException {
 
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document),
@@ -80,5 +82,12 @@ public class RntbdRequestRecordTests {
 
         Thread.sleep(100);
         assertThat(record.isCancelled()).isTrue();
+
+        String jsonString = record.toString();
+        String statusString = "{\"done\":true,\"cancelled\":true,\"completedExceptionally\":true,\"error\":{\"type\":\"java.util.concurrent.CancellationException\"}}";
+        JsonNode jsonNode = Utils.getSimpleObjectMapper().readTree(jsonString);
+        JsonNode errorStatus = jsonNode.get("RntbdRequestRecord").get("status");
+        assertThat(errorStatus).isNotNull();
+        assertThat(errorStatus.toString()).isEqualTo(statusString);
     }
 }

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.AvailableRuntimeVersionsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RuntimeVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RuntimeVersionsClient.
+ */
 public interface RuntimeVersionsClient {
     /**
      * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
@@ -25,7 +27,7 @@ public interface RuntimeVersionsClient {
 
     /**
      * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
@@ -35,17 +37,7 @@ public interface RuntimeVersionsClient {
 
     /**
      * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableRuntimeVersionsInner listRuntimeVersions();
-
-    /**
-     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,4 +46,14 @@ public interface RuntimeVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailableRuntimeVersionsInner> listRuntimeVersionsWithResponse(Context context);
+
+    /**
+     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailableRuntimeVersionsInner listRuntimeVersions();
 }

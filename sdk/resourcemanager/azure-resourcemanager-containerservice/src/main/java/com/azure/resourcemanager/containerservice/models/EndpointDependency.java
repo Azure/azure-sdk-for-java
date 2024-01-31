@@ -33,7 +33,7 @@ public final class EndpointDependency {
 
     /**
      * Get the domainName property: The domain name of the dependency.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -42,7 +42,7 @@ public final class EndpointDependency {
 
     /**
      * Set the domainName property: The domain name of the dependency.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the EndpointDependency object itself.
      */
@@ -53,7 +53,7 @@ public final class EndpointDependency {
 
     /**
      * Get the endpointDetails property: The Ports and Protocols used when connecting to domainName.
-     *
+     * 
      * @return the endpointDetails value.
      */
     public List<EndpointDetail> endpointDetails() {
@@ -62,7 +62,7 @@ public final class EndpointDependency {
 
     /**
      * Set the endpointDetails property: The Ports and Protocols used when connecting to domainName.
-     *
+     * 
      * @param endpointDetails the endpointDetails value to set.
      * @return the EndpointDependency object itself.
      */
@@ -73,7 +73,7 @@ public final class EndpointDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

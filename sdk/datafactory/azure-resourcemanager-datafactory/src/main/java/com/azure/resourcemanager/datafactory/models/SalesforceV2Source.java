@@ -23,11 +23,11 @@ public final class SalesforceV2Source extends TabularSource {
     private Object soqlQuery;
 
     /*
-     * The read behavior for the operation. Default is query. Allowed values: query/queryAll. Type: string (or
-     * Expression with resultType string).
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
-    @JsonProperty(value = "readBehavior")
-    private Object readBehavior;
+    @JsonProperty(value = "includeDeletedObjects")
+    private Object includeDeletedObjects;
 
     /**
      * Creates an instance of SalesforceV2Source class.
@@ -56,24 +56,24 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
-     * Get the readBehavior property: The read behavior for the operation. Default is query. Allowed values:
-     * query/queryAll. Type: string (or Expression with resultType string).
+     * Get the includeDeletedObjects property: This property control whether query result contains Deleted objects.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      * 
-     * @return the readBehavior value.
+     * @return the includeDeletedObjects value.
      */
-    public Object readBehavior() {
-        return this.readBehavior;
+    public Object includeDeletedObjects() {
+        return this.includeDeletedObjects;
     }
 
     /**
-     * Set the readBehavior property: The read behavior for the operation. Default is query. Allowed values:
-     * query/queryAll. Type: string (or Expression with resultType string).
+     * Set the includeDeletedObjects property: This property control whether query result contains Deleted objects.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      * 
-     * @param readBehavior the readBehavior value to set.
+     * @param includeDeletedObjects the includeDeletedObjects value to set.
      * @return the SalesforceV2Source object itself.
      */
-    public SalesforceV2Source withReadBehavior(Object readBehavior) {
-        this.readBehavior = readBehavior;
+    public SalesforceV2Source withIncludeDeletedObjects(Object includeDeletedObjects) {
+        this.includeDeletedObjects = includeDeletedObjects;
         return this;
     }
 

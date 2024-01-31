@@ -40,7 +40,7 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
      * Get the metricLabelsAllowlist property: Comma-separated list of additional Kubernetes label keys that will be
      * used in the resource's labels metric (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By
      * default the metric contains only resource name and namespace labels.
-     *
+     * 
      * @return the metricLabelsAllowlist value.
      */
     public String metricLabelsAllowlist() {
@@ -51,7 +51,7 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
      * Set the metricLabelsAllowlist property: Comma-separated list of additional Kubernetes label keys that will be
      * used in the resource's labels metric (Example: 'namespaces=[k8s-label-1,k8s-label-n,...],pods=[app],...'). By
      * default the metric contains only resource name and namespace labels.
-     *
+     * 
      * @param metricLabelsAllowlist the metricLabelsAllowlist value to set.
      * @return the ManagedClusterAzureMonitorProfileKubeStateMetrics object itself.
      */
@@ -65,7 +65,7 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
      * used in the resource's labels metric (Example:
      * 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only
      * resource name and namespace labels.
-     *
+     * 
      * @return the metricAnnotationsAllowList value.
      */
     public String metricAnnotationsAllowList() {
@@ -77,7 +77,7 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
      * used in the resource's labels metric (Example:
      * 'namespaces=[kubernetes.io/team,...],pods=[kubernetes.io/team],...'). By default the metric contains only
      * resource name and namespace labels.
-     *
+     * 
      * @param metricAnnotationsAllowList the metricAnnotationsAllowList value to set.
      * @return the ManagedClusterAzureMonitorProfileKubeStateMetrics object itself.
      */
@@ -89,7 +89,7 @@ public final class ManagedClusterAzureMonitorProfileKubeStateMetrics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
