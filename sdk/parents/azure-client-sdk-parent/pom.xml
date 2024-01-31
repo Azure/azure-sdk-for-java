@@ -434,20 +434,6 @@
         </configuration>
         <executions>
           <execution>
-            <id>instrument</id>
-            <phase>process-test-classes</phase>
-            <goals>
-              <goal>instrument</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>restore-instrumented-classes</id>
-            <phase>process-test-classes</phase>
-            <goals>
-              <goal>restore-instrumented-classes</goal>
-            </goals>
-          </execution>
-          <execution>
             <id>prepare-agent</id>
             <phase>process-test-classes</phase>
             <goals>
@@ -468,13 +454,6 @@
               <destFile>${project.build.directory}/jacoco-it.exec</destFile>
               <propertyName>jacocoIntegrationTestAgent</propertyName>
             </configuration>
-          </execution>
-          <execution>
-            <id>integration-restore-instrumented-classes</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>restore-instrumented-classes</goal>
-            </goals>
           </execution>
           <execution>
             <id>merge-unit-and-integration</id>
