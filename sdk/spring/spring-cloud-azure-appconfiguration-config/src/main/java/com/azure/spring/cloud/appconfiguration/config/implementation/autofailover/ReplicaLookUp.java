@@ -117,17 +117,20 @@ public class ReplicaLookUp {
         }
 
         SRVRecord origin = getOriginRecord(host);
-        List<SRVRecord> replicas = getReplicaRecords(origin);
-        String knownDomain = getKnownDomain(endpoint);
+        if (origin != null) {
+            List<SRVRecord> replicas = getReplicaRecords(origin);
+            String knownDomain = getKnownDomain(endpoint);
 
-        if (!providedEndpoints.contains(origin.getEndpoint()) && validate(knownDomain, origin.getEndpoint())) {
-            records.add(origin);
-        }
-        replicas.stream().forEach(replica -> {
-            if (!providedEndpoints.contains(replica.getEndpoint()) && validate(knownDomain, replica.getEndpoint())) {
-                records.add(replica);
+            if (!providedEndpoints.contains(origin.getEndpoint()) && validate(knownDomain, origin.getEndpoint())) {
+                records.add(origin);
             }
-        });
+            replicas.stream().forEach(replica -> {
+                if (!providedEndpoints.contains(replica.getEndpoint())
+                    && validate(knownDomain, replica.getEndpoint())) {
+                    records.add(replica);
+                }
+            });
+        }
         return records;
     }
 

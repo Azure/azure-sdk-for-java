@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -70,7 +71,7 @@ class AppConfigurationRefreshUtil {
                             }
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
-                        } catch (AppConfigurationStatusException e) {
+                        } catch (HttpResponseException e) {
                             LOGGER.warn(
                                 "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
@@ -95,7 +96,7 @@ class AppConfigurationRefreshUtil {
                             }
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
-                        } catch (AppConfigurationStatusException e) {
+                        } catch (HttpResponseException e) {
                             LOGGER.warn(
                                 "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
