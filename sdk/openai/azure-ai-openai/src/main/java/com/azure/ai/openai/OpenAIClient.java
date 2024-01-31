@@ -45,7 +45,7 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
 /**
- * The synchronous OpenAI client.
+ * Initializes a new instance of the synchronous OpenAIClient type.
  */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
