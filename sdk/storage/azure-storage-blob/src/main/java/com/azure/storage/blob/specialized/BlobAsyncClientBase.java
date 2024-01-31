@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -1117,18 +1116,15 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStream()} to download larger blobs.</p>
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStream()} to download larger blobs.</p>
      *
      * @return A reactive response containing the blob data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadContent() {
         return downloadWithResponse(null, null, null, false)
-            .flatMap(response ->
-                BinaryData.fromFlux(response.getValue(), 
-                Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)), false));
-
+            .flatMap(response -> BinaryData.fromFlux(response.getValue()));
     }
 
     /**
@@ -1239,8 +1235,8 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}
      * to download larger blobs.</p>
      *
      * @param options {@link DownloadRetryOptions}
