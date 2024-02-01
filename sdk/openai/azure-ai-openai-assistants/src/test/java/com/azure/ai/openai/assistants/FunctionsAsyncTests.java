@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
+import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStepToolCallDetails;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
@@ -83,7 +84,7 @@ public class FunctionsAsyncTests extends AssistantsClientTestBase {
                         assertNotNull(outputsAction.getSubmitToolOutputs());
                         assertFalse(outputsAction.getSubmitToolOutputs().getToolCalls().isEmpty());
 
-                        for(var outputAction : outputsAction.getSubmitToolOutputs().getToolCalls()) {
+                        for (RequiredToolCall outputAction : outputsAction.getSubmitToolOutputs().getToolCalls()) {
                             assertInstanceOf(RequiredFunctionToolCall.class, outputAction);
                         }
 

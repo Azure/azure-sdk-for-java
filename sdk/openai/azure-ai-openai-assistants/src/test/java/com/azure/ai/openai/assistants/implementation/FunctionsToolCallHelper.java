@@ -9,8 +9,8 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FunctionsToolCallHelper {
@@ -44,10 +44,10 @@ public class FunctionsToolCallHelper {
         private Map<String, FunctionEnumParameter> properties;
 
         @JsonCreator
-        public AirlineForSeasonParameters() {
+        AirlineForSeasonParameters() {
             this.properties = new HashMap<>();
 
-            this.properties.put("season", new FunctionEnumParameter(List.of("winter", "spring", "summer", "fall")));
+            this.properties.put("season", new FunctionEnumParameter(Arrays.asList("winter", "spring", "summer", "fall")));
         }
     }
 
@@ -60,7 +60,7 @@ public class FunctionsToolCallHelper {
         private Map<String, FunctionStringParameter> properties;
 
         @JsonCreator
-        public AirlinePriceFunctionParameters() {
+        AirlinePriceFunctionParameters() {
             this.properties = new HashMap<>();
 
             this.properties.put("destination", new FunctionStringParameter("A travel destination location."));
