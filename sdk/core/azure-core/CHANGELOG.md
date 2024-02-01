@@ -36,7 +36,7 @@
 
 #### Dependency Updates
 
-- Upgraded Reactor Core from `3.4.33` to `3.4.35`.
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
 
 ## 1.45.0 (2023-11-03)
 
