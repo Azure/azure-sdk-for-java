@@ -24,7 +24,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": "-P \"direct\",\"fast\",\"query\",\"multi-master\",\"e2e\",\"flaky-multi-master\",\"multi-region\",\"long\",\"cfp-split\",\"split\"",
+      "ProfileFlag": "-P \"fast\",\"split\",\"cfp-split\",\"query\",\"long\",\"direct\",\"multi-master\",\"flaky-multi-master\",\"e2e\",\"multi-region\"",
       "RunAggregateReports": true,
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
       "Agent": {
