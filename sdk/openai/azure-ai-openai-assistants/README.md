@@ -1,15 +1,19 @@
-# Azure Assistants client library for Java
+# Azure OpenAI: OpenAI Assistants client library for Java
 
-Azure Assistants client library for Java.
+> **NOTE**: This is a preview version of the Azure SDK library for OpenAI Assistants. The Azure OpenAI service does not 
+> yet include Assistants features and this project is thus currently for sole use with OpenAI's `api.openai.com` endpoints.
+> [OpenAI's Assistants API](https://platform.openai.com/docs/api-reference/assistants) is tagged as beta and both the 
+> API surface and this library's representation are subject to change.
 
-This package contains Microsoft Azure Assistants client library.
+The Azure OpenAI Assistants client library for Java is an adaptation of OpenAI's REST APIs that provides an idiomatic interface
+and rich integration with the rest of the Azure SDK ecosystem. It will connect to Azure OpenAI resources *or* to the
+non-Azure OpenAI inference endpoint, making it a great choice for even non-Azure OpenAI development.
 
-## Documentation
+Use this library to:
 
-Various documentation is available to help you get started
-
-- [API reference documentation][docs]
-- [Product documentation][product_documentation]
+- Create and manage assistants, threads, messages, and runs
+- Configure and use tools with assistants
+- Upload and manage files for use with assistants
 
 ## Getting started
 
@@ -17,6 +21,7 @@ Various documentation is available to help you get started
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
+- [Azure OpenAI access][azure_openai_access]
 
 ### Adding the package to your product
 
@@ -32,18 +37,148 @@ Various documentation is available to help you get started
 
 ### Authentication
 
-[Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
+See [OpenAI's "how assistants work"](https://platform.openai.com/docs/assistants/how-it-works) documentation for an
+overview of the concepts and relationships used with assistants. This overview closely follows
+[OpenAI's overview example](https://platform.openai.com/docs/assistants/overview) to demonstrate the basics of
+creating, running, and using assistants and threads.
+
+#### Create a Azure OpenAI client with key credential
+> **NOTE**: The Azure OpenAI service does not yet include Assistants features. Use Non-Azure OpenAI Client for now.
+
+Get Azure OpenAI `key` credential from the Azure Portal.
+
+```java readme-sample-createSyncClientKeyCredential
+AssistantsClient client = new AssistantsClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildClient();
+```
+or
+```java readme-sample-createAsyncClientKeyCredential
+AssistantsAsyncClient client = new AssistantsClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildAsyncClient();
+```
+
+### Support for non-Azure OpenAI
+
+The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the
+setup of the `Assistants Client` is slightly different. First, get Non-Azure OpenAI API key from
+[Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `Assistants Client` as follows:
+
+
+```java readme-sample-createNonAzureAssistantSyncClientApiKey
+AssistantsClient client = new AssistantsClientBuilder()
+        .credential(new KeyCredential("{openai-secret-key}"))
+        .buildClient();
+```
+or
+
+```java readme-sample-createNonAzureAssistantAsyncClientApiKey
+AssistantsAsyncClient client = new AssistantsClientBuilder()
+        .credential(new KeyCredential("{openai-secret-key}"))
+        .buildAsyncClient();
+```
 
 ## Key concepts
 
+### Overview
+
+For an overview of Assistants and the pertinent key concepts like Threads, Messages, Runs, and Tools, please see
+[OpenAI's Assistants API overview](https://platform.openai.com/docs/assistants/overview).
+
 ## Examples
 
-```java com.azure.ai.openai.assistants.readme
+### Working with simple assistant operations
+
+#### Create an assistant
+With an authenticated client, an assistant can be created:
+```java readme-sample-createAssistant
+AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("{deploymentOrModelId}")
+        .setName("Math Tutor")
+        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
+Assistant assistant = client.createAssistant(assistantCreationOptions);
 ```
 
+#### Create a thread with message and then run it
+Then a thread can be created:
+```java readme-sample-createThread
+AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
+String threadId = thread.getId();
+```
+
+With a thread created, a message can be created on it:
+```java readme-sample-createMessage
+String userMessage = "I need to solve the equation `3x + 11 = 14`. Can you help me?";
+ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, userMessage);
+```
+
+As we have a thread and message, we can create a run:
+```java readme-sample-createRun
+ThreadRun run = client.createRun(threadId, new CreateRunOptions(assistantId));
+```
+
+There is also a convenience method to create a thread and message, and then run it in one call:
+```java readme-sample-createThreadAndRun
+CreateAndRunThreadOptions createAndRunThreadOptions = new CreateAndRunThreadOptions(assistantId)
+        .setThread(new AssistantThreadCreationOptions()
+                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
+run = client.createThreadAndRun(createAndRunThreadOptions);
+```
+
+Once the run has started, it should then be polled until it reaches a terminal status:
+```java readme-sample-pollRun
+do {
+    run = client.getRun(run.getThreadId(), run.getId());
+    Thread.sleep(1000);
+} while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
+```
+
+Assuming the run successfully completed, listing messages from the thread that was run will now reflect new information
+added by the assistant:
+```java readme-sample-listMessagesAfterRun
+OpenAIPageableListOfThreadMessage messages = client.listMessages(run.getThreadId());
+List<ThreadMessage> data = messages.getData();
+for (int i = 0; i < data.size(); i++) {
+    ThreadMessage dataMessage = data.get(i);
+    MessageRole role = dataMessage.getRole();
+    for (MessageContent messageContent : dataMessage.getContent()) {
+        MessageTextContent messageTextContent = (MessageTextContent) messageContent;
+        System.out.println(i + ": Role = " + role + ", content = " + messageTextContent.getText().getValue());
+    }
+}
+```
+
+For more examples, such as listing assistants/threads/messages/runs/runSteps, upload files, delete assistants/threads,
+etc, see the [samples][samples_readme].
+
+### Working with files for retrieval
+TODO: Add examples for file operations
+
+### Using function tools and parallel function calling
+TODO: Add examples for function tools and parallel function calling
+
 ## Troubleshooting
+### Enable client logging
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
+- Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 
@@ -56,9 +191,13 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
-[docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai-assistants/src/samples
+
+[azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 
