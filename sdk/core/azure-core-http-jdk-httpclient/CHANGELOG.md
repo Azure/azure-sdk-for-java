@@ -1,14 +1,14 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.10 (2024-02-01)
 
 ### Other Changes
+
+- Optimized performance of handling HTTP headers. ([#38285](https://github.com/Azure/azure-sdk-for-java/pull/38285))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.9 (2023-11-03)
 
