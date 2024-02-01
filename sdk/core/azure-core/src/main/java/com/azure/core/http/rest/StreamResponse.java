@@ -24,10 +24,6 @@ import java.util.Objects;
  * the headers of the HTTP response, and the content of the HTTP response as a stream of
  * {@link ByteBuffer byte buffers}.</p>
  *
- * <p>It provides methods to access these properties. For example, you can use {@link #getRequest()} to get the
- * HTTP request, {@link #getStatusCode()} to get the status code, {@link #getHeaders()} to get the headers, and
- * {@link #getValue()} to get the content as a stream of byte buffers.</p>
- *
  * <p>This class is useful when you want to work with the response of an HTTP request where the body of the response
  * is expected to be in a specific format (the generic type {@code T}).</p>
  *

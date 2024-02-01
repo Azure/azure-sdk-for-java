@@ -24,9 +24,6 @@ import java.util.Objects;
  * <p>This class encapsulates a polygon defined by a list of {@link GeoLinearRing} instances. Each ring represents a
  * closed loop of coordinates forming the boundary of the polygon.</p>
  *
- * <p>It provides methods to access these rings. For example, you can use {@link #getRings()} to get the list of
- * rings forming the polygon, and {@link #getOuterRing()} to get the outer ring of the polygon.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric polygon to JSON, and a
  * {@link #fromJson(JsonReader)} method to deserialize a geometric polygon from JSON.</p>
  *

@@ -25,9 +25,6 @@ import java.util.Objects;
  * <p>This class encapsulates the common properties of a geometric object, including the bounding box and additional
  * custom properties. It provides methods to access these properties.</p>
  *
- * <p>For example, you can use {@link #getBoundingBox()} to get the bounding box of the geometric object,
- * and {@link #getCustomProperties()} to get the additional custom properties.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric object to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a geometric object from JSON.</p>
  *

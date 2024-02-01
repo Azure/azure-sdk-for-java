@@ -19,14 +19,8 @@ import java.util.List;
  * {@link JsonSerializer} class from the Jackson library and overrides the
  * {@link #serialize(JsonPatchDocument, JsonGenerator, SerializerProvider)} method to perform the serialization.</p>
  *
- * <p>The {@link #getModule()} method returns a {@link SimpleModule} that wraps this serializer, which can be
- * registered with a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper} to handle the
- * serialization of {@link JsonPatchDocument} instances.</p>
- *
  * <p>This class is useful when you want to serialize a {@link JsonPatchDocument} to JSON. For example, you can use
  * it when you want to send a JSON Patch document as part of an HTTP request.</p>
- *
- * <p>Note: This class is final and cannot be subclassed.</p>
  *
  * @see JsonPatchDocument
  * @see JsonSerializer

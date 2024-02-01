@@ -18,11 +18,6 @@ import java.io.IOException;
  * <p>This class encapsulates the details of an inner error in a {@link ResponseError}, including the error code
  * and a nested inner error. It provides methods to access and modify these properties.</p>
  *
- * <p>For example, you can use {@link #getCode()} to get the error code,
- * {@link #setCode(String)} to set the error code,
- * {@link #getInnerError()} to get the nested inner error, and
- * {@link #setInnerError(ResponseInnerError)} to set the nested inner error.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the inner error details to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize the inner error details from JSON.</p>
  *

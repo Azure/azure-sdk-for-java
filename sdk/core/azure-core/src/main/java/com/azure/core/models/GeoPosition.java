@@ -21,9 +21,6 @@ import java.util.Objects;
  * <p>This class encapsulates a geographic position defined by longitude, latitude, and optionally altitude. It
  * provides methods to access these properties.</p>
  *
- * <p>For example, you can use {@link #getLongitude()} to get the longitude of the position, {@link #getLatitude()}
- * to get the latitude of the position, and {@link #getAltitude()} to get the altitude of the position.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geographic position to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a geographic position from JSON.</p>
  *

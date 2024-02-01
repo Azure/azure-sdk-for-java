@@ -19,19 +19,11 @@ import java.util.List;
  * <p>This class encapsulates the details of an HTTP error response, including the error code, message, target,
  * inner error, and additional error details. It provides methods to access these properties.</p>
  *
- * <p>For example, you can use {@link #getCode()} to get the error code,
- * {@link #getMessage()} to get the error message,
- * {@link #getTarget()} to get the target of the error,
- * {@link #getInnerError()} to get the inner error, and
- * {@link #getErrorDetails()} to get the additional error details.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the error details to JSON, and
  * a {@link #fromJson(JsonReader)} method to deserialize the error details from JSON.</p>
  *
  * <p>This class is useful when you want to work with the error details of an HTTP response. For example, you can use
  * it to get detailed information about an error that occurred while processing an HTTP request.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
  *
  * @see JsonSerializable
  * @see JsonReader

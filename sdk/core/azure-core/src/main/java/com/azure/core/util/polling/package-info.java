@@ -13,11 +13,9 @@
  * <p>This package provides a standard mechanism for initiating, tracking, and retrieving the results of long-running
  * operations</p>
  *
- *
  * <p><strong>Code Sample: Asynchronously wait for polling to complete and then retrieve the final result</strong></p>
  *
  * <!-- src_embed com.azure.core.util.polling.poller.getResult -->
- *
  * <pre>
  * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMinutes&#40;5&#41;&#41;;
  *
@@ -57,6 +55,14 @@
  * <p><strong>Code Sample: Using a SimpleSyncPoller to poll until the operation is successfully completed</strong></p>
  *
  * <!-- src_embed com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ * <pre>
+ * LongRunningOperationStatus operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * while &#40;operationStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
+ *     System.out.println&#40;&quot;Polling status: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Polling response: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * &#125;
+ * </pre>
  * <!-- end com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
  *
  *

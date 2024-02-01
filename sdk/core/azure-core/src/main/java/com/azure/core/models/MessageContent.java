@@ -13,12 +13,6 @@ import com.azure.core.util.BinaryData;
  * <p>This class encapsulates a message that includes a content type and its corresponding data. The data is
  * represented as a {@link BinaryData} object, and the content type is a string.</p>
  *
- * <p>It provides methods to set and get these properties. For example, you can use
- * {@link #setBodyAsBinaryData(BinaryData)} to set the data of the message,
- * {@link #getBodyAsBinaryData()} to get the data of the message,
- * {@link #setContentType(String)} to set the content type of the message, and
- * {@link #getContentType()} to get the content type of the message.</p>
- *
  * <p>This class is useful when you want to work with a message that includes a specific type of content and its
  * corresponding data. For example, you can use it to represent a message with JSON data, XML data,
  * or plain text data.</p>

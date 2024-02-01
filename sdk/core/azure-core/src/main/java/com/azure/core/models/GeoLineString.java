@@ -22,9 +22,6 @@ import java.util.Objects;
  * <p>This class encapsulates a list of {@link GeoPosition} instances that form a line string. A line string is a
  * curve with linear interpolation between points.</p>
  *
- * <p>It provides methods to access these positions. For example, you can use {@link #getCoordinates()} to get the
- * list of positions forming the line string.</p>
- *
  * <p>This class is useful when you want to work with a line string in a geographic context. For example, you can use
  * it to represent a route on a map or the shape of a geographic feature.</p>
  *

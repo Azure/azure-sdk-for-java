@@ -20,9 +20,6 @@ import java.util.Objects;
  * <p>This class encapsulates a point defined by a {@link GeoPosition} which includes the longitude, latitude, and
  * optionally the altitude of the point.</p>
  *
- * <p>It provides methods to access these properties. For example, you can use {@link #getCoordinates()} to get
- * the {@link GeoPosition} of the point.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric point to JSON, and
  * a {@link #fromJson(JsonReader)} method to deserialize a geometric point from JSON.</p>
  *

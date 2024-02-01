@@ -12,10 +12,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 
 /**
- * Handles serialization of a {@link JsonPatchOperation}.
- */
-
-/**
  * Handles the serialization of a {@link JsonPatchOperation}.
  *
  * <p>This class is responsible for converting a {@link JsonPatchOperation} into a JSON representation. It extends the

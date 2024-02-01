@@ -26,10 +26,6 @@ import java.util.Optional;
  * (add, replace, remove, etc.), a path pointing to the location within the target JSON document, an optional
  * 'from' path for copy and move operations, and an optional value.</p>
  *
- * <p>It provides methods to access these properties. For example, you can use {@link #getOp()} to get the kind of
- * operation, {@link #getFrom()} to get the 'from' path, {@link #getPath()} to get the target path, and
- * {@link #getValue()} to get the value associated with the operation.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the JSON Patch operation to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a JSON Patch operation from JSON.</p>
  *

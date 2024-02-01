@@ -24,9 +24,6 @@ import java.util.Objects;
  * <p>This class encapsulates a list of {@link GeoPoint} instances that form a collection of points. Each point is
  * defined by a {@link GeoPosition} which includes the longitude, latitude, and optionally the altitude.</p>
  *
- * <p>It provides methods to access these points. For example, you can use {@link #getPoints()} to get the list of
- * points in the collection.</p>
- *
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the collection of points to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a collection of points from JSON.</p>
  *

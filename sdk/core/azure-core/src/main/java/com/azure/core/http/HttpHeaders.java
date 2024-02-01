@@ -15,10 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A collection of headers on an HTTP request or response.
- */
-
-/**
  * <p>Represents a collection of headers on an HTTP request or response.</p>
  *
  * <p>This class encapsulates the headers of an HTTP request or response. It provides methods to add, set, get, and

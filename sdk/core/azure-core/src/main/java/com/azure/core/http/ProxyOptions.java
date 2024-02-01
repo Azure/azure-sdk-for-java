@@ -27,16 +27,6 @@ import java.util.regex.PatternSyntaxException;
  * <p>This class encapsulates the proxy settings, including the proxy type, address, and optional credentials. It
  * provides methods to set and get these properties.</p>
  *
- * <p>For example, you can use {@link #getType()} to get the proxy type, {@link #getAddress()} to get the proxy address,
- * {@link #getUsername()} to get the proxy username, {@link #getPassword()} to get the proxy password, and
- * {@link #getNonProxyHosts()} to get the hosts that bypass the proxy.</p>
- *
- * <p>You can also use {@link #setCredentials(String, String)} to set the proxy credentials, and
- * {@link #setNonProxyHosts(String)} to set the hosts that bypass the proxy.</p>
- *
- * <p>This class also provides a {@link #fromConfiguration(Configuration)} method to create a
- * {@link ProxyOptions} instance from the environment configuration.</p>
- *
  * <p>This class is useful when you want to configure a proxy for an HTTP client. For example, you can use it to
  * create a proxy with specific credentials, or to specify hosts that should bypass the proxy.</p>
  *

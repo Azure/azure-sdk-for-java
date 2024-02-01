@@ -18,8 +18,6 @@ import java.util.Objects;
  * scheme of the authorization header, and {@link #getParameter()} to get the credentials of the authorization header.</p>
  *
  * <p>This class is useful when you want to work with the Authorization header of an HTTP request or response.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
  */
 @Immutable
 public final class HttpAuthorization {
