@@ -135,7 +135,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;300&quot;&#41;&#41;;
- * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;hotels&#41;.block&#40;&#41;;
+ * searchAsyncClient.uploadDocuments&#40;hotels&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
  *
@@ -156,7 +156,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
- * SEARCH_ASYNC_CLIENT.mergeDocuments&#40;hotels&#41;.block&#40;&#41;;
+ * searchAsyncClient.mergeDocuments&#40;hotels&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map -->
  *
@@ -176,7 +176,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * <pre>
  * SearchDocument documentId = new SearchDocument&#40;&#41;;
  * documentId.put&#40;&quot;hotelId&quot;, &quot;100&quot;&#41;;
- * SEARCH_ASYNC_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
+ * searchAsyncClient.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String -->
  *
@@ -194,8 +194,10 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *
  * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class -->
  * <pre>
- * Hotel hotel = SEARCH_ASYNC_CLIENT.getDocument&#40;&quot;100&quot;, Hotel.class&#41;.block&#40;&#41;;
- * System.out.printf&#40;&quot;Retrieved Hotel %s%n&quot;, hotel.getHotelId&#40;&#41;&#41;;
+ * Hotel hotel = searchAsyncClient.getDocument&#40;&quot;100&quot;, Hotel.class&#41;.block&#40;&#41;;
+ * if &#40;hotel != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved Hotel %s%n&quot;, hotel.getHotelId&#40;&#41;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class -->
  *
@@ -226,9 +228,10 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * List&lt;SearchDocument&gt; searchDocuments = new ArrayList&lt;&gt;&#40;&#41;;
  * searchDocuments.add&#40;searchDocument&#41;;
  * searchDocuments.add&#40;searchDocument1&#41;;
- * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;searchDocuments&#41;;
+ * searchAsyncClient.uploadDocuments&#40;searchDocuments&#41;;
  *
- * SearchPagedFlux results = SEARCH_ASYNC_CLIENT.search&#40;&quot;SearchText&quot;&#41;;
+ * SearchPagedFlux results = searchAsyncClient.search&#40;&quot;SearchText&quot;&#41;;
+ * results.getTotalCount&#40;&#41;.subscribe&#40;total -&gt; System.out.printf&#40;&quot;There are %s results&quot;, total&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String -->
  *
@@ -246,9 +249,9 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *
  * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String -->
  * <pre>
- * SuggestPagedFlux results = SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * SuggestPagedFlux results = searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
  * results.subscribe&#40;item -&gt; &#123;
- *     System.out.printf&#40;&quot;The text '%s' was found.&#92;n&quot;, item.getText&#40;&#41;&#41;;
+ *     System.out.printf&#40;&quot;The text '%s' was found.%n&quot;, item.getText&#40;&#41;&#41;;
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String -->
@@ -267,9 +270,9 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *
  * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String -->
  * <pre>
- * AutocompletePagedFlux results = SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * AutocompletePagedFlux results = searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
  * results.subscribe&#40;item -&gt; &#123;
- *     System.out.printf&#40;&quot;The text '%s' was found.&#92;n&quot;, item.getText&#40;&#41;&#41;;
+ *     System.out.printf&#40;&quot;The text '%s' was found.%n&quot;, item.getText&#40;&#41;&#41;;
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String -->

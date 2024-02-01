@@ -160,6 +160,14 @@ import java.util.Objects;
  * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
  *
  * <!-- src_embed com.azure.search.documents.SearchIndexClientBuilder.async.credential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;credential&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.search.documents.SearchIndexClientBuilder.async.credential -->
  *
  * @see SearchIndexClient

@@ -107,6 +107,7 @@ import java.util.Objects;
  * <pre>
  * SearchIndexer indexer = new SearchIndexer&#40;&quot;example-indexer&quot;, &quot;example-datasource&quot;, &quot;example-index&quot;&#41;;
  * SearchIndexer createdIndexer = searchIndexerClient.createIndexer&#40;indexer&#41;;
+ * System.out.printf&#40;&quot;Created indexer name: %s%n&quot;, createdIndexer.getName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
  *
@@ -125,7 +126,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers -->
  * <pre>
  * searchIndexerClient.listIndexers&#40;&#41;.forEach&#40;indexer -&gt;
- *     System.out.printf&#40;&quot;Retrieved indexer name: %s&#92;n&quot;, indexer.getName&#40;&#41;&#41;
+ *     System.out.printf&#40;&quot;Retrieved indexer name: %s%n&quot;, indexer.getName&#40;&#41;&#41;
  * &#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers -->
@@ -144,7 +145,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getIndexer#String -->
  * <pre>
  * SearchIndexer indexer = searchIndexerClient.getIndexer&#40;&quot;example-indexer&quot;&#41;;
- * System.out.printf&#40;&quot;Retrieved indexer name: %s&#92;n&quot;, indexer.getName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Retrieved indexer name: %s%n&quot;, indexer.getName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getIndexer#String -->
  *
@@ -165,7 +166,7 @@ import java.util.Objects;
  * SearchIndexer indexer = searchIndexerClient.getIndexer&#40;&quot;example-indexer&quot;&#41;;
  * indexer.setDescription&#40;&quot;This is a new description for this indexer&quot;&#41;;
  * SearchIndexer updatedIndexer = searchIndexerClient.createOrUpdateIndexer&#40;indexer&#41;;
- * System.out.printf&#40;&quot;Updated indexer name: %s, description: %s&#92;n&quot;, updatedIndexer.getName&#40;&#41;,
+ * System.out.printf&#40;&quot;Updated indexer name: %s, description: %s%n&quot;, updatedIndexer.getName&#40;&#41;,
  *     updatedIndexer.getDescription&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
@@ -289,7 +290,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets -->
  * <pre>
  * searchIndexerClient.listSkillsets&#40;&#41;.forEach&#40;skillset -&gt;
- *     System.out.printf&#40;&quot;Retrieved skillset name: %s&#92;n&quot;, skillset.getName&#40;&#41;&#41;
+ *     System.out.printf&#40;&quot;Retrieved skillset name: %s%n&quot;, skillset.getName&#40;&#41;&#41;
  * &#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets -->
@@ -309,7 +310,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getSkillset#String -->
  * <pre>
  * SearchIndexerSkillset skillset = searchIndexerClient.getSkillset&#40;&quot;example-skillset&quot;&#41;;
- * System.out.printf&#40;&quot;Retrieved skillset name: %s&#92;n&quot;, skillset.getName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Retrieved skillset name: %s%n&quot;, skillset.getName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getSkillset#String -->
  *
@@ -330,7 +331,7 @@ import java.util.Objects;
  * SearchIndexerSkillset skillset = searchIndexerClient.getSkillset&#40;&quot;example-skillset&quot;&#41;;
  * skillset.setDescription&#40;&quot;This is a new description for this skillset&quot;&#41;;
  * SearchIndexerSkillset updatedSkillset = searchIndexerClient.createOrUpdateSkillset&#40;skillset&#41;;
- * System.out.printf&#40;&quot;Updated skillset name: %s, description: %s&#92;n&quot;, updatedSkillset.getName&#40;&#41;,
+ * System.out.printf&#40;&quot;Updated skillset name: %s, description: %s%n&quot;, updatedSkillset.getName&#40;&#41;,
  *     updatedSkillset.getDescription&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->

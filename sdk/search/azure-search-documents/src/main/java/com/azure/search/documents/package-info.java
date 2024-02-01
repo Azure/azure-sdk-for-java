@@ -216,8 +216,8 @@
  * <pre>
  * for &#40;SearchResult result : searchClient.search&#40;&quot;luxury&quot;&#41;&#41; &#123;
  *     SearchDocument document = result.getDocument&#40;SearchDocument.class&#41;;
- *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, result.getDocument&#40;SearchDocument.class&#41;.get&#40;&quot;hotelId&quot;&#41;&#41;;
- *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, result.getDocument&#40;SearchDocument.class&#41;.get&#40;&quot;hotelName&quot;&#41;&#41;;
+ *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, document.get&#40;&quot;hotelId&quot;&#41;&#41;;
+ *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, document.get&#40;&quot;hotelName&quot;&#41;&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String -->
@@ -228,7 +228,7 @@
  *
  * <!-- src_embed hotelExampleClass -->
  * <pre>
- * class Hotel &#123;
+ * public static class SampleHotelClass &#123;
  *     private String hotelId;
  *     private String hotelName;
  *
@@ -239,6 +239,16 @@
  *     public String hotelName&#40;&#41; &#123;
  *         return this.hotelName;
  *     &#125;
+ *
+ *     public SampleHotelClass setHotelId&#40;String number&#41; &#123;
+ *         this.hotelId = number;
+ *         return this;
+ *     &#125;
+ *
+ *     public SampleHotelClass setHotelName&#40;String secretPointMotel&#41; &#123;
+ *         this.hotelName = secretPointMotel;
+ *         return this;
+ *     &#125;
  * &#125;
  * </pre>
  * <!-- end hotelExampleClass -->
@@ -248,7 +258,7 @@
  * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method -->
  * <pre>
  * for &#40;SearchResult result : searchClient.search&#40;&quot;luxury&quot;&#41;&#41; &#123;
- *     Hotel hotel = result.getDocument&#40;Hotel.class&#41;;
+ *     SampleHotelClass hotel = result.getDocument&#40;SampleHotelClass.class&#41;;
  *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, hotel.hotelId&#40;&#41;&#41;;
  *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, hotel.hotelName&#40;&#41;&#41;;
  * &#125;
@@ -268,7 +278,10 @@
  *     .setOrderBy&#40;&quot;rating desc&quot;&#41;
  *     .setTop&#40;5&#41;;
  * SearchPagedIterable searchResultsIterable = searchClient.search&#40;&quot;luxury&quot;, options, Context.NONE&#41;;
- * &#47;&#47;...
+ * searchResultsIterable.forEach&#40;result -&gt; &#123;
+ *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, result.getDocument&#40;SampleHotelClass.class&#41;.hotelId&#40;&#41;&#41;;
+ *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, result.getDocument&#40;SampleHotelClass.class&#41;.hotelName&#40;&#41;&#41;;
+ * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions -->
  *
@@ -284,7 +297,7 @@
  * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex -->
  * <pre>
  * &#47;&#47; Create a new search index structure that matches the properties of the Hotel class.
- * List&lt;SearchField&gt; searchFields = SearchIndexClient.buildSearchFields&#40;Hotel.class, null&#41;;
+ * List&lt;SearchField&gt; searchFields = SearchIndexClient.buildSearchFields&#40;SampleHotelClass.class, null&#41;;
  * searchIndexClient.createIndex&#40;new SearchIndex&#40;&quot;hotels&quot;, searchFields&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex -->
@@ -353,9 +366,9 @@
  *
  * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String -->
  * <pre>
- * Hotel hotel = searchClient.getDocument&#40;&quot;1&quot;, Hotel.class&#41;;
+ * SampleHotelClass hotel = searchClient.getDocument&#40;&quot;1&quot;, SampleHotelClass.class&#41;;
  * System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, hotel.hotelId&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, hotel.hotelName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;SampleHotelClass Name: %s%n&quot;, hotel.hotelName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String -->
  *
@@ -368,9 +381,11 @@
  *
  * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean -->
  * <pre>
- * IndexDocumentsBatch&lt;Hotel&gt; batch = new IndexDocumentsBatch&lt;Hotel&gt;&#40;&#41;;
- * batch.addUploadActions&#40;Collections.singletonList&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;783&quot;&#41;.setHotelName&#40;&quot;Upload Inn&quot;&#41;&#41;&#41;;
- * batch.addMergeActions&#40;Collections.singletonList&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;12&quot;&#41;.setHotelName&#40;&quot;Renovated Ranch&quot;&#41;&#41;&#41;;
+ * IndexDocumentsBatch&lt;SampleHotelClass&gt; batch = new IndexDocumentsBatch&lt;SampleHotelClass&gt;&#40;&#41;;
+ * batch.addUploadActions&#40;Collections.singletonList&#40;
+ *         new SampleHotelClass&#40;&#41;.setHotelId&#40;&quot;783&quot;&#41;.setHotelName&#40;&quot;Upload Inn&quot;&#41;&#41;&#41;;
+ * batch.addMergeActions&#40;Collections.singletonList&#40;
+ *         new SampleHotelClass&#40;&#41;.setHotelId&#40;&quot;12&quot;&#41;.setHotelName&#40;&quot;Renovated Ranch&quot;&#41;&#41;&#41;;
  * searchClient.indexDocuments&#40;batch&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean -->
@@ -424,6 +439,9 @@
  * <pre>
  * try &#123;
  *     Iterable&lt;SearchResult&gt; results = searchClient.search&#40;&quot;hotel&quot;&#41;;
+ *     results.forEach&#40;result -&gt; &#123;
+ *         System.out.println&#40;result.getDocument&#40;SampleHotelClass.class&#41;.hotelName&#40;&#41;&#41;;
+ *     &#125;&#41;;
  * &#125; catch &#40;HttpResponseException ex&#41; &#123;
  *     &#47;&#47; The exception contains the HTTP status code and the detailed message
  *     &#47;&#47; returned from the search service

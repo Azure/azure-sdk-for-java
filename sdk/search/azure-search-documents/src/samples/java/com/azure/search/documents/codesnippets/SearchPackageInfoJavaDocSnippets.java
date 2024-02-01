@@ -93,7 +93,7 @@ public class SearchPackageInfoJavaDocSnippets {
 
 
     //BEGIN: hotelExampleClass
-    public static class Hotel {
+    public static class SampleHotelClass {
         private String hotelId;
         private String hotelName;
 
@@ -105,12 +105,12 @@ public class SearchPackageInfoJavaDocSnippets {
             return this.hotelName;
         }
 
-        public Hotel setHotelId(String number) {
+        public SampleHotelClass setHotelId(String number) {
             this.hotelId = number;
             return this;
         }
 
-        public Hotel setHotelName(String secretPointMotel) {
+        public SampleHotelClass setHotelName(String secretPointMotel) {
             this.hotelName = secretPointMotel;
             return this;
         }
@@ -126,7 +126,7 @@ public class SearchPackageInfoJavaDocSnippets {
 
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method
         for (SearchResult result : searchClient.search("luxury")) {
-            Hotel hotel = result.getDocument(Hotel.class);
+            SampleHotelClass hotel = result.getDocument(SampleHotelClass.class);
             System.out.printf("Hotel ID: %s%n", hotel.hotelId());
             System.out.printf("Hotel Name: %s%n", hotel.hotelName());
         }
@@ -146,8 +146,8 @@ public class SearchPackageInfoJavaDocSnippets {
             .setTop(5);
         SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
         searchResultsIterable.forEach(result -> {
-            System.out.printf("Hotel ID: %s%n", result.getDocument(Hotel.class).hotelId());
-            System.out.printf("Hotel Name: %s%n", result.getDocument(Hotel.class).hotelName());
+            System.out.printf("Hotel ID: %s%n", result.getDocument(SampleHotelClass.class).hotelId());
+            System.out.printf("Hotel Name: %s%n", result.getDocument(SampleHotelClass.class).hotelName());
         });
         // END: com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions
     }
@@ -159,7 +159,7 @@ public class SearchPackageInfoJavaDocSnippets {
         SearchIndexClient searchIndexClient = createSearchIndexClient();
         // BEGIN: com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex
         // Create a new search index structure that matches the properties of the Hotel class.
-        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(SampleHotelClass.class, null);
         searchIndexClient.createIndex(new SearchIndex("hotels", searchFields));
         // END: com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex
     }
@@ -227,9 +227,9 @@ public class SearchPackageInfoJavaDocSnippets {
     public void getDocument() {
         SearchClient searchClient = createSearchClient();
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String
-        Hotel hotel = searchClient.getDocument("1", Hotel.class);
+        SampleHotelClass hotel = searchClient.getDocument("1", SampleHotelClass.class);
         System.out.printf("Hotel ID: %s%n", hotel.hotelId());
-        System.out.printf("Hotel Name: %s%n", hotel.hotelName());
+        System.out.printf("SampleHotelClass Name: %s%n", hotel.hotelName());
         // END: com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String
     }
 
@@ -239,9 +239,11 @@ public class SearchPackageInfoJavaDocSnippets {
     public void uploadDocuments() {
         SearchClient searchClient = createSearchClient();
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
-        batch.addUploadActions(Collections.singletonList(new Hotel().setHotelId("783").setHotelName("Upload Inn")));
-        batch.addMergeActions(Collections.singletonList(new Hotel().setHotelId("12").setHotelName("Renovated Ranch")));
+        IndexDocumentsBatch<SampleHotelClass> batch = new IndexDocumentsBatch<SampleHotelClass>();
+        batch.addUploadActions(Collections.singletonList(
+                new SampleHotelClass().setHotelId("783").setHotelName("Upload Inn")));
+        batch.addMergeActions(Collections.singletonList(
+                new SampleHotelClass().setHotelId("12").setHotelName("Renovated Ranch")));
         searchClient.indexDocuments(batch);
         // END: com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean
     }
@@ -271,7 +273,7 @@ public class SearchPackageInfoJavaDocSnippets {
         try {
             Iterable<SearchResult> results = searchClient.search("hotel");
             results.forEach(result -> {
-                System.out.println(result.getDocument(Hotel.class).hotelName());
+                System.out.println(result.getDocument(SampleHotelClass.class).hotelName());
             });
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message

@@ -129,7 +129,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;300&quot;&#41;&#41;;
- * SEARCH_CLIENT.uploadDocuments&#40;hotels&#41;;
+ * searchClient.uploadDocuments&#40;hotels&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
  *
@@ -150,7 +150,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
  * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
- * SEARCH_CLIENT.mergeDocuments&#40;hotels&#41;;
+ * searchClient.mergeDocuments&#40;hotels&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map -->
  *
@@ -170,7 +170,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * <pre>
  * SearchDocument documentId = new SearchDocument&#40;&#41;;
  * documentId.put&#40;&quot;hotelId&quot;, &quot;100&quot;&#41;;
- * SEARCH_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
+ * searchClient.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String -->
  *
@@ -188,7 +188,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  *
  * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class -->
  * <pre>
- * Hotel hotel = SEARCH_CLIENT.getDocument&#40;&quot;100&quot;, Hotel.class&#41;;
+ * Hotel hotel = searchClient.getDocument&#40;&quot;100&quot;, Hotel.class&#41;;
  * System.out.printf&#40;&quot;Retrieved Hotel %s%n&quot;, hotel.getHotelId&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class -->
@@ -220,9 +220,10 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  * List&lt;SearchDocument&gt; searchDocuments = new ArrayList&lt;&gt;&#40;&#41;;
  * searchDocuments.add&#40;searchDocument&#41;;
  * searchDocuments.add&#40;searchDocument1&#41;;
- * SEARCH_CLIENT.uploadDocuments&#40;searchDocuments&#41;;
+ * searchClient.uploadDocuments&#40;searchDocuments&#41;;
  *
- * SearchPagedIterable results = SEARCH_CLIENT.search&#40;&quot;SearchText&quot;&#41;;
+ * SearchPagedIterable results = searchClient.search&#40;&quot;SearchText&quot;&#41;;
+ * System.out.printf&#40;&quot;There are %s results.%n&quot;, results.getTotalCount&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String -->
  * <em>
@@ -239,7 +240,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  *
  * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String -->
  * <pre>
- * SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
  * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
  *     System.out.printf&#40;&quot;The suggested text is %s&quot;, result.getText&#40;&#41;&#41;;
  * &#125;
@@ -260,7 +261,7 @@ import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
  *
  * <!-- src_embed com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String -->
  * <pre>
- * AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
  * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
  *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
  * &#125;

@@ -38,7 +38,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for creating an indexer using {@link SearchIndexerClient}
      */
-    public void createIndexer() {
+    public static void createIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createIndexer#SearchIndexer
         SearchIndexer indexer = new SearchIndexer("example-indexer", "example-datasource", "example-index");
@@ -50,7 +50,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for listing all indexers using {@link SearchIndexerClient}
      */
-    public void listIndexers() {
+    public static void listIndexers() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listIndexers
         searchIndexerClient.listIndexers().forEach(indexer ->
@@ -62,7 +62,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for getting an indexer using {@link SearchIndexerClient}
      */
-    public void getIndexer() {
+    public static void getIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getIndexer#String
         SearchIndexer indexer = searchIndexerClient.getIndexer("example-indexer");
@@ -73,7 +73,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for updating an indexer using {@link SearchIndexerClient}
      */
-    public void updateIndexer() {
+    public static void updateIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateIndexer#SearchIndexer
         SearchIndexer indexer = searchIndexerClient.getIndexer("example-indexer");
@@ -87,7 +87,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for deleting an indexer using {@link SearchIndexerClient}
      */
-    public void deleteIndexer() {
+    public static void deleteIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.deleteIndexer#String
         searchIndexerClient.deleteIndexer("example-indexer");
@@ -97,7 +97,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for running an indexer using {@link SearchIndexerClient}
      */
-    public void runIndexer() {
+    public static void runIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.runIndexer#String
         searchIndexerClient.runIndexer("example-indexer");
@@ -107,7 +107,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for resetting an indexer using {@link SearchIndexerClient}
      */
-    public void resetIndexer() {
+    public static void resetIndexer() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.resetIndexer#String
         searchIndexerClient.resetIndexer("example-indexer");
@@ -117,7 +117,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for creating a skillset using {@link SearchIndexerClient}
      */
-    public void createSkillset() {
+    public static void createSkillset() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset
 
@@ -159,7 +159,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for listing all skillsets using {@link SearchIndexerClient}
      */
-    public void listSkillsets() {
+    public static void listSkillsets() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.listSkillsets
         searchIndexerClient.listSkillsets().forEach(skillset ->
@@ -171,7 +171,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for getting a skillset using {@link SearchIndexerClient}
      */
-    public void getSkillset() {
+    public static void getSkillset() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.getSkillset#String
         SearchIndexerSkillset skillset = searchIndexerClient.getSkillset("example-skillset");
@@ -182,7 +182,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for updating a skillset using {@link SearchIndexerClient}
      */
-    public void updateSkillset() {
+    public static void updateSkillset() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
         SearchIndexerSkillset skillset = searchIndexerClient.getSkillset("example-skillset");
@@ -196,7 +196,7 @@ public class SearchIndexerClientJavaDocSnippets {
     /**
      * Code snippet for deleting a skillset using {@link SearchIndexerClient}
      */
-    public void deleteSkillset() {
+    public static void deleteSkillset() {
         searchIndexerClient = createSearchIndexerClient();
         // BEGIN: com.azure.search.documents.SearchIndexerClient-classLevelJavaDoc.deleteSkillset#String
         searchIndexerClient.deleteSkillset("example-skillset");

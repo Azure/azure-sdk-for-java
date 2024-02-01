@@ -159,7 +159,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *                 .setFacetable&#40;true&#41;&#41;
  * &#41;&#41;;
  *
- * SEARCH_INDEX_ASYNC_CLIENT.createIndex&#40;searchIndex&#41;.block&#40;&#41;;
+ * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createIndex#SearchIndex -->
  *
@@ -177,7 +177,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listIndexes -->
  * <pre>
- * SEARCH_INDEX_ASYNC_CLIENT.listIndexes&#40;&#41;.subscribe&#40;index -&gt; System.out.println&#40;&quot;The index name is &quot; + index.getName&#40;&#41;&#41;&#41;;
+ * searchIndexAsyncClient.listIndexes&#40;&#41;.subscribe&#40;index -&gt; System.out.println&#40;&quot;The index name is &quot; + index.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listIndexes -->
  *
@@ -195,8 +195,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
  * <pre>
- * SearchIndex searchIndex = SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
- * System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
+ * SearchIndex searchIndex = searchIndexAsyncClient.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     System.out.println&#40;&quot;The index name is &quot; + searchIndex.getName&#40;&#41;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
  *
@@ -214,9 +216,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  * <pre>
- * SearchIndex searchIndex = SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
- * searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
- * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateIndex&#40;searchIndex&#41;;
+ * SearchIndex searchIndex = searchIndexAsyncClient.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
+ *     searchIndexAsyncClient.createOrUpdateIndex&#40;searchIndex&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  *
@@ -235,7 +239,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
  * <pre>
  * String indexName = &quot;indexName&quot;;
- * SEARCH_INDEX_ASYNC_CLIENT.deleteIndex&#40;indexName&#41;.block&#40;&#41;;
+ * searchIndexAsyncClient.deleteIndex&#40;indexName&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
  *
@@ -254,7 +258,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  * <pre>
  * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
- * SEARCH_INDEX_ASYNC_CLIENT.createSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
+ * searchIndexAsyncClient.createSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  *
@@ -273,7 +277,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps -->
  * <pre>
- * SEARCH_INDEX_ASYNC_CLIENT.listSynonymMaps&#40;&#41;.subscribe&#40;synonymMap -&gt;
+ * searchIndexAsyncClient.listSynonymMaps&#40;&#41;.subscribe&#40;synonymMap -&gt;
  *     System.out.println&#40;&quot;The synonymMap name is &quot; + synonymMap.getName&#40;&#41;&#41;
  * &#41;;
  * </pre>
@@ -293,8 +297,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
  * <pre>
- * SynonymMap synonymMap = SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
- * System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
+ * SynonymMap synonymMap = searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     System.out.println&#40;&quot;The synonymMap name is &quot; + synonymMap.getName&#40;&#41;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
  *
@@ -313,9 +319,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <pre>
- * SynonymMap synonymMap = SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
- * synonymMap.setSynonyms&#40;&quot;inn&quot;&#41;;
- * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
+ * SynonymMap synonymMap = searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     synonymMap.setSynonyms&#40;&quot;hotel, motel, inn&quot;&#41;;
+ *     searchIndexAsyncClient.createOrUpdateSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  *
@@ -335,7 +343,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
  * <pre>
  * String synonymMapName = &quot;synonymMapName&quot;;
- * SEARCH_INDEX_ASYNC_CLIENT.deleteSynonymMap&#40;synonymMapName&#41;.block&#40;&#41;;
+ * searchIndexAsyncClient.deleteSynonymMap&#40;synonymMapName&#41;.block&#40;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
  *

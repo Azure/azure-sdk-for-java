@@ -180,6 +180,15 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  * <p><strong>Instantiating an asynchronous Search Client</strong></p>
  *
  * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;credential&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
  *
  * @see SearchClient

@@ -154,7 +154,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *                 .setFacetable&#40;true&#41;&#41;
  * &#41;&#41;;
  *
- * SEARCH_INDEX_CLIENT.createIndex&#40;searchIndex&#41;;
+ * searchIndexClient.createIndex&#40;searchIndex&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
  * <em>
@@ -171,7 +171,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
  * <pre>
- * SEARCH_INDEX_CLIENT.listIndexes&#40;&#41;.forEach&#40;index -&gt; System.out.println&#40;index.getName&#40;&#41;&#41;&#41;;
+ * searchIndexClient.listIndexes&#40;&#41;.forEach&#40;index -&gt; System.out.println&#40;index.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
  * <em>
@@ -188,8 +188,10 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
  * <pre>
- * SearchIndex searchIndex = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;;
- * System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
+ * SearchIndex searchIndex = searchIndexClient.getIndex&#40;&quot;indexName&quot;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
  *
@@ -209,9 +211,11 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  * <pre>
- * SearchIndex searchIndex = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;;
- * searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
- * SEARCH_INDEX_CLIENT.createOrUpdateIndex&#40;searchIndex&#41;;
+ * SearchIndex searchIndex = searchIndexClient.getIndex&#40;&quot;indexName&quot;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
+ *     searchIndexClient.createOrUpdateIndex&#40;searchIndex&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
  *
@@ -231,7 +235,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
  * <pre>
  * String indexName = &quot;indexName&quot;;
- * SEARCH_INDEX_CLIENT.deleteIndex&#40;indexName&#41;;
+ * searchIndexClient.deleteIndex&#40;indexName&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
  * <em>
@@ -251,7 +255,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  * <pre>
  * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
- * SEARCH_INDEX_CLIENT.createSynonymMap&#40;synonymMap&#41;;
+ * searchIndexClient.createSynonymMap&#40;synonymMap&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
  *
@@ -271,7 +275,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
  * <pre>
- * SEARCH_INDEX_CLIENT.listSynonymMaps&#40;&#41;.forEach&#40;synonymMap -&gt; System.out.println&#40;synonymMap.getName&#40;&#41;&#41;&#41;;
+ * searchIndexClient.listSynonymMaps&#40;&#41;.forEach&#40;synonymMap -&gt; System.out.println&#40;synonymMap.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
  *
@@ -290,8 +294,10 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </p>
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
  * <pre>
- * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
- * System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
+ * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
  * <em>
@@ -309,9 +315,11 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * </p>
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <pre>
- * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
- * synonymMap.setSynonyms&#40;&quot;inn&quot;&#41;;
- * SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+ * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     synonymMap.setSynonyms&#40;&quot;inn,hotel,motel&quot;&#41;;
+ *     searchIndexClient.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <em>
@@ -331,7 +339,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
  * <pre>
  * String synonymMapName = &quot;synonymMapName&quot;;
- * SEARCH_INDEX_CLIENT.deleteSynonymMap&#40;synonymMapName&#41;;
+ * searchIndexClient.deleteSynonymMap&#40;synonymMapName&#41;;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
  *
