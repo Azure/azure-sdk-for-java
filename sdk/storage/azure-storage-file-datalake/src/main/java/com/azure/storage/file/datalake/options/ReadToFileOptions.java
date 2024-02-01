@@ -25,7 +25,8 @@ public class ReadToFileOptions {
     private DataLakeRequestConditions dataLakeRequestConditions;
     private boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
-    private Boolean upn;
+    private Boolean userPrincipalName;
+    private boolean overwrite;
 
 
     /**
@@ -146,16 +147,32 @@ public class ReadToFileOptions {
     /**
      * @return The value for the x-ms-upn header.
      */
-    public Boolean isUpn() {
-        return upn;
+    public Boolean isUserPrincipalName() {
+        return userPrincipalName;
     }
 
     /**
-     * @param upn The value for the x-ms-upn header.
+     * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */
-    public ReadToFileOptions setUpn(Boolean upn) {
-        this.upn = upn;
+    public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * @return Whether to overwrite the file.
+     */
+    public boolean isOverwrite() {
+        return overwrite;
+    }
+
+    /**
+     * @param overwrite Whether to overwrite the file.
+     * @return The updated options.
+     */
+    public ReadToFileOptions setOverwrite(boolean overwrite) {
+        this.overwrite = overwrite;
         return this;
     }
 }

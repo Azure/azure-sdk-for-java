@@ -3463,7 +3463,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc.createWithResponse(options, null, Context.NONE);
 
         //getProperties
-        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUpn(upnHeader);
+        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUserPrincipalName(upnHeader);
 
         PathProperties getPropertiesResponse = fc.getProperties(propertiesOptions);
         assertNotNull(getPropertiesResponse.getAccessControlList());
@@ -3480,21 +3480,12 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
         ReadToFileOptions readToFileOptions = new ReadToFileOptions();
-        readToFileOptions.setUpn(upnHeader).setFilePath(outFile.getPath()).setRange(null)
+        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
             .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
             .setRangeGetContentMd5(false).setOpenOptions(null);
 
-        PathProperties readToFileResponse1 = fc.readToFile(readToFileOptions);
-        assertNotNull(readToFileResponse1.getAccessControlList());
-
-        PathProperties readToFileBoolResponse2 = fc.readToFile(readToFileOptions, true);
-        assertNotNull(readToFileBoolResponse2.getAccessControlList());
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-        PathProperties readToFileBoolResponse3 = fc.readToFile(readToFileOptions, false);
-        assertNotNull(readToFileBoolResponse3.getAccessControlList());
+        PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
+        assertNotNull(readToFileResponse.getAccessControlList());
 
         if (outFile.exists()) {
             assertTrue(outFile.delete());
@@ -3503,7 +3494,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertNotNull(readToFileWithResponse.getValue().getAccessControlList());
 
         //openInputStream
-        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUpn(upnHeader);
+        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUserPrincipalName(upnHeader);
 
         DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
         //no way to pull acl from properties in openInputStream
@@ -3516,6 +3507,4 @@ public class FileApiTest extends DataLakeTestBase {
             Arguments.of(true),
             Arguments.of((Boolean) null));
     }
-
-
 }

@@ -7,6 +7,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -42,7 +43,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .assertNext(r -> assertEquals(r, leaseClient.getLeaseId()))
             .verifyComplete();
 
-        StepVerifier.create(fc.getPropertiesWithResponse(null))
+        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> {
                 assertEquals(leaseStateType, r.getValue().getLeaseState());
                 assertEquals(leaseDurationType, r.getValue().getLeaseDuration());

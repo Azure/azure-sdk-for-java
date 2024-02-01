@@ -1427,7 +1427,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         //setup options
         ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
-        options.setRenameSupported(renameSupport);
+        options.setRenameIncluded(renameSupport);
 
         //call
         if (renameSupport == null || !renameSupport) {

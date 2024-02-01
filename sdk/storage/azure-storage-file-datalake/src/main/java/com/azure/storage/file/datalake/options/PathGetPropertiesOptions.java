@@ -11,7 +11,7 @@ import com.azure.storage.file.datalake.DataLakePathClient;
  */
 public class PathGetPropertiesOptions {
     private DataLakeRequestConditions requestConditions;
-    private Boolean upn;
+    private Boolean userPrincipalName;
 
     /**
      * @return {@link DataLakeRequestConditions}
@@ -32,16 +32,16 @@ public class PathGetPropertiesOptions {
     /**
      * @return The value for the x-ms-upn header.
      */
-    public Boolean isUpn() {
-        return upn;
+    public Boolean isUserPrincipalName() {
+        return userPrincipalName;
     }
 
     /**
-     * @param upn The value for the x-ms-upn header.
+     * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */
-    public PathGetPropertiesOptions setUpn(Boolean upn) {
-        this.upn = upn;
+    public PathGetPropertiesOptions setUserPrincipalName(Boolean userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
         return this;
     }
 }

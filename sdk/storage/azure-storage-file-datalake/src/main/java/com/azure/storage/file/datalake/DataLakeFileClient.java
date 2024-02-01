@@ -1137,7 +1137,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
-        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
 
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
@@ -1240,7 +1240,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathProperties readToFile(ReadToFileOptions options) {
-        return readToFile(options, false);
+        return readToFileWithResponse(options, null, Context.NONE).getValue();
     }
 
     /**
@@ -1279,44 +1279,6 @@ public class DataLakeFileClient extends DataLakePathClient {
             openOptions.add(StandardOpenOption.WRITE);
         }
         return readToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Reads the entire file into a file specified by the path.
-     *
-     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
-     * {@link FileAlreadyExistsException} will be thrown.</p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean -->
-     * <pre>
-     * boolean overwrite1 = false; &#47;&#47; Default value
-     * client.readToFile&#40;new ReadToFileOptions&#40;&#41;.setFilePath&#40;file&#41;, overwrite1&#41;;
-     * System.out.println&#40;&quot;Completed download to file&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions-boolean -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
-     *
-     * @param options {@link ReadToFileOptions}
-     * @param overwrite Whether to overwrite the file, should the file exist.
-     * @return The file properties and metadata.
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PathProperties readToFile(ReadToFileOptions options, boolean overwrite) {
-        Set<OpenOption> openOptions = null;
-        if (overwrite) {
-            openOptions = new HashSet<>();
-            openOptions.add(StandardOpenOption.CREATE);
-            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
-            // for WRITE access, then its length is truncated to 0.
-            openOptions.add(StandardOpenOption.READ);
-            openOptions.add(StandardOpenOption.WRITE);
-            options.setOpenOptions(openOptions);
-        }
-        return readToFileWithResponse(options, null, Context.NONE)
             .getValue();
     }
 
@@ -1387,6 +1349,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context -->
      * <pre>
      * ReadToFileOptions options = new ReadToFileOptions&#40;&#41;;
+     * options.setFilePath&#40;file&#41;;
      * options.setRange&#40;new FileRange&#40;1024, 2048L&#41;&#41;;
      * options.setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;;
      * options.setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,
@@ -1408,7 +1371,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
-        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
         Context finalContext = context;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {

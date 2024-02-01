@@ -19,6 +19,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -38,6 +39,7 @@ import com.azure.storage.file.datalake.implementation.models.PathSetAccessContro
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
 import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -62,13 +64,16 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
+import reactor.util.context.ContextView;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -871,7 +876,32 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        return getPropertiesWithResponse((DataLakeRequestConditions) null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions -->
+     * <pre>
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
+     *
+     * client.getProperties&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getCreationTime&#40;&#41;, response.getFileSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties#PathGetPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @return A reactive response containing the resource's properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathProperties> getProperties(PathGetPropertiesOptions options) {
+        return getPropertiesWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -898,6 +928,37 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#PathGetPropertiesOptions -->
+     * <pre>
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
+     *
+     * client.getPropertiesWithResponse&#40;options&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getValue&#40;&#41;.getCreationTime&#40;&#41;,
+     *         response.getValue&#40;&#41;.getFileSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#PathGetPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @return A reactive response containing the resource's properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathProperties>> getPropertiesWithResponse(PathGetPropertiesOptions options) {
+        Context context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
+
+        return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+            .contextWrite(FluxUtil.toReactorContext(context))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
     }

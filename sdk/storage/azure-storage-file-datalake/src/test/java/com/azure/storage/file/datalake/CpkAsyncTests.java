@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -56,7 +57,7 @@ public class CpkAsyncTests extends DataLakeTestBase {
     public void pathGetProperties() {
         cpkFile.create().block();
 
-        StepVerifier.create(cpkFile.getPropertiesWithResponse(null))
+        StepVerifier.create(cpkFile.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());
                 assertTrue(r.getValue().isServerEncrypted());

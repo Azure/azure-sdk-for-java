@@ -204,7 +204,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
         String finalContentType = contentType;
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -461,7 +461,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         dc.createWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)).block();
 
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 contentMD5, contentType))
             .verifyComplete();
@@ -584,7 +584,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -663,7 +663,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteDirDoesNotExistAnymore() {
         dc.deleteWithResponse(false, null).block();
 
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getStatusCode());
@@ -724,7 +724,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsDirDoesNotExistAnymore() {
         assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(null), 200);
 
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -2235,7 +2235,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(renamedClient::getProperties);
+                assertDoesNotThrow(() -> renamedClient.getProperties());
             })
             .verifyComplete();
 
@@ -2251,7 +2251,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             generatePathName(), null, null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(renamedClient::getProperties);
+                assertDoesNotThrow(() -> renamedClient.getProperties());
             })
             .verifyComplete();
 
@@ -2354,7 +2354,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesDefault() {
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> {
                 HttpHeaders headers = r.getHeaders();
                 PathProperties properties = r.getValue();
@@ -2394,14 +2394,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertAsyncResponseStatusCode(dc.getPropertiesWithResponse(null),
+        assertAsyncResponseStatusCode(dc.getPropertiesWithResponse((DataLakeRequestConditions) null),
             200);
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-06-12")
     @Test
     public void getPropertiesOwnerGroupPermissions() {
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> {
                 assertNotNull(r.getValue().getOwner());
                 assertNotNull(r.getValue().getGroup());
@@ -2487,7 +2487,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setContentType(contentType);
 
         dc.setHttpHeaders(putHeaders).block();
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
+        StepVerifier.create(dc.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> {
                 validatePathProperties(r, cacheControl, contentDisposition,
                     contentEncoding, contentLanguage, contentMD5, contentType);
@@ -2661,7 +2661,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String finalContentType = contentType;
         StepVerifier.create(dc.createFileWithResponse(generatePathName(), null, null, headers, null,
                 null)
-            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
             .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -2769,7 +2769,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String finalContentType = contentType;
 
         StepVerifier.create(dc.createFileIfNotExistsWithResponse(generatePathName(), options)
-            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
             .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -2821,7 +2821,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakeFileAsyncClient client = dc.createFile(pathName).block();
         dc.deleteFileWithResponse(pathName, null).block();
 
-        StepVerifier.create(client.getPropertiesWithResponse(null))
+        StepVerifier.create(client.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getResponse().getStatusCode());
@@ -2996,7 +2996,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String finalContentType = contentType;
         StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers,
             null, null)
-            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
             .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -3129,7 +3129,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String finalContentType = contentType;
         StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
                 new DataLakePathCreateOptions().setPathHttpHeaders(headers))
-            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
             .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -3194,7 +3194,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
         dc.deleteSubdirectoryWithResponse(pathName, false, null).block();
 
-        StepVerifier.create(client.getPropertiesWithResponse(null))
+        StepVerifier.create(client.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyErrorSatisfies(r -> {
                 DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
                 assertEquals(404, e.getResponse().getStatusCode());
@@ -3383,7 +3383,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         // Check that service created underlying directory
         DataLakeDirectoryAsyncClient dirClient = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("dir");
 
-        StepVerifier.create(dirClient.getPropertiesWithResponse(null))
+        StepVerifier.create(dirClient.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
 
@@ -3392,7 +3392,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             200);
 
         // Directory should still exist
-        assertAsyncResponseStatusCode(dirClient.getPropertiesWithResponse(null), 200);
+        assertAsyncResponseStatusCode(dirClient.getPropertiesWithResponse((DataLakeRequestConditions) null), 200);
     }
 
     @Test
@@ -3425,7 +3425,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .buildDirectoryAsyncClient();
 
         // blob endpoint
-        StepVerifier.create(directoryClient.getPropertiesWithResponse(null))
+        StepVerifier.create(directoryClient.getPropertiesWithResponse((DataLakeRequestConditions) null))
             .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
             .verifyComplete();
 

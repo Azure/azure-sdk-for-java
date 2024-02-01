@@ -1156,7 +1156,7 @@ public class DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions -->
      * <pre>
-     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUpn&#40;true&#41;;
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
      *
      * System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, client.getProperties&#40;options&#41;.getCreationTime&#40;&#41;,
      *     client.getProperties&#40;options&#41;.getFileSize&#40;&#41;&#41;;
@@ -1216,7 +1216,7 @@ public class DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context -->
      * <pre>
-     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUpn&#40;true&#41;;
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
      *
      * Response&lt;PathProperties&gt; response2 = client.getPropertiesWithResponse&#40;options, timeout,
      *     new Context&#40;key2, value2&#41;&#41;;
@@ -1237,7 +1237,7 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathProperties> getPropertiesWithResponse(PathGetPropertiesOptions options, Duration timeout,
                                                               Context context) {
-        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUpn(), context);
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
         Context finalContext = context;
 
         PathGetPropertiesOptions finalOptions = options;

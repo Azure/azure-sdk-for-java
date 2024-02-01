@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void getFileProperties() {
-        StepVerifier.create(fsac.getFileAsyncClient(generatePathName()).getPropertiesWithResponse(null))
+        StepVerifier.create(fsac.getFileAsyncClient(generatePathName()).getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -45,7 +46,7 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void getDirectoryProperties() {
-        StepVerifier.create(fsac.getDirectoryAsyncClient(generatePathName()).getPropertiesWithResponse(null))
+        StepVerifier.create(fsac.getDirectoryAsyncClient(generatePathName()).getPropertiesWithResponse((DataLakeRequestConditions) null))
             .verifyError(DataLakeStorageException.class);
     }
 
