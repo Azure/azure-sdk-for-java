@@ -58,7 +58,7 @@ public class ChainedTokenCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredential.class);
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
-    private AtomicReference<TokenCredential> selectedCredential;
+    private final AtomicReference<TokenCredential> selectedCredential;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -101,17 +101,16 @@ public class ChainedTokenCredential implements TokenCredential {
                 .next();
         }
         return accessTokenMono.switchIfEmpty(Mono.defer(() -> {
-                // Chain Exceptions.
-                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-                for (int z = exceptions.size() - 2; z >= 0; z--) {
-                    CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
-                        + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                            + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
-                            : ""));
-                }
-                return Mono.error(last);
-            }));
+            // Chain Exceptions.
+            CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+            for (int z = exceptions.size() - 2; z >= 0; z--) {
+                CredentialUnavailableException current = exceptions.get(z);
+                last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                    + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                    + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot" : ""));
+            }
+            return Mono.error(last);
+        }));
     }
 
     private Function<Exception, Mono<? extends AccessToken>> handleExceptionAsync(List<CredentialUnavailableException> exceptions,
