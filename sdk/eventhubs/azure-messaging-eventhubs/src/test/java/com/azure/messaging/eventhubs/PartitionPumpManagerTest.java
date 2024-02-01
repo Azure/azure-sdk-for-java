@@ -19,19 +19,25 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -84,16 +90,15 @@ public class PartitionPumpManagerTest {
 
     private final Map<String, EventPosition> initialPartitionPositions = new HashMap<>();
     private final TestPublisher<PartitionEvent> receivePublisher = TestPublisher.createCold();
-
+    private final Integer prefetch = 100;
     private Checkpoint checkpoint;
     private PartitionOwnership partitionOwnership;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
-    public void beforeEach() throws InterruptedException {
+    public void beforeEach() {
         this.autoCloseable = MockitoAnnotations.openMocks(this);
 
-        final Integer prefetch = 100;
         when(builder.getPrefetchCount()).thenReturn(prefetch);
         when(builder.buildAsyncClient()).thenReturn(asyncClient);
 
@@ -392,21 +397,9 @@ public class PartitionPumpManagerTest {
 
         // Mock events to add.
         final Instant retrievalTime = Instant.now();
-        final Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
-        final LastEnqueuedEventProperties lastEnqueuedProperties1 =
-            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1));
-        final EventData eventData1 = new EventData("1");
-        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
-
-        final LastEnqueuedEventProperties lastEnqueuedProperties2 =
-            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2));
-        final EventData eventData2 = new EventData("2");
-        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
-
-        final LastEnqueuedEventProperties lastEnqueuedProperties3 =
-            new LastEnqueuedEventProperties(30L, 35L, retrievalTime, lastEnqueuedTime.plusSeconds(3));
-        final EventData eventData3 = new EventData("3");
-        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, lastEnqueuedProperties3);
+        final PartitionEvent partitionEvent1 = createEvent(retrievalTime, 1);
+        final PartitionEvent partitionEvent2 = createEvent(retrievalTime, 2);
+        final PartitionEvent partitionEvent3 = createEvent(retrievalTime, 3);
 
         final AtomicInteger eventCounter = new AtomicInteger();
 
@@ -449,6 +442,57 @@ public class PartitionPumpManagerTest {
                     && partitionEvent3.getLastEnqueuedEventProperties().equals(context.getLastEnqueuedEventProperties())));
 
             assertEquals(3, eventCounter.get());
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 16, 64, 128})
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void processBatchPrefetch(int maxBatchSize) throws InterruptedException {
+        // Arrange
+        final CountDownLatch receiveCounter = new CountDownLatch(5);
+
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setMaxBatchSize(maxBatchSize)
+            .setBatchReceiveMode(true);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
+            DEFAULT_TRACER, options);
+
+        final AtomicInteger prefetchedCounter = new AtomicInteger();
+        final Instant retrievalTime = Instant.now();
+
+        Flux<PartitionEvent> events = Flux.generate(s -> s.next(createEvent(retrievalTime, prefetchedCounter.getAndIncrement())));
+
+        when(consumerAsyncClient.receiveFromPartition(eq(PARTITION_ID), any(EventPosition.class),
+            any(ReceiveOptions.class))).thenReturn(events);
+
+        final AtomicInteger maxActualPrefetched = new AtomicInteger();
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            if (!batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+
+                int currentlyPrefetched = prefetchedCounter.addAndGet(-1 * batch.getEvents().size());
+                if (currentlyPrefetched > maxActualPrefetched.get()) {
+                    maxActualPrefetched.set(currentlyPrefetched);
+                }
+            }
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        try {
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+            assertTrue(receiveCounter.await(20, TimeUnit.SECONDS));
+            verify(partitionProcessor, never()).processError(any(ErrorContext.class));
+
+            final int maxExpectedPrefetched = Math.max(prefetch / maxBatchSize, 1) * maxBatchSize;
+            assertTrue(maxActualPrefetched.get() <= maxExpectedPrefetched,
+                String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxActualPrefetched.get()));
+
         } finally {
             manager.stopAllPartitionPumps();
         }
@@ -909,5 +953,12 @@ public class PartitionPumpManagerTest {
         } finally {
             manager.stopAllPartitionPumps();
         }
+    }
+
+    private PartitionEvent createEvent(Instant retrievalTime, int index) {
+        Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
+        LastEnqueuedEventProperties lastEnqueuedProperties =
+            new LastEnqueuedEventProperties((long)index, (long)index, retrievalTime, lastEnqueuedTime.plusSeconds(index));
+        return new PartitionEvent(PARTITION_CONTEXT, new EventData(String.valueOf(index)), lastEnqueuedProperties);
     }
 }
