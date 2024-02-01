@@ -14,7 +14,6 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
