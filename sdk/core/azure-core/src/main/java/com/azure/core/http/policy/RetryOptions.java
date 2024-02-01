@@ -15,8 +15,7 @@ public class RetryOptions {
     private final ExponentialBackoffOptions exponentialBackoffOptions;
     private final FixedDelayOptions fixedDelayOptions;
 
-    private Predicate<HttpResponse> shouldRetry;
-    private Predicate<Throwable> shouldRetryException;
+    private Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates a new instance that uses {@link ExponentialBackoffOptions}.
@@ -59,54 +58,29 @@ public class RetryOptions {
     }
 
     /**
-     * Gets the predicate that determines if a retry should be attempted for the given {@link HttpResponse}.
+     * Gets the predicate that determines if a retry should be attempted.
      * <p>
      * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
-     * isn't 501 or 505.
+     * isn't 501 or 505. And to retry any {@link Exception}.
      *
-     * @return The predicate that determines if a retry should be attempted for the given {@link HttpResponse}.
+     * @return The predicate that determines if a retry should be attempted.
      */
-    public Predicate<HttpResponse> getShouldRetry() {
-        return shouldRetry;
+    public Predicate<RequestRetryCondition> getShouldRetryCondition() {
+        return shouldRetryCondition;
     }
 
     /**
-     * Sets the predicate that determines if a retry should be attempted for the given {@link HttpResponse}.
+     * Sets the predicate that determines if a retry should be attempted.
      * <p>
      * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
-     * isn't 501 or 505.
+     * isn't 501 or 505. And to retry any {@link Exception}.
      *
-     * @param shouldRetry The predicate that determines if a retry should be attempted for the given
+     * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
      * {@link HttpResponse}.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setShouldRetry(Predicate<HttpResponse> shouldRetry) {
-        this.shouldRetry = shouldRetry;
-        return this;
-    }
-
-    /**
-     * Gets the predicate that determines if a retry should be attempted for the given {@link Throwable}.
-     * <p>
-     * If null, the default behavior is to retry any {@link Exception}.
-     *
-     * @return The predicate that determines if a retry should be attempted for the given {@link Throwable}.
-     */
-    public Predicate<Throwable> getShouldRetryException() {
-        return shouldRetryException;
-    }
-
-    /**
-     * Sets the predicate that determines if a retry should be attempted for the given {@link Throwable}.
-     * <p>
-     * If null, the default behavior is to retry any {@link Exception}.
-     *
-     * @param shouldRetryException The predicate that determines if a retry should be attempted for the given
-     * {@link Throwable}.
-     * @return The updated {@link RetryOptions} object.
-     */
-    public RetryOptions setShouldRetryException(Predicate<Throwable> shouldRetryException) {
-        this.shouldRetryException = shouldRetryException;
+    public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
+        this.shouldRetryCondition = shouldRetryCondition;
         return this;
     }
 }
