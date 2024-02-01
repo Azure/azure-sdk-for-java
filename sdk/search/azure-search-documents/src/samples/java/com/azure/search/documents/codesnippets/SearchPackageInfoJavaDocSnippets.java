@@ -10,7 +10,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.VectorSearchExample;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
@@ -86,8 +85,8 @@ public class SearchPackageInfoJavaDocSnippets {
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String
         for (SearchResult result : searchClient.search("luxury")) {
             SearchDocument document = result.getDocument(SearchDocument.class);
-            System.out.printf("Hotel ID: %s%n", result.getDocument(SearchDocument.class).get("hotelId"));
-            System.out.printf("Hotel Name: %s%n", result.getDocument(SearchDocument.class).get("hotelName"));
+            System.out.printf("Hotel ID: %s%n", document.get("hotelId"));
+            System.out.printf("Hotel Name: %s%n", document.get("hotelName"));
         }
         // END: com.azure.search.documents.packageInfo-SearchClient.search#String
     }
@@ -123,20 +122,7 @@ public class SearchPackageInfoJavaDocSnippets {
      */
     public void searchModelClass() {
         SearchClient searchClient = createSearchClient();
-        // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class
-        class Hotel {
-            private String hotelId;
-            private String hotelName;
 
-            public String hotelId() {
-                return this.hotelId;
-            }
-
-            public String hotelName() {
-                return this.hotelName;
-            }
-        }
-        // END: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class
 
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method
         for (SearchResult result : searchClient.search("luxury")) {
@@ -159,7 +145,10 @@ public class SearchPackageInfoJavaDocSnippets {
             .setOrderBy("rating desc")
             .setTop(5);
         SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
-        //...
+        searchResultsIterable.forEach(result -> {
+            System.out.printf("Hotel ID: %s%n", result.getDocument(Hotel.class).hotelId());
+            System.out.printf("Hotel Name: %s%n", result.getDocument(Hotel.class).hotelName());
+        });
         // END: com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions
     }
 
@@ -260,7 +249,7 @@ public class SearchPackageInfoJavaDocSnippets {
     /**
      * Authenticate SearchClient in a national cloud.
      */
-    public void createSearchClientInNationalCloud() {
+    public SearchClient createSearchClientInNationalCloud() {
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.instantiation.nationalCloud
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint("{endpoint}")
@@ -270,6 +259,7 @@ public class SearchPackageInfoJavaDocSnippets {
             .audience(SearchAudience.AZURE_PUBLIC_CLOUD) //set the audience of your cloud
             .buildClient();
         // END: com.azure.search.documents.packageInfo-SearchClient.instantiation.nationalCloud
+        return searchClient;
     }
 
     /**
@@ -280,6 +270,9 @@ public class SearchPackageInfoJavaDocSnippets {
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Error
         try {
             Iterable<SearchResult> results = searchClient.search("hotel");
+            results.forEach(result -> {
+                System.out.println(result.getDocument(Hotel.class).hotelName());
+            });
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service

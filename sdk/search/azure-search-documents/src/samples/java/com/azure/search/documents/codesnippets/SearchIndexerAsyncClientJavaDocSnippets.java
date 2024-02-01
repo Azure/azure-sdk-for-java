@@ -3,6 +3,7 @@
 package com.azure.search.documents.codesnippets;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -18,39 +19,46 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class SearchIndexerAsyncClientJavaDocSnippets {
 
-    public static SearchIndexerAsyncClient searchIndexerAsyncClient;
+    private static SearchIndexerAsyncClient searchIndexerAsyncClient;
 
     /**
      * Code snippet for creating a {@link SearchIndexerAsyncClient}
      */
-    public void createSearchIndexerAsyncClient() {
+    private static SearchIndexerAsyncClient createSearchIndexerAsyncClient() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation
-        SearchIndexerAsyncClient SearchIndexerAsyncClient = new SearchIndexerClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint("{endpoint}")
             .credential(new AzureKeyCredential("{admin-key}"))
             .buildAsyncClient();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation
+        return searchIndexerAsyncClient;
     }
 
     /**
      * Code snippet for creating an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void createIndexer() {
+    public static void createIndexer() {
 
 
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer
         SearchIndexer indexer = new SearchIndexer("example-indexer", "example-datasource", "example-index");
         SearchIndexer createdIndexer = searchIndexerAsyncClient.createIndexer(indexer).block();
+        if (createdIndexer != null) {
+            System.out.printf("Created indexer name: %s%n", createdIndexer.getName());
+        }
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer
+
     }
 
     /**
      * Code snippet for listing all indexers using {@link SearchIndexerAsyncClient}
      */
-    public void listIndexers() {
+    public static void listIndexers() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers
         searchIndexerAsyncClient.listIndexers().subscribe(indexer ->
-            System.out.printf("Retrieved indexer name: %s\n", indexer.getName())
+            System.out.printf("Retrieved indexer name: %s%n", indexer.getName())
         );
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers
     }
@@ -58,30 +66,42 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     /**
      * Code snippet for getting an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void getIndexer() {
+    public static void getIndexer() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String
         SearchIndexer indexer = searchIndexerAsyncClient.getIndexer("example-indexer").block();
-        System.out.printf("Retrieved indexer name: %s\n", indexer.getName());
+        if (indexer != null) {
+            System.out.printf("Retrieved indexer name: %s%n", indexer.getName());
+        }
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String
     }
 
     /**
      * Code snippet for updating an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void updateIndexer() {
+    public static void updateIndexer() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer
         SearchIndexer indexer = searchIndexerAsyncClient.getIndexer("example-indexer").block();
-        indexer.setDescription("This is a new description for this indexer");
-        SearchIndexer updatedIndexer = searchIndexerAsyncClient.createOrUpdateIndexer(indexer).block();
-        System.out.printf("Updated indexer name: %s, description: %s\n", updatedIndexer.getName(),
-            updatedIndexer.getDescription());
+        if (indexer != null) {
+            System.out.printf("Retrieved indexer name: %s%n", indexer.getName());
+            indexer.setDescription("This is a new description for this indexer");
+            SearchIndexer updatedIndexer = searchIndexerAsyncClient.createOrUpdateIndexer(indexer).block();
+
+            if (updatedIndexer != null) {
+                System.out.printf("Updated indexer name: %s, description: %s%n", updatedIndexer.getName(),
+                    updatedIndexer.getDescription());
+            }
+        }
+
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer
     }
 
     /**
      * Code snippet for deleting an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void deleteIndexer() {
+    public static void deleteIndexer() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String
         searchIndexerAsyncClient.deleteIndexer("example-indexer");
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String
@@ -90,7 +110,8 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     /**
      * Code snippet for running an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void runIndexer() {
+    public static void runIndexer() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String
         searchIndexerAsyncClient.runIndexer("example-indexer");
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String
@@ -99,7 +120,8 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     /**
      * Code snippet for resetting an indexer using {@link SearchIndexerAsyncClient}
      */
-    public void resetIndexer() {
+    public static void resetIndexer() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String
         searchIndexerAsyncClient.resetIndexer("example-indexer");
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String
@@ -108,9 +130,9 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     /**
      * Code snippet for creating a skillset using {@link SearchIndexerAsyncClient}
      */
-    public void createSkillset() {
+    public static void createSkillset() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset
-
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry("image")
                 .setSource("/document/normalized_images/*")
@@ -139,20 +161,22 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
 
         SearchIndexerSkillset createdSkillset = searchIndexerAsyncClient.createSkillset(skillset).block();
 
-        System.out.println("Created OCR skillset");
-        System.out.println(String.format("Name: %s", createdSkillset.getName()));
-        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
-
+        if (createdSkillset != null) {
+            System.out.println("Created OCR skillset");
+            System.out.println(String.format("Name: %s", createdSkillset.getName()));
+            System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
+        }
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset
     }
 
     /**
      * Code snippet for listing all skillsets using {@link SearchIndexerAsyncClient}
      */
-    public void listSkillsets() {
+    public static void listSkillsets() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets
         searchIndexerAsyncClient.listSkillsets().subscribe(skillset ->
-            System.out.printf("Retrieved skillset name: %s\n", skillset.getName())
+            System.out.printf("Retrieved skillset name: %s%n", skillset.getName())
         );
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets
     }
@@ -160,30 +184,40 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
     /**
      * Code snippet for getting a skillset using {@link SearchIndexerAsyncClient}
      */
-    public void getSkillset() {
+    public static void getSkillset() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String
         SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset("example-skillset").block();
-        System.out.printf("Retrieved skillset name: %s\n", skillset.getName());
+        if (skillset != null) {
+            System.out.printf("Retrieved skillset name: %s%n", skillset.getName());
+        }
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String
     }
 
     /**
      * Code snippet for updating a skillset using {@link SearchIndexerAsyncClient}
      */
-    public void updateSkillset() {
+    public static void updateSkillset() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
         SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset("example-skillset").block();
-        skillset.setDescription("This is a new description for this skillset");
-        SearchIndexerSkillset updatedSkillset = searchIndexerAsyncClient.createOrUpdateSkillset(skillset).block();
-        System.out.printf("Updated skillset name: %s, description: %s\n", updatedSkillset.getName(),
-            updatedSkillset.getDescription());
+        if (skillset != null) {
+            System.out.printf("Retrieved skillset name: %s%n", skillset.getName());
+            SearchIndexerSkillset updatedSkillset = searchIndexerAsyncClient.createOrUpdateSkillset(skillset).block();
+
+            if (updatedSkillset != null) {
+                System.out.printf("Updated skillset name: %s, description: %s%n", updatedSkillset.getName(),
+                    updatedSkillset.getDescription());
+            }
+        }
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
     }
 
     /**
      * Code snippet for deleting a skillset using {@link SearchIndexerAsyncClient}
      */
-    public void deleteSkillset() {
+    public static void deleteSkillset() {
+        searchIndexerAsyncClient = createSearchIndexerAsyncClient();
         // BEGIN: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String
         searchIndexerAsyncClient.deleteSkillset("example-skillset");
         // END: com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String

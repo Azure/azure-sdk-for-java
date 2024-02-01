@@ -65,13 +65,13 @@ public class SearchClientBuilderJavaDocSnippets {
         // BEGIN: com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        SearchAsyncClient searchClient = new SearchClientBuilder()
+        SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")
             .indexName("{indexName}")
             .buildAsyncClient();
         // END: com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential
-        return searchClient;
+        return searchAsyncClient;
     }
 
 

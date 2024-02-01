@@ -5,6 +5,7 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
@@ -14,31 +15,33 @@ public class SearchIndexerClientBuilderJavaDocsSnippets {
     /**
      * Code snippet for creating a {@link com.azure.search.documents.indexes.SearchIndexerClient}
      */
-    public void  createSearchIndexerClient() {
+    public SearchIndexerClient createSearchIndexerClient() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerClient
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerClient
+        return searchIndexerClient;
     }
 
     /**
      * Code snippet for creating a {@link com.azure.search.documents.indexes.SearchIndexerAsyncClient}
      */
-    public void  createSearchIndexerAsyncClient() {
+    public SearchIndexerAsyncClient createSearchIndexerAsyncClient() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerAsyncClient
-        SearchIndexerAsyncClient searchIndexerClient = new SearchIndexerClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerAsyncClient
+        return searchIndexerAsyncClient;
     }
 
     /**
      * Code snippet for authenticating a synchronous client with Default Azure Credential.
      */
-    public void createSearchIndexerClientWithDefaultAzureCredential() {
+    public SearchIndexerClient createSearchIndexerClientWithDefaultAzureCredential() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -47,19 +50,21 @@ public class SearchIndexerClientBuilderJavaDocsSnippets {
             .credential(credential)
             .buildClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential
+        return searchIndexerClient;
     }
 
     /**
      * Code snippet for authenticating an asynchronous client with Default Azure Credential.
      */
-    public void createSearchIndexerAsyncClientWithDefaultAzureCredential() {
+    public SearchIndexerAsyncClient createSearchIndexerAsyncClientWithDefaultAzureCredential() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        SearchIndexerAsyncClient searchIndexerClient = new SearchIndexerClientBuilder()
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildAsyncClient();
         // END: com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.async.DefaultAzureCredential
+        return searchIndexerAsyncClient;
     }
 }

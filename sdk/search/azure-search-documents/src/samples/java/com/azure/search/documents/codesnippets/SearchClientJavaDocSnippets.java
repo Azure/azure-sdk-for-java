@@ -21,7 +21,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class SearchClientJavaDocSnippets {
 
-    private static SearchClient SEARCH_CLIENT;
+    private static SearchClient searchClient;
 
     private static SearchClient createSearchClientWithSearcClientBuilder() {
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.instantiationWithSearchClientBuilder
@@ -38,12 +38,13 @@ public class SearchClientJavaDocSnippets {
      * Uploading a document to a SearchClient index.
      */
     public static void uploadDocument() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
         hotels.add(new Hotel().setHotelId("200"));
         hotels.add(new Hotel().setHotelId("300"));
-        SEARCH_CLIENT.uploadDocuments(hotels);
+        searchClient.uploadDocuments(hotels);
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean
     }
 
@@ -51,11 +52,12 @@ public class SearchClientJavaDocSnippets {
      * Merge a document in a SearchClient index.
      */
     public static void mergeDocument() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(new Hotel().setHotelId("100"));
         hotels.add(new Hotel().setHotelId("200"));
-        SEARCH_CLIENT.mergeDocuments(hotels);
+        searchClient.mergeDocuments(hotels);
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map
     }
 
@@ -63,10 +65,11 @@ public class SearchClientJavaDocSnippets {
      * Delete a document in a SearchClient index.
      */
     public static void deleteDocument() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String
         SearchDocument documentId = new SearchDocument();
         documentId.put("hotelId", "100");
-        SEARCH_CLIENT.deleteDocuments(Collections.singletonList(documentId));
+        searchClient.deleteDocuments(Collections.singletonList(documentId));
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String
     }
 
@@ -74,8 +77,9 @@ public class SearchClientJavaDocSnippets {
      * Retrieve a document from a SearchClient index.
      */
     public static void getDocument() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class
-        Hotel hotel = SEARCH_CLIENT.getDocument("100", Hotel.class);
+        Hotel hotel = searchClient.getDocument("100", Hotel.class);
         System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class
     }
@@ -84,6 +88,7 @@ public class SearchClientJavaDocSnippets {
      * Search documents in a SearchClient index.
      */
     public static void searchDocuments() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "8");
@@ -98,9 +103,9 @@ public class SearchClientJavaDocSnippets {
         List<SearchDocument> searchDocuments = new ArrayList<>();
         searchDocuments.add(searchDocument);
         searchDocuments.add(searchDocument1);
-        SEARCH_CLIENT.uploadDocuments(searchDocuments);
+        searchClient.uploadDocuments(searchDocuments);
 
-        SearchPagedIterable results = SEARCH_CLIENT.search("SearchText");
+        SearchPagedIterable results = searchClient.search("SearchText");
         System.out.printf("There are %s results.%n", results.getTotalCount());
         // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String
     }
@@ -109,8 +114,9 @@ public class SearchClientJavaDocSnippets {
      * Make a suggestion query to a SearchClient index.
      */
     public static void suggestDocuments() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String
-        SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest("searchText", "sg");
+        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg");
         for (SuggestResult result: suggestPagedIterable) {
             System.out.printf("The suggested text is %s", result.getText());
         }
@@ -121,8 +127,9 @@ public class SearchClientJavaDocSnippets {
      * Autocomplete a query in a SearchClient index.
      */
     public static void autocompleteDocuments() {
+        searchClient = createSearchClientWithSearcClientBuilder();
         // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String
-        AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete("searchText", "sg");
+        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg");
         for (AutocompleteItem result: autocompletePagedIterable) {
             System.out.printf("The complete term is %s", result.getText());
         }
