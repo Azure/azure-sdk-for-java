@@ -32,7 +32,7 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCRUD(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCreateRetrieveUpdateDelete(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
@@ -87,7 +87,7 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCRUDWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCrudWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();

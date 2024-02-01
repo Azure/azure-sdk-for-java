@@ -13,8 +13,10 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
@@ -473,5 +475,25 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals("thread.message", threadMessage.getObject());
         assertEquals(MessageRole.USER, threadMessage.getRole());
         assertFalse(threadMessage.getContent().isEmpty());
+    }
+
+
+    void validateOpenAIPageableListOfMessageFile(OpenAIPageableListOfMessageFile openAIPageableListOfMessageFile,
+        String messageId, List<String> fileIdList) {
+        assertNotNull(openAIPageableListOfMessageFile);
+        assertEquals("list", openAIPageableListOfMessageFile.getObject());
+        List<MessageFile> messageFiles = openAIPageableListOfMessageFile.getData();
+        assertNotNull(messageFiles);
+        assertEquals(fileIdList.size(), messageFiles.size());
+        for (int i = 0; i < messageFiles.size(); i++) {
+            validateMessageFile(messageFiles.get(i), messageId, fileIdList.get(i));
+        }
+    }
+    void validateMessageFile(MessageFile messageFile, String messageId, String fileId) {
+        assertNotNull(messageFile);
+        assertNotNull(fileId, messageFile.getId());
+        assertNotNull(messageFile.getCreatedAt());
+        assertEquals("thread.message.file", messageFile.getObject());
+        assertEquals(messageId, messageFile.getMessageId());
     }
 }
