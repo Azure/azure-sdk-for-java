@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation.accesshelpers;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RequestRetryInfomation;
 
 import java.util.function.Predicate;
 
@@ -23,12 +23,11 @@ public final class ExponentialBackoffAccessHelper {
          * {@code shouldRetry} and {@code shouldRetryException}.
          *
          * @param exponentialBackoffOptions The {@link ExponentialBackoffOptions}.
-         * @param shouldRetry The {@link Predicate} to determine if a response should be retried.
-         * @param shouldRetryException The {@link Predicate} to determine if a {@link Throwable} should be retried.
+         * @param shouldRetry The {@link Predicate} to determine if a request should be retried.
          * @return The created {@link ExponentialBackoff} instance.
          */
         ExponentialBackoff create(ExponentialBackoffOptions exponentialBackoffOptions,
-            Predicate<HttpResponse> shouldRetry, Predicate<Throwable> shouldRetryException);
+            Predicate<RequestRetryInfomation> shouldRetry);
     }
 
     /**
@@ -45,18 +44,17 @@ public final class ExponentialBackoffAccessHelper {
      * {@code shouldRetry} and {@code shouldRetryException}.
      *
      * @param exponentialBackoffOptions The {@link ExponentialBackoffOptions}.
-     * @param shouldRetry The {@link Predicate} to determine if a response should be retried.
-     * @param shouldRetryException The {@link Predicate} to determine if a {@link Throwable} should be retried.
+     * @param shouldRetry The {@link Predicate} to determine if a request should be retried.
      * @return The created {@link ExponentialBackoff} instance.
      */
     public static ExponentialBackoff create(ExponentialBackoffOptions exponentialBackoffOptions,
-        Predicate<HttpResponse> shouldRetry, Predicate<Throwable> shouldRetryException) {
+        Predicate<RequestRetryInfomation> shouldRetry) {
         if (accessor == null) {
             new ExponentialBackoff();
         }
 
         assert accessor != null;
-        return accessor.create(exponentialBackoffOptions, shouldRetry, shouldRetryException);
+        return accessor.create(exponentialBackoffOptions, shouldRetry);
     }
 
     private ExponentialBackoffAccessHelper() {

@@ -144,7 +144,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         context.setHttpRequest(originalHttpRequest.copy());
 
         return next.clone().process().flatMap(httpResponse -> {
-            if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
+            if (shouldRetry(retryStrategy, httpResponse, tryCount, suppressed)) {
                 final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                     retryAfterHeader, retryAfterTimeUnit);
                 logRetry(tryCount, delayDuration);
@@ -160,7 +160,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 return Mono.just(httpResponse);
             }
         }).onErrorResume(Exception.class, err -> {
-            if (shouldRetryException(retryStrategy, err, tryCount)) {
+            if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(err);
@@ -186,7 +186,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
             httpResponse = next.clone().processSync();
         } catch (RuntimeException err) {
-            if (shouldRetryException(retryStrategy, err, tryCount)) {
+            if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
@@ -208,7 +208,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             }
         }
 
-        if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
+        if (shouldRetry(retryStrategy, httpResponse, tryCount, suppressed)) {
             final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                 retryAfterHeader, retryAfterTimeUnit);
             logRetry(tryCount, delayDuration);
@@ -228,11 +228,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return httpResponse;
         }
     }
-    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
-        return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
+    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
+        List<Throwable> retriedExceptions) {
+        return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetryRequest(
+            new RequestRetryInfomation(response, null, tryCount, retriedExceptions));
     }
 
-    private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount) {
+    private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount,
+        List<Throwable> retriedExceptions) {
         // Check if there are any retry attempts still available.
         if (tryCount >= retryStrategy.getMaxRetries()) {
             return false;
@@ -240,14 +243,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = Exceptions.unwrap(throwable);
+        RequestRetryInfomation requestRetryInfomation = new RequestRetryInfomation(null, causalThrowable, tryCount,
+            retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable != null) {
-            if (retryStrategy.shouldRetryException(causalThrowable)) {
+            if (retryStrategy.shouldRetryRequest(requestRetryInfomation)) {
                 return true;
             }
 
             causalThrowable = causalThrowable.getCause();
+            requestRetryInfomation = new RequestRetryInfomation(null, causalThrowable, tryCount, retriedExceptions);
         }
 
         // Finally just return false as this can't be retried.

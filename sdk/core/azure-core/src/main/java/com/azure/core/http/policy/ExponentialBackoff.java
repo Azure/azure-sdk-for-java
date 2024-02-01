@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.accesshelpers.ExponentialBackoffAccessHelper;
 import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
@@ -54,8 +53,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private final int maxRetries;
     private final long baseDelayNanos;
     private final long maxDelayNanos;
-    private final Predicate<HttpResponse> shouldRetry;
-    private final Predicate<Throwable> shouldRetryException;
+    private final Predicate<RequestRetryInfomation> shouldRetryRequest;
 
     /**
      * Creates an instance of {@link ExponentialBackoff} with a maximum number of retry attempts configured by the
@@ -84,14 +82,14 @@ public class ExponentialBackoff implements RetryStrategy {
         );
     }
 
-    private ExponentialBackoff(ExponentialBackoffOptions options, Predicate<HttpResponse> shouldRetry,
-        Predicate<Throwable> shouldRetryException) {
+    private ExponentialBackoff(ExponentialBackoffOptions options,
+        Predicate<RequestRetryInfomation> shouldRetryRequest) {
         this(ObjectsUtil.requireNonNullElse(
             Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(), DEFAULT_MAX_RETRIES),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
                 DEFAULT_BASE_DELAY),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY), shouldRetry, shouldRetryException);
+                DEFAULT_MAX_DELAY), shouldRetryRequest);
     }
 
     /**
@@ -104,11 +102,11 @@ public class ExponentialBackoff implements RetryStrategy {
      * to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        this(maxRetries, baseDelay, maxDelay, null, null);
+        this(maxRetries, baseDelay, maxDelay, null);
     }
 
     private ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay,
-        Predicate<HttpResponse> shouldRetry, Predicate<Throwable> shouldRetryException) {
+        Predicate<RequestRetryInfomation> shouldRetryRequest) {
         if (maxRetries < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
@@ -126,8 +124,7 @@ public class ExponentialBackoff implements RetryStrategy {
         this.maxRetries = maxRetries;
         this.baseDelayNanos = baseDelay.toNanos();
         this.maxDelayNanos = maxDelay.toNanos();
-        this.shouldRetry = shouldRetry;
-        this.shouldRetryException = shouldRetryException;
+        this.shouldRetryRequest = shouldRetryRequest;
     }
 
     @Override
@@ -144,16 +141,9 @@ public class ExponentialBackoff implements RetryStrategy {
     }
 
     @Override
-    public boolean shouldRetry(HttpResponse httpResponse) {
-        return (shouldRetry == null)
-            ? RetryStrategy.super.shouldRetry(httpResponse)
-            : shouldRetry.test(httpResponse);
-    }
-
-    @Override
-    public boolean shouldRetryException(Throwable throwable) {
-        return (shouldRetryException == null)
-            ? RetryStrategy.super.shouldRetryException(throwable)
-            : shouldRetryException.test(throwable);
+    public boolean shouldRetryRequest(RequestRetryInfomation requestRetryInfomation) {
+        return shouldRetryRequest == null
+            ? RetryStrategy.super.shouldRetryRequest(requestRetryInfomation)
+            : shouldRetryRequest.test(requestRetryInfomation);
     }
 }

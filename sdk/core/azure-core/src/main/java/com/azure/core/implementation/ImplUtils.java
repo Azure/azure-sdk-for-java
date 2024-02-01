@@ -407,10 +407,9 @@ public final class ImplUtils {
 
         if (retryOptions.getExponentialBackoffOptions() != null) {
             return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
-                retryOptions.getShouldRetry(), retryOptions.getShouldRetryException());
+                retryOptions.getShouldRetryRequest());
         } else if (retryOptions.getFixedDelayOptions() != null) {
-            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(), retryOptions.getShouldRetry(),
-                retryOptions.getShouldRetryException());
+            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(), retryOptions.getShouldRetryRequest());
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
