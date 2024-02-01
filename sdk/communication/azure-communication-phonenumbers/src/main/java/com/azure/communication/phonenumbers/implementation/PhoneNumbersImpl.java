@@ -6,6 +6,8 @@ package com.azure.communication.phonenumbers.implementation;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.OfferingsResponse;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCodes;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCountries;
@@ -214,6 +216,15 @@ public final class PhoneNumbersImpl {
                 @QueryParam("skip") Integer skip,
                 @QueryParam("top") Integer top,
                 @QueryParam("api-version") String apiVersion,
+                Context context);
+
+        @Post("/operatorInformation/:search")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<OperatorInformationResult>> operatorInformationSearch(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") OperatorInformationRequest body,
                 Context context);
 
         @Get("{nextLink}")
@@ -2049,6 +2060,115 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top, Context context) {
         return new PagedIterable<>(listPhoneNumbersAsync(skip, top, context));
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<OperatorInformationResult>> operatorInformationSearchWithResponseAsync(
+            OperatorInformationRequest body) {
+        return FluxUtil.withContext(
+                context ->
+                        service.operatorInformationSearch(
+                                this.client.getEndpoint(), this.client.getApiVersion(), body, context));
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<OperatorInformationResult>> operatorInformationSearchWithResponseAsync(
+            OperatorInformationRequest body, Context context) {
+        return service.operatorInformationSearch(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperatorInformationResult> operatorInformationSearchAsync(OperatorInformationRequest body) {
+        return operatorInformationSearchWithResponseAsync(body)
+                .flatMap(
+                        (Response<OperatorInformationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperatorInformationResult> operatorInformationSearchAsync(
+            OperatorInformationRequest body, Context context) {
+        return operatorInformationSearchWithResponseAsync(body, context)
+                .flatMap(
+                        (Response<OperatorInformationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperatorInformationResult operatorInformationSearch(OperatorInformationRequest body) {
+        return operatorInformationSearchAsync(body).block();
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param body Represents a search request for operator information for the given phone numbers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search result containing operator information associated with the requested phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperatorInformationResult operatorInformationSearch(OperatorInformationRequest body, Context context) {
+        return operatorInformationSearchAsync(body, context).block();
     }
 
     /**

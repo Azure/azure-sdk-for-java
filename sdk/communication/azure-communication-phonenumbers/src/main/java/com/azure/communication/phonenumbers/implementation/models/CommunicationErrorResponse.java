@@ -4,12 +4,10 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CommunicationErrorResponse model. */
-@Generated
 @Fluent
 public final class CommunicationErrorResponse {
     /*
