@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -44,13 +43,6 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
-
-    private static boolean shutdownHookAccessHelper;
-
-    static {
-        shutdownHookAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-            .get("AZURE_CORE_UTILS_SHUTDOWN_HOOK_ACCESS_HELPER"));
-    }
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -624,7 +616,7 @@ public final class CoreUtils {
             }
         });
 
-        if (shutdownHookAccessHelper) {
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
             java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
                 return null;
@@ -735,11 +727,26 @@ public final class CoreUtils {
         return builder.toString();
     }
 
+    /*
+     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
+     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
+     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
+     * until CoreUtils is loaded.
+     */
+    private static final class ShutdownHookAccessHelperHolder {
+        private static boolean shutdownHookAccessHelper;
+
+        static {
+            shutdownHookAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
+                .get("AZURE_CORE_UTILS_SHUTDOWN_HOOK_ACCESS_HELPER"));
+        }
+    }
+
     static boolean isShutdownHookAccessHelper() {
-        return shutdownHookAccessHelper;
+        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
     }
 
     static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
-        CoreUtils.shutdownHookAccessHelper = shutdownHookAccessHelper;
+        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
 }
