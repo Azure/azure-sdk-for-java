@@ -16,7 +16,9 @@ import java.util.Map;
 public class FunctionsToolCallHelper {
 
     public FunctionToolDefinition getFavoriteVacationDestinationDefinition() {
-        return new FunctionToolDefinition(new FunctionDefinition("getFavoriteVacationDestination", null)
+        return new FunctionToolDefinition(new FunctionDefinition(
+            "getFavoriteVacationDestination",
+            BinaryData.fromObject(new FavoriteVacationDestinationParameters()))
             .setDescription("Retrieves the user's unambiguously preferred location for vacations."));
     }
 
@@ -65,5 +67,15 @@ public class FunctionsToolCallHelper {
             this.properties.put("airline", new FunctionStringParameter("The name of an airline that flights can be booked on."));
             this.properties.put("time", new FunctionStringParameter("An approximate time of year at which travel is planned."));
         }
+    }
+
+    private class FavoriteVacationDestinationParameters {
+
+        @JsonProperty(value = "type")
+        private String type = "object";
+
+        @JsonProperty(value = "properties")
+        private Map<String, FunctionStringParameter> properties = new HashMap<>();
+
     }
 }

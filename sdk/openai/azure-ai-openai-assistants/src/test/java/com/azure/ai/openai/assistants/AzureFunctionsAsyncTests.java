@@ -29,7 +29,6 @@ public class AzureFunctionsAsyncTests extends AssistantsClientTestBase {
 
     private AssistantsAsyncClient client;
 
-    @Disabled("Support for FUNCTION tool calls is unclear in Azure at the moment")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void parallelFunctionCallTest(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
