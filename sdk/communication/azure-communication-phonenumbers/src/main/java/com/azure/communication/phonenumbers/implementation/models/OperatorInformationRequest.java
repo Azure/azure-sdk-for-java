@@ -4,12 +4,14 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OperatorInformationRequest model. */
 @Fluent
+@Generated
 public final class OperatorInformationRequest {
     /*
      * Phone number(s) whose operator information is being requested
