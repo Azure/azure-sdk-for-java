@@ -19,6 +19,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
@@ -141,7 +142,8 @@ public class EventProcessorClientBuilder implements
 
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorClientBuilder.class);
 
-    private final EventHubClientBuilder eventHubClientBuilder;
+    // Builder used to hold intermediate Event Hub related configuration changes.
+    private final EventHubClientBuilder eventHubClientOptions;
     private String consumerGroup;
     private CheckpointStore checkpointStore;
     private Consumer<EventContext> processEvent;
@@ -162,7 +164,7 @@ public class EventProcessorClientBuilder implements
      * Creates a new instance of {@link EventProcessorClientBuilder}.
      */
     public EventProcessorClientBuilder() {
-        eventHubClientBuilder = new EventHubClientBuilder();
+        eventHubClientOptions = new EventHubClientBuilder();
     }
 
     /**
@@ -177,7 +179,7 @@ public class EventProcessorClientBuilder implements
      * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
      */
     public EventProcessorClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
-        eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
+        eventHubClientOptions.fullyQualifiedNamespace(fullyQualifiedNamespace);
         return this;
     }
 
@@ -192,7 +194,7 @@ public class EventProcessorClientBuilder implements
      * @throws NullPointerException if {@code eventHubName} is null.
      */
     public EventProcessorClientBuilder eventHubName(String eventHubName) {
-        eventHubClientBuilder.eventHubName(eventHubName);
+        eventHubClientOptions.eventHubName(eventHubName);
         return this;
     }
 
@@ -224,7 +226,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder connectionString(String connectionString) {
-        eventHubClientBuilder.connectionString(connectionString);
+        eventHubClientOptions.connectionString(connectionString);
         return this;
     }
 
@@ -246,7 +248,7 @@ public class EventProcessorClientBuilder implements
      *     connection string.
      */
     public EventProcessorClientBuilder connectionString(String connectionString, String eventHubName) {
-        eventHubClientBuilder.connectionString(connectionString, eventHubName);
+        eventHubClientOptions.connectionString(connectionString, eventHubName);
         return this;
     }
 
@@ -262,7 +264,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder configuration(Configuration configuration) {
-        eventHubClientBuilder.configuration(configuration);
+        eventHubClientOptions.configuration(configuration);
         return this;
     }
 
@@ -284,7 +286,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
-        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -302,7 +304,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(TokenCredential credential) {
-        eventHubClientBuilder.credential(credential);
+        eventHubClientOptions.credential(credential);
         return this;
     }
 
@@ -324,7 +326,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureNamedKeyCredential credential) {
-        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -340,7 +342,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(AzureNamedKeyCredential credential) {
-        eventHubClientBuilder.credential(credential);
+        eventHubClientOptions.credential(credential);
         return this;
     }
 
@@ -362,7 +364,7 @@ public class EventProcessorClientBuilder implements
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureSasCredential credential) {
-        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        eventHubClientOptions.credential(fullyQualifiedNamespace, eventHubName, credential);
         return this;
     }
 
@@ -378,7 +380,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder credential(AzureSasCredential credential) {
-        eventHubClientBuilder.credential(credential);
+        eventHubClientOptions.credential(credential);
         return this;
     }
 
@@ -397,7 +399,7 @@ public class EventProcessorClientBuilder implements
      * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
      */
     public EventProcessorClientBuilder customEndpointAddress(String customEndpointAddress) {
-        eventHubClientBuilder.customEndpointAddress(customEndpointAddress);
+        eventHubClientOptions.customEndpointAddress(customEndpointAddress);
         return this;
     }
 
@@ -411,7 +413,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder proxyOptions(ProxyOptions proxyOptions) {
-        eventHubClientBuilder.proxyOptions(proxyOptions);
+        eventHubClientOptions.proxyOptions(proxyOptions);
         return this;
     }
 
@@ -425,7 +427,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder transportType(AmqpTransportType transport) {
-        eventHubClientBuilder.transportType(transport);
+        eventHubClientOptions.transportType(transport);
         return this;
     }
 
@@ -440,7 +442,7 @@ public class EventProcessorClientBuilder implements
      */
     @Deprecated
     public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
-        eventHubClientBuilder.retryOptions(retryOptions);
+        eventHubClientOptions.retryOptions(retryOptions);
         return this;
     }
 
@@ -453,7 +455,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
-        eventHubClientBuilder.retryOptions(retryOptions);
+        eventHubClientOptions.retryOptions(retryOptions);
         return this;
     }
 
@@ -468,7 +470,7 @@ public class EventProcessorClientBuilder implements
      */
     @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
-        eventHubClientBuilder.clientOptions(clientOptions);
+        eventHubClientOptions.clientOptions(clientOptions);
         return this;
     }
 
@@ -580,7 +582,7 @@ public class EventProcessorClientBuilder implements
      * @throws IllegalArgumentException if {@code prefetchCount} is less than 1 or greater than 8000.
      */
     public EventProcessorClientBuilder prefetchCount(int prefetchCount) {
-        eventHubClientBuilder.prefetchCount(prefetchCount);
+        eventHubClientOptions.prefetchCount(prefetchCount);
         return this;
     }
 
@@ -869,8 +871,11 @@ public class EventProcessorClientBuilder implements
                     + numberOfTimesSet + " times."));
         }
 
-        return new EventProcessorClient(eventHubClientBuilder, getPartitionProcessorSupplier(), checkpointStore,
-            processError, eventHubClientBuilder.createTracer(), processorOptions);
+        // Create a copy of the options, so it does not change if another processor is created from the same instance.
+        final EventHubClientBuilder builder = copyOptions(eventHubClientOptions);
+
+        return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore,
+            processError, eventHubClientOptions.createTracer(), processorOptions);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
@@ -916,4 +921,43 @@ public class EventProcessorClientBuilder implements
         };
     }
 
+    private static EventHubClientBuilder copyOptions(EventHubClientBuilder source) {
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .clientOptions(source.getClientOptions())
+            .configuration(source.getConfiguration());
+
+        if (!Objects.isNull(source.getCredentials())) {
+            builder.credential(source.getCredentials());
+        }
+
+        if (!Objects.isNull(source.getCustomEndpointAddress())) {
+            builder.customEndpointAddress(source.getCustomEndpointAddress().toString());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(source.getFullyQualifiedNamespace())) {
+            builder.fullyQualifiedNamespace(source.getFullyQualifiedNamespace());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(source.getEventHubName())) {
+            builder.eventHubName(source.getEventHubName());
+        }
+
+        if (source.isSharedConnection()) {
+            builder.shareConnection();
+        }
+
+        builder.proxyOptions(source.getProxyOptions())
+            .transportType(source.getTransportType())
+            .retryOptions(source.getRetryOptions())
+            .consumerGroup(source.getConsumerGroup());
+
+        if (source.getPrefetchCount() != null) {
+            builder.prefetchCount(source.getPrefetchCount());
+        }
+
+        builder.scheduler(source.getScheduler())
+            .verifyMode(source.getVerifyMode());
+
+        return builder;
+    }
 }
