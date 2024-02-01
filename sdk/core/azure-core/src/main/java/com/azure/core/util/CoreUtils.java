@@ -578,7 +578,7 @@ public final class CoreUtils {
      * <p>
      * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
      * security isn't available. So, if running with a security manager, setting
-     * {@code AZURE_CORE_UTILS_SHUTDOWN_HOOK_ACCESS_HELPER} to true will have this method use access controller to add
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
      * the shutdown hook with privileged permissions.
      * <p>
      * If {@code executorService} is null, no shutdown hook will be added and this method will return null.
@@ -738,7 +738,7 @@ public final class CoreUtils {
 
         static {
             shutdownHookAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-                .get("AZURE_CORE_UTILS_SHUTDOWN_HOOK_ACCESS_HELPER"));
+                .get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
         }
     }
 
