@@ -13,8 +13,8 @@
 - Added `BinaryData.writeTo(OutputStream)`, `BinaryData.writeTo(WriteableByteChannel)`, 
   and `BinaryData.writeToAsync(AsynchronousByteChannel)` to allow writing the content of `BinaryData` to an 
   `OutputStream`, `WriteableByteChannel`, or `AsynchronousByteChannel` respectively. ([#38271](https://github.com/Azure/azure-sdk-for-java/pull/38271))
-- Added `RetryOptions.shouldRetry` and `RetryOptions.shouldRetryException` to allow `RetryOptions` to determine which
-  HTTP responses and exceptions can be retried. ([#38469](https://github.com/Azure/azure-sdk-for-java/pull/38469))
+- Added `RetryOptions.shouldRetryCondition`, `RetryStrategy.shouldRetryCondition` and `RequestRetryCondition` to allow 
+  `RetryOptions` to determine which  HTTP responses and exceptions can be retried. ([#38585](https://github.com/Azure/azure-sdk-for-java/pull/38585))
 - Added `CoreUtils.addShutdownHookSafely` to add a shutdown hook with possible usage of `AccessController` to add it
   in a privileged manner. ([#38580](https://github.com/Azure/azure-sdk-for-java/pull/38580))
 
