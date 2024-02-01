@@ -217,7 +217,7 @@ io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.0.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-jdbc;2.0.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.0.0-alpha
 
-io.projectreactor:reactor-test;3.4.35
+io.projectreactor:reactor-test;3.4.34
 io.github.hakky54:logcaptor;2.9.0
 com.squareup.okio:okio;3.6.0
 com.squareup.okio:okio-jvm;3.6.0
