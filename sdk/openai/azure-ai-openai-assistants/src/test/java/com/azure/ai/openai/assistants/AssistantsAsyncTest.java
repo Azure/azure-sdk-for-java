@@ -32,7 +32,7 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCrud(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCreateRetrieveUpdateDelete(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             AtomicReference<Assistant> assistantCreated = new AtomicReference<>();
