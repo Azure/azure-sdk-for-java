@@ -26,8 +26,8 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
- * Please be aware that client built from this builder can support synchronously and asynchronously call of sending
- * request. Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
+ * The client built from this builder can support sending requests synchronously and asynchronously.
+ * Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
  * synchronously with contextual information.
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
@@ -42,7 +42,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
  *
  * <p>Configuring the OkHttp client with a proxy is relevant when your application needs to communicate with Azure
- * services through a proxy server. Proxies are commonly used for security, monitoring, and other purposes.</p>
+ * services through a proxy server.</p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  * <pre>
@@ -71,11 +71,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
  *
  * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
- *
- * <p>Configuring the OkHttp client with HTTP/2 support is relevant when you want to take advantage of the benefits
- * provided by the HTTP/2 protocol. HTTP/2 is the next version of the HTTP network protocol, designed to improve the
- * performance of web applications by allowing multiple requests and responses to be multiplexed over a
- * single connection.</p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
