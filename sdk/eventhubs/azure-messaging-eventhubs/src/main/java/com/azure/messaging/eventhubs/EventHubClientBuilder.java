@@ -347,6 +347,13 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    /***
+     * Package-private method to get client options.
+     */
+    ClientOptions getClientOptions() {
+        return clientOptions;
+    }
+
     /**
      * Sets the credential information given a connection string to the Event Hubs namespace and name to a specific
      * Event Hub instance.
@@ -406,6 +413,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Package private class to get configuration.
+     */
+    Configuration getConfiguration() {
+        return configuration;
+    }
+
+    /**
      * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
      * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
      * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
@@ -434,6 +448,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the custom endpoint address.
+     */
+    URL getCustomEndpointAddress() {
+        return this.customEndpointAddress;
+    }
+
+    /**
      * Sets the fully qualified name for the Event Hubs namespace.
      *
      * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
@@ -451,6 +472,13 @@ public class EventHubClientBuilder implements
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
+    }
+
+    /**
+     * Gets the fully qualified namespace.
+     */
+    String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     private String getAndValidateFullyQualifiedNamespace() {
@@ -480,6 +508,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the Event Hub name.
+     */
+    String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
      * Toggles the builder to use the same connection for producers or consumers that are built from this instance. By
      * default, a new connection is constructed and used created for each Event Hub consumer or producer created.
      *
@@ -488,6 +523,13 @@ public class EventHubClientBuilder implements
     public EventHubClientBuilder shareConnection() {
         this.isSharedConnection.set(true);
         return this;
+    }
+
+    /**
+     * Gets whether the connection is shared.
+     */
+    boolean isSharedConnection() {
+        return isSharedConnection.get();
     }
 
     /**
@@ -645,6 +687,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Package-private method to get credentials set on builder.
+     */
+    TokenCredential getCredentials() {
+        return credentials;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -659,6 +708,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets proxy options.
+     */
+    ProxyOptions getProxyOptions() {
+        return proxyOptions;
+    }
+
+    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
@@ -670,6 +726,10 @@ public class EventHubClientBuilder implements
     public EventHubClientBuilder transportType(AmqpTransportType transport) {
         this.transport = transport;
         return this;
+    }
+
+    AmqpTransportType getTransportType() {
+        return transport;
     }
 
     /**
@@ -700,6 +760,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the retry options.
+     */
+    AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
+
+    /**
      * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
      * group. The name of the consumer group that is created by default is {@link #DEFAULT_CONSUMER_GROUP_NAME
      * "$Default"}.
@@ -714,6 +781,13 @@ public class EventHubClientBuilder implements
         this.consumerGroup = consumerGroup;
         return this;
     }
+
+    /**
+     * Gets the consumer group.
+     */
+    String getConsumerGroup() {
+        return consumerGroup;
+   }
 
     /**
      * Sets the count used by the receiver to control the number of events per partition the Event Hub consumer will actively receive
@@ -762,6 +836,10 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    Scheduler getScheduler() {
+        return this.scheduler;
+    }
+
     /**
      * Package-private method that sets the verify mode for this connection.
      *
@@ -771,6 +849,13 @@ public class EventHubClientBuilder implements
     EventHubClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
         this.verifyMode = verifyMode;
         return this;
+    }
+
+    /**
+     * Gets the verify mode.
+     */
+    SslDomain.VerifyMode getVerifyMode() {
+        return verifyMode;
     }
 
     /**
