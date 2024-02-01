@@ -226,7 +226,7 @@
  *
  * <p>Define a `Hotel` class.</p>
  *
- * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class -->
+ * <!-- src_embed hotelExampleClass -->
  * <pre>
  * class Hotel &#123;
  *     private String hotelId;
@@ -241,7 +241,7 @@
  *     &#125;
  * &#125;
  * </pre>
- * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class -->
+ * <!-- end hotelExampleClass -->
  *
  * <p>Use it in place of SearchDocument when querying.</p>
  *
