@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.accesshelpers.FixedDelayAccessHelper;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
@@ -22,8 +21,7 @@ public class FixedDelay implements RetryStrategy {
 
     private final int maxRetries;
     private final Duration delay;
-    private final Predicate<HttpResponse> shouldRetry;
-    private final Predicate<Throwable> shouldRetryException;
+    private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates an instance of {@link FixedDelay}.
@@ -34,7 +32,7 @@ public class FixedDelay implements RetryStrategy {
      * @throws NullPointerException If {@code delay} is {@code null}.
      */
     public FixedDelay(int maxRetries, Duration delay) {
-        this(maxRetries, delay, null, null);
+        this(maxRetries, delay, null);
     }
 
     /**
@@ -47,22 +45,19 @@ public class FixedDelay implements RetryStrategy {
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay());
     }
 
-    private FixedDelay(FixedDelayOptions fixedDelayOptions, Predicate<HttpResponse> shouldRetry,
-        Predicate<Throwable> shouldRetryException) {
+    private FixedDelay(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryCondition> shouldRetryCondition) {
         this(Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
-            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay(), shouldRetry,
-            shouldRetryException);
+            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay(),
+            shouldRetryCondition);
     }
 
-    private FixedDelay(int maxRetries, Duration delay, Predicate<HttpResponse> shouldRetry,
-        Predicate<Throwable> shouldRetryException) {
+    private FixedDelay(int maxRetries, Duration delay, Predicate<RequestRetryCondition> shouldRetryCondition) {
         if (maxRetries < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         this.maxRetries = maxRetries;
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
-        this.shouldRetry = shouldRetry;
-        this.shouldRetryException = shouldRetryException;
+        this.shouldRetryCondition = shouldRetryCondition;
     }
 
     @Override
@@ -76,16 +71,9 @@ public class FixedDelay implements RetryStrategy {
     }
 
     @Override
-    public boolean shouldRetry(HttpResponse httpResponse) {
-        return (shouldRetry == null)
-            ? RetryStrategy.super.shouldRetry(httpResponse)
-            : shouldRetry.test(httpResponse);
-    }
-
-    @Override
-    public boolean shouldRetryException(Throwable throwable) {
-        return (shouldRetryException == null)
-            ? RetryStrategy.super.shouldRetryException(throwable)
-            : shouldRetryException.test(throwable);
+    public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        return shouldRetryCondition == null
+            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+            : shouldRetryCondition.test(requestRetryCondition);
     }
 }
