@@ -53,7 +53,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private final int maxRetries;
     private final long baseDelayNanos;
     private final long maxDelayNanos;
-    private final Predicate<RequestRetryInfomation> shouldRetryRequest;
+    private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates an instance of {@link ExponentialBackoff} with a maximum number of retry attempts configured by the
@@ -83,13 +83,13 @@ public class ExponentialBackoff implements RetryStrategy {
     }
 
     private ExponentialBackoff(ExponentialBackoffOptions options,
-        Predicate<RequestRetryInfomation> shouldRetryRequest) {
+        Predicate<RequestRetryCondition> shouldRetryCondition) {
         this(ObjectsUtil.requireNonNullElse(
             Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(), DEFAULT_MAX_RETRIES),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
                 DEFAULT_BASE_DELAY),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY), shouldRetryRequest);
+                DEFAULT_MAX_DELAY), shouldRetryCondition);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ExponentialBackoff implements RetryStrategy {
     }
 
     private ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay,
-        Predicate<RequestRetryInfomation> shouldRetryRequest) {
+        Predicate<RequestRetryCondition> shouldRetryCondition) {
         if (maxRetries < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
@@ -124,7 +124,7 @@ public class ExponentialBackoff implements RetryStrategy {
         this.maxRetries = maxRetries;
         this.baseDelayNanos = baseDelay.toNanos();
         this.maxDelayNanos = maxDelay.toNanos();
-        this.shouldRetryRequest = shouldRetryRequest;
+        this.shouldRetryCondition = shouldRetryCondition;
     }
 
     @Override
@@ -141,9 +141,9 @@ public class ExponentialBackoff implements RetryStrategy {
     }
 
     @Override
-    public boolean shouldRetryRequest(RequestRetryInfomation requestRetryInfomation) {
-        return shouldRetryRequest == null
-            ? RetryStrategy.super.shouldRetryRequest(requestRetryInfomation)
-            : shouldRetryRequest.test(requestRetryInfomation);
+    public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        return shouldRetryCondition == null
+            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+            : shouldRetryCondition.test(requestRetryCondition);
     }
 }

@@ -21,7 +21,7 @@ public class FixedDelay implements RetryStrategy {
 
     private final int maxRetries;
     private final Duration delay;
-    private final Predicate<RequestRetryInfomation> shouldRetryRequest;
+    private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates an instance of {@link FixedDelay}.
@@ -45,19 +45,19 @@ public class FixedDelay implements RetryStrategy {
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay());
     }
 
-    private FixedDelay(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryInfomation> shouldRetryRequest) {
+    private FixedDelay(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryCondition> shouldRetryCondition) {
         this(Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay(),
-            shouldRetryRequest);
+            shouldRetryCondition);
     }
 
-    private FixedDelay(int maxRetries, Duration delay, Predicate<RequestRetryInfomation> shouldRetryRequest) {
+    private FixedDelay(int maxRetries, Duration delay, Predicate<RequestRetryCondition> shouldRetryCondition) {
         if (maxRetries < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         this.maxRetries = maxRetries;
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
-        this.shouldRetryRequest = shouldRetryRequest;
+        this.shouldRetryCondition = shouldRetryCondition;
     }
 
     @Override
@@ -71,9 +71,9 @@ public class FixedDelay implements RetryStrategy {
     }
 
     @Override
-    public boolean shouldRetryRequest(RequestRetryInfomation requestRetryInfomation) {
-        return shouldRetryRequest == null
-            ? RetryStrategy.super.shouldRetryRequest(requestRetryInfomation)
-            : shouldRetryRequest.test(requestRetryInfomation);
+    public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        return shouldRetryCondition == null
+            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+            : shouldRetryCondition.test(requestRetryCondition);
     }
 }

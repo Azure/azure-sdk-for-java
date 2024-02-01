@@ -4,7 +4,7 @@ package com.azure.core.implementation.accesshelpers;
 
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.RequestRetryInfomation;
+import com.azure.core.http.policy.RequestRetryCondition;
 
 import java.time.Duration;
 import java.util.function.Predicate;
@@ -20,14 +20,14 @@ public final class FixedDelayAccessHelper {
      */
     public interface FixedDelayAccessor {
         /**
-         * Creates an {@link FixedDelay} instance with the passed {@code fixedDelayOptions}, {@code shouldRetry} and
-         * {@code shouldRetryException}.
+         * Creates an {@link FixedDelay} instance with the passed {@code fixedDelayOptions} and
+         * {@code shouldRetryCondition}.
          *
          * @param fixedDelayOptions The {@link FixedDelayOptions}.
-         * @param shouldRetry The {@link Predicate} to determine if a request should be retried.
+         * @param shouldRetryCondition The {@link Predicate} to determine if a request should be retried.
          * @return The created {@link FixedDelay} instance.
          */
-        FixedDelay create(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryInfomation> shouldRetry);
+        FixedDelay create(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryCondition> shouldRetryCondition);
     }
 
     /**
@@ -40,20 +40,21 @@ public final class FixedDelayAccessHelper {
     }
 
     /**
-     * Creates an {@link FixedDelay} instance with the passed {@code fixedDelayOptions}, {@code shouldRetry} and
-     * {@code shouldRetryException}.
+     * Creates an {@link FixedDelay} instance with the passed {@code fixedDelayOptions} and
+     * {@code shouldRetryCondition}.
      *
      * @param fixedDelayOptions The {@link FixedDelayOptions}.
-     * @param shouldRetry The {@link Predicate} to determine if a request should be retried.
+     * @param shouldRetryCondition The {@link Predicate} to determine if a request should be retried.
      * @return The created {@link FixedDelay} instance.
      */
-    public static FixedDelay create(FixedDelayOptions fixedDelayOptions, Predicate<RequestRetryInfomation> shouldRetry) {
+    public static FixedDelay create(FixedDelayOptions fixedDelayOptions,
+        Predicate<RequestRetryCondition> shouldRetryCondition) {
         if (accessor == null) {
             new FixedDelay(1, Duration.ofMillis(1));
         }
 
         assert accessor != null;
-        return accessor.create(fixedDelayOptions, shouldRetry);
+        return accessor.create(fixedDelayOptions, shouldRetryCondition);
     }
 
     private FixedDelayAccessHelper() {

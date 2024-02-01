@@ -355,7 +355,7 @@
         <Method name="getBodyAsBinaryData" />
       </And>
       <And>
-        <Class name="com.azure.core.http.policy.RequestRetryInfomation" />
+        <Class name="com.azure.core.http.policy.RequestRetryCondition" />
         <Or>
           <Method name="getResponse" />
           <Method name="getThrowable" />

@@ -15,7 +15,7 @@ public class RetryOptions {
     private final ExponentialBackoffOptions exponentialBackoffOptions;
     private final FixedDelayOptions fixedDelayOptions;
 
-    private Predicate<RequestRetryInfomation> shouldRetryRequest;
+    private Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates a new instance that uses {@link ExponentialBackoffOptions}.
@@ -65,8 +65,8 @@ public class RetryOptions {
      *
      * @return The predicate that determines if a retry should be attempted.
      */
-    public Predicate<RequestRetryInfomation> getShouldRetryRequest() {
-        return shouldRetryRequest;
+    public Predicate<RequestRetryCondition> getShouldRetryCondition() {
+        return shouldRetryCondition;
     }
 
     /**
@@ -75,12 +75,12 @@ public class RetryOptions {
      * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
      * isn't 501 or 505. And to retry any {@link Exception}.
      *
-     * @param shouldRetryRequest The predicate that determines if a retry should be attempted for the given
+     * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
      * {@link HttpResponse}.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setShouldRetryRequest(Predicate<RequestRetryInfomation> shouldRetryRequest) {
-        this.shouldRetryRequest = shouldRetryRequest;
+    public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
+        this.shouldRetryCondition = shouldRetryCondition;
         return this;
     }
 }

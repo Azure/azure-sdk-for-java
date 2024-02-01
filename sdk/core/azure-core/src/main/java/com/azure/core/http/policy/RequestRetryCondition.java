@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Information about the request that failed, used to determine whether a retry should be attempted.
  */
-public final class RequestRetryInfomation {
+public final class RequestRetryCondition {
     private final HttpResponse response;
     private final Throwable throwable;
     private final int tryCount;
@@ -20,21 +20,23 @@ public final class RequestRetryInfomation {
      * Creates a new ShouldRetryInfo object.
      *
      * @param response The HTTP response of the request that failed.
-     * @param throwable The exception of the request that failed.
+     * @param throwable The throwable of the request that failed.
      * @param tryCount The number of tries that have been attempted.
-     * @param retriedExceptions The list of exceptions that have been encountered during retries.
+     * @param retriedThrowables The list of throwables that have been encountered during retries.
      */
-    RequestRetryInfomation(HttpResponse response, Throwable throwable, int tryCount,
-        List<Throwable> retriedExceptions) {
+    RequestRetryCondition(HttpResponse response, Throwable throwable, int tryCount,
+        List<Throwable> retriedThrowables) {
         this.response = response;
         this.throwable = throwable;
         this.tryCount = tryCount;
-        this.retriedExceptions = retriedExceptions == null
-            ? Collections.emptyList() : Collections.unmodifiableList(retriedExceptions);
+        this.retriedExceptions = retriedThrowables == null
+            ? Collections.emptyList() : Collections.unmodifiableList(retriedThrowables);
     }
 
     /**
      * Gets the HTTP response of the request that failed.
+     * <p>
+     * This may be null if the request failed with a throwable and no response was received.
      *
      * @return The HTTP response of the request that failed.
      */
@@ -43,9 +45,11 @@ public final class RequestRetryInfomation {
     }
 
     /**
-     * Gets the exception of the request that failed.
+     * Gets the throwable of the request that failed.
+     * <p>
+     * This may be null if the request failed with a response and no throwable was received.
      *
-     * @return The exception of the request that failed.
+     * @return The throwable of the request that failed.
      */
     public Throwable getThrowable() {
         return throwable;

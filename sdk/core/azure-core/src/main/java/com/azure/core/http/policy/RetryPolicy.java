@@ -230,8 +230,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
     private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
         List<Throwable> retriedExceptions) {
-        return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetryRequest(
-            new RequestRetryInfomation(response, null, tryCount, retriedExceptions));
+        return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetryCondition(
+            new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }
 
     private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount,
@@ -243,17 +243,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = Exceptions.unwrap(throwable);
-        RequestRetryInfomation requestRetryInfomation = new RequestRetryInfomation(null, causalThrowable, tryCount,
+        RequestRetryCondition requestRetryCondition = new RequestRetryCondition(null, causalThrowable, tryCount,
             retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable != null) {
-            if (retryStrategy.shouldRetryRequest(requestRetryInfomation)) {
+            if (retryStrategy.shouldRetryCondition(requestRetryCondition)) {
                 return true;
             }
 
             causalThrowable = causalThrowable.getCause();
-            requestRetryInfomation = new RequestRetryInfomation(null, causalThrowable, tryCount, retriedExceptions);
+            requestRetryCondition = new RequestRetryCondition(null, causalThrowable, tryCount, retriedExceptions);
         }
 
         // Finally just return false as this can't be retried.
