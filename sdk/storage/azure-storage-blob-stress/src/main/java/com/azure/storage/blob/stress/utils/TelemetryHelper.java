@@ -216,6 +216,7 @@ public class TelemetryHelper {
      */
     public void recordStart(StorageStressOptions options) {
         String storageBlobPackageVersion = "unknown";
+        String storageDatalakePackageVersion = "unknown";
         try {
             Class<?> storageBlobBusPackage = Class.forName("com.azure.storage.blob.BlobServiceClientBuilder");
             storageBlobPackageVersion = storageBlobBusPackage.getPackage().getImplementationVersion();
