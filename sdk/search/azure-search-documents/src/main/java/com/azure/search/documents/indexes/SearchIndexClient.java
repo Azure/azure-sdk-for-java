@@ -83,7 +83,7 @@ public final class SearchIndexClient {
      *
      * @return the pipeline.
      */
-    HttpPipeline getHttpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

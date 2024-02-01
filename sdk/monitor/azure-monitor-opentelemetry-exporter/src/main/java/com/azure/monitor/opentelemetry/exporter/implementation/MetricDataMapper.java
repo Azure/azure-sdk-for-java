@@ -143,9 +143,15 @@ public class MetricDataMapper {
                     pointBuilder.setCount((int) histogramCount);
                 }
                 HistogramPointData histogramPointData = (HistogramPointData) pointData;
+                double min = histogramPointData.getMin();
+                double max = histogramPointData.getMax();
+                if (shouldConvertToMilliseconds(metricData.getName(), isPreAggregatedStandardMetric)) {
+                    min = min * 1000;
+                    max = max * 1000;
+                }
                 pointDataValue = histogramPointData.getSum();
-                pointBuilder.setMin(histogramPointData.getMin());
-                pointBuilder.setMax(histogramPointData.getMax());
+                pointBuilder.setMin(min);
+                pointBuilder.setMax(max);
                 break;
             case SUMMARY: // not supported yet in OpenTelemetry SDK
             case EXPONENTIAL_HISTOGRAM: // not supported yet in OpenTelemetry SDK
@@ -154,7 +160,7 @@ public class MetricDataMapper {
         }
 
         // new http semconv metrics use seconds, but we want to send milliseconds to Breeze
-        if (isPreAggregatedStandardMetric && (metricData.getName().equals("http.server.request.duration") || metricData.getName().equals("http.client.request.duration"))) {
+        if (shouldConvertToMilliseconds(metricData.getName(), isPreAggregatedStandardMetric)) {
             pointDataValue = pointDataValue * 1000;
         }
 
@@ -209,7 +215,11 @@ public class MetricDataMapper {
         }
     }
 
-    static boolean applyConnectionStringAndRoleNameOverrides(
+    private static boolean shouldConvertToMilliseconds(String metricName, boolean isPreAggregatedStandardMetric) {
+        return isPreAggregatedStandardMetric && (metricName.equals("http.server.request.duration") || metricName.equals("http.client.request.duration"));
+    }
+
+    private static boolean applyConnectionStringAndRoleNameOverrides(
         AbstractTelemetryBuilder telemetryBuilder, Object value, String key) {
         if (key.equals(AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey())
             && value instanceof String) {
