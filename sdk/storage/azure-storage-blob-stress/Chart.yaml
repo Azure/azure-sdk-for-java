@@ -1,5 +1,5 @@
 apiVersion: v2
-name: javablobstorage
+name: java-blobstorage
 description: Stress tests for Java Blob Storage
 version: 0.1.1
 appVersion: v0.1

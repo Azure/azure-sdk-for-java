@@ -1,13 +1,13 @@
 matrix:
   scenarios:
-#   this test downloads 1024 bytes, small file, no chunking
+    # this test downloads 1024 bytes, small file, no chunking
     download-small-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
     download-small-file-async-test:
@@ -16,37 +16,37 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
-#   this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
+    # this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
     download-med-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "16777216"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
-#   this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
+    # this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
     download-unaligned-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "8405002"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
-#   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
+    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
     download-large-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
@@ -56,7 +56,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 1000
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 1024 bytes, small stream, no chunking
@@ -66,7 +66,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
     download-small-stream-async-test:
@@ -75,7 +75,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 16 * 1024 * 1024 bytes, medium stream in several chunks
@@ -85,7 +85,7 @@ matrix:
       sizeBytes: "16777216"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
@@ -95,7 +95,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests with 1000 parallel requests
@@ -105,7 +105,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 1000
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 1024 bytes, small content, no chunking
@@ -115,7 +115,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
     download-small-content-async-test:
@@ -124,7 +124,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 16 * 1024 * 1024 bytes, medium content in several chunks
@@ -134,7 +134,7 @@ matrix:
       sizeBytes: "16777216"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests
@@ -144,7 +144,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes, large content requiring multiple requests with 1000 parallel requests
@@ -154,7 +154,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 1024 bytes to open input stream, no chunking
@@ -164,7 +164,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 16 * 1024 * 1024 bytes to open input stream in several chunks
@@ -174,7 +174,7 @@ matrix:
       sizeBytes: "16777216"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests
@@ -184,7 +184,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes to open input stream requiring multiple requests with 1000 parallel requests
@@ -194,7 +194,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 1000
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 1024 bytes to seekablebytechannel, no chunking
@@ -204,7 +204,7 @@ matrix:
       sizeBytes: 1024
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 16 * 1024 * 1024 bytes to seekablebytechannel in several chunks
@@ -214,7 +214,7 @@ matrix:
       sizeBytes: "16777216"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests
@@ -224,7 +224,7 @@ matrix:
       sizeBytes: "52428800"
       parallel: 100
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
 
 #   this test downloads 50 * 1024 * 1024 bytes to seekablebytechannel requiring multiple requests with 1000 parallel requests
@@ -234,5 +234,5 @@ matrix:
       sizeBytes: "52428800"
       parallel: 1000
       faults: true
-      durationSeconds: 28800
+      durationMin: 480
       imageBuildDir: "../../.."
