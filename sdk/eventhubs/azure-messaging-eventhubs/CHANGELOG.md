@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed over-prefetching in EventProcessorClient caused by implicit prefetching in partition pump reactor pipeline ([#TODO](https://github.com/Azure/azure-sdk-for-java/issues/TODO))  
+- Fixed over-prefetching in EventProcessorClient caused by implicit prefetching in partition pump reactor pipeline ([#38572](https://github.com/Azure/azure-sdk-for-java/issues/38572))  
 
 ### Other Changes
 
