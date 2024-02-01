@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The collection of tasks. */
+/**
+ * The collection of tasks.
+ */
 @Fluent
 public final class TaskListResult {
     /*
@@ -24,13 +26,15 @@ public final class TaskListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TaskListResult class. */
+    /**
+     * Creates an instance of TaskListResult class.
+     */
     public TaskListResult() {
     }
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<TaskInner> value() {
@@ -39,7 +43,7 @@ public final class TaskListResult {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the TaskListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class TaskListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TaskListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TaskListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class TaskListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

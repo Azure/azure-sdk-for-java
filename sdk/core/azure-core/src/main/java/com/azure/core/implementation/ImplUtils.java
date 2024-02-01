@@ -5,10 +5,10 @@ package com.azure.core.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.implementation.accesshelpers.ExponentialBackoffAccessHelper;
+import com.azure.core.implementation.accesshelpers.FixedDelayAccessHelper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -406,9 +406,11 @@ public final class ImplUtils {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         if (retryOptions.getExponentialBackoffOptions() != null) {
-            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+            return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
+                retryOptions.getShouldRetry(), retryOptions.getShouldRetryException());
         } else if (retryOptions.getFixedDelayOptions() != null) {
-            return new FixedDelay(retryOptions.getFixedDelayOptions());
+            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(), retryOptions.getShouldRetry(),
+                retryOptions.getShouldRetryException());
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");

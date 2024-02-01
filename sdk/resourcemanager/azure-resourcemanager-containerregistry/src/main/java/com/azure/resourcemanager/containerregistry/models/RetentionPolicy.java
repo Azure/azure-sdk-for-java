@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The retention policy for a container registry. */
+/**
+ * The retention policy for a container registry.
+ */
 @Fluent
 public final class RetentionPolicy {
     /*
@@ -29,13 +31,15 @@ public final class RetentionPolicy {
     @JsonProperty(value = "status")
     private PolicyStatus status;
 
-    /** Creates an instance of RetentionPolicy class. */
+    /**
+     * Creates an instance of RetentionPolicy class.
+     */
     public RetentionPolicy() {
     }
 
     /**
      * Get the days property: The number of days to retain an untagged manifest after which it gets purged.
-     *
+     * 
      * @return the days value.
      */
     public Integer days() {
@@ -44,7 +48,7 @@ public final class RetentionPolicy {
 
     /**
      * Set the days property: The number of days to retain an untagged manifest after which it gets purged.
-     *
+     * 
      * @param days the days value to set.
      * @return the RetentionPolicy object itself.
      */
@@ -55,7 +59,7 @@ public final class RetentionPolicy {
 
     /**
      * Get the lastUpdatedTime property: The timestamp when the policy was last updated.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -64,7 +68,7 @@ public final class RetentionPolicy {
 
     /**
      * Get the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @return the status value.
      */
     public PolicyStatus status() {
@@ -73,7 +77,7 @@ public final class RetentionPolicy {
 
     /**
      * Set the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @param status the status value to set.
      * @return the RetentionPolicy object itself.
      */
@@ -84,7 +88,7 @@ public final class RetentionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
