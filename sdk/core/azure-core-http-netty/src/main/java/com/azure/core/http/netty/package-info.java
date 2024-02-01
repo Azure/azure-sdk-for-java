@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/en-us/java/api/overview/azure/core-http-netty-readme?view=azure-java-stable">
+ * <p><a href="https://learn.microsoft.com/java/api/overview/azure/core-http-netty-readme?view=azure-java-stable">
  * Azure Core Http Netty</a> client library is a plugin for the azure-core HTTP client API. It allows you to use Netty as
  * the underlying HTTP client for communicating with Azure services. It is the default HTTP client used in all
  * Azure SDK for Java libraries, but you can also replace it with other implementations such as OkHttp or
- * JDK 11 HttpClient. You can also configure various aspects of the Netty client, such as proxy, protocol, or
- * chunk size.</p>
+ * the JDK 11 HttpClient. You can also configure various aspects of the Netty client, such as proxy, protocol, or
+ * chunk size. For more details refer to our
+ * <a href="https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients">conceptual documentation</a>.</p>
  *
  * <p><strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong></p>
  *
@@ -24,32 +25,8 @@
  * <h2><strong>Using NettyAsyncHttpClient with Http Proxy</strong></h2>
  *
  * <p>Configuring the Netty client with a proxy in the context of Azure Java SDK is relevant when your application needs
- * to communicate with Azure services through a proxy server. Proxies are commonly used for security, monitoring, and
- * other purposes.</p>
- *
- * <p>Here are some scenarios where you might need to configure the Netty client with a proxy:</p>
- *
- * <ul>
- *     <li>Corporate Network Environment: If your application is running in a corporate network that requires
- *     communication through a proxy server for internet access, you might need to configure the netty client to use
- *     the proxy.</li>
- *
- *     <li>Security Requirements: In some cases, organizations enforce security policies that mandate communication
- *     through a proxy for monitoring, logging, or filtering purposes. Configuring the Netty client with a proxy helps
- *     in meeting these security requirements.</li>
- *
- *     <li>Restricted Network Access: If your application is deployed in an environment where direct internet access
- *     is restricted, but the proxy allows external communication, configuring the Netty client with a proxy becomes
- *     necessary.</li>
- *
- *     <li>Proxy for Azure Services: Some Azure services may require communication through a proxy, and configuring
- *     the Netty client appropriately becomes essential to establish connections.</li>
- *
- *     <li>Logging and Auditing: If your organization requires detailed logging or auditing of outgoing network
- *     requests, configuring the Netty client with a proxy allows you to capture and analyze the traffic passing
- *     through the proxy.</li>
- *
- * </ul>
+ * to communicate with Azure services through a proxy server. For more details refer to our
+ * <a href="https://learn.microsoft.com/azure/developer/java/sdk/proxying#http-proxy-configuration">conceptual documentation</a>.</p>
  *
  * <p>The following code sample demonstrates the creation of a Netty HttpClient that is using a proxy.</p>
  *
@@ -64,32 +41,6 @@
  * <hr>
  *
  * <h2><strong>Using NettyAsyncHttpClient with HTTP/2 Support</strong></h2>
- *
- * <p>Configuring the Netty client with HTTP/2 support is relevant when you want to take advantage of the benefits
- * provided by the HTTP/2 protocol. HTTP/2 is the next version of the HTTP network protocol, designed to improve the
- * performance of web applications by allowing multiple requests and responses to be multiplexed over a
- * single connection.</p>
- *
- * <p>Here are some scenarios where you might consider configuring the Netty client with HTTP/2 support:</p>
- *
- * <ul>
- *     <li>Improved Performance: HTTP/2 is designed to be more efficient than its predecessor, HTTP/1.1. It allows for
- *     the multiplexing of multiple streams over a single connection, reducing latency and improving overall
- *     performance. If you are working with Azure services that support HTTP/2, enabling it can lead to better
- *     performance.</li>
- *
- *     <li>Service Support: Some Azure services might support or even require communication using the HTTP/2 protocol.
- *     In such cases, configuring the Netty client with HTTP/2 support becomes necessary to establish connections to
- *     these services.</li>
- *
- *     <li>Concurrency: HTTP/2 enables concurrent requests and responses, which can be particularly beneficial for
- *     applications that need to make multiple simultaneous requests to Azure services. This concurrency support can
- *     lead to more efficient resource utilization and reduced response times.</li>
- *
- *     <li>Resource Multiplexing: HTTP/2 allows for multiplexing, meaning multiple requests and responses can be sent
- *     and received in parallel over a single connection. This is especially useful for applications that need
- *     to efficiently utilize network resources.</li>
- * </ul>
  *
  * <p>The following code sample demonstrates the creation of a Netty HttpClient that supports both the HTTP/1.1 and
  * HTTP/2 protocols, with HTTP/2 being the preferred protocol.</p>

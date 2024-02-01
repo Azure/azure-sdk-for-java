@@ -12,8 +12,8 @@ import reactor.netty.resources.ConnectionProvider;
 
 /**
  * <p>The NettyAsyncHttpClientProvider class is an implementation of the HttpClientProvider interface that provides
- * an instance of HttpClient based on Netty. This class is designed to create instances of HttpClient that are backed
- * by Reactor Netty, either as a shared instance or a new instance based on the configuration.</p>
+ * an instance of HttpClient based on Netty. Instances are either shared or a newly created based
+ * on the configuration.</p>
  *
  * @see com.azure.core.http.netty
  * @see NettyAsyncHttpClient
