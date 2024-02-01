@@ -7,7 +7,6 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
-import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
@@ -33,7 +32,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCrud(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCRUD(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
@@ -74,7 +73,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCrudWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCRUDWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create an assistant
@@ -127,8 +126,9 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
     public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
+            // Create assistants
+            String assistantId1 = createAssistant(client, assistantCreationOptions.setName("assistant1"));
+            String assistantId2 = createAssistant(client, assistantCreationOptions.setName("assistant2"));
 
             OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants();
             List<Assistant> dataAscending = assistantsAscending.getData();
@@ -140,12 +140,9 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
             assertTrue(dataAscendingResponse.size() >= 2);
 
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
+            // Deleted created assistant
+            deleteAssistant(client, assistantId1);
+            deleteAssistant(client, assistantId2);
         });
     }
 
@@ -155,56 +152,42 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
         client = getAssistantsClient(httpClient);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create assistants
-            Assistant assistant1 = client.createAssistant(assistantCreationOptions.setName("assistant1"));
-            Assistant assistant2 = client.createAssistant(assistantCreationOptions.setName("assistant2"));
-            Assistant assistant3 = client.createAssistant(assistantCreationOptions.setName("assistant3"));
-            Assistant assistant4 = client.createAssistant(assistantCreationOptions.setName("assistant4"));
+            String assistantId1 = createAssistant(client, assistantCreationOptions.setName("assistant1"));
+            String assistantId2 = createAssistant(client, assistantCreationOptions.setName("assistant2"));
+            String assistantId3 = createAssistant(client, assistantCreationOptions.setName("assistant3"));
+            String assistantId4 = createAssistant(client, assistantCreationOptions.setName("assistant4"));
 
             // List only the middle two assistants; sort by name ascending
             OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants(100,
-                    ListSortOrder.ASCENDING, assistant1.getId(), assistant4.getId());
+                    ListSortOrder.ASCENDING, assistantId1, assistantId4);
             List<Assistant> dataAscending = assistantsAscending.getData();
             assertEquals(2, dataAscending.size());
-            assertEquals(assistant2.getId(), dataAscending.get(0).getId());
-            assertEquals(assistant3.getId(), dataAscending.get(1).getId());
+            assertEquals(assistantId2, dataAscending.get(0).getId());
+            assertEquals(assistantId3, dataAscending.get(1).getId());
 
             // List only the middle two assistants; sort by name descending
             OpenAIPageableListOfAssistant assistantsDescending = client.listAssistants(100,
-                    ListSortOrder.DESCENDING, assistant4.getId(), assistant1.getId());
+                    ListSortOrder.DESCENDING, assistantId4, assistantId1);
             List<Assistant> dataDescending = assistantsDescending.getData();
             assertEquals(2, dataDescending.size());
-            assertEquals(assistant3.getId(), dataDescending.get(0).getId());
-            assertEquals(assistant2.getId(), dataDescending.get(1).getId());
+            assertEquals(assistantId3, dataDescending.get(0).getId());
+            assertEquals(assistantId2, dataDescending.get(1).getId());
 
-            // Delete the created assistants
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant1.getId());
-            assertEquals(assistant1.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus2 = client.deleteAssistant(assistant2.getId());
-            assertEquals(assistant2.getId(), assistantDeletionStatus2.getId());
-            assertTrue(assistantDeletionStatus2.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus3 = client.deleteAssistant(assistant3.getId());
-            assertEquals(assistant3.getId(), assistantDeletionStatus3.getId());
-            assertTrue(assistantDeletionStatus3.isDeleted());
-            AssistantDeletionStatus assistantDeletionStatus4 = client.deleteAssistant(assistant4.getId());
-            assertEquals(assistant4.getId(), assistantDeletionStatus4.getId());
-            assertTrue(assistantDeletionStatus4.isDeleted());
+            // Deleted created assistant
+            deleteAssistant(client, assistantId1);
+            deleteAssistant(client, assistantId2);
+            deleteAssistant(client, assistantId3);
+            deleteAssistant(client, assistantId4);
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCrd(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantFileCreateRetrieveDelete(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            // Create an assistant
-            assertEquals(assistantCreationOptions.getName(), assistant.getName());
-            assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-            assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-            assertEquals(CodeInterpreterToolDefinition.class, assistant.getTools().get(0).getClass());
-            String assistantId = assistant.getId();
-
+        String assistantId = createMathTutorAssistant(client);
+        String fileId = uploadFile(client);
+        createAssistantsFileRunner(assistantCreationOptions -> {
             // Attach a file to the assistant created above and return the assistant file
             AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
             assertNotNull(assistantFile.getCreatedAt());
@@ -223,27 +206,18 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             AssistantFileDeletionStatus assistantFileDeletionStatus = client.deleteAssistantFile(assistantId, fileId);
             assertEquals(fileId, assistantFileDeletionStatus.getId());
             assertTrue(assistantFileDeletionStatus.isDeleted());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistantId);
-            assertEquals(assistantId, assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+        deleteFile(client, fileId);
+        deleteAssistant(client, assistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCrdWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantFileCreateRetrieveDeleteWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            // Create an assistant
-            assertEquals(assistantCreationOptions.getName(), assistant.getName());
-            assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-            assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-            assertEquals(CodeInterpreterToolDefinition.class, assistant.getTools().get(0).getClass());
-            String assistantId = assistant.getId();
-
+        String assistantId = createMathTutorAssistant(client);
+        String fileId = uploadFile(client);
+        createAssistantsFileRunner(assistantCreationOptions -> {
             // Attach a file to the assistant created above and return the assistant file
             Map<String, String> requestObj = new HashMap<>();
             requestObj.put("file_id", fileId);
@@ -273,21 +247,18 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
                     assistantFileDeletionStatusResponse, AssistantFileDeletionStatus.class, 200);
             assertEquals(fileId, assistantFileDeletionStatus.getId());
             assertTrue(assistantFileDeletionStatus.isDeleted());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistantId);
-            assertEquals(assistantId, assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+        deleteFile(client, fileId);
+        deleteAssistant(client, assistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            String assistantId = assistant.getId();
+        String assistantId = createMathTutorAssistant(client);
+        String fileId = uploadFile(client);
+        createAssistantsFileRunner(assistantCreationOptions -> {
             // Attach a file to the assistant created above and return the assistant file
             AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
             assertNotNull(assistantFile.getCreatedAt());
@@ -303,21 +274,18 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(assistantId, assistantFileOnly.getAssistantId());
             assertEquals("assistant.file", assistantFileOnly.getObject());
             assertEquals(fileId, assistantFileOnly.getId());
-
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistantId);
-            assertEquals(assistantId, assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+        deleteFile(client, fileId);
+        deleteAssistant(client, assistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesAddSameFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            // Create an assistant
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            String assistantId = assistant.getId();
+        String assistantId = createMathTutorAssistant(client);
+        String fileId = uploadFile(client);
+        createAssistantsFileRunner(assistantCreationOptions -> {
             // Attach a file to the assistant created above and return the assistant file
             AssistantFile assistantFile1 = client.createAssistantFile(assistantId, fileId);
             AssistantFile assistantFile2 = client.createAssistantFile(assistantId, fileId);
@@ -330,22 +298,18 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             List<AssistantFile> dataAscending = assistantFilesAscending.getData();
             assertEquals(1, dataAscending.size());
             assertEquals(fileId, dataAscending.get(0).getId());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant.getId());
-            assertEquals(assistant.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+        deleteFile(client, fileId);
+        deleteAssistant(client, assistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            // Create an assistant
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            String assistantId = assistant.getId();
+        String assistantId = createMathTutorAssistant(client);
+        String fileId = uploadFile(client);
+        createAssistantsFileRunner(assistantCreationOptions -> {
             // Attach a file to the assistant created above and return the assistant file
             AssistantFile assistantFile = client.createAssistantFile(assistantId, fileId);
             assertNotNull(assistantFile.getCreatedAt());
@@ -364,29 +328,31 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(assistantId, assistantFileOnly.getAssistantId());
             assertEquals("assistant.file", assistantFileOnly.getObject());
             assertEquals(fileId, assistantFileOnly.getId());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant.getId());
-            assertEquals(assistant.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+        deleteFile(client, fileId);
+        deleteAssistant(client, assistantId);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listAssistantFilesBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createAssistantsFileRunner((assistantCreationOptions, fileId) -> {
-            // Create an assistant
-            Assistant assistant = client.createAssistant(assistantCreationOptions);
-            String assistantId = assistant.getId();
-            // Attach a file to the assistant created above and return the assistant file
-            AssistantFile assistantFile1 = client.createAssistantFile(assistantId, fileId);
-            AssistantFile assistantFile2 = client.createAssistantFile(assistantId, "file-z8QKwkZbGZO3fSGjgvWKfeYj");
-            AssistantFile assistantFile3 = client.createAssistantFile(assistantId, "file-CzfVqhPj4QUayCScgoJprooC");
-            AssistantFile assistantFile4 = client.createAssistantFile(assistantId, "file-mXHN1is1lJUDcBj36Jms87dq");
-            assertEquals(assistantId, assistantFile1.getAssistantId());
+        String assistantId = createMathTutorAssistant(client);
+        String fileId1 = uploadFile(client);
+        String fileId2 = uploadFile(client);
+        String fileId3 = uploadFile(client);
+        String fileId4 = uploadFile(client);
 
+        createAssistantsFileRunner(assistantCreationOptions -> {
+            // Attach a file to the assistant created above and return the assistant file
+            AssistantFile assistantFile1 = client.createAssistantFile(assistantId, fileId1);
+            AssistantFile assistantFile2 = client.createAssistantFile(assistantId, fileId2);
+            AssistantFile assistantFile3 = client.createAssistantFile(assistantId, fileId3);
+            AssistantFile assistantFile4 = client.createAssistantFile(assistantId, fileId4);
+            assertEquals(assistantId, assistantFile1.getAssistantId());
+            assertEquals(assistantId, assistantFile2.getAssistantId());
+            assertEquals(assistantId, assistantFile3.getAssistantId());
+            assertEquals(assistantId, assistantFile4.getAssistantId());
             // List only the middle two assistants; sort by name ascending
             OpenAIPageableListOfAssistantFile assistantFilesAscending = client.listAssistantFiles(assistantId, 100,
                     ListSortOrder.ASCENDING, assistantFile1.getId(), assistantFile4.getId());
@@ -394,11 +360,12 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(2, dataAscending.size());
             assertEquals(assistantFile2.getId(), dataAscending.get(0).getId());
             assertEquals(assistantFile3.getId(), dataAscending.get(1).getId());
-
-            // Delete the created assistant
-            AssistantDeletionStatus assistantDeletionStatus = client.deleteAssistant(assistant.getId());
-            assertEquals(assistant.getId(), assistantDeletionStatus.getId());
-            assertTrue(assistantDeletionStatus.isDeleted());
         });
+
+        deleteFile(client, fileId1);
+        deleteFile(client, fileId2);
+        deleteFile(client, fileId3);
+        deleteFile(client, fileId4);
+        deleteAssistant(client, assistantId);
     }
 }

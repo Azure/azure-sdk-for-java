@@ -10,6 +10,7 @@ import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -153,13 +154,11 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createAssistantsFileRunner(BiConsumer<AssistantCreationOptions, String> testRunner) {
-        String fileId = "file-TYRl7zf7ecXsqYcBUDofznbA";
+    void createAssistantsFileRunner(Consumer<AssistantCreationOptions> testRunner) {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                         .setName("Math Tutor")
                         .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())),
-                fileId);
+                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
     void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
@@ -276,7 +275,64 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     String createMathTutorAssistant(AssistantsClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
-                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
+                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+                .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
+    String createMathTutorAssistant(AssistantsAsyncClient client) {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                .setName("Math Tutor")
+                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+                .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
+    String uploadFile(AssistantsClient client) {
+        OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(
+                new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+                FilePurpose.ASSISTANTS));
+        assertNotNull(openAIFile.getId());
+        assertNotNull(openAIFile.getCreatedAt());
+        return openAIFile.getId();
+    }
+
+    void deleteFile(AssistantsClient client, String fileId) {
+        if (CoreUtils.isNullOrEmpty(fileId)) {
+            return;
+        }
+        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+        assertEquals(fileId, deletionStatus.getId());
+        assertTrue(deletionStatus.isDeleted());
+    }
+
+    String uploadFile(AssistantsAsyncClient client) {
+        AtomicReference<String> openAIFileRef = new AtomicReference<>();
+        StepVerifier.create(client.uploadFile(new UploadFileRequest(
+                new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+                        FilePurpose.ASSISTANTS)))
+                .assertNext(openAIFile -> {
+                    assertNotNull(openAIFile.getId());
+                    assertNotNull(openAIFile.getCreatedAt());
+                    openAIFileRef.set(openAIFile.getId());
+                })
+                .verifyComplete();
+        return openAIFileRef.get();
+    }
+
+    void deleteFile(AssistantsAsyncClient client, String fileId) {
+        if (CoreUtils.isNullOrEmpty(fileId)) {
+            return;
+        }
+        StepVerifier.create(client.deleteFile(fileId))
+                .assertNext(deletionStatus -> {
+                    assertEquals(fileId, deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                })
+                .verifyComplete();
+    }
+
+    String createAssistant(AssistantsClient client, AssistantCreationOptions assistantCreationOptions) {
         Assistant assistant = client.createAssistant(assistantCreationOptions);
         // Create an assistant
         assertEquals(assistantCreationOptions.getName(), assistant.getName());
@@ -285,10 +341,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return assistant.getId();
     }
 
-    String createMathTutorAssistant(AssistantsAsyncClient client) {
-        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
-                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.");
+    String createAssistant(AssistantsAsyncClient client, AssistantCreationOptions assistantCreationOptions) {
         AtomicReference<String> assistantIdRef = new AtomicReference<>();
         // create assistant test
         StepVerifier.create(client.createAssistant(assistantCreationOptions))
@@ -302,7 +355,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return assistantIdRef.get();
     }
 
-    void deleteMathTutorAssistant(AssistantsClient client, String assistantId) {
+    void deleteAssistant(AssistantsClient client, String assistantId) {
         if (CoreUtils.isNullOrEmpty(assistantId)) {
             return;
         }
@@ -311,7 +364,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertTrue(deletionStatus.isDeleted());
     }
 
-    void deleteMathTutorAssistant(AssistantsAsyncClient client, String assistantId) {
+    void deleteAssistant(AssistantsAsyncClient client, String assistantId) {
         if (CoreUtils.isNullOrEmpty(assistantId)) {
             return;
         }
