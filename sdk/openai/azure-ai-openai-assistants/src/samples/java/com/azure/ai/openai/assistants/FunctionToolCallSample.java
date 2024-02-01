@@ -14,7 +14,6 @@ import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.openai.assistants.models.RequiredAction;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
@@ -22,9 +21,11 @@ import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -65,10 +66,11 @@ public class FunctionToolCallSample {
             run = client.getRun(thread.getId(), run.getId());
 
             if (run.getStatus() == RunStatus.REQUIRES_ACTION
-                && run.getRequiredAction() instanceof SubmitToolOutputsAction requiredAction) {
+                && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+                SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
                 List<ToolOutput> toolOutputs = new ArrayList<>();
 
-                for(RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
+                for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
                     toolOutputs.add(getResolvedToolOutput(toolCall));
                 }
                 run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
@@ -94,27 +96,24 @@ public class FunctionToolCallSample {
     }
 
     private static ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
-        if (toolCall instanceof RequiredFunctionToolCall functionToolCall)
-        {
-            if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY))
-            {
+        if (toolCall instanceof RequiredFunctionToolCall) {
+            RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
+            if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
                 return new ToolOutput().setToolCallId(toolCall.getId())
                     .setOutput(getUserFavoriteCity());
             }
-            if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME))
-            {
+            if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
                 Map<String, String> parameters = BinaryData.fromObject(
                         functionToolCall.getFunction().getParameters())
-                    .toObject(Map.class);
+                    .toObject(new TypeReference<Map<String, String>>() {});
                 String location = parameters.get("location");
                 return new ToolOutput().setToolCallId(toolCall.getId())
                     .setOutput(getCityNickname(location));
             }
-            if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION))
-            {
+            if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
                 Map<String, String> parameters = BinaryData.fromObject(
                         functionToolCall.getFunction().getParameters())
-                    .toObject(Map.class);
+                    .toObject(new TypeReference<Map<String, String>>() {});
                 String location = parameters.get("location");
                 // unit was not marked as required on our Function tool definition, so we need to handle its absence
                 String unit = parameters.getOrDefault("unit", "c");
@@ -291,7 +290,7 @@ public class FunctionToolCallSample {
         private String description;
 
         @JsonCreator
-        public StringParameter(String description) {
+        StringParameter(String description) {
             this.description = description;
         }
     }
