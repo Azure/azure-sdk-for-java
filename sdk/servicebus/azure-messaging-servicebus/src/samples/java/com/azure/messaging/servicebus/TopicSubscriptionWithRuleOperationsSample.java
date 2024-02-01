@@ -94,7 +94,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
         // Creating the equivalent of the $Default rule.
         final CreateRuleOptions defaultRuleOptions = new CreateRuleOptions()
             .setFilter(new TrueRuleFilter());
-        administrationClient.createRule(TOPIC_NAME,defaultRuleName, allMessagesSubscription,  defaultRuleOptions);
+        administrationClient.createRule(TOPIC_NAME, defaultRuleName, allMessagesSubscription, defaultRuleOptions);
 
         // 2nd Subscription: Add SqlFilter on Subscription 2
         // Delete Default Rule.
@@ -111,7 +111,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
 
         final CreateRuleOptions sqlFilterRuleOptions = new CreateRuleOptions()
             .setFilter(new SqlRuleFilter("Color = 'Red'"));
-        administrationClient.createRule(TOPIC_NAME,sqlFilterOnlyRuleName, sqlFilterOnlySubscription, sqlFilterRuleOptions);
+        administrationClient.createRule(TOPIC_NAME, sqlFilterOnlyRuleName, sqlFilterOnlySubscription, sqlFilterRuleOptions);
 
         // 3rd Subscription: Add SqlFilter and SqlRuleAction on Subscription 3
         // Delete Default Rule
@@ -124,7 +124,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
         final CreateRuleOptions sqlRuleWithActionOptions = new CreateRuleOptions()
             .setFilter(new SqlRuleFilter("Color = 'Blue'"))
             .setAction(new SqlRuleAction("SET Color = 'BlueProcessed'"));
-        administrationClient.createRule(TOPIC_NAME,sqlFilterWithActionRuleName, sqlFilterWithActionSubscription,sqlRuleWithActionOptions);
+        administrationClient.createRule(TOPIC_NAME, sqlFilterWithActionRuleName, sqlFilterWithActionSubscription, sqlRuleWithActionOptions);
 
         // 4th Subscription: Add Correlation Filter on Subscription 4
         System.out.printf("SubscriptionName: %s, Removing Default Rule and Adding CorrelationFilter%n",
@@ -133,7 +133,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
 
         final CreateRuleOptions correlationFilterRuleOptions = new CreateRuleOptions()
             .setFilter(new CorrelationRuleFilter().setCorrelationId("important").setLabel("Red"));
-        administrationClient.createRule(TOPIC_NAME, correlationFilterSubscriptionRule,correlationFilterSubscription,correlationFilterRuleOptions);
+        administrationClient.createRule(TOPIC_NAME, correlationFilterSubscriptionRule, correlationFilterSubscription, correlationFilterRuleOptions);
 
         // Get Rules on Subscription, called here only for one subscription as example
         administrationClient.listRules(TOPIC_NAME, correlationFilterSubscription)
