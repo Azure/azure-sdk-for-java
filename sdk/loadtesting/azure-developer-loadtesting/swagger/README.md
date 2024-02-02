@@ -11,6 +11,7 @@ security-scopes: https://cnt-prod.loadtesting.azure.com/.default
 artifact-id: azure-developer-loadtesting
 namespace: com.azure.developer.loadtesting
 generate-builder-per-client: true
+enable-sync-stack: true
 partial-update: true
 output-folder: $(azure-sdk-for-java-folder)/sdk/loadtesting/azure-developer-loadtesting
 service-versions:
