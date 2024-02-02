@@ -4,12 +4,10 @@
 
 package com.azure.ai.openai;
 
-import com.azure.core.util.ServiceVersion;
-
 /**
  * Service version of OpenAIClient.
  */
-public enum OpenAIServiceVersion implements ServiceVersion {
+public enum OpenAIServiceVersion implements com.azure.core.util.ServiceVersion {
     /**
      * Enum value 2022-12-01.
      */

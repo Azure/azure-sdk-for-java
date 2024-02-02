@@ -285,7 +285,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
             BinaryData.fromObject(imageContent), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -311,7 +311,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromUrlWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
             BinaryData.fromObject(imageContent), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -538,7 +538,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -564,7 +564,7 @@ public final class ImageAnalysisAsyncClient {
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -584,7 +584,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-url -->
      * <pre>
      * &#47;&#47;
@@ -640,7 +640,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-file -->
      * <pre>
      * &#47;&#47;

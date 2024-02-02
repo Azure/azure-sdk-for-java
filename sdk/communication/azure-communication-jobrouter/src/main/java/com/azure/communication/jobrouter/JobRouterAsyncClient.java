@@ -1502,9 +1502,9 @@ public final class JobRouterAsyncClient {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
-                .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(),
-                    RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
+            .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
     }
 
     /**
