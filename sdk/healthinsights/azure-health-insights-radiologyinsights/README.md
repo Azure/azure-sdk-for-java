@@ -88,7 +88,6 @@ for (RadiologyInsightsPatientResult patientResult : patientResults) {
     }
 }
 ```
-For detailed conceptual information of this and other inferences please read more here.
 
 ## Troubleshooting
 
