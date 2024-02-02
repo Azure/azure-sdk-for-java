@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,7 +34,7 @@ public final class FunctionDefinition {
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private Object parameters;
+    private BinaryData parameters;
 
     /**
      * Get the name property: The name of the function to be called.
@@ -62,7 +63,7 @@ public final class FunctionDefinition {
      * @return the parameters value.
      */
     @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
     }
 
@@ -75,7 +76,7 @@ public final class FunctionDefinition {
     @Generated
     @JsonCreator
     public FunctionDefinition(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "parameters") Object parameters) {
+        @JsonProperty(value = "parameters") BinaryData parameters) {
         this.name = name;
         this.parameters = parameters;
     }

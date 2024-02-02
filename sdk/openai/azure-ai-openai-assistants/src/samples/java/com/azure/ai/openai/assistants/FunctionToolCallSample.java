@@ -8,6 +8,10 @@ import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
+import com.azure.ai.openai.assistants.models.FunctionParameters;
+import com.azure.ai.openai.assistants.models.FunctionProperties;
+import com.azure.ai.openai.assistants.models.FunctionToolCall;
+import com.azure.ai.openai.assistants.models.FunctionToolCallDetails;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageImageFileContent;
@@ -21,19 +25,20 @@ import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FunctionToolCallSample {
 
@@ -46,6 +51,7 @@ public class FunctionToolCallSample {
         String deploymentOrModelId = "gpt-4-1106-preview";
 
         AssistantsClient client = new AssistantsClientBuilder()
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(new KeyCredential(apiKey))
             .buildClient();
 
@@ -58,24 +64,26 @@ public class FunctionToolCallSample {
 
         // Create a run
         ThreadRun run = runUserRequest(assistant, thread, client);
-
         // Pool the run and call methods as requested by the service
         do {
             // We sleep to prevent requesting too many times for an update
             Thread.sleep(500);
             run = client.getRun(thread.getId(), run.getId());
+            List<ToolOutput> toolOutputs = new ArrayList<>();
 
-            if (run.getStatus() == RunStatus.REQUIRES_ACTION
-                && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+            if (run.getStatus() == RunStatus.REQUIRES_ACTION && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
                 SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
-                List<ToolOutput> toolOutputs = new ArrayList<>();
+                requiredAction
+                        .getSubmitToolOutputs()
+                        .getToolCalls()
+                        .forEach(toolCall -> {
+                            toolOutputs.add(new ToolOutput()
+                                    .setToolCallId(toolCall.getId())
+                                    .setOutput(toolCall.getFunction().getArguments()));
+                        });
 
-                for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
-                    toolOutputs.add(getResolvedToolOutput(toolCall));
-                }
                 run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
             }
-
         } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
 
         OpenAIPageableListOfThreadMessage messagesPage = client.listMessages(thread.getId());
@@ -84,7 +92,7 @@ public class FunctionToolCallSample {
         for (ThreadMessage message : messages) {
             for (MessageContent contentItem : message.getContent()) {
                 if (contentItem instanceof MessageTextContent) {
-                    System.out.println(((MessageTextContent) contentItem).getText());
+                    System.out.println(((MessageTextContent) contentItem).getText().getValue());
                 } else if (contentItem instanceof MessageImageFileContent) {
                     System.out.println(((MessageImageFileContent) contentItem).getImageFile().getFileId());
                 }
@@ -93,35 +101,6 @@ public class FunctionToolCallSample {
 
         // cleanup
         cleanUp(assistant, thread, client);
-    }
-
-    private static ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
-        if (toolCall instanceof RequiredFunctionToolCall) {
-            RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
-            if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getUserFavoriteCity());
-            }
-            if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
-                Map<String, String> parameters = BinaryData.fromObject(
-                        functionToolCall.getFunction().getParameters())
-                    .toObject(new TypeReference<Map<String, String>>() {});
-                String location = parameters.get("location");
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getCityNickname(location));
-            }
-            if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
-                Map<String, String> parameters = BinaryData.fromObject(
-                        functionToolCall.getFunction().getParameters())
-                    .toObject(new TypeReference<Map<String, String>>() {});
-                String location = parameters.get("location");
-                // unit was not marked as required on our Function tool definition, so we need to handle its absence
-                String unit = parameters.getOrDefault("unit", "c");
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getWeatherAtLocation(location, unit));
-            }
-        }
-        return null;
     }
 
     private static void cleanUp(Assistant assistant, AssistantThread thread, AssistantsClient client) {
@@ -167,23 +146,22 @@ public class FunctionToolCallSample {
     private static FunctionToolDefinition getUserFavoriteCityToolDefinition() {
         return new FunctionToolDefinition(new FunctionDefinition(
                 GET_USER_FAVORITE_CITY,
-                BinaryData.fromObject(new UserFavoriteCityParameters())
+                BinaryData.fromObject(getUserFavoriteCityParameters())
         ).setDescription("Gets the user's favorite city."));
     }
 
-    /**
-     * Convenience class defining the parameters for the getUserFavoriteCity method.
-     * This is used for the sole purpose of obtaining a JSON representation of the parameters.
-     */
-    private static class UserFavoriteCityParameters {
+    private static FunctionParameters getUserFavoriteCityParameters() {
+        FunctionProperties location = new FunctionProperties()
+                .setType("string")
+                .setDescription("The city and state, e.g. San Francisco, CA");
 
-        @JsonProperty("type")
-        private String type = "object";
+        Map<String, FunctionProperties> props = new HashMap<>();
+        props.put("location", location);
 
-        @JsonProperty("properties")
-        private Map<String, Object> properties = new HashMap<>();
+        return new FunctionParameters()
+                .setType("object")
+                .setProperties(props);
     }
-    // endregion
 
     // region getCityNickName
     /**
@@ -193,7 +171,7 @@ public class FunctionToolCallSample {
      */
     private static String getCityNickname(String location) {
         // This function is just a mock.
-        return "The Emerald City";
+        return "The Emerald City is the city nick name of " + location;
     }
 
     /**
@@ -204,31 +182,24 @@ public class FunctionToolCallSample {
     private static FunctionToolDefinition getCityNicknameToolDefinition() {
         return new FunctionToolDefinition(new FunctionDefinition(
             GET_CITY_NICKNAME,
-            BinaryData.fromObject(new CityNicknameParameters())
+            BinaryData.fromObject(getCityNicknameParameters())
         ).setDescription("Gets the nickname of a city, e.g. 'LA' for 'Los Angeles, CA'."));
     }
 
-    /**
-     * Convenience class defining the parameters for the getCityNickname method.
-     * This is used for the sole purpose of obtaining a JSON representation of the parameters.
-     */
-    private static class CityNicknameParameters {
+    private static FunctionParameters getCityNicknameParameters() {
+        FunctionProperties location = new FunctionProperties()
+                .setType("string")
+                .setDescription("The city and state, e.g. San Francisco, CA");
 
-        @JsonProperty("type")
-        private String type = "object";
+        Map<String, FunctionProperties> props = new HashMap<>();
+        props.put("location", location);
 
-        @JsonProperty("required")
-        private List<String> required = Arrays.asList("location");
-
-        @JsonProperty("properties")
-        private Map<String, StringParameter> properties;
-
-        CityNicknameParameters() {
-            this.properties = new HashMap<>();
-
-            this.properties.put("location", new StringParameter("The city and state, e.g. San Francisco, CA"));
-        }
+        return new FunctionParameters()
+                .setType("object")
+                .setRequiredPropertyNames(Arrays.asList("location"))
+                .setProperties(props);
     }
+
     // endregion
 
     // region getWeatherAtLocation
@@ -250,61 +221,28 @@ public class FunctionToolCallSample {
      */
     private static FunctionToolDefinition getWeatherAtLocationToolDefinition() {
         return new FunctionToolDefinition(new FunctionDefinition(
-            GET_WEATHER_AT_LOCATION,
-            BinaryData.fromObject(new WeatherAtLocationParameters())
+                GET_WEATHER_AT_LOCATION,
+                BinaryData.fromObject(getCurrentWeatherFunctionParameters())
         ).setDescription("Gets the current weather at a provided location."));
     }
 
-    /**
-     * Convenience class defining the parameters for the getWeatherAtLocation method.
-     * This is used for the sole purpose of obtaining a JSON representation of the parameters.
-     */
-    private static class WeatherAtLocationParameters {
-        @JsonProperty("type")
-        private String type = "object";
+    private static FunctionParameters getCurrentWeatherFunctionParameters() {
+        FunctionProperties location = new FunctionProperties()
+                .setType("string")
+                .setDescription("The city and state, e.g. San Francisco, CA");
 
-        @JsonProperty("required")
-        private List<String> required = Arrays.asList("location");
+        FunctionProperties unit = new FunctionProperties()
+                .setType("string")
+                .setEnumString(Arrays.asList("celsius", "fahrenheit"))
+                .setDescription("The temperature unit to use. Infer this from the user's location.");
 
-        @JsonProperty("properties")
-        private Map<String, Object> properties;
+        Map<String, FunctionProperties> props = new HashMap<>();
+        props.put("location", location);
+        props.put("unit", unit);
 
-        WeatherAtLocationParameters() {
-            this.properties = new HashMap<>();
-
-            this.properties.put("location", new StringParameter("The city and state, e.g. San Francisco, CA"));
-            this.properties.put("unit", new EnumParameter());
-        }
+        return new FunctionParameters()
+                .setType("object")
+                .setRequiredPropertyNames(Arrays.asList("location", "unit"))
+                .setProperties(props);
     }
-    // endregion
-
-    // region FunctionToolCall Helpers
-    /**
-     * Function Tool call definition helper class for String parameters
-     */
-    private static class StringParameter {
-        @JsonProperty(value = "type")
-        private String type = "string";
-
-        @JsonProperty(value = "description")
-        private String description;
-
-        @JsonCreator
-        StringParameter(String description) {
-            this.description = description;
-        }
-    }
-
-    /**
-     * Function Tool call definition helper class for enum parameters
-     */
-    private static class EnumParameter {
-
-        @JsonProperty(value = "type")
-        private String type = "string";
-
-        @JsonProperty(value = "enum")
-        private List<String> enumvalues = Arrays.asList("c", "f");
-    }
-    // endregion
 }

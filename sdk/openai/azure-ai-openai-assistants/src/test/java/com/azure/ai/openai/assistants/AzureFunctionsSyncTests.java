@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
+import com.azure.ai.openai.assistants.models.FunctionToolCall;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
@@ -64,7 +65,7 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
             assertNotNull(outputsAction.getSubmitToolOutputs());
             assertFalse(outputsAction.getSubmitToolOutputs().getToolCalls().isEmpty());
 
-            for (RequiredToolCall outputAction : outputsAction.getSubmitToolOutputs().getToolCalls()) {
+            for (FunctionToolCall outputAction : outputsAction.getSubmitToolOutputs().getToolCalls()) {
                 assertInstanceOf(RequiredFunctionToolCall.class, outputAction);
             }
 
