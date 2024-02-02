@@ -60,7 +60,7 @@ public class FunctionToolCallSample {
         AssistantThread thread = createAssistantThread(client);
 
         // capture user input
-        sendUserMessage("What is the weather like in my favorite city?", thread.getId(), client);
+        sendUserMessage("What is the weather like in my city?", thread.getId(), client);
 
         // Create a run
         ThreadRun run = runUserRequest(assistant, thread, client);
@@ -77,9 +77,40 @@ public class FunctionToolCallSample {
                         .getSubmitToolOutputs()
                         .getToolCalls()
                         .forEach(toolCall -> {
-                            toolOutputs.add(new ToolOutput()
-                                    .setToolCallId(toolCall.getId())
-                                    .setOutput(toolCall.getFunction().getArguments()));
+                            FunctionToolCallDetails function = toolCall.getFunction();
+                            String arguments1 = function.getArguments();
+                            String functionName = function.getName();
+                            ToolOutput toolOutput = new ToolOutput();
+
+                            if (GET_CITY_NICKNAME.equals(functionName)) {
+                                Map<String, String> locationMap = BinaryData.fromString(arguments1).toObject(Map.class);
+                                String cityNickname = getCityNickname(locationMap.get("location"));
+                                Map<String, String> output = new HashMap<>();
+                                output.put("nickname", cityNickname);
+
+                                toolOutput = new ToolOutput()
+                                        .setToolCallId(toolCall.getId())
+                                        .setOutput(BinaryData.fromObject(output).toString());
+                            } else if (GET_USER_FAVORITE_CITY.equals(functionName)) {
+                                String favoriteCity = getUserFavoriteCity();
+                                Map<String, String> output = new HashMap<>();
+                                output.put("favoriteCity", favoriteCity);
+
+                                toolOutput = new ToolOutput()
+                                        .setToolCallId(toolCall.getId())
+                                        .setOutput(BinaryData.fromObject(output).toString());
+                            } else if (GET_WEATHER_AT_LOCATION.equals(functionName)) {
+                                Map<String, String> locationMap = BinaryData.fromString(arguments1).toObject(Map.class);
+                                String weather = getWeatherAtLocation(locationMap.get("location"), locationMap.get("unit"));
+                                Map<String, String> output = new HashMap<>();
+                                output.put("temperature", weather);
+
+                                toolOutput = new ToolOutput()
+                                        .setToolCallId(toolCall.getId())
+                                        .setOutput(BinaryData.fromObject(output).toString());
+                            }
+
+                            toolOutputs.add(toolOutput);
                         });
 
                 run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
@@ -170,8 +201,16 @@ public class FunctionToolCallSample {
      * @return nickname of the desired location
      */
     private static String getCityNickname(String location) {
-        // This function is just a mock.
-        return "The Emerald City is the city nick name of " + location;
+        switch (location) {
+            case "Seattle, WA":
+                return "Emerald City";
+            case "Los Angeles, CA":
+                return "LA";
+            case "San Francisco, CA":
+                return "SF";
+            default:
+                return "Unknown";
+        }
     }
 
     /**
