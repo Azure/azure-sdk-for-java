@@ -10,6 +10,7 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +43,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private final boolean isInfoEnabled;
     private final boolean isWarnEnabled;
     private final boolean isErrorEnabled;
+    private final PrintStream logLocation;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -49,7 +51,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param clazz Class creating the logger.
      */
     public DefaultLogger(Class<?> clazz) {
-        this(clazz.getCanonicalName(), false);
+        this(clazz.getCanonicalName(), System.out);
     }
 
     /**
@@ -59,7 +61,26 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        this(getClassPathFromClassName(className), false);
+        this(getClassPathFromClassName(className), System.out);
+    }
+
+    /**
+     * Construct DefaultLogger for the given class name.
+     *
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
+     * @param logLocation The location to log the messages.
+     */
+    public DefaultLogger(String className, PrintStream logLocation) {
+        this.classPath = getClassPathFromClassName(className);
+        int configuredLogLevel = fromEnvironment().getLogLevel();
+
+        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
+        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
+        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
+        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
+        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
+        this.logLocation = logLocation;
     }
 
     private static String getClassPathFromClassName(String className) {
@@ -70,17 +91,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             return className;
         }
-    }
-
-    private DefaultLogger(String classPath, boolean ignored) {
-        this.classPath = classPath;
-        int configuredLogLevel = fromEnvironment().getLogLevel();
-
-        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
-        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
-        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
-        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
-        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
     }
 
     private static LogLevel fromEnvironment() {
@@ -449,7 +459,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
                 stringBuilder.append(sw);
             }
         }
-        System.out.print(stringBuilder.toString());
+        logLocation.print(stringBuilder.toString());
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {

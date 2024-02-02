@@ -23,8 +23,8 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
- * is the last argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String,
- * Object...) verbose}, the stack trace for the throwable is logged.</p>
+ * is the last argument of the format varargs and the logger is enabled for
+ * {@link ClientLogger#verbose(String, Object...) verbose}, the stack trace for the throwable is logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
  * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
@@ -40,6 +40,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
+ *
  * @see Configuration
  */
 public class ClientLogger {
@@ -70,16 +71,17 @@ public class ClientLogger {
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
      *
      * @param clazz Class creating the logger.
-     * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * @param context Context to be populated on every log record written with this logger. Objects are serialized with
+     * {@code toString()} method.
+     * @throws NullPointerException If {@code clazz} is null.
      */
     public ClientLogger(Class<?> clazz, Map<String, Object> context) {
         this(clazz.getName(), context);
     }
 
     /**
-     * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
-     * context that will be populated on all log records produced with this logger.
+     * Retrieves a logger for the passed class name using the {@link LoggerFactory} with context that will be populated
+     * on all log records produced with this logger.
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger#globalcontext -->
      * <pre>
@@ -92,15 +94,23 @@ public class ClientLogger {
      * <!-- end com.azure.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
-     * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * @param context Context to be populated on every log record written with this logger. Objects are serialized with
+     * {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
+        this(getLogger(className), context);
+    }
+
+    private static Logger getLogger(String className) {
         Logger initLogger = LoggerFactory.getLogger(className);
-        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
-        globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
-        hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
+        return initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
+    }
+
+    private ClientLogger(Logger logger, Map<String, Object> context) {
+        this.logger = logger;
+        this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+        this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
     }
 
     /**
@@ -189,8 +199,8 @@ public class ClientLogger {
      * <!-- end com.azure.core.util.logging.clientlogger.verbose#string-object -->
      *
      * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     * {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
         if (logger.isDebugEnabled()) {
@@ -237,8 +247,8 @@ public class ClientLogger {
      * <!-- end com.azure.core.util.logging.clientlogger.info#string-object -->
      *
      * @param format The format-able message to log
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     * {@link Throwable}.
      */
     public void info(String format, Object... args) {
         if (logger.isInfoEnabled()) {
@@ -287,8 +297,8 @@ public class ClientLogger {
      * <!-- end com.azure.core.util.logging.clientlogger.warning#string-object -->
      *
      * @param format The format-able message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     * {@link Throwable}.
      */
     public void warning(String format, Object... args) {
         if (logger.isWarnEnabled()) {
@@ -343,8 +353,8 @@ public class ClientLogger {
      * <!-- end com.azure.core.util.logging.clientlogger.error#string-object -->
      *
      * @param format The format-able message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     * {@link Throwable}.
      */
     public void error(String format, Object... args) {
         if (logger.isErrorEnabled()) {
@@ -371,8 +381,8 @@ public class ClientLogger {
     /**
      * Logs the {@link Throwable} at the warning level and returns it to be thrown.
      * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
-     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a
+     * {@link RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
      *
      * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
@@ -394,8 +404,8 @@ public class ClientLogger {
     /**
      * Logs the {@link Throwable} at the warning level and returns it to be thrown.
      * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
-     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a
+     * {@link RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
      *
      * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
@@ -430,8 +440,8 @@ public class ClientLogger {
     /**
      * Logs the {@link Throwable} at the error level and returns it to be thrown.
      * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
-     * RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a
+     * {@link RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
      *
      * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
@@ -456,8 +466,7 @@ public class ClientLogger {
      */
     private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         if (hasGlobalContext) {
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(format, args);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(format, args);
             return;
         }
 
@@ -521,8 +530,7 @@ public class ClientLogger {
         if (hasGlobalContext) {
             // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
             // sanitization needed
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(messageSupplier, throwable);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(messageSupplier, throwable);
             return;
         }
 
@@ -574,8 +582,8 @@ public class ClientLogger {
      * @return Determines if it is supplier logging
      */
     boolean isSupplierLogging(Object[] args) {
-        return (args.length == 1 && args[0] instanceof Supplier)
-            || (args.length == 2 && args[0] instanceof Supplier && (args[1] instanceof Throwable || args[1] == null));
+        return (args.length == 1 && args[0] instanceof Supplier) || (args.length == 2 && args[0] instanceof Supplier
+            && (args[1] instanceof Throwable || args[1] == null));
     }
 
     /**
@@ -603,8 +611,8 @@ public class ClientLogger {
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
-     * used to enrich log with additional context.
+     * Creates {@link LoggingEventBuilder} for {@code error} log level that can be used to enrich log with additional
+     * context.
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at error level.</p>
@@ -620,13 +628,14 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized,
+            canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
-     * used to enrich log with additional context.
-
+     * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be used to enrich log with additional
+     * context.
+     *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
@@ -647,8 +656,8 @@ public class ClientLogger {
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
-     * used to enrich log with additional context.
+     * Creates {@link LoggingEventBuilder} for {@code info} log level that can be used to enrich log with additional
+     * context.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -670,8 +679,8 @@ public class ClientLogger {
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
-     * used to enrich log with additional context.
+     * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be used to enrich log with additional
+     * context.
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at verbose level.</p>
@@ -692,8 +701,7 @@ public class ClientLogger {
     }
 
     /**
-     * Creates {@link LoggingEventBuilder} for log level that can be
-     * used to enrich log with additional context.
+     * Creates {@link LoggingEventBuilder} for log level that can be used to enrich log with additional context.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -712,7 +720,6 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContextSerialized,
-            canLogAtLevel(level));
+        return LoggingEventBuilder.create(logger, level, globalContextSerialized, canLogAtLevel(level));
     }
 }
