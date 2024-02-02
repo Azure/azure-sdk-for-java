@@ -11,6 +11,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -302,6 +303,11 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetrics(String testRunId, String metricName, String metricNamespace,
         String timespan, RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        // Content-Type header required even though body can be null
+        requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         return this.serviceClient.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
     }
 
