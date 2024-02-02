@@ -11,6 +11,8 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FunctionDefinition;
+import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -28,12 +30,15 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class ReadmeSamples {
     private AssistantsClient client = new AssistantsClientBuilder().buildClient();
@@ -199,4 +204,65 @@ public final class ReadmeSamples {
             });
         }
     }
+
+    @Test
+    public void simpleFunctionCallOperation() throws InterruptedException {
+        String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
+        String deploymentOrModelId = "gpt-4-1106-preview";
+        client = new AssistantsClientBuilder()
+            .credential(new KeyCredential(apiKey))
+            .buildClient();
+
+        // BEGIN: readme-sample-createAssistantFunctionCall
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
+            .setName("Java Assistants SDK Function Tool Sample Assistant")
+            .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
+                + "Customize your responses to the user's preferences as much as possible and use friendly "
+                + "nicknames for cities whenever possible.")
+            .setTools(Arrays.asList(
+                getUserFavoriteCityToolDefinition()
+//                getCityNicknameToolDefinition(),
+//                getWeatherAtLocationToolDefinition()
+            ));
+
+        client.createAssistant(assistantCreationOptions);
+        // END: readme-sample-createAssistantFunctionCall
+    }
+
+    // BEGIN: readme-sample-functionDefinition
+    private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
+
+        final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
+
+        class UserFavoriteCityParameters {
+
+            @JsonProperty("type")
+            private String type = "object";
+
+            @JsonProperty("properties")
+            private Map<String, Object> properties = new HashMap<>();
+        }
+
+        return new FunctionToolDefinition(
+            new FunctionDefinition(
+                GET_USER_FAVORITE_CITY,
+                BinaryData.fromObject(new UserFavoriteCityParameters()
+                )
+            ).setDescription("Gets the user's favorite city."));
+    }
+    // END: readme-sample-functionDefinition
+
+    // BEGIN: readme-sample-userDefinedFunctions
+    private static String getUserFavoriteCity() {
+        return "Seattle, WA";
+    }
+
+    private static String getCityNickname(String location) {
+        return "The Emerald City";
+    }
+
+    private static String getWeatherAtLocation(String location, String temperatureUnit) {
+        return temperatureUnit.equals("f") ? "70f" : "21c";
+    }
+    // END: readme-sample-userDefinedFunctions
 }

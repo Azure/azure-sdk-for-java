@@ -184,7 +184,65 @@ With a file ID association and a supported tool enabled, the assistant will then
 when running threads.
 
 ### Using function tools and parallel function calling
-TODO: Add examples for function tools and parallel function calling
+
+As [described in OpenAI's documentation for assistant tools](https://platform.openai.com/docs/assistants/tools/function-calling), 
+tools that reference caller-defined capabilities as functions can be provided to an assistant to allow it to dynamically 
+resolve and disambiguate during a run.
+
+Here, outlined is a simple assistant that "knows how to," via caller-provided functions:
+
+1. Get the user's favorite city
+2. Get a nickname for a given city
+3. Get the current weather, optionally with a temperature unit, in a city
+
+To do this, begin by defining the functions to use -- the actual implementations here are merely representative stubs.
+For the full sample, please follow this [link][function_tool_call_full_sample].
+
+```java readme-sample-functionDefinition
+    private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
+    
+    final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
+
+    class UserFavoriteCityParameters {
+
+        @JsonProperty("type")
+        private String type = "object";
+
+        @JsonProperty("properties")
+        private Map<String, Object> properties = new HashMap<>();
+    }
+
+    return new FunctionToolDefinition(
+        new FunctionDefinition(
+            GET_USER_FAVORITE_CITY,
+            BinaryData.fromObject(new UserFavoriteCityParameters()
+            )
+        ).setDescription("Gets the user's favorite city."));
+}
+```
+
+Please refer to [full sample][function_tool_call_full_sample] for more details on how to setup methods with mandatory
+parameters and enum types.
+
+With the functions defined in their appropriate tools, an assistant can be now created that has those tools enabled:
+
+```java readme-sample-createAssistantFunctionCall
+AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
+    .setName("Java Assistants SDK Function Tool Sample Assistant")
+    .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
+        + "Customize your responses to the user's preferences as much as possible and use friendly "
+        + "nicknames for cities whenever possible.")
+    .setTools(Arrays.asList(
+        getUserFavoriteCityToolDefinition()
+//                getCityNicknameToolDefinition(),
+//                getWeatherAtLocationToolDefinition()
+    ));
+
+client.createAssistant(assistantCreationOptions);
+```
+
+If the assistant calls tools, the calling code will need to resolve ToolCall instances into matching ToolOutput instances. 
+For convenience, a basic example is extracted here:
 
 ## Troubleshooting
 ### Enable client logging
@@ -226,5 +284,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-
+[function_tool_call_full_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-assistants/src/samples/java/com/azure/ai/openai/assistants/FunctionToolCallSample.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fassistants%2Fazure-ai-openai-assistants%2FREADME.png)
