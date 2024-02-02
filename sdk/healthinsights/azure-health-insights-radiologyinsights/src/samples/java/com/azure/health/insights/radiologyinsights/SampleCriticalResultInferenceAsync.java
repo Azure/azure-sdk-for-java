@@ -84,15 +84,19 @@ public class SampleCriticalResultInferenceAsync {
      * @param args The command-line arguments passed to the program.
      */
     public static void main(final String[] args) throws InterruptedException {
+        // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+        // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
+        // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+        // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         
         Mono<RadiologyInsightsInferenceResult> finalResult = asyncPoller.last().flatMap(pollResult -> {
             if (pollResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
@@ -122,6 +126,7 @@ public class SampleCriticalResultInferenceAsync {
      *                                request.
      */
     private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+        // BEGIN: com.azure.health.insights.radiologyinsights.displayresults
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
             List<FhirR4Extendible1> inferences = patientResult.getInferences();
@@ -129,10 +134,11 @@ public class SampleCriticalResultInferenceAsync {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);                    
+                    System.out.println("Critical Result Inference found: " + description);
                 }
             }
         }
+        // END: com.azure.health.insights.radiologyinsights.displayresults
     }
 
     /**
