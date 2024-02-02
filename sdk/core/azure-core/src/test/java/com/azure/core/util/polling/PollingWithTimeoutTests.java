@@ -27,16 +27,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PollingWithTimeoutTests {
     private static final Duration TEN_MILLIS = Duration.ofMillis(10);
     private static final Duration HUNDRED_MILLIS = Duration.ofMillis(100);
+    private static final Duration FIVE_SECONDS = Duration.ofSeconds(5);
 
     private static final PollResponse<TestResponse> ACTIVATION_RESPONSE
         = new PollResponse<>(NOT_STARTED, new TestResponse("Activated"));
-    private static final PollResponse<TestResponse> RESPONSE_ZERO = new PollResponse<>(IN_PROGRESS, new TestResponse("0"));
-    private static final PollResponse<TestResponse> RESPONSE_ONE = new PollResponse<>(IN_PROGRESS, new TestResponse("1"));
+    private static final PollResponse<TestResponse> RESPONSE_ZERO
+        = new PollResponse<>(IN_PROGRESS, new TestResponse("0"));
+    private static final PollResponse<TestResponse> RESPONSE_ONE
+        = new PollResponse<>(IN_PROGRESS, new TestResponse("1"));
 
-    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>> SYNC_NEVER_COMPLETES = ignored -> {
-        sleep();
-        return RESPONSE_ZERO;
-    };
+    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>> SYNC_NEVER_COMPLETES =
+        ignored -> sleepThenReturn(10000, RESPONSE_ONE);
 
     private static final Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> ASYNC_NEVER_COMPLETES
         = ignored -> Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ZERO);
@@ -65,8 +66,47 @@ public class PollingWithTimeoutTests {
     }
 
     /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
-     * than the timeout period.
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the operation timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void simpleSyncWaitForCompletionOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the wait timeout period and is larger than the operation timeout.
+     */
+    @Test
+    public void simpleSyncWaitForCompletionWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
+    }
+
+    /**
+     * Tests that the last response is returned if a single poll takes longer than the timeout period.
      */
     @Test
     public void simpleSyncWaitUntilSinglePollTimesOut() {
@@ -76,8 +116,8 @@ public class PollingWithTimeoutTests {
     }
 
     /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
-     * doesn't reach the {@code statusToWaitFor} within the timeout period.
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the timeout period.
      */
     @Test
     public void simpleSyncWaitUntilOperationTimesOut() {
@@ -89,6 +129,46 @@ public class PollingWithTimeoutTests {
     }
 
     /**
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the operation timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void simpleSyncWaitUntilOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        PollResponse<TestResponse> pollResponse = assertDoesNotThrow(
+            () -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertEquals(RESPONSE_ZERO.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the wait timeout period but is larger than the operation timeout.
+     */
+    @Test
+    public void simpleSyncWaitUntilWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        PollResponse<TestResponse> pollResponse = assertDoesNotThrow(
+            () -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertEquals(RESPONSE_ONE.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
+    }
+
+    /**
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
@@ -97,6 +177,46 @@ public class PollingWithTimeoutTests {
         SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
 
         assertTimeoutException(poller::getFinalResult);
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the operation timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void simpleSyncGetFinalResultOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the wait timeout period and is larger than the operation timeout.
+     */
+    @Test
+    public void simpleSyncGetFinalResultWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
     }
 
     /**
@@ -135,8 +255,48 @@ public class PollingWithTimeoutTests {
     }
 
     /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
-     * than the timeout period.
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the operation timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void syncOverAsyncWaitForCompletionOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the wait timeout period and is larger than the operation timeout.
+     */
+    @Test
+    public void syncOverAsyncWaitForCompletionWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(
+            asyncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
+    }
+
+    /**
+     * Tests that the last response is returned if a single poll takes longer than the timeout period.
      */
     @Test
     public void syncOverAsyncWaitUntilSinglePollTimesOut() {
@@ -146,7 +306,8 @@ public class PollingWithTimeoutTests {
     }
 
     /**
-     * Tests that the last received PollResponse is used when waitUtil times out.
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the timeout period.
      */
     @Test
     public void syncOverAsyncWaitUntilOperationTimesOut() {
@@ -155,6 +316,47 @@ public class PollingWithTimeoutTests {
 
         assertReturns(timeout -> poller.waitUntil(timeout, SUCCESSFULLY_COMPLETED), hasBeenRan,
             RESPONSE_ZERO.getValue());
+    }
+
+    /**
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void syncOverAsyncWaitUntilOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        PollResponse<TestResponse> pollResponse = assertDoesNotThrow(
+            () -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertEquals(RESPONSE_ZERO.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that the last response is returned if the polling operation doesn't reach the {@code statusToWaitFor}
+     * within the wait timeout period but is larger than the operation timeout.
+     */
+    @Test
+    public void syncOverAsyncWaitUntilWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(
+            asyncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        PollResponse<TestResponse> pollResponse = assertDoesNotThrow(
+            () -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertEquals(RESPONSE_ONE.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
     }
 
     /**
@@ -178,6 +380,47 @@ public class PollingWithTimeoutTests {
         SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
 
         assertTimeoutException(poller::getFinalResult, hasBeenRan);
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the operation timeout period but is less than the wait timeout.
+     */
+    @Test
+    public void syncOverAsyncGetFinalResultOperationTimesOutIsLessThanWaitTimeout() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start < FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out before the wait timeout.");
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the wait timeout period and is larger than the operation timeout.
+     */
+    @Test
+    public void syncOverAsyncGetFinalResultWaitTimesOut() {
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(
+            asyncRunsMoreThanOnce(hasBeenRan));
+
+        long start = System.currentTimeMillis();
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult(HUNDRED_MILLIS, FIVE_SECONDS));
+        long end = System.currentTimeMillis();
+
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        assertTrue(end - start >= FIVE_SECONDS.toMillis(),
+            "Expected the operation to have timed out due to the wait timeout. Waited for " + (end - start) + "ms.");
     }
 
     private static SyncPoller<TestResponse, CertificateOutput> createSimplePoller(
@@ -223,20 +466,24 @@ public class PollingWithTimeoutTests {
 
     private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>> syncRunsOnce(
         AtomicBoolean hasBeenRan) {
-        return ignored -> {
-            if (hasBeenRan.compareAndSet(false, true)) {
-                return RESPONSE_ZERO;
-            } else {
-                sleep();
-                return RESPONSE_ONE;
-            }
-        };
+        return ignored -> hasBeenRan.compareAndSet(false, true) ? RESPONSE_ZERO : sleepThenReturn(10000, RESPONSE_ONE);
+    }
+
+    private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>> syncRunsMoreThanOnce(
+        AtomicBoolean hasBeenRan) {
+        return ignored -> hasBeenRan.compareAndSet(false, true) ? RESPONSE_ZERO : sleepThenReturn(10, RESPONSE_ONE);
     }
 
     private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> asyncRunsOnce(
         AtomicBoolean hasBeenRan) {
-        return ignored -> (hasBeenRan.compareAndSet(false, true))
-            ? Mono.just(RESPONSE_ZERO) : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
+        return ignored -> hasBeenRan.compareAndSet(false, true) ? Mono.just(RESPONSE_ZERO)
+            : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
+    }
+
+    private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> asyncRunsMoreThanOnce(
+        AtomicBoolean hasBeenRan) {
+        return ignored -> hasBeenRan.compareAndSet(false, true) ? Mono.just(RESPONSE_ZERO)
+            : Mono.delay(TEN_MILLIS).map(ignored2 -> RESPONSE_ONE);
     }
 
     private static String printException(Throwable throwable) {
@@ -246,9 +493,10 @@ public class PollingWithTimeoutTests {
         return sw.toString();
     }
 
-    private static void sleep() {
+    private static <T> T sleepThenReturn(long sleepMillis, T returnValue) {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(sleepMillis);
+            return returnValue;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

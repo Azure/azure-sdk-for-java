@@ -68,7 +68,8 @@ class PollingUtil {
                 }
 
                 try {
-                    long pollTimeout = timeBound ? operationTimeoutMills - elapsedTime : -1;
+                    long pollTimeout = timeBound
+                        ? Math.min(operationTimeoutMills, waitTimeoutMillis - elapsedTime) : -1;
                     intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
                     pollingContext.setLatestResponse(intermediatePollResponse);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
