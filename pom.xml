@@ -183,6 +183,8 @@
     <module>sdk/signalr</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
+    <module>sdk/spring-experimental</module>
+    <module>sdk/springappdiscovery</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/storage</module>
     <module>sdk/storagecache</module>

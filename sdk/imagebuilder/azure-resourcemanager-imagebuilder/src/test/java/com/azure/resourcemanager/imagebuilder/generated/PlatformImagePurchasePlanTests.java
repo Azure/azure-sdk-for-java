@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PlatformImagePurchasePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlatformImagePurchasePlan model =
-            BinaryData
-                .fromString(
-                    "{\"planName\":\"gnzscxaqwo\",\"planProduct\":\"chcbonqvpkvlrxnj\",\"planPublisher\":\"ase\"}")
-                .toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("gnzscxaqwo", model.planName());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.planProduct());
-        Assertions.assertEquals("ase", model.planPublisher());
+        PlatformImagePurchasePlan model = BinaryData.fromString(
+            "{\"planName\":\"lazjdyggdtjixhbk\",\"planProduct\":\"ofqweykhmenevfye\",\"planPublisher\":\"fwhybcibvy\"}")
+            .toObject(PlatformImagePurchasePlan.class);
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.planName());
+        Assertions.assertEquals("ofqweykhmenevfye", model.planProduct());
+        Assertions.assertEquals("fwhybcibvy", model.planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlatformImagePurchasePlan model =
-            new PlatformImagePurchasePlan()
-                .withPlanName("gnzscxaqwo")
-                .withPlanProduct("chcbonqvpkvlrxnj")
-                .withPlanPublisher("ase");
+        PlatformImagePurchasePlan model = new PlatformImagePurchasePlan().withPlanName("lazjdyggdtjixhbk")
+            .withPlanProduct("ofqweykhmenevfye").withPlanPublisher("fwhybcibvy");
         model = BinaryData.fromObject(model).toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("gnzscxaqwo", model.planName());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.planProduct());
-        Assertions.assertEquals("ase", model.planPublisher());
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.planName());
+        Assertions.assertEquals("ofqweykhmenevfye", model.planProduct());
+        Assertions.assertEquals("fwhybcibvy", model.planPublisher());
     }
 }

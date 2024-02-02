@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Target Azure File Share Info. */
+/**
+ * Target Azure File Share Info.
+ */
 @Fluent
 public final class TargetAfsRestoreInfo {
     /*
@@ -22,13 +24,15 @@ public final class TargetAfsRestoreInfo {
     @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
-    /** Creates an instance of TargetAfsRestoreInfo class. */
+    /**
+     * Creates an instance of TargetAfsRestoreInfo class.
+     */
     public TargetAfsRestoreInfo() {
     }
 
     /**
      * Get the name property: File share name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Set the name property: File share name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetAfsRestoreInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Get the targetResourceId property: Target file share resource ARM ID.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -57,7 +61,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Set the targetResourceId property: Target file share resource ARM ID.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the TargetAfsRestoreInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

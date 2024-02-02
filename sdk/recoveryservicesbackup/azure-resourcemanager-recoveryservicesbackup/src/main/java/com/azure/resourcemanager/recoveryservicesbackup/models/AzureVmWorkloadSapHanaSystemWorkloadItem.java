@@ -8,72 +8,94 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific workload item representing SAP HANA System. */
+/**
+ * Azure VM workload-specific workload item representing SAP HANA System.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "workloadItemType")
 @JsonTypeName("SAPHanaSystem")
 @Fluent
 public final class AzureVmWorkloadSapHanaSystemWorkloadItem extends AzureVmWorkloadItem {
-    /** Creates an instance of AzureVmWorkloadSapHanaSystemWorkloadItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadSapHanaSystemWorkloadItem class.
+     */
     public AzureVmWorkloadSapHanaSystemWorkloadItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withSubWorkloadItemCount(Integer subWorkloadItemCount) {
         super.withSubWorkloadItemCount(subWorkloadItemCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaSystemWorkloadItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -82,7 +104,7 @@ public final class AzureVmWorkloadSapHanaSystemWorkloadItem extends AzureVmWorkl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

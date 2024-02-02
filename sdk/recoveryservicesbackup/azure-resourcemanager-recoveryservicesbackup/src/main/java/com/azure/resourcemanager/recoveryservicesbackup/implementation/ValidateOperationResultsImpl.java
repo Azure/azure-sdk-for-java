@@ -20,22 +20,18 @@ public final class ValidateOperationResultsImpl implements ValidateOperationResu
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ValidateOperationResultsImpl(
-        ValidateOperationResultsClient innerClient,
+    public ValidateOperationResultsImpl(ValidateOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ValidateOperationsResponse> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        Response<ValidateOperationsResponseInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    public Response<ValidateOperationsResponse> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
+        Response<ValidateOperationsResponseInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidateOperationsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

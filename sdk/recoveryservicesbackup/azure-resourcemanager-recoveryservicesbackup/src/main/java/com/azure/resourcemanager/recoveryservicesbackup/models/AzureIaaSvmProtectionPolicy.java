@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** IaaS VM workload-specific backup policy. */
+/**
+ * IaaS VM workload-specific backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("AzureIaasVM")
 @Fluent
@@ -62,13 +64,15 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "policyType")
     private IaasvmPolicyType policyType;
 
-    /** Creates an instance of AzureIaaSvmProtectionPolicy class. */
+    /**
+     * Creates an instance of AzureIaaSvmProtectionPolicy class.
+     */
     public AzureIaaSvmProtectionPolicy() {
     }
 
     /**
      * Get the instantRPDetails property: The instantRPDetails property.
-     *
+     * 
      * @return the instantRPDetails value.
      */
     public InstantRPAdditionalDetails instantRPDetails() {
@@ -77,7 +81,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the instantRPDetails property: The instantRPDetails property.
-     *
+     * 
      * @param instantRPDetails the instantRPDetails value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -88,7 +92,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @return the schedulePolicy value.
      */
     public SchedulePolicy schedulePolicy() {
@@ -97,7 +101,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @param schedulePolicy the schedulePolicy value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -108,7 +112,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -117,7 +121,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -127,9 +131,10 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     }
 
     /**
-     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier Key is Target Tier,
-     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
-     *
+     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     * 
      * @return the tieringPolicy value.
      */
     public Map<String, TieringPolicy> tieringPolicy() {
@@ -137,9 +142,10 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     }
 
     /**
-     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier Key is Target Tier,
-     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
-     *
+     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     * 
      * @param tieringPolicy the tieringPolicy value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -150,7 +156,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the instantRpRetentionRangeInDays property: Instant RP retention policy range in days.
-     *
+     * 
      * @return the instantRpRetentionRangeInDays value.
      */
     public Integer instantRpRetentionRangeInDays() {
@@ -159,7 +165,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the instantRpRetentionRangeInDays property: Instant RP retention policy range in days.
-     *
+     * 
      * @param instantRpRetentionRangeInDays the instantRpRetentionRangeInDays value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -170,7 +176,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -179,7 +185,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -190,7 +196,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the policyType property: The policyType property.
-     *
+     * 
      * @return the policyType value.
      */
     public IaasvmPolicyType policyType() {
@@ -199,7 +205,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the policyType property: The policyType property.
-     *
+     * 
      * @param policyType the policyType value to set.
      * @return the AzureIaaSvmProtectionPolicy object itself.
      */
@@ -208,14 +214,18 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
@@ -224,7 +234,7 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -240,14 +250,11 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
             retentionPolicy().validate();
         }
         if (tieringPolicy() != null) {
-            tieringPolicy()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            tieringPolicy().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

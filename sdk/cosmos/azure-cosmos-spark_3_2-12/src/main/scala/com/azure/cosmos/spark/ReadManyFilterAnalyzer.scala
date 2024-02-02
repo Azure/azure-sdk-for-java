@@ -47,7 +47,7 @@ private[spark] case class ReadManyFilterAnalyzer(
 
   private[this] def getReadManyFilterFromId(value: String): ReadManyFilter = {
     val partitionKey = new PartitionKey(value)
-    ReadManyFilter(partitionKey, CosmosItemIdentityHelper.getCosmosItemIdentityValueString(value, value))
+    ReadManyFilter(partitionKey, CosmosItemIdentityHelper.getCosmosItemIdentityValueString(value, List(value)))
   }
 
   private[this] def getReadManyFilterFromNonId(value: String): ReadManyFilter = {

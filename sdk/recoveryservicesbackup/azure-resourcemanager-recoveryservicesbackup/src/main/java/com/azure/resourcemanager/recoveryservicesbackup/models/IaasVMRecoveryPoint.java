@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** IaaS VM workload specific backup copy. */
+/**
+ * IaaS VM workload specific backup copy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("IaasVMRecoveryPoint")
 @Fluent
@@ -134,13 +136,15 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
-    /** Creates an instance of IaasVMRecoveryPoint class. */
+    /**
+     * Creates an instance of IaasVMRecoveryPoint class.
+     */
     public IaasVMRecoveryPoint() {
     }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public String recoveryPointType() {
@@ -149,7 +153,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointType property: Type of the backup copy.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -160,7 +164,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointTime property: Time at which this backup copy was created.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -169,7 +173,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointTime property: Time at which this backup copy was created.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -180,7 +184,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointAdditionalInfo property: Additional information associated with this backup copy.
-     *
+     * 
      * @return the recoveryPointAdditionalInfo value.
      */
     public String recoveryPointAdditionalInfo() {
@@ -189,7 +193,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointAdditionalInfo property: Additional information associated with this backup copy.
-     *
+     * 
      * @param recoveryPointAdditionalInfo the recoveryPointAdditionalInfo value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -200,7 +204,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the sourceVMStorageType property: Storage type of the VM whose backup copy is created.
-     *
+     * 
      * @return the sourceVMStorageType value.
      */
     public String sourceVMStorageType() {
@@ -209,7 +213,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the sourceVMStorageType property: Storage type of the VM whose backup copy is created.
-     *
+     * 
      * @param sourceVMStorageType the sourceVMStorageType value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -220,7 +224,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the isSourceVMEncrypted property: Identifies whether the VM was encrypted when the backup copy is created.
-     *
+     * 
      * @return the isSourceVMEncrypted value.
      */
     public Boolean isSourceVMEncrypted() {
@@ -229,7 +233,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the isSourceVMEncrypted property: Identifies whether the VM was encrypted when the backup copy is created.
-     *
+     * 
      * @param isSourceVMEncrypted the isSourceVMEncrypted value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -241,7 +245,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     /**
      * Get the keyAndSecret property: Required details for recovering an encrypted VM. Applicable only when
      * IsSourceVMEncrypted is true.
-     *
+     * 
      * @return the keyAndSecret value.
      */
     public KeyAndSecretDetails keyAndSecret() {
@@ -251,7 +255,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     /**
      * Set the keyAndSecret property: Required details for recovering an encrypted VM. Applicable only when
      * IsSourceVMEncrypted is true.
-     *
+     * 
      * @param keyAndSecret the keyAndSecret value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -262,7 +266,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the isInstantIlrSessionActive property: Is the session to recover items from this backup copy still active.
-     *
+     * 
      * @return the isInstantIlrSessionActive value.
      */
     public Boolean isInstantIlrSessionActive() {
@@ -271,7 +275,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the isInstantIlrSessionActive property: Is the session to recover items from this backup copy still active.
-     *
+     * 
      * @param isInstantIlrSessionActive the isInstantIlrSessionActive value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -282,7 +286,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointTierDetails property: Recovery point tier information.
-     *
+     * 
      * @return the recoveryPointTierDetails value.
      */
     public List<RecoveryPointTierInformationV2> recoveryPointTierDetails() {
@@ -291,19 +295,19 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointTierDetails property: Recovery point tier information.
-     *
+     * 
      * @param recoveryPointTierDetails the recoveryPointTierDetails value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
-    public IaasVMRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
+    public IaasVMRecoveryPoint
+        withRecoveryPointTierDetails(List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         this.recoveryPointTierDetails = recoveryPointTierDetails;
         return this;
     }
 
     /**
      * Get the isManagedVirtualMachine property: Whether VM is with Managed Disks.
-     *
+     * 
      * @return the isManagedVirtualMachine value.
      */
     public Boolean isManagedVirtualMachine() {
@@ -312,7 +316,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the isManagedVirtualMachine property: Whether VM is with Managed Disks.
-     *
+     * 
      * @param isManagedVirtualMachine the isManagedVirtualMachine value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -323,7 +327,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the virtualMachineSize property: Virtual Machine Size.
-     *
+     * 
      * @return the virtualMachineSize value.
      */
     public String virtualMachineSize() {
@@ -332,7 +336,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the virtualMachineSize property: Virtual Machine Size.
-     *
+     * 
      * @param virtualMachineSize the virtualMachineSize value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -343,7 +347,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the originalStorageAccountOption property: Original Storage Account Option.
-     *
+     * 
      * @return the originalStorageAccountOption value.
      */
     public Boolean originalStorageAccountOption() {
@@ -352,7 +356,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the originalStorageAccountOption property: Original Storage Account Option.
-     *
+     * 
      * @param originalStorageAccountOption the originalStorageAccountOption value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -363,7 +367,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the osType property: OS type.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -372,7 +376,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the osType property: OS type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -383,7 +387,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointDiskConfiguration property: Disk configuration.
-     *
+     * 
      * @return the recoveryPointDiskConfiguration value.
      */
     public RecoveryPointDiskConfiguration recoveryPointDiskConfiguration() {
@@ -392,19 +396,20 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointDiskConfiguration property: Disk configuration.
-     *
+     * 
      * @param recoveryPointDiskConfiguration the recoveryPointDiskConfiguration value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
-    public IaasVMRecoveryPoint withRecoveryPointDiskConfiguration(
-        RecoveryPointDiskConfiguration recoveryPointDiskConfiguration) {
+    public IaasVMRecoveryPoint
+        withRecoveryPointDiskConfiguration(RecoveryPointDiskConfiguration recoveryPointDiskConfiguration) {
         this.recoveryPointDiskConfiguration = recoveryPointDiskConfiguration;
         return this;
     }
 
     /**
-     * Get the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms.
-     *
+     * Get the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned
+     * Vms.
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -412,8 +417,9 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Set the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms.
-     *
+     * Set the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned
+     * Vms.
+     * 
      * @param zones the zones value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -424,7 +430,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointMoveReadinessInfo property: Eligibility of RP to be moved to another tier.
-     *
+     * 
      * @return the recoveryPointMoveReadinessInfo value.
      */
     public Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo() {
@@ -433,19 +439,19 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointMoveReadinessInfo property: Eligibility of RP to be moved to another tier.
-     *
+     * 
      * @param recoveryPointMoveReadinessInfo the recoveryPointMoveReadinessInfo value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
-    public IaasVMRecoveryPoint withRecoveryPointMoveReadinessInfo(
-        Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
+    public IaasVMRecoveryPoint
+        withRecoveryPointMoveReadinessInfo(Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         this.recoveryPointMoveReadinessInfo = recoveryPointMoveReadinessInfo;
         return this;
     }
 
     /**
      * Get the securityType property: Security Type of the Disk.
-     *
+     * 
      * @return the securityType value.
      */
     public String securityType() {
@@ -454,7 +460,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the securityType property: Security Type of the Disk.
-     *
+     * 
      * @param securityType the securityType value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -465,7 +471,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointProperties property: Properties of Recovery Point.
-     *
+     * 
      * @return the recoveryPointProperties value.
      */
     public RecoveryPointProperties recoveryPointProperties() {
@@ -474,7 +480,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointProperties property: Properties of Recovery Point.
-     *
+     * 
      * @param recoveryPointProperties the recoveryPointProperties value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -486,7 +492,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     /**
      * Get the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
      * Private access network setting.
-     *
+     * 
      * @return the isPrivateAccessEnabledOnAnyDisk value.
      */
     public Boolean isPrivateAccessEnabledOnAnyDisk() {
@@ -496,7 +502,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     /**
      * Set the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
      * Private access network setting.
-     *
+     * 
      * @param isPrivateAccessEnabledOnAnyDisk the isPrivateAccessEnabledOnAnyDisk value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -506,9 +512,9 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Get the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
-     * cloud.
-     *
+     * Get the extendedLocation property: Extended location of the VM recovery point,
+     * should be null if VM is in public cloud.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -516,9 +522,9 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Set the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
-     * cloud.
-     *
+     * Set the extendedLocation property: Extended location of the VM recovery point,
+     * should be null if VM is in public cloud.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the IaasVMRecoveryPoint object itself.
      */
@@ -529,7 +535,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -545,14 +551,11 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
             recoveryPointDiskConfiguration().validate();
         }
         if (recoveryPointMoveReadinessInfo() != null) {
-            recoveryPointMoveReadinessInfo()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            recoveryPointMoveReadinessInfo().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (recoveryPointProperties() != null) {
             recoveryPointProperties().validate();

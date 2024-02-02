@@ -9,7 +9,9 @@ import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Elastic Sans. */
+/**
+ * List of Elastic Sans.
+ */
 @Fluent
 public final class ElasticSanList {
     /*
@@ -24,13 +26,15 @@ public final class ElasticSanList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ElasticSanList class. */
+    /**
+     * Creates an instance of ElasticSanList class.
+     */
     public ElasticSanList() {
     }
 
     /**
      * Get the value property: An array of Elastic San objects.
-     *
+     * 
      * @return the value value.
      */
     public List<ElasticSanInner> value() {
@@ -39,7 +43,7 @@ public final class ElasticSanList {
 
     /**
      * Set the value property: An array of Elastic San objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the ElasticSanList object itself.
      */
@@ -50,7 +54,7 @@ public final class ElasticSanList {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ElasticSanList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

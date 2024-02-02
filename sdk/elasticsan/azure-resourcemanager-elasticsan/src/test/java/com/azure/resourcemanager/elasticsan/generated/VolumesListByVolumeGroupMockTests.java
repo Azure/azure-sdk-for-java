@@ -32,42 +32,29 @@ public final class VolumesListByVolumeGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Volume> response =
-            manager
-                .volumes()
-                .listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu", com.azure.core.util.Context.NONE);
+        PagedIterable<Volume> response = manager.volumes().listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu",
+            com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, response.iterator().next().creationData().createSource());
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT,
+            response.iterator().next().creationData().createSource());
         Assertions.assertEquals("idoamciodhkha", response.iterator().next().creationData().sourceId());
         Assertions.assertEquals(4852560903522204647L, response.iterator().next().sizeGiB());
         Assertions.assertEquals("tvb", response.iterator().next().managedBy().resourceId());

@@ -11,7 +11,7 @@ public final class VmSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSkuProperties model = BinaryData.fromString(
-            "{\"resourceType\":\"vjfdx\",\"capabilities\":[{\"name\":\"tvtc\",\"value\":\"qtdo\"},{\"name\":\"cbxvwvxyslqbh\",\"value\":\"xoblytkbl\"}],\"name\":\"ewwwfbkrvrnsv\",\"tier\":\"q\",\"size\":\"hxcr\"}")
+            "{\"resourceType\":\"ayqcgw\",\"capabilities\":[{\"name\":\"uzgwyzmhtx\",\"value\":\"gmtsavjcbpwxqpsr\"},{\"name\":\"ftguv\",\"value\":\"uhprwmdyvxqt\"}],\"name\":\"riwwroy\",\"tier\":\"exrmcqibycnojvk\",\"size\":\"e\"}")
             .toObject(VmSkuProperties.class);
     }
 

@@ -11,14 +11,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** DPM workload-specific protection container. */
+/**
+ * DPM workload-specific protection container.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "containerType",
     defaultImpl = DpmContainer.class)
 @JsonTypeName("DPMContainer")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureBackupServerContainer", value = AzureBackupServerContainer.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureBackupServerContainer", value = AzureBackupServerContainer.class) })
 @Fluent
 public class DpmContainer extends ProtectionContainer {
     /*
@@ -69,13 +71,15 @@ public class DpmContainer extends ProtectionContainer {
     @JsonProperty(value = "extendedInfo")
     private DpmContainerExtendedInfo extendedInfo;
 
-    /** Creates an instance of DpmContainer class. */
+    /**
+     * Creates an instance of DpmContainer class.
+     */
     public DpmContainer() {
     }
 
     /**
      * Get the canReRegister property: Specifies whether the container is re-registrable.
-     *
+     * 
      * @return the canReRegister value.
      */
     public Boolean canReRegister() {
@@ -84,7 +88,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the canReRegister property: Specifies whether the container is re-registrable.
-     *
+     * 
      * @param canReRegister the canReRegister value to set.
      * @return the DpmContainer object itself.
      */
@@ -95,7 +99,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the containerId property: ID of container.
-     *
+     * 
      * @return the containerId value.
      */
     public String containerId() {
@@ -104,7 +108,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the containerId property: ID of container.
-     *
+     * 
      * @param containerId the containerId value to set.
      * @return the DpmContainer object itself.
      */
@@ -115,7 +119,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the protectedItemCount property: Number of protected items in the BackupEngine.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Long protectedItemCount() {
@@ -124,7 +128,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the protectedItemCount property: Number of protected items in the BackupEngine.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the DpmContainer object itself.
      */
@@ -135,7 +139,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the dpmAgentVersion property: Backup engine Agent version.
-     *
+     * 
      * @return the dpmAgentVersion value.
      */
     public String dpmAgentVersion() {
@@ -144,7 +148,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the dpmAgentVersion property: Backup engine Agent version.
-     *
+     * 
      * @param dpmAgentVersion the dpmAgentVersion value to set.
      * @return the DpmContainer object itself.
      */
@@ -155,7 +159,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the dpmServers property: List of BackupEngines protecting the container.
-     *
+     * 
      * @return the dpmServers value.
      */
     public List<String> dpmServers() {
@@ -164,7 +168,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the dpmServers property: List of BackupEngines protecting the container.
-     *
+     * 
      * @param dpmServers the dpmServers value to set.
      * @return the DpmContainer object itself.
      */
@@ -175,7 +179,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the upgradeAvailable property: To check if upgrade available.
-     *
+     * 
      * @return the upgradeAvailable value.
      */
     public Boolean upgradeAvailable() {
@@ -184,7 +188,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the upgradeAvailable property: To check if upgrade available.
-     *
+     * 
      * @param upgradeAvailable the upgradeAvailable value to set.
      * @return the DpmContainer object itself.
      */
@@ -195,7 +199,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the protectionStatus property: Protection status of the container.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -204,7 +208,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the protectionStatus property: Protection status of the container.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the DpmContainer object itself.
      */
@@ -215,7 +219,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the extendedInfo property: Extended Info of the container.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public DpmContainerExtendedInfo extendedInfo() {
@@ -224,7 +228,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the extendedInfo property: Extended Info of the container.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the DpmContainer object itself.
      */
@@ -233,35 +237,45 @@ public class DpmContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -270,7 +284,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
