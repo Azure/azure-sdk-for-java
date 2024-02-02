@@ -20,25 +20,33 @@ import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
+import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
+import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
+import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.ai.openai.assistants.FunctionToolCallSample.createAssistantThread;
 
 public final class ReadmeSamples {
     private AssistantsClient client = new AssistantsClientBuilder().buildClient();
@@ -225,14 +233,55 @@ public final class ReadmeSamples {
 //                getWeatherAtLocationToolDefinition()
             ));
 
-        client.createAssistant(assistantCreationOptions);
+        Assistant assistant = client.createAssistant(assistantCreationOptions);
         // END: readme-sample-createAssistantFunctionCall
+
+        AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
+
+        // capture user input
+        client.createMessage(thread.getId(), MessageRole.USER, "What is the weather like in my favorite city?");
+
+        // Create a run
+        ThreadRun run = client.createRun(thread, assistant);
+
+        // BEGIN: readme-sample-functionHandlingRunPolling
+        do {
+            Thread.sleep(500);
+            run = client.getRun(thread.getId(), run.getId());
+
+            if (run.getStatus() == RunStatus.REQUIRES_ACTION
+                && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+                SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
+                List<ToolOutput> toolOutputs = new ArrayList<>();
+
+                for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
+                    toolOutputs.add(getResolvedToolOutput(toolCall));
+                }
+                run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
+            }
+        } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
+        // END: readme-sample-functionHandlingRunPolling
+
+        OpenAIPageableListOfThreadMessage messagesPage = client.listMessages(thread.getId());
+        List<ThreadMessage> messages = messagesPage.getData();
+
+        for (ThreadMessage message : messages) {
+            for (MessageContent contentItem : message.getContent()) {
+                if (contentItem instanceof MessageTextContent) {
+                    System.out.println(((MessageTextContent) contentItem).getText().getValue());
+                } else if (contentItem instanceof MessageImageFileContent) {
+                    System.out.println(((MessageImageFileContent) contentItem).getImageFile().getFileId());
+                }
+            }
+        }
     }
+
+    public static final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
+    public static final String GET_CITY_NICKNAME = "getCityNickname";
+    public static final String GET_WEATHER_AT_LOCATION = "getWeatherAtLocation";
 
     // BEGIN: readme-sample-functionDefinition
     private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
-
-        final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
 
         class UserFavoriteCityParameters {
 
@@ -265,4 +314,35 @@ public final class ReadmeSamples {
         return temperatureUnit.equals("f") ? "70f" : "21c";
     }
     // END: readme-sample-userDefinedFunctions
+
+    // BEGIN: readme-sample-resolveToolOutput
+    private ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
+        if (toolCall instanceof RequiredFunctionToolCall) {
+            RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
+            if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
+                return new ToolOutput().setToolCallId(toolCall.getId())
+                    .setOutput(getUserFavoriteCity());
+            }
+            if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
+                Map<String, String> parameters = BinaryData.fromString(
+                        functionToolCall.getFunction().getArguments())
+                    .toObject(new TypeReference<Map<String, String>>() {});
+                String location = parameters.get("location");
+                return new ToolOutput().setToolCallId(toolCall.getId())
+                    .setOutput(getCityNickname(location));
+            }
+            if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
+                Map<String, String> parameters = BinaryData.fromString(
+                        functionToolCall.getFunction().getArguments())
+                    .toObject(new TypeReference<Map<String, String>>() {});
+                String location = parameters.get("location");
+                // unit was not marked as required on our Function tool definition, so we need to handle its absence
+                String unit = parameters.getOrDefault("unit", "c");
+                return new ToolOutput().setToolCallId(toolCall.getId())
+                    .setOutput(getWeatherAtLocation(location, unit));
+            }
+        }
+        return null;
+    }
+    // END: readme-sample-resolveToolOutput
 }

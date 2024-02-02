@@ -244,6 +244,65 @@ client.createAssistant(assistantCreationOptions);
 If the assistant calls tools, the calling code will need to resolve ToolCall instances into matching ToolOutput instances. 
 For convenience, a basic example is extracted here:
 
+```java readme-sample-resolveToolOutput
+private ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
+    if (toolCall instanceof RequiredFunctionToolCall) {
+        RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
+        if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getUserFavoriteCity());
+        }
+        if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
+            Map<String, String> parameters = BinaryData.fromString(
+                    functionToolCall.getFunction().getArguments())
+                .toObject(new TypeReference<Map<String, String>>() {});
+            String location = parameters.get("location");
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getCityNickname(location));
+        }
+        if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
+            Map<String, String> parameters = BinaryData.fromString(
+                    functionToolCall.getFunction().getArguments())
+                .toObject(new TypeReference<Map<String, String>>() {});
+            String location = parameters.get("location");
+            // unit was not marked as required on our Function tool definition, so we need to handle its absence
+            String unit = parameters.getOrDefault("unit", "c");
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getWeatherAtLocation(location, unit));
+        }
+    }
+    return null;
+}
+```
+
+To handle user input like "what's the weather like right now in my favorite city?", polling the response for completion
+should be supplemented by a `RunStatus` check for `RequiresAction` or, in this case, the presence of the
+`RequiredAction` property on the run. Then, the collection of `toolOutputs` should be submitted to the
+run via the `SubmitRunToolOutputs` method so that the run can continue:
+
+```java readme-sample-functionHandlingRunPolling
+do {
+    Thread.sleep(500);
+    run = client.getRun(thread.getId(), run.getId());
+
+    if (run.getStatus() == RunStatus.REQUIRES_ACTION && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+        SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
+        List<ToolOutput> toolOutputs = new ArrayList<>();
+
+        for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
+            toolOutputs.add(getResolvedToolOutput(toolCall));
+        }
+        run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
+    }
+} while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
+```
+
+Note that, when using supported models, the assistant may request that several functions be called in parallel. Older
+models may only call one function at a time.
+
+Once all needed function calls have been resolved, the run will proceed normally and the completed messages on the
+thread will contain model output supplemented by the provided function tool outputs.
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
