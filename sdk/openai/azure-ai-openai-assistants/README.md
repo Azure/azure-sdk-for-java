@@ -155,10 +155,153 @@ For more examples, such as listing assistants/threads/messages/runs/runSteps, up
 etc, see the [samples][samples_readme].
 
 ### Working with files for retrieval
-TODO: Add examples for file operations
+
+Files can be uploaded and then referenced by assistants or messages. First, use the generalized upload API with a 
+purpose of 'assistants' to make a file ID available:
+
+```java readme-sample-uploadFile
+Path filePath = Paths.get("src", "samples", "resources", fileName);
+BinaryData fileData = BinaryData.fromFile(filePath);
+FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
+
+OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(fileDetails, FilePurpose.ASSISTANTS));
+```
+
+Once uploaded, the file ID can then be provided to an assistant upon creation. Note that file IDs will only be used if 
+an appropriate tool like Code Interpreter or Retrieval is enabled.
+
+```java readme-sample-createRetrievalAssistant
+Assistant assistant = client.createAssistant(
+    new AssistantCreationOptions(deploymentOrModelId)
+        .setName("Java SDK Retrieval Sample")
+        .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+        .setTools(Arrays.asList(new RetrievalToolDefinition()))
+        .setFileIds(Arrays.asList(openAIFile.getId()))
+);
+```
+
+With a file ID association and a supported tool enabled, the assistant will then be able to consume the associated data 
+when running threads.
 
 ### Using function tools and parallel function calling
-TODO: Add examples for function tools and parallel function calling
+
+As [described in OpenAI's documentation for assistant tools](https://platform.openai.com/docs/assistants/tools/function-calling), 
+tools that reference caller-defined capabilities as functions can be provided to an assistant to allow it to dynamically 
+resolve and disambiguate during a run.
+
+Here, outlined is a simple assistant that "knows how to," via caller-provided functions:
+
+1. Get the user's favorite city
+2. Get a nickname for a given city
+3. Get the current weather, optionally with a temperature unit, in a city
+
+To do this, begin by defining the functions to use -- the actual implementations here are merely representative stubs.
+For the full sample, please follow this [link][function_tool_call_full_sample].
+
+```java readme-sample-functionDefinition
+    private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
+    
+    final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
+
+    class UserFavoriteCityParameters {
+
+        @JsonProperty("type")
+        private String type = "object";
+
+        @JsonProperty("properties")
+        private Map<String, Object> properties = new HashMap<>();
+    }
+
+    return new FunctionToolDefinition(
+        new FunctionDefinition(
+            GET_USER_FAVORITE_CITY,
+            BinaryData.fromObject(new UserFavoriteCityParameters()
+            )
+        ).setDescription("Gets the user's favorite city."));
+}
+```
+
+Please refer to [full sample][function_tool_call_full_sample] for more details on how to setup methods with mandatory
+parameters and enum types.
+
+With the functions defined in their appropriate tools, an assistant can be now created that has those tools enabled:
+
+```java readme-sample-createAssistantFunctionCall
+AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
+    .setName("Java Assistants SDK Function Tool Sample Assistant")
+    .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
+        + "Customize your responses to the user's preferences as much as possible and use friendly "
+        + "nicknames for cities whenever possible.")
+    .setTools(Arrays.asList(
+        getUserFavoriteCityToolDefinition()
+//                getCityNicknameToolDefinition(),
+//                getWeatherAtLocationToolDefinition()
+    ));
+
+client.createAssistant(assistantCreationOptions);
+```
+
+If the assistant calls tools, the calling code will need to resolve ToolCall instances into matching ToolOutput instances. 
+For convenience, a basic example is extracted here:
+
+```java readme-sample-resolveToolOutput
+private ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
+    if (toolCall instanceof RequiredFunctionToolCall) {
+        RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
+        if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getUserFavoriteCity());
+        }
+        if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
+            Map<String, String> parameters = BinaryData.fromString(
+                    functionToolCall.getFunction().getArguments())
+                .toObject(new TypeReference<Map<String, String>>() {});
+            String location = parameters.get("location");
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getCityNickname(location));
+        }
+        if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
+            Map<String, String> parameters = BinaryData.fromString(
+                    functionToolCall.getFunction().getArguments())
+                .toObject(new TypeReference<Map<String, String>>() {});
+            String location = parameters.get("location");
+            // unit was not marked as required on our Function tool definition, so we need to handle its absence
+            String unit = parameters.getOrDefault("unit", "c");
+            return new ToolOutput().setToolCallId(toolCall.getId())
+                .setOutput(getWeatherAtLocation(location, unit));
+        }
+    }
+    return null;
+}
+```
+
+To handle user input like "what's the weather like right now in my favorite city?", polling the response for completion
+should be supplemented by a `RunStatus` check for `RequiresAction` or, in this case, the presence of the
+`RequiredAction` property on the run. Then, the collection of `toolOutputs` should be submitted to the
+run via the `SubmitRunToolOutputs` method so that the run can continue:
+
+```java readme-sample-functionHandlingRunPolling
+do {
+    Thread.sleep(500);
+    run = client.getRun(thread.getId(), run.getId());
+
+    if (run.getStatus() == RunStatus.REQUIRES_ACTION && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+        SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
+        List<ToolOutput> toolOutputs = new ArrayList<>();
+
+        for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
+            toolOutputs.add(getResolvedToolOutput(toolCall));
+        }
+        run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
+    }
+} while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
+```
+
+Note that, when using supported models, the assistant may request that several functions be called in parallel. Older
+models may only call one function at a time.
+
+Once all needed function calls have been resolved, the run will proceed normally and the completed messages on the
+thread will contain model output supplemented by the provided function tool outputs.
 
 ## Troubleshooting
 ### Enable client logging
@@ -200,5 +343,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-
+[function_tool_call_full_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-assistants/src/samples/java/com/azure/ai/openai/assistants/FunctionToolCallSample.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fassistants%2Fazure-ai-openai-assistants%2FREADME.png)
