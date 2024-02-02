@@ -1,12 +1,22 @@
 # Release History
 
-## 1.46.0-beta.1 (Unreleased)
+## 1.46.0 (2024-02-02)
 
 ### Features Added
 
 - Added `SyncPoller.getFinalResult(Duration)` to get the final result of a long-running operation with a timeout
   period. Allows for a single call rather than calling both `SyncPoller.waitForCompletion(Duration)` and
   `SyncPoller.getFinalResult()`.
+- Serialization model types now implement `JsonSerializable`. ([#37046](https://github.com/Azure/azure-sdk-for-java/pull/37046))
+- Added `CoreUtils.durationToStringWithDays`, exposing how serialization of `Duration` is done. ([#37763](https://github.com/Azure/azure-sdk-for-java/pull/37763))
+- Prevent requests that won't retry from being buffered. ([#37871](https://github.com/Azure/azure-sdk-for-java/pull/37871))
+- Added `BinaryData.writeTo(OutputStream)`, `BinaryData.writeTo(WriteableByteChannel)`, 
+  and `BinaryData.writeToAsync(AsynchronousByteChannel)` to allow writing the content of `BinaryData` to an 
+  `OutputStream`, `WriteableByteChannel`, or `AsynchronousByteChannel` respectively. ([#38271](https://github.com/Azure/azure-sdk-for-java/pull/38271))
+- Added `RetryOptions.shouldRetryCondition`, `RetryStrategy.shouldRetryCondition` and `RequestRetryCondition` to allow 
+  `RetryOptions` to determine which  HTTP responses and exceptions can be retried. ([#38585](https://github.com/Azure/azure-sdk-for-java/pull/38585))
+- Added `CoreUtils.addShutdownHookSafely` to add a shutdown hook with possible usage of `AccessController` to add it
+  in a privileged manner. ([#38580](https://github.com/Azure/azure-sdk-for-java/pull/38580))
 
 ### Breaking Changes
 
@@ -15,7 +25,18 @@
 
 ### Bugs Fixed
 
+- Fixed `RetryPolicy` usage of calculated delay. ([#37788](https://github.com/Azure/azure-sdk-for-java/pull/37788))
+
 ### Other Changes
+
+- `HttpLoggingPolicy` uses better defaults for allowed headers and query parameters to log. ([#37686](https://github.com/Azure/azure-sdk-for-java/pull/37686))
+- Performance improvements in `LoggingEventBuilder`. ([#37967](https://github.com/Azure/azure-sdk-for-java/pull/37967))
+- Performance improvements to HTTP header logging. ([#38492](https://github.com/Azure/azure-sdk-for-java/pull/38492))
+- Reduce redacted header logging. ([#38501](https://github.com/Azure/azure-sdk-for-java/pull/38501))
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
 
 ## 1.45.0 (2023-11-03)
 
