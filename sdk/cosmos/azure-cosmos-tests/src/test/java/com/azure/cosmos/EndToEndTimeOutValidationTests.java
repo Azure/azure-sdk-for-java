@@ -197,7 +197,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
-        TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
+        createdDocuments.get(random.nextInt(createdDocuments.size()));
 
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
@@ -227,7 +227,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
+        createdDocuments.get(random.nextInt(createdDocuments.size()));
 
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
@@ -266,7 +266,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         try {
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-            TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
+            createdDocuments.get(random.nextInt(createdDocuments.size()));
 
             String queryText = "select top 1 * from c";
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
@@ -310,7 +310,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 "name123",
                 2,
                 UUID.randomUUID().toString());
-            CosmosItemResponse<?> response = container.createItem(obj).block();
+            container.createItem(obj).block();
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
                 container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
