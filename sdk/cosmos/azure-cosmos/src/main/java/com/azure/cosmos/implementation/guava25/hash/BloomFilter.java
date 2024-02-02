@@ -161,10 +161,10 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
      *
      * @since 14.0 (since 11.0 as expectedFalsePositiveProbability())
      */
-    public double expectedFpp() {
-        // You down with FPP? (Yeah you know me!) Who's down with FPP? (Every last homie!)
-        return Math.pow((double) bits.bitCount() / bitSize(), numHashFunctions);
-    }
+//    public double expectedFpp() {
+//        // You down with FPP? (Yeah you know me!) Who's down with FPP? (Every last homie!)
+//        return Math.pow((double) bits.bitCount() / bitSize(), numHashFunctions);
+//    }
 
     /**
      * Returns an estimate for the total number of distinct elements that have been added to this
@@ -173,20 +173,20 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
      *
      * @since 22.0
      */
-    public long approximateElementCount() {
-        long bitSize = bits.bitSize();
-        long bitCount = bits.bitCount();
-
-        /**
-         * Each insertion is expected to reduce the # of clear bits by a factor of
-         * `numHashFunctions/bitSize`. So, after n insertions, expected bitCount is `bitSize * (1 - (1 -
-         * numHashFunctions/bitSize)^n)`. Solving that for n, and approximating `ln x` as `x - 1` when x
-         * is close to 1 (why?), gives the following formula.
-         */
-        double fractionOfBitsSet = (double) bitCount / bitSize;
-        return DoubleMath.roundToLong(
-            -Math.log1p(-fractionOfBitsSet) * bitSize / numHashFunctions, RoundingMode.HALF_UP);
-    }
+//    public long approximateElementCount() {
+//        long bitSize = bits.bitSize();
+//        long bitCount = bits.bitCount();
+//
+//        /**
+//         * Each insertion is expected to reduce the # of clear bits by a factor of
+//         * `numHashFunctions/bitSize`. So, after n insertions, expected bitCount is `bitSize * (1 - (1 -
+//         * numHashFunctions/bitSize)^n)`. Solving that for n, and approximating `ln x` as `x - 1` when x
+//         * is close to 1 (why?), gives the following formula.
+//         */
+//        double fractionOfBitsSet = (double) bitCount / bitSize;
+//        return DoubleMath.roundToLong(
+//            -Math.log1p(-fractionOfBitsSet) * bitSize / numHashFunctions, RoundingMode.HALF_UP);
+//    }
 
     /** Returns the number of bits in the underlying bit array. */
     @VisibleForTesting

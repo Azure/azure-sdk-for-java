@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayTestUtils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -243,11 +242,14 @@ public class RegionScopedSessionContainerTest {
 
     @Test(groups = "unit")
     public void sessionContainer() throws Exception {
-        ISessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        ISessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
 
         int numCollections = 2;
         int numPartitionKeyRangeIds = 5;
         String regionContacted = "location1";
+
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(Location1Endpoint), Mockito.any())).thenReturn(regionContacted);
 
         for (int i = 0; i < numCollections; i++) {
             String collectionResourceId =
@@ -261,10 +263,7 @@ public class RegionScopedSessionContainerTest {
                 String resultantSessionToken = partitionKeyRangeId + ":" + lsn;
 
                 RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-                ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-                sessionTokenToRegionMappings.put(resultantSessionToken, regionContacted);
-
-                setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappings);
+                request.requestContext.locationEndpointToRoute = Location1Endpoint;
 
                 sessionContainer.setSessionToken(
                     request,
@@ -277,6 +276,8 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.ReadFeed, ResourceType.DocumentCollection,
             "dbs/db1/colls/collName_1", Utils.getUTF8Bytes("content1"), new HashMap<>());
 
+        request.requestContext.locationEndpointToRoute = Location1Endpoint;
+
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_1");
         assertThat(sessionToken.getLSN()).isEqualTo(1);
 
@@ -286,6 +287,7 @@ public class RegionScopedSessionContainerTest {
         GatewayTestUtils.setParent(resolvedPKRange, ImmutableList.of("range_2", "range_x"));
         dsrContext.resolvedPartitionKeyRange = resolvedPKRange;
         request.requestContext = dsrContext;
+        request.requestContext.locationEndpointToRoute = Location1Endpoint;
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.getId());
         assertThat(sessionToken.getLSN()).isEqualTo(2);
@@ -299,11 +301,16 @@ public class RegionScopedSessionContainerTest {
         String sessionToken = "1#100#1=20#2=5#3=30";
         String collectionName = "dbs/db1/colls/collName_1";
         String regionContacted = "location1";
+        URI endpointContacted = Location1Endpoint;
 
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        ISessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(endpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
+        request1.requestContext.locationEndpointToRoute = endpointContacted;
+
         String sessionTokenWithPkRangeIdForRequest1 = partitionKeyRangeId + ":" + sessionToken;
 
         Map<String, String> respHeaders = new HashMap<>();
@@ -313,10 +320,6 @@ public class RegionScopedSessionContainerTest {
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(sessionTokenWithPkRangeIdForRequest1, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappings);
         sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         @SuppressWarnings("unchecked")
@@ -334,6 +337,7 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
+        request2.requestContext.locationEndpointToRoute = endpointContacted;
 
         ISessionToken resolvedSessionToken = sessionContainer.resolvePartitionLocalSessionToken(request2, partitionKeyRangeId);
         assertThat(resolvedSessionToken).isNotNull();
@@ -349,19 +353,19 @@ public class RegionScopedSessionContainerTest {
         String partitionKeyRangeId = "test_range_id";
         String expectedMergedSessionToken = "1#100#1=31#2=5#3=30";
         String regionContacted = "location1";
+        URI locationEndpointContacted = Location1Endpoint;
 
         Map<String, String> respHeaders = new HashMap<>();
 
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
+        request1.requestContext.locationEndpointToRoute = locationEndpointContacted;
+
         String initialSessionTokenWithPkRangeId = partitionKeyRangeId + ":" + initialSessionToken;
-
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(initialSessionTokenWithPkRangeId, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappings);
 
         RxDocumentServiceResponse resp = Mockito.mock(RxDocumentServiceResponse.class);
         Mockito.doReturn(respHeaders).when(resp).getResponseHeaders();
@@ -377,14 +381,11 @@ public class RegionScopedSessionContainerTest {
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
 
-        sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(newSessionTokenWithPkRangeId, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappings);
         sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             collectionName + "/docs", Utils.getUTF8Bytes(""), new HashMap<>());
+        request2.requestContext.locationEndpointToRoute = locationEndpointContacted;
 
         ISessionToken resolvedSessionToken = sessionContainer.resolvePartitionLocalSessionToken(request2, partitionKeyRangeId);
         assertThat(resolvedSessionToken).isNotNull();
@@ -402,23 +403,28 @@ public class RegionScopedSessionContainerTest {
 
     @Test(groups = "unit")
     public void resolveGlobalSessionTokenReturnsEmptyStringOnCacheMiss() {
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+
         String partitionKeyRangeId = "range_0";
         String documentCollectionId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId()).getDocumentCollectionId().toString();
         String initialSessionToken = "1#100#1=20#2=5#3=30";
         String regionContacted = "location1";
+        URI locationEndpointContacted = Location1Endpoint;
         String resultantSessionToken = partitionKeyRangeId + ":" + initialSessionToken;
+
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest collectionCreateRequest = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(), OperationType.Create, ResourceType.DocumentCollection);
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(resultantSessionToken, regionContacted);
+        collectionCreateRequest.requestContext.locationEndpointToRoute = locationEndpointContacted;
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(collectionCreateRequest, sessionTokenToRegionMappings);
         sessionContainer.setSessionToken(collectionCreateRequest, documentCollectionId, "dbs/db1/colls1/collName",
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":" + initialSessionToken));
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             "dbs/db1/colls1/collName2/docs/doc1", new HashMap<>());
+        request.requestContext.locationEndpointToRoute = locationEndpointContacted;
+
         assertThat(StringUtils.EMPTY).isEqualTo(sessionContainer.resolveGlobalSessionToken(request));
     }
 
@@ -432,20 +438,12 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest1 = "range_0:1#100#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(sessionTokenForRequest1, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenForRequest1));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest2 = "range_1:1#101#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest2.put(sessionTokenForRequest2, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenToRegionMappingsForRequest2);
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenForRequest2));
 
@@ -469,20 +467,12 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest1 = "range_0:1#100#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(sessionTokenForRequest1, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#100#1=20#2=5#3=30"));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest2 = "range_1:1#101#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest2.put(sessionTokenForRequest2, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenToRegionMappingsForRequest2);
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_1:1#101#1=20#2=5#3=30"));
 
@@ -508,20 +498,12 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest1 = "range_0:1#100#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(sessionTokenForRequest1, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#100#1=20#2=5#3=30"));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenForRequest2 = "range_1:1#101#1=20#2=5#3=30";
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest2.put(sessionTokenForRequest2, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenToRegionMappingsForRequest2);
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_1:1#101#1=20#2=5#3=30"));
 
@@ -542,19 +524,13 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest1 = "range_0:1#100#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenWithRegionMappingsForRequest1.put(sessionTokenWithPkRangeIdForRequest1, regionContacted);
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenWithRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest1));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest2 = "range_1:1#101#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenWithRegionMappingsForRequest2.put(sessionTokenWithPkRangeIdForRequest2, regionContacted);
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenWithRegionMappingsForRequest2);
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest2));
 
@@ -579,18 +555,12 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest1 = "range_0:1#100#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest1 = new ConcurrentHashMap<>();
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenWithRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest1));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest2 = "range_1:1#101#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenWithRegionMappingsForRequest2.put(sessionTokenWithPkRangeIdForRequest2, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenWithRegionMappingsForRequest2);
 
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest2));
@@ -612,19 +582,12 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest1 = "range_0:1#100#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenWithRegionMappingsForRequest1);
 
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest1));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest2 = "range_1:1#101#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenWithRegionMappingsForRequest2.put(sessionTokenWithPkRangeIdForRequest2, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenWithRegionMappingsForRequest2);
 
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest2));
@@ -646,18 +609,13 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest1 = "range_0:1#100#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest1 = new ConcurrentHashMap<>();
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenWithRegionMappingsForRequest1);
         sessionContainer.setSessionToken(request1, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest1));
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         String sessionTokenWithPkRangeIdForRequest2 = "range_1:1#101#1=20#2=5#3=30";
-        ConcurrentHashMap<String, String> sessionTokenWithRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenWithRegionMappingsForRequest2.put(sessionTokenWithPkRangeIdForRequest2, regionContacted);
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenWithRegionMappingsForRequest2);
         sessionContainer.setSessionToken(request2, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest2));
 
@@ -672,16 +630,18 @@ public class RegionScopedSessionContainerTest {
 
     @Test(groups = "unit")
     public void clearTokenByCollectionFullNameRemovesToken() {
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+
+        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
         String documentCollectionId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId()).getDocumentCollectionId().toString();
         String collectionFullName = "dbs/db1/colls1/collName";
         String regionContacted = "location1";
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        RxDocumentServiceRequest documentCollectionCreateRequest = createMockCollectionCreateRequest();
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForCollCreateRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForCollCreateRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(documentCollectionCreateRequest, sessionTokenToRegionMappingsForCollCreateRequest);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(Location1Endpoint), Mockito.any())).thenReturn(regionContacted);
+
+        RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, Location1Endpoint);
 
         sessionContainer.setSessionToken(documentCollectionCreateRequest, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, unparsedSessionToken));
@@ -689,9 +649,6 @@ public class RegionScopedSessionContainerTest {
         //  Test getResourceId based
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId, ResourceType.Document, new HashMap<>());
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappings);
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken.getLSN()).isEqualTo(100);
@@ -699,9 +656,6 @@ public class RegionScopedSessionContainerTest {
         //  Test names based
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document);
-        sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappings);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken.getLSN()).isEqualTo(100);
@@ -711,9 +665,6 @@ public class RegionScopedSessionContainerTest {
         //  Test resourceId based
         request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId, ResourceType.Document, new HashMap<>());
-        sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappings);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNull();
@@ -721,9 +672,6 @@ public class RegionScopedSessionContainerTest {
         //  Test names based
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document);
-        sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappings);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNull();
@@ -731,16 +679,18 @@ public class RegionScopedSessionContainerTest {
 
     @Test(groups = "unit")
     public void clearTokenByResourceIdRemovesToken() {
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+
+        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
         String documentCollectionId = ResourceId.newDocumentCollectionId(getRandomDbId(), getRandomCollectionId()).getDocumentCollectionId().toString();
         String collectionFullName = "dbs/db1/colls1/collName";
         String regionContacted = "location1";
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        RxDocumentServiceRequest documentCollectionCreateRequest = createMockCollectionCreateRequest();
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForCollectionCreateRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForCollectionCreateRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(documentCollectionCreateRequest, sessionTokenToRegionMappingsForCollectionCreateRequest);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(Location1Endpoint), Mockito.any())).thenReturn(regionContacted);
+
+        RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, Location1Endpoint);
 
         sessionContainer.setSessionToken(documentCollectionCreateRequest, documentCollectionId, collectionFullName,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, unparsedSessionToken));
@@ -748,9 +698,6 @@ public class RegionScopedSessionContainerTest {
         //  Test resourceId based
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId, ResourceType.Document, new HashMap<>());
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNotNull();
@@ -759,9 +706,6 @@ public class RegionScopedSessionContainerTest {
         //  Test names based
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document);
-        sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNotNull();
@@ -772,9 +716,6 @@ public class RegionScopedSessionContainerTest {
         //  Test resourceId based
         request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId, ResourceType.Document, new HashMap<>());
-        sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNull();
@@ -782,9 +723,6 @@ public class RegionScopedSessionContainerTest {
         //  Test names based
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document);
-        sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_0");
         assertThat(sessionToken).isNull();
@@ -792,17 +730,18 @@ public class RegionScopedSessionContainerTest {
 
     @Test(groups = "unit")
     public void clearTokenKeepsUnmatchedCollection() {
-        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1");
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
+
         int randomCollectionId = getRandomCollectionId();
         String documentCollectionId1 = ResourceId.newDocumentCollectionId(getRandomDbId(), randomCollectionId).getDocumentCollectionId().toString();
         String collectionFullName1 = "dbs/db1/colls1/collName1";
         String regionContacted = "location1";
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        RxDocumentServiceRequest documentCollectionCreateRequest = createMockCollectionCreateRequest();
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappings = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappings.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(documentCollectionCreateRequest, sessionTokenToRegionMappings);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(Location1Endpoint), Mockito.any())).thenReturn(regionContacted);
+
+        RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, Location1Endpoint);
 
         sessionContainer.setSessionToken(documentCollectionCreateRequest, documentCollectionId1, collectionFullName1,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, unparsedSessionToken));
@@ -810,9 +749,6 @@ public class RegionScopedSessionContainerTest {
         //  Test resourceId based
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId1, ResourceType.Document, new HashMap<>());
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
 
         String documentCollectionId2 = ResourceId.newDocumentCollectionId(getRandomDbId(), randomCollectionId - 1).getDocumentCollectionId().toString();
         String collectionFullName2 = "dbs/db1/colls1/collName2";
@@ -820,9 +756,6 @@ public class RegionScopedSessionContainerTest {
         //  Test resourceId based
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             documentCollectionId2, ResourceType.Document, new HashMap<>());
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest2.put(unparsedSessionToken, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenToRegionMappingsForRequest2);
 
         sessionContainer.setSessionToken(request2, documentCollectionId2, collectionFullName2,
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, unparsedSessionToken));
@@ -856,9 +789,6 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
         request.setResourceId(documentCollectionId);
 
         assertThat(request.getIsNameBased()).isFalse();
@@ -885,9 +815,6 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName1 + "/docs/doc1", ResourceType.Document, new HashMap<>());
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
         request.setResourceId(documentCollectionId);
 
         sessionContainer.setSessionToken(request,
@@ -919,9 +846,6 @@ public class RegionScopedSessionContainerTest {
         request.setResourceId(documentCollectionId1);
 
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         assertThat(request.getIsNameBased()).isFalse();
 
@@ -958,10 +882,6 @@ public class RegionScopedSessionContainerTest {
         request.setResourceId(documentCollectionId1);
 
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
         assertThat(request.getIsNameBased()).isTrue();
 
         sessionContainer.setSessionToken(request,
@@ -1011,9 +931,6 @@ public class RegionScopedSessionContainerTest {
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
 
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         request.setResourceId(documentCollectionId);
 
@@ -1023,10 +940,6 @@ public class RegionScopedSessionContainerTest {
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
 
         String sessionTokenWithPkRangeIdToBeOverwritten = "range_0:1#105#4=90#5=1";
-
-        sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdToBeOverwritten, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
 
         request.setResourceId(documentCollectionId);
         sessionContainer.setSessionToken(request, ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdToBeOverwritten));
@@ -1050,9 +963,6 @@ public class RegionScopedSessionContainerTest {
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
 
         String sessionTokenWithPkRangeIdForRequest = "range_0:1#105#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdForRequest, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
         request.setResourceId(documentCollectionId);
 
         sessionContainer.setSessionToken(request, ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForRequest));
@@ -1062,9 +972,6 @@ public class RegionScopedSessionContainerTest {
 
         String sessionTokenWithPkRangeIdToBeOverwritten = "range_0:1#100#4=90#5=1";
 
-        sessionTokenToRegionMappingsForRequest = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest.put(sessionTokenWithPkRangeIdToBeOverwritten, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, sessionTokenToRegionMappingsForRequest);
         request.setResourceId(documentCollectionId);
 
         sessionContainer.setSessionToken(request, ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdToBeOverwritten));
@@ -1087,9 +994,6 @@ public class RegionScopedSessionContainerTest {
         RxDocumentServiceRequest docReadRequest1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
         String sessionTokenWithPkRangeIdForDocReadRequest1 = "range_0:1#100#4=90#5=1";
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForDocReadRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForDocReadRequest1.put(sessionTokenWithPkRangeIdForDocReadRequest1, regionContacted);
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(docReadRequest1, sessionTokenToRegionMappingsForDocReadRequest1);
 
         sessionContainer.setSessionToken(docReadRequest1, documentCollectionId, collectionFullName + "/docs/doc1",
             ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionTokenWithPkRangeIdForDocReadRequest1));
@@ -1132,11 +1036,6 @@ public class RegionScopedSessionContainerTest {
                 RxDocumentServiceRequest documentReadRequest = RxDocumentServiceRequest
                     .create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
-                ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForDocumentReadRequest = new ConcurrentHashMap<>();
-                sessionTokenToRegionMappingsForDocumentReadRequest.put(resultantSessionToken, regionContacted);
-
-                setSessionTokenToRegionMappingsOnCosmosDiagnostics(documentReadRequest, sessionTokenToRegionMappingsForDocumentReadRequest);
-
                 sessionContainer.setSessionToken(
                     documentReadRequest,
                     collectionResourceId,
@@ -1178,10 +1077,6 @@ public class RegionScopedSessionContainerTest {
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(resultantParentSessionToken, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
         sessionContainer.setSessionToken(
             request1,
             documentCollectionId1,
@@ -1233,10 +1128,6 @@ public class RegionScopedSessionContainerTest {
         String parent1SessionToken = parent1PKRangeId + ":" + parent1Session;
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest1 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest1.put(parent1SessionToken, regionContacted);
-
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request1, sessionTokenToRegionMappingsForRequest1);
         sessionContainer.setSessionToken(
             request1,
             documentCollectionId1,
@@ -1253,10 +1144,7 @@ public class RegionScopedSessionContainerTest {
         String parent2SessionToken = parent2PKRangeId + ":" + parent2Session;
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-        ConcurrentHashMap<String, String> sessionTokenToRegionMappingsForRequest2 = new ConcurrentHashMap<>();
-        sessionTokenToRegionMappingsForRequest2.put(parent2SessionToken, regionContacted);
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request2, sessionTokenToRegionMappingsForRequest2);
         sessionContainer.setSessionToken(
             request2,
             documentCollectionId1,
@@ -1408,26 +1296,31 @@ public class RegionScopedSessionContainerTest {
         request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(partitionKey));
         request.setPartitionKeyDefinition(partitionKeyDefinition);
 
-        setSessionTokenToRegionMappingsOnCosmosDiagnostics(request, new ConcurrentHashMap<>(sessionTokenToRegionMappings));
-
         return new RequestMetadata(request, responseHeaders);
     }
 
-    private static RxDocumentServiceRequest createMockCollectionCreateRequest() {
+    private static RxDocumentServiceRequest createRequestEntity(OperationType operationType, ResourceType resourceType, URI locationEndpointToRoute) {
 
-        RxDocumentServiceRequest collectionCreateRequest = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(),
-            OperationType.Create,
-            ResourceType.DocumentCollection);
+            operationType,
+            resourceType);
 
-        collectionCreateRequest.requestContext.cosmosDiagnostics = Mockito.mock(CosmosDiagnostics.class);
+        request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
 
-        return collectionCreateRequest;
+        return request;
     }
 
-    private static void setSessionTokenToRegionMappingsOnCosmosDiagnostics(RxDocumentServiceRequest request, ConcurrentHashMap<String, String> sessionTokenToRegionMapping) {
-        request.requestContext.cosmosDiagnostics = diagnosticsAccessor.create(mockDiagnosticsClientContext(), 1);
-        diagnosticsAccessor.setSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics, sessionTokenToRegionMapping);
+    private static RxDocumentServiceRequest createRequestEntity(OperationType operationType, ResourceType resourceType, URI locationEndpointToRoute, String documentCollectionLink) {
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            operationType,
+            resourceType);
+
+        request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
+
+        return request;
     }
 
     // todo (abhmohanty): move to a test utility class

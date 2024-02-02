@@ -134,7 +134,7 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     static final class LockFreeBitArray {
         private static final int LONG_ADDRESSABLE_BITS = 6;
         final AtomicLongArray data;
-        private final LongAddable bitCount;
+//        private final LongAddable bitCount;
 
         LockFreeBitArray(long bits) {
             this(new long[Ints.checkedCast(LongMath.divide(bits, 64, RoundingMode.CEILING))]);
@@ -144,12 +144,12 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
         LockFreeBitArray(long[] data) {
             checkArgument(data.length > 0, "data length is zero!");
             this.data = new AtomicLongArray(data);
-            this.bitCount = LongAddables.create();
-            long bitCount = 0;
-            for (long value : data) {
-                bitCount += Long.bitCount(value);
-            }
-            this.bitCount.add(bitCount);
+//            this.bitCount = LongAddables.create();
+//            long bitCount = 0;
+//            for (long value : data) {
+//                bitCount += Long.bitCount(value);
+//            }
+//            this.bitCount.add(bitCount);
         }
 
         /** Returns true if the bit changed value. */
@@ -172,7 +172,7 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
             } while (!data.compareAndSet(longIndex, oldValue, newValue));
 
             // We turned the bit on, so increment bitCount.
-            bitCount.increment();
+//            bitCount.increment();
             return true;
         }
 
@@ -206,9 +206,9 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
          * estimate without locking. Note that the number, if not exactly accurate, is *always*
          * underestimating, never overestimating.
          */
-        long bitCount() {
-            return bitCount.sum();
-        }
+//        long bitCount() {
+//            return bitCount.sum();
+//        }
 
         LockFreeBitArray copy() {
             return new LockFreeBitArray(toPlainArray(data));
@@ -244,10 +244,10 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
                     }
                 } while (!data.compareAndSet(i, ourLongOld, ourLongNew));
 
-                if (changedAnyBits) {
-                    int bitsAdded = Long.bitCount(ourLongNew) - Long.bitCount(ourLongOld);
-                    bitCount.add(bitsAdded);
-                }
+//                if (changedAnyBits) {
+//                    int bitsAdded = Long.bitCount(ourLongNew) - Long.bitCount(ourLongOld);
+//                    bitCount.add(bitsAdded);
+//                }
             }
         }
 
