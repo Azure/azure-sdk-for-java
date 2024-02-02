@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
@@ -46,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
 
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
@@ -96,22 +94,26 @@ public class SampleCriticalResultInferenceAsync {
         PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(createRadiologyInsightsRequest());
         
-        asyncPoller.takeUntil(isComplete).filter(isComplete).subscribe(completedResult -> {
-            System.out.println("Completed poll response, status: " + completedResult.getStatus());
-            if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                mono = completedResult.getFinalResult();
+        Mono<RadiologyInsightsInferenceResult> finalResult = asyncPoller.last().flatMap(pollResult -> {
+            if (pollResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                return pollResult.getFinalResult();
             } else {
                 System.out.println(
-                        "Poll Request Failed with message: " + completedResult.getValue().getError().getMessage());
+                        "Poll Request Failed with message: " + pollResult.getValue().getError().getMessage());
+                return Mono.empty();
             }
+        });
+
+        CountDownLatch latch = new CountDownLatch(1);
+        
+        finalResult.doFinally(signal -> {
             latch.countDown();
+        }).subscribe(result -> {
+            displayCriticalResults(result);
         });
 
         latch.await();
-        displayCriticalResults(mono.block());
     }
-
-    private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
     /**
      * Display the critical results of the Radiology Insights request.
@@ -277,11 +279,4 @@ public class SampleCriticalResultInferenceAsync {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
-
-    private static Predicate<AsyncPollResponse<PollOperationDetails, RadiologyInsightsInferenceResult>> isComplete = response -> {
-        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
-                && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
-    };
-
-    private static CountDownLatch latch = new CountDownLatch(1);
 }
