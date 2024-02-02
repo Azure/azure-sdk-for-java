@@ -15,6 +15,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,8 @@ import java.time.Duration;
  */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClient.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -135,7 +138,7 @@ public final class LoadTestAdministrationClient {
             Response<BinaryData> fileResponse = getTestFileWithResponse(testId, fileName, defaultRequestOptions);
             return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
         }, (activationResponse, context) -> {
-            throw new RuntimeException("Cancellation is not supported");
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
     }
 

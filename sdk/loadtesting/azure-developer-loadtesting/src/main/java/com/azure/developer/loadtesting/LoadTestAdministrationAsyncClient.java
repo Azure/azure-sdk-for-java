@@ -16,6 +16,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
@@ -28,6 +29,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationAsyncClient.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -142,7 +145,8 @@ public final class LoadTestAdministrationAsyncClient {
                 = getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono);
             return fileMono.flatMap(fileBinaryData -> PollingUtils
                 .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData, OBJECT_MAPPER)));
-        }, (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+        }, (activationResponse, context) -> Mono
+            .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 

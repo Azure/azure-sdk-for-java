@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.developer.loadtesting;
 
 import java.util.concurrent.Callable;
@@ -60,14 +62,14 @@ final class PollingUtils {
         return new PollResponse<>(lroStatus, fileBinary);
     }
 
-    static PollResponse<BinaryData> getTestRunStatus(BinaryData testRunBinary, ObjectMapper objectMapper) {
+    static PollResponse<BinaryData> getTestRunStatus(BinaryData testRunBinary, ObjectMapper objectMapper) throws RuntimeException {
         String status;
         JsonNode testRun;
         try {
             testRun = objectMapper.readTree(testRunBinary.toString());
             status = testRun.get("status").asText();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Encountered exception while retriving test run status");
+            throw new RuntimeException("Encountered exception while retrieving test run status", e);
         }
         LongRunningOperationStatus lroStatus;
         switch (status) {
