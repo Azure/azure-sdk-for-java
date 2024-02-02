@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition of Azure Monitoring metric. */
+/**
+ * The definition of Azure Monitoring metric.
+ */
 @Fluent
 public final class OperationMetricSpecificationDefinition {
     /*
@@ -46,13 +48,15 @@ public final class OperationMetricSpecificationDefinition {
     @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
-    /** Creates an instance of OperationMetricSpecificationDefinition class. */
+    /**
+     * Creates an instance of OperationMetricSpecificationDefinition class.
+     */
     public OperationMetricSpecificationDefinition() {
     }
 
     /**
      * Get the name property: Metric name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the name property: Metric name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -72,7 +76,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Get the displayName property: Metric display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -81,7 +85,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the displayName property: Metric display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -92,7 +96,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Get the displayDescription property: Metric description.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -101,7 +105,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the displayDescription property: Metric description.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -112,7 +116,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Get the unit property: Metric unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -121,7 +125,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the unit property: Metric unit.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -132,7 +136,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Get the aggregationType property: Metric aggregation type.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -141,7 +145,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the aggregationType property: Metric aggregation type.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -152,7 +156,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Get the internalMetricName property: Internal metric name.
-     *
+     * 
      * @return the internalMetricName value.
      */
     public String internalMetricName() {
@@ -161,7 +165,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Set the internalMetricName property: Internal metric name.
-     *
+     * 
      * @param internalMetricName the internalMetricName value to set.
      * @return the OperationMetricSpecificationDefinition object itself.
      */
@@ -172,7 +176,7 @@ public final class OperationMetricSpecificationDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

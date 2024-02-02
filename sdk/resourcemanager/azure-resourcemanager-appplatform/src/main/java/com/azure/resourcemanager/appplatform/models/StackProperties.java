@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** KPack ClusterStack properties payload. */
+/**
+ * KPack ClusterStack properties payload.
+ */
 @Fluent
 public final class StackProperties {
     /*
@@ -23,8 +25,14 @@ public final class StackProperties {
     private String version;
 
     /**
+     * Creates an instance of StackProperties class.
+     */
+    public StackProperties() {
+    }
+
+    /**
      * Get the id property: Id of the ClusterStack.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,7 +41,7 @@ public final class StackProperties {
 
     /**
      * Set the id property: Id of the ClusterStack.
-     *
+     * 
      * @param id the id value to set.
      * @return the StackProperties object itself.
      */
@@ -44,7 +52,7 @@ public final class StackProperties {
 
     /**
      * Get the version property: Version of the ClusterStack.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -53,7 +61,7 @@ public final class StackProperties {
 
     /**
      * Set the version property: Version of the ClusterStack.
-     *
+     * 
      * @param version the version value to set.
      * @return the StackProperties object itself.
      */
@@ -64,7 +72,7 @@ public final class StackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

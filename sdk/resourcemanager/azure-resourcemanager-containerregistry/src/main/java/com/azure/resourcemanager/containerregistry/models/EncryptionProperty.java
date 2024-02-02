@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EncryptionProperty model. */
+/**
+ * The EncryptionProperty model.
+ */
 @Fluent
 public final class EncryptionProperty {
     /*
@@ -22,13 +24,15 @@ public final class EncryptionProperty {
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
-    /** Creates an instance of EncryptionProperty class. */
+    /**
+     * Creates an instance of EncryptionProperty class.
+     */
     public EncryptionProperty() {
     }
 
     /**
      * Get the status property: Indicates whether or not the encryption is enabled for container registry.
-     *
+     * 
      * @return the status value.
      */
     public EncryptionStatus status() {
@@ -37,7 +41,7 @@ public final class EncryptionProperty {
 
     /**
      * Set the status property: Indicates whether or not the encryption is enabled for container registry.
-     *
+     * 
      * @param status the status value to set.
      * @return the EncryptionProperty object itself.
      */
@@ -48,7 +52,7 @@ public final class EncryptionProperty {
 
     /**
      * Get the keyVaultProperties property: Key vault properties.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -57,7 +61,7 @@ public final class EncryptionProperty {
 
     /**
      * Set the keyVaultProperties property: Key vault properties.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionProperty object itself.
      */
@@ -68,7 +72,7 @@ public final class EncryptionProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

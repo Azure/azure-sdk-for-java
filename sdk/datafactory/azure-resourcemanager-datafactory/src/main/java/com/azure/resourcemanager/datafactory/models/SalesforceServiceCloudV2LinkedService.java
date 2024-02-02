@@ -104,6 +104,31 @@ public final class SalesforceServiceCloudV2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
+     * we only support OAuth2ClientCredentials, it is also the default value.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
+     * we only support OAuth2ClientCredentials, it is also the default value.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the SalesforceServiceCloudV2LinkedService object itself.
+     */
+    public SalesforceServiceCloudV2LinkedService withAuthenticationType(Object authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SalesforceServiceCloudV2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
      * Get the clientId property: The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce
      * instance. Type: string (or Expression with resultType string).
      * 

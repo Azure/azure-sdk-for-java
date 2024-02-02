@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a task run update parameters. */
+/**
+ * The properties of a task run update parameters.
+ */
 @Fluent
 public final class TaskRunPropertiesUpdateParameters {
     /*
@@ -23,13 +25,15 @@ public final class TaskRunPropertiesUpdateParameters {
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
-    /** Creates an instance of TaskRunPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of TaskRunPropertiesUpdateParameters class.
+     */
     public TaskRunPropertiesUpdateParameters() {
     }
 
     /**
      * Get the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -38,7 +42,7 @@ public final class TaskRunPropertiesUpdateParameters {
 
     /**
      * Set the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunPropertiesUpdateParameters object itself.
      */
@@ -50,7 +54,7 @@ public final class TaskRunPropertiesUpdateParameters {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -60,7 +64,7 @@ public final class TaskRunPropertiesUpdateParameters {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunPropertiesUpdateParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class TaskRunPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

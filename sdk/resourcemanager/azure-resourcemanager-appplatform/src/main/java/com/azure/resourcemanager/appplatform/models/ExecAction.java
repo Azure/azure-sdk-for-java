@@ -10,28 +10,34 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** ExecAction describes a "run in container" action. */
+/**
+ * ExecAction describes a "run in container" action.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ExecAction")
 @Fluent
 public final class ExecAction extends ProbeAction {
     /*
-     * Command is the command line to execute inside the container, the working
-     * directory for the command is root ('/') in the container's filesystem.
-     * The command is not run inside a shell, so traditional shell instructions
-     * ('|', etc) won't work. To use a shell, you need to explicitly call out
-     * to that shell. Exit status of 0 is treated as live/healthy and non-zero
-     * is unhealthy.
+     * Command is the command line to execute inside the container, the working directory for the command is root ('/')
+     * in the container's filesystem. The command is not run inside a shell, so traditional shell instructions ('|',
+     * etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as
+     * live/healthy and non-zero is unhealthy.
      */
     @JsonProperty(value = "command")
     private List<String> command;
+
+    /**
+     * Creates an instance of ExecAction class.
+     */
+    public ExecAction() {
+    }
 
     /**
      * Get the command property: Command is the command line to execute inside the container, the working directory for
      * the command is root ('/') in the container's filesystem. The command is not run inside a shell, so traditional
      * shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit
      * status of 0 is treated as live/healthy and non-zero is unhealthy.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -43,7 +49,7 @@ public final class ExecAction extends ProbeAction {
      * the command is root ('/') in the container's filesystem. The command is not run inside a shell, so traditional
      * shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit
      * status of 0 is treated as live/healthy and non-zero is unhealthy.
-     *
+     * 
      * @param command the command value to set.
      * @return the ExecAction object itself.
      */
@@ -54,7 +60,7 @@ public final class ExecAction extends ProbeAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

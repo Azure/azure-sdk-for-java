@@ -20,7 +20,7 @@ public final class VmSkuProfileProperties {
     private ResourceProvisioningState provisioningState;
 
     /*
-     * Array of HybridAKS Support VM Skus
+     * List of supported VM SKUs.
      */
     @JsonProperty(value = "values")
     private List<VmSkuProperties> values;
@@ -41,7 +41,7 @@ public final class VmSkuProfileProperties {
     }
 
     /**
-     * Get the values property: Array of HybridAKS Support VM Skus.
+     * Get the values property: List of supported VM SKUs.
      * 
      * @return the values value.
      */
@@ -50,7 +50,7 @@ public final class VmSkuProfileProperties {
     }
 
     /**
-     * Set the values property: Array of HybridAKS Support VM Skus.
+     * Set the values property: List of supported VM SKUs.
      * 
      * @param values the values value to set.
      * @return the VmSkuProfileProperties object itself.

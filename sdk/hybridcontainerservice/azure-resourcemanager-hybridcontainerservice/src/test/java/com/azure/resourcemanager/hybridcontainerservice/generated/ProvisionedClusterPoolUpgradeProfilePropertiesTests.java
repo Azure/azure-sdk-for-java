@@ -11,7 +11,7 @@ public final class ProvisionedClusterPoolUpgradeProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedClusterPoolUpgradeProfileProperties model
-            = BinaryData.fromString("{\"kubernetesVersion\":\"bciqfouflm\",\"isPreview\":false}")
+            = BinaryData.fromString("{\"kubernetesVersion\":\"wtnhxbnjbiksqr\",\"isPreview\":true}")
                 .toObject(ProvisionedClusterPoolUpgradeProfileProperties.class);
     }
 

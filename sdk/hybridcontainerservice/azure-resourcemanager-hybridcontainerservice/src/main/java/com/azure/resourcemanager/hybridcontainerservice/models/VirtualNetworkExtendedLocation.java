@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The VirtualNetworkExtendedLocation model.
+ * Extended location pointing to the underlying infrastructure.
  */
 @Fluent
 public final class VirtualNetworkExtendedLocation {
     /*
-     * The extended location type.
+     * The extended location type. Allowed value: 'CustomLocation'
      */
     @JsonProperty(value = "type")
-    private String type;
+    private ExtendedLocationTypes type;
 
     /*
-     * The extended location name.
+     * ARM Id of the extended location.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -31,27 +31,27 @@ public final class VirtualNetworkExtendedLocation {
     }
 
     /**
-     * Get the type property: The extended location type.
+     * Get the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @return the type value.
      */
-    public String type() {
+    public ExtendedLocationTypes type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The extended location type.
+     * Set the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @param type the type value to set.
      * @return the VirtualNetworkExtendedLocation object itself.
      */
-    public VirtualNetworkExtendedLocation withType(String type) {
+    public VirtualNetworkExtendedLocation withType(ExtendedLocationTypes type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the name property: The extended location name.
+     * Get the name property: ARM Id of the extended location.
      * 
      * @return the name value.
      */
@@ -60,7 +60,7 @@ public final class VirtualNetworkExtendedLocation {
     }
 
     /**
-     * Set the name property: The extended location name.
+     * Set the name property: ARM Id of the extended location.
      * 
      * @param name the name value to set.
      * @return the VirtualNetworkExtendedLocation object itself.
