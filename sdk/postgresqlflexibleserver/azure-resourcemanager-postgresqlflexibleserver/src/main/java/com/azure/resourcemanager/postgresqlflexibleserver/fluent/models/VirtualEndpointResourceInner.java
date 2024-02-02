@@ -11,7 +11,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a virtual endpoint for a server. */
+/**
+ * Represents a virtual endpoint for a server.
+ */
 @Fluent
 public final class VirtualEndpointResourceInner extends VirtualEndpointResourceForPatch {
     /*
@@ -39,14 +41,16 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VirtualEndpointResourceInner class. */
+    /**
+     * Creates an instance of VirtualEndpointResourceInner class.
+     */
     public VirtualEndpointResourceInner() {
     }
 
     /**
      * Get the id property: Fully qualified resource ID for the resource. E.g.
      * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -55,7 +59,7 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
     /**
      * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
      * "Microsoft.Storage/storageAccounts".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -74,21 +78,25 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualEndpointResourceInner withEndpointType(VirtualEndpointType endpointType) {
         super.withEndpointType(endpointType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualEndpointResourceInner withMembers(List<String> members) {
         super.withMembers(members);
@@ -97,7 +105,7 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

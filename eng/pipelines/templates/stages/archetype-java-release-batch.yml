@@ -91,7 +91,10 @@ stages:
                   - '**/*.xml'
                   - '!sdk/**/test-recordings'
                   - '!sdk/**/session-records'
-
+            
+            - download: current
+              displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+              artifact: ${{parameters.ArtifactName}}-signed
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
               inputs:
@@ -131,6 +134,12 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
+              # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
+              - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceDirectory: ${{parameters.ServiceDirectory}}
+                  ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
             # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
             # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
             # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't

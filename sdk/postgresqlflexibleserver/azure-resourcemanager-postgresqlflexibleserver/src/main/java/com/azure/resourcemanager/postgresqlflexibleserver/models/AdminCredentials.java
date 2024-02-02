@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Server admin credentials. */
+/**
+ * Server admin credentials.
+ */
 @Fluent
 public final class AdminCredentials {
     /*
@@ -23,13 +25,15 @@ public final class AdminCredentials {
     @JsonProperty(value = "targetServerPassword")
     private String targetServerPassword;
 
-    /** Creates an instance of AdminCredentials class. */
+    /**
+     * Creates an instance of AdminCredentials class.
+     */
     public AdminCredentials() {
     }
 
     /**
      * Get the sourceServerPassword property: Password for source server.
-     *
+     * 
      * @return the sourceServerPassword value.
      */
     public String sourceServerPassword() {
@@ -38,7 +42,7 @@ public final class AdminCredentials {
 
     /**
      * Set the sourceServerPassword property: Password for source server.
-     *
+     * 
      * @param sourceServerPassword the sourceServerPassword value to set.
      * @return the AdminCredentials object itself.
      */
@@ -49,7 +53,7 @@ public final class AdminCredentials {
 
     /**
      * Get the targetServerPassword property: Password for target server.
-     *
+     * 
      * @return the targetServerPassword value.
      */
     public String targetServerPassword() {
@@ -58,7 +62,7 @@ public final class AdminCredentials {
 
     /**
      * Set the targetServerPassword property: Password for target server.
-     *
+     * 
      * @param targetServerPassword the targetServerPassword value to set.
      * @return the AdminCredentials object itself.
      */
@@ -69,21 +73,17 @@ public final class AdminCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceServerPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceServerPassword in model AdminCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceServerPassword in model AdminCredentials"));
         }
         if (targetServerPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetServerPassword in model AdminCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetServerPassword in model AdminCredentials"));
         }
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters used to regenerate the login credential. */
+/**
+ * The parameters used to regenerate the login credential.
+ */
 @Fluent
 public final class RegenerateCredentialParameters {
     /*
@@ -17,13 +19,15 @@ public final class RegenerateCredentialParameters {
     @JsonProperty(value = "name", required = true)
     private PasswordName name;
 
-    /** Creates an instance of RegenerateCredentialParameters class. */
+    /**
+     * Creates an instance of RegenerateCredentialParameters class.
+     */
     public RegenerateCredentialParameters() {
     }
 
     /**
      * Get the name property: Specifies name of the password which should be regenerated -- password or password2.
-     *
+     * 
      * @return the name value.
      */
     public PasswordName name() {
@@ -32,7 +36,7 @@ public final class RegenerateCredentialParameters {
 
     /**
      * Set the name property: Specifies name of the password which should be regenerated -- password or password2.
-     *
+     * 
      * @param name the name value to set.
      * @return the RegenerateCredentialParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class RegenerateCredentialParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RegenerateCredentialParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RegenerateCredentialParameters"));
         }
     }
 

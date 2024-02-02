@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.CredentialSetIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list credential sets for a container registry. */
+/**
+ * The result of a request to list credential sets for a container registry.
+ */
 @Fluent
 public final class CredentialSetListResult {
     /*
@@ -25,14 +27,16 @@ public final class CredentialSetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CredentialSetListResult class. */
+    /**
+     * Creates an instance of CredentialSetListResult class.
+     */
     public CredentialSetListResult() {
     }
 
     /**
-     * Get the value property: The list of credential sets. Since this list may be incomplete, the nextLink field should
-     * be used to request the next list of credential sets.
-     *
+     * Get the value property: The list of credential sets. Since this list may be incomplete, the nextLink field
+     * should be used to request the next list of credential sets.
+     * 
      * @return the value value.
      */
     public List<CredentialSetInner> value() {
@@ -40,9 +44,9 @@ public final class CredentialSetListResult {
     }
 
     /**
-     * Set the value property: The list of credential sets. Since this list may be incomplete, the nextLink field should
-     * be used to request the next list of credential sets.
-     *
+     * Set the value property: The list of credential sets. Since this list may be incomplete, the nextLink field
+     * should be used to request the next list of credential sets.
+     * 
      * @param value the value value to set.
      * @return the CredentialSetListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class CredentialSetListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of credential sets.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class CredentialSetListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of credential sets.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CredentialSetListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class CredentialSetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

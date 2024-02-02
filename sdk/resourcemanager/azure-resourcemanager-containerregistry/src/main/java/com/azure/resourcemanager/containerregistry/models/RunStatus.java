@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current status of the run. */
+/**
+ * The current status of the run.
+ */
 public final class RunStatus extends ExpandableStringEnum<RunStatus> {
-    /** Static value Queued for RunStatus. */
+    /**
+     * Static value Queued for RunStatus.
+     */
     public static final RunStatus QUEUED = fromString("Queued");
 
-    /** Static value Started for RunStatus. */
+    /**
+     * Static value Started for RunStatus.
+     */
     public static final RunStatus STARTED = fromString("Started");
 
-    /** Static value Running for RunStatus. */
+    /**
+     * Static value Running for RunStatus.
+     */
     public static final RunStatus RUNNING = fromString("Running");
 
-    /** Static value Succeeded for RunStatus. */
+    /**
+     * Static value Succeeded for RunStatus.
+     */
     public static final RunStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for RunStatus. */
+    /**
+     * Static value Failed for RunStatus.
+     */
     public static final RunStatus FAILED = fromString("Failed");
 
-    /** Static value Canceled for RunStatus. */
+    /**
+     * Static value Canceled for RunStatus.
+     */
     public static final RunStatus CANCELED = fromString("Canceled");
 
-    /** Static value Error for RunStatus. */
+    /**
+     * Static value Error for RunStatus.
+     */
     public static final RunStatus ERROR = fromString("Error");
 
-    /** Static value Timeout for RunStatus. */
+    /**
+     * Static value Timeout for RunStatus.
+     */
     public static final RunStatus TIMEOUT = fromString("Timeout");
 
     /**
      * Creates a new instance of RunStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
 
     /**
      * Creates or finds a RunStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RunStatus.
      */
@@ -56,7 +74,7 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
 
     /**
      * Gets known RunStatus values.
-     *
+     * 
      * @return known RunStatus values.
      */
     public static Collection<RunStatus> values() {

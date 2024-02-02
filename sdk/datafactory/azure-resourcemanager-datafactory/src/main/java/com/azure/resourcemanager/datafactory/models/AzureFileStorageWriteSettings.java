@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Azure File Storage write settings.
@@ -45,6 +46,15 @@ public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
     @Override
     public AzureFileStorageWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFileStorageWriteSettings withMetadata(List<MetadataItem> metadata) {
+        super.withMetadata(metadata);
         return this;
     }
 

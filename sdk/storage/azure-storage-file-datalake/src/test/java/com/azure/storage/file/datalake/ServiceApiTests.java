@@ -501,7 +501,6 @@ public class ServiceApiTests extends DataLakeTestBase {
 
         Response<DataLakeFileSystemClient> response = assertDoesNotThrow(() ->
             serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null));
-
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
     }
 

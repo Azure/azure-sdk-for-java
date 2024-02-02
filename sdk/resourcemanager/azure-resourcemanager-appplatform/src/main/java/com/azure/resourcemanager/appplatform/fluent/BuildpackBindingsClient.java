@@ -18,13 +18,59 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BuildpackBindingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BuildpackBindingsClient.
+ */
 public interface BuildpackBindingsClient {
     /**
-     * Get a buildpack binding by name.
-     *
+     * Get collection of buildpack bindings under all builders.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BuildpackBindingResourceInner> listForClusterAsync(String resourceGroupName, String serviceName);
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BuildpackBindingResourceInner> listForCluster(String resourceGroupName, String serviceName);
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BuildpackBindingResourceInner> listForCluster(String resourceGroupName, String serviceName,
+        Context context);
+
+    /**
+     * Get a buildpack binding by name.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -35,18 +81,14 @@ public interface BuildpackBindingsClient {
      * @return a buildpack binding by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
+    Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName);
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -57,40 +99,14 @@ public interface BuildpackBindingsClient {
      * @return a buildpack binding by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BuildpackBindingResourceInner> getAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
+    Mono<BuildpackBindingResourceInner> getAsync(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName);
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @param buildpackBindingName The name of the Buildpack Binding Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a buildpack binding by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BuildpackBindingResourceInner get(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
-
-    /**
-     * Get a buildpack binding by name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -102,19 +118,32 @@ public interface BuildpackBindingsClient {
      * @return a buildpack binding by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BuildpackBindingResourceInner> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context);
+    Response<BuildpackBindingResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context);
+
+    /**
+     * Get a buildpack binding by name.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param buildpackBindingName The name of the Buildpack Binding Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a buildpack binding by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BuildpackBindingResourceInner get(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -126,19 +155,15 @@ public interface BuildpackBindingsClient {
      * @return buildpack Binding Resource object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
         BuildpackBindingResourceInner buildpackBinding);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -151,18 +176,14 @@ public interface BuildpackBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding);
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -175,18 +196,14 @@ public interface BuildpackBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding);
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -200,19 +217,14 @@ public interface BuildpackBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
-        Context context);
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding, Context context);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -224,19 +236,15 @@ public interface BuildpackBindingsClient {
      * @return buildpack Binding Resource object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BuildpackBindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
+    Mono<BuildpackBindingResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
         BuildpackBindingResourceInner buildpackBinding);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -248,19 +256,14 @@ public interface BuildpackBindingsClient {
      * @return buildpack Binding Resource object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BuildpackBindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding);
+    BuildpackBindingResourceInner createOrUpdate(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding);
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -273,20 +276,15 @@ public interface BuildpackBindingsClient {
      * @return buildpack Binding Resource object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BuildpackBindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
+    BuildpackBindingResourceInner createOrUpdate(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding,
         Context context);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -297,18 +295,14 @@ public interface BuildpackBindingsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -319,18 +313,14 @@ public interface BuildpackBindingsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -341,18 +331,14 @@ public interface BuildpackBindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -364,19 +350,14 @@ public interface BuildpackBindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -387,18 +368,14 @@ public interface BuildpackBindingsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
+    Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         String buildpackBindingName);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -408,18 +385,14 @@ public interface BuildpackBindingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
+    void delete(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         String buildpackBindingName);
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -430,19 +403,14 @@ public interface BuildpackBindingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context);
+    void delete(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, Context context);
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -450,17 +418,17 @@ public interface BuildpackBindingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BuildpackBindingResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    PagedFlux<BuildpackBindingResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -468,17 +436,17 @@ public interface BuildpackBindingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BuildpackBindingResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName);
+    PagedIterable<BuildpackBindingResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName);
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -487,9 +455,9 @@ public interface BuildpackBindingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BuildpackBindingResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context);
+    PagedIterable<BuildpackBindingResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context);
 }

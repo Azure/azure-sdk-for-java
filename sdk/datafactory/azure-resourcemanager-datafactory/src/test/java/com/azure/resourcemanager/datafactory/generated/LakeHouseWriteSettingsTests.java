@@ -6,19 +6,24 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.LakeHouseWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"dataolgelsgnenjtxu\",\"disableMetricsCollection\":\"datadmrqa\",\"copyBehavior\":\"databyjahbzb\",\"\":{\"rlazcgwn\":\"dataacbwmvphmjyzice\"}}")
+            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"dataotclmbk\",\"disableMetricsCollection\":\"datajryt\",\"copyBehavior\":\"datafnoj\",\"metadata\":[{\"name\":\"datanthjqgovviv\",\"value\":\"dataxytrafettwytavp\"},{\"name\":\"datalgyql\",\"value\":\"datalgspy\"},{\"name\":\"dataapnhhvp\",\"value\":\"datakourqviy\"}],\"\":{\"jtcpdtd\":\"dataegwezgfqo\",\"kajmnvbigmn\":\"datalyogzbasjckakik\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("dataolgelsgnenjtxu")
-            .withDisableMetricsCollection("datadmrqa").withCopyBehavior("databyjahbzb");
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("dataotclmbk")
+            .withDisableMetricsCollection("datajryt").withCopyBehavior("datafnoj")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datanthjqgovviv").withValue("dataxytrafettwytavp"),
+                new MetadataItem().withName("datalgyql").withValue("datalgspy"),
+                new MetadataItem().withName("dataapnhhvp").withValue("datakourqviy")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

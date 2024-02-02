@@ -21,7 +21,7 @@ public final class RelativeMonthlySchedule {
 
     /*
      * The week index.
-     *
+     * 
      * Specifies on which week of the month the dayOfWeek applies.
      */
     @JsonProperty(value = "weekIndex", required = true)
@@ -41,7 +41,7 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Get the intervalMonths property: Specifies the number of months between each set of occurrences.
-     *
+     * 
      * @return the intervalMonths value.
      */
     public int intervalMonths() {
@@ -50,7 +50,7 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Set the intervalMonths property: Specifies the number of months between each set of occurrences.
-     *
+     * 
      * @param intervalMonths the intervalMonths value to set.
      * @return the RelativeMonthlySchedule object itself.
      */
@@ -61,9 +61,9 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Get the weekIndex property: The week index.
-     *
+     * 
      * Specifies on which week of the month the dayOfWeek applies.
-     *
+     * 
      * @return the weekIndex value.
      */
     public Type weekIndex() {
@@ -72,9 +72,9 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Set the weekIndex property: The week index.
-     *
+     * 
      * Specifies on which week of the month the dayOfWeek applies.
-     *
+     * 
      * @param weekIndex the weekIndex value to set.
      * @return the RelativeMonthlySchedule object itself.
      */
@@ -85,7 +85,7 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Get the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public WeekDay dayOfWeek() {
@@ -94,7 +94,7 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Set the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the RelativeMonthlySchedule object itself.
      */
@@ -105,7 +105,7 @@ public final class RelativeMonthlySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,37 +30,26 @@ public final class OperationsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"tmninw\",\"display\":{\"provider\":\"cilnghgshejjt\",\"resource\":\"qmuluxlxqz\",\"operation\":\"ers\",\"description\":\"cucrwnamikze\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"swhvhczznvfbycj\":\"datawziqgfuhokzr\",\"xzv\":\"dataxjww\"}},{\"name\":\"wmxqhndvnoamlds\",\"display\":{\"provider\":\"ohdjhhflzok\",\"resource\":\"ox\",\"operation\":\"lnjetaglt\",\"description\":\"oatftgzpnpbswvef\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"xp\":\"dataozihmipgawt\"}},{\"name\":\"jcxcjxgrytfmpcyc\",\"display\":{\"provider\":\"mcayk\",\"resource\":\"noxuztrksx\",\"operation\":\"ndfcpfn\",\"description\":\"thjtwk\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"iosmgbzahgxqdly\":\"datazvoamktc\",\"ap\":\"datatlt\",\"oqeq\":\"dataltzkatbhjmznnb\",\"ebwlnbmhyreeudzq\":\"datalarvlagunbtg\"}},{\"name\":\"bpdqmjxlyy\",\"display\":{\"provider\":\"gouwtlmj\",\"resource\":\"uojqt\",\"operation\":\"axkjeytunlbfjk\",\"description\":\"u\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"qunjqh\":\"datay\"}}],\"nextLink\":\"nxaulk\"}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"tmninw\",\"display\":{\"provider\":\"cilnghgshejjt\",\"resource\":\"qmuluxlxqz\",\"operation\":\"ers\",\"description\":\"cucrwnamikze\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"swhvhczznvfbycj\":\"datawziqgfuhokzr\",\"xzv\":\"dataxjww\"}},{\"name\":\"wmxqhndvnoamlds\",\"display\":{\"provider\":\"ohdjhhflzok\",\"resource\":\"ox\",\"operation\":\"lnjetaglt\",\"description\":\"oatftgzpnpbswvef\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"xp\":\"dataozihmipgawt\"}},{\"name\":\"jcxcjxgrytfmpcyc\",\"display\":{\"provider\":\"mcayk\",\"resource\":\"noxuztrksx\",\"operation\":\"ndfcpfn\",\"description\":\"thjtwk\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"iosmgbzahgxqdly\":\"datazvoamktc\",\"ap\":\"datatlt\",\"oqeq\":\"dataltzkatbhjmznnb\",\"ebwlnbmhyreeudzq\":\"datalarvlagunbtg\"}},{\"name\":\"bpdqmjxlyy\",\"display\":{\"provider\":\"gouwtlmj\",\"resource\":\"uojqt\",\"operation\":\"axkjeytunlbfjk\",\"description\":\"u\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"qunjqh\":\"datay\"}}],\"nextLink\":\"nxaulk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PostgreSqlManager manager =
-            PostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PostgreSqlManager manager = PostgreSqlManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationListResult response =
-            manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+        OperationListResult response
+            = manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(false, response.value().get(0).isDataAction());
         Assertions.assertEquals("nxaulk", response.nextLink());

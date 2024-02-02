@@ -13,7 +13,7 @@ public final class SynapseSparkJobReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SynapseSparkJobReference model
-            = BinaryData.fromString("{\"type\":\"SparkJobDefinitionReference\",\"referenceName\":\"datacnvrbhqxewdc\"}")
+            = BinaryData.fromString("{\"type\":\"SparkJobDefinitionReference\",\"referenceName\":\"dataonrrarznlr\"}")
                 .toObject(SynapseSparkJobReference.class);
         Assertions.assertEquals(SparkJobReferenceType.SPARK_JOB_DEFINITION_REFERENCE, model.type());
     }
@@ -21,7 +21,7 @@ public final class SynapseSparkJobReferenceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SynapseSparkJobReference model = new SynapseSparkJobReference()
-            .withType(SparkJobReferenceType.SPARK_JOB_DEFINITION_REFERENCE).withReferenceName("datacnvrbhqxewdc");
+            .withType(SparkJobReferenceType.SPARK_JOB_DEFINITION_REFERENCE).withReferenceName("dataonrrarznlr");
         model = BinaryData.fromObject(model).toObject(SynapseSparkJobReference.class);
         Assertions.assertEquals(SparkJobReferenceType.SPARK_JOB_DEFINITION_REFERENCE, model.type());
     }

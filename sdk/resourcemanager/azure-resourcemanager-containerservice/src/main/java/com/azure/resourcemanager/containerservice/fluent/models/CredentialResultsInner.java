@@ -28,7 +28,7 @@ public final class CredentialResultsInner {
 
     /**
      * Get the kubeconfigs property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     public List<CredentialResult> kubeconfigs() {
@@ -37,7 +37,7 @@ public final class CredentialResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

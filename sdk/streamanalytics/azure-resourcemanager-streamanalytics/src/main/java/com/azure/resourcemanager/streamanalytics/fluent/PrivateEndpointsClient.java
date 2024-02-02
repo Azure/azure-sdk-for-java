@@ -13,56 +13,69 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointsClient.
+ */
 public interface PrivateEndpointsClient {
     /**
      * Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateEndpoint The definition of the private endpoint that will be used to create a new cluster or
-     *     replace the existing one.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return complete information about the private endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointInner createOrUpdate(
-        String resourceGroupName, String clusterName, String privateEndpointName, PrivateEndpointInner privateEndpoint);
-
-    /**
-     * Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param privateEndpoint The definition of the private endpoint that will be used to create a new cluster or
-     *     replace the existing one.
+     * replace the existing one.
      * @param ifMatch The ETag of the resource. Omit this value to always overwrite the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing record
-     *     set. Other values will result in a 412 Pre-condition Failed response.
+     * set. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return complete information about the private endpoint.
+     * @return complete information about the private endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String privateEndpointName,
-        PrivateEndpointInner privateEndpoint,
-        String ifMatch,
-        String ifNoneMatch,
+    Response<PrivateEndpointInner> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointName, PrivateEndpointInner privateEndpoint, String ifMatch, String ifNoneMatch,
         Context context);
 
     /**
+     * Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param privateEndpoint The definition of the private endpoint that will be used to create a new cluster or
+     * replace the existing one.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return complete information about the private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointInner createOrUpdate(String resourceGroupName, String clusterName, String privateEndpointName,
+        PrivateEndpointInner privateEndpoint);
+
+    /**
      * Gets information about the specified Private Endpoint.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Private Endpoint along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointInner> getWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointName, Context context);
+
+    /**
+     * Gets information about the specified Private Endpoint.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -75,8 +88,23 @@ public interface PrivateEndpointsClient {
     PrivateEndpointInner get(String resourceGroupName, String clusterName, String privateEndpointName);
 
     /**
-     * Gets information about the specified Private Endpoint.
-     *
+     * Delete the specified private endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param privateEndpointName The name of the private endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointName);
+
+    /**
+     * Delete the specified private endpoint.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -84,46 +112,15 @@ public interface PrivateEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Private Endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointInner> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointName, Context context);
-
-    /**
-     * Delete the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String privateEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String privateEndpointName, Context context);
 
     /**
      * Delete the specified private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String privateEndpointName, Context context);
-
-    /**
-     * Delete the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -136,7 +133,7 @@ public interface PrivateEndpointsClient {
 
     /**
      * Delete the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -150,27 +147,27 @@ public interface PrivateEndpointsClient {
 
     /**
      * Lists the private endpoints in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoints.
+     * @return a list of private endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
      * Lists the private endpoints in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoints.
+     * @return a list of private endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointInner> listByCluster(String resourceGroupName, String clusterName, Context context);

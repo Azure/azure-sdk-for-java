@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupJobs. */
+/**
+ * Resource collection API of BackupJobs.
+ */
 public interface BackupJobs {
     /**
      * Provides a pageable list of jobs.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface BackupJobs {
 
     /**
      * Provides a pageable list of jobs.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -34,6 +36,6 @@ public interface BackupJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Job resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobResource> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<JobResource> list(String vaultName, String resourceGroupName, String filter, String skipToken,
+        Context context);
 }

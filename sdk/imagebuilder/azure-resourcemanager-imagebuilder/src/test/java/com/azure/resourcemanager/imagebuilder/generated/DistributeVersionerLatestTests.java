@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DistributeVersionerLatestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DistributeVersionerLatest model =
-            BinaryData
-                .fromString("{\"scheme\":\"Latest\",\"major\":828238885}")
-                .toObject(DistributeVersionerLatest.class);
-        Assertions.assertEquals(828238885, model.major());
+        DistributeVersionerLatest model = BinaryData.fromString("{\"scheme\":\"Latest\",\"major\":29207263}")
+            .toObject(DistributeVersionerLatest.class);
+        Assertions.assertEquals(29207263, model.major());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DistributeVersionerLatest model = new DistributeVersionerLatest().withMajor(828238885);
+        DistributeVersionerLatest model = new DistributeVersionerLatest().withMajor(29207263);
         model = BinaryData.fromObject(model).toObject(DistributeVersionerLatest.class);
-        Assertions.assertEquals(828238885, model.major());
+        Assertions.assertEquals(29207263, model.major());
     }
 }

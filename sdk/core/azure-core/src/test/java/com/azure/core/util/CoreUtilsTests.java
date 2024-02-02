@@ -544,7 +544,7 @@ public class CoreUtilsTests {
         try {
             AtomicBoolean completed = new AtomicBoolean(false);
             Future<?> future = executorService.submit(() -> {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
                 completed.set(true);
                 return null;
             });
@@ -557,7 +557,7 @@ public class CoreUtilsTests {
             }
 
             // Give time for the future to complete if cancellation didn't work.
-            Thread.sleep(1000);
+            Thread.sleep(5000);
 
             assertFalse(completed.get());
         } catch (InterruptedException | ExecutionException e) {
@@ -666,5 +666,28 @@ public class CoreUtilsTests {
             Arguments.of(Duration.ofDays(-100), "-P100D"),
             Arguments.of(Duration.ofDays(-101), "-P101D")
         );
+    }
+
+    @Test
+    public void addShutdownHookWithNullExecutorServiceDoesNothing() {
+        assertNull(CoreUtils.addShutdownHookSafely(null, null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNull() {
+        assertThrows(NullPointerException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNegative() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ofSeconds(-1)));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeZero() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ZERO));
     }
 }

@@ -11,17 +11,17 @@ public final class Office365SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Office365Source model = BinaryData.fromString(
-            "{\"type\":\"Office365Source\",\"allowedGroups\":\"dataul\",\"userScopeFilterUri\":\"dataaycnkirmiecfmqc\",\"dateFilterColumn\":\"datapcdbvcxo\",\"startTime\":\"datahefuhnbdl\",\"endTime\":\"datawectz\",\"outputColumns\":\"datagvcbt\",\"sourceRetryCount\":\"datampnkyvujhej\",\"sourceRetryWait\":\"datarvlguy\",\"maxConcurrentConnections\":\"datarngnbqhmuqyzxko\",\"disableMetricsCollection\":\"datarcjshtcfnbf\",\"\":{\"huboqozx\":\"dataxlyhxpdqo\"}}")
+            "{\"type\":\"Office365Source\",\"allowedGroups\":\"dataxoavlwwpvjrnjwvc\",\"userScopeFilterUri\":\"datarqlceflgsndur\",\"dateFilterColumn\":\"dataozjwm\",\"startTime\":\"datadehjloz\",\"endTime\":\"datawokuxedpqwzzzi\",\"outputColumns\":\"databxjgxrhajr\",\"sourceRetryCount\":\"datacv\",\"sourceRetryWait\":\"datave\",\"maxConcurrentConnections\":\"datafmd\",\"disableMetricsCollection\":\"dataf\",\"\":{\"uclkbw\":\"datalp\"}}")
             .toObject(Office365Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Office365Source model = new Office365Source().withSourceRetryCount("datampnkyvujhej")
-            .withSourceRetryWait("datarvlguy").withMaxConcurrentConnections("datarngnbqhmuqyzxko")
-            .withDisableMetricsCollection("datarcjshtcfnbf").withAllowedGroups("dataul")
-            .withUserScopeFilterUri("dataaycnkirmiecfmqc").withDateFilterColumn("datapcdbvcxo")
-            .withStartTime("datahefuhnbdl").withEndTime("datawectz").withOutputColumns("datagvcbt");
+        Office365Source model = new Office365Source().withSourceRetryCount("datacv").withSourceRetryWait("datave")
+            .withMaxConcurrentConnections("datafmd").withDisableMetricsCollection("dataf")
+            .withAllowedGroups("dataxoavlwwpvjrnjwvc").withUserScopeFilterUri("datarqlceflgsndur")
+            .withDateFilterColumn("dataozjwm").withStartTime("datadehjloz").withEndTime("datawokuxedpqwzzzi")
+            .withOutputColumns("databxjgxrhajr");
         model = BinaryData.fromObject(model).toObject(Office365Source.class);
     }
 }

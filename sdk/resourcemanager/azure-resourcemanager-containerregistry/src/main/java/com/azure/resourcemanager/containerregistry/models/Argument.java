@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a run argument. */
+/**
+ * The properties of a run argument.
+ */
 @Fluent
 public final class Argument {
     /*
@@ -29,13 +31,15 @@ public final class Argument {
     @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
-    /** Creates an instance of Argument class. */
+    /**
+     * Creates an instance of Argument class.
+     */
     public Argument() {
     }
 
     /**
      * Get the name property: The name of the argument.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class Argument {
 
     /**
      * Set the name property: The name of the argument.
-     *
+     * 
      * @param name the name value to set.
      * @return the Argument object itself.
      */
@@ -55,7 +59,7 @@ public final class Argument {
 
     /**
      * Get the value property: The value of the argument.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +68,7 @@ public final class Argument {
 
     /**
      * Set the value property: The value of the argument.
-     *
+     * 
      * @param value the value value to set.
      * @return the Argument object itself.
      */
@@ -76,7 +80,7 @@ public final class Argument {
     /**
      * Get the isSecret property: Flag to indicate whether the argument represents a secret and want to be removed from
      * build logs.
-     *
+     * 
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -86,7 +90,7 @@ public final class Argument {
     /**
      * Set the isSecret property: Flag to indicate whether the argument represents a secret and want to be removed from
      * build logs.
-     *
+     * 
      * @param isSecret the isSecret value to set.
      * @return the Argument object itself.
      */
@@ -97,7 +101,7 @@ public final class Argument {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
