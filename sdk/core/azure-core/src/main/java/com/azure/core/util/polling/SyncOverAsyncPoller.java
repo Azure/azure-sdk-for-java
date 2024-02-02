@@ -136,6 +136,43 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     }
 
     @Override
+    public PollResponse<T> waitForCompletion(Duration operationTimeout, Duration waitTimeout) {
+        validateTimeout(operationTimeout, LOGGER);
+        validateTimeout(waitTimeout, LOGGER);
+        if (operationTimeout.compareTo(waitTimeout) > 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Operation timeout should be less than or equal to wait timeout."));
+        }
+
+        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            return currentTerminalPollContext.getLatestResponse();
+        }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            // timeout for each poll operation
+            .timeout(operationTimeout,
+                Mono.error(() -> new TimeoutException("Polling didn't complete before the operation timeout period.")))
+            // take with a timeout to halt the loop once the wait timeout period elapses
+            .take(waitTimeout)
+            .switchIfEmpty(
+                Mono.error(() -> new TimeoutException("Polling didn't complete before the wait timeout period.")))
+            .takeUntil(apr -> apr.getStatus().isComplete()) // take until terminal status
+            .last()
+            .flatMap(response -> {
+                if (response != null && response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return Mono.just(PollingUtil.toPollResponse(response));
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
+    }
+
+    @Override
     public PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
@@ -186,6 +223,40 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     }
 
     @Override
+    public PollResponse<T> waitUntil(Duration operationTimeout, Duration waitTimeout,
+        LongRunningOperationStatus statusToWaitFor) {
+        validateTimeout(operationTimeout, LOGGER);
+        validateTimeout(waitTimeout, LOGGER);
+        Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
+        if (operationTimeout.compareTo(waitTimeout) > 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Operation timeout should be less than or equal to wait timeout."));
+        }
+
+        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            // Don't attempt to waitUntil status as it will never happen.
+            return currentTerminalPollContext.getLatestResponse();
+        }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .timeout(operationTimeout, Mono.empty())
+            .take(waitTimeout) // take until the timeout happens
+            .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // take until terminal status
+            .takeLast(1)
+            .flatMap(response -> {
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                }
+                return Mono.just(PollingUtil.toPollResponse(response));
+            })
+            .switchIfEmpty(Mono.fromCallable(this.pollingContext::getLatestResponse))
+            .blockLast();
+    }
+
+    @Override
     public U getFinalResult() {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
@@ -205,6 +276,8 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public U getFinalResult(Duration timeout) {
+        validateTimeout(timeout, LOGGER);
+
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
             // If the terminal poll context is not null, then the operation has already completed.
@@ -222,6 +295,43 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
                     return response.getFinalResult();
                 } else {
                     return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
+    }
+
+    @Override
+    public U getFinalResult(Duration operationTimeout, Duration waitTimeout) {
+        validateTimeout(operationTimeout, LOGGER);
+        validateTimeout(waitTimeout, LOGGER);
+        if (operationTimeout.compareTo(waitTimeout) > 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Operation timeout should be less than or equal to wait timeout."));
+        }
+
+        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            return this.fetchResultOperation.apply(currentTerminalPollContext).block();
+        }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            // timeout for each poll operation
+            .timeout(operationTimeout,
+                Mono.error(() -> new TimeoutException("Polling didn't complete before the operation timeout period.")))
+            // take with a timeout to halt the loop once the wait timeout period elapses
+            .take(waitTimeout)
+            .switchIfEmpty(
+                Mono.error(() -> new TimeoutException("Polling didn't complete before the wait timeout period.")))
+            .takeUntil(apr -> apr.getStatus().isComplete()) // take until terminal status
+            .last()
+            .flatMap(response -> {
+                if (response != null && response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return response.getFinalResult();
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the wait timeout period."));
                 }
             })
             .block();

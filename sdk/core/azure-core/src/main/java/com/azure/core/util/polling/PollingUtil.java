@@ -31,11 +31,12 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
 class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
 
-    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
-        LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        Duration pollInterval, boolean isWaitForStatus) {
-        boolean timeBound = timeout != null;
-        long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
+    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration operationTimeout,
+        Duration waitTimeout, LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>,
+        PollResponse<T>> pollOperation, Duration pollInterval, boolean isWaitForStatus) {
+        boolean timeBound = operationTimeout != null && waitTimeout != null;
+        long operationTimeoutMills = timeBound ? operationTimeout.toMillis() : -1;
+        long waitTimeoutMillis = timeBound ? waitTimeout.toMillis() : -1;
         long startTime = System.currentTimeMillis();
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
 
@@ -44,12 +45,12 @@ class PollingUtil {
         try {
             while (!intermediatePollResponse.getStatus().isComplete()) {
                 long elapsedTime = System.currentTimeMillis() - startTime;
-                if (timeBound && elapsedTime >= timeoutInMillis) {
+                if (timeBound && elapsedTime >= waitTimeoutMillis) {
                     if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
                         return intermediatePollResponse;
                     } else {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
-                            new TimeoutException("Polling didn't complete before the timeout period.")));
+                            new TimeoutException("Polling didn't complete before the operation timeout period.")));
                     }
                 }
 
@@ -67,11 +68,11 @@ class PollingUtil {
                 }
 
                 try {
-                    long pollTimeout = timeBound ? timeoutInMillis - elapsedTime : -1;
+                    long pollTimeout = timeBound ? operationTimeoutMills - elapsedTime : -1;
                     intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
                     pollingContext.setLatestResponse(intermediatePollResponse);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    // waitUntil should not throw when timeout is reached.
+                    // waitUntil should not throw when operationTimeout is reached.
                     if (isWaitForStatus) {
                         return intermediatePollResponse;
                     }
