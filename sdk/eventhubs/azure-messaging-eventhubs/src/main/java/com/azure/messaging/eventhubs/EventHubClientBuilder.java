@@ -719,9 +719,7 @@ public class EventHubClientBuilder implements
      * Sets the count used by the receiver to control the number of events per partition the Event Hub consumer will actively receive
      * and queue locally without regard to whether a receive operation is currently active.
      *
-     * Defaults to 500 events per partition.
-     *
-     * @param prefetchCount The amount of events per partition to queue locally.
+     * @param prefetchCount The amount of events per partition to queue locally. Defaults to 500 events per partition.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than {@link #MINIMUM_PREFETCH_COUNT 1} or

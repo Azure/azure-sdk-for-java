@@ -19,8 +19,6 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -450,7 +448,6 @@ public class PartitionPumpManagerTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {1, 16, 64, 128})
-    @Execution(ExecutionMode.SAME_THREAD)
     public void processBatchPrefetch(int maxBatchSize) throws InterruptedException {
         // Arrange
         final int batches = 5;
@@ -471,7 +468,7 @@ public class PartitionPumpManagerTest {
 
         Flux<PartitionEvent> events = Flux.generate(s -> {
             int publishedIndex = publishedCounter.getAndIncrement();
-            if (publishedIndex < maxBatchSize * batches + prefetch) {
+            if (publishedIndex <= maxBatchSize * batches + prefetch + 1000) {
                 s.next(createEvent(retrievalTime, publishedIndex));
             } else {
                 s.complete();
@@ -503,7 +500,6 @@ public class PartitionPumpManagerTest {
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
             assertTrue(maxPrefetched.get() <= maxExpectedPrefetched,
                 String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
-
         } finally {
             manager.stopAllPartitionPumps();
         }
