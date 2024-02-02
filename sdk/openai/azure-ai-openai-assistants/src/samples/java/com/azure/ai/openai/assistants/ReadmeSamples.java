@@ -46,8 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.ai.openai.assistants.FunctionToolCallSample.createAssistantThread;
-
 public final class ReadmeSamples {
     private AssistantsClient client = new AssistantsClientBuilder().buildClient();
 
