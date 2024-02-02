@@ -34,7 +34,7 @@ public class TestUtils {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients().forEach(httpClient -> Arrays.stream(OpenAIServiceVersion.values())
+        getHttpClients().forEach(httpClient -> Arrays.stream(AssistantsServiceVersion.values())
                 .filter(TestUtils::shouldServiceVersionBeTested)
                 .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
@@ -45,7 +45,7 @@ public class TestUtils {
      *
      * <ul>
      * <li>Using latest service version as default if no environment variable is set.</li>
-     * <li>If it's set to ALL, all Service versions in {@link OpenAIServiceVersion} will be tested.</li>
+     * <li>If it's set to ALL, all Service versions in {@link AssistantsServiceVersion} will be tested.</li>
      * <li>Otherwise, Service version string should match env variable.</li>
      * </ul>
      *
@@ -56,9 +56,9 @@ public class TestUtils {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(OpenAIServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(AssistantsServiceVersion serviceVersion) {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return OpenAIServiceVersion.getLatest().equals(serviceVersion);
+            return AssistantsServiceVersion.getLatest().equals(serviceVersion);
         }
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;

@@ -28,7 +28,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantTextFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantTextFileRunner(uploadFileRequest -> {
             StepVerifier.create(
@@ -73,7 +73,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantImageFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantImageFileRunner(uploadFileRequest -> {
             StepVerifier.create(
