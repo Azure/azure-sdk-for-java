@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a credential set resource. */
+/**
+ * The properties of a credential set resource.
+ */
 @Fluent
 public final class CredentialSetProperties {
     /*
@@ -39,13 +41,15 @@ public final class CredentialSetProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of CredentialSetProperties class. */
+    /**
+     * Creates an instance of CredentialSetProperties class.
+     */
     public CredentialSetProperties() {
     }
 
     /**
      * Get the loginServer property: The credentials are stored for this upstream or login server.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -54,7 +58,7 @@ public final class CredentialSetProperties {
 
     /**
      * Set the loginServer property: The credentials are stored for this upstream or login server.
-     *
+     * 
      * @param loginServer the loginServer value to set.
      * @return the CredentialSetProperties object itself.
      */
@@ -64,9 +68,9 @@ public final class CredentialSetProperties {
     }
 
     /**
-     * Get the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Get the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @return the authCredentials value.
      */
     public List<AuthCredential> authCredentials() {
@@ -74,9 +78,9 @@ public final class CredentialSetProperties {
     }
 
     /**
-     * Set the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Set the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @param authCredentials the authCredentials value to set.
      * @return the CredentialSetProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class CredentialSetProperties {
 
     /**
      * Get the creationDate property: The creation date of credential store resource.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -96,7 +100,7 @@ public final class CredentialSetProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -105,7 +109,7 @@ public final class CredentialSetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The parameters for a task run request. */
+/**
+ * The parameters for a task run request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TaskRunRequest")
 @Fluent
@@ -27,13 +29,15 @@ public final class TaskRunRequest extends RunRequest {
     @JsonProperty(value = "overrideTaskStepProperties")
     private OverrideTaskStepProperties overrideTaskStepProperties;
 
-    /** Creates an instance of TaskRunRequest class. */
+    /**
+     * Creates an instance of TaskRunRequest class.
+     */
     public TaskRunRequest() {
     }
 
     /**
      * Get the taskId property: The resource ID of task against which run has to be queued.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -42,7 +46,7 @@ public final class TaskRunRequest extends RunRequest {
 
     /**
      * Set the taskId property: The resource ID of task against which run has to be queued.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the TaskRunRequest object itself.
      */
@@ -54,7 +58,7 @@ public final class TaskRunRequest extends RunRequest {
     /**
      * Get the overrideTaskStepProperties property: Set of overridable parameters that can be passed when running a
      * Task.
-     *
+     * 
      * @return the overrideTaskStepProperties value.
      */
     public OverrideTaskStepProperties overrideTaskStepProperties() {
@@ -64,7 +68,7 @@ public final class TaskRunRequest extends RunRequest {
     /**
      * Set the overrideTaskStepProperties property: Set of overridable parameters that can be passed when running a
      * Task.
-     *
+     * 
      * @param overrideTaskStepProperties the overrideTaskStepProperties value to set.
      * @return the TaskRunRequest object itself.
      */
@@ -73,21 +77,27 @@ public final class TaskRunRequest extends RunRequest {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskRunRequest withAgentPoolName(String agentPoolName) {
         super.withAgentPoolName(agentPoolName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskRunRequest withLogTemplate(String logTemplate) {
         super.withLogTemplate(logTemplate);
@@ -96,16 +106,15 @@ public final class TaskRunRequest extends RunRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (taskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));
         }
         if (overrideTaskStepProperties() != null) {
             overrideTaskStepProperties().validate();

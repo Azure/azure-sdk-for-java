@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.35.1 (2024-01-31)
+
+### Bugs Fixed
+
+- Mitigated backend error when creating Function App in Azure Container Apps environment.
+
 ## 2.35.0 (2024-01-26)
 
 ### Other Changes

@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An object that represents a webhook for a container registry. */
+/**
+ * An object that represents a webhook for a container registry.
+ */
 @Fluent
 public final class WebhookInner extends Resource {
     /*
@@ -29,13 +31,15 @@ public final class WebhookInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WebhookInner class. */
+    /**
+     * Creates an instance of WebhookInner class.
+     */
     public WebhookInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the webhook.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookProperties innerProperties() {
@@ -44,21 +48,25 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +75,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -76,7 +84,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookInner object itself.
      */
@@ -92,7 +100,7 @@ public final class WebhookInner extends Resource {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -103,7 +111,7 @@ public final class WebhookInner extends Resource {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookInner object itself.
      */
@@ -117,7 +125,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -126,7 +134,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookInner object itself.
      */
@@ -140,7 +148,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the webhook at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -149,7 +157,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
