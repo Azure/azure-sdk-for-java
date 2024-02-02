@@ -1,6 +1,6 @@
 # Release History
 
-## 1.46.0 (2024-02-01)
+## 1.46.0 (2024-02-02)
 
 ### Features Added
 
