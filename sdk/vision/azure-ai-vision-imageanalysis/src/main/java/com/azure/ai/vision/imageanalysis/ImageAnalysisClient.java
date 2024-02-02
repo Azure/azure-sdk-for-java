@@ -576,7 +576,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      * <pre>
      * &#47;&#47;
@@ -632,7 +632,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
      * <pre>
      * &#47;&#47;

@@ -4,12 +4,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.core.util.ServiceVersion;
-
 /**
  * Service version of DocumentIntelligenceClient.
  */
-public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
+public enum DocumentIntelligenceServiceVersion implements com.azure.core.util.ServiceVersion {
     /**
      * Enum value 2023-10-31-preview.
      */
