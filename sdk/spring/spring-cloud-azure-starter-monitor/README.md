@@ -41,9 +41,9 @@ by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/ins
 
 ### Enable OpenTelemetry features
 
-All the features described in the [OpenTelemetry Spring Boot starter][otel_spring_starter] documentation work with _Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application_.
+All the features described in the [OpenTelemetry Spring Boot starter][otel_spring_starter] documentation work with Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
 
-_You have just to replace the `opentelemetry-spring-boot-starter` dependency by the `spring-cloud-azure-starter-monitor` one._
+You have just to replace the `opentelemetry-spring-boot-starter` dependency by the `spring-cloud-azure-starter-monitor` one.
 
 ### Azure Monitor configuration
 
