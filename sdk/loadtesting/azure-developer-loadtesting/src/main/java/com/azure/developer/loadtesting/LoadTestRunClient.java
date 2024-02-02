@@ -299,7 +299,6 @@ public final class LoadTestRunClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response to a metrics query as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetrics(String testRunId, String metricName, String metricNamespace,
         String timespan, RequestOptions requestOptions) {
