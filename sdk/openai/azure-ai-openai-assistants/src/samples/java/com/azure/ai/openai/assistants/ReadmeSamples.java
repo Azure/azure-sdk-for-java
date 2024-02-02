@@ -29,7 +29,6 @@ import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
@@ -164,7 +163,7 @@ public final class ReadmeSamples {
         BinaryData fileData = BinaryData.fromFile(filePath);
         FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
 
-        OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(fileDetails, FilePurpose.ASSISTANTS));
+        OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
         // END: readme-sample-uploadFile
 
         // BEGIN: readme-sample-createRetrievalAssistant

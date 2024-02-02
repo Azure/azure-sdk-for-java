@@ -3,6 +3,8 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
+import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -24,8 +26,6 @@ import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
-import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -218,25 +218,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(assistantOptions, threadCreationOptions);
     }
 
-    void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-            FilePurpose.ASSISTANTS);
-        testRunner.accept(uploadFileRequest);
+    void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        testRunner.accept(new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+                FilePurpose.ASSISTANTS);
     }
 
-    void uploadAssistantImageFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png"))),
-            FilePurpose.ASSISTANTS);
-        testRunner.accept(uploadFileRequest);
+    void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        testRunner.accept(new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png"))),
+                FilePurpose.ASSISTANTS);
     }
 
-    void uploadFineTuningJsonFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json"))),
-            FilePurpose.FINE_TUNE);
-        testRunner.accept(uploadFileRequest);
+    void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        testRunner.accept(new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json"))),
+                FilePurpose.FINE_TUNE);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
@@ -291,9 +285,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client) {
-        OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(
+        OpenAIFile openAIFile = client.uploadFile(
                 new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-                FilePurpose.ASSISTANTS));
+                FilePurpose.ASSISTANTS);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
@@ -310,9 +304,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String uploadFile(AssistantsAsyncClient client) {
         AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        StepVerifier.create(client.uploadFile(new UploadFileRequest(
+        StepVerifier.create(client.uploadFile(
                 new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-                        FilePurpose.ASSISTANTS)))
+                        FilePurpose.ASSISTANTS))
                 .assertNext(openAIFile -> {
                     assertNotNull(openAIFile.getId());
                     assertNotNull(openAIFile.getCreatedAt());
