@@ -7,6 +7,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
@@ -47,7 +48,6 @@ public final class HttpResponseDecoder {
         private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
         private Object bodyCached;
-        private Object headersCached;
 
         /**
          * Creates HttpDecodedResponse. Package private Ctr.
@@ -86,7 +86,7 @@ public final class HttpResponseDecoder {
         }
 
         @Override
-        public void close() {
+        public void close() throws IOException {
             this.response.close();
         }
     }
