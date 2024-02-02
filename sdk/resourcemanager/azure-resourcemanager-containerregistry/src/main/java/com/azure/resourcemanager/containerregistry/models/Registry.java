@@ -107,7 +107,7 @@ public interface Registry
     boolean isDedicatedDataEndpointsEnabled();
 
     /** @return Whether or not zone redundancy is enabled for this container registry */
-    ZoneRedundancy zoneRedundancy();
+    boolean isZoneRedundancyEnabled();
 
     /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
     List<String> dedicatedDataEndpointsHostNames();
@@ -247,9 +247,12 @@ public interface Registry
          */
         interface WithZoneRedundancy {
             /**
-             * Enables Zone Redundancy for the container registry.
+             * Enables zone redundancy for the container registry.
              *
              * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/zone-redundancy">
+             *      Enable zone redundancy
+             *      </a>
              */
             WithCreate withZoneRedundancy();
         }
