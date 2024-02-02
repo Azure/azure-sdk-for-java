@@ -2860,9 +2860,8 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreadRun createRun(AssistantThread thread, Assistant assistant) {
         RequestOptions requestOptions = new RequestOptions();
-        return createRunWithResponse(thread.getId(),
-            BinaryData.fromObject(new CreateRunOptions(assistant.getId())), requestOptions).getValue()
-                .toObject(ThreadRun.class);
+        return createRunWithResponse(thread.getId(), BinaryData.fromObject(new CreateRunOptions(assistant.getId())),
+            requestOptions).getValue().toObject(ThreadRun.class);
     }
 
     /**
