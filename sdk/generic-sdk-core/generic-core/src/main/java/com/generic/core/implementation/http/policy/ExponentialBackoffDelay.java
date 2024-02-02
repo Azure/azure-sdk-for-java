@@ -3,13 +3,15 @@
 
 package com.generic.core.implementation.http.policy;
 
+import com.generic.core.http.policy.RequestRetryCondition;
 import com.generic.core.http.policy.RetryPolicy;
-import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.configuration.Configuration;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 /**
  * A truncated exponential backoff implementation of {@link RetryPolicy.RetryStrategy} that has a delay duration that exponentially
@@ -23,6 +25,7 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffDelay.class);
     private final long baseDelayNanos;
     private final long maxDelayNanos;
+    private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates an instance of {@link ExponentialBackoffDelay} with a maximum number of retry attempts configured by the
@@ -31,7 +34,7 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
      * with each additional retry attempt to a maximum of 8 seconds.
      */
     public ExponentialBackoffDelay() {
-        this(DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
+        this(DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY, null);
     }
 
     /**
@@ -43,6 +46,16 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
      * to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoffDelay(Duration baseDelay, Duration maxDelay) {
+        this(baseDelay, maxDelay, null);
+    }
+
+    /**
+     * Creates an instance of {@link ExponentialBackoffDelay}.
+     * @param baseDelay The base delay duration for retry.
+     * @param maxDelay The max delay duration for retry.
+     * @param shouldRetryCondition The condition to determine if the request should be retried.
+     */
+    public ExponentialBackoffDelay(Duration baseDelay, Duration maxDelay, Predicate<RequestRetryCondition> shouldRetryCondition) {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
@@ -56,6 +69,7 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
         }
         this.baseDelayNanos = baseDelay.toNanos();
         this.maxDelayNanos = maxDelay.toNanos();
+        this.shouldRetryCondition = shouldRetryCondition;
     }
 
     @Override
@@ -64,5 +78,12 @@ public class ExponentialBackoffDelay implements RetryPolicy.RetryStrategy {
         long delayWithJitterInNanos = ThreadLocalRandom.current()
             .nextLong((long) (baseDelayNanos * (1 - JITTER_FACTOR)), (long) (baseDelayNanos * (1 + JITTER_FACTOR)));
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
+    }
+
+    @Override
+    public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        return shouldRetryCondition == null
+            ? RetryPolicy.RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+            : shouldRetryCondition.test(requestRetryCondition);
     }
 }

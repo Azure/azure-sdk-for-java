@@ -387,8 +387,15 @@ public final class ImplUtils {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         if (retryOptions.getBaseDelay() != null && retryOptions.getMaxDelay() != null) {
+            if (retryOptions.getShouldRetryCondition() != null) {
+                return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay(),
+                    retryOptions.getShouldRetryCondition());
+            }
             return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay());
         } else if (retryOptions.getFixedDelay() != null) {
+            if (retryOptions.getShouldRetryCondition() != null) {
+                return new FixedDelay(retryOptions.getFixedDelay(), retryOptions.getShouldRetryCondition());
+            }
             return new FixedDelay(retryOptions.getFixedDelay());
         } else {
             // This should never happen.
