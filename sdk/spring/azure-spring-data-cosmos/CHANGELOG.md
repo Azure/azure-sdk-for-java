@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.42.0 (2024-02-04)
+### 3.42.0 (2024-02-02)
 
 #### Bugs Fixed
 * Fixed a bug with auto generated id's when using bulk `saveAll` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).

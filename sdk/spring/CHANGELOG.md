@@ -1,6 +1,6 @@
 # Release History
 
-## 4.15.0 (2024-02-04)
+## 4.15.0 (2024-02-02)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.18. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>18) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.9. (Note: 2020.0.x (x>6) and 2021.0.y (y>9) should be supported, but they aren't tested with this release.)
 
@@ -20,7 +20,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
-Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3420-2024-02-04) for more details.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3420-2024-02-02) for more details.
 
 ## 5.8.0 (2023-12-14)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.6, 3.2.0-3.2.0. (Note: 3.0.x (x>13), 3.1.y (y>6) and 3.2.z (z>0) should be supported, but they aren't tested with this release.)
