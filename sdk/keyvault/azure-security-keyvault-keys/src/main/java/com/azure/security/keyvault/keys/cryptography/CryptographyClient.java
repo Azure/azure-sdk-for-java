@@ -137,10 +137,10 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
-    private LocalKeyCryptographyClient localKeyCryptographyClient;
+    private final JsonWebKey jsonWebKey;
+    private final LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
-    final JsonWebKey jsonWebKey;
     final String keyId;
 
     /**
@@ -154,17 +154,21 @@ public class CryptographyClient {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
 
+        LocalKeyCryptographyClient localClient = null;
+
         try {
-            this.localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient(this.implClient);
+            localClient = retrieveJwkAndInitializeLocalClient(this.implClient);
         } catch (RuntimeException e) {
             LOGGER.info(
                 "Cannot perform cryptographic operations locally. Defaulting to service-side cryptography.", e);
         }
 
-        if (this.localKeyCryptographyClient != null) {
-            this.jsonWebKey = this.localKeyCryptographyClient.getJsonWebKey();
-        } else {            
+        if (localClient != null) {
+            this.jsonWebKey = localClient.getJsonWebKey();
+            this.localKeyCryptographyClient = localClient;
+        } else {
             this.jsonWebKey = null;
+            this.localKeyCryptographyClient = null;
         }
     }
 
@@ -363,7 +367,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {    
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         if (localKeyCryptographyClient != null) {
             if (!checkKeyPermissions(this.jsonWebKey.getKeyOps(), KeyOperation.ENCRYPT)) {
                 throw LOGGER.logExceptionAsError(
@@ -374,7 +378,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.encrypt(algorithm, plaintext, context);
         }
-        
+
         return implClient.encrypt(algorithm, plaintext, context);
     }
 
@@ -563,7 +567,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.decrypt(algorithm, ciphertext, context);
         }
-        
+
         return implClient.decrypt(algorithm, ciphertext, context);
     }
 
@@ -632,7 +636,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.decrypt(decryptParameters, context);
         }
-        
+
         return implClient.decrypt(decryptParameters, context);
     }
 
@@ -733,7 +737,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.sign(algorithm, digest, context);
         }
-        
+
         return implClient.sign(algorithm, digest, context);
     }
 
@@ -842,7 +846,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.verify(algorithm, digest, signature, context);
         }
-        
+
         return implClient.verify(algorithm, digest, signature, context);
     }
 
@@ -941,7 +945,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.wrapKey(algorithm, key, context);
         }
-        
+
         return implClient.wrapKey(algorithm, key, context);
     }
 
@@ -1249,7 +1253,7 @@ public class CryptographyClient {
 
             return localKeyCryptographyClient.verifyData(algorithm, data, signature, context);
         }
-        
+
         return implClient.verifyData(algorithm, data, signature, context);
     }
 
