@@ -182,7 +182,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private SimpleTokenCache tokenCredentialCache;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     AuthorizationTokenType authorizationTokenType;
-    private SessionContainer sessionContainer;
+    private ISessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
     private RxGatewayStoreModel gatewayProxy;
@@ -506,7 +506,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -640,7 +640,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 : this.getDefaultConsistencyLevelOfAccount();
             boolean updatedDisableSessionCapturing =
                 (ConsistencyLevel.SESSION != effectiveConsistencyLevel && !sessionCapturingOverrideEnabled);
-            this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
+
+            if (sessionContainer instanceof RegionScopedSessionContainer) {
+                ((RegionScopedSessionContainer) this.sessionContainer).setDisableSessionCapturing(updatedDisableSessionCapturing);
+            } else if (sessionContainer instanceof SessionContainer) {
+                ((SessionContainer) this.sessionContainer).setDisableSessionCapturing(updatedDisableSessionCapturing);
+            }
+
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();

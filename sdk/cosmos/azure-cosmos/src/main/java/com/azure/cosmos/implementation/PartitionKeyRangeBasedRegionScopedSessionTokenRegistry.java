@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,44 +45,20 @@ public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
         return Objects.hash(pkRangeIdToRegionScopedSessionTokens);
     }
 
-    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping) {
+    public void tryRecordSessionToken(ISessionToken parsedSessionToken, String partitionKeyRangeId, String regionRoutedTo) {
 
-        if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
-            return;
-        }
+        String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");
 
-        for (Map.Entry<String, String> sessionTokenToRegion : sessionTokenToRegionMapping.entrySet()) {
+        this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeId, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
 
-            String sessionTokenUnparsedInner = sessionTokenToRegion.getKey();
-            String regionInner = sessionTokenToRegion.getValue();
-
-            if (!Strings.isNullOrEmpty(sessionTokenUnparsedInner) && !Strings.isNullOrEmpty(regionInner)) {
-
-                String[] sessionTokenSegments = StringUtils.split(sessionTokenUnparsedInner, ":");
-
-                if (sessionTokenSegments.length > 1) {
-
-                    String partitionKeyRangeIdInner = sessionTokenSegments[0];
-                    ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenUnparsedInner);
-
-                    this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeIdInner, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
-
-                        if (regionToSessionTokensAsVal == null) {
-                            regionToSessionTokensAsVal = new ConcurrentHashMap<>();
-                        }
-
-                        regionToSessionTokensAsVal.merge(regionInner, parsedRegionSpecificSessionToken, ISessionToken::merge);
-
-                        return regionToSessionTokensAsVal;
-                    });
-                } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Unparsed session token - {} cannot be parsed.", sessionTokenUnparsedInner);
-                    }
-                }
+            if (regionToSessionTokensAsVal == null) {
+                regionToSessionTokensAsVal = new ConcurrentHashMap<>();
             }
 
-        }
+            regionToSessionTokensAsVal.merge(normalizedRegionRoutedTo, parsedSessionToken, ISessionToken::merge);
+
+            return regionToSessionTokensAsVal;
+        });
     }
 
     public ISessionToken tryResolveSessionToken(
@@ -97,9 +74,9 @@ public class PartitionKeyRangeBasedRegionScopedSessionTokenRegistry {
 
         // case 1 : where the request is not targeted to a logical partition
         // therefore resolve session token representing all regions
-        // case 2 : where the request targets a logical partition not seen by
-        // the bloom filter / lesser preferred regions
-        if (!canUseRegionScopedSessionTokens || lesserPreferredRegionsPkProbablyRequestedFrom.isEmpty()) {
+        // (TODO (abhmohanty) - validate case 2 : where the request targets a logical partition not seen by
+        // TODO - a logical partition could have been seen just in the first preferred location
+        if (!canUseRegionScopedSessionTokens) {
             return mergeSessionTokenRepresentingAllRegions(partitionKeyRangeId);
         }
 

@@ -191,12 +191,12 @@ public class SessionConsistencyTests extends TestSuiteBase {
             }
         };
 
-        BloomFilter<PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType> stringBasedBloomFilter = BloomFilter.create(pkBasedTypeFunnel, 10_000, 0.001);
+        BloomFilter<PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType> partitionKeyBasedBloomFilter = BloomFilter.create(pkBasedTypeFunnel, 10_000, 0.001);
 
-        stringBasedBloomFilter.put(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk1", "eastus", 1L));
+        partitionKeyBasedBloomFilter.put(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk1", "eastus", 1L));
 
-        Assertions.assertThat(stringBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk1", "eastus", 1L))).isTrue();
-        Assertions.assertThat(stringBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
+        Assertions.assertThat(partitionKeyBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk1", "eastus", 1L))).isTrue();
+        Assertions.assertThat(partitionKeyBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
     }
 
     @Test

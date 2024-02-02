@@ -13,6 +13,7 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,13 +51,9 @@ public class PartitionKeyBasedBloomFilter {
     public void tryRecordPartitionKey(
         Long collectionRid,
         String firstPreferredWritableRegion,
-        Map<String, String> sessionTokenToRegionMapping,
+        String regionRoutedTo,
         PartitionKeyInternal partitionKeyInternal,
         PartitionKeyDefinition partitionKeyDefinition) {
-
-        if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
-            return;
-        }
 
         if (partitionKeyInternal == null) {
             return;
@@ -73,20 +70,16 @@ public class PartitionKeyBasedBloomFilter {
         String effectivePartitionKeyString = PartitionKeyInternalHelper
             .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
-        for (Map.Entry<String, String> sessionTokenToRegionPair : sessionTokenToRegionMapping.entrySet()) {
+        String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
 
-            String sessionTokenUnparsedInner = sessionTokenToRegionPair.getKey();
-            String regionInner = sessionTokenToRegionPair.getValue();
+        // a session token should have been received from a region to consider an EPK
+        // to also have been requested from the region
+        if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
 
-            // a session token should have been received from a region to consider an EPK
-            // to also have been requested from the region
-            if (!regionInner.equals(firstPreferredWritableRegion) && !Strings.isNullOrEmpty(sessionTokenUnparsedInner)) {
-
-                if (isBloomFilterInitialized.get()) {
-                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
-                        regionInner, collectionRid));
-                    this.recordedRegions.add(regionInner);
-                }
+            if (isBloomFilterInitialized.get()) {
+                this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
+                    normalizedRegionRoutedTo, collectionRid));
+                this.recordedRegions.add(normalizedRegionRoutedTo);
             }
         }
     }

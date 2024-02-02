@@ -6,6 +6,9 @@ package com.azure.cosmos.implementation;
 import java.util.Map;
 
 public interface ISessionContainer {
+
+    void setDisableSessionCapturing(boolean value);
+
     /**
      * Returns a serialized map of partitionKeyRangeId to session token. If a entity is name based then the method extracts name from
      * ResourceAddress and use it to identify collection otherwise it uses ResourceId. Returns empty string if collection is unknown
@@ -64,4 +67,6 @@ public interface ISessionContainer {
      * @param responseHeaders responseHeaders
      */
     void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
+
+    void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
 }

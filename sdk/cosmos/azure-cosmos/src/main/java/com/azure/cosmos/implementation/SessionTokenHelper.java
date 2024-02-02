@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 
@@ -111,6 +112,35 @@ public class SessionTokenHelper {
         return highestSessionToken;
     }
 
+    static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
+                                                           String partitionKeyRangeId,
+                                                           ConcurrentHashMap<String, ISessionToken> rangeIdToTokenMap) {
+        if (rangeIdToTokenMap != null) {
+            if (rangeIdToTokenMap.containsKey(partitionKeyRangeId)) {
+                return rangeIdToTokenMap.get(partitionKeyRangeId);
+            } else {
+                ISessionToken parentSessionToken = null;
+
+                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
+                if (parents != null) {
+                    List<String> parentsList = new ArrayList<>(parents);
+                    for (int i = parentsList.size() - 1; i >= 0; i--) {
+                        String parentId = parentsList.get(i);
+                        if (rangeIdToTokenMap.containsKey(parentId)) {
+                            // A partition can have more than 1 parent (merge). In that case, we apply Merge to generate a token with both parent's max LSNs
+                            parentSessionToken =
+                                parentSessionToken != null
+                                    ? parentSessionToken.merge(rangeIdToTokenMap.get(parentId)) : rangeIdToTokenMap.get(parentId);
+                        }
+                    }
+
+                    return parentSessionToken;
+                }
+            }
+        }
+
+        return null;
+    }
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
                                                            PartitionKeyBasedBloomFilter pkBasedBloomFilter,
                                                            PartitionKeyRangeBasedRegionScopedSessionTokenRegistry partitionKeyRangeBasedRegionScopedSessionTokenRegistry,
