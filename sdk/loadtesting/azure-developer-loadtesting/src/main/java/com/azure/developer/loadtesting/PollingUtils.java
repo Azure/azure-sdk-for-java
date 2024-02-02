@@ -62,35 +62,35 @@ final class PollingUtils {
 
     static PollResponse<BinaryData> getTestRunStatus(BinaryData testRunBinary, ObjectMapper objectMapper) {
         String status;
-                JsonNode testRun;
-                try {
-                    testRun = objectMapper.readTree(testRunBinary.toString());
-                    status = testRun.get("status").asText();
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException("Encountered exception while retriving test run status");
-                }
-                LongRunningOperationStatus lroStatus;
-                switch (status) {
-                    case "NOTSTARTED":
-                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                        break;
+        JsonNode testRun;
+        try {
+            testRun = objectMapper.readTree(testRunBinary.toString());
+            status = testRun.get("status").asText();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Encountered exception while retriving test run status");
+        }
+        LongRunningOperationStatus lroStatus;
+        switch (status) {
+            case "NOTSTARTED":
+                lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                break;
 
-                    case "DONE":
-                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                        break;
+            case "DONE":
+                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
 
-                    case "FAILED":
-                        lroStatus = LongRunningOperationStatus.FAILED;
-                        break;
+            case "FAILED":
+                lroStatus = LongRunningOperationStatus.FAILED;
+                break;
 
-                    case "CANCELLED":
-                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
-                        break;
+            case "CANCELLED":
+                lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                break;
 
-                    default:
-                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                        break;
-                }
-                return new PollResponse<>(lroStatus, testRunBinary);
+            default:
+                lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+        }
+        return new PollResponse<>(lroStatus, testRunBinary);
     }
 }
