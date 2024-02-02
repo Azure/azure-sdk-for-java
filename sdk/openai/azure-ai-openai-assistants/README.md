@@ -155,7 +155,33 @@ For more examples, such as listing assistants/threads/messages/runs/runSteps, up
 etc, see the [samples][samples_readme].
 
 ### Working with files for retrieval
-TODO: Add examples for file operations
+
+Files can be uploaded and then referenced by assistants or messages. First, use the generalized upload API with a 
+purpose of 'assistants' to make a file ID available:
+
+```java readme-sample-uploadFile
+Path filePath = Paths.get("src", "samples", "resources", fileName);
+BinaryData fileData = BinaryData.fromFile(filePath);
+FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
+
+OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(fileDetails, FilePurpose.ASSISTANTS));
+```
+
+Once uploaded, the file ID can then be provided to an assistant upon creation. Note that file IDs will only be used if 
+an appropriate tool like Code Interpreter or Retrieval is enabled.
+
+```java readme-sample-createRetrievalAssistant
+Assistant assistant = client.createAssistant(
+    new AssistantCreationOptions(deploymentOrModelId)
+        .setName("Java SDK Retrieval Sample")
+        .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+        .setTools(Arrays.asList(new RetrievalToolDefinition()))
+        .setFileIds(Arrays.asList(openAIFile.getId()))
+);
+```
+
+With a file ID association and a supported tool enabled, the assistant will then be able to consume the associated data 
+when running threads.
 
 ### Using function tools and parallel function calling
 TODO: Add examples for function tools and parallel function calling
