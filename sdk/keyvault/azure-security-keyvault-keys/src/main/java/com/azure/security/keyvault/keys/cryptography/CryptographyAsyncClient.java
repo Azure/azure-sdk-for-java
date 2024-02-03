@@ -954,6 +954,6 @@ public class CryptographyAsyncClient {
         }
 
         // Couldn't/didn't create a local cryptography client.
-        throw new IllegalStateException("Could not create a local cryptography client.");
+        return Mono.error(new IllegalStateException("Could not create a local cryptography client."));
     }
 }
