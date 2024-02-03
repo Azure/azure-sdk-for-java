@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TasksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TasksClient.
+ */
 public interface TasksClient {
     /**
      * Lists all the tasks for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface TasksClient {
 
     /**
      * Lists all the tasks for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface TasksClient {
 
     /**
      * Lists all the tasks for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -63,7 +65,7 @@ public interface TasksClient {
 
     /**
      * Get the properties of a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -77,7 +79,7 @@ public interface TasksClient {
 
     /**
      * Get the properties of a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -91,7 +93,7 @@ public interface TasksClient {
 
     /**
      * Get the properties of a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -102,12 +104,12 @@ public interface TasksClient {
      * @return the properties of a specified task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TaskInner> getWithResponse(
-        String resourceGroupName, String registryName, String taskName, Context context);
+    Response<TaskInner> getWithResponse(String resourceGroupName, String registryName, String taskName,
+        Context context);
 
     /**
      * Get the properties of a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -121,7 +123,7 @@ public interface TasksClient {
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -130,15 +132,15 @@ public interface TasksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String taskName, TaskInner taskCreateParameters);
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -149,12 +151,12 @@ public interface TasksClient {
      * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(
-        String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
+    PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(String resourceGroupName, String registryName,
+        String taskName, TaskInner taskCreateParameters);
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -165,12 +167,12 @@ public interface TasksClient {
      * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
-        String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
+    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(String resourceGroupName, String registryName,
+        String taskName, TaskInner taskCreateParameters);
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -182,16 +184,12 @@ public interface TasksClient {
      * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String taskName,
-        TaskInner taskCreateParameters,
-        Context context);
+    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(String resourceGroupName, String registryName,
+        String taskName, TaskInner taskCreateParameters, Context context);
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -202,12 +200,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TaskInner> createAsync(
-        String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
+    Mono<TaskInner> createAsync(String resourceGroupName, String registryName, String taskName,
+        TaskInner taskCreateParameters);
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -222,7 +220,7 @@ public interface TasksClient {
 
     /**
      * Creates a task for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -234,16 +232,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner create(
-        String resourceGroupName,
-        String registryName,
-        String taskName,
-        TaskInner taskCreateParameters,
+    TaskInner create(String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters,
         Context context);
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -253,12 +247,12 @@ public interface TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String taskName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String taskName);
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -272,7 +266,7 @@ public interface TasksClient {
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -286,7 +280,7 @@ public interface TasksClient {
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -297,12 +291,12 @@ public interface TasksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String taskName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String taskName,
+        Context context);
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -316,7 +310,7 @@ public interface TasksClient {
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -329,7 +323,7 @@ public interface TasksClient {
 
     /**
      * Deletes a specified task.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -343,7 +337,7 @@ public interface TasksClient {
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -352,15 +346,15 @@ public interface TasksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String taskName, TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -371,12 +365,12 @@ public interface TasksClient {
      * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(
-        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
+    PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(String resourceGroupName, String registryName,
+        String taskName, TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -387,12 +381,12 @@ public interface TasksClient {
      * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
-        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
+    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(String resourceGroupName, String registryName,
+        String taskName, TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -404,16 +398,12 @@ public interface TasksClient {
      * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String taskName,
-        TaskUpdateParameters taskUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(String resourceGroupName, String registryName,
+        String taskName, TaskUpdateParameters taskUpdateParameters, Context context);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -424,12 +414,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TaskInner> updateAsync(
-        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
+    Mono<TaskInner> updateAsync(String resourceGroupName, String registryName, String taskName,
+        TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -440,12 +430,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner update(
-        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
+    TaskInner update(String resourceGroupName, String registryName, String taskName,
+        TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -457,16 +447,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner update(
-        String resourceGroupName,
-        String registryName,
-        String taskName,
-        TaskUpdateParameters taskUpdateParameters,
-        Context context);
+    TaskInner update(String resourceGroupName, String registryName, String taskName,
+        TaskUpdateParameters taskUpdateParameters, Context context);
 
     /**
      * Returns a task with extended information that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -474,15 +460,15 @@ public interface TasksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TaskInner>> getDetailsWithResponseAsync(
-        String resourceGroupName, String registryName, String taskName);
+    Mono<Response<TaskInner>> getDetailsWithResponseAsync(String resourceGroupName, String registryName,
+        String taskName);
 
     /**
      * Returns a task with extended information that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -496,7 +482,7 @@ public interface TasksClient {
 
     /**
      * Returns a task with extended information that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
@@ -507,12 +493,12 @@ public interface TasksClient {
      * @return the task that has the ARM resource and task properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TaskInner> getDetailsWithResponse(
-        String resourceGroupName, String registryName, String taskName, Context context);
+    Response<TaskInner> getDetailsWithResponse(String resourceGroupName, String registryName, String taskName,
+        Context context);
 
     /**
      * Returns a task with extended information that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.

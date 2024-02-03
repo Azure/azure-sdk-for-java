@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether the data migration should start right away. */
+/**
+ * Indicates whether the data migration should start right away.
+ */
 public final class StartDataMigrationEnum extends ExpandableStringEnum<StartDataMigrationEnum> {
-    /** Static value True for StartDataMigrationEnum. */
+    /**
+     * Static value True for StartDataMigrationEnum.
+     */
     public static final StartDataMigrationEnum TRUE = fromString("True");
 
-    /** Static value False for StartDataMigrationEnum. */
+    /**
+     * Static value False for StartDataMigrationEnum.
+     */
     public static final StartDataMigrationEnum FALSE = fromString("False");
 
     /**
      * Creates a new instance of StartDataMigrationEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class StartDataMigrationEnum extends ExpandableStringEnum<StartData
 
     /**
      * Creates or finds a StartDataMigrationEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StartDataMigrationEnum.
      */
@@ -38,7 +44,7 @@ public final class StartDataMigrationEnum extends ExpandableStringEnum<StartData
 
     /**
      * Gets known StartDataMigrationEnum values.
-     *
+     * 
      * @return known StartDataMigrationEnum values.
      */
     public static Collection<StartDataMigrationEnum> values() {

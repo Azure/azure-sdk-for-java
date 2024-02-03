@@ -11,15 +11,16 @@ public final class PaypalSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PaypalSource model = BinaryData.fromString(
-            "{\"type\":\"PaypalSource\",\"query\":\"datavzd\",\"queryTimeout\":\"datakqajia\",\"additionalColumns\":\"datacyrdtrd\",\"sourceRetryCount\":\"datadmsktuvjh\",\"sourceRetryWait\":\"datatvyt\",\"maxConcurrentConnections\":\"datafbsgrzw\",\"disableMetricsCollection\":\"datadudxqebtrpsplwt\",\"\":{\"ckrnku\":\"dataseybvtgcoznnjq\",\"tuynugptfjpi\":\"dataotlymybmgmrkxk\",\"tqqshb\":\"datavfh\",\"zjsezgphip\":\"datapzhuhuj\"}}")
+            "{\"type\":\"PaypalSource\",\"query\":\"datacrejt\",\"queryTimeout\":\"dataqqoz\",\"additionalColumns\":\"datasbpqwnmfjktdvdh\",\"sourceRetryCount\":\"dataztaluuup\",\"sourceRetryWait\":\"dataaoatzvajwvxh\",\"maxConcurrentConnections\":\"datamotulhilmazgp\",\"disableMetricsCollection\":\"datarppsoeo\",\"\":{\"ln\":\"datawtye\",\"dxsgwd\":\"datagqeplyos\"}}")
             .toObject(PaypalSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PaypalSource model = new PaypalSource().withSourceRetryCount("datadmsktuvjh").withSourceRetryWait("datatvyt")
-            .withMaxConcurrentConnections("datafbsgrzw").withDisableMetricsCollection("datadudxqebtrpsplwt")
-            .withQueryTimeout("datakqajia").withAdditionalColumns("datacyrdtrd").withQuery("datavzd");
+        PaypalSource model
+            = new PaypalSource().withSourceRetryCount("dataztaluuup").withSourceRetryWait("dataaoatzvajwvxh")
+                .withMaxConcurrentConnections("datamotulhilmazgp").withDisableMetricsCollection("datarppsoeo")
+                .withQueryTimeout("dataqqoz").withAdditionalColumns("datasbpqwnmfjktdvdh").withQuery("datacrejt");
         model = BinaryData.fromObject(model).toObject(PaypalSource.class);
     }
 }

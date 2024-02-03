@@ -23,7 +23,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An object that represents a container registry. */
+/**
+ * An object that represents a container registry.
+ */
 @Fluent
 public final class RegistryInner extends Resource {
     /*
@@ -50,13 +52,15 @@ public final class RegistryInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RegistryInner class. */
+    /**
+     * Creates an instance of RegistryInner class.
+     */
     public RegistryInner() {
     }
 
     /**
      * Get the sku property: The SKU of the container registry.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -65,7 +69,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the container registry.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RegistryInner object itself.
      */
@@ -76,7 +80,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the identity property: The identity of the container registry.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -85,7 +89,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the identity property: The identity of the container registry.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RegistryInner object itself.
      */
@@ -96,7 +100,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the innerProperties property: The properties of the container registry.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegistryProperties innerProperties() {
@@ -105,21 +109,25 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -128,7 +136,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -137,7 +145,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the container registry in ISO8601 format.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -147,7 +155,7 @@ public final class RegistryInner extends Resource {
     /**
      * Get the provisioningState property: The provisioning state of the container registry at the time the operation
      * was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -156,7 +164,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the status property: The status of the container registry at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -165,7 +173,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -174,7 +182,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryInner object itself.
      */
@@ -188,7 +196,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -197,7 +205,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryInner object itself.
      */
@@ -211,7 +219,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -220,7 +228,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryInner object itself.
      */
@@ -234,7 +242,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -243,7 +251,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryInner object itself.
      */
@@ -257,7 +265,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -266,7 +274,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryInner object itself.
      */
@@ -279,8 +287,9 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
-     *
+     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is
+     * true.
+     * 
      * @return the dataEndpointHostNames value.
      */
     public List<String> dataEndpointHostNames() {
@@ -289,7 +298,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections for a container registry.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -297,8 +306,9 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -306,8 +316,9 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryInner object itself.
      */
@@ -320,9 +331,9 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -330,9 +341,9 @@ public final class RegistryInner extends Resource {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryInner object itself.
      */
@@ -346,7 +357,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -355,7 +366,7 @@ public final class RegistryInner extends Resource {
 
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the RegistryInner object itself.
      */
@@ -369,14 +380,13 @@ public final class RegistryInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model RegistryInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model RegistryInner"));
         } else {
             sku().validate();
         }

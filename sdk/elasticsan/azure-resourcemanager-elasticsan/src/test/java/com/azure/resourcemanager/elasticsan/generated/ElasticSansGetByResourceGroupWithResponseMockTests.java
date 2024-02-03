@@ -33,40 +33,26 @@ public final class ElasticSansGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"pomgkopkwhojvp\",\"jqg\",\"ysmocmbqfqvmkcxo\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":5899001695027882086,\"extendedCapacitySizeTiB\":5939290521556195540,\"totalVolumeSizeGiB\":6359402383631764014,\"volumeGroupCount\":2576017949192235258,\"totalIops\":7257891717234420847,\"totalMBps\":3729632374595732416,\"totalSizeTiB\":2336439907780223059,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ciqibrhosx\",\"dqrhzoymib\"]},\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"piexpbtgiw\"]},\"id\":\"oenwashr\",\"name\":\"dtkcnqxwbpokulp\",\"type\":\"ujw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"i\",\"obyu\",\"erpqlpqwcciuqg\"]},\"id\":\"butauvfb\",\"name\":\"kuwhh\",\"type\":\"hykojoxafnndlpic\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cdyhbpkkpwdreqn\",\"vvqfovljxyws\"]},\"id\":\"syrsndsytgadgvra\",\"name\":\"aeneqnzarrwl\",\"type\":\"uu\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"kacewiipfp\",\"tags\":{\"uvksgplsaknynfsy\":\"ibwwiftohqkv\"},\"id\":\"ljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"}";
+        String responseStr
+            = "{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"pomgkopkwhojvp\",\"jqg\",\"ysmocmbqfqvmkcxo\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":5899001695027882086,\"extendedCapacitySizeTiB\":5939290521556195540,\"totalVolumeSizeGiB\":6359402383631764014,\"volumeGroupCount\":2576017949192235258,\"totalIops\":7257891717234420847,\"totalMBps\":3729632374595732416,\"totalSizeTiB\":2336439907780223059,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ciqibrhosx\",\"dqrhzoymib\"]},\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"piexpbtgiw\"]},\"id\":\"oenwashr\",\"name\":\"dtkcnqxwbpokulp\",\"type\":\"ujw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"i\",\"obyu\",\"erpqlpqwcciuqg\"]},\"id\":\"butauvfb\",\"name\":\"kuwhh\",\"type\":\"hykojoxafnndlpic\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cdyhbpkkpwdreqn\",\"vvqfovljxyws\"]},\"id\":\"syrsndsytgadgvra\",\"name\":\"aeneqnzarrwl\",\"type\":\"uu\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"kacewiipfp\",\"tags\":{\"uvksgplsaknynfsy\":\"ibwwiftohqkv\"},\"id\":\"ljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ElasticSan response =
-            manager
-                .elasticSans()
-                .getByResourceGroupWithResponse("nubexk", "zksmondj", com.azure.core.util.Context.NONE)
-                .getValue();
+        ElasticSan response = manager.elasticSans()
+            .getByResourceGroupWithResponse("nubexk", "zksmondj", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("kacewiipfp", response.location());
         Assertions.assertEquals("ibwwiftohqkv", response.tags().get("uvksgplsaknynfsy"));

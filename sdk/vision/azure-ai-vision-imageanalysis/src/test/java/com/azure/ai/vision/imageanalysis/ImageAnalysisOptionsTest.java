@@ -18,7 +18,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == null;
-        assert options.getGenderNeutralCaption() == null;
+        assert options.isGenderNeutralCaption() == null;
         assert options.getModelVersion() == null;
     }
 
@@ -35,7 +35,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == aspectRatios;
         assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
+        assert options.isGenderNeutralCaption() == genderNeutralCaption;
         assert options.getModelVersion() == modelVersion;
     }
 
@@ -55,7 +55,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == aspectRatios;
         assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
+        assert options.isGenderNeutralCaption() == genderNeutralCaption;
         assert options.getModelVersion() == modelVersion;
     }
 
@@ -71,7 +71,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
+        assert options.isGenderNeutralCaption() == genderNeutralCaption;
         assert options.getModelVersion() == null;
     }
 }

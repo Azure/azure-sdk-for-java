@@ -13,8 +13,8 @@ import com.azure.resourcemanager.containerregistry.models.RunRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The task run that has the ARM resource and properties. The task run will have the information of request and result
- * of a run.
+ * The task run that has the ARM resource and properties.
+ * The task run will have the information of request and result of a run.
  */
 @Fluent
 public final class TaskRunInner extends ProxyResource {
@@ -42,13 +42,15 @@ public final class TaskRunInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TaskRunInner class. */
+    /**
+     * Creates an instance of TaskRunInner class.
+     */
     public TaskRunInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -57,7 +59,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the TaskRunInner object itself.
      */
@@ -69,7 +71,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Get the innerProperties property: The properties associated with the task run, i.e., request and result of the
      * run.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskRunPropertiesInner innerProperties() {
@@ -78,7 +80,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -87,7 +89,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the TaskRunInner object itself.
      */
@@ -98,7 +100,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -107,7 +109,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of this task run.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +118,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -125,7 +127,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunInner object itself.
      */
@@ -139,7 +141,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the runResult property: The result of this task run.
-     *
+     * 
      * @return the runResult value.
      */
     public RunInner runResult() {
@@ -149,7 +151,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -159,7 +161,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunInner object itself.
      */
@@ -173,7 +175,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

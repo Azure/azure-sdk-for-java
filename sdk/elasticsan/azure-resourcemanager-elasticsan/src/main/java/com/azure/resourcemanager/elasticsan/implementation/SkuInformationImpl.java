@@ -18,8 +18,8 @@ public final class SkuInformationImpl implements SkuInformation {
 
     private final com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager;
 
-    SkuInformationImpl(
-        SkuInformationInner innerObject, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
+    SkuInformationImpl(SkuInformationInner innerObject,
+        com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

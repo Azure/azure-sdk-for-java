@@ -42,13 +42,13 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.implementation.DocumentAnalysisClientImpl",
+    "name": "com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "com.azure.ai.documentintelligence.implementation.DocumentModelAdministrationClientImpl",
+    "name": "com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl",
     "allDeclaredConstructors": true,
     "allDeclaredFields": true,
     "allDeclaredMethods": true

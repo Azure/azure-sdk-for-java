@@ -133,7 +133,6 @@ public final class SearchIndexingAsyncPublisher<T> {
             try {
                 processingSemaphore.acquire();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 

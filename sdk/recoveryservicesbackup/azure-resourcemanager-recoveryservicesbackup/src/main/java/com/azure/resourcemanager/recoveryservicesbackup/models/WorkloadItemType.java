@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Workload item type of the item for which intent is to be set. */
+/**
+ * Workload item type of the item for which intent is to be set.
+ */
 public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemType> {
-    /** Static value Invalid for WorkloadItemType. */
+    /**
+     * Static value Invalid for WorkloadItemType.
+     */
     public static final WorkloadItemType INVALID = fromString("Invalid");
 
-    /** Static value SQLInstance for WorkloadItemType. */
+    /**
+     * Static value SQLInstance for WorkloadItemType.
+     */
     public static final WorkloadItemType SQLINSTANCE = fromString("SQLInstance");
 
-    /** Static value SQLDataBase for WorkloadItemType. */
+    /**
+     * Static value SQLDataBase for WorkloadItemType.
+     */
     public static final WorkloadItemType SQLDATA_BASE = fromString("SQLDataBase");
 
-    /** Static value SAPHanaSystem for WorkloadItemType. */
+    /**
+     * Static value SAPHanaSystem for WorkloadItemType.
+     */
     public static final WorkloadItemType SAPHANA_SYSTEM = fromString("SAPHanaSystem");
 
-    /** Static value SAPHanaDatabase for WorkloadItemType. */
+    /**
+     * Static value SAPHanaDatabase for WorkloadItemType.
+     */
     public static final WorkloadItemType SAPHANA_DATABASE = fromString("SAPHanaDatabase");
 
-    /** Static value SAPAseSystem for WorkloadItemType. */
+    /**
+     * Static value SAPAseSystem for WorkloadItemType.
+     */
     public static final WorkloadItemType SAPASE_SYSTEM = fromString("SAPAseSystem");
 
-    /** Static value SAPAseDatabase for WorkloadItemType. */
+    /**
+     * Static value SAPAseDatabase for WorkloadItemType.
+     */
     public static final WorkloadItemType SAPASE_DATABASE = fromString("SAPAseDatabase");
 
-    /** Static value SAPHanaDBInstance for WorkloadItemType. */
+    /**
+     * Static value SAPHanaDBInstance for WorkloadItemType.
+     */
     public static final WorkloadItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
      * Creates a new instance of WorkloadItemType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemTyp
 
     /**
      * Creates or finds a WorkloadItemType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadItemType.
      */
@@ -56,7 +74,7 @@ public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemTyp
 
     /**
      * Gets known WorkloadItemType values.
-     *
+     * 
      * @return known WorkloadItemType values.
      */
     public static Collection<WorkloadItemType> values() {

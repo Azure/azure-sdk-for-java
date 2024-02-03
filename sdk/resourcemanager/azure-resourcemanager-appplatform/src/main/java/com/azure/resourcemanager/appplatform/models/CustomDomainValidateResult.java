@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Validation result for custom domain. */
+/**
+ * Validation result for custom domain.
+ */
 @Fluent
 public final class CustomDomainValidateResult {
     /*
@@ -23,8 +25,14 @@ public final class CustomDomainValidateResult {
     private String message;
 
     /**
+     * Creates an instance of CustomDomainValidateResult class.
+     */
+    public CustomDomainValidateResult() {
+    }
+
+    /**
      * Get the isValid property: Indicates if domain name is valid.
-     *
+     * 
      * @return the isValid value.
      */
     public Boolean isValid() {
@@ -33,7 +41,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Set the isValid property: Indicates if domain name is valid.
-     *
+     * 
      * @param isValid the isValid value to set.
      * @return the CustomDomainValidateResult object itself.
      */
@@ -44,7 +52,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Get the message property: Message of why domain name is invalid.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +61,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Set the message property: Message of why domain name is invalid.
-     *
+     * 
      * @param message the message value to set.
      * @return the CustomDomainValidateResult object itself.
      */
@@ -64,7 +72,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection compose of a custom domain resources list and a possible link for next page. */
+/**
+ * Collection compose of a custom domain resources list and a possible link for next page.
+ */
 @Fluent
 public final class CustomDomainResourceCollection {
     /*
@@ -25,8 +27,14 @@ public final class CustomDomainResourceCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of CustomDomainResourceCollection class.
+     */
+    public CustomDomainResourceCollection() {
+    }
+
+    /**
      * Get the value property: The custom domain resources list.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomDomainResourceInner> value() {
@@ -35,7 +43,7 @@ public final class CustomDomainResourceCollection {
 
     /**
      * Set the value property: The custom domain resources list.
-     *
+     * 
      * @param value the value value to set.
      * @return the CustomDomainResourceCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class CustomDomainResourceCollection {
 
     /**
      * Get the nextLink property: The link to next page of custom domain list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class CustomDomainResourceCollection {
 
     /**
      * Set the nextLink property: The link to next page of custom domain list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomDomainResourceCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class CustomDomainResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

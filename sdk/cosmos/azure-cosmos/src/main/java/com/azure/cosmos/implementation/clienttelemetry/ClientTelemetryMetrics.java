@@ -513,7 +513,8 @@ public final class ClientTelemetryMetrics {
                             diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getDuration(),
-                            requestStatistics.getGatewayStatisticsList());
+                            requestStatistics.getGatewayStatisticsList(),
+                            requestStatistics.getRequestPayloadSizeInBytes());
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -1010,7 +1011,8 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
             Duration latency,
-            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList,
+            int requestPayloadSizeInBytes) {
 
             if (gatewayStatisticsList == null
                 || gatewayStatisticsList.size() == 0
@@ -1037,6 +1039,13 @@ public final class ClientTelemetryMetrics {
                         null,
                         null,
                         null)
+                );
+
+                recordRequestPayloadSizes(
+                    ctx,
+                    client,
+                    requestPayloadSizeInBytes,
+                    gatewayStats.getResponsePayloadSizeInBytes()
                 );
 
                 CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(

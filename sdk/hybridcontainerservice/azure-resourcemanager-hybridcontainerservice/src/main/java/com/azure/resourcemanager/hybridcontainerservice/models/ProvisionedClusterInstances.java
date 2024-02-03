@@ -7,80 +7,70 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClustersInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterInner;
 
 /**
  * Resource collection API of ProvisionedClusterInstances.
  */
 public interface ProvisionedClusterInstances {
     /**
-     * Gets the provisioned cluster instance
+     * Gets the provisioned cluster instance.
      * 
-     * Gets the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS provisioned cluster instance along with {@link Response}.
+     * @return the provisioned cluster instance along with {@link Response}.
      */
-    Response<ProvisionedClusters> getWithResponse(String connectedClusterResourceUri, Context context);
+    Response<ProvisionedCluster> getWithResponse(String connectedClusterResourceUri, Context context);
 
     /**
-     * Gets the provisioned cluster instance
+     * Gets the provisioned cluster instance.
      * 
-     * Gets the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS provisioned cluster instance.
+     * @return the provisioned cluster instance.
      */
-    ProvisionedClusters get(String connectedClusterResourceUri);
+    ProvisionedCluster get(String connectedClusterResourceUri);
 
     /**
-     * Creates the provisioned cluster instance
+     * Creates or updates the provisioned cluster instance.
      * 
-     * Creates the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
-     * @param provisionedClusterInstance The provisionedClusterInstances resource definition.
+     * @param provisionedClusterInstance Provisioned Cluster resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provisionedClusterInstances resource definition.
+     * @return the provisioned cluster resource definition.
      */
-    ProvisionedClusters createOrUpdate(String connectedClusterResourceUri,
-        ProvisionedClustersInner provisionedClusterInstance);
+    ProvisionedCluster createOrUpdate(String connectedClusterResourceUri,
+        ProvisionedClusterInner provisionedClusterInstance);
 
     /**
-     * Creates the provisioned cluster instance
+     * Creates or updates the provisioned cluster instance.
      * 
-     * Creates the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
-     * @param provisionedClusterInstance The provisionedClusterInstances resource definition.
+     * @param provisionedClusterInstance Provisioned Cluster resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the provisionedClusterInstances resource definition.
+     * @return the provisioned cluster resource definition.
      */
-    ProvisionedClusters createOrUpdate(String connectedClusterResourceUri,
-        ProvisionedClustersInner provisionedClusterInstance, Context context);
+    ProvisionedCluster createOrUpdate(String connectedClusterResourceUri,
+        ProvisionedClusterInner provisionedClusterInstance, Context context);
 
     /**
-     * Deletes the provisioned cluster instance
+     * Deletes the provisioned cluster instance.
      * 
-     * Deletes the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,11 +79,9 @@ public interface ProvisionedClusterInstances {
     void delete(String connectedClusterResourceUri);
 
     /**
-     * Deletes the provisioned cluster instance
+     * Deletes the provisioned cluster instance.
      * 
-     * Deletes the Hybrid AKS provisioned cluster instance.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,68 +91,62 @@ public interface ProvisionedClusterInstances {
     void delete(String connectedClusterResourceUri, Context context);
 
     /**
-     * Gets the provisioned cluster instances associated with the connected cluster
+     * Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
      * 
-     * Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS provisioned cluster instances associated with the connected cluster as paginated response
+     * @return lists the ProvisionedClusterInstance resource associated with the ConnectedCluster as paginated response
      * with {@link PagedIterable}.
      */
-    PagedIterable<ProvisionedClusters> list(String connectedClusterResourceUri);
+    PagedIterable<ProvisionedCluster> list(String connectedClusterResourceUri);
 
     /**
-     * Gets the provisioned cluster instances associated with the connected cluster
+     * Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
      * 
-     * Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS provisioned cluster instances associated with the connected cluster as paginated response
+     * @return lists the ProvisionedClusterInstance resource associated with the ConnectedCluster as paginated response
      * with {@link PagedIterable}.
      */
-    PagedIterable<ProvisionedClusters> list(String connectedClusterResourceUri, Context context);
+    PagedIterable<ProvisionedCluster> list(String connectedClusterResourceUri, Context context);
 
     /**
-     * Gets the upgrade profile of a provisioned cluster instance.
+     * Gets the upgrade profile of a provisioned cluster.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile of a provisioned cluster instance along with {@link Response}.
+     * @return the upgrade profile of a provisioned cluster along with {@link Response}.
      */
     Response<ProvisionedClusterUpgradeProfile> getUpgradeProfileWithResponse(String connectedClusterResourceUri,
         Context context);
 
     /**
-     * Gets the upgrade profile of a provisioned cluster instance.
+     * Gets the upgrade profile of a provisioned cluster.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile of a provisioned cluster instance.
+     * @return the upgrade profile of a provisioned cluster.
      */
     ProvisionedClusterUpgradeProfile getUpgradeProfile(String connectedClusterResourceUri);
 
     /**
-     * Listing the AAD user credentials of a provisioned cluster instance used only in direct mode.
+     * Lists the user credentials of the provisioned cluster (can only be used within private network).
      * 
-     * Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,11 +156,9 @@ public interface ProvisionedClusterInstances {
     ListCredentialResponse listUserKubeconfig(String connectedClusterResourceUri);
 
     /**
-     * Listing the AAD user credentials of a provisioned cluster instance used only in direct mode.
+     * Lists the user credentials of the provisioned cluster (can only be used within private network).
      * 
-     * Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,11 +169,9 @@ public interface ProvisionedClusterInstances {
     ListCredentialResponse listUserKubeconfig(String connectedClusterResourceUri, Context context);
 
     /**
-     * Listing the admin credentials of a provisioned cluster instance used only in direct mode.
+     * Lists the admin credentials of the provisioned cluster (can only be used within private network).
      * 
-     * Lists the admin credentials of a provisioned cluster instance used only in direct mode.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,11 +181,9 @@ public interface ProvisionedClusterInstances {
     ListCredentialResponse listAdminKubeconfig(String connectedClusterResourceUri);
 
     /**
-     * Listing the admin credentials of a provisioned cluster instance used only in direct mode.
+     * Lists the admin credentials of the provisioned cluster (can only be used within private network).
      * 
-     * Lists the admin credentials of a provisioned cluster instance used only in direct mode.
-     * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

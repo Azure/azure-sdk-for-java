@@ -26,7 +26,7 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
 
     /**
      * Get the enabled property: Whether to enable workload identity.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
 
     /**
      * Set the enabled property: Whether to enable workload identity.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileWorkloadIdentity object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

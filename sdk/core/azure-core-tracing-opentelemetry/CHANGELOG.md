@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.43 (Unreleased)
+## 1.0.0-beta.44 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.43 (2024-02-02)
 
 ### Features Added
 
@@ -16,10 +26,12 @@
 - Removed `http.user_agent` optional attribute since the same information is reported in the instrumentation scope via library name and version.  
 - Removed `OpenTelemetrySchemaVersion` and it's setter method on `OpenTelemetryTracingOptions` since we're not allowing to change the schema version for now.
 - Removed exception event reporting - exceptions are reported as logs already.
-- 
-### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.42 (2023-11-03)
 

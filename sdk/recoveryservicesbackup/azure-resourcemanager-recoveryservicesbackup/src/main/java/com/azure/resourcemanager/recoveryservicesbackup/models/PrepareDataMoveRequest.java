@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Prepare DataMove Request. */
+/**
+ * Prepare DataMove Request.
+ */
 @Fluent
 public final class PrepareDataMoveRequest {
     /*
@@ -43,13 +45,15 @@ public final class PrepareDataMoveRequest {
     @JsonProperty(value = "ignoreMoved")
     private Boolean ignoreMoved;
 
-    /** Creates an instance of PrepareDataMoveRequest class. */
+    /**
+     * Creates an instance of PrepareDataMoveRequest class.
+     */
     public PrepareDataMoveRequest() {
     }
 
     /**
      * Get the targetResourceId property: ARM Id of target vault.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -58,7 +62,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Set the targetResourceId property: ARM Id of target vault.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the PrepareDataMoveRequest object itself.
      */
@@ -69,7 +73,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Get the targetRegion property: Target Region.
-     *
+     * 
      * @return the targetRegion value.
      */
     public String targetRegion() {
@@ -78,7 +82,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Set the targetRegion property: Target Region.
-     *
+     * 
      * @param targetRegion the targetRegion value to set.
      * @return the PrepareDataMoveRequest object itself.
      */
@@ -89,7 +93,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Get the dataMoveLevel property: DataMove Level.
-     *
+     * 
      * @return the dataMoveLevel value.
      */
     public DataMoveLevel dataMoveLevel() {
@@ -98,7 +102,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Set the dataMoveLevel property: DataMove Level.
-     *
+     * 
      * @param dataMoveLevel the dataMoveLevel value to set.
      * @return the PrepareDataMoveRequest object itself.
      */
@@ -108,9 +112,9 @@ public final class PrepareDataMoveRequest {
     }
 
     /**
-     * Get the sourceContainerArmIds property: Source Container ArmIds This needs to be populated only if DataMoveLevel
-     * is set to container.
-     *
+     * Get the sourceContainerArmIds property: Source Container ArmIds
+     * This needs to be populated only if DataMoveLevel is set to container.
+     * 
      * @return the sourceContainerArmIds value.
      */
     public List<String> sourceContainerArmIds() {
@@ -118,9 +122,9 @@ public final class PrepareDataMoveRequest {
     }
 
     /**
-     * Set the sourceContainerArmIds property: Source Container ArmIds This needs to be populated only if DataMoveLevel
-     * is set to container.
-     *
+     * Set the sourceContainerArmIds property: Source Container ArmIds
+     * This needs to be populated only if DataMoveLevel is set to container.
+     * 
      * @param sourceContainerArmIds the sourceContainerArmIds value to set.
      * @return the PrepareDataMoveRequest object itself.
      */
@@ -131,7 +135,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Get the ignoreMoved property: Ignore the artifacts which are already moved.
-     *
+     * 
      * @return the ignoreMoved value.
      */
     public Boolean ignoreMoved() {
@@ -140,7 +144,7 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Set the ignoreMoved property: Ignore the artifacts which are already moved.
-     *
+     * 
      * @param ignoreMoved the ignoreMoved value to set.
      * @return the PrepareDataMoveRequest object itself.
      */
@@ -151,27 +155,21 @@ public final class PrepareDataMoveRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model PrepareDataMoveRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model PrepareDataMoveRequest"));
         }
         if (targetRegion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetRegion in model PrepareDataMoveRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetRegion in model PrepareDataMoveRequest"));
         }
         if (dataMoveLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataMoveLevel in model PrepareDataMoveRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataMoveLevel in model PrepareDataMoveRequest"));
         }
     }
 

@@ -5,49 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.OAuthBasedDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with an Azure Data Lake Store. */
+/**
+ * The properties that are associated with an Azure Data Lake Store.
+ */
 @Fluent
 public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBasedDataSourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureDataLakeStoreOutputDataSourceProperties.class);
-
     /*
-     * The name of the Azure Data Lake Store account. Required on PUT
-     * (CreateOrReplace) requests.
+     * The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
-     * The tenant id of the user used to obtain the refresh token. Required on
-     * PUT (CreateOrReplace) requests.
+     * The tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
-     * The location of the file to which the output should be written to.
-     * Required on PUT (CreateOrReplace) requests.
+     * The location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "filePathPrefix")
     private String filePathPrefix;
 
     /*
-     * The date format. Wherever {date} appears in filePathPrefix, the value of
-     * this property is used as the date format instead.
+     * The date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date
+     * format instead.
      */
     @JsonProperty(value = "dateFormat")
     private String dateFormat;
 
     /*
-     * The time format. Wherever {time} appears in filePathPrefix, the value of
-     * this property is used as the time format instead.
+     * The time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time
+     * format instead.
      */
     @JsonProperty(value = "timeFormat")
     private String timeFormat;
@@ -59,9 +53,15 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     private AuthenticationMode authenticationMode;
 
     /**
+     * Creates an instance of AzureDataLakeStoreOutputDataSourceProperties class.
+     */
+    public AzureDataLakeStoreOutputDataSourceProperties() {
+    }
+
+    /**
      * Get the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -71,7 +71,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Set the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -83,7 +83,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Get the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -93,7 +93,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Set the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -105,7 +105,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Get the filePathPrefix property: The location of the file to which the output should be written to. Required on
      * PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the filePathPrefix value.
      */
     public String filePathPrefix() {
@@ -115,7 +115,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Set the filePathPrefix property: The location of the file to which the output should be written to. Required on
      * PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param filePathPrefix the filePathPrefix value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -127,7 +127,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Get the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
      * property is used as the date format instead.
-     *
+     * 
      * @return the dateFormat value.
      */
     public String dateFormat() {
@@ -137,7 +137,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Set the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
      * property is used as the date format instead.
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -149,7 +149,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Get the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
      * property is used as the time format instead.
-     *
+     * 
      * @return the timeFormat value.
      */
     public String timeFormat() {
@@ -159,7 +159,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
     /**
      * Set the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
      * property is used as the time format instead.
-     *
+     * 
      * @param timeFormat the timeFormat value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -170,7 +170,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -179,7 +179,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the AzureDataLakeStoreOutputDataSourceProperties object itself.
      */
@@ -188,21 +188,27 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreOutputDataSourceProperties withRefreshToken(String refreshToken) {
         super.withRefreshToken(refreshToken);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreOutputDataSourceProperties withTokenUserPrincipalName(String tokenUserPrincipalName) {
         super.withTokenUserPrincipalName(tokenUserPrincipalName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreOutputDataSourceProperties withTokenUserDisplayName(String tokenUserDisplayName) {
         super.withTokenUserDisplayName(tokenUserDisplayName);
@@ -211,7 +217,7 @@ public final class AzureDataLakeStoreOutputDataSourceProperties extends OAuthBas
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

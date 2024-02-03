@@ -23,7 +23,7 @@ public final class ManagedClustersGetCommandResultHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ManagedClustersGetCommandResultHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ManagedClustersGetCommandResultHeaders(HttpHeaders rawHeaders) {
@@ -32,7 +32,7 @@ public final class ManagedClustersGetCommandResultHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -41,7 +41,7 @@ public final class ManagedClustersGetCommandResultHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the ManagedClustersGetCommandResultHeaders object itself.
      */
@@ -52,7 +52,7 @@ public final class ManagedClustersGetCommandResultHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

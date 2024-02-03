@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point. */
+/**
+ * AzureWorkload SAP Hana-specific restore with integrated rehydration of recovery point.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadSAPHanaRestoreWithRehydrateRequest")
 @Fluent
@@ -21,13 +23,15 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of AzureWorkloadSapHanaRestoreWithRehydrateRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSapHanaRestoreWithRehydrateRequest class.
+     */
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest() {
     }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -36,52 +40,93 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the AzureWorkloadSapHanaRestoreWithRehydrateRequest object itself.
      */
-    public AzureWorkloadSapHanaRestoreWithRehydrateRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -90,7 +135,7 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
