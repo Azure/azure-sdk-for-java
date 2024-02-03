@@ -480,4 +480,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
+
+  <!-- Exceptions thrown here are caught in the calling method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.CryptographyClient.java"
+            lines="1283,1286,1293"/>
 </suppressions>
