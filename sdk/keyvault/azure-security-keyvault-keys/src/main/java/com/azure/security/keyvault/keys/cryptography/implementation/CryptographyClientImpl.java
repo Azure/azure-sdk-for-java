@@ -38,6 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeyEncryptionAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeySignatureAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapWrapAlgorithm;
@@ -100,7 +101,15 @@ public final class CryptographyClientImpl {
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
 
-    JsonWebKey getSecretKey() {
+    public Mono<JsonWebKey> getSecretKeyAsync() {
+        return withContext(context -> secretClient.getSecretWithResponseAsync(vaultUrl, keyName, keyVersion, context))
+            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to get key - {}", keyName, error))
+            .map(response -> transformSecretKey(response.getValue()));
+    }
+
+    public JsonWebKey getSecretKey() {
         return transformSecretKey(secretClient.getSecretWithResponse(vaultUrl, keyName, keyVersion, Context.NONE)
             .getValue());
     }

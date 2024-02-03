@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -20,6 +19,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
@@ -37,7 +37,7 @@ public final class CryptographyUtils {
         // No-op
     }
 
-    private static final String SECRETS_COLLECTION = "secrets";
+    public static final String SECRETS_COLLECTION = "secrets";
 
     public static List<String> unpackAndValidateId(String keyId, ClientLogger logger) {
         if (CoreUtils.isNullOrEmpty(keyId)) {
@@ -87,31 +87,15 @@ public final class CryptographyUtils {
         }
 
         // Should never reach this point.
-        return null;
+        throw new IllegalStateException("Could not create local cryptography client.");
     }
 
-    public static LocalKeyCryptographyClient retrieveJwkAndInitializeLocalClient(CryptographyClientImpl implClient) {
-        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
-        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
-            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
-            // default to using service-side cryptography.
-            JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? implClient.getSecretKey()
-                : implClient.getKey(Context.NONE).getValue().getKey();
-
-            if (!jsonWebKey.isValid()) {
-                throw new IllegalArgumentException("The JSON Web Key is not valid.");
-            } else {
-                return initializeLocalClient(jsonWebKey, implClient);
-            }
+    public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
+        if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
+            throw new UnsupportedOperationException(
+                String.format("The %s operation is not allowed for key with id: %s",
+                    keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
         }
-
-        // Couldn't/didn't create a local cryptography client.
-        throw new IllegalStateException("The JSON Web Key is not valid.");
-    }
-
-    public static boolean checkKeyPermissions(List<KeyOperation> operations, KeyOperation keyOperation) {
-        return operations.contains(keyOperation);
     }
 
     /*

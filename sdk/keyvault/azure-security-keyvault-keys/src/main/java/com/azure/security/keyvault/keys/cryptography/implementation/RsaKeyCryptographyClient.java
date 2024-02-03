@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -26,24 +25,22 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RsaKeyCryptographyClient.class);
-
-    private KeyPair rsaKeyPair;
+    private final KeyPair rsaKeyPair;
 
     RsaKeyCryptographyClient(JsonWebKey jsonWebKey, CryptographyClientImpl implClient) {
         super(jsonWebKey, implClient);
 
-        this.rsaKeyPair = jsonWebKey.toRsa(jsonWebKey.hasPrivateKey());
+        rsaKeyPair = jsonWebKey.toRsa(jsonWebKey.hasPrivateKey());
     }
 
     @Override
     public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         if (algorithm == null) {
-            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
+            throw new NullPointerException("Encryption algorithm cannot be null.");
         }
 
         if (plaintext == null) {
-            return Mono.error(new NullPointerException("Plaintext cannot be null."));
+            throw new NullPointerException("Plaintext cannot be null.");
         }
 
         // Interpret the requested algorithm
@@ -54,9 +51,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.encryptAsync(algorithm, plaintext, context);
             }
 
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPublic() == null) {
@@ -64,8 +61,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.encryptAsync(algorithm, plaintext, context);
             }
 
-            return Mono.error(new IllegalArgumentException(
-                "Public portion of the key not available to perform encrypt operation"));
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the encrypt operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -90,9 +87,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.encrypt(algorithm, plaintext, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPublic() == null) {
@@ -100,8 +97,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.encrypt(algorithm, plaintext, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Public portion of the key not available to perform encrypt operation"));
+            throw
+                new IllegalArgumentException(
+                    "The public portion of the key is not available to perform the encrypt operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -111,7 +109,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -130,11 +128,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         if (algorithm == null) {
-            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
+            throw new NullPointerException("Encryption algorithm cannot be null.");
         }
 
         if (ciphertext == null) {
-            return Mono.error(new NullPointerException("Ciphertext cannot be null."));
+            throw new NullPointerException("Ciphertext cannot be null.");
         }
 
         // Interpret the requested algorithm
@@ -145,9 +143,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.decryptAsync(algorithm, ciphertext, context);
             }
 
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPrivate() == null) {
@@ -155,8 +153,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.decryptAsync(algorithm, ciphertext, context);
             }
 
-            return Mono.error(new IllegalArgumentException(
-                "Private portion of the key not available to perform decrypt operation"));
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the decrypt operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -181,9 +179,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.decrypt(algorithm, ciphertext, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPrivate() == null) {
@@ -191,8 +189,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.decrypt(algorithm, ciphertext, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Private portion of the key not available to perform decrypt operation"));
+            throw
+                new IllegalArgumentException(
+                    "The private portion of the key is not available to perform the decrypt operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -202,7 +201,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new DecryptResult(transform.doFinal(ciphertext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -224,7 +223,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         return implClient != null
             ? implClient.signAsync(algorithm, digest, context)
             : Mono.error(new UnsupportedOperationException(
-                "Sign operation on Local RSA key is not supported currently."));
+                "The sign operation on local RSA key is not currently supported."));
     }
 
     @Override
@@ -232,8 +231,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (implClient != null) {
             return implClient.sign(algorithm, digest, context);
         } else {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("Sign operation on Local RSA key is not supported currently."));
+            throw
+                new UnsupportedOperationException("The sign operation on local RSA key is not currently supported.");
         }
     }
 
@@ -243,7 +242,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         return implClient != null
             ? implClient.verifyAsync(algorithm, digest, signature, context)
             : Mono.error(new UnsupportedOperationException(
-                "Verify operation on Local RSA key is not supported currently."));
+                "The verify operation on a local RSA key is not currently supported."));
     }
 
     @Override
@@ -251,19 +250,20 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (implClient != null) {
             return implClient.verify(algorithm, digest, signature, context);
         } else {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("Verify operation on Local RSA key is not supported currently."));
+            throw
+                new UnsupportedOperationException(
+                    "The verify operation on a local RSA key is not currently supported.");
         }
     }
 
     @Override
     public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
         if (algorithm == null) {
-            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
+            throw new NullPointerException("Key wrap algorithm cannot be null.");
         }
 
         if (keyToWrap == null) {
-            return Mono.error(new NullPointerException("Key content to be wrapped cannot be null."));
+            throw new NullPointerException("Key content to be wrapped cannot be null.");
         }
 
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
@@ -273,9 +273,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.wrapKeyAsync(algorithm, keyToWrap, context);
             }
 
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPublic() == null) {
@@ -283,8 +283,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.wrapKeyAsync(algorithm, keyToWrap, context);
             }
 
-            return Mono.error(new IllegalArgumentException(
-                "Public portion of the key not available to perform wrap key operation"));
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the key wrap operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -307,9 +307,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.wrapKey(algorithm, keyToWrap, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPublic() == null) {
@@ -317,8 +317,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.wrapKey(algorithm, keyToWrap, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Public portion of the key not available to perform wrap key operation"));
+            throw
+                new IllegalArgumentException(
+                    "The public portion of the key is not available to perform the key wrap operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -328,18 +329,18 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new WrapResult(transform.doFinal(keyToWrap), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         if (algorithm == null) {
-            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
+            throw new NullPointerException("Key wrap algorithm cannot be null.");
         }
 
         if (encryptedKey == null) {
-            return Mono.error(new NullPointerException("Encrypted key content to be unwrapped cannot be null."));
+            throw new NullPointerException("Encrypted key content to be unwrapped cannot be null.");
         }
 
         // Interpret the requested algorithm
@@ -350,9 +351,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
             }
 
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPrivate() == null) {
@@ -360,8 +361,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
             }
 
-            return Mono.error(new IllegalArgumentException(
-                "Private portion of the key not available to perform unwrap operation"));
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the key unwrap operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -386,9 +387,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
         if (rsaKeyPair.getPrivate() == null) {
@@ -396,8 +397,9 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Private portion of the key not available to perform unwrap operation"));
+            throw
+                new IllegalArgumentException(
+                    "The private portion of the key is not available to perform the key unwrap operation.");
         }
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
@@ -407,7 +409,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -416,7 +418,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         try {
             return signAsync(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
-            return Mono.error(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -425,7 +427,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         try {
             return sign(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -435,7 +437,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         try {
             return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
-            return Mono.error(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -444,7 +446,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         try {
             return verify(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
