@@ -4,10 +4,12 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of AssistantsClient.
  */
-public enum AssistantsServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum AssistantsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-02-15-preview.
      */
