@@ -372,11 +372,11 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                         # this regex is looking for beta.X
                         if prerelease_regex_named.match(prerel) is None:
                             # if the build_type isn't data then error
-                            if build_type.name.lower() != 'data':
+                            if build_type.name.lower() == 'data':
                                 # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
-                            else:
+                             # else:
                                 # verify that the prerelease tag is "beta" which is the only allowable thing for data track aside from beta.X
-                                if prerelease_data_regex.match(prerel) is None:
+                                #if prerelease_data_regex.match(prerel) is None:
                                     # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tags for data track are (beta) or (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
                                 # at this point the version is <major>.<minor>.<patch>-beta
                                 temp_ver = '{}-{}'.format(temp_ver, str(prerel))
