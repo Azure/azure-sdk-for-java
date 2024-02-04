@@ -357,30 +357,6 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                 # <major>.<minor>.<patch/hotfix>-beta.<prerelease>
                 if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
-                    vmatch = version_regex_named.match(module.current)
-                    temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
-                    # we should never have buildmetadata in our versioning scheme
-                    #if vmatch.group('buildmetadata') is not None:
-                        # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(library_to_update, module.current, version_file, vmatch.group('buildmetadata')))
-
-                    # reconstruct the version from the semver pieces and it should match exactly the current
-                    # version in the module
-                    # If there's a pre-release version it should be beta.X
-                    if vmatch.group('prerelease') is not None:
-                        prerel = vmatch.group('prerelease')
-                        # this regex is looking for beta.X
-                        if prerelease_regex_named.match(prerel) is None and build_type.name.lower() == 'data':
-                            temp_ver = '{}-{}'.format(temp_ver, str(prerel))
-                        else:
-                            prever = prerelease_regex_named.match(prerel)
-                            rev = int(prever.group('revision'))
-                            temp_ver = '{}-beta.{}'.format(temp_ver, str(rev))
-
-                    # last but not least, for sanity verify that the version constructed from the
-                    # semver pieces matches module's current version
-                    # if module.current != temp_ver:
-                        # raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
-
                     print('The version {} for {} looks good!'.format(module.current, module.name))
 
 
