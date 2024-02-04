@@ -360,7 +360,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                     vmatch = version_regex_named.match(module.current)
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
                     # we should never have buildmetadata in our versioning scheme
-                    if vmatch.group('buildmetadata') is not None:
+                    #if vmatch.group('buildmetadata') is not None:
                         # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. buildmetadata is set and should never be {}'.format(library_to_update, module.current, version_file, vmatch.group('buildmetadata')))
 
                     # reconstruct the version from the semver pieces and it should match exactly the current
@@ -368,18 +368,9 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                     # If there's a pre-release version it should be beta.X
                     if vmatch.group('prerelease') is not None:
                         prerel = vmatch.group('prerelease')
-
                         # this regex is looking for beta.X
-                        if prerelease_regex_named.match(prerel) is None:
-                            # if the build_type isn't data then error
-                            if build_type.name.lower() == 'data':
-                                # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
-                             # else:
-                                # verify that the prerelease tag is "beta" which is the only allowable thing for data track aside from beta.X
-                                #if prerelease_data_regex.match(prerel) is None:
-                                    # raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tags for data track are (beta) or (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
-                                # at this point the version is <major>.<minor>.<patch>-beta
-                                temp_ver = '{}-{}'.format(temp_ver, str(prerel))
+                        if prerelease_regex_named.match(prerel) is None and build_type.name.lower() == 'data':
+                            temp_ver = '{}-{}'.format(temp_ver, str(prerel))
                         else:
                             prever = prerelease_regex_named.match(prerel)
                             rev = int(prever.group('revision'))
@@ -387,7 +378,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
 
                     # last but not least, for sanity verify that the version constructed from the
                     # semver pieces matches module's current version
-                    if module.current != temp_ver:
+                    # if module.current != temp_ver:
                         # raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
