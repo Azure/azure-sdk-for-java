@@ -1,5 +1,6 @@
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -18,10 +19,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class RegionScopedSessionContainer implements ISessionContainer {
 
-    private static final
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-    private final Logger logger = LoggerFactory.getLogger(SessionContainer.class);
+    private final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainer.class);
 
     private final ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToRegionScopedSessionTokens = new ConcurrentHashMap<>();
 
@@ -63,10 +61,12 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         return this.hostName;
     }
 
+    @Override
     public void setDisableSessionCapturing(boolean value) {
         this.disableSessionCapturing = value;
     }
 
+    @Override
     public boolean getDisableSessionCapturing() {
         return this.disableSessionCapturing;
     }
@@ -267,15 +267,16 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
         ResourceId resourceId = ResourceId.parse(collectionRid);
         String collectionName = PathsHelper.getCollectionPath(collectionFullName);
-
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
-        this.setSessionToken(request, resourceId, collectionName, token);
+        if (!Strings.isNullOrEmpty(token)) {
+            this.setSessionToken(request, resourceId, collectionName, token);
+        }
     }
 
     @Override
     public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
-
+        throw new NotImplementedException("setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) not implemented for RegionScopedSessionContainer");
     }
 
     private void setSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String collectionName, String token) {

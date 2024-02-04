@@ -506,7 +506,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+
+            if (Configs.isRegionScopedSessionTokenCapturingEnabled()) {
+                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+            } else {
+                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            }
+
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -640,13 +646,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 : this.getDefaultConsistencyLevelOfAccount();
             boolean updatedDisableSessionCapturing =
                 (ConsistencyLevel.SESSION != effectiveConsistencyLevel && !sessionCapturingOverrideEnabled);
-
-            if (sessionContainer instanceof RegionScopedSessionContainer) {
-                ((RegionScopedSessionContainer) this.sessionContainer).setDisableSessionCapturing(updatedDisableSessionCapturing);
-            } else if (sessionContainer instanceof SessionContainer) {
-                ((SessionContainer) this.sessionContainer).setDisableSessionCapturing(updatedDisableSessionCapturing);
-            }
-
+            this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1251,11 +1251,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
-                           this.sessionContainer.setSessionToken(
-                               request,
-                               resourceResponse.getResource().getResourceId(),
-                               getAltLink(resourceResponse.getResource()),
-                               resourceResponse.getResponseHeaders());
+                    // set the session token
+                    this.sessionContainer.setSessionToken(
+                        request,
+                        resourceResponse.getResource().getResourceId(),
+                        getAltLink(resourceResponse.getResource()),
+                        resourceResponse.getResponseHeaders());
                 });
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
@@ -4994,12 +4995,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public Object getSession() {
+    // TODO (abhmohanty) - evaluate risk of changing return type Object -> ISessionContainer
+    public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
-    public void setSession(Object sessionContainer) {
-        this.sessionContainer = (SessionContainer) sessionContainer;
+    public void setSession(ISessionContainer sessionContainer) {
+        // this.sessionContainer = (SessionContainer) sessionContainer;
+        this.sessionContainer = sessionContainer;
     }
 
     @Override

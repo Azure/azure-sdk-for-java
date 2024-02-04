@@ -380,7 +380,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return readLagging;
     }
 
-    void validateSessionContainerAfterCollectionDeletion(boolean useGateway) throws Exception {
+    void validateSessionContainerAfterCollectionDeletion(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -443,8 +443,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             }
             // verify the client2 has the same token.
             {
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collection));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collection.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collection, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collection, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEqualTo(token2);
             }
 
@@ -456,9 +456,9 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             collectionDefinition.setId(collectionId);
             DocumentCollection collectionSameName = createCollection(client2, createdDatabase.getId(), collectionDefinition);
             String documentId1 = "Generation2-" + 0;
-            Document databaseDefinition2 = getDocumentDefinition();
-            databaseDefinition2.setId(documentId1);
-            Document createdDocument = client1.createDocument(collectionSameName.getSelfLink(), databaseDefinition2, null, true).block().getResource();
+            Document documentDefinition2 = getDocumentDefinition();
+            documentDefinition2.setId(documentId1);
+            Document createdDocument = client1.createDocument(collectionSameName.getSelfLink(), documentDefinition2, null, true).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocument, "mypk")));
             ResourceResponseValidator<Document> successValidator = new ResourceResponseValidator.Builder<Document>()
@@ -467,14 +467,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = client1.readDocument(createdDocument.getSelfLink(), requestOptions);
             validateSuccess(readObservable, successValidator);
             {
-                String token1 = ((SessionContainer) client1.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client1.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token1 = getGlobalSessionToken(client1, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client1, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEqualTo(token2);
             }
 
             {
                 // Client2 read using getName link should fail with higher LSN.
-                String token = ((SessionContainer) client1.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token = getGlobalSessionToken(client1, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 // artificially bump to higher LSN
                 String higherLsnToken = this.getDifferentLSNToken(token, 2000);
                 RequestOptions requestOptions1 = new RequestOptions();
@@ -487,8 +487,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // this will trigger client2 to clear the token
             {
                 // verify token by altlink is gone!
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collection.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collection, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEmpty();
                 //assertThat(token2).isNotEmpty(); In java both SelfLink and AltLink token remain in sync.
             }
@@ -510,8 +510,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 validateSuccess(readObservable, successValidator);
 
                 client1.deleteCollection(collectionSameName.getSelfLink(), null).block();
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 // currently we can't delete the token from Altlink when deleting using selflink
                 assertThat(token1).isNotEmpty();
                 //assertThat(token2).isEmpty(); In java both SelfLink and AltLink token remain in sync.
@@ -523,7 +523,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     }
 
-    void validateSessionTokenWithPreConditionFailure(boolean useGateway) throws Exception {
+    void validateSessionTokenWithPreConditionFailure(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -568,7 +568,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     documentResponse.getResource(), requestOptions1, true);
             FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.PRECONDITION_FAILED).build();
             validateFailure(preConditionFailureResponseObservable, failureValidator);
-            assertThat(isSessionEqual(((SessionContainer) validationClient.getSession()), (SessionContainer) writeClient.getSession())).isTrue();
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
 
         } finally {
             safeClose(writeClient);
@@ -839,6 +839,25 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
+    private static String getGlobalSessionToken(RxDocumentClientImpl client, DocumentCollection collection, boolean useAltLink, boolean isRegionScopedSessionTokenCapturingEnabled) {
+
+        if (isRegionScopedSessionTokenCapturingEnabled) {
+
+            if (useAltLink) {
+                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(ModelBridgeInternal.getAltLink(collection));
+            } else {
+                return ((RegionScopedSessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
+            }
+        } else {
+            if (useAltLink) {
+                return ((SessionContainer) client.getSession()).getSessionToken(ModelBridgeInternal.getAltLink(collection));
+            } else {
+                return ((SessionContainer) client.getSession()).getSessionToken(collection.getSelfLink());
+            }
+        }
+
+    }
+
     @AfterClass(groups = {"direct"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.initClient);
@@ -886,6 +905,18 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return doc;
     }
 
+    private boolean isSessionEqual(ISessionContainer sessionContainer1, ISessionContainer sessionContainer2) throws Exception {
+
+        if (sessionContainer1 instanceof SessionContainer && sessionContainer2 instanceof SessionContainer) {
+            return isSessionEqual((SessionContainer) sessionContainer1, (SessionContainer) sessionContainer2);
+        } else if (sessionContainer1 instanceof RegionScopedSessionContainer && sessionContainer2 instanceof RegionScopedSessionContainer) {
+            return isSessionEqual((RegionScopedSessionContainer) sessionContainer1, (RegionScopedSessionContainer) sessionContainer2);
+        }
+
+        logger.warn("The session containers are not of type SessionContainer / RegionScopedSessionContainer");
+        return false;
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private boolean isSessionEqual(SessionContainer sessionContainer1, SessionContainer sessionContainer2) throws Exception {
         if (sessionContainer1 == null) {
@@ -900,25 +931,76 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             return true;
         }
 
-        Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = SessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionResourceIdToSessionTokens1 = SessionContainer.class.getDeclaredField("collectionResourceIdToSessionTokens");
         Field fieldCollectionNameToCollectionResourceId1 = SessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
-        fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
+        fieldCollectionResourceIdToSessionTokens1.setAccessible(true);
         fieldCollectionNameToCollectionResourceId1.setAccessible(true);
-        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens1 =
-                (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(sessionContainer1);
+        ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens1 =
+                (ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>>) fieldCollectionResourceIdToSessionTokens1.get(sessionContainer1);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(sessionContainer1);
 
 
-        Field fieldCollectionResourceIdToRegionScopedSessionTokens2 = SessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionResourceIdToSessionTokens2 = SessionContainer.class.getDeclaredField("collectionResourceIdToSessionTokens");
         Field fieldCollectionNameToCollectionResourceId2 = SessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
-        fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
+        fieldCollectionResourceIdToSessionTokens2.setAccessible(true);
         fieldCollectionNameToCollectionResourceId2.setAccessible(true);
-        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens2 =
-                (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(sessionContainer2);
+        ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens2 =
+                (ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>>) fieldCollectionResourceIdToSessionTokens2.get(sessionContainer2);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId2 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId2.get(sessionContainer2);
 
         if (collectionResourceIdToSessionTokens1.size() != collectionResourceIdToSessionTokens2.size() ||
                 collectionNameToCollectionResourceId1.size() != collectionNameToCollectionResourceId2.size()) {
+            return false;
+        }
+
+        // get keys, and compare entries
+        for (Long resourceId : collectionResourceIdToSessionTokens1.keySet()) {
+            if (!collectionResourceIdToSessionTokens1.get(resourceId).equals(collectionResourceIdToSessionTokens2.get(resourceId))) {
+                return false;
+            }
+        }
+
+        for (String collectionName : collectionNameToCollectionResourceId1.keySet()) {
+            if (!collectionNameToCollectionResourceId1.get(collectionName).equals(collectionNameToCollectionResourceId2.get(collectionName))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isSessionEqual(RegionScopedSessionContainer regionScopedSessionContainer1, RegionScopedSessionContainer regionScopedSessionContainer2) throws NoSuchFieldException, IllegalAccessException {
+        if (regionScopedSessionContainer1 == null) {
+            return false;
+        }
+
+        if (regionScopedSessionContainer2 == null) {
+            return false;
+        }
+
+        if (regionScopedSessionContainer1 == regionScopedSessionContainer2) {
+            return true;
+        }
+
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionNameToCollectionResourceId1 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
+        fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
+        fieldCollectionNameToCollectionResourceId1.setAccessible(true);
+        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens1 =
+            (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(regionScopedSessionContainer1);
+        ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(regionScopedSessionContainer1);
+
+
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens2 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionNameToCollectionResourceId2 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
+        fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
+        fieldCollectionNameToCollectionResourceId2.setAccessible(true);
+        ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry> collectionResourceIdToSessionTokens2 =
+            (ConcurrentHashMap<Long, PartitionKeyRangeBasedRegionScopedSessionTokenRegistry>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(regionScopedSessionContainer2);
+        ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId2 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId2.get(regionScopedSessionContainer2);
+
+        if (collectionResourceIdToSessionTokens1.size() != collectionResourceIdToSessionTokens2.size() ||
+            collectionNameToCollectionResourceId1.size() != collectionNameToCollectionResourceId2.size()) {
             return false;
         }
 

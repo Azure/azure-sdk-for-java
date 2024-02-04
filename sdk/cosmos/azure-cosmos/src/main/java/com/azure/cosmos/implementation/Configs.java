@@ -157,6 +157,9 @@ public class Configs {
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
+    public static final String IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = "COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
+    private static final boolean DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -432,5 +435,9 @@ public class Configs {
                     System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
                     DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
                 MIN_MAX_TRACE_MESSAGE_LENGTH);
+    }
+
+    public static boolean isRegionScopedSessionTokenCapturingEnabled() {
+        return getBooleanValue(System.getProperty(IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED), DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED);
     }
 }

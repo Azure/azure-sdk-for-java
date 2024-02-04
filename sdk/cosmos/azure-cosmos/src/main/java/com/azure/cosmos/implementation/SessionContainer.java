@@ -53,10 +53,12 @@ public final class SessionContainer implements ISessionContainer {
         return this.hostName;
     }
 
+    @Override
     public void setDisableSessionCapturing(boolean value) {
         this.disableSessionCapturing = value;
     }
 
+    @Override
     public boolean getDisableSessionCapturing() {
         return this.disableSessionCapturing;
     }
@@ -189,7 +191,17 @@ public final class SessionContainer implements ISessionContainer {
 
     @Override
     public void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
+        if (this.disableSessionCapturing) {
+            return;
+        }
 
+        ResourceId resourceId = ResourceId.parse(collectionRid);
+        String collectionName = PathsHelper.getCollectionPath(collectionFullName);
+        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+
+        if (!Strings.isNullOrEmpty(token)) {
+            this.setSessionToken(resourceId, collectionName, token);
+        }
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface ISessionContainer {
 
     void setDisableSessionCapturing(boolean value);
 
+    boolean getDisableSessionCapturing();
+
     /**
      * Returns a serialized map of partitionKeyRangeId to session token. If a entity is name based then the method extracts name from
      * ResourceAddress and use it to identify collection otherwise it uses ResourceId. Returns empty string if collection is unknown

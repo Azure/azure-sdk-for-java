@@ -16,6 +16,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.Range;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,8 +29,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests2 extends ConsistencyTestsBase {
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateReadSessionOnAsyncReplication() throws InterruptedException {
+    @DataProvider(name = "regionScopedSessionContainerConfigs")
+    public Object[] regionScopedSessionContainerConfigs() {
+        return new Object[] {false, true};
+    }
+
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateReadSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
+
+        // this setting is simply to test regression
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -59,11 +71,18 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                                                            null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateReadSession(document);
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateWriteSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
+
+        // this setting is simply to test regression
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -93,6 +112,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                                                            null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateWriteSession(document);
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
 
@@ -110,14 +130,21 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionContainerAfterCollectionDeletion() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionContainerAfterCollectionDeletion(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         // Verify the collection deletion will trigger the session token clean up (even for different client)
         //this.ValidateSessionContainerAfterCollectionDeletion(true, Protocol.TCP);
-        this.validateSessionContainerAfterCollectionDeletion(true);
-        this.validateSessionContainerAfterCollectionDeletion(false);
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
+        this.validateSessionContainerAfterCollectionDeletion(true, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionContainerAfterCollectionDeletion(false, shouldRegionScopedSessionContainerEnabled);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
@@ -126,12 +153,19 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithPreConditionFailure() throws Exception {
+    public void validateSessionTokenWithPreConditionFailure(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithPreConditionFailure(false, Protocol.TCP);
-        this.validateSessionTokenWithPreConditionFailure(false);
-        this.validateSessionTokenWithPreConditionFailure(true);
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
+        this.validateSessionTokenWithPreConditionFailure(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithPreConditionFailure(true, shouldRegionScopedSessionContainerEnabled);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
