@@ -28,6 +28,16 @@ resource blobRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   }
 }
 
+resource blobRoleFunc 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: sa
+  name: guid(resourceGroup().id, blobContributor, 'azfunc')
+  properties: {
+    principalId: azfunc.identity.principalId
+    roleDefinitionId: blobContributor
+    principalType: 'ServicePrincipal'
+  }
+}
+
 resource blobRole2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: sa2
   name: guid(resourceGroup().id, blobContributor, usermgdid.id)
@@ -119,7 +129,7 @@ netFrameworkVersion: 'v6.0'
           value: sa2.name
         }
         {
-          name: 'IDENTITY_WEBAPP_USER_DEFINED_IDENTITY'
+          name: 'IDENTITY_USER_DEFINED_IDENTITY'
           value: usermgdid.id
         }
       ]
@@ -184,8 +194,9 @@ resource azfunc 'Microsoft.Web/sites@2021-03-01' = {
 }
 
 output IDENTITY_WEBAPP_NAME string = web.name
-output IDENTITY_WEBAPP_USER_DEFINED_IDENTITY string = usermgdid.id
+output IDENTITY_USER_DEFINED_IDENTITY string = usermgdid.id
 output IDENTITY_STORAGE_NAME_1 string = sa.name
 output IDENTITY_STORAGE_NAME_2 string = sa2.name
 output IDENTITY_FUNCTION_NAME string = azfunc.name
 output IDENTITY_APPSERVICE_NAME string = farm.name
+output IDENTITY_FUNC_URL string = azfunc.properties.defaultHostName

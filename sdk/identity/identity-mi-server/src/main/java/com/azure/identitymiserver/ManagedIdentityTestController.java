@@ -15,7 +15,7 @@ public class ManagedIdentityTestController {
 
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String resourceId = configuration.get("IDENTITY_WEBAPP_USER_DEFINED_IDENTITY");
+        String resourceId = configuration.get("IDENTITY_USER_DEFINED_IDENTITY");
         String account1 = configuration.get("IDENTITY_STORAGE_NAME_1");
         String account2 = configuration.get("IDENTITY_STORAGE_NAME_2");
 

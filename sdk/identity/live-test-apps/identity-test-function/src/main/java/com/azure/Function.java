@@ -1,5 +1,9 @@
 package com.azure;
 
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -15,12 +19,8 @@ import java.util.Optional;
  * Azure Functions with HTTP Trigger.
  */
 public class Function {
-    /**
-     * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
-     * 1. curl -d "HTTP Body" {your host}/api/HttpExample
-     * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
-     */
-    @FunctionName("HttpExample")
+
+    @FunctionName("MITest")
     public HttpResponseMessage run(
             @HttpTrigger(
                 name = "req",
@@ -29,15 +29,32 @@ public class Function {
                 HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
+            
 
-        // Parse query parameter
-        final String query = request.getQueryParameters().get("name");
-        final String name = request.getBody().orElse(query);
+        String resourceId = System.getenv().get("IDENTITY_USER_DEFINED_IDENTITY");
+        String account1 = System.getenv().get("IDENTITY_STORAGE_NAME_1");
+        String account2 = System.getenv().get("IDENTITY_STORAGE_NAME_2");
+        ManagedIdentityCredential systemAssigned = new ManagedIdentityCredentialBuilder().build();
+        ManagedIdentityCredential userAssigned = new ManagedIdentityCredentialBuilder()
+                .resourceId(resourceId)
+                .build();
 
-        if (name == null) {
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
-        } else {
-            return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
+        BlobServiceClient systemAssignedBlobClient = new BlobServiceClientBuilder()
+                .endpoint("https://" + account1 + ".blob.core.windows.net")
+                .credential(systemAssigned)
+                .buildClient();
+        BlobServiceClient userAssignedBlobClient = new BlobServiceClientBuilder()
+                .endpoint("https://" + account2 + ".blob.core.windows.net")
+                .credential(userAssigned)
+                .buildClient();
+
+        try {
+            systemAssignedBlobClient.listBlobContainers().forEach(container -> container.getName());
+            userAssignedBlobClient.listBlobContainers().forEach(container -> container.getName());
+            return request.createResponseBuilder(HttpStatus.OK).body("Successfully retrieved managed identity tokens").build();
+
+        } catch (Exception e) {
+        return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage() + "\r\n" + e.getStackTrace().toString()).build();
         }
     }
 }
