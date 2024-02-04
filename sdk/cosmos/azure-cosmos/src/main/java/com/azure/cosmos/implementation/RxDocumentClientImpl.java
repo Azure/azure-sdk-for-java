@@ -1061,7 +1061,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .toRequestOptions(options);
 
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-                getEndToEndOperationLatencyPolicyConfig(requestOptions);
+                getEndToEndOperationLatencyPolicyConfig(requestOptions, resourceTypeEnum, OperationType.Query);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                 return getFeedResponseFluxWithTimeout(
@@ -2508,14 +2508,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .map(resp -> toResourceResponse(resp, Document.class)));
     }
 
-    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
+    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+        RequestOptions options,
+        ResourceType resourceType,
+        OperationType operationType) {
         return this.getEffectiveEndToEndOperationLatencyPolicyConfig(
-            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null);
+            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null,
+            resourceType,
+            operationType);
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEffectiveEndToEndOperationLatencyPolicyConfig(
-        CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
-        return policyConfig != null ? policyConfig : this.cosmosEndToEndOperationLatencyPolicyConfig;
+        CosmosEndToEndOperationLatencyPolicyConfig policyConfig,
+        ResourceType resourceType,
+        OperationType operationType) {
+        if (policyConfig != null) {
+            return policyConfig;
+        }
+
+        if (resourceType != ResourceType.Document) {
+            return null;
+        }
+
+        if (!operationType.isPointOperation() && Configs.isDefaultE2ETimeoutDisabledForNonPointOperations()) {
+            return null;
+        }
+
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     @Override
@@ -3274,7 +3293,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .toRequestOptions(options);
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            getEndToEndOperationLatencyPolicyConfig(requestOptions);
+            getEndToEndOperationLatencyPolicyConfig(requestOptions, ResourceType.Document, OperationType.Query);
 
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
             return getFeedResponseFluxWithTimeout(
@@ -5338,7 +5357,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             "This method can only be used for document point operations.");
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
         List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
@@ -5668,7 +5687,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             this.getEffectiveEndToEndOperationLatencyPolicyConfig(
-                req.requestContext.getEndToEndOperationLatencyPolicyConfig());
+                req.requestContext.getEndToEndOperationLatencyPolicyConfig(), resourceType, operationType);
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(

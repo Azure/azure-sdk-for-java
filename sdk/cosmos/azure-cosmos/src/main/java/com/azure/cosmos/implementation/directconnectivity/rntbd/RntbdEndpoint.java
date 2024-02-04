@@ -259,7 +259,9 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public boolean isChannelAcquisitionContextEnabled() { return this.options.isChannelAcquisitionContextEnabled(); }
+        public long channelAcquisitionContextLatencyThresholdInMillis() {
+            return this.options.channelAcquisitionContextLatencyThresholdInMillis();
+        }
 
         @JsonProperty
         public int tcpKeepIntvl() { return this.options.tcpKeepIntvl(); }
