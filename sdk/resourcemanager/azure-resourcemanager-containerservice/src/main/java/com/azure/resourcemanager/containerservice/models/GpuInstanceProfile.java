@@ -39,7 +39,7 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
 
     /**
      * Creates a new instance of GpuInstanceProfile value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +48,7 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
 
     /**
      * Creates or finds a GpuInstanceProfile from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GpuInstanceProfile.
      */
@@ -59,7 +59,7 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
 
     /**
      * Gets known GpuInstanceProfile values.
-     *
+     * 
      * @return known GpuInstanceProfile values.
      */
     public static Collection<GpuInstanceProfile> values() {

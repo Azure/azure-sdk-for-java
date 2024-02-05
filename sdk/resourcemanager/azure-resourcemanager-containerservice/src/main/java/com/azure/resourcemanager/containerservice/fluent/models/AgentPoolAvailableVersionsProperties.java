@@ -28,7 +28,7 @@ public final class AgentPoolAvailableVersionsProperties {
 
     /**
      * Get the agentPoolVersions property: List of versions available for agent pool.
-     *
+     * 
      * @return the agentPoolVersions value.
      */
     public List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions() {
@@ -37,7 +37,7 @@ public final class AgentPoolAvailableVersionsProperties {
 
     /**
      * Set the agentPoolVersions property: List of versions available for agent pool.
-     *
+     * 
      * @param agentPoolVersions the agentPoolVersions value to set.
      * @return the AgentPoolAvailableVersionsProperties object itself.
      */
@@ -49,7 +49,7 @@ public final class AgentPoolAvailableVersionsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,13 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiPortalCustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiPortalCustomDomainsClient.
+ */
 public interface ApiPortalCustomDomainsClient {
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -34,14 +36,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the API portal custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
+    Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, String domainName);
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -51,31 +53,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the API portal custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApiPortalCustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
+    Mono<ApiPortalCustomDomainResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName);
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
-     * @param domainName The name of the API portal custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API portal custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiPortalCustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
-
-    /**
-     * Get the API portal custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -86,14 +71,31 @@ public interface ApiPortalCustomDomainsClient {
      * @return the API portal custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiPortalCustomDomainResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context);
+    Response<ApiPortalCustomDomainResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, Context context);
+
+    /**
+     * Get the API portal custom domain.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @param domainName The name of the API portal custom domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API portal custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApiPortalCustomDomainResourceInner get(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -104,18 +106,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return custom domain of the API portal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -127,18 +125,14 @@ public interface ApiPortalCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String apiPortalName,
-            String domainName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -150,17 +144,14 @@ public interface ApiPortalCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
+        String resourceGroupName, String serviceName, String apiPortalName, String domainName,
         ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -173,18 +164,14 @@ public interface ApiPortalCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
-        Context context);
+        String resourceGroupName, String serviceName, String apiPortalName, String domainName,
+        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource, Context context);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -195,18 +182,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return custom domain of the API portal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
+    Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -217,18 +200,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return custom domain of the API portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiPortalCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
+    ApiPortalCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource);
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -240,19 +219,15 @@ public interface ApiPortalCustomDomainsClient {
      * @return custom domain of the API portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiPortalCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
+    ApiPortalCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
         Context context);
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -262,14 +237,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName);
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -279,14 +254,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName);
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -296,14 +271,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName);
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -314,14 +289,14 @@ public interface ApiPortalCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName, Context context);
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -335,9 +310,9 @@ public interface ApiPortalCustomDomainsClient {
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -350,9 +325,9 @@ public interface ApiPortalCustomDomainsClient {
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -366,43 +341,43 @@ public interface ApiPortalCustomDomainsClient {
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String apiPortalName);
+    PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String apiPortalName);
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiPortalCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String apiPortalName);
+    PagedIterable<ApiPortalCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String apiPortalName);
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
@@ -410,9 +385,9 @@ public interface ApiPortalCustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiPortalCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String apiPortalName, Context context);
+    PagedIterable<ApiPortalCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String apiPortalName, Context context);
 }

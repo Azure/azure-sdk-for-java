@@ -35,7 +35,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Get the controlPlaneProfile property: The list of available upgrade versions for the control plane.
-     *
+     * 
      * @return the controlPlaneProfile value.
      */
     public ManagedClusterPoolUpgradeProfile controlPlaneProfile() {
@@ -44,7 +44,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Set the controlPlaneProfile property: The list of available upgrade versions for the control plane.
-     *
+     * 
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
@@ -56,7 +56,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Get the agentPoolProfiles property: The list of available upgrade versions for agent pools.
-     *
+     * 
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles() {
@@ -65,7 +65,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Set the agentPoolProfiles property: The list of available upgrade versions for agent pools.
-     *
+     * 
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
@@ -77,7 +77,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

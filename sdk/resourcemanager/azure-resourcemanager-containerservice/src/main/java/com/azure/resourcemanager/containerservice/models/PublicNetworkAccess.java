@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * PublicNetworkAccess of the managedCluster
- *
+ * 
  * Allow or deny public network access for AKS.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
@@ -26,7 +26,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
 
     /**
      * Creates a new instance of PublicNetworkAccess value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +35,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
 
     /**
      * Creates or finds a PublicNetworkAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccess.
      */
@@ -46,7 +46,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
 
     /**
      * Gets known PublicNetworkAccess values.
-     *
+     * 
      * @return known PublicNetworkAccess values.
      */
     public static Collection<PublicNetworkAccess> values() {

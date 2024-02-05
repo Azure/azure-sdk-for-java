@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppResourceProvisioningState. */
+/**
+ * Provisioning state of the App.
+ */
 public final class AppResourceProvisioningState extends ExpandableStringEnum<AppResourceProvisioningState> {
-    /** Static value Succeeded for AppResourceProvisioningState. */
+    /**
+     * Static value Succeeded for AppResourceProvisioningState.
+     */
     public static final AppResourceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for AppResourceProvisioningState. */
+    /**
+     * Static value Failed for AppResourceProvisioningState.
+     */
     public static final AppResourceProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Creating for AppResourceProvisioningState. */
+    /**
+     * Static value Creating for AppResourceProvisioningState.
+     */
     public static final AppResourceProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for AppResourceProvisioningState. */
+    /**
+     * Static value Updating for AppResourceProvisioningState.
+     */
     public static final AppResourceProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for AppResourceProvisioningState. */
+    /**
+     * Static value Deleting for AppResourceProvisioningState.
+     */
     public static final AppResourceProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of AppResourceProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppResourceProvisioningState() {
+    }
+
+    /**
      * Creates or finds a AppResourceProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppResourceProvisioningState.
      */
@@ -38,7 +59,7 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
 
     /**
      * Gets known AppResourceProvisioningState values.
-     *
+     * 
      * @return known AppResourceProvisioningState values.
      */
     public static Collection<AppResourceProvisioningState> values() {
