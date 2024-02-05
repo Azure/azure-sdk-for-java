@@ -13,7 +13,6 @@
       <outputDirectory>${file.separator}</outputDirectory>
       <includes>
         <include>com/azure/storage/common/test/shared/**/*</include>
-        <include>simplelogger.properties</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>

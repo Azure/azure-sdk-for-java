@@ -1,0 +1,30 @@
+parameters:
+  - name: TestLogsArtifactName
+    type: string
+    default: 'test-logs'
+
+steps:
+  - pwsh: |
+      if ((Get-ChildItem -Path . -Recurse -Filter test.log -File -Depth 4).Count -eq 0) {
+        Write-Host "##vso[task.setvariable variable=HAS_TEST_LOGS]false"
+      } else {
+        Write-Host "##vso[task.setvariable variable=HAS_TEST_LOGS]true"
+      }
+    displayName: 'Check for test logs'
+    condition: always()
+
+  - pwsh: |
+      New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }} -ItemType directory
+      foreach($testLog in (Get-ChildItem -Path . -Recurse -Filter test.log -File -Depth 4)) {
+        $fileFullName = $testLog.FullName
+        $fileName = "$($testLog.Directory.Parent.Parent.Name)-$($testLog.Directory.Parent.Name)-$($testLog.Name)"
+        Move-Item -Path $fileFullName -Destination $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}/$fileName -ErrorAction SilentlyContinue
+      }
+      [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip")
+    displayName: 'Copy test logs'
+    condition: eq(variables['HAS_TEST_LOGS'], 'true')
+
+  - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
+    displayName: 'Publish test logs'
+    artifact: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+    condition: eq(variables['HAS_TEST_LOGS'], 'true')
