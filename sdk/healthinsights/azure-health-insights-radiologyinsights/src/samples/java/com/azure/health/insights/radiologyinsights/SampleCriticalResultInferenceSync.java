@@ -79,14 +79,18 @@ public class SampleCriticalResultInferenceSync {
      * @param args The command-line arguments passed to the program.
      */
     public static void main(final String[] args) throws InterruptedException {
+        // BEGIN: com.azure.health.insights.radiologyinsights.buildsyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
         RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildClient();
-
+        // END: com.azure.health.insights.radiologyinsights.buildsyncclient
+        
+        // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
         RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
+        // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
         displayCriticalResults(riResults);
     }

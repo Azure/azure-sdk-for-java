@@ -4,10 +4,12 @@
 
 package com.azure.health.insights.radiologyinsights;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of RadiologyInsightsClient.
  */
-public enum RadiologyInsightsServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum RadiologyInsightsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-09-01-preview.
      */

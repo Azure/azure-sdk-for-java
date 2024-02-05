@@ -148,6 +148,7 @@ public class SampleCriticalResultInferenceAsync {
      * @return A RadiologyInsightsData object with the created patient records and
      *         model configuration.
      */
+    // BEGIN: com.azure.health.insights.radiologyinsights.createrequest
     private static RadiologyInsightsData createRadiologyInsightsRequest() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
@@ -285,4 +286,5 @@ public class SampleCriticalResultInferenceAsync {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
+    // END: com.azure.health.insights.radiologyinsights.createrequest
 }

@@ -45,7 +45,20 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 #### Create a RadiologyInsightsClient with an API Key Credential
 
 Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter
-to authenticate the client:
+to authenticate the client. You may choose to build a **synchronous** or **asynchronous** client.
+
+Build a **synchronous** client:
+
+```java com.azure.health.insights.radiologyinsights.buildsyncclient
+String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
+
+RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
+        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
+        .credential(new AzureKeyCredential(apiKey)).buildClient();
+```
+
+Build an **asynchronous** client:
 
 ```java com.azure.health.insights.radiologyinsights.buildasyncclient
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
@@ -62,13 +75,161 @@ Radiology Insights currently supports one document from one patient. Please take
 
 ## Examples
 
-### Create a RadiologyInsights request and get the result using an asynchronous client
+### Create a RadiologyInsights request and retrieve the result
 
-Infer radiology insights from a patient's radiology report.
+Infer radiology insights from a patient's radiology report using a **synchronous** client.
+
+```java com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
+RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
+```
+
+Infer radiology insights from a patient's radiology report using an **asynchronous** client.
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
 PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
         .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+```
+
+Create the request.
+
+```java com.azure.health.insights.radiologyinsights.createrequest
+private static RadiologyInsightsData createRadiologyInsightsRequest() {
+    List<PatientRecord> patientRecords = createPatientRecords();
+    RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
+    RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
+    radiologyInsightsData.setConfiguration(modelConfiguration);
+    return radiologyInsightsData;
+}
+
+/**
+ * Creates a list of patient records.
+ *
+ * @return A list of PatientRecord objects that represent patient information.
+ */
+private static List<PatientRecord> createPatientRecords() {
+    List<PatientRecord> patientRecords = new ArrayList<>();
+    // Patients
+    PatientRecord patientRecord = new PatientRecord("Sharona");
+
+    PatientDetails patientDetails = new PatientDetails();
+    patientDetails.setSex(PatientSex.FEMALE);
+    // Define a formatter that matches the input pattern
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
+
+    // Parse the string to LocalDateTime
+    LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
+    patientDetails.setBirthDate(dateTime.toLocalDate());
+    
+    patientRecord.setInfo(patientDetails);
+
+    Encounter encounter = new Encounter("encounterid1");
+
+    TimePeriod period = new TimePeriod();
+    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d'T'HH:mm:ssXXX");
+
+    OffsetDateTime startTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
+    OffsetDateTime endTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
+
+    period.setStart(startTime);
+    period.setEnd(endTime);
+
+    encounter.setPeriod(period);
+    encounter.setClassProperty(EncounterClass.IN_PATIENT);
+
+    patientRecord.setEncounters(Arrays.asList(encounter));
+
+    PatientDocument patientDocument = getPatientDocument();
+    patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
+    patientDocument.setLanguage("EN");
+
+    DocumentAuthor author = new DocumentAuthor();
+    author.setId("authorid1");
+    author.setFullName("authorname1");
+
+    patientDocument.setAuthors(Arrays.asList(author));
+    patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
+
+    DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
+    FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+
+    FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
+    FhirR4Coding procedureCoding = new FhirR4Coding();
+    procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
+    procedureCoding.setCode("USPELVIS");
+    procedureCoding.setDisplay("US PELVIS COMPLETE");
+
+    procedureCode.setCoding(Arrays.asList(procedureCoding));
+    orderedProcedure.setCode(procedureCode);
+    orderedProcedure.setDescription("US PELVIS COMPLETE");
+
+    adminMetadata.setOrderedProcedures(Arrays.asList(orderedProcedure));
+    adminMetadata.setEncounterId("encounterid1");
+
+    patientDocument.setAdministrativeMetadata(adminMetadata);
+
+    // Define a formatter to handle milliseconds
+    DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
+    OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter3);
+    patientDocument.setCreatedDateTime(createdDateTime);
+
+    patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
+    patientRecords.add(patientRecord);
+    return patientRecords;
+}
+
+/**
+ * Retrieves the patient document.
+ *
+ * @return The patient document.
+ */
+private static PatientDocument getPatientDocument() {
+    DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+    return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+}
+
+/**
+ * Creates a RadiologyInsightsModelConfiguration object with the specified
+ * configuration settings.
+ *
+ * @return A new instance of RadiologyInsightsModelConfiguration.
+ */
+private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
+    RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
+    RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
+    configuration.setInferenceOptions(inferenceOptions);
+    configuration.setInferenceTypes(Arrays.asList(RadiologyInsightsInferenceType.FINDING,
+            RadiologyInsightsInferenceType.AGE_MISMATCH, RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY,
+            RadiologyInsightsInferenceType.SEX_MISMATCH, RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY,
+            RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY,
+            RadiologyInsightsInferenceType.CRITICAL_RESULT, RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION,
+            RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION,
+            RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE));
+    configuration.setLocale("en-US");
+    configuration.setVerbose(false);
+    configuration.setIncludeEvidence(true);
+    return configuration;
+}
+
+/**
+ * Retrieves the RadiologyInsightsInferenceOptions object with the specified
+ * options.
+ *
+ * @return The RadiologyInsightsInferenceOptions object with the specified
+ *         options.
+ */
+private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
+    RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
+    FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
+    FindingOptions findingOptions = new FindingOptions();
+    followupOptions.setIncludeRecommendationsWithNoSpecifiedModality(true);
+    followupOptions.setIncludeRecommendationsInReferences(true);
+    followupOptions.setProvideFocusedSentenceEvidence(true);
+    findingOptions.setProvideFocusedSentenceEvidence(true);
+    inferenceOptions.setFollowupRecommendationOptions(followupOptions);
+    inferenceOptions.setFindingOptions(findingOptions);
+    return inferenceOptions;
+}
 ```
 
 ### Get Critical Result Inference information
