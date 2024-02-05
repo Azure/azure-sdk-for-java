@@ -227,7 +227,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public boolean isZoneRedundancyEnabled() {
-        return !Objects.isNull(this.innerModel().zoneRedundancy()) && ZoneRedundancy.ENABLED.equals(this.innerModel().zoneRedundancy());
+        return ZoneRedundancy.ENABLED.equals(this.innerModel().zoneRedundancy());
     }
 
     @Override
