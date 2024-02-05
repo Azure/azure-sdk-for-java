@@ -38,7 +38,7 @@
  * with the Azure AI Search service and allows developers to perform common operations such as:</p>
  *
  * <ul>
- *     <li>Submit queries for simple and advanced query forms that include fuzzy search, wildcard search, regular expressions..</li>
+ *     <li>Submit queries for simple and advanced query forms that include fuzzy search, wildcard search, regular expressions.</li>
  *     <li>Implement filtered queries for faceted navigation, geospatial search, or to narrow results based on filter criteria.</li>
  *     <li>Create and manage search indexes.</li>
  *     <li>Upload and update documents in the search index.</li>
