@@ -951,7 +951,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   })
 
                   activeReadManyOperationsSnapshot.foreach(operation => {
-                    if (activeReadManyOperationsSnapshot.contains(operation)) {
+                    if (activeReadManyOperations.contains(operation)) {
                       // re-validating whether the operation is still active - if so, just re-enqueue another retry
                       // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
 
