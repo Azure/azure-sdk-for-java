@@ -549,16 +549,19 @@ private class BulkWriter(container: CosmosAsyncContainer,
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
+          val pendingRetriesFound = pendingBulkWriteRetries.remove(itemOperation)
+
+          if (pendingRetriesFound) {
+            pendingRetries.decrementAndGet()
+          }
+
           if (!itemOperationFound) {
             // can't find the item operation in list of active operations!
             log.logInfo(s"Cannot find active operation for '${itemOperation.getOperationType} " +
             s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
             s"retries get re-enqueued.")
-
-            if (pendingBulkWriteRetries.remove(itemOperation)) {
-              pendingRetries.decrementAndGet()
-            }
-          } else {
+          }
+          if (pendingRetriesFound || itemOperationFound) {
             val context = itemOperation.getContext[OperationContext]
             val itemResponse = resp.getResponse
 
@@ -968,7 +971,10 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L) {
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L &&
+                  // pending retries only tracks the time to enqueue
+                  // the retry - so this should never take longer than 1 minute
+                  pendingRetriesSnapshot == 0L) {
                   activeOperationsSnapshot.foreach(operation => {
                     if (activeBulkWriteOperations.contains(operation)) {
                       // re-validating whether the operation is still active - if so, just re-enqueue another retry
@@ -1048,10 +1054,17 @@ private class BulkWriter(container: CosmosAsyncContainer,
           assume(activeBulkWriteOperations.isEmpty)
           assume(activeReadManyOperations.isEmpty)
           assume(semaphore.availablePermits() == maxPendingOperations)
-          log.logInfo(s"flushAndClose completed with no error. " +
-            s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
-            s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
-          assume(totalScheduledMetrics.get() == totalSuccessfulIngestionMetrics.get)
+
+          if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
+            log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
+              s"scheduled metrics. This indicates that successful completion was only possible after re-enqueueing " +
+              s"retries. totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
+              s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
+          } else {
+            log.logInfo(s"flushAndClose completed with no error. " +
+              s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
+              s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
+          }
         }
       } finally {
         subscriptionDisposable.dispose()
