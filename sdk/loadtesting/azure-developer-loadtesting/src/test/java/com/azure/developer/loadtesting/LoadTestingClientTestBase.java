@@ -71,7 +71,6 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
             sanitizers.add(new TestProxySanitizer("Location", "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", "https://REDACTED", TestProxySanitizerType.HEADER));
-            interceptorManager.addSanitizers(sanitizers);
             sanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
         }
