@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Lowered logging level of token cache misses from `ERROR` to `DEBUG`.
+- Lowered logging level of token cache misses from `ERROR` to `DEBUG`. ([#38502](https://github.com/Azure/azure-sdk-for-java/pull/38502))
 
 ### Other Changes
 
