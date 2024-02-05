@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -24,8 +25,6 @@ import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
-import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
