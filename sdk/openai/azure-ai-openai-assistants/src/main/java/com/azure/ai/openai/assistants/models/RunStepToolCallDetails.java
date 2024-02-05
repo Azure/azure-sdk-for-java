@@ -24,7 +24,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      */
     @Generated
     @JsonProperty(value = "tool_calls")
-    private List<ToolCall> toolCalls;
+    private List<RunStepToolCall> toolCalls;
 
     /**
      * Creates an instance of RunStepToolCallDetails class.
@@ -33,7 +33,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      */
     @Generated
     @JsonCreator
-    private RunStepToolCallDetails(@JsonProperty(value = "tool_calls") List<ToolCall> toolCalls) {
+    private RunStepToolCallDetails(@JsonProperty(value = "tool_calls") List<RunStepToolCall> toolCalls) {
         this.toolCalls = toolCalls;
     }
 
@@ -43,7 +43,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      * @return the toolCalls value.
      */
     @Generated
-    public List<ToolCall> getToolCalls() {
+    public List<RunStepToolCall> getToolCalls() {
         return this.toolCalls;
     }
 }

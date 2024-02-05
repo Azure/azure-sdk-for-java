@@ -199,9 +199,7 @@ To do this, begin by defining the functions to use -- the actual implementations
 For the full sample, please follow this [link][function_tool_call_full_sample].
 
 ```java readme-sample-functionDefinition
-    private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
-    
-    final String GET_USER_FAVORITE_CITY = "getUserFavoriteCity";
+private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
 
     class UserFavoriteCityParameters {
 
@@ -227,18 +225,18 @@ parameters and enum types.
 With the functions defined in their appropriate tools, an assistant can be now created that has those tools enabled:
 
 ```java readme-sample-createAssistantFunctionCall
-AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
-    .setName("Java Assistants SDK Function Tool Sample Assistant")
-    .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
-        + "Customize your responses to the user's preferences as much as possible and use friendly "
-        + "nicknames for cities whenever possible.")
-    .setTools(Arrays.asList(
-        getUserFavoriteCityToolDefinition()
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
+            .setName("Java Assistants SDK Function Tool Sample Assistant")
+            .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
+                + "Customize your responses to the user's preferences as much as possible and use friendly "
+                + "nicknames for cities whenever possible.")
+            .setTools(Arrays.asList(
+                getUserFavoriteCityToolDefinition()
 //                getCityNicknameToolDefinition(),
 //                getWeatherAtLocationToolDefinition()
-    ));
+            ));
 
-client.createAssistant(assistantCreationOptions);
+        Assistant assistant = client.createAssistant(assistantCreationOptions);
 ```
 
 If the assistant calls tools, the calling code will need to resolve ToolCall instances into matching ToolOutput instances. 
@@ -285,7 +283,8 @@ do {
     Thread.sleep(500);
     run = client.getRun(thread.getId(), run.getId());
 
-    if (run.getStatus() == RunStatus.REQUIRES_ACTION && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
+    if (run.getStatus() == RunStatus.REQUIRES_ACTION
+        && run.getRequiredAction() instanceof SubmitToolOutputsAction) {
         SubmitToolOutputsAction requiredAction = (SubmitToolOutputsAction) run.getRequiredAction();
         List<ToolOutput> toolOutputs = new ArrayList<>();
 

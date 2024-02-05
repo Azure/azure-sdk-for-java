@@ -5,6 +5,13 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
+import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
+import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
+import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
+import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
+import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
+import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
+import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -15,6 +22,7 @@ import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
+import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
@@ -33,7 +41,6 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -46,11 +53,11 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.util.HashMap;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous AssistantsClient type.
@@ -519,8 +526,7 @@ public final class AssistantsAsyncClient {
     public Mono<AssistantFile> createAssistantFile(String assistantId, String fileId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("file_id", fileId);
+        CreateAssistantFileRequest requestObj = new CreateAssistantFileRequest(fileId);
         BinaryData request = BinaryData.fromObject(requestObj);
         return createAssistantFileWithResponse(assistantId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
@@ -1933,11 +1939,8 @@ public final class AssistantsAsyncClient {
         Map<String, String> metadata) {
         // Generated convenience method for createMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("role", (role == null ? null : role.toString()));
-        requestObj.put("content", content);
-        requestObj.put("file_ids", fileIds);
-        requestObj.put("metadata", metadata);
+        CreateMessageRequest requestObj
+            = new CreateMessageRequest(role, content).setFileIds(fileIds).setMetadata(metadata);
         BinaryData request = BinaryData.fromObject(requestObj);
         return createMessageWithResponse(threadId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
@@ -1962,9 +1965,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadMessage> createMessage(String threadId, MessageRole role, String content) {
         // Generated convenience method for createMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("role", (role == null ? null : role.toString()));
-        requestObj.put("content", content);
+        CreateMessageRequest requestObj = new CreateMessageRequest(role, content);
         BinaryData request = BinaryData.fromObject(requestObj);
         return createMessageWithResponse(threadId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
@@ -2258,8 +2259,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadRun> submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("tool_outputs", toolOutputs);
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
         BinaryData request = BinaryData.fromObject(requestObj);
         return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
@@ -2800,8 +2800,7 @@ public final class AssistantsAsyncClient {
     public Mono<AssistantThread> updateThread(String threadId, Map<String, String> metadata) {
         // Generated convenience method for updateThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
+        UpdateThreadRequest requestObj = new UpdateThreadRequest().setMetadata(metadata);
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateThreadWithResponse(threadId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantThread.class));
@@ -2824,7 +2823,7 @@ public final class AssistantsAsyncClient {
     public Mono<AssistantThread> updateThread(String threadId) {
         // Generated convenience method for updateThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
+        UpdateThreadRequest requestObj = new UpdateThreadRequest();
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateThreadWithResponse(threadId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantThread.class));
@@ -2851,8 +2850,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadMessage> updateMessage(String threadId, String messageId, Map<String, String> metadata) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
+        UpdateMessageRequest requestObj = new UpdateMessageRequest().setMetadata(metadata);
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateMessageWithResponse(threadId, messageId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
@@ -2876,7 +2874,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadMessage> updateMessage(String threadId, String messageId) {
         // Generated convenience method for updateMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
+        UpdateMessageRequest requestObj = new UpdateMessageRequest();
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateMessageWithResponse(threadId, messageId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
@@ -2946,8 +2944,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadRun> updateRun(String threadId, String runId, Map<String, String> metadata) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
-        requestObj.put("metadata", metadata);
+        UpdateRunRequest requestObj = new UpdateRunRequest().setMetadata(metadata);
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
@@ -2972,7 +2969,7 @@ public final class AssistantsAsyncClient {
     public Mono<ThreadRun> updateRun(String threadId, String runId) {
         // Generated convenience method for updateRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Map<String, Object> requestObj = new HashMap<>();
+        UpdateRunRequest requestObj = new UpdateRunRequest();
         BinaryData request = BinaryData.fromObject(requestObj);
         return updateRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
@@ -3002,7 +2999,9 @@ public final class AssistantsAsyncClient {
     /**
      * Uploads a file for use by other operations.
      *
-     * @param request The request parameter.
+     * @param file The file data (not filename) to upload.
+     * @param purpose The intended purpose of the file.
+     * @param filename A filename to associate with the uploaded data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3013,14 +3012,44 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(UploadFileRequest request) {
+    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", request.getFile().getContent(), request.getFile().getContentType(),
-                request.getFile().getFilename())
-            .serializeTextField("purpose", Objects.toString(request.getPurpose()))
-            .serializeTextField("filename", request.getFilename()).end().getRequestBody(), requestOptions)
-                .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+        UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
+        BinaryData request = new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", requestObj.getFile().getContent(), requestObj.getFile().getContentType(),
+                requestObj.getFile().getFilename())
+            .serializeTextField("purpose", Objects.toString(requestObj.getPurpose()))
+            .serializeTextField("filename", requestObj.getFilename()).end().getRequestBody();
+        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     *
+     * @param file The file data (not filename) to upload.
+     * @param purpose The intended purpose of the file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UploadFileRequest requestObj = new UploadFileRequest(file, purpose);
+        BinaryData request = new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", requestObj.getFile().getContent(), requestObj.getFile().getContentType(),
+                requestObj.getFile().getFilename())
+            .serializeTextField("purpose", Objects.toString(requestObj.getPurpose()))
+            .serializeTextField("filename", requestObj.getFilename()).end().getRequestBody();
+        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
     }
 }
