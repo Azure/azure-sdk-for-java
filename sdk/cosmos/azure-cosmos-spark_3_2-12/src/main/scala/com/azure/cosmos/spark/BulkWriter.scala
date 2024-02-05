@@ -528,7 +528,12 @@ private class BulkWriter(container: CosmosAsyncContainer,
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
-          assume(itemOperationFound) // can't find the item operation in list of active operations!
+          if (!itemOperationFound) {
+            // can't find the item operation in list of active operations!
+            log.logInfo(s"Cannot find active operation for '${itemOperation.getOperationType} " +
+            s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
+            s"retries get re-enqueued.")
+          }
           val context = itemOperation.getContext[OperationContext]
           val itemResponse = resp.getResponse
 
@@ -932,16 +937,28 @@ private class BulkWriter(container: CosmosAsyncContainer,
                 )
 
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L) {
-                  val activeWriteOperationsSnapshot = activeBulkWriteOperations.clone()
-                  activeWriteOperationsSnapshot.foreach(operation => {
+                  activeOperationsSnapshot.foreach(operation => {
                     if (activeBulkWriteOperations.contains(operation)) {
                       // re-validating whether the operation is still active - if so, just re-enqueue another retry
                       // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
 
                       // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
                       bulkInputEmitter.emitNext(operation, emitFailureHandler)
-                      log.logInfo(s"Re-enqueued a retry for pending active task '${operation.getOperationType} "
+                      log.logInfo(s"Re-enqueued a retry for pending active write task '${operation.getOperationType} "
                         + s"(${operation.getPartitionKeyValue}/${operation.getId})' "
+                        + s"Context: ${operationContext.toString} $getThreadInfo")
+                    }
+                  })
+
+                  activeReadManyOperationsSnapshot.foreach(operation => {
+                    if (activeReadManyOperationsSnapshot.contains(operation)) {
+                      // re-validating whether the operation is still active - if so, just re-enqueue another retry
+                      // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
+
+                      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+                      readManyInputEmitterOpt.get.emitNext(operation, emitFailureHandler)
+                      log.logInfo(s"Re-enqueued a retry for pending active read-many task '"
+                        + s"(${operation.cosmosItemIdentity.getPartitionKey}/${operation.cosmosItemIdentity.getId})' "
                         + s"Context: ${operationContext.toString} $getThreadInfo")
                     }
                   })
