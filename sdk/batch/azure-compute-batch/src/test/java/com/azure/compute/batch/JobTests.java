@@ -116,7 +116,7 @@ public class JobTests extends BatchClientTestBase {
             Integer priority = 500;
             job.setPriority(priority);
             job.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-            job.setPoolInfo(new BatchPoolInfo().setPoolId(poolId));
+            job.getPoolInfo().setPoolId(poolId);
             batchClient.replaceJob(jobId, job);
 
             job = batchClient.getJob(jobId);
