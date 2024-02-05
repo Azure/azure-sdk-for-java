@@ -107,7 +107,7 @@ public class ClientLogger {
         return initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
     }
 
-    private ClientLogger(Logger logger, Map<String, Object> context) {
+    ClientLogger(Logger logger, Map<String, Object> context) {
         this.logger = logger;
         this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
         this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);

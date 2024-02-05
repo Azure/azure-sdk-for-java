@@ -51,7 +51,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param clazz Class creating the logger.
      */
     public DefaultLogger(Class<?> clazz) {
-        this(clazz.getCanonicalName(), System.out);
+        this(clazz.getCanonicalName(), System.out, fromEnvironment());
     }
 
     /**
@@ -61,7 +61,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        this(getClassPathFromClassName(className), System.out);
+        this(getClassPathFromClassName(className), System.out, fromEnvironment());
     }
 
     /**
@@ -71,9 +71,9 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      * @param logLocation The location to log the messages.
      */
-    public DefaultLogger(String className, PrintStream logLocation) {
+    public DefaultLogger(String className, PrintStream logLocation, LogLevel logLevel) {
         this.classPath = getClassPathFromClassName(className);
-        int configuredLogLevel = fromEnvironment().getLogLevel();
+        int configuredLogLevel = logLevel.getLogLevel();
 
         isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
         isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
