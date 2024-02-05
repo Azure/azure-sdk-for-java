@@ -4,10 +4,12 @@
 
 package com.azure.ai.vision.imageanalysis;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of ImageAnalysisClient.
  */
-public enum ImageAnalysisServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum ImageAnalysisServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-10-01.
      */
