@@ -3,29 +3,20 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.logging.DefaultLogger;
-import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.Isolated;
-import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -35,7 +26,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -46,22 +36,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
-    private ByteArrayOutputStream logCaptureStream;
-    private Map<String, Object> globalContext;
+    private final AccessibleByteArrayOutputStream logCaptureStream;
+    private final Map<String, Object> globalContext;
 
-    @BeforeEach
-    public void setupLoggingConfiguration() {
-        /*
-         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
-         * capture the log messages.
-         */
-        logCaptureStream = new ByteArrayOutputStream();
-
-        // preserve order
-        globalContext = new LinkedHashMap<>();
-        globalContext.put("connectionId", "foo");
-        globalContext.put("linkName", 1);
-        globalContext.put("anotherKey", new LoggableObject("hello world"));
+    public ClientLoggerTests() {
+        this.logCaptureStream = new AccessibleByteArrayOutputStream();
+        this.globalContext = new LinkedHashMap<>();
+        this.globalContext.put("connectionId", "foo");
+        this.globalContext.put("linkName", 1);
+        this.globalContext.put("anotherKey", new LoggableObject("hello world"));
     }
 
     /**
@@ -880,12 +863,8 @@ public class ClientLoggerTests {
         return throwable;
     }
 
-    private static String byteArraySteamToString(ByteArrayOutputStream stream) {
-        try {
-            return stream.toString(StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
-            throw new UncheckedIOException(ex);
-        }
+    private static String byteArraySteamToString(AccessibleByteArrayOutputStream stream) {
+        return stream.toString(StandardCharsets.UTF_8);
     }
 
     private void assertMessage(String expectedMessage, String fullLog, LogLevel configuredLevel, LogLevel loggedLevel) {

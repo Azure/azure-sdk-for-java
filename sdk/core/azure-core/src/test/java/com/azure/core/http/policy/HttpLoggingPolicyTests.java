@@ -14,7 +14,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
-import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper;
+import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -25,18 +26,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.Isolated;
-import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -61,7 +56,6 @@ import java.util.stream.Stream;
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.createUrl;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -70,52 +64,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
  */
-@Execution(ExecutionMode.SAME_THREAD)
-@Isolated
-@ResourceLock(Resources.SYSTEM_OUT)
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
 
-    private static String initialLogLevel;
-    private static PrintStream originalSystemOut;
-
-    private AccessibleByteArrayOutputStream logCaptureStream;
-
-    @BeforeAll
-    public static void captureInitialLogLevel() {
-        initialLogLevel = EnvironmentConfiguration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
-        originalSystemOut = System.out;
-    }
-
-    @AfterAll
-    public static void resetInitialLogLevel() {
-        if (initialLogLevel == null) {
-            EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, initialLogLevel);
-        }
-
-        System.setOut(originalSystemOut);
-    }
-
-    @BeforeEach
-    public void prepareForTest() {
-        // Set the log level to information for the test.
-        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
-
-        /*
-         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
-         * capture the log messages.
-         */
-        logCaptureStream = new AccessibleByteArrayOutputStream();
-        System.setOut(new PrintStream(logCaptureStream));
-    }
-
-    @AfterEach
-    public void cleanupAfterTest() {
-        // Reset or clear the log level after the test completes.
-        clearTestLogLevel();
-    }
+    private final AccessibleByteArrayOutputStream logCaptureStream = new AccessibleByteArrayOutputStream();
 
     /**
      * Tests that a query string will be properly redacted before it is logged.
@@ -132,7 +84,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl),
-                getCallerMethodContext("redactQueryParameters")))
+                getCallerMethodContext("redactQueryParameters", LogLevel.INFORMATIONAL)))
             .verifyComplete();
 
         assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
@@ -153,7 +105,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         pipeline.sendSync(new HttpRequest(HttpMethod.POST, requestUrl),
-            getCallerMethodContext("redactQueryParametersSync"));
+            getCallerMethodContext("redactQueryParametersSync", LogLevel.INFORMATIONAL));
 
         assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
     }
@@ -203,7 +155,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, createUrl(url), requestHeaders, stream),
-                getCallerMethodContext("validateLoggingDoesNotConsumeRequest")))
+                getCallerMethodContext("validateLoggingDoesNotConsumeRequest", LogLevel.INFORMATIONAL)))
             .verifyComplete();
 
         String logString = convertOutputStreamToString(logCaptureStream);
@@ -236,7 +188,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         pipeline.sendSync(new HttpRequest(HttpMethod.POST, createUrl(url), requestHeaders, requestBody),
-            getCallerMethodContext("validateLoggingDoesNotConsumeRequestSync"));
+            getCallerMethodContext("validateLoggingDoesNotConsumeRequestSync", LogLevel.INFORMATIONAL));
 
         String logString = convertOutputStreamToString(logCaptureStream);
         List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
@@ -262,7 +214,8 @@ public class HttpLoggingPolicyTests {
             .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, stream)))
             .build();
 
-        StepVerifier.create(pipeline.send(request, getCallerMethodContext("validateLoggingDoesNotConsumeResponse")))
+        StepVerifier.create(pipeline.send(request, getCallerMethodContext("validateLoggingDoesNotConsumeResponse",
+                LogLevel.INFORMATIONAL)))
             .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
                 .assertNext(bytes -> assertArraysEqual(data, bytes))
                 .verifyComplete())
@@ -289,7 +242,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         try (HttpResponse response = pipeline.sendSync(request,
-            getCallerMethodContext("validateLoggingDoesNotConsumeResponseSync"))) {
+            getCallerMethodContext("validateLoggingDoesNotConsumeResponseSync", LogLevel.INFORMATIONAL))) {
             assertArraysEqual(data, response.getBodyAsBinaryData().toBytes());
         }
 
@@ -441,7 +394,8 @@ public class HttpLoggingPolicyTests {
         HttpLogMessage expectedResponse = HttpLogMessage.response(url, responseBody, 200)
             .setHeaders(responseHeaders);
 
-        StepVerifier.create(pipeline.send(request, getCallerMethodContext("loggingIncludesRetryCount"))
+        StepVerifier.create(pipeline.send(request, getCallerMethodContext("loggingIncludesRetryCount",
+                    LogLevel.INFORMATIONAL))
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
@@ -465,7 +419,6 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("logOptionsSupplier")
     public void loggingHeadersAndBodyVerbose(HttpLogOptions logOptions) {
-        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};
         String url = "https://test.com/loggingHeadersAndBodyVerbose/" + logOptions.getLogLevel();
@@ -490,7 +443,8 @@ public class HttpLoggingPolicyTests {
         HttpLogMessage expectedResponse = HttpLogMessage.response(url, responseBody, 200)
             .setHeaders(responseHeaders);
 
-        StepVerifier.create(pipeline.send(request, getCallerMethodContext("loggingHeadersAndBodyVerbose"))
+        StepVerifier.create(pipeline.send(request, getCallerMethodContext("loggingHeadersAndBodyVerbose",
+                    LogLevel.VERBOSE))
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
@@ -536,7 +490,7 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         try (HttpResponse response = pipeline.sendSync(request,
-            getCallerMethodContext("loggingIncludesRetryCountSync"))) {
+            getCallerMethodContext("loggingIncludesRetryCountSync", LogLevel.INFORMATIONAL))) {
             BinaryData content = response.getBodyAsBinaryData();
             assertEquals(2, requestCount.get());
             String logString = convertOutputStreamToString(logCaptureStream);
@@ -564,7 +518,6 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("logOptionsSupplier")
     public void loggingHeadersAndBodyVerboseSync(HttpLogOptions logOptions) {
-        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};
         String url = "https://test.com/loggingHeadersAndBodyVerboseSync/" + logOptions.getLogLevel();
@@ -590,7 +543,7 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         try (HttpResponse response = pipeline.sendSync(request,
-            getCallerMethodContext("loggingHeadersAndBodyVerboseSync"))) {
+            getCallerMethodContext("loggingHeadersAndBodyVerboseSync", LogLevel.VERBOSE))) {
             assertArraysEqual(responseBody, response.getBodyAsBinaryData().toBytes());
 
             String logString = convertOutputStreamToString(logCaptureStream);
@@ -616,16 +569,10 @@ public class HttpLoggingPolicyTests {
             new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(true));
     }
 
-    private static Context getCallerMethodContext(String testMethodName) {
-        return new Context("caller-method", HttpLoggingPolicyTests.class.getName() + "." + testMethodName);
-    }
-
-    private void setupLogLevel(int logLevelToSet) {
-        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
-    }
-
-    private void clearTestLogLevel() {
-        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
+    private Context getCallerMethodContext(String testMethodName, LogLevel logLevel) {
+        Logger logger = new DefaultLogger(HttpLoggingPolicyTests.class.getName() + "." + testMethodName,
+            new PrintStream(logCaptureStream), logLevel);
+        return new Context("caller-logger", ClientLoggerAccessHelper.createClientLogger(logger, null));
     }
 
     private static String convertOutputStreamToString(AccessibleByteArrayOutputStream stream) {

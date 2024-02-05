@@ -70,6 +70,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
      * name passes in.
      * @param logLocation The location to log the messages.
+     * @param logLevel The log level supported by the logger.
      */
     public DefaultLogger(String className, PrintStream logLocation, LogLevel logLevel) {
         this.classPath = getClassPathFromClassName(className);

@@ -3,6 +3,7 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper;
 import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -47,6 +48,10 @@ public class ClientLogger {
     private final Logger logger;
     private final String globalContextSerialized;
     private final boolean hasGlobalContext;
+
+    static {
+        ClientLoggerAccessHelper.setAccessor(ClientLogger::new);
+    }
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.

@@ -135,7 +135,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final ClientLogger logger = getOrCreateMethodLogger(context.getContext());
         final long startNs = System.nanoTime();
 
         return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
@@ -152,7 +152,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.processSync();
         }
 
-        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final ClientLogger logger = getOrCreateMethodLogger(context.getContext());
         final long startNs = System.nanoTime();
 
         requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
@@ -527,7 +527,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /*
      * Get or create the ClientLogger for the method having its request and response logged.
      */
-    private static ClientLogger getOrCreateMethodLogger(String methodName) {
+    private static ClientLogger getOrCreateMethodLogger(Context context) {
+        ClientLogger logger = (ClientLogger) context.getData("caller-logger").orElse(null);
+        if (logger != null) {
+            return logger;
+        }
+
+        String methodName = (String) context.getData("caller-method").orElse("");
+
         if (CALLER_METHOD_LOGGER_CACHE.size() > LOGGER_CACHE_MAX_SIZE) {
             CALLER_METHOD_LOGGER_CACHE.clear();
         }
