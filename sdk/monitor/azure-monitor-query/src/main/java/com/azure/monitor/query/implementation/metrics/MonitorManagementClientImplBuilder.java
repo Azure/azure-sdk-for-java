@@ -287,7 +287,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     public MonitorManagementClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MonitorManagementClientImpl client = new MonitorManagementClientImpl(localPipeline, localSerializerAdapter,

@@ -269,7 +269,7 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
     public MetricsNamespacesClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2017-12-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MetricsNamespacesClientImpl client

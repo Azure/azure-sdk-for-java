@@ -30,7 +30,7 @@ These settings apply only when `--tag=package-metrics` is specified on the comma
 
 ```yaml $(tag) == 'package-metrics'
 use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-10-01/metrics_API.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metrics_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metrics
@@ -77,7 +77,7 @@ These settings apply only when `--tag=package-metrics-namespaces` is specified o
 ```yaml $(tag) == 'package-metrics-namespaces'
 use: '@autorest/java@4.1.25'
 service-name: MetricsNamespaces
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricNamespaces_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
@@ -101,7 +101,7 @@ These settings apply only when `--tag=package-metrics-definitions` is specified 
 
 ```yaml $(tag) == 'package-metrics-definitions'
 use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-10-01/metricDefinitions_API.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../
@@ -126,8 +126,8 @@ These settings apply only when `--tag=package-metrics-batch` is specified on the
 
 ```yaml $(tag) == 'package-metrics-batch'
 use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/data-plane/Microsoft.Insights/stable/2023-10-01/metricBatch.json
-service-name: MetricsDefinitions
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0e000791847cec21ef5eb9e8f41cd120f3b2a95c/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
+service-name: MetricsBatch
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsbatch
