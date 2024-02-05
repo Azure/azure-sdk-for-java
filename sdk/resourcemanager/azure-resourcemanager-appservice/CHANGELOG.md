@@ -1,5 +1,15 @@
 # Release History
 
+## 2.36.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.35.2 (2024-02-05)
 
 ### Bugs Fixed
