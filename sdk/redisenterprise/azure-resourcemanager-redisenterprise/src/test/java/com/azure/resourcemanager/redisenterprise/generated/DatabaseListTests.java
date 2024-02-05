@@ -6,50 +6,93 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.redisenterprise.models.AofFrequency;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseList;
+import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
+import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
+import com.azure.resourcemanager.redisenterprise.models.Module;
+import com.azure.resourcemanager.redisenterprise.models.Persistence;
 import com.azure.resourcemanager.redisenterprise.models.Protocol;
+import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DatabaseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":2146697807,\"provisioningState\":\"Deleting\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileLFU\",\"modules\":[]},\"id\":\"vddntwn\",\"name\":\"eic\",\"type\":\"twnpzaoqvuhrhcf\"},{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1519639894,\"provisioningState\":\"Failed\",\"resourceState\":\"Creating\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"AllKeysLFU\",\"modules\":[]},\"id\":\"icxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"}],\"nextLink\":\"hm\"}")
-                .toObject(DatabaseList.class);
+        DatabaseList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1018660183,\"provisioningState\":\"Canceled\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"NoEviction\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"},\"modules\":[{\"name\":\"qulngsntnbybkzgc\",\"args\":\"wclxxwrl\",\"version\":\"ouskcqvkocrc\"}],\"geoReplication\":{\"groupNickname\":\"wtnhxbnjbiksqr\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"sainqpjwnzl\",\"name\":\"jfm\",\"type\":\"pee\"},{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1969125414,\"provisioningState\":\"Updating\",\"resourceState\":\"Running\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"VolatileLRU\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":true,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"},\"modules\":[{\"name\":\"ndhkrw\",\"args\":\"appd\",\"version\":\"dkvwrwjfe\"},{\"name\":\"snhu\",\"args\":\"eltmrldhugjzzdat\",\"version\":\"hocdgeab\"},{\"name\":\"gphuticndvka\",\"args\":\"wyiftyhxhur\",\"version\":\"ftyxolniw\"}],\"geoReplication\":{\"groupNickname\":\"ukjfkgiawxklr\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"wckbasyypnd\",\"name\":\"hsgcbacphejkot\",\"type\":\"nqgoulzndli\"},{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1581994668,\"provisioningState\":\"Creating\",\"resourceState\":\"Scaling\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileLRU\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"qedqytbciqfoufl\",\"args\":\"nkzsmodmglou\",\"version\":\"b\"},{\"name\":\"wtmutduq\",\"args\":\"ap\",\"version\":\"wgcu\"},{\"name\":\"rtumkdosvq\",\"args\":\"bmdg\",\"version\":\"jfddgmbmbe\"},{\"name\":\"ppbhtqqrolfp\",\"args\":\"s\",\"version\":\"gbquxigj\"}],\"geoReplication\":{\"groupNickname\":\"zjaoyfhrtxil\",\"linkedDatabases\":[{},{}]}},\"id\":\"kujysvlejuvfq\",\"name\":\"wrlyxwjkcprb\",\"type\":\"wbxgjvt\"},{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1314012997,\"provisioningState\":\"Failed\",\"resourceState\":\"Disabling\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"VolatileTTL\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"always\",\"rdbFrequency\":\"12h\"},\"modules\":[{\"name\":\"zw\",\"args\":\"g\",\"version\":\"tnwu\"},{\"name\":\"zga\",\"args\":\"ufizuckyf\",\"version\":\"rfidfvzwdz\"},{\"name\":\"htymw\",\"args\":\"dkfthwxmnt\",\"version\":\"waopvkmijcmmxd\"}],\"geoReplication\":{\"groupNickname\":\"uf\",\"linkedDatabases\":[{},{},{},{}]}},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}],\"nextLink\":\"lnrosfqp\"}")
+            .toObject(DatabaseList.class);
         Assertions.assertEquals(Protocol.ENCRYPTED, model.value().get(0).clientProtocol());
-        Assertions.assertEquals(2146697807, model.value().get(0).port());
-        Assertions.assertEquals(ClusteringPolicy.OSSCLUSTER, model.value().get(0).clusteringPolicy());
-        Assertions.assertEquals(EvictionPolicy.VOLATILE_LFU, model.value().get(0).evictionPolicy());
+        Assertions.assertEquals(1018660183, model.value().get(0).port());
+        Assertions.assertEquals(ClusteringPolicy.ENTERPRISE_CLUSTER, model.value().get(0).clusteringPolicy());
+        Assertions.assertEquals(EvictionPolicy.NO_EVICTION, model.value().get(0).evictionPolicy());
+        Assertions.assertEquals(true, model.value().get(0).persistence().aofEnabled());
+        Assertions.assertEquals(false, model.value().get(0).persistence().rdbEnabled());
+        Assertions.assertEquals(AofFrequency.ONES, model.value().get(0).persistence().aofFrequency());
+        Assertions.assertEquals(RdbFrequency.ONEH, model.value().get(0).persistence().rdbFrequency());
+        Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).modules().get(0).name());
+        Assertions.assertEquals("wclxxwrl", model.value().get(0).modules().get(0).args());
+        Assertions.assertEquals("wtnhxbnjbiksqr", model.value().get(0).geoReplication().groupNickname());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseList model =
-            new DatabaseList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner()
-                                .withClientProtocol(Protocol.ENCRYPTED)
-                                .withPort(2146697807)
-                                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER)
-                                .withEvictionPolicy(EvictionPolicy.VOLATILE_LFU)
-                                .withModules(Arrays.asList()),
-                            new DatabaseInner()
-                                .withClientProtocol(Protocol.ENCRYPTED)
-                                .withPort(1519639894)
-                                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER)
-                                .withEvictionPolicy(EvictionPolicy.ALL_KEYS_LFU)
-                                .withModules(Arrays.asList())));
+        DatabaseList model = new DatabaseList().withValue(Arrays.asList(
+            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED).withPort(1018660183)
+                .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
+                .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
+                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.ONEH))
+                .withModules(Arrays.asList(new Module().withName("qulngsntnbybkzgc").withArgs("wclxxwrl")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("wtnhxbnjbiksqr")
+                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(),
+                        new LinkedDatabase()))),
+            new DatabaseInner().withClientProtocol(Protocol.ENCRYPTED).withPort(1969125414)
+                .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
+                .withEvictionPolicy(EvictionPolicy.VOLATILE_LRU)
+                .withPersistence(new Persistence().withAofEnabled(false).withRdbEnabled(true)
+                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.ONEH))
+                .withModules(Arrays.asList(new Module().withName("ndhkrw").withArgs("appd"),
+                    new Module().withName("snhu").withArgs("eltmrldhugjzzdat"),
+                    new Module().withName("gphuticndvka").withArgs("wyiftyhxhur")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("ukjfkgiawxklr")
+                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(),
+                        new LinkedDatabase()))),
+            new DatabaseInner().withClientProtocol(Protocol.PLAINTEXT).withPort(1581994668)
+                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER).withEvictionPolicy(EvictionPolicy.VOLATILE_LRU)
+                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.SIXH))
+                .withModules(Arrays.asList(new Module().withName("qedqytbciqfoufl").withArgs("nkzsmodmglou"),
+                    new Module().withName("wtmutduq").withArgs("ap"),
+                    new Module().withName("rtumkdosvq").withArgs("bmdg"),
+                    new Module().withName("ppbhtqqrolfp").withArgs("s")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("zjaoyfhrtxil")
+                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase(), new LinkedDatabase()))),
+            new DatabaseInner().withClientProtocol(Protocol.PLAINTEXT).withPort(1314012997)
+                .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
+                .withEvictionPolicy(EvictionPolicy.VOLATILE_TTL)
+                .withPersistence(new Persistence().withAofEnabled(false).withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ALWAYS).withRdbFrequency(RdbFrequency.ONE_TWOH))
+                .withModules(Arrays.asList(new Module().withName("zw").withArgs("g"),
+                    new Module().withName("zga").withArgs("ufizuckyf"),
+                    new Module().withName("htymw").withArgs("dkfthwxmnt")))
+                .withGeoReplication(
+                    new DatabasePropertiesGeoReplication().withGroupNickname("uf").withLinkedDatabases(Arrays.asList(
+                        new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase(), new LinkedDatabase())))));
         model = BinaryData.fromObject(model).toObject(DatabaseList.class);
         Assertions.assertEquals(Protocol.ENCRYPTED, model.value().get(0).clientProtocol());
-        Assertions.assertEquals(2146697807, model.value().get(0).port());
-        Assertions.assertEquals(ClusteringPolicy.OSSCLUSTER, model.value().get(0).clusteringPolicy());
-        Assertions.assertEquals(EvictionPolicy.VOLATILE_LFU, model.value().get(0).evictionPolicy());
+        Assertions.assertEquals(1018660183, model.value().get(0).port());
+        Assertions.assertEquals(ClusteringPolicy.ENTERPRISE_CLUSTER, model.value().get(0).clusteringPolicy());
+        Assertions.assertEquals(EvictionPolicy.NO_EVICTION, model.value().get(0).evictionPolicy());
+        Assertions.assertEquals(true, model.value().get(0).persistence().aofEnabled());
+        Assertions.assertEquals(false, model.value().get(0).persistence().rdbEnabled());
+        Assertions.assertEquals(AofFrequency.ONES, model.value().get(0).persistence().aofFrequency());
+        Assertions.assertEquals(RdbFrequency.ONEH, model.value().get(0).persistence().rdbFrequency());
+        Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).modules().get(0).name());
+        Assertions.assertEquals("wclxxwrl", model.value().get(0).modules().get(0).args());
+        Assertions.assertEquals("wtnhxbnjbiksqr", model.value().get(0).geoReplication().groupNickname());
     }
 }

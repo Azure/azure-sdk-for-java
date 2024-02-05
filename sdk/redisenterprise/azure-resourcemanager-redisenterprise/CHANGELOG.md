@@ -1,14 +1,53 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.4 (2024-01-30)
 
-### Features Added
+- Azure Resource Manager RedisEnterprise client library for Java. This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.SkuDetail` was removed
 
-### Other Changes
+* `models.LocationInfo` was removed
+
+* `models.RegionSkuDetail` was removed
+
+* `models.Capability` was removed
+
+* `models.RegionSkuDetails` was removed
+
+* `models.Skus` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was removed
+
+#### `RedisEnterpriseManager` was modified
+
+* `skus()` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Database` was modified
+
+* `systemData()` was removed
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was removed
+
+#### `models.Cluster` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.1.0-beta.3 (2023-03-21)
 
