@@ -161,7 +161,7 @@ steps:
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if ne(parameters.VersionOverride, '') }}:
-    - template: /eng/pipelines/templates/steps/reatain-test-logs.yml
+    - template: /eng/pipelines/templates/steps/retain-test-logs.yml
       parameters:
         TestLogsArtifactName: 'test-logs-vo-${{ parameters.VersionOverride }}'
 

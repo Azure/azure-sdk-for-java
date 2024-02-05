@@ -126,9 +126,9 @@ steps:
 
   - template: /eng/pipelines/templates/steps//upload-repository-on-failure.yml
 
-  - template: /eng/pipelines/templates/steps//retain-test-logs.yml
+  - template: /eng/pipelines/templates/steps/retain-test-logs.yml
 
-  - template: /eng/pipelines/templates/steps//retain-heap-dump-hprofs.yml
+  - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()
