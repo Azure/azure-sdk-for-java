@@ -4,10 +4,12 @@
 
 package com.azure.developer.devcenter;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of DevCenterServiceClient.
  */
-public enum DevCenterServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum DevCenterServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-04-01.
      */
