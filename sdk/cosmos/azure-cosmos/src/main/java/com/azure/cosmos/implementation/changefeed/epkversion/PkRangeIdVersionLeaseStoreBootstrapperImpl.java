@@ -4,9 +4,12 @@
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -70,10 +73,20 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
-            .flatMap(initialized -> {
-                this.isInitialized = initialized;
+            .zipWith(((com.azure.cosmos.implementation.changefeed.epkversion.LeaseStoreManagerImpl) this.leaseStore).getAllLeases(1).collectList())
+            .flatMap(initializedToLeaseTuple -> {
+                this.isInitialized = initializedToLeaseTuple.getT1();
 
-                if (initialized) {
+                if (!initializedToLeaseTuple.getT2().isEmpty()) {
+
+                    Lease lease = initializedToLeaseTuple.getT2().get(0);
+
+                    if (!Strings.isNullOrEmpty(lease.getContinuationToken())) {
+                        ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
+                        logger.info("Change feed mode : {}", changeFeedState.getMode());
+                    }
+                }
+                if (initializedToLeaseTuple.getT1()) {
                     return Mono.empty();
                 } else {
                     logger.info("Acquire initialization lock");

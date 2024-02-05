@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
@@ -34,6 +35,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +133,12 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     @Override
     public Flux<Lease> getAllLeases() {
         return this.listDocuments(this.getPartitionLeasePrefix())
+            .map(documentServiceLease -> documentServiceLease);
+    }
+
+    @Override
+    public Flux<Lease> getAllLeases(int top) {
+        return this.listDocuments(this.getPartitionLeasePrefix(), top)
             .map(documentServiceLease -> documentServiceLease);
     }
 
@@ -499,6 +507,34 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
             .map(ServiceItemLeaseV1::fromDocument);
     }
+
+
+    private Flux<ServiceItemLease> listDocuments(String prefix, int top) {
+        if (prefix == null || prefix.isEmpty()) {
+            throw new IllegalArgumentException("prefix");
+        }
+
+        SqlParameter topParam = new SqlParameter();
+        topParam.setName("@Top");
+        topParam.setValue(top);
+
+        SqlParameter param = new SqlParameter();
+        param.setName("@PartitionLeasePrefix");
+        param.setValue(prefix);
+        SqlQuerySpec querySpec = new SqlQuerySpec(
+            "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+            Arrays.asList(topParam, param));
+
+        Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
+            this.settings.getLeaseCollectionLink(),
+            querySpec,
+            this.requestOptionsFactory.createQueryRequestOptions(),
+            InternalObjectNode.class);
+
+        return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
+            .map(ServiceItemLease::fromDocument);
+    }
+
 
     private String getDocumentId(String leaseToken)
     {

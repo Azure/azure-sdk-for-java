@@ -51,6 +51,7 @@ class BootstrapperImpl implements Bootstrapper {
 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
+            // .zipWith(this.)
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
 
