@@ -50,7 +50,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
-        Assertions.assertNotNull(response.getValue().toString());
+        Assertions.assertNotNull(response.getValue());
     }
 
     @Test
