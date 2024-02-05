@@ -28,6 +28,16 @@ resource blobRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   }
 }
 
+resource blobRoleFunc 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: sa
+  name: guid(resourceGroup().id, blobContributor, 'azfunc')
+  properties: {
+    principalId: azfunc.identity.principalId
+    roleDefinitionId: blobContributor
+    principalType: 'ServicePrincipal'
+  }
+}
+
 resource blobRole2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: sa2
   name: guid(resourceGroup().id, blobContributor, usermgdid.id)
@@ -73,14 +83,14 @@ resource sa2 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 }
 
 resource farm 'Microsoft.Web/serverfarms@2021-03-01' = {
-  name: '${baseName}_asp'
+  name: '${baseName}-asp'
   location: location
   sku: {
-    name: 'F1'
-    tier: 'Free'
-    size: 'F1'
-    family: 'F'
-    capacity: 0
+    name: 'B1'
+    tier: 'Basic'
+    size: 'B1'
+    family: 'B'
+    capacity: 1
   }
   properties: { }
   kind: 'app'
@@ -102,7 +112,7 @@ resource web 'Microsoft.Web/sites@2021-03-01' = {
     httpsOnly: true
     keyVaultReferenceIdentity: 'SystemAssigned'
     siteConfig: {
-      netFrameworkVersion: 'v6.0'
+netFrameworkVersion: 'v6.0'
       http20Enabled: true
       minTlsVersion: '1.2'
       appSettings: [
@@ -119,7 +129,7 @@ resource web 'Microsoft.Web/sites@2021-03-01' = {
           value: sa2.name
         }
         {
-          name: 'IDENTITY_WEBAPP_USER_DEFINED_IDENTITY'
+          name: 'IDENTITY_USER_DEFINED_IDENTITY'
           value: usermgdid.id
         }
       ]
@@ -127,7 +137,66 @@ resource web 'Microsoft.Web/sites@2021-03-01' = {
   }
 }
 
+resource azfunc 'Microsoft.Web/sites@2021-03-01' = {
+  name: '${baseName}func'
+  location: location
+  kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${usermgdid.id}' : { }
+    }
+  }
+  properties: {
+    enabled: true
+    serverFarmId: farm.id
+    httpsOnly: true
+    keyVaultReferenceIdentity: 'SystemAssigned'
+    siteConfig: {
+      alwaysOn: true
+      minTlsVersion: '1.2'
+      appSettings: [
+        {
+          name: 'IDENTITY_STORAGE_NAME_1'
+          value: sa.name
+        }
+        {
+          name: 'IDENTITY_STORAGE_NAME_2'
+          value: sa2.name
+        }
+        {
+          name: 'IDENTITY_USER_DEFINED_IDENTITY'
+          value: usermgdid.id
+        }
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${sa.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${sa.listKeys().keys[0].value}'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${sa.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${sa.listKeys().keys[0].value}'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: toLower('${baseName}-func')
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'java'
+        }
+      ]
+    }
+  }
+}
+
 output IDENTITY_WEBAPP_NAME string = web.name
-output IDENTITY_WEBAPP_USER_DEFINED_IDENTITY string = usermgdid.id
+output IDENTITY_USER_DEFINED_IDENTITY string = usermgdid.id
 output IDENTITY_STORAGE_NAME_1 string = sa.name
 output IDENTITY_STORAGE_NAME_2 string = sa2.name
+output IDENTITY_FUNCTION_NAME string = azfunc.name
+output IDENTITY_APPSERVICE_NAME string = farm.name
+output IDENTITY_FUNC_URL string = azfunc.properties.defaultHostName
